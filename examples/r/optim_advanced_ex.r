@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/optim_advanced_ex.r
 # Note: this uses the flat ClassName_method(obj, ...) call form throughout, not R's usual
 # obj$method(...) syntax -- see memory/datamunge_r_dollar_dispatch_bug.md.
 #

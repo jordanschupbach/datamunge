@@ -37,7 +37,7 @@ The codeword length is \(C+1\) plus the sum of the block lengths, which is
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 inline int lev_len(std::uint64_t n) { std::vector<bool> b; levenshtein_encode_value(n, b); return (int)b.size(); }
 inline int eg_len(std::uint64_t n)  { std::vector<bool> b; exp_golomb0_encode_value(n, b); return (int)b.size(); }

@@ -44,7 +44,7 @@ behind X-ray phase retrieval and combinatorial feasibility solvers \-\- all from
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -102,7 +102,7 @@ step size collapse as the iterate reaches the crossing point.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

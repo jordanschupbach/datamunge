@@ -1,5 +1,6 @@
 """Functional SWIG bindings to datamunge::nn; models and loops live in Python."""
 from contextlib import contextmanager
+from operator import index as _index
 from types import SimpleNamespace
 
 from .nn_native import *
@@ -32,6 +33,24 @@ for _kind in ('PadMode', 'ResizeMethod', 'DepthToSpaceMode', 'GridSampleMode', '
     if _kind not in globals() or not isinstance(globals()[_kind], SimpleNamespace):
         globals()[_kind] = _enum(_kind)
 augment = SimpleNamespace(**{name[8:]: getattr(_native, name) for name in dir(_native) if name.startswith('augment_')})
+
+
+def _image_size(size):
+    """Convert a spatial pair to the canonical C++ value type."""
+    if isinstance(size, _native.ImageSize):
+        return size
+    height, width = size
+    result = _native.ImageSize()
+    result.height, result.width = _index(height), _index(width)
+    return result
+
+
+def resize_bilinear(images, size, align_corners=False, half_pixel_centers=False):
+    return _native.resize_bilinear(images, _image_size(size), align_corners, half_pixel_centers)
+
+
+def resize_nearest(images, size, align_corners=False, half_pixel_centers=False):
+    return _native.resize_nearest(images, _image_size(size), align_corners, half_pixel_centers)
 
 
 @contextmanager

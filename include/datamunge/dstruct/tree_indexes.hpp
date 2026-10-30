@@ -58,6 +58,12 @@ class SegmentTree {
   SegmentTree(std::size_t size, T identity = T{}) : size_(size), identity_(std::move(identity)), values_(storage_size(size), identity_) {}
   void set(std::size_t index, T value) { if (index >= size_) throw std::out_of_range("SegmentTree index out of range"); set(1, 0, size_, index, std::move(value)); }
   T query(std::size_t begin, std::size_t end) const { if (begin > end || end > size_) throw std::out_of_range("SegmentTree range out of range"); return query(1, 0, size_, begin, end); }
+  /// @brief Number of leaf positions, fixed at construction.
+  /// @return The size; valid query ranges satisfy end <= size().
+  [[nodiscard]] std::size_t size() const noexcept { return size_; }
+  /// @brief The identity element returned for empty ranges and unset positions.
+  /// @return The identity passed to the constructor.
+  [[nodiscard]] const T& identity() const noexcept { return identity_; }
  private:
   static std::size_t storage_size(std::size_t size) { return size ? size * 4 : 1; }
   void set(std::size_t node, std::size_t left, std::size_t right, std::size_t index, T value) { if (right - left == 1) { values_[node] = std::move(value); return; } const auto middle = (left + right) / 2; if (index < middle) set(node * 2, left, middle, index, std::move(value)); else set(node * 2 + 1, middle, right, index, std::move(value)); values_[node] = combine_(values_[node * 2], values_[node * 2 + 1]); }

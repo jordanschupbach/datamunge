@@ -54,7 +54,7 @@ process reversible, and it drives the decoder.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Encoding: tree to sequence
@@ -231,7 +231,7 @@ leaving \(\{4,5\}\). The code is therefore \(3\,3\,3\,4\). We then enumerate
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

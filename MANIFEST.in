@@ -6,12 +6,17 @@ recursive-include src/pydatamunge *.py *.i
 # Optional, native-backed NN example extension (built only on explicit request).
 include scripts/prebuild_nn_examples.py
 recursive-include examples/bindings *.hpp *.i
-recursive-include examples/cpp/nn *.cpp
+recursive-include examples/cpp/source/nn *.cpp
 recursive-include examples/nn/common *.hpp
 prune build
 
 include scripts/prebuild_nn_api.py src/nn_python_wrap.cpp
 recursive-include prebindings/nn *.i
+recursive-include prebindings/simulation *.i
+# Embedded native render shaders build without a shader SDK; keep regeneration reproducible.
+recursive-include shaders *.comp
+include scripts/compile_compute_fixture.py scripts/prebuild_simulation_shaders.py
+include scripts/prebuild_nn_storage_shaders.py
 # Preserve handwritten language ports when regenerating from a source archive.
 recursive-include examples/python/nn *.py
 recursive-include examples/r/nn *.R
@@ -19,4 +24,5 @@ recursive-include examples/bindings/r *.R
 
 include scripts/nn_migration_status.py
 recursive-include examples/nn *.cpp
+recursive-include examples/simulation *.cpp
 include examples/nn/language_status.json

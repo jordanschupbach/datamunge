@@ -1,10 +1,10 @@
 # Native R NN example. Full masked LSTM BPTT on the three-epoch marked-token memory task.
+# CMD: nix develop .#r --command Rscript examples/r/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/lstm.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example lstm
 # Full masked LSTM BPTT on the common three-epoch marked-token memory task.
 #
 # Port of tflow's lstm (common/ml/gated_sequence_demo.h with GatedCell::kLstm).

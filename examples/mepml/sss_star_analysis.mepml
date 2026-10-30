@@ -42,7 +42,7 @@ expands, so on trees with imperfect move ordering it searches meaningfully fewer
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static GameNode build_tree(std::mt19937& rng, int depth) {
     GameNode n;
@@ -119,7 +119,7 @@ counting the leaves each evaluates.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static GameNode build_tree(std::mt19937& rng, int depth) {
     GameNode n;

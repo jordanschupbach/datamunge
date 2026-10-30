@@ -33,7 +33,7 @@ theory computes it in polynomial time for any \(n\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 inline std::string show(const std::vector<int>& p) {
     std::string s = "[";
@@ -94,7 +94,7 @@ count fall as each reversal is applied.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 inline std::string show(const std::vector<int>& p) {
     std::string s = "[";

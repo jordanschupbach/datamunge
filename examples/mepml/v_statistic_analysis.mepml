@@ -54,7 +54,7 @@ functionals from which V-statistics take their name.
 #include <vector>
 
 using namespace datamunge::stats;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Relation to the U-statistic and the \(O(1/n)\) bias
@@ -141,7 +141,7 @@ kernel. We tabulate \(V_n\), \(U_n\), their difference, and the predicted
 #include <vector>
 
 using namespace datamunge::stats;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

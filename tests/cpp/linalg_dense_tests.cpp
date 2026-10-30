@@ -361,3 +361,13 @@ TEST(QR, NDLessThanMThrows) {
     DenseMatrix<double> A(2, 3, {1, 2, 3, 4, 5, 6});
     EXPECT_THROW(qr(A), std::invalid_argument);
 }
+
+TEST(DenseMatrix, FromColumns) {
+    const auto A = datamunge::linalg::DenseMatrix<double>::from_columns({{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}});
+    ASSERT_EQ(A.rows(), 3u);
+    ASSERT_EQ(A.cols(), 2u);
+    EXPECT_DOUBLE_EQ(A(0, 1), 4.0);
+    EXPECT_DOUBLE_EQ(A(2, 0), 3.0);
+    EXPECT_THROW((void)datamunge::linalg::DenseMatrix<double>::from_columns({}), std::invalid_argument);
+    EXPECT_THROW((void)datamunge::linalg::DenseMatrix<double>::from_columns({{1.0}, {1.0, 2.0}}), std::invalid_argument);
+}

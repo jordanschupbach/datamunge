@@ -1,3 +1,6 @@
+/// @file random.cpp
+/// @brief Seed expansion, xoshiro sampling, and random tensor/discrete index construction.
+
 #include "datamunge/nn/random.hpp"
 
 #include <algorithm>
@@ -10,8 +13,10 @@ namespace datamunge::nn {
 
 using detail::dispatch_float;
 
+/// @brief Seed mixing, bit rotation, floating tensor filling, and discrete-weight sampling helpers.
 namespace {
 
+/// @brief Advances a SplitMix64 seeding state and returns one mixed 64-bit word.
 std::uint64_t splitmix64(std::uint64_t& x) {
   std::uint64_t z = (x += 0x9e3779b97f4a7c15ULL);
   z               = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ULL;
@@ -19,6 +24,7 @@ std::uint64_t splitmix64(std::uint64_t& x) {
   return z ^ (z >> 31);
 }
 
+/// @brief Rotates a word left by k bits; callers supply a count strictly between zero and 64.
 std::uint64_t rotl(std::uint64_t x, int k) { return (x << k) | (x >> (64 - k)); }
 
 /// Fills a new float tensor with draws from `draw()`.
@@ -84,6 +90,7 @@ std::uint64_t Generator::below(std::uint64_t n) {
 }
 
 Generator& default_generator() {
+  /// @brief Shared deterministic stream, initialized once; callers serialize concurrent mutation.
   static Generator gen(0x5eed);
   return gen;
 }

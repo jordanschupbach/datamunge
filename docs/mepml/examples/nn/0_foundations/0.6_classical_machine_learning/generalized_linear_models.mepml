@@ -1,0 +1,196 @@
+//? Title: Log-Link GLMs: Means, Likelihoods and Scores
+//? Subtitle: Poisson, gamma and negative-binomial likelihoods imply different variance models
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Positive means can describe integer counts or strictly positive measurements, but one mean
+function does not determine a response distribution. We compare three log-link likelihoods at
+hand-checkable observations and verify autograd against their analytic scores. Shape and size
+are fixed here, keeping mean estimation separate from dispersion estimation.
+)
+\toc
+
+> The method
+
+All three families use eta=Xw and mu=exp(eta). Poisson has variance mu; gamma with known shape
+a has variance mu²/a; negative binomial with known size r has variance mu+mu²/r. Their derivatives
+of per-observation negative log likelihood with respect to eta are
+
+$$
+\partial_\eta\ell_{\rm Pois}=\mu-y,\quad
+\partial_\eta\ell_{\rm Gamma}=a(1-y/\mu),\quad
+\partial_\eta\ell_{\rm NB}=\frac{r(\mu-y)}{r+\mu}.
+$$
+\alttext(The Poisson, gamma and negative-binomial score residuals differ in how they weight the same observed-minus-mean discrepancy.)
+
+These follow by differentiating the distribution log densities after substituting mu=exp(eta).
+The coefficient gradient is Xᵀ times these scores. GlmNll retains response normalising constants
+in the reported likelihood while stopping their response gradients. Gamma requires y>0; count
+families use nonnegative integer y. Callers supply valid response support and finite predictors.
+The helper is a log-link likelihood, including for gamma; it differs from stats::GLM's inverse-link
+gamma family. NB uses a softplus expression for stability. Shape/size are supplied, not estimated.
+
+The concept diagram has a retained TikZ source in `diagrams/generalized_linear_models_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/generalized_linear_models_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/generalized_linear_models_concept.tikz > build/generalized_linear_models_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/generalized_linear_models_concept.svg build/generalized_linear_models_concept.dvi > build/generalized_linear_models_concept.render.log 2>&1
+printf 'Rendered build/generalized_linear_models_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/generalized_linear_models_concept.svg from local TikZ source.
+// \image(figures/generalized_linear_models_concept.svg)
+// result_end
+\caption(Poisson, gamma and negative-binomial likelihoods imply different variance models)
+\alttext(Linear predictor; \eta=Xw Then Positive mean; \mu=\exp(\eta) Then Choose response family; likelihood + variance.)
+
+> Simple examples
+
+At eta=0 and y=2, mu=1. Scores are -1 for Poisson, -3 for gamma shape 3 and -2/3 for negative-binomial size 2.
+
+```{cpp, results="markdown", file="figures/generalized_linear_models_scores.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::ml;
+  dm::dstruct::DataFrame t;
+  std::vector<std::string> family;
+  std::vector<double> nll, score, exact;
+  int i = 0;
+  for (auto f :
+       {m::GlmFamily::kPoisson, m::GlmFamily::kGamma, m::GlmFamily::kNegativeBinomial}) {
+    auto eta = n::scalar(0, n::DType::Float64).requires_grad_();
+    const auto loss = m::GlmNll(eta, n::scalar(2, n::DType::Float64), f, i == 1 ? 3 : 2);
+    const double g = n::grad(loss, {eta})[0].item(), e = i == 0 ? -1 : i == 1 ? -3 : -2. / 3;
+    if (std::abs(g - e) > 1e-12)
+      return 1;
+    family.push_back(i == 0 ? "Poisson" : i == 1 ? "gamma shape 3" : "NB size 2");
+    nll.push_back(loss.item());
+    score.push_back(g);
+    exact.push_back(e);
+    ++i;
+  }
+  auto p = dm::graphics::RPlot::create();
+  p.bars({0, 1, 2}, score, "score in eta", {37, 99, 235}, .5)
+      .title("Same mean and response, different score weights")
+      .x_label("Poisson=0, gamma=1, NB=2")
+      .y_label("NLL derivative");
+  std::filesystem::create_directories("build");
+  p.y_limits(-3.4, .25).size(850, 420).save_svg("build/generalized_linear_models_scores.svg");
+  t.add_column("family", family);
+  t.add_column("NLL", nll);
+  t.add_column("autograd_score", score);
+  t.add_column("analytic_score", exact);
+  std::print("{}\n", t.to_md(8));
+}
+```
+// result_begin: markdown
+| family | NLL | autograd_score | analytic_score |
+| :--- | ---: | ---: | ---: |
+| Poisson | 1.69314718 | -1.00000000 | -1.00000000 |
+| gamma shape 3 | 2.01101595 | -3.00000000 | -3.00000000 |
+| NB size 2 | 1.90954250 | -0.66666667 | -0.66666667 |
+
+\image(figures/generalized_linear_models_scores.svg)
+// result_end
+\caption(Distribution choice changes both likelihood value and the score at a fixed mean.)
+\alttext(Distribution choice changes both likelihood value and the score at a fixed mean.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::ml;
+  double worst = 0;
+  int checked = 0;
+  for (auto f :
+       {m::GlmFamily::kPoisson, m::GlmFamily::kGamma, m::GlmFamily::kNegativeBinomial})
+    for (double value : {-2., -1., 0., 1., 2.}) {
+      auto eta = n::scalar(value, n::DType::Float64).requires_grad_();
+      const auto y = n::scalar(2, n::DType::Float64);
+      const double g = n::grad(m::GlmNll(eta, y, f, 2), {eta})[0].item();
+      const double mu = std::exp(value), exact = f == m::GlmFamily::kPoisson ? mu - 2
+                                                 : f == m::GlmFamily::kGamma
+                                                     ? 2 * (1 - 2 / mu)
+                                                     : 2 * (mu - 2) / (2 + mu);
+      worst = std::max(worst, std::abs(g - exact));
+      ++checked;
+    }
+  if (worst > 1e-10)
+    return 1;
+  std::print("{} analytic score probes; maximum discrepancy {:.12f}.\n", checked, worst);
+}
+```
+// result_begin: markdown
+15 analytic score probes; maximum discrepancy 0.000000000000.
+// result_end
+
+
+> Fitting means with a tensor optimizer
+
+The intercept-only training responses 1,2,3,2 have mean 2. For each fixed dispersion,
+the score sums to zero at eta=log(2). The optimizer fits eta directly; this analytic
+answer checks the fit rather than supplying its parameters.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::ml;
+  const auto dtype = n::DType::Float64;
+  const auto y = n::tensor({1, 2, 3, 2}, {4}, dtype);
+  dm::dstruct::DataFrame table;
+  std::vector<std::string> family;
+  std::vector<double> fitted, error, nll;
+  int index = 0;
+  for (auto kind :
+       {m::GlmFamily::kPoisson, m::GlmFamily::kGamma, m::GlmFamily::kNegativeBinomial}) {
+    auto intercept = n::scalar(0, dtype).requires_grad_();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer({intercept}, .05, config);
+    for (int step = 0; step < 800; ++step) {
+      const auto loss = n::mean(m::GlmNll(intercept + n::zeros_like(y), y, kind, 2));
+      optimizer.minimize(loss);
+    }
+    n::NoGradGuard guard;
+    fitted.push_back(n::exp(intercept).item());
+    error.push_back(std::abs(fitted.back() - 2));
+    nll.push_back(n::mean(m::GlmNll(intercept + n::zeros_like(y), y, kind, 2)).item());
+    family.push_back(index == 0 ? "Poisson" : index == 1 ? "gamma" : "negative binomial");
+    ++index;
+    if (error.back() > 1e-8)
+      return 1;
+  }
+  table.add_column("family", family);
+  table.add_column("fitted_mean", fitted);
+  table.add_column("analytic_mean_error", error);
+  table.add_column("mean_NLL", nll);
+  std::print("{}\n", table.to_md(9));
+}
+```
+// result_begin: markdown
+| family | fitted_mean | analytic_mean_error | mean_NLL |
+| :--- | ---: | ---: | ---: |
+| Poisson | 2 | 0 | 1.408219096 |
+| gamma | 2 | 0 | 1.378773338 |
+| negative binomial | 2 | 0 | 1.703422192 |
+// result_end
+
+> Conclusion
+
+Analytic scores agree with differentiation across all three fixed-dispersion likelihoods.
+A positive mean function does not make the distributions interchangeable. Response support,
+dispersion choice and held-out likelihood should be assessed before interpreting fitted coefficients.
+
+> References
+
+- [Stan Functions Reference: distributions](https://mc-stan.org/docs/functions-reference/unbounded_discrete_distributions.html).
+- [R family documentation and link conventions](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/family.html).

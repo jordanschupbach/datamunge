@@ -1,49 +1,54 @@
-#
-# Configuration for Doxygen for use with CMake
-# Only options that deviate from the default are included
-# To create a new Doxyfile containing all available options, call `doxygen -g`
+# Configured by docs/CMakeLists.txt; paths also work in checkouts containing spaces.
+PROJECT_NAME           = "@DOXYGEN_PROJECT_NAME@"
+PROJECT_NUMBER         = "@DOXYGEN_PROJECT_VERSION@"
+OUTPUT_DIRECTORY       = "@DOXYGEN_OUTPUT_DIRECTORY@"
+INPUT                  = "@DOXYGEN_PROJECT_ROOT@/README.md" \
+                         "@DOXYGEN_PROJECT_ROOT@/include" \
+                         "@DOXYGEN_PROJECT_ROOT@/src/datamunge" \
+                         "@DOXYGEN_PROJECT_ROOT@/docs/pages"
+FILE_PATTERNS          = *.hpp *.h *.cpp *.c *.inl *.md *.dox
+RECURSIVE              = YES
+EXCLUDE_SYMLINKS       = YES
+USE_MDFILE_AS_MAINPAGE = "@DOXYGEN_PROJECT_ROOT@/README.md"
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        = "@DOXYGEN_PROJECT_ROOT@/"
+STRIP_FROM_INC_PATH    = "@DOXYGEN_PROJECT_ROOT@/include/"
 
-# Get Project name and version from CMake
-PROJECT_NAME = @DOXYGEN_PROJECT_NAME@
-PROJECT_NUMBER = @DOXYGEN_PROJECT_VERSION@
+# Read the sources on every core (about twice as fast; only generated anchor and
+# formula numbers differ from a one-thread run).
+NUM_PROC_THREADS       = 0
 
-# Add sources
-INPUT = @DOXYGEN_PROJECT_ROOT@/README.md @DOXYGEN_PROJECT_ROOT@/include @DOXYGEN_PROJECT_ROOT@/docs/pages
-EXTRACT_ALL = YES
-RECURSIVE = YES
-OUTPUT_DIRECTORY = @DOXYGEN_OUTPUT_DIRECTORY@
+# Keep undocumented symbols in XML so the coverage audit can count them.
+# EXTRACT_ALL disables Doxygen's missing-documentation warnings; the XML audit
+# supplies that check without hiding private members or implementation helpers.
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_PRIV_VIRTUAL   = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_ANON_NSPACES   = YES
+INTERNAL_DOCS          = YES
+HIDE_UNDOC_MEMBERS     = NO
+HIDE_UNDOC_CLASSES     = NO
+HIDE_UNDOC_NAMESPACES  = NO
+JAVADOC_AUTOBRIEF      = YES
+MULTILINE_CPP_IS_BRIEF = YES
+BUILTIN_STL_SUPPORT    = YES
 
-# Use the README as a main page
-USE_MDFILE_AS_MAINPAGE = @DOXYGEN_PROJECT_ROOT@/README.md
+QUIET                  = YES
+WARNINGS               = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_IF_INCOMPLETE_DOC = YES
+WARN_LOGFILE           = "@DOXYGEN_OUTPUT_DIRECTORY@/warnings.log"
 
-# set relative include paths
-FULL_PATH_NAMES = YES
-STRIP_FROM_PATH = @DOXYGEN_PROJECT_ROOT@/include @DOXYGEN_PROJECT_ROOT@
-
-# We use m.css to generate the html documentation, so we only need XML output
-EXTRACT_ALL          = YES
-CLASS_DIAGRAMS      = YES
-HIDE_UNDOC_RELATIONS = NO
-HAVE_DOT             = YES
-CLASS_GRAPH          = YES
-COLLABORATION_GRAPH  = YES
-UML_LOOK             = YES
-UML_LIMIT_NUM_FIELDS = 50
-TEMPLATE_RELATIONS   = YES
-DOT_GRAPH_MAX_NODES  = 100
-MAX_DOT_GRAPH_DEPTH  = 0
-DOT_TRANSPARENT      = YES
-
-
-
-GENERATE_XML = YES
-GENERATE_HTML = YES
-GENERATE_LATEX = NO
-XML_PROGRAMLISTING = NO
-CREATE_SUBDIRS = NO
-
-# Include all directories, files and namespaces in the documentation
-# Disable to include only explicitly documented objects
-M_SHOW_UNDOCUMENTED = YES
-
-EXCLUDE = @DOXYGEN_PROJECT_ROOT@/include/charm/extern/
+GENERATE_XML           = YES
+XML_PROGRAMLISTING     = NO
+GENERATE_HTML          = @DOXYGEN_GENERATE_HTML@
+GENERATE_LATEX         = NO
+# Render existing formula comments in HTML without a local TeX installation.
+USE_MATHJAX            = YES
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+HAVE_DOT               = NO
+# Optional native backend implementations are part of the maintained source inventory.
+PREDEFINED += DATAMUNGE_ENABLE_DATA_ASSETS=1 DATAMUNGE_ENABLE_CUDA=1 DATAMUNGE_ENABLE_CUBLAS=1 DATAMUNGE_ENABLE_VULKAN=1

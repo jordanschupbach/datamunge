@@ -1,3 +1,6 @@
+/// @file decision_tree_classifier.cpp
+/// @brief CART classification tree: sort-and-sweep split search, prediction, summaries and plots.
+
 #include <datamunge/stats/decision_tree_classifier.hpp>
 
 #include <algorithm>
@@ -6,14 +9,19 @@
 #include <iostream>
 #include <limits>
 #include <numeric>
-#include <set>
+#include <optional>
 #include <sstream>
 #include <stdexcept>
 
 namespace datamunge::stats {
 
+/// @brief Formatting and colour helpers for the tree.
 namespace {
 
+/// @brief Formats @p v with fixed @p precision ("NaN" for NaN).
+/// @param v          Value.
+/// @param precision  Digits after the point.
+/// @return The text.
 std::string format_stat(double v, int precision = 4) {
     if (std::isnan(v)) return "NaN";
     std::ostringstream oss;
@@ -21,7 +29,8 @@ std::string format_stat(double v, int precision = 4) {
     return oss.str();
 }
 
-const plot::RGB kSeriesColors[] = {
+/// @brief Series colours for the plots, one per class.
+const graphics::RGB kSeriesColors[] = {
     {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}, {124, 58, 237}, {8, 145, 178},
 };
 
@@ -145,26 +154,28 @@ std::size_t DecisionTreeClassifier::build_node(const linalg::DenseMatrix<double>
     double      best_threshold = 0.0;
     bool        found          = false;
 
+    // Each candidate threshold is the midpoint between two consecutive distinct values. Sorting
+    // the rows once per feature and sweeping them left to right gives every threshold's class
+    // counts in O(n log n), instead of recounting all rows per threshold.
+    std::vector<std::size_t> order(rows.size());
     for (const auto feature : feature_candidates(p)) {
-        std::set<double> unique_values;
-        for (const auto r : rows) unique_values.insert(X(r, feature));
-        if (unique_values.size() < 2) continue;
+        std::iota(order.begin(), order.end(), std::size_t{0});
+        std::sort(order.begin(), order.end(),
+                  [&](std::size_t a, std::size_t b) { return X(rows[a], feature) < X(rows[b], feature); });
 
-        std::vector<double> sorted_values(unique_values.begin(), unique_values.end());
-        for (std::size_t v = 0; v + 1 < sorted_values.size(); ++v) {
-            const double threshold = 0.5 * (sorted_values[v] + sorted_values[v + 1]);
-
-            std::vector<double> left_counts(k, 0.0), right_counts(k, 0.0);
-            std::size_t          left_n = 0, right_n = 0;
-            for (const auto r : rows) {
-                if (X(r, feature) <= threshold) {
-                    left_counts[class_index[r]] += 1.0;
-                    ++left_n;
-                } else {
-                    right_counts[class_index[r]] += 1.0;
-                    ++right_n;
-                }
-            }
+        std::vector<double> left_counts(k, 0.0), right_counts = node.class_counts;
+        std::size_t         left_n = 0, right_n = rows.size();
+        for (std::size_t s = 0; s + 1 < order.size(); ++s) {
+            const std::size_t r     = rows[order[s]];
+            const double      value = X(r, feature);
+            left_counts[class_index[r]] += 1.0;
+            right_counts[class_index[r]] -= 1.0;
+            ++left_n;
+            --right_n;
+            const double next = X(rows[order[s + 1]], feature);
+            if (!(next > value)) continue; // not the last row of a run of equal values
+            const double threshold = 0.5 * (value + next);
+            if (!(threshold < next)) continue; // adjacent doubles: no threshold separates them
             if (left_n < options_.min_samples_leaf || right_n < options_.min_samples_leaf) continue;
 
             const double weighted = (static_cast<double>(left_n) * impurity_of(left_counts, left_n)
@@ -202,6 +213,42 @@ std::size_t DecisionTreeClassifier::classify_row(const std::vector<double>& x) c
     while (!nodes_[index].is_leaf)
         index = (x[nodes_[index].feature_index] <= nodes_[index].threshold) ? nodes_[index].left : nodes_[index].right;
     return index;
+}
+
+std::size_t DecisionTreeClassifier::predict_row(const std::vector<double>& x) const {
+    if (x.size() != predictor_names_.size())
+        throw std::invalid_argument("DecisionTreeClassifier::predict_row: expected " + std::to_string(predictor_names_.size())
+                                    + " predictor values, got " + std::to_string(x.size()));
+    return nodes_[classify_row(x)].predicted_class_index;
+}
+
+dstruct::DataFrame DecisionTreeClassifier::node_frame() const {
+    std::vector<double>                id, depth, left, right, n, impurity;
+    std::vector<std::optional<double>> threshold;
+    std::vector<std::string>           feature, cls;
+    for (std::size_t i = 0; i < nodes_.size(); ++i) {
+        const auto& node = nodes_[i];
+        id.push_back(static_cast<double>(i));
+        depth.push_back(static_cast<double>(node.depth));
+        feature.push_back(node.is_leaf ? "" : predictor_names_[node.feature_index]);
+        threshold.push_back(node.is_leaf ? std::nullopt : std::optional<double>(node.threshold));
+        left.push_back(node.is_leaf ? -1.0 : static_cast<double>(node.left));
+        right.push_back(node.is_leaf ? -1.0 : static_cast<double>(node.right));
+        n.push_back(static_cast<double>(node.n_samples));
+        impurity.push_back(node.impurity);
+        cls.push_back(classes_[node.predicted_class_index]);
+    }
+    dstruct::DataFrame frame;
+    frame.add_column("node", id);
+    frame.add_column("depth", depth);
+    frame.add_column("feature", feature);
+    frame.add_column("threshold", threshold);
+    frame.add_column("left", left);
+    frame.add_column("right", right);
+    frame.add_column("n", n);
+    frame.add_column("impurity", impurity);
+    frame.add_column("class", cls);
+    return frame;
 }
 
 std::size_t DecisionTreeClassifier::leaf_count() const {
@@ -322,13 +369,13 @@ DecisionTreeClassifierPrediction DecisionTreeClassifier::predict_detail(const ds
     return result;
 }
 
-plot::RPlot DecisionTreeClassifier::plot_classification(const dstruct::DataFrame& data,
+graphics::RPlot DecisionTreeClassifier::plot_classification(const dstruct::DataFrame& data,
                                                                const std::string& x_feature,
                                                                const std::string& y_feature) const {
     const auto predictions = predict(data);
     const auto& response   = design_.response_name;
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs, ys;
         for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -359,7 +406,7 @@ plot::RPlot DecisionTreeClassifier::plot_classification(const dstruct::DataFrame
     return plot;
 }
 
-plot::RPlot DecisionTreeClassifier::plot_decision_regions(const std::string& x_feature,
+graphics::RPlot DecisionTreeClassifier::plot_decision_regions(const std::string& x_feature,
                                                                  const std::string& y_feature,
                                                                  std::size_t grid_resolution) const {
     if (predictor_names_.size() != 2)
@@ -384,7 +431,7 @@ plot::RPlot DecisionTreeClassifier::plot_decision_regions(const std::string& x_f
     y_min -= y_pad;
     y_max += y_pad;
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     std::vector<std::vector<double>> grid_x(classes_.size()), grid_y(classes_.size());
     for (std::size_t gx = 0; gx < grid_resolution; ++gx) {
         for (std::size_t gy = 0; gy < grid_resolution; ++gy) {

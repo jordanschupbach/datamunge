@@ -1,3 +1,5 @@
+/// @file cma_es.cpp
+/// @brief CMAES native update, trial and stopping implementation.
 #include <datamunge/optim/cma_es.hpp>
 
 #include <algorithm>
@@ -8,13 +10,20 @@
 #include <stdexcept>
 
 namespace datamunge::optim {
+/// @brief Private cma es arithmetic, validation and local state.
 namespace {
 
+/// @brief Owned covariance eigenpairs for the local dense CMA sampler.
 struct EigenSystem {
-    std::vector<double> values;
-    std::vector<double> vectors; // Columns are eigenvectors.
+    std::vector<double> values; ///< Eigenvalues floored at 1e-30.
+    std::vector<double> vectors; ///< Row-major matrix whose columns are eigenvectors.
 };
 
+/// @brief Apply largest-off-diagonal Jacobi rotations to a symmetric covariance copy.
+/// @param matrix Owned row-major n by n symmetric matrix.
+/// @param n Matrix dimension.
+/// @return Eigenvectors and diagonal values floored at 1e-30, not sorted.
+/// Uses at most 20*n*n+1 rotations and absolute 1e-14 off-diagonal stopping.
 EigenSystem symmetric_eigensystem(std::vector<double> matrix, const std::size_t n) {
     EigenSystem result{std::vector<double>(n), std::vector<double>(n * n, 0.0)};
     for (std::size_t i = 0; i < n; ++i) result.vectors[i * n + i] = 1.0;
@@ -63,6 +72,9 @@ EigenSystem symmetric_eigensystem(std::vector<double> matrix, const std::size_t 
     return result;
 }
 
+/// @brief Compute the ordinary Euclidean evolution-path norm.
+/// @param values Path components.
+/// @return Square root of the double sum of squares.
 double norm(const std::vector<double>& values) {
     double squared = 0.0;
     for (const double value : values) squared += value * value;
@@ -113,7 +125,12 @@ double CMAES::optimize(ArbitraryFunction& function, std::vector<double>& coordin
     std::vector<double> best = mean;
     double best_value = function.evaluate(best);
 
-    struct Candidate { std::vector<double> point; std::vector<double> step; double value; };
+    /// @brief One locally sampled CMA offspring and its objective value.
+    struct Candidate {
+      std::vector<double> point; ///< Sampled coordinates.
+      std::vector<double> step; ///< Covariance-transformed step before sigma scaling.
+      double value; ///< Objective at point.
+    };
     for (std::size_t generation = 0; generation < options_.max_generations; ++generation) {
         const EigenSystem eigen = symmetric_eigensystem(covariance, n);
         std::vector<double> axes(n);

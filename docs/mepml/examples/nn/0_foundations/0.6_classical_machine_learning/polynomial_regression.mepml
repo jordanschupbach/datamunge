@@ -1,0 +1,181 @@
+//? Title: Polynomial Regression: Basis and Bias–Variance
+//? Subtitle: A richer polynomial space lowers training error without guaranteeing lower risk
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Curved responses require a richer function class than a straight line, but flexible fits can
+amplify observation noise. We construct Legendre features on a tiny quadratic example, then
+fit many independent noisy replicas of a known sine function. The finite-ensemble identity
+checks bias and variance directly rather than inferring them from one fitted curve.
+)
+\toc
+
+> The method
+
+Degree-d polynomial regression is linear in d+1 coefficients. Legendre columns span the same
+space as powers while improving conditioning on [-1,1]. They satisfy P0=1, P1=x and
+
+$$
+P_n(x)=\frac{(2n-1)xP_{n-1}(x)-(n-1)P_{n-2}(x)}n,\qquad
+\overline{(\widehat f-f)^2}=(\overline{\widehat f}-f)^2+\overline{(\widehat f-\overline{\widehat f})^2}.
+$$
+\alttext(Legendre columns follow a three-term recurrence. Ensemble mean squared error equals squared bias plus population variance across fitted replicas.)
+
+The second equality follows by expanding each error around the ensemble mean; the cross term
+sums to zero. It is exact for the finite ensemble with divisor R, not R-1. Add the observation
+noise variance only when predicting a fresh noisy response rather than the latent mean.
+Each fit uses a learnable coefficient tensor and an explicit SGD loop. In the ensemble,
+the loss averages over observations and sums over the 100 replica columns, so each
+replica receives the same update scale as an independent fit. A single coefficient
+matrix trains all replicas concurrently. QR checks the converged coefficients; it does
+not perform the demonstrated fit. Each SGD step costs O(N(d+1)R). Extrapolation can
+still be unstable even when the in-range training loss is small.
+
+The concept diagram has a retained TikZ source in `diagrams/polynomial_regression_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/polynomial_regression_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/polynomial_regression_concept.tikz > build/polynomial_regression_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/polynomial_regression_concept.svg build/polynomial_regression_concept.dvi > build/polynomial_regression_concept.render.log 2>&1
+printf 'Rendered build/polynomial_regression_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/polynomial_regression_concept.svg from local TikZ source.
+// \image(figures/polynomial_regression_concept.svg)
+// result_end
+\caption(A richer polynomial space lowers training error without guaranteeing lower risk)
+\alttext(Fixed input locations; Legendre design X. Then Noisy response replicas; independent columns of Y. Then Explicit tensor SGD; check bias and variance.)
+
+> Simple examples
+
+Since P2=(3x²-1)/2, x²=(1+2P2)/3. Five noise-free observations should recover Legendre coefficients (1/3,0,2/3).
+
+```{cpp, results="markdown", file="figures/polynomial_regression_quadratic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto x = n::linspace(-1, 1, 5, n::DType::Float64).reshape({5, 1});
+  const auto design = n::ml::PolynomialFeatures(x, 2);
+  const auto target = n::square(x);
+  auto w = n::zeros({3, 1}, n::DType::Float64).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Sgd;
+  n::Optimizer optimizer({w}, .3, config);
+  for (int step = 0; step < 1000; ++step) {
+    const auto loss = .5 * n::mean(n::square(n::matmul(design, w) - target));
+    optimizer.minimize(loss);
+  }
+  const auto exact = n::tensor({1. / 3, 0, 2. / 3}, {3, 1}, n::DType::Float64);
+  if (n::max(n::abs(w - exact)).item() > 1e-10)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.lines(x.to_vector<double>(), n::matmul(design, w).to_vector<double>(), "tensor SGD",
+          {234, 88, 12})
+      .points(x.to_vector<double>(), target.to_vector<double>(), "exact squares",
+              {37, 99, 235})
+      .title("Optimise coefficients of fixed Legendre features")
+      .x_label("x")
+      .y_label("x squared");
+  std::filesystem::create_directories("build");
+  p.size(820, 420).save_svg("build/polynomial_regression_quadratic.svg");
+  std::print("SGD Legendre coefficients: {}.\n", w.to_vector<double>());
+}
+```
+// result_begin: markdown
+SGD Legendre coefficients: [0.3333333333333335, -1.229872490653621e-21, 0.6666666666666662].
+\image(figures/polynomial_regression_quadratic.svg)
+// result_end
+\caption(A quadratic response uses constant and second Legendre columns; its linear coefficient vanishes.)
+\alttext(A quadratic response uses constant and second Legendre columns; its linear coefficient vanishes.)
+
+> Checking the theory
+
+One hundred replicas share 20 x locations and independent Gaussian noise of standard deviation .2. Degrees 1,3,12 are fixed in advance. The query grid lies inside the training interval.
+
+```{cpp, results="markdown", file="figures/polynomial_regression_ensemble.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::Generator rng(17);
+  const auto x = n::linspace(-1, 1, 20, n::DType::Float64).reshape({20, 1});
+  const auto q = n::linspace(-1, 1, 101, n::DType::Float64).reshape({101, 1});
+  const auto truth = n::sin(x * std::numbers::pi);
+  const auto target = truth + n::normal({20, 100}, 0, .2, rng, n::DType::Float64);
+  const auto f = n::sin(q * std::numbers::pi);
+  dm::dstruct::DataFrame table;
+  std::vector<double> degree, train, bias, variance, risk, identity, oracle_error;
+  auto p = dm::graphics::RPlot::create();
+  for (int d : {1, 3, 12}) {
+    const auto X = n::ml::PolynomialFeatures(x, d), Q = n::ml::PolynomialFeatures(q, d);
+    auto w = n::zeros({d + 1, 100}, n::DType::Float64).requires_grad_();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Sgd;
+    n::Optimizer optimizer({w}, .3, config);
+    for (int step = 0; step < 6000; ++step) {
+      // Average over observations, sum over 100 independent fitted replicas.
+      const auto loss = .5 * n::sum(n::mean(n::square(n::matmul(X, w) - target), {0}));
+      optimizer.minimize(loss);
+    }
+    n::NoGradGuard guard;
+    const auto pred = n::matmul(Q, w), average = n::mean(pred, {1}, true);
+    const double b = n::mean(n::square(average - f)).item();
+    const double v = n::mean(n::square(pred - average)).item();
+    const double m = n::mean(n::square(pred - f)).item();
+    degree.push_back(d);
+    train.push_back(n::mean(n::square(n::matmul(X, w) - target)).item());
+    bias.push_back(b);
+    variance.push_back(v);
+    risk.push_back(m);
+    identity.push_back(std::abs(m - b - v));
+    oracle_error.push_back(n::max(n::abs(w - n::ml::LeastSquaresQr(X, target))).item());
+    if (identity.back() > 1e-10 || oracle_error.back() > 1e-6)
+      return 1;
+    p.lines(q.to_vector<double>(), average.to_vector<double>(), "degree " + std::to_string(d),
+            d == 1   ? dm::graphics::RGB{37, 99, 235}
+            : d == 3 ? dm::graphics::RGB{234, 88, 12}
+                     : dm::graphics::RGB{22, 163, 74});
+  }
+  p.title("Mean tensor-SGD fit across 100 noisy replicas")
+      .x_label("x")
+      .y_label("ensemble mean");
+  std::filesystem::create_directories("build");
+  p.y_limits(-1.2, 1.65).size(850, 430).save_svg("build/polynomial_regression_ensemble.svg");
+  table.add_column("degree", degree);
+  table.add_column("train_MSE", train);
+  table.add_column("bias_squared", bias);
+  table.add_column("variance", variance);
+  table.add_column("latent_MSE", risk);
+  table.add_column("identity_error", identity);
+  table.add_column("QR_check_error", oracle_error);
+  std::print("{}\n", table.to_md(8));
+}
+```
+// result_begin: markdown
+| degree | train_MSE | bias_squared | variance | latent_MSE | identity_error | QR_check_error |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.26875884 | 0.20731555 | 0.00299456 | 0.21031011 | 0 | 0 |
+| 3 | 0.03689618 | 0.00529088 | 0.00619057 | 0.01148145 | 0 | 0 |
+| 12 | 0.01387106 | 0.00017441 | 0.03286803 | 0.03304244 | 0 | 0 |
+
+\image(figures/polynomial_regression_ensemble.svg)
+// result_end
+\caption(The printed bias and variance sum to latent prediction error for every fitted degree.)
+\alttext(The printed bias and variance sum to latent prediction error for every fitted degree.)
+
+
+> Conclusion
+
+The quadratic example verifies the basis transformation. Across noisy replicas the bias–variance
+identity holds numerically, and training error alone does not describe latent prediction risk.
+These are conditional results at a fixed design and noise level; selecting degree needs separate validation.
+
+> References
+
+- [NIST DLMF: Legendre recurrence](https://dlmf.nist.gov/18.9).
+- [Hastie, Tibshirani and Friedman: The Elements of Statistical Learning, chapter 7](https://hastie.su.domains/ElemStatLearn/).

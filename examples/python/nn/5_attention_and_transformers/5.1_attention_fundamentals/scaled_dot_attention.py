@@ -1,4 +1,5 @@
 # Native Python NN example. Scaled attention outputs and complete Q/K/V derivative fixtures.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/scaled_dot_attention.py
 """Cross, masked-head, single-key and additive-bias attention with finite differences."""
 import math
 from pathlib import Path

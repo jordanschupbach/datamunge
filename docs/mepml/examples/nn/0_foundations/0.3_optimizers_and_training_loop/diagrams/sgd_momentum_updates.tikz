@@ -1,0 +1,15 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usetikzlibrary{arrows.meta,positioning}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\sffamily,box/.style={draw,rounded corners,align=center,minimum height=1cm,inner sep=7pt},arrow/.style={->,thick}]
+\node[box,fill=blue!8] (g) at (0,0) {Gradient at the stored weights\\$g_t=\nabla f(w_t)$};
+\node[box,fill=orange!12] (v) at (5,0) {Updated velocity\\$v_t=\mu v_{t-1}+g_t$};
+\node[box,fill=orange!12] (old) at (5,2) {Previous velocity\\$v_{t-1}$};
+\draw[arrow] (g)--(v);\draw[arrow] (old)--node[right] {remember with decay $\mu$} (v);
+\node[box,fill=green!10] (sgd) at (0,-2) {SGD\\$w_{t+1}=w_t-\eta_t g_t$};
+\node[box,fill=green!10] (hb) at (5,-2) {Momentum\\$w_{t+1}=w_t-\eta_t v_t$};
+\node[box,fill=green!10] (nag) at (10,-2) {Nesterov convention here\\$w_{t+1}=w_t-\eta_t(g_t+\mu v_t)$};
+\draw[arrow] (g)--(sgd);\draw[arrow] (v)--(hb);\draw[arrow] (v)-|(nag);
+\node[align=center] at (5,-3.3) {Velocity remembers gradients, not previous parameter displacements.\\The current rate multiplies the whole update direction.};
+\end{tikzpicture}
+\end{document}

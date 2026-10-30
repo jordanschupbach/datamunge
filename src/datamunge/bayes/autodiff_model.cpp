@@ -1,4 +1,9 @@
+/// @file autodiff_model.cpp
+/// @brief AutodiffModel and LogDensity adapters.
+
 #include <datamunge/bayes/autodiff_model.hpp>
+
+#include <utility>
 
 namespace datamunge::bayes {
 
@@ -23,5 +28,9 @@ std::vector<double> AutodiffModel::gradient(const std::vector<double>& params) {
     for (std::size_t i = 0; i < params.size(); ++i) grad[i] = adjoint[leaves[i].index()];
     return grad;
 }
+
+LogDensity::LogDensity(Fn fn) : fn_(std::move(fn)) {}
+
+double LogDensity::evaluate(const std::vector<double>& params) { return fn_(params); }
 
 } // namespace datamunge::bayes

@@ -44,6 +44,17 @@ class GBMRegressor {
  public:
     GBMRegressor(const dstruct::DataFrame& data, const std::string& formula, GBMRegressorOptions options = {});
 
+    /// @brief Fits the same model from a formula object, in R's `(formula, data)` argument order.
+    ///
+    /// Same as the `(data, formula, ...)` constructor; a string literal or std::string
+    /// converts to Formula implicitly, so `GBMRegressor("y ~ x", data)` also works.
+    /// @param formula  Model formula, e.g. `dm::formula("y ~ x1 + x2")`.
+    /// @param data  Data frame holding every column the formula names.
+    /// @param options  Same as in the `(data, formula, ...)` constructor.
+    /// @throws std::invalid_argument  As the `(data, formula, ...)` constructor.
+    GBMRegressor(const Formula& formula, const dstruct::DataFrame& data, GBMRegressorOptions options = {})
+        : GBMRegressor(data, formula.text(), std::move(options)) {}
+
     [[nodiscard]] const std::string&              formula_text() const { return formula_.text(); }
     [[nodiscard]] const std::vector<std::string>& predictor_names() const { return predictor_names_; }
     [[nodiscard]] std::size_t                     observations() const { return observations_; }
@@ -64,9 +75,9 @@ class GBMRegressor {
 
     [[nodiscard]] std::vector<double> predict(const dstruct::DataFrame& newdata) const;
 
-    [[nodiscard]] plot::RPlot plot_predicted_vs_actual() const;
-    [[nodiscard]] plot::RPlot plot_residuals_vs_fitted() const;
-    [[nodiscard]] plot::RPlot plot_training_deviance() const;
+    [[nodiscard]] graphics::RPlot plot_predicted_vs_actual() const;
+    [[nodiscard]] graphics::RPlot plot_residuals_vs_fitted() const;
+    [[nodiscard]] graphics::RPlot plot_training_deviance() const;
 
  private:
     void fit(const dstruct::DataFrame& data);

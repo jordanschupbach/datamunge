@@ -6,6 +6,7 @@
 #include <optional>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 namespace datamunge::dstruct {
 
@@ -116,6 +117,14 @@ class DoublyLinkedList {
   std::optional<T> pop_back() { if (!tail_) return std::nullopt; if (tail_ == head_.get()) return pop_front(); Node* previous = tail_->previous; auto node = std::move(previous->next); tail_ = previous; --size_; return std::move(node->value); }
   T& front() { if (!head_) throw std::out_of_range("DoublyLinkedList is empty"); return head_->value; }
   T& back() { if (!tail_) throw std::out_of_range("DoublyLinkedList is empty"); return tail_->value; }
+  /// @brief Copies the elements front to back without modifying the list.
+  /// @return The elements in list order (empty when the list is empty).
+  [[nodiscard]] std::vector<T> to_vector() const {
+    std::vector<T> values;
+    values.reserve(size_);
+    for (const Node* node = head_.get(); node; node = node->next.get()) values.push_back(node->value);
+    return values;
+  }
  private:
   std::unique_ptr<Node> head_;
   Node* tail_{nullptr};
@@ -129,6 +138,14 @@ template <typename T> class Stack {
   T& top() { return values_.front(); }
   bool empty() const noexcept { return values_.empty(); }
   std::size_t size() const noexcept { return values_.size(); }
+  /// @brief Copies the elements from top to bottom without popping them.
+  /// @return The elements, top of the stack first.
+  [[nodiscard]] std::vector<T> to_vector() const {
+    std::vector<T> values;
+    values.reserve(values_.size());
+    values_.for_each([&](const T& value) { values.push_back(value); });
+    return values;
+  }
  private: LinkedList<T> values_;
 };
 
@@ -139,6 +156,9 @@ template <typename T> class Queue {
   T& front() { return values_.front(); }
   bool empty() const noexcept { return values_.empty(); }
   std::size_t size() const noexcept { return values_.size(); }
+  /// @brief Copies the elements from front to back without dequeuing them.
+  /// @return The elements, next-to-pop first.
+  [[nodiscard]] std::vector<T> to_vector() const { return values_.to_vector(); }
  private: DoublyLinkedList<T> values_;
 };
 
@@ -152,6 +172,9 @@ template <typename T> class DoubleEndedQueue {
   T& back() { return values_.back(); }
   bool empty() const noexcept { return values_.empty(); }
   std::size_t size() const noexcept { return values_.size(); }
+  /// @brief Copies the elements from front to back without removing them.
+  /// @return The elements in deque order.
+  [[nodiscard]] std::vector<T> to_vector() const { return values_.to_vector(); }
  private: DoublyLinkedList<T> values_;
 };
 

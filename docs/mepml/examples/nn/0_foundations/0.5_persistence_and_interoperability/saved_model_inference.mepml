@@ -1,0 +1,115 @@
+//? Title: Serving Exported Weights with a Dynamic Batch
+//? Subtitle: Native least squares fits the coefficients; C++ supplies and checks the serving function
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A fitted model must accept new batch sizes after leaving its training environment. We fit a
+small affine model with native least squares, export its Float32 weights, and evaluate it in C++ on two batch
+sizes. The native process needs the numeric weights and matching inference code; it does not
+load a TensorFlow SavedModel directory.
+)
+\toc
+
+> The method
+
+Serving separates parameter estimation from evaluation. Once weights W and b are fixed,
+Y=XW+b has shape [batch,output_width], and batch may vary between calls. The native helper
+requires floating inputs, weights and bias of the same dtype and compatible dimensions.
+The fixture fits the full-rank design Z=[1,X] by least squares:
+
+$$
+\widehat\theta=\arg\min_\theta\|Z\theta-y\|_2^2,\qquad y=.75x_0-1.5x_1+.25.
+$$
+\alttext(Estimate an intercept and two slopes from a full-rank training design.)
+
+Native NPZ serialization exports learned coefficients, not executable graph functions or SignatureDefs. The C++
+consumer retains the affine computation and performs explicit shape/dtype validation. NoGradGuard
+inside affine_inference avoids retaining an inference graph. Dense evaluation costs
+O(batch times input_width times output_width). Matching outputs on a few queries is a useful
+contract check, not proof of generalization to another population.
+
+The concept diagram has a retained TikZ source in `diagrams/saved_model_inference_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/saved_model_inference_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/saved_model_inference_concept.tikz > build/saved_model_inference_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/saved_model_inference_concept.svg build/saved_model_inference_concept.dvi > build/saved_model_inference_concept.render.log 2>&1
+printf 'Rendered build/saved_model_inference_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/saved_model_inference_concept.svg from local TikZ source.
+// \image(figures/saved_model_inference_concept.svg)
+// result_end
+\caption(Native least squares fits the coefficients; C++ supplies and checks the serving function)
+\alttext(Native fit; least squares coefficients Then Export Float32 NPZ; weights + bias Then C++ serving contract; dynamic batch; no grad.)
+
+> Simple examples
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/nn/array_io.hpp>
+int main(){
+ namespace n=dm::nn;
+ std::filesystem::create_directories("build");
+ const auto x=n::tensor({0.,0.,1.,0.,0.,1.,2.,-3.,-1.,2.},{5,2},n::DType::Float64);
+ const auto y=n::matmul(x,n::tensor({.75,-1.5},{2,1},n::DType::Float64))+.25;
+ const auto z=n::concat({n::ones({5,1},n::DType::Float64),x},1);
+ const auto coef=n::lstsq(z,y,0.,false);
+ n::save_npz("build/saved_model_inference_weights.npz",{{"weights",n::slice_axis(coef,0,1,3).to(n::DType::Float32)},{"bias",n::slice_axis(coef,0,0,1).reshape({1}).to(n::DType::Float32)}});
+ if(n::max(n::abs(n::matmul(z,coef)-y)).item<double>()>=1e-12)return 1;
+ std::print("Native least squares recovered intercept .25 and slopes .75, -1.5; exported Float32 arrays.\n");
+}
+```
+// result_begin:
+// Native least squares recovered intercept .25 and slopes .75, -1.5; exported Float32 arrays.
+// result_end
+
+```{cpp, results="markdown", file="figures/saved_model_inference_agreement.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;n::ParameterStore s;s.load("build/saved_model_inference_weights.npz",false);
+ const auto w=s.at("weights"),b=s.at("bias"),x=n::tensor({{0,0},{1,0},{0,1},{2,-3}}),y=n::affine_inference(x,w,b);
+ const auto single=n::affine_inference(n::tensor({{2,-3}}),w,b);
+ auto p=dm::graphics::RPlot::create();p.lines({.25,1,-1.25,6.25},y.to_vector<double>(),"native output")
+ .title("Exported model agrees with its generating affine rule").x_label("analytic prediction").y_label("native prediction");
+ p.size(820,420).save_svg("build/saved_model_inference_agreement.svg");
+ if(y.to_vector<double>()!=std::vector<double>({.25,1,-1.25,6.25})||single.item()!=6.25||y.requires_grad())return 1;
+ std::print("Batch shapes: {} and {}; predictions: {}.\n",n::shape_str(y.shape()),n::shape_str(single.shape()),y.to_vector<double>());
+}
+```
+// result_begin: markdown
+Batch shapes: [4, 1] and [1, 1]; predictions: [0.25, 1, -1.25, 6.25].
+\image(figures/saved_model_inference_agreement.svg)
+// result_end
+\caption(The same weights serve four rows or one row without rebuilding a graph.)
+\alttext(The same weights serve four rows or one row without rebuilding a graph.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;int bad=0;const auto w=n::tensor({.75,-1.5},{2,1}),b=n::tensor({.25});
+ try{n::affine_inference(n::zeros({1,3}),w,b);}catch(const std::invalid_argument&){++bad;}
+ try{n::affine_inference(n::zeros({1,2},n::DType::Float64),w,b);}catch(const std::invalid_argument&){++bad;}
+ if(bad!=2)return 1;std::print("Incompatible input width and dtype rejected: {}.\n",bad);
+}
+```
+// result_begin: markdown
+Incompatible input width and dtype rejected: 2.
+// result_end
+
+
+> Conclusion
+
+Native estimation and serving inference agree across dynamic batch sizes, and incompatible inputs
+fail at the serving boundary. This is weight interoperability with explicit native code. It does
+not demonstrate SavedModel loading, graph portability or execution of arbitrary exported functions.
+
+> References
+
+- [TensorFlow SavedModel guide: functions and signatures](https://www.tensorflow.org/guide/saved_model).
+- [NumPy NPY format specification](https://numpy.org/doc/stable/reference/generated/numpy.lib.format.html).

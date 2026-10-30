@@ -1,6 +1,6 @@
 # Native Python NN example. Full masked LSTM BPTT on the three-epoch marked-token memory task.
-"""CMD: just python-example lstm
-Full masked LSTM BPTT on the common three-epoch marked-token memory task.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/lstm.py
+"""Full masked LSTM BPTT on the common three-epoch marked-token memory task.
 
 Port of tflow's lstm (common/ml/gated_sequence_demo.h with GatedCell::kLstm).
 No dataset: the 512/128/128 marked sequences are generated with tflow's

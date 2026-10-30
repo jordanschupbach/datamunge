@@ -44,7 +44,7 @@ grid halves \(h\) and *quarters* the \(O(h^2)\) error.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -104,7 +104,7 @@ comparing the numerical profile and measuring the error as the grid refines.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -44,7 +44,7 @@ independent of conditioning. In practice it is slow (interior-point methods domi
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -120,7 +120,7 @@ radius 10, tracing the objective at each step to expose the geometric decay.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

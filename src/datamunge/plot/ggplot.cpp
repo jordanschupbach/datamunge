@@ -1,10 +1,12 @@
 #include <datamunge/plot/ggplot.hpp>
+#include <datamunge/plot/figure.hpp>
 
 #include <datamunge/stats/lm.hpp>
 
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <filesystem>
 #include <fstream>
 #include <map>
 #include <numeric>
@@ -14,7 +16,7 @@
 #include <utility>
 #include <vector>
 
-namespace datamunge::plot {
+namespace datamunge::graphics {
 namespace {
 
 using dstruct::DataFrame;
@@ -501,11 +503,7 @@ RPlot GGPlot::build_panel(const dstruct::DataFrame& panel_data, const std::strin
   return panel;
 }
 
-std::string GGPlot::to_svg() const {
-  if (facet_column_.empty()) {
-    return build_panel(data_, "").to_svg();
-  }
-
+RLayout GGPlot::facet_layout() const {
   auto facets = split_by_group(data_, facet_column_);
   if (facets.empty()) {
     throw std::runtime_error("GGPlot::save: facet_wrap column has no values");
@@ -519,7 +517,14 @@ std::string GGPlot::to_svg() const {
     RPlot panel = build_panel(panel_data, label);
     layout.add(panel);
   }
-  return layout.to_svg();
+  return layout;
+}
+
+std::string GGPlot::to_svg() const {
+  if (facet_column_.empty()) {
+    return build_panel(data_, "").to_svg();
+  }
+  return facet_layout().to_svg();
 }
 
 void GGPlot::save_svg(const std::string& path) const {
@@ -531,7 +536,14 @@ void GGPlot::save_svg(const std::string& path) const {
 }
 
 void GGPlot::save(const std::string& path) const {
-  save_svg(path);
+  const auto ext = std::filesystem::path(path).extension().string();
+  if (ext == ".svg" || ext.empty()) {
+    save_svg(path);
+  } else if (facet_column_.empty()) {
+    build_panel(data_, "").save(path);
+  } else {
+    facet_layout().save(path);
+  }
 }
 
 void GGPlot::show(const std::string& title_hint) const {
@@ -549,4 +561,7 @@ void GGPlot::show(const std::string& title_hint) const {
   }
 }
 
-} // namespace datamunge::plot
+Figure::Figure(const GGPlot& plot)
+    : Figure(plot.facet_column_.empty() ? Figure(plot.build_panel(plot.data_, "")) : Figure(plot.facet_layout())) {}
+
+} // namespace datamunge::graphics

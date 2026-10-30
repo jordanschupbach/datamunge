@@ -1,6 +1,6 @@
 # Native Python NN example. Contractive autoencoder with the exact sigmoid-encoder Jacobian penalty.
-"""CMD: just python-example contractive_autoencoder
-Exact sigmoid-encoder Jacobian-Frobenius penalty, plain and strong matched controls.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/contractive_autoencoder.py
+"""Exact sigmoid-encoder Jacobian-Frobenius penalty, plain and strong matched controls.
 Three epochs/default; differentiate through activation slopes AND encoder weights.
 
 Port of tflow's contractive_autoencoder. Preparation (in ~/projects/tflow_examples):

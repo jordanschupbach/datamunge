@@ -41,6 +41,10 @@ public:
                                                      const std::vector<double>& lower_bound,
                                                      const std::vector<double>& upper_bound) const;
 
+    /// @brief The options this NSGA2 was configured with.
+    /// @return The stored options.
+    [[nodiscard]] const NSGA2Options& options() const noexcept { return options_; }
+
 private:
     NSGA2Options options_;
 };

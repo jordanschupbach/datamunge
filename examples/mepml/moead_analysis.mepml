@@ -51,7 +51,7 @@ extract the front from the final population.
 #include <vector>
 
 using namespace datamunge::optim;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // ZDT1: convex Pareto front f2 = 1 - sqrt(f1), reached only when g(x)=1. Standard n=30 test.
 struct ZDT1 : MultiObjectiveFunction {
@@ -202,7 +202,7 @@ against the true curve.
 #include <vector>
 
 using namespace datamunge::optim;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // ZDT1: convex Pareto front f2 = 1 - sqrt(f1), reached only when g(x)=1. Standard n=30 test.
 struct ZDT1 : MultiObjectiveFunction {

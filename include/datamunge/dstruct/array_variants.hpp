@@ -37,6 +37,9 @@ class BitField {
   explicit BitField(std::size_t width) : bits_(width) {}
   void set(std::size_t offset, std::size_t width, std::uint64_t value) { if (width > 64 || offset + width > bits_.size()) throw std::out_of_range("BitField range out of range"); for (std::size_t i = 0; i < width; ++i) bits_.set(offset + i, (value >> i) & 1U); }
   std::uint64_t get(std::size_t offset, std::size_t width) const { if (width > 64 || offset + width > bits_.size()) throw std::out_of_range("BitField range out of range"); std::uint64_t value = 0; for (std::size_t i = 0; i < width; ++i) if (bits_.at(offset + i)) value |= std::uint64_t{1} << i; return value; }
+  /// @brief Total number of bits, fixed at construction.
+  /// @return The field width in bits.
+  [[nodiscard]] std::size_t width() const noexcept { return bits_.size(); }
  private: BitArray bits_;
 };
 

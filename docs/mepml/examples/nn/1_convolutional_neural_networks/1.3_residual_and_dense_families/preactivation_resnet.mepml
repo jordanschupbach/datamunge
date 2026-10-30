@@ -1,0 +1,529 @@
+//? Title: Pre-Activation ResNet: Signed Identity Paths Through Complete Depth
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A shortcut cannot carry every signed signal unchanged if a ReLU follows each addition.
+Full pre-activation units move BN/ReLU before the filters and leave the sum ungated. We
+verify signed values and derivatives through fifty identity units, inspect the projection
+exception, then train a complete half-width 164-layer tensor network with visible Adam updates.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/preactivation_resnet.cpp`.
+
+> The method
+
+An equal-width stride-one unit is y=x+F(BN/ReLU(x)), with further preactivation before
+each weight layer. There is no nonlinearity after addition. Its bottleneck uses 1×1/3×3/1×1,
+with inner width w and outer width 4w. Across identity-shortcut units,
+
+$$
+x_L=x_l+\sum_{i=l}^{L-1}F_i(x_i),\qquad
+\frac{\partial x_{i+1}}{\partial x_i}=I+J_{F_i}.
+$$
+\alttext(The raw shortcut retains an identity contribution while learned branches add corrections.)
+
+Setting every final branch kernel to zero gives exact signed identity values and unit input
+derivatives through fifty units. This statement includes negative inputs, unlike a post-add
+ReLU block. It is an algebraic diagnostic, not proof that arbitrary learned branches cannot
+cancel or amplify gradients. When channels/stride change, the projection consumes the first
+BN/ReLU result; it is not a raw identity. A controlled projection checks that exception.
+A positive-input nonzero branch checks one derivative by central differences away from gates.
+
+The released CIFAR bottleneck layout has depth 9n+2: a raw 3×3 stem, three n-block stages,
+final BN/ReLU, global mean and a linear classifier. Base width 16 gives outer stage widths
+64/128/256 at 32/16/8 pixels. Depths 164 and 1001 use n=18 and 111, respectively, with
+1703258/10327706 learned scalars and 24224/149216 moving scalars. Projection shortcuts are
+excluded from the depth name. A width-w bottleneck branch with outer width 4w costs 17w²
+kernel weights at unchanged width, plus BN; work sums spatial convolution costs across units.
+The full forward checks omit backward storage; quarter-width graphs separately differentiate
+every parameter tensor with the complete 164/1001 depths retained.
+
+Convolutions are bias-free with symmetric spatial padding. He-uniform fan-in initialization
+differs from the release's He-normal fan-out recipe. BN learns gamma/beta with epsilon 1e-5;
+training output uses batch population variance, while eager moving updates use unbiased
+variance. Parameters and moving moments belong in separate stores. There is no dropout.
+
+The dataset fit keeps depth 164 at base width eight (half width), with original 32×32 CIFAR-10
+images. It shows five epochs, batch sixteen, Adam(.001), explicit kernel L2=.0001/2 and independent
+padded crops/flips. The fixed subsets are 64 fit/32 validation/32 official-test rows. The
+lowest validation NLL selects paired parameter/moving-state checkpoints before the test pass.
+Cached CIFAR-10 is required; this bounded CPU run is not the paper's long SGD schedule.
+
+The editable concept diagram is `diagrams/preactivation_resnet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/preactivation_resnet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/preactivation_resnet_concept.tikz > build/preactivation_resnet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/preactivation_resnet_concept.svg build/preactivation_resnet_concept.dvi > build/preactivation_resnet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/preactivation_resnet_concept.svg)
+// result_end
+\caption(Pre-Activation ResNet: Signed Identity Paths Through Complete Depth)
+\alttext(Preactivate filters; raw shortcut path; then 164 or 1001 layers; three CIFAR stages; then Tensor Adam loop; save weights; and BN state.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/preactivation_resnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::PreActResNetConfig cfg;
+  cfg.depth      = 164;
+  cfg.base_width = 8;
+  cfg.classes    = 10;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out      = n::models::PreActResNet(p, state, image, cfg, false);
+        auto       previous = image;
+        for (std::size_t i = 0; i < out.stages.size(); ++i) {
+          n::model_stage("Stage " + std::to_string(i + 1), previous, out.stages[i]);
+          previous = out.stages[i];
+        }
+        return out.logits;
+      },
+      "Pre-Activation ResNet: Signed Identity Paths Through Complete Depth");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/preactivation_resnet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+10 displayed nodes; 432626 reachable learned values.
+\image(figures/preactivation_resnet_architecture.svg)
+// result_end
+\caption(Executed preactivation resnet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right preactivation resnet architecture with rotated names and exact output shapes.)
+
+> Simple identity example
+
+The fixture removes every learned correction but retains all BN/ReLU/filter operations.
+
+```{cpp, results="markdown", file="figures/preactivation_resnet_identity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), state(17, type);
+  const auto x = n::linspace(-1, 1, 100, type).reshape({1, 5, 5, 4}).detach().requires_grad_();
+  auto build = [&](const n::Tensor &input) {
+    auto h = input;
+    for (int i = 0; i < 50; ++i)
+      h = n::models::PreActBottleneck(p, state, "b" + std::to_string(i), h, 1).output;
+    return h;
+  };
+  {
+    n::NoGradGuard guard;
+    build(x);
+  }
+  for (int i = 0; i < 50; ++i)
+    p.set("b" + std::to_string(i) + "/conv3/W", n::zeros({1, 1, 1, 4}, type));
+  const auto output = build(x);
+  const auto derivative = n::grad(n::sum(output), {x})[0];
+  if (n::max(n::abs(output - x)).item() != 0 || n::max(n::abs(derivative - 1)).item() != 0)
+    return 1;
+  auto channel = [](const n::Tensor &t) {
+    return n::slice_axis(t, 3, 0, 1).reshape({5, 5});
+  };
+  auto gradient = dm::graphics::RPlot::create();
+  gradient
+      .lines(n::arange(0, 100).to_vector<double>(),
+             derivative.reshape({100}).to_vector<double>(), "input derivative", {37, 99, 235})
+      .title("Derivative through fifty zero branches")
+      .x_label("input scalar index")
+      .y_label("d sum(output) / dx")
+      .y_limits(0, 1.5);
+  auto layout = dm::graphics::RLayout::create(2, 2);
+  layout.add(n::plot_tensor_map(channel(x), -1, 1).title("Signed input, first channel"))
+      .add(n::plot_tensor_map(channel(output), -1, 1)
+               .title("Fifty pre-activation identity units"))
+      .add(n::plot_tensor_map(channel(n::relu(x)), -1, 1)
+               .title("Post-add ReLU formula would clip negatives"))
+      .add(gradient);
+  std::filesystem::create_directories("build");
+  layout.size(1100, 920).fit_panels().save_svg("build/preactivation_resnet_identity.svg");
+  std::print("Fifty equal-width zero-residual units: bitwise-equal signed values and "
+             "derivative one for every input scalar.\n");
+}
+```
+// result_begin: markdown
+Fifty equal-width zero-residual units: bitwise-equal signed values and derivative one for every input scalar.
+\image(figures/preactivation_resnet_identity.svg)
+// result_end
+\caption(Raw signed values pass through equal-width shortcuts. The post-add ReLU panel is the zero-residual basic-block formula, shown for comparison. No model is fitted in this diagnostic.)
+\alttext(Raw signed values pass through equal-width shortcuts. The post-add ReLU panel is the zero-residual basic-block formula, shown for comparison. No model is fitted in this diagnostic.)
+
+> Projection and nonzero-branch checks
+
+Dimension-changing shortcuts are tested separately from raw identity paths. The finite-difference fixture uses positive activations to avoid a ReLU boundary.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), state(17, type);
+  const auto x = n::linspace(-1, 1, 50, type).reshape({1, 5, 5, 2});
+  {
+    n::NoGradGuard guard;
+    n::models::PreActBottleneck(p, state, "b", x, 1, 2);
+  }
+  p.set("b/conv3/W", n::zeros({1, 1, 1, 4}, type));
+  p.set("b/shortcut/W", n::tensor({1., 0., 1., 0., 0., 1., 0., 1.}, {1, 1, 2, 4}).to(type));
+  p.set("b/bn1/gamma", n::full({2}, std::sqrt(1.00001), type));
+  const auto actual = n::models::PreActBottleneck(p, state, "b", x, 1, 2).output;
+  const auto sampled = n::slice_axis(n::slice_axis(n::relu(x), 1, 0, 5, 2), 2, 0, 5, 2);
+  const double error = n::max(n::abs(actual - n::concat({sampled, sampled}, 3))).item();
+  if (error > 1e-12)
+    return 1;
+  n::ParameterStore q(19, type), moments(19, type);
+  const auto positive = n::full({1, 3, 3, 4}, .5, type).requires_grad_();
+  {
+    n::NoGradGuard guard;
+    n::models::PreActBottleneck(q, moments, "b", positive, 1);
+  }
+  for (const auto &name : q.names())
+    if (name.ends_with("/W"))
+      q.set(name, n::full(q.at(name).shape(), .2, type));
+  const auto y = n::models::PreActBottleneck(q, moments, "b", positive, 1).output;
+  const auto dx = n::grad(n::sum(y), {positive})[0];
+  const auto direction = n::one_hot(n::tensor({16}).to(n::DType::Int64), 36, 1, 0, type)
+                             .reshape(positive.shape());
+  n::NoGradGuard guard;
+  const double h = 1e-6;
+  const double plus =
+      n::sum(n::models::PreActBottleneck(q, moments, "b", positive.detach() + h * direction, 1)
+                 .output)
+          .item();
+  const double minus =
+      n::sum(n::models::PreActBottleneck(q, moments, "b", positive.detach() - h * direction, 1)
+                 .output)
+          .item();
+  const double numerical = (plus - minus) / (2 * h), analytic = dx.at({0, 1, 1, 0});
+  if (std::abs(numerical - analytic) > 1e-7)
+    return 1;
+  std::print("Projection consumes the first BN/ReLU, not raw input: value error "
+             "{:.12f}.\nNonzero branch centre-input derivative: autograd {:.9f}, finite "
+             "difference {:.9f}; includes the identity contribution.\n",
+             error, analytic, numerical);
+}
+```
+// result_begin: markdown
+Projection consumes the first BN/ReLU, not raw input: value error 0.000000000000.
+Nonzero branch centre-input derivative: autograd 1.287995680, finite difference 1.287995680; includes the identity contribution.
+// result_end
+
+> Checking complete topology
+
+Full-width forward counts/shapes and full-depth compact gradients establish separate claims.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  for (auto [depth, count, moving] : std::vector<std::tuple<int, int64_t, int64_t>>{
+           {164, 1703258, 24224}, {1001, 10327706, 149216}}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    n::models::PreActResNetConfig cfg;
+    cfg.depth = depth;
+    const auto out = n::models::PreActResNet(p, state, n::zeros({1, 32, 32, 3}), cfg);
+    if (p.count() != count || state.count() != moving ||
+        out.stem.shape() != n::Shape{1, 32, 32, 16} || out.logits.shape() != n::Shape{1, 10} ||
+        3 * int(out.blocks.size()) + 2 != depth)
+      return 1;
+    for (int i = 0; i < 3; ++i)
+      if (out.stages[i].shape() != n::Shape{1, 32 / (1 << i), 32 / (1 << i), 64 << i})
+        return 1;
+    std::print("Full pre-activation ResNet-{}: {} learned scalars, {} moving scalars; {} "
+               "complete bottleneck blocks and all stage shapes verified.\n",
+               depth, count, moving, out.blocks.size());
+  }
+  for (int depth : {164, 1001}) {
+    n::ParameterStore p(17), state(17);
+    n::Generator rng(29);
+    n::models::PreActResNetConfig cfg;
+    cfg.depth = depth;
+    cfg.base_width = 4;
+    cfg.update_stats = false;
+    const auto x = n::normal({2, 16, 16, 3}, 0, .2, rng);
+    const auto out = n::models::PreActResNet(p, state, x, cfg, true);
+    const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+    for (const auto &g : gradients)
+      if (!std::isfinite(n::sum(n::abs(g)).item()))
+        return 1;
+    const auto saved = state.flatten();
+    n::NoGradGuard guard;
+    n::models::PreActResNet(p, state, x, cfg);
+    if (state.flatten() != saved)
+      return 1;
+    std::print("Compact depth {} keeps all blocks: {} finite parameter-tensor gradients; "
+               "inference leaves moving state unchanged.\n",
+               depth, gradients.size());
+  }
+}
+```
+// result_begin: markdown
+Full pre-activation ResNet-164: 1703258 learned scalars, 24224 moving scalars; 54 complete bottleneck blocks and all stage shapes verified.
+Full pre-activation ResNet-1001: 10327706 learned scalars, 149216 moving scalars; 333 complete bottleneck blocks and all stage shapes verified.
+Compact depth 164 keeps all blocks: 494 finite parameter-tensor gradients; inference leaves moving state unchanged.
+Compact depth 1001 keeps all blocks: 3005 finite parameter-tensor gradients; inference leaves moving state unchanged.
+// result_end
+
+> Dataset example
+
+Original images appear in CIFAR-10 class order before any augmentation.
+
+```{cpp, results="markdown", file="figures/preactivation_resnet_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/preactivation_resnet_inputs.png", 5,
+                     0., 1., 4, 1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/preactivation_resnet_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/preactivation_resnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 64), ty = n::slice_axis(labels, 0, 0, 64);
+  const auto vx = 2 * n::slice_axis(images, 0, 64, 96) - 1, vy = n::slice_axis(labels, 0, 64, 96);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 32) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 32);
+  n::models::PreActResNetConfig cfg;
+  cfg.depth      = 164;
+  cfg.base_width = 8;
+  cfg.classes    = 10;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::PreActResNet(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(64, 16, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/preactivation_resnet_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 5; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/preactivation_resnet_confusion_api_" + std::to_string(rendered_confusions++) +
+              ".svg",
+          {.title = "preactivation resnet / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 32)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("Pre-activation ResNet-164")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/preactivation_resnet_training.svg");
+  std::print(
+      "64 fit / 32 validation / 32 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+64 fit / 32 validation / 32 official-test rows; 432626 learned scalars, 12112 moving scalars; 20 explicit Adam updates.
+Selected epoch 4; validation NLL 2.325037; inference training NLL 2.159872; test NLL 2.470615; test accuracy 0.062500.
+\image(figures/preactivation_resnet_training.svg)
+// result_end
+\caption(Explicit five-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order. The title gives the colour limits.)
+\alttext(Explicit five-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order. The title gives the colour limits.)
+
+
+The half-width fit selects epoch four: validation NLL 2.325037, inference
+training NLL 2.159872, test NLL 2.470615 and accuracy 6.25% (2 of 32). After
+20 updates it does not generalise beyond chance (NLL ln 10 ≈ 2.30) on this small
+held-out subset. The training trace uses batch moments and augmentation; the
+held-out NLL is measured with the saved inference moments instead. The identity-path checks
+establish their algebraic claim independently of this unsuccessful short fit.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/preactivation_resnet_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Removing the post-add gate makes the raw equal-width shortcut an exact signed identity when
+the residual is zero. Projections have a different preactivated input and need separate checks.
+Complete-depth counts, gradients and the explicit half-width subset fit preserve those rules
+without claiming that the short run reproduces the released training results.
+
+> References
+
+- [He et al. (2016), Identity Mappings in Deep Residual Networks](https://arxiv.org/abs/1603.05027).
+- [Released CIFAR pre-activation implementation](https://github.com/KaimingHe/resnet-1k-layers/blob/master/resnet-pre-act.lua).
+- [CIFAR-10 dataset and binary-file format](https://www.cs.toronto.edu/~kriz/cifar.html).

@@ -1,0 +1,550 @@
+//? Title: Wide Residual Networks: Width and Branch Dropout
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Wide residual networks trade very deep thin stages for wider preactivated filters. We check
+where dropout acts and how its derivatives scale, verify full WRN parameter budgets and geometry,
+then explicitly train three CIFAR configurations with tensor Adam and validation checkpoints.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/wide_resnet.cpp`.
+
+> The method
+
+A CIFAR WRN of depth 6n+4 uses a fixed 16-channel 3×3 stem and n two-filter units in each
+of three stages, whose widths are 16k/32k/64k. Stage sides are 32/16/8 for 32×32 inputs.
+Each branch applies BN/ReLU, 3×3, BN/ReLU, optional inverted elementwise dropout, then 3×3.
+Equal-width shortcuts carry raw inputs; projections consume the first preactivation.
+No ReLU follows the sum. Final BN/ReLU, global mean and a dense classifier finish the model.
+
+$$y=S(x)+W_2*D_p(\operatorname{ReLU}(\operatorname{BN}_2(W_1*a))),\quad
+ a=\operatorname{ReLU}(\operatorname{BN}_1(x)),\qquad D_p(z)=m z/(1-p).$$
+\alttext(The Bernoulli mask acts only inside the learned branch, with keep probability one minus p.)
+
+Retained dropout values and derivatives scale by 1/(1-p), and inference bypasses masks.
+A zero final filter gives exact signed identity and unit input derivatives for matching-width
+units even with training dropout. This identity fixture does not claim arbitrary trained branches
+cannot cancel shortcut gradients. The sampled removed fraction is checked on positive values;
+zero preactivations alone cannot identify a dropped mask. Fresh masks must differ and inference
+must repeat. A caller-owned generator supplies one stream across the whole model, replacing
+the source's per-block seeds. BN learns gamma/beta with epsilon 1e-5; eager moving moments
+are saved separately. He-uniform fan-in replaces the release's normal initialization.
+
+WRN-16-1/16-2/28-10 have 175066/691674/36479194 learned scalars and
+928/1824/17952 moving scalars. Depth labels exclude projection shortcuts. Width growth
+makes the dominant convolution budget approximately quadratic in k; MAC estimates below count
+multiply-accumulate pairs for kernels and classifier, excluding BN, ReLU, addition and pooling.
+They do not measure runtime. Full-size forward checks are separate from complete WRN-16
+backward graphs at k=1/2; no blocks are omitted in those derivative checks.
+
+Three explicit fits compare WRN-16 at (k,p)=(1,0),(2,0),(2,.3). Each resets the parameter,
+augmentation and minibatch seeds, uses the same 128/64/64 fit/validation/official-test images,
+average-pooled to 16x16 so that the fits stay short (global pooling makes the network
+size-agnostic, so the parameter counts are unchanged), 8 epochs of batch-eight Adam(.001),
+pad-2 random crops with flips, and explicit kernel L2=.0001/2. Validation selects each
+paired parameter/moment checkpoint before test evaluation. Width changes random tensor shapes,
+so equal seeds do not produce identical kernels. These tiny single-seed fits illustrate the
+comparison procedure; they do not establish a width/dropout ranking or reproduce the paper.
+
+The editable concept diagram is `diagrams/wide_resnet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/wide_resnet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/wide_resnet_concept.tikz > build/wide_resnet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/wide_resnet_concept.svg build/wide_resnet_concept.dvi > build/wide_resnet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/wide_resnet_concept.svg)
+// result_end
+\caption(Wide Residual Networks: Width and Branch Dropout)
+\alttext(Preactivated 3x3 pair; branch-only dropout; then Raw or projected shortcut; signed addition; then Width and dropout fits; visible tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/wide_resnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  const int                   width = 1;
+  const double                drop  = .3;
+  n::models::WideResNetConfig cfg;
+  cfg.depth        = 16;
+  cfg.widen_factor = width;
+  cfg.dropout      = drop;
+  n::Generator      dropout_rng(17);
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::WideResNet(p, state, image, cfg, false, dropout_rng).logits;
+      },
+      "Wide Residual Networks: Width and Branch Dropout");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 16, 16, 3}), options);
+  diagram.save_svg("build/wide_resnet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+67 displayed nodes; 175066 reachable learned values.
+\image(figures/wide_resnet_architecture.svg)
+// result_end
+\caption(Executed wide resnet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right wide resnet architecture with rotated names and exact output shapes.)
+
+> Simple dropout and identity example
+
+Mask scaling, fresh samples and deterministic inference are checked explicitly.
+
+```{cpp, results="markdown", file="figures/wide_resnet_dropout.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17), state(17);
+  n::Generator gen(17);
+  const auto x = n::sin(.17 * n::arange(0, 2048).to(n::DType::Float32))
+                     .reshape({8, 8, 8, 4})
+                     .detach()
+                     .requires_grad_();
+  const n::models::PreactivationNormConfig train{true, false, .9, 1e-5},
+      infer{false, false, .9, 1e-5};
+  auto block = [&](const auto &norm, double rate) {
+    return n::models::WideBasicBlock(p, state, "b", x, 4, 1, norm, rate, gen);
+  };
+  const auto first = block(train, .3);
+  const auto before = first.before_dropout.to_vector<float>(),
+             after = first.after_dropout.to_vector<float>();
+  const auto dx =
+      n::grad(n::sum(first.after_dropout), {first.before_dropout})[0].to_vector<float>();
+  int positive = 0, removed = 0;
+  for (size_t i = 0; i < before.size(); ++i) {
+    const bool dropped = after[i] == 0;
+    if (before[i] > 1e-6) {
+      ++positive;
+      removed += dropped;
+      if (std::abs(after[i] - (dropped ? 0 : before[i] / .7)) > 2e-6 ||
+          std::abs(dx[i] - (dropped ? 0 : 1 / .7)) > 2e-6)
+        return 1;
+    }
+  }
+  const auto repeated = block(train, .3);
+  if (n::sum(n::abs(repeated.after_dropout - first.after_dropout)).item() < 1)
+    return 1;
+  const auto prediction = block(infer, .3).output;
+  if (n::max(n::abs(prediction - block(infer, 0).output)).item() != 0 ||
+      n::max(n::abs(prediction - block(infer, .3).output)).item() != 0)
+    return 1;
+  if (positive < 500 || std::abs(double(removed) / positive - .3) > .06)
+    return 1;
+  p.set("b/conv2/W", n::zeros_like(p.at("b/conv2/W")));
+  const auto identity = block(train, .3);
+  if (n::max(n::abs(identity.output - x)).item() != 0 ||
+      n::max(n::abs(n::grad(n::sum(identity.output), {x})[0] - 1)).item() != 0)
+    return 1;
+  auto first_channel = [](const auto &t) {
+    return n::slice_axis(n::slice_axis(t, 0, 0, 1), 3, 0, 1).reshape({8, 8});
+  };
+  const double hi = n::max(first.before_dropout).item() / .7;
+  auto layout = dm::graphics::RLayout::create(2, 2);
+  layout
+      .add(n::plot_tensor_map(first_channel(first.before_dropout), 0, hi)
+               .title("Second preactivation, before dropout"))
+      .add(n::plot_tensor_map(first_channel(first.after_dropout), 0, hi)
+               .title("Branch-only inverted dropout, p=.3"))
+      .add(n::plot_tensor_map(first_channel(x), -1, 1).title("Signed raw shortcut input"))
+      .add(n::plot_tensor_map(first_channel(identity.output), -1, 1)
+               .title("Zero branch: exact signed identity"));
+  std::filesystem::create_directories("build");
+  layout.size(1100, 920).fit_panels().save_svg("build/wide_resnet_dropout.svg");
+  std::print("{} positive preactivations: removed fraction {:.6f}. Retained "
+             "values/derivatives scale by 1/.7, training masks change, inference repeats, and "
+             "zero residual gives exact identity values/derivatives.\n",
+             positive, double(removed) / positive);
+}
+```
+// result_begin: markdown
+1250 positive preactivations: removed fraction 0.315200. Retained values/derivatives scale by 1/.7, training masks change, inference repeats, and zero residual gives exact identity values/derivatives.
+\image(figures/wide_resnet_dropout.svg)
+// result_end
+\caption(Dropout changes the learned branch and leaves shortcuts intact. Top panels share a colour range. The zero-branch diagnostic keeps signed input values and unit input derivatives despite training dropout.)
+\alttext(Dropout changes the learned branch and leaves shortcuts intact. Top panels share a colour range. The zero-branch diagnostic keeps signed input values and unit input derivatives despite training dropout.)
+
+> Complete geometry and arithmetic
+
+Full configurations retain the released stage topology.
+
+```{cpp, results="markdown", file="figures/wide_resnet_budget.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int64_t macs(int depth, int k) {
+  int64_t total = 32 * 32 * 9 * 3 * 16, in = 16, side = 32;
+  for (int s = 0; s < 3; ++s) {
+    const int64_t out = (16 << s) * k;
+    if (s)
+      side /= 2;
+    for (int b = 0; b < (depth - 4) / 6; ++b) {
+      total += side * side * (9 * in * out + 9 * out * out + (in != out ? in * out : 0));
+      in = out;
+    }
+  }
+  return total + in * 10;
+}
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  std::vector<double> width, parameters, work;
+  for (auto [depth, k, count, moving] : std::vector<std::tuple<int, int, int64_t, int64_t>>{
+           {16, 1, 175066, 928}, {16, 2, 691674, 1824}, {28, 10, 36479194, 17952}}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    n::Generator gen(17);
+    n::models::WideResNetConfig cfg;
+    cfg.depth = depth;
+    cfg.widen_factor = k;
+    cfg.dropout = 0;
+    const auto out =
+        n::models::WideResNet(p, state, n::zeros({1, 32, 32, 3}), cfg, false, gen);
+    if (p.count() != count || state.count() != moving ||
+        out.stem.shape() != n::Shape{1, 32, 32, 16} || out.logits.shape() != n::Shape{1, 10} ||
+        out.blocks.size() != size_t((depth - 4) / 2))
+      return 1;
+    for (int i = 0; i < 3; ++i)
+      if (out.stages[i].shape() != n::Shape{1, 32 / (1 << i), 32 / (1 << i), (16 << i) * k})
+        return 1;
+    std::print("WRN-{}-{}: {} learned / {} moving scalars; {} convolution/classifier MACs per "
+               "32x32 image; all stage shapes verified.\n",
+               depth, k, count, moving, macs(depth, k));
+  }
+  for (int k : {1, 2}) {
+    n::ParameterStore p(17), state(17);
+    n::Generator gen(17), rng(29);
+    n::models::WideResNetConfig cfg;
+    cfg.depth = 16;
+    cfg.widen_factor = k;
+    cfg.update_stats = false;
+    const auto out =
+        n::models::WideResNet(p, state, n::normal({2, 16, 16, 3}, 0, .2, rng), cfg, true, gen);
+    for (const auto &g : n::grad(n::mean(n::square(out.logits)), p.parameters()))
+      if (!std::isfinite(n::sum(n::abs(g)).item()))
+        return 1;
+  }
+  for (int k = 1; k <= 10; ++k) {
+    width.push_back(k);
+    work.push_back(double(macs(16, k)) / 1e6);
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    n::Generator gen(17);
+    n::models::WideResNetConfig cfg;
+    cfg.depth = 16;
+    cfg.widen_factor = k;
+    n::models::WideResNet(p, state, n::zeros({1, 8, 8, 3}), cfg, false, gen);
+    parameters.push_back(double(p.count()) / 1e6);
+  }
+  auto count = dm::graphics::RPlot::create(), ops = dm::graphics::RPlot::create();
+  count.lines(width, parameters, "learned", {37, 99, 235})
+      .title("WRN-16 parameter growth")
+      .x_label("widening k")
+      .y_label("million learned scalars")
+      .y_limits(0, 20);
+  ops.lines(width, work, "convolution + classifier", {234, 88, 12})
+      .title("WRN-16 arithmetic at 32 pixels")
+      .x_label("widening k")
+      .y_label("million MACs/image")
+      .y_limits(0, 3000);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(count)
+      .add(ops)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/wide_resnet_budget.svg");
+  std::print(
+      "Complete WRN-16-1 and WRN-16-2 backward graphs: every parameter gradient finite. MACs "
+      "exclude BN, activations, additions and pooling; no latency is measured.\n");
+}
+```
+// result_begin: markdown
+WRN-16-1: 175066 learned / 928 moving scalars; 26657408 convolution/classifier MACs per 32x32 image; all stage shapes verified.
+WRN-16-2: 691674 learned / 1824 moving scalars; 101106944 convolution/classifier MACs per 32x32 image; all stage shapes verified.
+WRN-28-10: 36479194 learned / 17952 moving scalars; 5243328768 convolution/classifier MACs per 32x32 image; all stage shapes verified.
+Complete WRN-16-1 and WRN-16-2 backward graphs: every parameter gradient finite. MACs exclude BN, activations, additions and pooling; no latency is measured.
+\image(figures/wide_resnet_budget.svg)
+// result_end
+\caption(Depth stays 16 while k changes. Parameter counts include BN and the classifier; MACs include convolutions/projections/classifier only. The full WRN-28-10 count is checked separately.)
+\alttext(Depth stays 16 while k changes. Parameter counts include BN and the classifier; MACs include convolutions/projections/classifier only. The full WRN-28-10 count is checked separately.)
+
+> Dataset and controlled fits
+
+Each training configuration uses the same original CIFAR split and checkpoint rule.
+
+```{cpp, results="markdown", file="figures/wide_resnet_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/wide_resnet_inputs.png", 5, 0., 1., 4,
+                     1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/wide_resnet_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/wide_resnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  auto training_plot      = dm::graphics::RPlot::create(),
+       validation_plot    = dm::graphics::RPlot::create();
+  int setting             = 0;
+  for (auto [width, drop] : std::vector<std::pair<int, double>>{{1, 0}, {2, 0}, {2, .3}}) {
+    n::set_num_threads(2);
+
+    std::filesystem::path cache;
+    if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+      cache = p;
+    else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+      cache = std::filesystem::path(p) / "datamunge/datasets";
+    else
+      cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+    const auto raw = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+    // 2x2 average pooling to 16x16 keeps the three fits short; the network is unchanged.
+    const auto images = n::avg_pool2d(n::cast(raw.images, n::DType::Float32) / 255., 2, 2),
+               labels = n::cast(raw.labels, n::DType::Int64);
+    const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+    const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+               vy       = n::slice_axis(labels, 0, 128, 192);
+    const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+    const auto qx       = 2 * n::avg_pool2d(n::slice_axis(official.images, 0, 0, 64), 2, 2) - 1,
+               qy       = n::slice_axis(official.labels, 0, 0, 64);
+    n::models::WideResNetConfig cfg;
+    cfg.depth        = 16;
+    cfg.widen_factor = width;
+    cfg.dropout      = drop;
+    n::Generator      dropout_rng(17);
+    n::ParameterStore p(17), state(17);
+    auto              output = [&](const n::Tensor& image, bool training) {
+      return n::models::WideResNet(p, state, image, cfg, training, dropout_rng).logits;
+    };
+    {
+      n::NoGradGuard guard;
+      output(n::zeros({1, 16, 16, 3}), false);
+    }
+    if (p.count() != (width == 1 ? 175066 : 691674) || state.count() != (width == 1 ? 928 : 1824))
+      return 1;
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer  optimizer(p, .001, config);
+    n::BatchOrder batches(128, 8, 2026);
+    n::Generator  augmentation(151);
+    std::filesystem::create_directories("build");
+    const std::string   checkpoint = "build/wide_resnet_best";
+    double              best       = std::numeric_limits<double>::infinity();
+    int                 best_epoch = 0;
+    std::vector<double> epochs, train, validation;
+    for (int epoch = 1; epoch <= 8; ++epoch) {
+      batches.begin_epoch();
+      n::WeightedMean average;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+        std::vector<n::Tensor> transformed;
+        for (int64_t row = 0; row < batch.size(0); ++row) {
+          auto image =
+              n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {2, 2}, {2, 2}, {0, 0}});
+          image = n::augment::random_crop(image, 16, 16, augmentation);
+          transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+        }
+        const auto nll = n::sparse_softmax_cross_entropy(
+            output(2 * n::concat(transformed, 0) - 1, true), target);
+        auto objective = nll;
+        for (const auto& w : p.parameters())
+          if (w.dim() >= 2)
+            objective = objective + .00005 * n::sum(n::square(w));
+        optimizer.minimize(objective);
+        average.add(nll.item(), rows.size());
+      }
+      n::NoGradGuard guard;
+      const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+      if (!std::isfinite(val))
+        return 1;
+      epochs.push_back(epoch);
+      train.push_back(average.value());
+      validation.push_back(val);
+      if (val < best) {
+        best       = val;
+        best_epoch = epoch;
+        p.save(checkpoint + "_params.npz");
+        state.save(checkpoint + "_state.npz");
+      }
+    }
+    p.load(checkpoint + "_params.npz");
+    state.load(checkpoint + "_state.npz");
+    n::NoGradGuard guard;
+    const auto     prediction = output(qx, false);
+    const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+    const double   training_nll =
+        n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+    if (!std::isfinite(test_nll))
+      return 1;
+    const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+    const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+    n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+        .save_svg(
+            "build/wide_resnet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+            {.title = "wide resnet / selected-checkpoint test counts"});
+
+    if (n::sum(confusion).item() != 64)
+      return 1;
+    const std::string label = "k=" + std::to_string(width) + (drop > 0 ? ", p=.3" : ", p=0");
+    const std::vector<dm::graphics::RGB> colours = {{37, 99, 235}, {234, 88, 12}, {22, 163, 74}};
+    training_plot.lines(epochs, train, label, colours[setting]);
+    validation_plot.lines(epochs, validation, label, colours[setting]);
+    ++setting;
+    std::print("WRN-16 width {}, dropout {}: ", width, drop);
+    std::print(
+        "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+        "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+        "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+        p.count(),
+        state.count(),
+        optimizer.iterations(),
+        best_epoch,
+        best,
+        training_nll,
+        test_nll,
+        n::accuracy(prediction, qy));
+  }
+  training_plot.title("WRN-16: augmented training").x_label("epoch").y_label("mean NLL");
+  validation_plot.title("WRN-16: inference validation").x_label("epoch").y_label("mean NLL");
+  dm::graphics::RLayout::create(1, 2)
+      .add(training_plot)
+      .add(validation_plot)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/wide_resnet_training.svg");
+}
+```
+// result_begin: markdown
+WRN-16 width 1, dropout 0: 128 fit / 64 validation / 64 official-test rows; 175066 learned scalars, 928 moving scalars; 128 explicit Adam updates.
+Selected epoch 7; validation NLL 2.218949; inference training NLL 1.484779; test NLL 2.200018; test accuracy 0.312500.
+WRN-16 width 2, dropout 0: 128 fit / 64 validation / 64 official-test rows; 691674 learned scalars, 1824 moving scalars; 128 explicit Adam updates.
+Selected epoch 1; validation NLL 2.200805; inference training NLL 2.218276; test NLL 2.247619; test accuracy 0.187500.
+WRN-16 width 2, dropout 0.3: 128 fit / 64 validation / 64 official-test rows; 691674 learned scalars, 1824 moving scalars; 128 explicit Adam updates.
+Selected epoch 1; validation NLL 2.265416; inference training NLL 2.202762; test NLL 2.207598; test accuracy 0.187500.
+\image(figures/wide_resnet_training.svg)
+// result_end
+\caption(Three complete WRN-16 fits on 16x16 average-pooled images share fixed subsets and augmentation seeds. Width and branch dropout vary; validation selects each paired checkpoint before its test evaluation.)
+\alttext(Training and validation curves for width one, width two and width two with dropout .3.)
+
+The selected checkpoints show substantial overfitting and do not support a general
+width/dropout ranking:
+
+| Width k | Dropout p | Selected epoch | Validation NLL | Test NLL | Test accuracy |
+|---|---|---|---|---|---|
+| 1 | 0 | 7 | 2.218949 | 2.200018 | 0.312500 |
+| 2 | 0 | 1 | 2.200805 | 2.247619 | 0.187500 |
+| 2 | .3 | 1 | 2.265416 | 2.207598 | 0.187500 |
+
+Only the narrow network improves on its first-epoch validation loss within 8 epochs; both
+width-two runs select epoch 1, so on 64 test images they differ by noise rather than by
+dropout. The training
+curves use augmented images and batch BN moments; the restored inference training
+losses printed above use saved moving moments and need not match those curves.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/wide_resnet_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/wide_resnet_confusion_api_1.svg)
+\caption(Held-out classification confusion counts, evaluation 2. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/wide_resnet_confusion_api_2.svg)
+\caption(Held-out classification confusion counts, evaluation 3. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Widening raises representational and arithmetic budgets, while dropout regularizes only the
+residual branch. Exact mask and signed-shortcut checks explain that distinction; the visible
+three-fit loop makes the comparison and its small-data limitations reproducible.
+
+> References
+
+- [Zagoruyko and Komodakis (2016), Wide Residual Networks](https://arxiv.org/abs/1605.07146).
+- [Authors' implementation](https://github.com/szagoruyko/wide-residual-networks/blob/master/models/wide-resnet.lua).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

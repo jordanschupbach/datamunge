@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/autodiff_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # Note: the C++ autodiff_ex.cpp additionally demonstrates datamunge::autodiff::derivative/
 # gradient_forward/gradient_reverse/jacobian_forward/hessian -- generic C++ template driver

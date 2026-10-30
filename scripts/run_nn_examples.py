@@ -35,7 +35,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EXAMPLES = ROOT / "examples" / "nn"
-CPP_EXAMPLES = ROOT / "examples" / "cpp" / "nn"
+CPP_EXAMPLES = ROOT / "examples" / "cpp" / "source" / "nn"
 INCLUDE_DIRS = [CPP_EXAMPLES, EXAMPLES, ROOT / "include"]
 BIN_DIR = ROOT / "build" / "nn-examples" / "bin"
 CACHE = ROOT / "build" / "nn-examples" / "run-cache.tsv"

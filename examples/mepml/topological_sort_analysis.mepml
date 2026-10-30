@@ -51,7 +51,7 @@ certifies that a proposed order places every edge's tail before its head.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Kahn's algorithm
@@ -183,7 +183,7 @@ emitting `0` exposes `3`, emitting `1` exposes `2`, and so on, yielding
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

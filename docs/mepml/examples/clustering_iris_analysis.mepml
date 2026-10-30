@@ -1,0 +1,742 @@
+//? Title: Clustering Iris: Centroids, Merge Trees and Density
+//? Subtitle: Exact small examples before comparing three definitions of a group
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given only measurements, we want groups of similar observations without prescribing
+species labels as a training target. Similarity alone does not specify a unique
+partition: distance to a centre, the cost of a merge and local density answer different
+questions. Four collinear points and two short density chains make those mechanisms
+checkable by hand. We then cluster all four Iris measurements, compare K-means cluster
+counts and restarts, re-cut a hierarchical tree, and vary DBSCAN's radius. Species
+labels describe the fitted results afterwards. Explicit noise coverage and
+permutation-invariant agreement prevent purity from being mistaken for predictive
+accuracy or evidence for a uniquely correct cluster count.
+)
+\toc
+
+> The method
+
+>> Specify a geometry and a question
+
+An observation is a numeric vector \(x_i\in\mathbb R^p\). Every fit below uses
+Euclidean distance in the supplied feature units. Neither the clustering classes nor
+these diagnostics standardize features automatically. Changing a single column's units
+changes the geometry; equal units do not imply equal variance or scientific importance.
+Uniform scaling by a multiplies squared-distance objectives by a squared, and preserving
+DBSCAN neighbourhoods then requires scaling epsilon by the absolute value of a.
+
+The concept diagram contrasts three rules for forming a group. The retained TikZ
+source is rendered locally using LaTeX with PGF/TikZ, standalone and Latin Modern,
+then dvisvgm.
+Those tools are required only when regenerating the diagram; exports use the saved SVG.
+
+```{bash, results="output", file="figures/clustering_iris_concepts.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/clustering_iris_concepts.tikz > build/clustering_iris_concepts.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/clustering_iris_concepts.svg build/clustering_iris_concepts.dvi > build/clustering_iris_concepts.render.log 2>&1
+printf 'Rendered the local clustering concept diagram.\n'
+```
+// result_begin:
+// Rendered the local clustering concept diagram.
+// \image(figures/clustering_iris_concepts.svg)
+// result_end
+\caption(Centre assignments, nested merges and density connectivity define different kinds of clusters.)
+\alttext(Three TikZ panels show points assigned to two centres, four leaves combined into a merge tree, and a DBSCAN core with two border neighbours plus a separate noise point. Only the core expands a density-connected group.)
+
+>> Lloyd updates and careful seeding
+
+For k nonempty groups, K-means minimizes the within-cluster sum of squares (WCSS),
+also called inertia. Holding centres fixed gives nearest-centre assignments; holding
+assignments fixed gives means:
+
+$$
+ J=\sum_i\|x_i-\mu_{z_i}\|^2,\qquad
+ z_i\leftarrow\arg\min_c\|x_i-\mu_c\|^2,\qquad
+ \mu_c\leftarrow\frac1{|C_c|}\sum_{i\in C_c}x_i.
+$$
+\alttext(K-means sums squared distances to assigned centres, assigns each point to its nearest centre, and recomputes each nonempty centre as a mean.)
+
+The derivative of a group's squared-error sum is
+\(2|C_c|\mu_c-2\sum_{i\in C_c}x_i\), so the mean minimizes that subproblem.
+Each exact assignment and nonempty mean update cannot increase J. This is alternating
+minimization, with no guarantee of a global minimum. The implementation reseeds an
+empty centre at a farthest point. It stops when every centre's Euclidean shift is below
+tolerance, or at the iteration cap, then reassigns labels to the final centres.
+At a capped, unconverged fit those centres need not equal the final assigned-group means.
+
+K-means++ chooses the first centre uniformly and each later point with probability
+\(D_i^2/\sum_jD_j^2\), where D is distance to the nearest existing centre.
+The native implementation uses that single-draw seeding, then keeps the lowest-inertia
+run across `n_init` restarts. We use positive iteration/restart budgets and a fixed seed;
+`iterations_used()` counts only the winning run. Extending the restart count at the
+same seed keeps the earlier candidates, so the best objective cannot worsen. Increasing
+k makes the globally optimal objective nonincreasing, but independently initialized
+finite local fits have no such general guarantee. An elbow is descriptive, not a
+validated estimator of a biological species count.
+
+>> Linkage and the units of a merge height
+
+Agglomeration starts from singleton groups. Single linkage takes the minimum
+cross-group distance; complete takes the maximum; average takes the mean over all
+cross-group point pairs. Ward instead minimizes the increase in WCSS:
+
+$$
+ \Delta(A,B)=\frac{|A||B|}{|A|+|B|}\|\mu_A-\mu_B\|^2,\qquad
+ h_{\mathrm{Ward}}(A,B)=\sqrt{2\Delta(A,B)}.
+$$
+\alttext(Ward's squared-error increase is the size-weighted squared distance between the two means. The native reported merge height is the square root of twice that increase.)
+
+The identity follows by splitting each squared distance about its old and merged
+means; the centred cross terms vanish. The native Lance-Williams update keeps squared
+Ward distances internally and reports their square roots. Thus its height is not the
+raw SSE increase. Ward requires Euclidean distance. Every fit builds all n−1 merges;
+`cut(k)` replays a prefix of that same tree, so changing the cut needs no refit.
+Tied merges may produce different valid trees in another implementation.
+
+>> Core connectivity, borders and noise
+
+DBSCAN uses a closed radius neighbourhood that includes the point itself:
+
+$$
+ N_\varepsilon(i)=\{j:\|x_i-x_j\|\leq\varepsilon\},\qquad
+ i\text{ is core}\iff |N_\varepsilon(i)|\geq m.
+$$
+\alttext(A point is core if its closed epsilon neighbourhood, counting itself, contains at least the chosen minimum number of samples.)
+
+Core-to-core chains form components. Noncore neighbours of a core join as border
+points but cannot extend a chain; everything else is noise, labelled -1. A point
+initially marked noise may later be reclaimed as a border. If a border touches two
+components its assignment can depend on traversal order. Epsilon and min_samples,
+as well as feature scaling and distance choice, define the result. More epsilon can
+create core components before it joins them, so cluster count need not be monotone.
+A two-cluster result at one radius does not establish two intrinsic populations.
+
+>> Agreement needs both a partition and coverage
+
+With a contingency table \(n_{cj}\) between fitted clusters and reference classes,
+assigned purity is \(\sum_{c\geq0}\max_j n_{cj}/n_{\mathrm{assigned}}\).
+It ignores noise and reaches one for singleton clusters, so it rewards fragmentation
+and can hide rejected observations. Always report coverage, assigned/n, beside it.
+For adjusted Rand, let A and B be sums of unordered within-cluster and within-class
+pair counts, and S the sum within contingency cells:
+
+$$
+ \mathrm{ARI}=\frac{S-AB/\binom n2}{(A+B)/2-AB/\binom n2},\quad
+ S=\sum_{cj}\binom{n_{cj}}2,\quad A=\sum_c\binom{n_c}2,\quad B=\sum_j\binom{n_j}2.
+$$
+\alttext(Adjusted Rand subtracts the fixed-marginal expected same-group pair count from observed agreement and divides by its maximum possible excess.)
+
+ARI is invariant to label renaming, equals one for identical partitions, and can be
+negative. Its chance correction uses a fixed-marginal permutation model, not a
+significance test. Here ARI includes all observations, treating every noise label as
+one category; it does not credit noise rows as assigned. Degenerate identical partitions
+receive one. Purity is NaN when all rows are noise. Neither statistic is held-out
+classification accuracy, and looking at these scores to choose settings would use the
+species labels for selection. We present predeclared settings and sensitivity ranges.
+
+For n rows, p features, k centres, r restarts and T iterations, Lloyd fitting costs
+O(r T n k p). This implementation's dense hierarchical search uses O(n^3+n^2 p) time
+and O(n^2) memory. DBSCAN precomputes all pair distances, requiring O(n^2 p) time and
+O(n^2) memory; it does not use a spatial index. External count summaries use O(n log n)
+time and O(n) storage. These examples concern small data, not large-scale benchmarks.
+
+> Simple examples
+
+>> Four points determine the centres and Ward increments
+
+For x=(0,2,8,10), k=2 yields means (1,9) and WCSS=4.
+One mean at five gives WCSS=68. Ward first merges each adjacent pair, adding two
+units of WCSS each time, then merges the two size-two groups at cost 64.
+Its reported heights are (2,2,sqrt(128)); summing height squared over two recovers 68.
+The table exposes every merge, including original-point ids 0..3 and merged ids 4,5.
+The centre plot uses an extra zero-valued vertical coordinate only for display.
+
+```{cpp, results="markdown", file="figures/clustering_iris_four_points.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 2, 8, 10});
+  d.add_column("display_y", std::vector<double>(4, 0));
+  KMeansOptions o;
+  o.n_clusters = 2;
+  const KMeans                  fit(d, {"x"}, o);
+  const AgglomerativeClustering tree(d, {"x"});
+  std::vector<int>              labels(fit.labels().begin(), fit.labels().end());
+  auto centres = plot_clusters(d, "x", "display_y", labels, "K-means: means at one and nine");
+  centres
+      .points(
+          {fit.cluster_centers()(0, 0), fit.cluster_centers()(1, 0)},
+          {0, 0},
+          "centres",
+          {17, 24, 39},
+          7)
+      .y_limits(-.5, 1.5);
+  auto                   dendrogram = plot_dendrogram(tree, "Ward heights encode merge costs");
+  dm::dstruct::DataFrame t;
+  std::vector<double>    step, a, b, height, delta, total;
+  double                 sum = 0;
+  for (std::size_t i = 0; i < tree.merge_history().size(); ++i) {
+    const auto& m = tree.merge_history()[i];
+    step.push_back(i);
+    a.push_back(m.cluster_a);
+    b.push_back(m.cluster_b);
+    height.push_back(m.distance);
+    delta.push_back(m.distance * m.distance / 2);
+    sum += delta.back();
+    total.push_back(sum);
+  }
+  if (std::abs(fit.inertia() - 4) > 1e-12 || std::abs(sum - 68) > 1e-12)
+    throw std::runtime_error("four-point reference mismatch");
+  t.add_column("merge", step);
+  t.add_column("child_a", a);
+  t.add_column("child_b", b);
+  t.add_column("height", height);
+  t.add_column("sse_increase", delta);
+  t.add_column("cumulative_sse", total);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(centres)
+      .add(dendrogram)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/clustering_iris_four_points.svg");
+  std::print("K-means WCSS: {:.6f}.\n\n{}\n", fit.inertia(), t.to_md(6));
+}
+```
+// result_begin: markdown
+K-means WCSS: 4.000000.
+
+| merge | child_a | child_b | height | sse_increase | cumulative_sse |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 1 | 2.000000 | 2 | 2 |
+| 1 | 2 | 3 | 2.000000 | 2 | 4 |
+| 2 | 4 | 5 | 11.313708 | 64 | 68 |
+
+\image(figures/clustering_iris_four_points.svg)
+// result_end
+\caption(Known means and merge costs connect K-means inertia to the native Ward-height normalization.)
+\alttext(The left panel groups four points around centres one and nine. The right shows the three-merge Ward tree. A table gives both child ids, heights, squared-error increments and cumulative squared error.)
+
+>> A density chain has cores, borders and a rejected point
+
+Two chains at (0,.1,.2,.3) and (1.5,1.6,1.7,1.8), plus an isolated point at
+three, use epsilon=.11 and min_samples=3. In each chain, the two interior points see
+three observations including themselves, while endpoints see two. The interiors are
+core and endpoints are border: all four join, even though each chain's diameter .3
+exceeds epsilon. The isolated point is noise. A radius sweep starts with no cores,
+creates two components, then joins them and absorbs the last point.
+
+```{cpp, results="markdown", file="figures/clustering_iris_density.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, .1, .2, .3, 1.5, 1.6, 1.7, 1.8, 3});
+  d.add_column("display_y", std::vector<double>(9, 0));
+  DBSCANOptions o;
+  o.eps         = .11;
+  o.min_samples = 3;
+  const DBSCAN fit(d, {"x"}, o);
+  if (fit.n_clusters() != 2 || fit.n_noise() != 1 || fit.labels()[0] != fit.labels()[3])
+    throw std::runtime_error("density reference mismatch");
+  auto projection =
+      plot_clusters(d, "x", "display_y", fit.labels(), "Core chains absorb their borders");
+  projection.y_limits(-.5, 1.5);
+  std::vector<double> eps = {.05, .11, 1.21, 3}, clusters, noise;
+  for (double radius : eps) {
+    o.eps = radius;
+    const DBSCAN m(d, {"x"}, o);
+    clusters.push_back(m.n_clusters());
+    noise.push_back(m.n_noise());
+  }
+  auto sweep = dm::graphics::RPlot::create();
+  sweep.line(eps, clusters, "clusters", {37, 99, 235})
+      .points(eps, clusters, "counts", {37, 99, 235}, 4)
+      .line(eps, noise, "noise rows", {220, 38, 38})
+      .title("Radius creates, then joins components")
+      .x_label("epsilon")
+      .y_label("count")
+      .y_limits(0, 12);
+  dm::dstruct::DataFrame t;
+  t.add_column("epsilon", eps);
+  t.add_column("clusters", clusters);
+  t.add_column("noise_rows", noise);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(projection)
+      .add(sweep)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/clustering_iris_density.svg");
+  std::print("{}\n", t.to_md(3));
+}
+```
+// result_begin: markdown
+| epsilon | clusters | noise_rows |
+| ---: | ---: | ---: |
+| 0.05 | 0 | 9 |
+| 0.11 | 2 | 1 |
+| 1.21 | 1 | 0 |
+| 3.00 | 1 | 0 |
+
+\image(figures/clustering_iris_density.svg)
+// result_end
+\caption(Density connectivity allows groups wider than epsilon; noncore endpoints join without extending a chain.)
+\alttext(Two four-point chains have different colours and one isolated point is grey. A radius sweep and table show cluster counts zero, two, one, one and declining noise counts.)
+
+> Checking the interpretation
+
+>> Purity alone can reward fragmentation or rejection
+
+For reference classes (a,a,b,b), compare the matching partition, a crossed
+partition, four singleton groups and assigning only the two a observations.
+Singleton purity is one although ARI is zero. The partial assignment has purity one
+and ARI one under the stated noise-as-one-category convention, but covers only half
+the observations. The final all-noise row has undefined assigned purity and zero
+coverage. These are exact arithmetic checks, not fitted classifiers.
+
+```{cpp, results="markdown", file="figures/clustering_iris_agreement.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  const std::vector<std::string>      truth  = {"a", "a", "b", "b"};
+  const std::vector<std::vector<int>> labels = {
+      {0, 0, 1, 1}, {0, 1, 0, 1}, {0, 1, 2, 3}, {0, 0, -1, -1}, {-1, -1, -1, -1}};
+  const std::vector<std::string> name = {
+      "matching", "crossed", "singletons", "half assigned", "all noise"};
+  std::vector<double> clusters, coverage, purity, ari;
+  for (const auto& z : labels) {
+    const auto m = cluster_agreement(z, truth);
+    clusters.push_back(m.clusters);
+    coverage.push_back(m.coverage);
+    purity.push_back(m.purity);
+    ari.push_back(m.adjusted_rand);
+  }
+  dm::dstruct::DataFrame t;
+  t.add_column("partition", name);
+  t.add_column("assigned_clusters", clusters);
+  t.add_column("coverage", coverage);
+  t.add_column("assigned_purity", purity);
+  t.add_column("ari_including_noise", ari);
+  auto p = dm::graphics::RPlot::create(), q = dm::graphics::RPlot::create();
+  p.bars({0, 1, 2, 3}, {purity[0], purity[1], purity[2], purity[3]}, "purity", {37, 99, 235}, .5)
+      .title("Purity depends on assigned rows")
+      .x_label("0 match, 1 cross, 2 singletons, 3 half assigned")
+      .y_label("assigned purity")
+      .y_limits(0, 1.4);
+  q.bars({0, 1, 2, 3}, {ari[0], ari[1], ari[2], ari[3]}, "adjusted Rand", {220, 38, 38}, .5)
+      .title("Noise grouped as one category for ARI")
+      .x_label("same four partition indices")
+      .y_label("ARI on all observations")
+      .y_limits(-.75, 1.4);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(p).add(q).size(1100, 490).fit_panels().save_svg(
+      "build/clustering_iris_agreement.svg");
+  std::print("{}\n", t.to_md(3));
+}
+```
+// result_begin: markdown
+| partition | assigned_clusters | coverage | assigned_purity | ari_including_noise |
+| :--- | ---: | ---: | ---: | ---: |
+| matching | 2 | 1.0 | 1.0 | 1.0 |
+| crossed | 2 | 1.0 | 0.5 | -0.5 |
+| singletons | 4 | 1.0 | 1.0 | 0.0 |
+| half assigned | 1 | 0.5 | 1.0 | 1.0 |
+| all noise | 0 | 0.0 | nan | 0.0 |
+
+\image(figures/clustering_iris_agreement.svg)
+// result_end
+\caption(Agreement scores need their conventions: high purity or even ARI one can coexist with incomplete assignment.)
+\alttext(Bars compare assigned purity and adjusted Rand for four constructed partitions. A five-row table also reports cluster counts, coverage and the undefined purity of an all-noise result.)
+
+> Iris measurements
+
+All 150 flowers have four complete numeric measurements in centimetres: sepal length,
+sepal width, petal length and petal width. Each species has fifty rows. All four raw
+features enter every fit below; two petal coordinates are used only for display.
+Species is excluded from every fit and returned only for descriptive agreement.
+Settings and sensitivity grids are declared in code rather than selected by a species
+score. Using all rows makes this an exploratory, in-sample analysis.
+
+>> K-means on four features, displayed on two
+
+The baseline requests k=3 with twenty K-means++ restarts, seed 42, tolerance
+1e-4 and at most 300 iterations. Three is a comparison setting, not an estimated
+species count. Labels are arbitrary ids: colours are local to a panel and need not
+match a species or another algorithm. The composition table reports each group's
+majority and size without pretending those majority names were predicted labels.
+The species panel is shown only after fitting.
+
+```{cpp, results="markdown", file="figures/clustering_iris_kmeans.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  const auto                     d        = dm::datasets::iris();
+  const std::vector<std::string> features = {
+      "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+  KMeansOptions o;
+  o.n_clusters = 3;
+  o.n_init     = 20;
+  const KMeans             fit(d, features, o);
+  std::vector<std::string> truth;
+  std::vector<int>         reference;
+  for (std::size_t i = 0; i < d.nrows(); ++i) {
+    truth.push_back(d.string_at("Species", i));
+    reference.push_back(truth.back() == "setosa" ? 0 : truth.back() == "versicolor" ? 1 : 2);
+  }
+  const std::vector<int> labels(fit.labels().begin(), fit.labels().end());
+  const auto             agreement = cluster_agreement(labels, truth);
+  auto                   species =
+      plot_clusters(d, "Petal.Length", "Petal.Width", reference, "Species shown after fitting");
+  species.legend(
+      {"setosa", "versicolor", "virginica"}, {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}});
+  auto clusters =
+      plot_clusters(d, "Petal.Length", "Petal.Width", labels, "Four-feature K-means partition");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(species)
+      .add(clusters)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/clustering_iris_kmeans.svg");
+  std::print(
+      "{}\n\n{}\n\nWCSS: {:.9f}; winning-run iterations: {}; coverage: {:.3f}; assigned purity: "
+      "{:.6f}; ARI: {:.6f}.\n",
+      d | dm::group_by("Species") |
+          dm::summarise(
+              dm::agg::n("n"),
+              dm::agg::mean("Sepal.Length", "mean_sepal_length_cm"),
+              dm::agg::mean("Petal.Length", "mean_petal_length_cm"),
+              dm::agg::mean("Petal.Width", "mean_petal_width_cm")) |
+          dm::to_md(3),
+      cluster_composition(labels, truth).to_md(6),
+      fit.inertia(),
+      fit.iterations_used(),
+      agreement.coverage,
+      agreement.purity,
+      agreement.adjusted_rand);
+}
+```
+// result_begin: markdown
+| Species | n | mean_sepal_length_cm | mean_petal_length_cm | mean_petal_width_cm |
+| :--- | ---: | ---: | ---: | ---: |
+| setosa | 50 | 5.006 | 1.462 | 0.246 |
+| versicolor | 50 | 5.936 | 4.260 | 1.326 |
+| virginica | 50 | 6.588 | 5.552 | 2.026 |
+
+
+| cluster | size | majority_class | majority_count | purity |
+| ---: | ---: | :--- | ---: | ---: |
+| 0 | 62 | versicolor | 48 | 0.774194 |
+| 1 | 50 | setosa | 50 | 1.000000 |
+| 2 | 38 | virginica | 36 | 0.947368 |
+
+
+WCSS: 78.851441426; winning-run iterations: 6; coverage: 1.000; assigned purity: 0.893333; ARI: 0.730238.
+\image(figures/clustering_iris_kmeans.svg)
+// result_end
+\caption(Petal plots display the fitted four-dimensional partition; the species labels are a separate post-fit reference.)
+\alttext(Two panels show petal length versus width coloured by true species and by fitted K-means group. Tables give species means and per-cluster size, majority class, majority count and purity, followed by WCSS and adjusted Rand.)
+
+>> Cluster-count and restart sweeps answer different questions
+
+The k=1..8 curve uses twenty restarts per fit, without species labels.
+WCSS usually decreases as more centres represent the same data; it is not comparable
+across different feature scalings. The second panel keeps k=3 fixed and extends one
+seeded restart stream from one through twenty runs. Its best objective cannot increase,
+because every shorter candidate set is a prefix of the next. A flat curve here would
+mean the first seed already found the best observed basin, not that restarts are
+unnecessary on arbitrary data. Neither curve identifies a uniquely correct k.
+
+```{cpp, results="markdown", file="figures/clustering_iris_sweeps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  const auto                     d = dm::datasets::iris();
+  const std::vector<std::string> f = {"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+  std::vector<double>            k, inertia;
+  for (int c = 1; c <= 8; ++c) {
+    KMeansOptions o;
+    o.n_clusters = c;
+    o.n_init     = 20;
+    const KMeans m(d, f, o);
+    k.push_back(c);
+    inertia.push_back(m.inertia());
+  }
+  std::vector<double> runs = {1, 2, 5, 10, 20}, best;
+  for (double count : runs) {
+    KMeansOptions o;
+    o.n_clusters = 3;
+    o.n_init     = std::size_t(count);
+    best.push_back(KMeans(d, f, o).inertia());
+  }
+  for (std::size_t i = 1; i < best.size(); ++i)
+    if (best[i] > best[i - 1] + 1e-10)
+      throw std::runtime_error("restart-prefix objective worsened");
+  dm::dstruct::DataFrame a, b;
+  a.add_column("k", k);
+  a.add_column("wcss", inertia);
+  b.add_column("restarts", runs);
+  b.add_column("best_wcss_k3", best);
+  auto elbow = dm::graphics::RPlot::create(), restarts = dm::graphics::RPlot::create();
+  elbow.line(k, inertia, "WCSS", {37, 99, 235})
+      .points(k, inertia, "fits", {37, 99, 235}, 4)
+      .title("More centres reduce representation error")
+      .x_label("requested clusters k")
+      .y_label("WCSS (cm squared)")
+      .y_limits(0, 900);
+  restarts.line(runs, best, "best WCSS", {220, 38, 38})
+      .points(runs, best, "prefixes", {220, 38, 38}, 4)
+      .title("Best of a growing restart prefix")
+      .x_label("K-means++ restarts, seed 42")
+      .y_label("WCSS at k = 3")
+      .y_limits(78.7, 80);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(elbow)
+      .add(restarts)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/clustering_iris_sweeps.svg");
+  std::print("{}\n\n{}\n", a.to_md(9), b.to_md(9));
+}
+```
+// result_begin: markdown
+| k | wcss |
+| ---: | ---: |
+| 1 | 681.37060000 |
+| 2 | 152.34795176 |
+| 3 | 78.85144143 |
+| 4 | 57.22847321 |
+| 5 | 46.44618205 |
+| 6 | 39.06603535 |
+| 7 | 34.53097186 |
+| 8 | 30.18655519 |
+
+
+| restarts | best_wcss_k3 |
+| ---: | ---: |
+| 1 | 78.8514414 |
+| 2 | 78.8514414 |
+| 5 | 78.8514414 |
+| 10 | 78.8514414 |
+| 20 | 78.8514414 |
+
+\image(figures/clustering_iris_sweeps.svg)
+// result_end
+\caption(An elbow compares model sizes, while a restart sweep compares optimization attempts at one fixed size.)
+\alttext(The left panel plots WCSS for one through eight clusters. The right plots the best WCSS from increasing prefixes of one seeded restart stream at three clusters. Tables retain every value.)
+
+>> Compare four linkages and re-cut one Ward tree
+
+Each linkage is fitted at three clusters using the same four raw features.
+The table includes a two-cluster cut of the already fitted Ward tree, whose 149 merges
+are reused unchanged. Its dendrogram exposes large late merges, but a visually large
+height gap is not proof of a true species count. Linkage rankings by a species agreement
+score describe this dataset and geometry; they do not establish a universally superior
+linkage. Ties among equal distances may change individual merges in another implementation.
+
+```{cpp, results="markdown", file="figures/clustering_iris_linkage.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  const auto                     d = dm::datasets::iris();
+  const std::vector<std::string> f = {"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+  std::vector<std::string>       truth;
+  for (std::size_t i = 0; i < d.nrows(); ++i)
+    truth.push_back(d.string_at("Species", i));
+  std::vector<std::string> name;
+  std::vector<double>      k, purity, ari;
+  int                      index = 0;
+  for (auto linkage :
+       {LinkageCriterion::Single,
+        LinkageCriterion::Complete,
+        LinkageCriterion::Average,
+        LinkageCriterion::Ward}) {
+    AgglomerativeClusteringOptions o;
+    o.n_clusters = 3;
+    o.linkage    = linkage;
+    const AgglomerativeClustering m(d, f, o);
+    const auto a = cluster_agreement(std::vector<int>(m.labels().begin(), m.labels().end()), truth);
+    name.push_back(std::vector<std::string>{"single", "complete", "average", "ward"}[index++]);
+    k.push_back(a.clusters);
+    purity.push_back(a.purity);
+    ari.push_back(a.adjusted_rand);
+  }
+  AgglomerativeClusteringOptions o;
+  o.n_clusters = 3;
+  const AgglomerativeClustering ward(d, f, o);
+  const auto                    cut = ward.cut(2);
+  const auto a = cluster_agreement(std::vector<int>(cut.begin(), cut.end()), truth);
+  name.push_back("ward recut");
+  k.push_back(a.clusters);
+  purity.push_back(a.purity);
+  ari.push_back(a.adjusted_rand);
+  auto tree       = plot_dendrogram(ward, "Ward: all 149 merges retained");
+  auto projection = plot_clusters(
+      d,
+      "Petal.Length",
+      "Petal.Width",
+      std::vector<int>(cut.begin(), cut.end()),
+      "Same Ward tree, cut at two groups");
+  dm::dstruct::DataFrame t;
+  t.add_column("linkage", name);
+  t.add_column("clusters", k);
+  t.add_column("purity", purity);
+  t.add_column("adjusted_rand", ari);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(tree)
+      .add(projection)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/clustering_iris_linkage.svg");
+  std::print(
+      "{}\n\nWard merge history size: {} (unchanged by cut).\n",
+      t.to_md(6),
+      ward.merge_history().size());
+}
+```
+// result_begin: markdown
+| linkage | clusters | purity | adjusted_rand |
+| :--- | ---: | ---: | ---: |
+| single | 3 | 0.680000 | 0.563751 |
+| complete | 3 | 0.840000 | 0.642251 |
+| average | 3 | 0.906667 | 0.759199 |
+| ward | 3 | 0.893333 | 0.731199 |
+| ward recut | 2 | 0.666667 | 0.568116 |
+
+
+Ward merge history size: 149 (unchanged by cut).
+\image(figures/clustering_iris_linkage.svg)
+// result_end
+\caption(A common feature space supports four linkage comparisons; one retained tree supports several cuts.)
+\alttext(A full Ward dendrogram and a two-cluster petal projection share one fit. A table compares three-cluster single, complete, average and Ward partitions with the two-cluster Ward cut.)
+
+>> DBSCAN radius changes assignment as well as cluster count
+
+The baseline uses epsilon=.6 cm in the four-dimensional Euclidean metric and
+min_samples=5, including self. Grey points are unassigned noise, not a third fitted
+cluster. The radius grid .2,.3,.4,.6,.8,1,1.5 is predeclared. Its table reports both
+cluster count and noise/coverage, assigned purity and all-row ARI. Comparing purity
+without the changing coverage would compare different selected subsets. At a fixed
+min_samples, more radius can create groups before joining them. These parameter-specific
+partitions do not prove how many biological populations exist, and grey points need
+not lie between groups in this two-coordinate projection.
+
+```{cpp, results="markdown", file="figures/clustering_iris_dbscan.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  const auto                     d = dm::datasets::iris();
+  const std::vector<std::string> f = {"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+  std::vector<std::string>       truth;
+  for (std::size_t i = 0; i < d.nrows(); ++i)
+    truth.push_back(d.string_at("Species", i));
+  DBSCANOptions o;
+  o.eps         = .6;
+  o.min_samples = 5;
+  const DBSCAN baseline(d, f, o);
+  auto         projection = plot_clusters(
+      d, "Petal.Length", "Petal.Width", baseline.labels(), "DBSCAN: radius 0.6, minimum five");
+  std::vector<double> eps = {.2, .3, .4, .6, .8, 1, 1.5}, clusters, noise, coverage, purity, ari;
+  for (double radius : eps) {
+    o.eps = radius;
+    const DBSCAN m(d, f, o);
+    const auto   a = cluster_agreement(m.labels(), truth);
+    clusters.push_back(a.clusters);
+    noise.push_back(a.noise);
+    coverage.push_back(a.coverage);
+    purity.push_back(a.purity);
+    ari.push_back(a.adjusted_rand);
+  }
+  dm::dstruct::DataFrame t;
+  t.add_column("epsilon", eps);
+  t.add_column("clusters", clusters);
+  t.add_column("noise", noise);
+  t.add_column("coverage", coverage);
+  t.add_column("assigned_purity", purity);
+  t.add_column("ari_including_noise", ari);
+  auto sweep = dm::graphics::RPlot::create();
+  sweep.line(eps, clusters, "clusters", {37, 99, 235})
+      .points(eps, clusters, "counts", {37, 99, 235}, 4)
+      .title("Cluster count is not monotone in radius")
+      .x_label("epsilon in raw-feature distance units")
+      .y_label("non-noise clusters")
+      .y_limits(0, 6);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(projection)
+      .add(sweep)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/clustering_iris_dbscan.svg");
+  std::print(
+      "{}\n\nBaseline composition (noise row included descriptively):\n\n{}\n",
+      t.to_md(6),
+      cluster_composition(baseline.labels(), truth).to_md(6));
+}
+```
+// result_begin: markdown
+| epsilon | clusters | noise | coverage | assigned_purity | ari_including_noise |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.2 | 2 | 133 | 0.113333 | 1.000000 | 0.040456 |
+| 0.3 | 3 | 96 | 0.360000 | 0.981481 | 0.281756 |
+| 0.4 | 4 | 32 | 0.786667 | 0.974576 | 0.589824 |
+| 0.6 | 2 | 9 | 0.940000 | 0.673759 | 0.536997 |
+| 0.8 | 2 | 2 | 0.986667 | 0.675676 | 0.563751 |
+| 1.0 | 2 | 0 | 1.000000 | 0.666667 | 0.568116 |
+| 1.5 | 2 | 0 | 1.000000 | 0.666667 | 0.568116 |
+
+
+Baseline composition (noise row included descriptively):
+
+| cluster | size | majority_class | majority_count | purity |
+| ---: | ---: | :--- | ---: | ---: |
+| -1 | 9 | versicolor | 4 | 0.444444 |
+| 0 | 49 | setosa | 49 | 1.000000 |
+| 1 | 92 | versicolor | 46 | 0.500000 |
+
+\image(figures/clustering_iris_dbscan.svg)
+// result_end
+\caption(Coverage changes with the density threshold; a radius-specific two-group partition is not a universal population count.)
+\alttext(The left petal projection shows baseline DBSCAN groups and grey noise. The right shows the number of non-noise clusters across seven radii. Tables report rejected counts, coverage, agreement and baseline majority composition.)
+
+Epsilon is a hard threshold. Some Iris pair distances lie at .3 within floating-point
+error. Direct coordinate-difference distances (used here) and dot-product-based
+distance evaluation can put them on opposite sides of that threshold. Our independent
+check against scikit-learn agrees on all seven partitions when supplied the same
+explicit distance matrix; allowing it to compute distances independently changes the
+partition at .3. Use a common distance matrix to isolate algorithm differences from
+numerical threshold effects, and examine nearby radii when an edge is borderline.
+
+> Conclusion
+
+At k=3, K-means gives WCSS 78.8514, assigned purity .8933 and ARI .7302.
+Average linkage has ARI .7592, compared with Ward .7312, complete .6423 and single
+.5638 for these three-cluster fits. At epsilon=.6, DBSCAN gives two groups and nine
+noise rows: coverage .94 and assigned purity .6738. These are post-fit descriptions,
+not labels used to select an algorithm. The twenty-run K-means prefix happens to
+find its best objective in the first run; that observation is specific to seed 42.
+
+Centroid error, linkage cost and density connectivity define different partitions.
+The small examples verify means and WCSS, Ward's square-root height convention, core
+and border roles, and the limits of purity. Iris supplies an exploratory comparison
+in one declared raw-feature geometry. Its measured WCSS, merge tree, radius sensitivity
+and species agreement characterize those fits; they do not infer a unique intrinsic
+cluster count, validate a predictive classifier or make every noise point an outlier
+in biological terms. Feature scaling and domain purpose remain part of the question.
+
+> References
+
+- Lloyd, S. P. (1982). [Least Squares Quantization in PCM|https://web.stanford.edu/class/ee398a/handouts/papers/Lloyd%20-%20Least%20Squares%20Q%20in%20PCM.pdf]. IEEE Transactions on Information Theory 28(2), 129–137.
+- Arthur, D. and Vassilvitskii, S. (2007). [k-means++: The Advantages of Careful Seeding|https://theory.stanford.edu/~sergei/papers/kMeansPP-soda.pdf]. SODA, 1027–1035.
+- Ward, J. H. (1963). [Hierarchical Grouping to Optimize an Objective Function|https://doi.org/10.1080/01621459.1963.10500845]. JASA 58(301), 236–244. The report explicitly states the native square-root height convention.
+- Ester, M., Kriegel, H.-P., Sander, J. and Xu, X. (1996). [A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise|https://cdn.aaai.org/KDD/1996/KDD96-037.pdf]. KDD, 226–231.
+- Hubert, L. and Arabie, P. (1985). [Comparing partitions|https://doi.org/10.1007/BF01908075]. Journal of Classification 2, 193–218.
+- Manning, C. D., Raghavan, P. and Schütze, H. (2008). [Evaluation of clustering|https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html]. Introduction to Information Retrieval. Purity's sensitivity to cluster count.
+- Fisher, R. A. (1936). [The use of multiple measurements in taxonomic problems|https://doi.org/10.1111/j.1469-1809.1936.tb02137.x]. Annals of Eugenics 7(2), 179–188. Iris measurement provenance.

@@ -43,7 +43,7 @@ index is finite \-\- it is a semi-decision procedure for a problem that is undec
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<int> poww(int sym, int k) { std::vector<int> w; for (int i = 0; i < k; ++i) w.push_back(sym); return w; }
 ```
@@ -110,7 +110,7 @@ index, and plot the recovered orders of a family of named groups.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<int> poww(int sym, int k) { std::vector<int> w; for (int i = 0; i < k; ++i) w.push_back(sym); return w; }
 

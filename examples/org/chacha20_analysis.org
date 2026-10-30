@@ -46,7 +46,7 @@ A round applies it to the four *columns*; the next to the four *diagonals*. Twen
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::string hex_of(const std::array<std::uint8_t, 64>& b, int n) {
     static const char* h = "0123456789abcdef";

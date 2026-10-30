@@ -14,6 +14,23 @@
       url = "github:jordanschupbach/swig";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Local development checkout: no crepl commit is required to use its changes.
+    # Refresh with `nix flake update crepl` after editing that checkout.
+    crepl = {
+      # ~/projects is a symlink here; Nix path inputs need its resolved location.
+      url = "path:/mnt/projects/crepl";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # mep (editor and `mep-mepml`), from its main branch: the docs build runs and
+    # exports the mepml reports with it. `just update-mep` bumps the lock to the
+    # latest main. Only its package is used; its own nixpkgs pin is kept (that is
+    # what mep is built and tested against). mep's flake has a datamunge input of
+    # its own (for its dev shell, which nothing here evaluates): it follows this
+    # flake ("" is the root) rather than locking a second, older datamunge.
+    mep = {
+      url = "github:jordanschupbach/mep";
+      inputs.datamunge.follows = "";
+    };
   };
   outputs =
     {
@@ -22,6 +39,8 @@
       flake-utils,
       php-from-source,
       swig,
+      crepl,
+      mep,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -35,10 +54,42 @@
         # `pkgs` with nixpkgs' swig replaced by the fork, for the binding packages in nix/ (which
         # take swig from `pkgs`). Only used there, so nothing else in nixpkgs gets rebuilt.
         swigPkg = swig.packages.${system}.swig;
+        creplPkg = crepl.packages.${system}.default;
+        mepPkg = mep.packages.${system}.default;
         bindingPkgs = pkgs // {
           swig = swigPkg;
         };
         datamunge = import ./nix/datamunge.nix { inherit pkgs; };
+        # CUDA is opt-in and Linux-only; ordinary packages/shells never evaluate
+        # unfree SDKs. The running host supplies the NVIDIA driver and devices.
+        cudaSupported = builtins.elem system [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
+        cudaPkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        # Keep a coherent release and exclude driver compatibility shims: the
+        # real host driver supplies libcuda. No cuDNN/NCCL or graphics SDK is needed.
+        cuda = cudaPkgs.cudaPackages_12_8.overrideScope (_final: _prev: { cuda_compat = null; });
+        cudaToolkit = cudaPkgs.symlinkJoin {
+          name = "datamunge-cuda-toolkit-12.8";
+          paths = [
+            cuda.cuda_nvcc
+            cuda.cuda_cudart
+            cuda.cuda_cccl
+            (lib.getOutput "include" cuda.libcublas)
+            (lib.getLib cuda.libcublas)
+            (lib.getOutput "include" cuda.cuda_nvrtc)
+            (lib.getLib cuda.cuda_nvrtc)
+          ];
+        };
+        cudaHook = ''
+          export CUDAToolkit_ROOT="${cudaToolkit}"
+          export CUDA_PATH="${cudaToolkit}"
+          export LD_LIBRARY_PATH="/run/opengl-driver/lib:${cudaToolkit}/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+        '';
         # The custom php-from-source flake only targets x86_64-linux; fall back to the
         # nixpkgs PHP (which supports darwin) on any host it doesn't provide.
         phpPackage =
@@ -57,7 +108,13 @@
         # working tree by `just build-<lang>`; rebuilding a binding is an explicit, manual step.
         # (The nix binding packages are still exposed under `packages` and used by `checks` and
         # the hermetic `docs-pages` shell.)
-        localBindingsHook = ''
+        # OpenMP OpenBLAS ignores OPENBLAS_NUM_THREADS. Large default BLAS teams
+        # make the small NN examples much slower; retain explicit user budgets.
+        nnThreadHook = ''
+          export OMP_NUM_THREADS="''${OMP_NUM_THREADS:-1}"
+          export OPENBLAS_NUM_THREADS="''${OPENBLAS_NUM_THREADS:-1}"
+        '';
+        localBindingsHook = nnThreadHook + ''
           datamungeRoot="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
           export DATAMUNGE_PREFIX="${datamunge}"
           export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
@@ -672,9 +729,19 @@
             datamunged
             ;
 
+          mep = mepPkg;
+
           rename-datamunge = pkgs.writeShellApplication {
             name = "rename-datamunge";
             text = ''exec "${./rename_datamunge}" "$@"'';
+          };
+        }
+        // lib.optionalAttrs cudaSupported {
+          datamunge-cuda = import ./nix/datamunge.nix {
+            pkgs = cudaPkgs;
+            enableCuda = true;
+            enableCublas = true;
+            inherit cudaToolkit;
           };
         };
 
@@ -688,6 +755,9 @@
 
         devShells.default = pkgs.mkShell {
           packages = [
+
+            creplPkg
+            mepPkg
 
             pkgs.libxml2
 
@@ -821,6 +891,15 @@
         devShells.cpp-tools = pkgs.mkShell {
 
           packages = [
+            creplPkg
+            # mep-mepml runs and exports the docs' mepml reports (just docs).
+            mepPkg
+            pkgs.curl
+            pkgs.libarchive
+            pkgs.openssl
+            pkgs.nlohmann_json
+            pkgs.hdf5-cpp
+            pkgs.ffmpeg
 
             # Build the working tree with CMake; entering this shell must not
             # first rebuild an installed copy of the library after every edit.
@@ -835,9 +914,14 @@
                 numpy
                 jinja2
                 pygments
+                pytest
+                # The documentation website (scripts/website).
+                markdown-it-py
               ]
             ))
             pkgs.clang
+            # clangd provides definition hover checks for Doxygen source comments.
+            (if has "clang-tools" pkgs then pkgs.clang-tools else pkgs.clang)
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.arrow-cpp
@@ -848,6 +932,18 @@
             pkgs.doctest
             pkgs.cmake
             pkgs.xorg.libX11.dev
+            # The mepml reports' TikZ concept diagrams (docs/mepml/examples/**/diagrams/*.tikz),
+            # which a bash block renders with `latex` + `dvisvgm --no-fonts` during `just docs`.
+            (pkgs.texlive.combine {
+              inherit (pkgs.texlive)
+                scheme-small
+                standalone
+                pgf
+                amsmath
+                lm
+                dvisvgm
+                ;
+            })
             # benchmarks/ (nn GEMM, conv and training benchmarks)
             pkgs.gbenchmark
 
@@ -858,13 +954,36 @@
           ]
           # CBLAS for datamunge::nn GEMM on Linux (macOS uses Accelerate).
           ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.openblas ];
+          shellHook = nnThreadHook;
+        };
+
+        # Optional simulation/compute SDKs; ordinary CPU builds keep cpp-tools sufficient.
+        devShells.simulation = pkgs.mkShell {
+          inputsFrom = [ self.devShells.${system}.cpp-tools ];
+          packages = [
+            pkgs.vulkan-headers
+            pkgs.vulkan-loader
+            pkgs.vulkan-tools
+            pkgs.shaderc
+          ]
+          ++ lib.optionals cudaSupported [ cudaToolkit ];
+          shellHook = lib.optionalString cudaSupported cudaHook;
+        };
+
+        devShells.${if cudaSupported then "cuda" else null} = pkgs.mkShell {
+          inputsFrom = [ self.devShells.${system}.cpp-tools ];
+          packages = [ cudaToolkit ];
+          shellHook = cudaHook;
         };
 
         # Keep installed-library workflows (e.g. repl-cpp) available without
         # making working-tree NN builds first rebuild that installed package.
         devShells.cpp = pkgs.mkShell {
           inputsFrom = [ self.devShells.${system}.cpp-tools ];
-          packages = [ datamunge ];
+          packages = [
+            datamunge
+            pkgs.curl
+          ];
         };
 
         devShells.java = pkgs.mkShell {
@@ -884,6 +1003,7 @@
 
         devShells.python = pkgs.mkShell {
           packages = [
+            pkgs.curl
             swigPkg
             # pkgs.cmake
             pkgs.pkg-config
@@ -932,6 +1052,7 @@
 
         devShells.r = pkgs.mkShell {
           packages = [
+            pkgs.curl
             swigPkg
             pkgs.python3
             pkgs.R

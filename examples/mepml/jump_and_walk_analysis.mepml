@@ -46,7 +46,7 @@ search structure beyond the mesh's edge adjacency.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static double orient(const Point2D& a, const Point2D& b, const Point2D& p) {
     return (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
@@ -138,7 +138,7 @@ triangle really contains its query. The figure draws the mesh with one query and
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static double orient(const Point2D& a, const Point2D& b, const Point2D& p) {
     return (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);

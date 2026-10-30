@@ -1,4 +1,5 @@
 # Native R NN example. Model composition and training run in R.
+# CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_mnist.R
 # Epochs are honored in both modes; --quick reduces the dataset, --full uses all MNIST.
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT", getwd()), "examples/r/nn/common.R")
 if (!file.exists(.nn_common))
@@ -54,8 +55,8 @@ main <- function(arguments = commandArgs(TRUE)) {
     if (!is.finite(args$threads) || args$threads < 1L || args$threads != floor(args$threads))
         stop("threads must be a positive integer")
     nn$set_num_threads(args$threads)
-    train <- nn$load_mnist(args$data, "train")
-    test <- nn$load_mnist(args$data, "test")
+    train <- nn_components$dataset_assets$LoadMnist(args$data, "train")
+    test <- nn_components$dataset_assets$LoadMnist(args$data, "test")
     stopifnot(identical(as.numeric(train$images$shape()), c(60000, 28, 28, 1)), identical(as.numeric(test$images$shape()),
         c(10000, 28, 28, 1)))
     train_x <- nn$reshape(train$images, c(60000L, 784L))

@@ -1,0 +1,119 @@
+//? Title: Checkpoint I/O: Names, Dtypes and Byte-Exact State
+//? Subtitle: Validate the whole assignment set before changing any live tensor
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Restoring a model means more than loading a floating weight array: counters and text metadata
+must retain their exact values too. We save named floating, Int64 and byte-encoded string state,
+mutate it and restore into existing handles. A failed schema check demonstrates that validation
+precedes every assignment.
+)
+\toc
+
+> The method
+
+An NPZ file stores named NPY arrays; the serving/training code gives those arrays meaning.
+For each destination tensor, restore_tensors checks name, dtype and shape before copying any
+value. Strict mode also rejects extra names. Values are staged so source/target aliases cannot
+change later reads. Int64 counters must not pass through Float32, whose consecutive-integer range
+ends at 2^24. Strings use concatenated byte values and cumulative offsets:
+
+$$
+o_0=0,\quad o_{i+1}=o_i+|s_i|,\qquad s_i=\mathrm{bytes}[o_i:o_{i+1}].
+$$
+\alttext(Each string occupies the half-open interval between two consecutive cumulative byte offsets.)
+
+Lengths count bytes, not Unicode scalar values. Empty strings have equal adjacent offsets;
+embedded NUL bytes are ordinary data. This archive is model state, not a process snapshot.
+Use training_state/save_training_checkpoint for optimizer and batch-order continuation, and
+save any additional application RNG/configuration state explicitly. Storage and restoration
+cost are linear in total state bytes.
+
+The concept diagram has a retained TikZ source in `diagrams/checkpoint_io_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/checkpoint_io_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/checkpoint_io_concept.tikz > build/checkpoint_io_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/checkpoint_io_concept.svg build/checkpoint_io_concept.dvi > build/checkpoint_io_concept.render.log 2>&1
+printf 'Rendered build/checkpoint_io_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/checkpoint_io_concept.svg from local TikZ source.
+// \image(figures/checkpoint_io_concept.svg)
+// result_end
+\caption(Validate the whole assignment set before changing any live tensor)
+\alttext(Named typed state; weights, step, text Then Validate all entries; name + dtype + shape Then Stage and assign; preserve tensor handles.)
+
+> Simple examples
+
+The exact counter is 2^40+7. The vocabulary contains café, an embedded-NUL string and an empty string.
+
+```{cpp, results="markdown", file="figures/checkpoint_io_strings.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;
+ std::filesystem::create_directories("build");
+ auto w=n::tensor({1,2,3,4},{2,2}),step=n::from_vector(std::vector<int64_t>{(int64_t{1}<<40)+7},{1});
+ auto text=n::encode_strings({"café",std::string("a\0b",3),""});
+ n::NamedTensors state{{"weights",w},{"step",step}};state.insert(state.end(),text.begin(),text.end());
+ n::save_npz("build/checkpoint_state.npz",state);
+ {n::NoGradGuard guard;w.copy_(n::full({2,2},-9));step.copy_(n::from_vector(std::vector<int64_t>{-1},{1}));}
+ const auto saved=n::load_npz("build/checkpoint_state.npz");n::restore_tensors(state,saved);
+ const auto words=n::decode_strings({saved[2],saved[3]});
+ if(step.item<int64_t>()!=(int64_t{1}<<40)+7||words[1]!=std::string("a\0b",3))return 1;
+ dm::dstruct::DataFrame t;t.add_column("entry",std::vector<std::string>{"café","a-NUL-b","empty"});
+ std::vector<double> lengths;for(const auto& s:words)lengths.push_back(s.size());t.add_column("byte_length",lengths);
+ auto p=dm::graphics::RPlot::create();p.bars({0,1,2},lengths,"bytes",{37,99,235},.5)
+ .title("Byte lengths preserve NUL and empty strings").x_label("vocabulary entry").y_label("bytes").y_limits(0,6);
+ p.size(820,420).save_svg("build/checkpoint_io_strings.svg");
+ std::print("Restored Int64 counter: {}.\n\n{}\n",step.item<int64_t>(),t.to_md());
+}
+```
+// result_begin: markdown
+Restored Int64 counter: 1099511627783.
+
+| entry | byte_length |
+| :--- | ---: |
+| café | 5 |
+| a-NUL-b | 3 |
+| empty | 0 |
+
+\image(figures/checkpoint_io_strings.svg)
+// result_end
+\caption(UTF-8 storage length differs from character count; NUL does not terminate a stored string.)
+\alttext(UTF-8 storage length differs from character count; NUL does not terminate a stored string.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;
+ auto a=n::tensor({1,2}),b=n::tensor({3,4});const auto before=n::encode_npy(a);int rejected=0;
+ try{n::restore_tensors({{"a",a},{"b",b}},{{"a",n::tensor({9,9})},{"b",n::tensor({1})}});}catch(const std::invalid_argument&){++rejected;}
+ if(n::encode_npy(a)!=before)return 1;
+ try{n::restore_tensors({{"a",a}},{{"a",n::tensor({7,8},{2},n::DType::Float64)}});}catch(const std::invalid_argument&){++rejected;}
+ n::restore_tensors({{"a",a},{"b",b}},{{"a",b},{"b",a}});
+ if(rejected!=2||a.to_vector<int>()!=std::vector<int>({3,4})||b.to_vector<int>()!=std::vector<int>({1,2}))return 1;
+ std::print("Shape/dtype mismatches rejected: {}; first assignment unchanged on failure.\n\nAliased source swap succeeds after staging deep copies.\n",rejected);
+}
+```
+// result_begin: markdown
+Shape/dtype mismatches rejected: 2; first assignment unchanged on failure.
+
+Aliased source swap succeeds after staging deep copies.
+// result_end
+
+
+> Conclusion
+
+Names, shapes and dtypes determine whether a snapshot can restore the intended state. The large
+integer and byte strings survive exactly, and validation errors leave targets untouched. Matching
+arrays do not guarantee matching model code, so retain the computation and configuration as well.
+
+> References
+
+- [NumPy NPY format specification](https://numpy.org/doc/stable/reference/generated/numpy.lib.format.html).

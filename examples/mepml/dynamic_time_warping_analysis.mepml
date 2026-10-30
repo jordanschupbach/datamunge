@@ -38,7 +38,7 @@ equal lengths \-\- both impossible for plain Euclidean distance.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double PI = 3.14159265358979323846;
 ```
@@ -138,7 +138,7 @@ mismatch at every position after the first.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double PI = 3.14159265358979323846;
 

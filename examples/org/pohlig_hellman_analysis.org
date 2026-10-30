@@ -41,7 +41,7 @@ factor in \(n\) keeps the problem hard -- which is exactly what secure parameter
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

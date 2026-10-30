@@ -20,7 +20,9 @@
 
 namespace datamunge::algorithms {
 
+/// A complex amplitude.
 using Complex      = std::complex<double>;
+/// An n-qubit state: 2^n amplitudes, basis index bit q = qubit q.
 using QuantumState = std::vector<Complex>;
 
 /// \brief The \f$n\f$-qubit ground state \f$|0\cdots0\rangle\f$.

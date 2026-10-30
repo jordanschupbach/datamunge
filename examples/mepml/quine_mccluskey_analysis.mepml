@@ -35,7 +35,7 @@ sum-of-products form.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -93,7 +93,7 @@ The classic four-variable function \(f(A,B,C,D)=\sum m(4,8,10,11,12,15)\) with d
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

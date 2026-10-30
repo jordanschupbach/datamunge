@@ -1,0 +1,528 @@
+//? Title: FCN32s,16s and8s dense prediction skips
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Assigning a class to every pixel needs spatially aligned outputs from coarse CNN features. This report checks frozen bilinear filters and released FCN crop geometry, then fits all three compact VGG skip variants with explicit Adam and compares their held-out masks.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segmentation/fcn.cpp`.
+
+> The method
+
+FCN replaces classification layers with spatial convolutions. Bilinear deconvolution restores resolution; projected intermediate VGG features add progressively finer class scores. Full released geometry and compact teaching geometry are checked separately before fitting.
+
+The editable concept diagram is `diagrams/fcn_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/fcn_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/fcn_concept.tikz > build/fcn_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/fcn_concept.svg build/fcn_concept.dvi > build/fcn_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/fcn_concept.svg)
+// result_end
+\caption(FCN32s,16s and8s dense prediction skips)
+\alttext(VGG spatial features; Coarse class scores; then Pool4 and pool3; Aligned score skips; then Fixed upsampling; Explicit Adam fit.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/fcn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(17), state(18);
+  m::FcnConfig      c;
+  c.stride           = 8;
+  c.compact          = true;
+  c.width_divisor    = 8;
+  c.fc_width         = 64;
+  c.classes          = 4;
+  c.keep_probability = 1;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) { return n::models::Fcn(p, image, c).logits; },
+      "FCN32s,16s and8s dense prediction skips");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 3}), options);
+  diagram.save_svg("build/fcn_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+33 displayed nodes; 272308 reachable learned values.
+\image(figures/fcn_architecture.svg)
+// result_end
+\caption(Executed fcn tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right fcn architecture with rotated names and exact output shapes.)
+
+> Frozen bilinear filters and aligned skip fusion
+
+All thirteen VGG convolutions become a dense prediction backbone. Coarse
+class score maps are bilinearly upsampled; FCN16s adds projected pool4 scores,
+and FCN8s also adds pool3 scores. The frozen filter is a separable tent centred
+at `stride-.5`, multiplied by channel identity so classes never mix. Frozen
+filters are excluded from learned parameters and the optimizer.
+
+The released full geometry adds99 pixels per edge before SAME conv1, uses
+ceil/SAME pooling and valid7x7 fc6, crops skips at5/9, then crops final
+upsampling at19/27/31 for32s/16s/8s. The compact adaptation retains every
+VGG stage but uses SAME3x3 fc6 and zero-offset crops, with width divisor8,
+fc64/four classes and dropout disabled. It aligns odd95/96/97-pixel inputs.
+
+```{cpp, results="markdown", file="figures/fcn_fusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto kernel = m::FcnBilinearKernel(2, 2);
+  double error = 0;
+  for (int r = 0; r < 4; ++r)
+    for (int c = 0; c < 4; ++c)
+      for (int a = 0; a < 2; ++a)
+        for (int b = 0; b < 2; ++b) {
+          const double expected =
+              a == b ? (1 - std::abs(r - 1.5) / 2) * (1 - std::abs(c - 1.5) / 2) : 0;
+          error = std::max(error, std::abs(kernel.at({r, c, a, b}) - expected));
+        }
+  const auto impulse = n::tensor({0., 0., 0., 0., 1., 0., 0., 0., 0.}, {1, 3, 3, 1}),
+             skip = n::full({1, 6, 6, 1}, .25), fused = m::FcnFuseSkip(impulse, skip, 1);
+  const auto only = m::FcnBilinearDeconvolution(impulse, 2, 1);
+  if (error > 1e-12 || n::max(n::abs(fused - only - .25)).item() > 1e-7)
+    return 1;
+  auto a = n::plot_tensor_map(
+           n::slice_axis(n::slice_axis(kernel, 2, 0, 1), 3, 0, 1).reshape({4, 4}), 0, 1),
+       b = n::plot_tensor_map(fused.reshape({6, 6}), 0, 1);
+  a.title("Frozen diagonal tent filter");
+  b.title("Impulse upsample plus.25 skip");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1200, 530).fit_panels().save_svg(
+      "build/fcn_fusion.svg");
+  std::print("Every diagonal/cross-class filter element matches the independent tent oracle; "
+             "max error {:.12f}. Native fixtures also check exact fusion values and both "
+             "input derivatives, full/compact crop conventions and odd spatial grids.\n",
+             error);
+}
+```
+// result_begin: markdown
+Every diagonal/cross-class filter element matches the independent tent oracle; max error 0.000000000000. Native fixtures also check exact fusion values and both input derivatives, full/compact crop conventions and odd spatial grids.
+\image(figures/fcn_fusion.svg)
+// result_end
+\caption(Frozen bilinear tent coefficients and a known upsampled impulse plus constant skip. No filter fitting or class mixing is hidden.)
+\alttext(Frozen bilinear tent coefficients and a known upsampled impulse plus constant skip. No filter fitting or class mixing is hidden.)
+
+> Full released and compact graph checks
+
+The full32s/16s/8s models have134,346,581/134,357,354/134,362,751 learned
+scalars and32/34/36 learned tensor gradients. All three full backwards execute
+below on an8x8 RGB image with released padding/crops; this checks the graph
+and does not train a full benchmark model. Compact counts are271,916/272,176/
+272,308 with every learned gradient nonzero in the96-pixel native probe.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  const std::array<int, 3> strides = {32, 16, 8};
+  const std::array<std::int64_t, 3> counts = {134346581, 134357354, 134362751};
+  for (int i = 0; i < 3; ++i) {
+    n::ParameterStore p(17);
+    n::models::FcnConfig c;
+    c.stride = strides[i];
+    const auto net = n::models::Fcn(
+        p, n::sin(.13 * n::arange(0, 8 * 8 * 3)).reshape({1, 8, 8, 3}), c, true);
+    const auto g = n::grad(n::mean(n::square(net.logits)), p.parameters());
+    if (p.count() != counts[i] || g.size() != std::size_t(32 + 2 * i) ||
+        net.logits.shape() != n::Shape{1, 8, 8, 21})
+      return 1;
+    for (const auto &v : g)
+      if (!v.defined() || !std::isfinite(n::sum(n::square(v.to(n::DType::Float64))).item()))
+        return 1;
+    std::print("Full FCN-{}s: {} learned scalars,all{} finite gradients;8x8 logits with "
+               "released padding/crops.\n",
+               strides[i], p.count(), g.size());
+  }
+  for (int stride : strides) {
+    n::ParameterStore p(17);
+    n::models::FcnConfig c;
+    c.stride = stride;
+    c.compact = true;
+    c.width_divisor = 8;
+    c.fc_width = 64;
+    c.classes = 4;
+    c.keep_probability = 1;
+    for (int side : {95, 96, 97}) {
+      const auto net = n::models::Fcn(p, n::zeros({1, side, side, 3}), c);
+      if (net.logits.shape() != n::Shape{1, side, side, 4})
+        return 1;
+    }
+    std::print("Compact FCN-{}s:{} learned scalars; exact95/96/97px grids.\n", stride,
+               p.count());
+  }
+}
+```
+// result_begin: markdown
+Full FCN-32s: 134346581 learned scalars,all32 finite gradients;8x8 logits with released padding/crops.
+Full FCN-16s: 134357354 learned scalars,all34 finite gradients;8x8 logits with released padding/crops.
+Full FCN-8s: 134362751 learned scalars,all36 finite gradients;8x8 logits with released padding/crops.
+Compact FCN-32s:271916 learned scalars; exact95/96/97px grids.
+Compact FCN-16s:272176 learned scalars; exact95/96/97px grids.
+Compact FCN-8s:272308 learned scalars; exact95/96/97px grids.
+// result_end
+
+> Actual procedural image/mask pairs
+
+The tensor shape generator creates64 fitting/16 validation/16 test96-pixel
+RGB images with independent seeds11/22/33. Circle,rectangle and triangle
+brightness/noise/tint have the same distributions, so labels require spatial
+context. Later objects occlude earlier masks. This tensor RNG adaptation has
+different fixed-seed pixels from the original mt19937 generator; it preserves
+the procedural conventions rather than byte-for-byte samples. Four actual
+fitting image/mask pairs appear below. The mask palette is background dark,
+circle red,rectangle green,triangle blue.
+
+```{cpp, results="markdown", file="figures/fcn_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto data = m::TensorSegmentationShapes(64, 96, 11);
+  std::vector<n::Tensor> gallery;
+  const auto colored = m::ColorSegmentationLabels(n::slice_axis(data.labels, 0, 0, 4));
+  for (int i = 0; i < 4; ++i) {
+    gallery.push_back(n::slice_axis(data.images, 0, i, i + 1));
+    gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+  }
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::concat(gallery, 0), "build/fcn_data.png", 2, 0., 1., 3, 1., 2);
+  const auto weights = m::SegmentationClassWeights(data.labels, 4);
+  std::print(
+      "64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. "
+      "Fit-only inverse-square-root pseudocount weights {:.6f}/{:.6f}/{:.6f}/{:.6f}. "
+      "Noise,tint and brightness are class-independent; later objects occlude earlier masks. "
+      "Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.\n",
+      weights.at({0}), weights.at({1}), weights.at({2}), weights.at({3}));
+}
+```
+// result_begin: markdown
+64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. Fit-only inverse-square-root pseudocount weights 1.149431/3.477891/3.045941/4.357872. Noise,tint and brightness are class-independent; later objects occlude earlier masks. Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.
+\image(figures/fcn_data.png)
+// result_end
+\caption(Actual first four tensor-generated fitting images, paired with four-class truth masks. Appearance is class-independent; overlap changes the visible mask.)
+\alttext(Actual first four tensor-generated fitting images, paired with four-class truth masks. Appearance is class-independent; overlap changes the visible mask.)
+
+> Explicit Adam for all three skip variants
+
+The fit-only weight for class c is `1/sqrt((count_c+1)/fit_pixels)`. Pixel
+CE is normalized by the sum of selected pixel weights, using stable tensor
+log-softmax. Every leaf is warmed before Adam(.001); the visible loop performs
+8 epochs,batch4,128 updates per model. Explicit `.00005*sum(kernel²)` matches
+half the source L2 coefficient. Kernels,biases and score layers are optimized;
+there are no BN moving moments. Validation mean IoU strictly selects the learned
+checkpoint, then restoration reproduces the selected score before test evaluation.
+Mean IoU includes background and classes present in truth or prediction; classes
+absent from both are excluded. Test metrics never select epochs or fit weights.
+
+```{cpp, results="markdown", file="figures/fcn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <print>
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  namespace m             = n::models;
+  n::set_num_threads(2);
+  const auto fit              = m::TensorSegmentationShapes(64, 96, 11),
+             validation       = m::TensorSegmentationShapes(16, 96, 22),
+             test             = m::TensorSegmentationShapes(16, 96, 33);
+  const auto          weights = m::SegmentationClassWeights(fit.labels, 4);
+  std::vector<double> epochs;
+  for (int epoch = 1; epoch <= 8; ++epoch)
+    epochs.push_back(epoch);
+  auto loss_plot = dm::graphics::RPlot::create(), score_plot = dm::graphics::RPlot::create();
+  const std::array<dm::graphics::RGB, 3> colors = {{{37, 99, 235}, {22, 163, 74}, {220, 38, 38}}};
+  int                                    color_index = 0;
+  double                                 max_loss    = 0;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  for (int variant : {32, 16, 8}) {
+    n::ParameterStore p(17);
+    m::FcnConfig      config;
+    config.compact          = true;
+    config.width_divisor    = 8;
+    config.fc_width         = 64;
+    config.classes          = 4;
+    config.keep_probability = 1;
+    config.stride           = variant;
+    const auto forward      = [&](const n::Tensor& images, bool training) {
+      return m::Fcn(p, images, config, training).logits;
+    };
+    // Create every learnable convolution/score leaf before Adam captures the store.
+    {
+      n::NoGradGuard guard;
+      forward(n::slice_axis(fit.images, 0, 0, 1), false);
+    }
+    n::OptimizerConfig adam_config;
+    adam_config.kind = n::OptimizerKind::Adam;
+    n::Optimizer           adam(p, .001, adam_config);
+    n::BatchOrder          batches(64, 4, 29);
+    std::vector<n::Tensor> kernels;
+    for (const auto& leaf : p.parameters())
+      if (leaf.dim() > 1)
+        kernels.push_back(leaf);
+    const std::string   prefix   = "build/fcn_" + std::to_string(variant);
+    double              best     = -1;
+    int                 selected = 0, updates = 0;
+    std::vector<double> losses, miou;
+    const auto          evaluate = [&](const m::TensorSegmentationData& data) {
+      n::NoGradGuard guard;
+      auto           confusion = n::zeros({4, 4}, n::DType::Int64);
+      for (int first = 0; first < data.images.shape()[0]; first += 8) {
+        const auto end    = std::min<std::int64_t>(first + 8, data.images.shape()[0]);
+        const auto logits = forward(n::slice_axis(data.images, 0, first, end), false);
+        confusion =
+            confusion + m::SegmentationPredictionMetrics(
+                            n::argmax(logits, 3), n::slice_axis(data.labels, 0, first, end), 4)
+                            .confusion;
+      }
+      return m::SegmentationConfusionMetrics(confusion);
+    };
+    std::print(
+        "Variant{}: {} learned scalars, no BN state. Fit-only weights "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}.\n",
+        variant,
+        p.count(),
+        weights.at({0}),
+        weights.at({1}),
+        weights.at({2}),
+        weights.at({3}));
+    std::print(
+        "| variant | epoch | weighted pixel CE | validation mIoU |\n|---:|---:|---:|---:|\n");
+    for (int epoch = 1; epoch <= 8; ++epoch) {
+      batches.begin_epoch();
+      double      total = 0;
+      std::size_t seen  = 0;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto batch   = m::TensorSegmentationBatch(fit, n::from_vector(rows));
+        const auto logits  = forward(batch.first, true);
+        const auto ce      = m::SegmentationCrossEntropy(logits, batch.second, 4, weights);
+        n::Tensor  penalty = n::zeros({});
+        for (const auto& kernel : kernels)
+          penalty = penalty + n::sum(n::square(kernel));
+        if (!std::isfinite(ce.item()))
+          return 1;
+        total += ce.item() * rows.size();
+        seen += rows.size();
+        adam.minimize(ce + .00005 * penalty);
+        ++updates;
+      }
+      const auto metric = evaluate(validation);
+      losses.push_back(total / double(seen));
+      miou.push_back(metric.mean_iou.item());
+      if (miou.back() > best) {
+        best     = miou.back();
+        selected = epoch;
+        p.save(prefix + "_best.npz");
+      }
+      std::print("| {} | {} | {:.6f} | {:.6f} |\n", variant, epoch, losses.back(), miou.back());
+    }
+    p.load(prefix + "_best.npz");
+    const auto restored = evaluate(validation), metric = evaluate(test);
+    const auto count_matrix = n::ConfusionMatrix::from_counts(metric.confusion);
+    const auto index        = std::to_string(rendered_confusions++);
+    count_matrix.save_svg(
+        "build/fcn_confusion_api_" + index + ".svg", {.title = "Selected-checkpoint pixel counts"});
+    count_matrix.save_svg(
+        "build/fcn_confusion_api_" + index + "_normalized.svg",
+        {.title         = "Selected-checkpoint pixel recall",
+         .normalization = n::ConfusionMatrixNormalization::True});
+
+    if (std::abs(restored.mean_iou.item() - best) > 1e-12 || updates != 128)
+      return 1;
+    n::NoGradGuard         guard;
+    std::vector<n::Tensor> gallery;
+    const auto prediction = n::argmax(forward(n::slice_axis(test.images, 0, 0, 4), false), 3);
+    const auto truth      = m::ColorSegmentationLabels(n::slice_axis(test.labels, 0, 0, 4)),
+               colored    = m::ColorSegmentationLabels(prediction);
+    for (int i = 0; i < 4; ++i) {
+      gallery.push_back(n::slice_axis(test.images, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(truth, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+    }
+    const auto image_name = "fcn_predictions_" + std::to_string(variant) + ".png";
+    n::save_image_grid(n::concat(gallery, 0), "build/" + image_name, 3, 0., 1., 3, 1., 2);
+    std::filesystem::copy_file(
+        "build/" + image_name,
+        "figures/" + image_name,
+        std::filesystem::copy_options::overwrite_existing);
+    const auto color = colors[color_index++];
+    const auto name  = "FCN-" + std::to_string(variant);
+    loss_plot.lines(epochs, losses, name, color);
+    score_plot.lines(epochs, miou, name, color);
+    max_loss = std::max(max_loss, *std::max_element(losses.begin(), losses.end()));
+    std::print(
+        "Variant{} restored epoch{}: validation mIoU {:.6f}; test pixel accuracy "
+        "{:.6f}, mean IoU {:.6f}; per-class IoU(background,circle,rectangle,triangle) "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}. {} explicit Adam updates.\n",
+        variant,
+        selected,
+        best,
+        metric.pixel_accuracy.item(),
+        metric.mean_iou.item(),
+        metric.iou.at({0}),
+        metric.iou.at({1}),
+        metric.iou.at({2}),
+        metric.iou.at({3}),
+        updates);
+  }
+  loss_plot.title("FCN variants weighted pixel loss")
+      .x_label("epoch")
+      .y_label("unregularized weighted CE")
+      .y_limits(0, max_loss * 1.3);
+  score_plot.title("Validation mean IoU selection")
+      .x_label("epoch")
+      .y_label("present-class mIoU")
+      .y_limits(0, 1.3);
+  dm::graphics::RLayout::create(1, 2)
+      .add(loss_plot)
+      .add(score_plot)
+      .size(1200, 550)
+      .fit_panels()
+      .save_svg("build/fcn_training.svg");
+}
+```
+// result_begin: markdown
+Variant32: 271916 learned scalars, no BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 32 | 1 | 1.342616 | 0.186900 |
+| 32 | 2 | 1.183523 | 0.239047 |
+| 32 | 3 | 1.119462 | 0.282820 |
+| 32 | 4 | 0.983291 | 0.257870 |
+| 32 | 5 | 0.896263 | 0.316811 |
+| 32 | 6 | 0.802533 | 0.311597 |
+| 32 | 7 | 0.772540 | 0.351520 |
+| 32 | 8 | 0.689064 | 0.367674 |
+Variant32 restored epoch8: validation mIoU 0.367674; test pixel accuracy 0.748332, mean IoU 0.376401; per-class IoU(background,circle,rectangle,triangle) 0.790797/0.181684/0.310373/0.222750. 128 explicit Adam updates.
+Variant16: 272176 learned scalars, no BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 16 | 1 | 1.312580 | 0.186888 |
+| 16 | 2 | 1.060047 | 0.294596 |
+| 16 | 3 | 0.805999 | 0.419132 |
+| 16 | 4 | 0.636816 | 0.398192 |
+| 16 | 5 | 0.482690 | 0.527858 |
+| 16 | 6 | 0.349934 | 0.648003 |
+| 16 | 7 | 0.292242 | 0.637337 |
+| 16 | 8 | 0.263755 | 0.656522 |
+Variant16 restored epoch8: validation mIoU 0.656522; test pixel accuracy 0.906813, mean IoU 0.669480; per-class IoU(background,circle,rectangle,triangle) 0.916957/0.602608/0.635477/0.522878. 128 explicit Adam updates.
+Variant8: 272308 learned scalars, no BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 8 | 1 | 1.238906 | 0.343969 |
+| 8 | 2 | 0.795192 | 0.329377 |
+| 8 | 3 | 0.687835 | 0.446691 |
+| 8 | 4 | 0.558325 | 0.409217 |
+| 8 | 5 | 0.466497 | 0.498833 |
+| 8 | 6 | 0.369228 | 0.504719 |
+| 8 | 7 | 0.351034 | 0.601637 |
+| 8 | 8 | 0.275532 | 0.632153 |
+Variant8 restored epoch8: validation mIoU 0.632153; test pixel accuracy 0.929186, mean IoU 0.688770; per-class IoU(background,circle,rectangle,triangle) 0.962051/0.494061/0.691676/0.607294. 128 explicit Adam updates.
+\image(figures/fcn_training.svg)
+// result_end
+\caption(Three separately initialized compact FCN models, each with a visible128-update Adam fit. Weighted CE excludes explicit L2; validation mean IoU selects each checkpoint independently.)
+\alttext(Three separately initialized compact FCN models, each with a visible128-update Adam fit. Weighted CE excludes explicit L2; validation mean IoU selects each checkpoint independently.)
+
+FCN-32s/16s/8s all select the final epoch 8,with validation mean IoU
+.367674/.656522/.632153. Test mean IoU is .376401/.669480/.688770,
+respectively. The finer skip variants improve this bounded fit,while32s
+produces visibly coarse regions. All three were still improving when the
+128-update runs stopped, and FCN8s still has its lowest IoU on circles
+(.494061); these runs illustrate the architectures rather than establish
+a benchmark ranking.
+
+\image(figures/fcn_predictions_32.png)
+\caption(FCN-32s: each row shows the actual test image,truth mask and restored prediction for the first four test scenes. Palette and pixel range are fixed; mistakes remain visible.)
+\alttext(FCN-32s held-out image/truth/prediction triples.)
+\image(figures/fcn_predictions_16.png)
+\caption(FCN-16s: each row shows the actual test image,truth mask and restored prediction for the first four test scenes. Palette and pixel range are fixed; mistakes remain visible.)
+\alttext(FCN-16s held-out image/truth/prediction triples.)
+\image(figures/fcn_predictions_8.png)
+\caption(FCN-8s: each row shows the actual test image,truth mask and restored prediction for the first four test scenes. Palette and pixel range are fixed; mistakes remain visible.)
+\alttext(FCN-8s held-out image/truth/prediction triples.)
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/fcn_confusion_api_0.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/fcn_confusion_api_0_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+\image(figures/fcn_confusion_api_1.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 3. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/fcn_confusion_api_1_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+\image(figures/fcn_confusion_api_2.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 5. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/fcn_confusion_api_2_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Full released graphs and every learned gradient are checked separately from compact training. Fit-only class weights,visible optimization and validation-selected restoration support held-out comparisons while retaining segmentation errors in the actual prediction galleries.
+
+> References
+
+- [Long,Shelhamer and Darrell(2015), Fully Convolutional Networks for Semantic Segmentation](https://arxiv.org/abs/1411.4038).
+- [Authors’ released FCN models](https://github.com/shelhamer/fcn.berkeleyvision.org).

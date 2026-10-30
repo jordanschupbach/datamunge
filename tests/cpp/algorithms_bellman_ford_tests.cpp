@@ -2,6 +2,8 @@
 
 #include <datamunge/algorithms/bellman_ford.hpp>
 
+#include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <limits>
 #include <queue>
@@ -134,4 +136,60 @@ TEST(BellmanFord, RejectsOutOfRangeInput) {
     EXPECT_THROW(bellman_ford(2, {{0, 5, 1.0}}, 0), std::invalid_argument); // 'to' endpoint >= n
     EXPECT_THROW(bellman_ford(2, {{7, 1, 1.0}}, 0), std::invalid_argument); // 'from' endpoint >= n
     EXPECT_THROW(bellman_ford(0, {}, 0), std::invalid_argument);            // empty graph, no valid source
+}
+
+namespace {
+
+double cycle_weight(const std::vector<std::tuple<std::size_t, std::size_t, double>>& edges,
+                    const std::vector<std::size_t>& cycle) {
+    double total = 0.0;
+    for (std::size_t k = 0; k < cycle.size(); ++k) {
+        const std::size_t a = cycle[k], b = cycle[(k + 1) % cycle.size()];
+        double best = std::numeric_limits<double>::infinity();
+        for (const auto& [u, v, w] : edges)
+            if (u == a && v == b) best = std::min(best, w);
+        total += best;
+    }
+    return total;
+}
+
+}  // namespace
+
+TEST(BellmanFordQueue, AgreesWithPassesAndExtractsNegativeCycles) {
+    std::mt19937 rng(11);
+    int with_cycle = 0;
+    for (int trial = 0; trial < 200; ++trial) {
+        const std::size_t n = 2 + rng() % 30;
+        std::vector<std::tuple<std::size_t, std::size_t, double>> edges;
+        const std::size_t m = rng() % (3 * n);
+        std::uniform_real_distribution<double> w(trial % 2 ? -2.0 : -0.5, 5.0);
+        for (std::size_t e = 0; e < m; ++e) edges.emplace_back(rng() % n, rng() % n, w(rng));
+        const auto a = bellman_ford(n, edges, 0);
+        const auto b = datamunge::algorithms::bellman_ford_queue(n, edges, 0);
+        ASSERT_EQ(a.has_negative_cycle, b.has_negative_cycle) << trial;
+        EXPECT_LE(b.edge_checks, a.edge_checks + edges.size());
+        if (a.has_negative_cycle) {
+            ++with_cycle;
+            ASSERT_FALSE(a.negative_cycle.empty());
+            ASSERT_FALSE(b.negative_cycle.empty());
+            EXPECT_LT(cycle_weight(edges, a.negative_cycle), 0.0) << trial;
+            EXPECT_LT(cycle_weight(edges, b.negative_cycle), 0.0) << trial;
+            continue;
+        }
+        EXPECT_TRUE(a.negative_cycle.empty());
+        EXPECT_EQ(a.passes, a.relaxations_per_pass.size());
+        for (std::size_t v = 0; v < n; ++v) {
+            if (std::isinf(a.distance[v])) {
+                EXPECT_TRUE(std::isinf(b.distance[v]));
+                EXPECT_TRUE(datamunge::algorithms::shortest_path_to(a, v).empty());
+                continue;
+            }
+            EXPECT_NEAR(a.distance[v], b.distance[v], 1e-9);
+            const auto path = datamunge::algorithms::shortest_path_to(b, v);
+            ASSERT_FALSE(path.empty());
+            EXPECT_EQ(path.front(), 0u);
+            EXPECT_EQ(path.back(), v);
+        }
+    }
+    EXPECT_GT(with_cycle, 10);
 }

@@ -39,7 +39,7 @@ such polynomial (up to the check width) divides evenly, CRCs catch every short b
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

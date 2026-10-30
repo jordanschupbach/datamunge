@@ -22,12 +22,8 @@ def options(arguments, defaults):
 
 
 def data_root():
-    return Path(
-        os.environ.get(
-            "DATAMUNGE_DATA_DIR",
-            Path.home() / "projects/tflow_examples/output/datasets",
-        )
-    )
+    from .nn_components import dataset_assets
+    return Path(dataset_assets.DataRoot())
 
 
 def output_root(full=False):

@@ -1,10 +1,10 @@
 # Native R NN example. Per-gate per-example LayerNorm LSTM with raw cell carry and normalized readout.
+# CMD: nix develop .#r --command Rscript examples/r/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/layer_norm_lstm.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example layer_norm_lstm
 # Per-gate per-example LayerNorm LSTM with raw cell carry and normalized
 # hidden readout.
 #

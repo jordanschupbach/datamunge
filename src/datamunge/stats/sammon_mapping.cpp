@@ -12,7 +12,7 @@ namespace datamunge::stats {
 
 namespace {
 
-const plot::RGB kSeriesColors[] = {
+const graphics::RGB kSeriesColors[] = {
     {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}, {124, 58, 237}, {8, 145, 178},
 };
 
@@ -200,11 +200,11 @@ void SammonMapping::print_summary(std::ostream& os) const {
     os << "Final stress: " << stress_ << "\n";
 }
 
-plot::RPlot SammonMapping::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+graphics::RPlot SammonMapping::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
     if (dimension_x >= n_components() || dimension_y >= n_components())
         throw std::out_of_range("SammonMapping::plot_embedding dimension index out of range");
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     plot.points(embedding_.col(dimension_x), embedding_.col(dimension_y), "", kSeriesColors[0]);
     plot.title("Sammon Mapping")
         .x_label("Dim" + std::to_string(dimension_x + 1))
@@ -212,7 +212,7 @@ plot::RPlot SammonMapping::plot_embedding(const std::size_t dimension_x, const s
     return plot;
 }
 
-plot::RPlot SammonMapping::plot_embedding(const std::vector<std::string>& group_labels, const std::size_t dimension_x,
+graphics::RPlot SammonMapping::plot_embedding(const std::vector<std::string>& group_labels, const std::size_t dimension_x,
                                           const std::size_t dimension_y) const {
     if (dimension_x >= n_components() || dimension_y >= n_components())
         throw std::out_of_range("SammonMapping::plot_embedding dimension index out of range");
@@ -220,7 +220,7 @@ plot::RPlot SammonMapping::plot_embedding(const std::vector<std::string>& group_
         throw std::invalid_argument(
             "SammonMapping::plot_embedding: group_labels must have one entry per fitted observation");
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     const auto groups = unique_sorted(group_labels);
     for (std::size_t g = 0; g < groups.size(); ++g) {
         std::vector<double> xs, ys;

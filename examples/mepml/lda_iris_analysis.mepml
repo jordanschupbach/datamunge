@@ -147,7 +147,7 @@ The entire analysis \-\- loading the data, exploratory figures, model fit,
 diagnostics, and every plot \-\- is one C\+\+ program built against
 `datamunge`: `dstruct::DataFrame` holds the tabular data,
 `stats::LDA` (formula-driven, like R's `MASS::lda`) fits the model, and
-`plot::RPlot=/=plot::RLayout`, an R-base-graphics-style SVG renderer built
+`graphics::RPlot=/=graphics::RLayout`, an R-base-graphics-style SVG renderer built
 into the library, draws every figure. No external plotting or statistics
 package is used anywhere in this document.
 
@@ -179,7 +179,7 @@ every figure in this report uses the same color for the same species.
 
 using datamunge::dstruct::DataFrame;
 using datamunge::stats::LDA;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static const std::vector<std::string> kSpecies =
     {"setosa", "versicolor", "virginica"};
@@ -409,7 +409,7 @@ shown here, not the (redundant) expanded source itself.
 
 using datamunge::dstruct::DataFrame;
 using datamunge::stats::LDA;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static const std::vector<std::string> kSpecies =
     {"setosa", "versicolor", "virginica"};

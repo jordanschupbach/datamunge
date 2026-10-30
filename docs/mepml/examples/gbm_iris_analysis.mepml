@@ -1,0 +1,795 @@
+//? Title: Gradient Boosting: Residual Trees, Scores and Validation
+//? Subtitle: Hand-checkable softmax updates and held-out Iris classification
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Classifying observations from numeric measurements requires both a decision rule and
+an assessment of how it predicts unseen observations. A perfect training classification
+can still have uncertain probabilities or poor generalization. Gradient boosting builds
+an additive score function by fitting small trees to the current loss gradient. We
+work through exact two-class and three-class updates, check a full-sample descent
+bound and demonstrate an oversized step that increases loss. Iris then illustrates
+learning-rate and round selection on validation rows, fixed-model decision regions,
+and a final refit evaluated on reserved test rows. Validation selects rate .3 and
+106 rounds; the refit correctly classifies 29 of 30 test flowers, while log loss
+records the confidently mistaken prediction. All figures are local image files;
+the introductory update diagram retains its editable TikZ source.
+)
+\toc
+
+> The method
+
+>> Scores turn measurements into class probabilities
+
+For \(K\) observed training classes, let \(y_{ik}\) be one when row i has class \(k\), and zero
+otherwise. Fit one score \(F_k(x)\) per class. Softmax and the mean negative log likelihood are
+
+$$
+ p_{ik}=\frac{\exp F_k(x_i)}{\sum_{j=1}^K\exp F_j(x_i)},\qquad
+ L(F)=\frac1n\sum_{i=1}^n\left[\log\sum_{k=1}^K\exp F_k(x_i)-F_{y_i}(x_i)\right].
+$$
+\alttext(Each probability is an exponentiated class score normalized over all classes. Mean log loss averages log-sum-exp minus the score of the observed class.)
+
+The constant starting scores are \(F_{0,k}=\log(n_k/n)\), so the first probabilities equal
+the empirical class proportions. These minimize constant-model log loss: imposing
+\(\sum_k p_k=1\) on \(-\sum_k n_k\log p_k\) gives \(p_k=n_k/n\). Adding the same constant to
+every score leaves softmax unchanged; scores themselves are not probabilities.
+`initial_scores()` exposes the log priors and `raw_scores(data,0)` repeats them by row.
+
+For one observation, differentiation gives \(\partial\ell_i/\partial F_{ik}=p_{ik}-y_{ik}\). Thus the negative
+gradient is the pseudo-residual \(r_{ik}=y_{ik}-p_{ik}\). The global factor \(1/n\) changes the
+step-size convention but not the residual-fitting direction. At each round \(m\), compute
+all \(K\) targets using the same pre-round probabilities, fit a least-squares tree to each
+class target, and add its shrunken prediction to that class score:
+
+$$
+ r_{imk}=y_{ik}-p_{i,m-1,k},\quad
+ h_{mk}\approx\arg\min_h\sum_{i\in S_m}(r_{imk}-h(x_i))^2,\quad
+ F_{mk}=F_{m-1,k}+\eta h_{mk}.
+$$
+\alttext(All class residuals use the probabilities before the round. A separate regression tree approximates each residual vector on the sampled rows. Its output, multiplied by learning rate eta, is added to that class score.)
+
+`GBMClassifier` implements this direct first-order residual-tree variant. CART greedily
+chooses squared-error-reducing splits and each terminal node predicts its residual mean.
+It uses \(K\) trees even for two classes. There is no Newton leaf correction, class-count
+correction, score recentering or line search. Consequently a numeric comparison with
+scikit-learn's `GradientBoostingClassifier` would compare different algorithms: its
+classification terminal updates and binary score representation differ. Friedman's
+2001 paper supplies the gradient-boosting framework; the equations above specify the
+particular variant used here.
+
+Each round samples one shared set \(S_m\) without replacement for all class trees.
+`subsample=1` uses all retained training rows. Otherwise its size is
+`max(1,round(subsample*n))`; SplitMix64 and `seed` determine the sequence. Round count,
+depth, minimum leaf size, learning rate and sampling all affect flexibility. The
+constructor always fits its declared round budget; it performs no early stopping.
+
+The diagram separates the current probabilities, the simultaneous residual targets
+and the updated scores. Rendering requires LaTeX, PGF/TikZ, standalone, Latin Modern
+and dvisvgm; normal documentation export consumes the saved SVG.
+
+```{bash, results="output", file="figures/gbm_residual_update.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/gbm_residual_update.tikz > build/gbm_residual_update.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/gbm_residual_update.svg build/gbm_residual_update.dvi > build/gbm_residual_update.render.log 2>&1
+printf 'Rendered the local boosting update diagram.\n'
+```
+// result_begin:
+// Rendered the local boosting update diagram.
+// \image(figures/gbm_residual_update.svg)
+// result_end
+\caption(One boosting round uses the same pre-round probabilities for every class tree.)
+\alttext(Log-prior scores feed softmax. Subtracting these probabilities from one-hot labels creates all class residuals together. Separate class trees fit those residuals; their shrunken outputs update the scores before the next softmax.)
+
+>> When does a residual-tree step decrease loss?
+
+With full-sample leaf means, each residual is projected onto the constants on its
+chosen leaves. Within a leaf \(A\), \(\sum_{i\in A}r_i h_i=|A|\bar r_A^2=\sum_{i\in A}h_i^2\). Summing
+over leaves and classes yields the exact-arithmetic identity below. The Hessian of
+one-row log-sum-exp is \(\operatorname{diag}(p)-pp^T\), whose absolute row sums are \(2p_k(1-p_k)\le1/2\).
+Its spectral norm is at most 1/2. Taylor's quadratic upper bound then gives
+
+$$
+ \langle r,h\rangle=\|h\|_2^2,\qquad
+ L(F+\eta h)\le L(F)-\frac{\eta}{n}\langle r,h\rangle+
+ \frac{\eta^2}{4n}\|h\|_2^2
+ =L(F)-\frac{\eta(1-\eta/4)}n\|h\|_2^2.
+$$
+\alttext(For trees fitted with full-sample leaf means, the residual and update inner product equals the update squared norm. A Hessian bound of one half implies a loss decrease for a nonzero update and a learning rate strictly between zero and four.)
+
+Thus \(0<\eta<4\) guarantees descent for a nonzero full-sample update in exact arithmetic;
+implementation tolerances and rounding affect tiny changes. This is a sufficient bound,
+not an optimal rate or a generalization claim. With subsampling, the leaf identity holds
+on \(S_m\) and need not hold on all training rows. A large eta can overshoot even with all
+rows. `step_diagnostics()` reports both inner product and squared norm over all training
+rows; interpret its projection-based `quadratic_bound` as a guarantee only for full samples.
+
+Training log loss and accuracy measure different things. Once every winning class is
+correct, probability concentration can continue improving log loss while accuracy stays
+flat. On new data, excessive concentration can be costly. Evaluation uses stable
+log-sum-exp without clipping the true-class probability at a floor, even if softmax
+underflows to zero. The historically named `training_deviance()` stores mean log loss,
+without a factor of two. The multiclass Brier score is \(n^{-1}\sum_i\sum_k(p_{ik}-y_{ik})^2\),
+without dividing by \(K\); smaller is better for both loss scores.
+
+>> Contracts, cost and importance
+
+The formula machinery fixes predictor encoding on fitting rows and omits rows with null
+formula values. `kept_row_indices()` maps compact training rows back to original indices.
+Predictions retain original query order, using an empty label/probability vector for a
+row with null predictors and a NaN raw-score row. An empty prediction frame returns empty
+predictions; a nonempty frame with no complete rows is rejected. Evaluation reports
+input, retained and skipped counts, and rejects response classes absent from training.
+Retained transformed predictors, learning rate and subsample must be finite. A query row
+uses the frozen model whether supplied alone or in a batch. Depth and tree counts are
+positive; minimum leaf size is positive and minimum split size is at least two.
+
+For \(M\) rounds, \(K\) classes, \(p\) encoded predictors, \(n\) rows and depth limit \(D\), this implementation's
+exhaustive CART splitter has a conservative \(O(MKpn^2(D+1))\) fitting bound: it scans all
+candidate thresholds and repartitions rows. It is not a histogram-based booster. Staged
+evaluation applies each tree once per row, \(O(MKn(D+1))\), rather than independently
+refitting every prefix. Stored trees require up to \(O(MK\min(n,2^D))\) nodes plus \(O(MKn)\) stored
+training targets/predictions, retained design data and sampling indices. Diagnostics
+traverse fitted trees without refitting.
+
+For each fitted class tree, normalize its featurewise squared-error gains by that tree's
+total gain, or use a zero vector when it has no split. `feature_importance()` averages
+these vectors equally across all \(MK\) trees. Its sum can be less than one when some trees
+are constant. `importance_table()` additionally gives `relative_share`, normalized across
+features to sum to one when any gain exists. Neither quantity pools raw gains across
+trees or measures causality, uncertainty, permutation importance or held-out usefulness.
+
+> Simple examples
+
+>> Four rows: perfect classification is not probability one
+
+Take x=(0,1,2,3), with labels (a,a,b,b). Equal priors give scores log(.5), probabilities
+.5 and class-a residuals (.5,.5,−.5,−.5). A depth-one tree splits at x=1.5 and predicts
+those residual means exactly; class b is the negative. At eta=.5 the first row has
+scores (log(.5)+.25,log(.5)−.25). Therefore p(a)=1/(1+exp(−.5)) and mean loss is
+log(1+exp(−.5)). Classification is already perfect after this single round, while the
+predicted true-class probability is only about .622459.
+
+```{cpp, results="markdown", file="figures/gbm_binary.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 1, 2, 3});
+  d.add_column("label", std::vector<std::string>{"a", "a", "b", "b"});
+  const dm::stats::GBMClassifier m(d, "label ~ x", {20, .5, 1});
+  const auto                     first  = m.predict_detail(d, 1);
+  const auto                     stages = m.staged_evaluation(d);
+  auto                left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  std::vector<double> pa, pb;
+  for (const auto& p : first.probability) {
+    pa.push_back(p[0]);
+    pb.push_back(p[1]);
+  }
+  left.points({0, 1, 2, 3}, pa, "class a", {37, 99, 235}, 5)
+      .points({0, 1, 2, 3}, pb, "class b", {220, 38, 38}, 5)
+      .line({0, 3}, {.5, .5}, "prior", {100, 116, 139})
+      .title("Probabilities after one round")
+      .x_label("x")
+      .y_label("class probability")
+      .y_limits(0, 1.4);
+  right
+      .line(
+          stages.numeric_column("round").values(),
+          stages.numeric_column("mean_log_loss").values(),
+          "mean log loss",
+          {37, 99, 235})
+      .title("Loss falls after accuracy reaches one")
+      .x_label("round, including prior at zero")
+      .y_label("mean log loss")
+      .y_limits(0, .9);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gbm_binary.svg");
+  std::print(
+      "Input:\n\n{}\n\nFirst-round residuals and updates:\n\n{}\n\nSelected stages:\n\n{}\n",
+      d.to_md(),
+      m.training_step(1)
+          .select(
+              {"original_row",
+               "class",
+               "before_probability",
+               "pseudo_residual",
+               "tree_value",
+               "after_probability"})
+          .to_md(8),
+      stages.take_rows({0, 1, 5, 20})
+          .select({"round", "accuracy", "mean_log_loss", "brier"})
+          .to_md(8));
+}
+```
+// result_begin: markdown
+Input:
+
+| x | label |
+| ---: | :--- |
+| 0 | a |
+| 1 | a |
+| 2 | b |
+| 3 | b |
+
+
+First-round residuals and updates:
+
+| original_row | class | before_probability | pseudo_residual | tree_value | after_probability |
+| ---: | :--- | ---: | ---: | ---: | ---: |
+| 0 | a | 0.5 | 0.5 | 0.5 | 0.62245933 |
+| 0 | b | 0.5 | -0.5 | -0.5 | 0.37754067 |
+| 1 | a | 0.5 | 0.5 | 0.5 | 0.62245933 |
+| 1 | b | 0.5 | -0.5 | -0.5 | 0.37754067 |
+| 2 | a | 0.5 | -0.5 | -0.5 | 0.37754067 |
+| 2 | b | 0.5 | 0.5 | 0.5 | 0.62245933 |
+| 3 | a | 0.5 | -0.5 | -0.5 | 0.37754067 |
+| 3 | b | 0.5 | 0.5 | 0.5 | 0.62245933 |
+
+
+Selected stages:
+
+| round | accuracy | mean_log_loss | brier |
+| ---: | ---: | ---: | ---: |
+| 0 | 0.5 | 0.69314718 | 0.50000000 |
+| 1 | 1.0 | 0.47407698 | 0.28507391 |
+| 5 | 1.0 | 0.18315746 | 0.05602072 |
+| 20 | 1.0 | 0.05064386 | 0.00487733 |
+
+\image(figures/gbm_binary.svg)
+// result_end
+\caption(Exact residual means produce the first softmax update; accuracy then hides continued changes in confidence.)
+\alttext(The first panel shows class probabilities at all four input values after one round and the prior reference at one half. The second plots log loss from round zero through twenty. Tables expose the input, all eight class residual updates and selected evaluation stages.)
+
+>> Six rows and three classes: compute targets simultaneously
+
+Take x=(0,1,2,3,4,5) with labels (a,a,b,b,c,c). Priors are one third. Every row's
+true-class residual is 2/3 and its other two residuals are −1/3. Class a can be isolated
+by the first stump and class c by the last. For class \(b\), two symmetric stump splits tie;
+the implementation keeps the first ascending threshold, 1.5. Its left prediction is
+−1/3 and its right prediction is (2/3+2/3−1/3−1/3)/4=1/6.
+
+At \(x=2\) after one \(\eta=.5\) step, score increments are \((-1/6,1/12,-1/6)\). Their softmax is
+approximately (.304504,.390991,.304504). The class-b residual used in that same round
+is still 2/3, computed before any score update. Separate class trees need not sum to
+zero at each x; softmax handles the common-score offset automatically.
+
+```{cpp, results="markdown", file="figures/gbm_multiclass.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 1, 2, 3, 4, 5});
+  d.add_column("label", std::vector<std::string>{"a", "a", "b", "b", "c", "c"});
+  const dm::stats::GBMClassifier       m(d, "label ~ x", {20, .5, 1});
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  for (std::size_t k = 0; k < 3; ++k) {
+    std::vector<double> early, late;
+    const auto          first = m.predict_detail(d, 1), last = m.predict_detail(d);
+    for (std::size_t i = 0; i < d.nrows(); ++i) {
+      early.push_back(first.probability[i][k]);
+      late.push_back(last.probability[i][k]);
+    }
+    left.line({0, 1, 2, 3, 4, 5}, early, m.classes()[k], colors[k])
+        .points({0, 1, 2, 3, 4, 5}, early, "", colors[k], 4);
+    right.line({0, 1, 2, 3, 4, 5}, late, m.classes()[k], colors[k])
+        .points({0, 1, 2, 3, 4, 5}, late, "", colors[k], 4);
+  }
+  left.title("One round: shared starting probabilities")
+      .x_label("x")
+      .y_label("class probability")
+      .y_limits(0, 1.5);
+  right.title("Twenty rounds: confidence changes")
+      .x_label("x")
+      .y_label("class probability")
+      .y_limits(0, 1.5);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gbm_multiclass.svg");
+  std::print(
+      "Representative first-round rows (original rows 0, 2, 4):\n\n{}\n\nStage metrics:\n\n{}\n",
+      m.training_step(1)
+          .take_rows({0, 1, 2, 6, 7, 8, 12, 13, 14})
+          .select(
+              {"original_row",
+               "class",
+               "before_probability",
+               "pseudo_residual",
+               "tree_value",
+               "after_probability"})
+          .to_md(8),
+      m.staged_evaluation(d)
+          .take_rows({0, 1, 20})
+          .select({"round", "accuracy", "mean_log_loss", "brier"})
+          .to_md(8));
+}
+```
+// result_begin: markdown
+Representative first-round rows (original rows 0, 2, 4):
+
+| original_row | class | before_probability | pseudo_residual | tree_value | after_probability |
+| ---: | :--- | ---: | ---: | ---: | ---: |
+| 0 | a | 0.33333333 | 0.66666667 | 0.66666667 | 0.45186276 |
+| 0 | b | 0.33333333 | -0.33333333 | -0.33333333 | 0.27406862 |
+| 0 | c | 0.33333333 | -0.33333333 | -0.33333333 | 0.27406862 |
+| 2 | a | 0.33333333 | -0.33333333 | -0.33333333 | 0.30450434 |
+| 2 | b | 0.33333333 | 0.66666667 | 0.16666667 | 0.39099132 |
+| 2 | c | 0.33333333 | -0.33333333 | -0.33333333 | 0.30450434 |
+| 4 | a | 0.33333333 | -0.33333333 | -0.33333333 | 0.25427521 |
+| 4 | b | 0.33333333 | -0.33333333 | 0.16666667 | 0.32649584 |
+| 4 | c | 0.33333333 | 0.66666667 | 0.66666667 | 0.41922895 |
+
+
+Stage metrics:
+
+| round | accuracy | mean_log_loss | brier |
+| ---: | ---: | ---: | ---: |
+| 0 | 0.33333333 | 1.09861229 | 0.66666667 |
+| 1 | 1.00000000 | 0.86759493 | 0.50518981 |
+| 20 | 1.00000000 | 0.11989611 | 0.02153946 |
+
+\image(figures/gbm_multiclass.svg)
+// result_end
+\caption(Class-specific stumps approximate simultaneous residuals; later rounds refine the additive scores.)
+\alttext(Two panels show the three class probabilities at the six observed x values after one and twenty rounds. Connecting lines guide the eye between observed rows and do not imply linear interpolation by the trees. Tables show all classes for three representative rows and stage metrics.)
+
+> Checking the theory
+
+>> Full-sample projection, sampling and an oversized step
+
+Keep six x values but change labels to (a,a,b,b,a,b). The balanced prior still gives
+log loss log(2). The first full-sample class-a stump predicts .5 on the first two rows
+and −.25 on the remaining four; class b is its negative. Thus the squared update norm
+summed over both classes is 1.5, equal to its residual inner product. With eta=.5 the
+upper bound is log(2)−.5*(1−.5/4)*1.5/6, approximately .583772.
+
+Compare that small full-sample step with sampling half the rows and with eta=20 on all
+rows. The loss plot includes round zero. The diagnostic scatter places full-training
+inner product on x and squared norm on y, both divided by n. Full-sample leaf means lie
+on the identity; sampled leaf means need not. The oversized full-sample first step
+raises loss to about 1.666697, demonstrating why arbitrary positive rates do not inherit
+the descent guarantee. None of these training curves estimates held-out error.
+
+```{cpp, results="markdown", file="figures/gbm_descent.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 1, 2, 3, 4, 5});
+  d.add_column("label", std::vector<std::string>{"a", "a", "b", "b", "a", "b"});
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  dm::dstruct::DataFrame               table;
+  const std::vector<std::string>       labels = {"full, eta .5", "half, eta .5", "full, eta 20"};
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+  double                               top = 0, extent = .05;
+  for (std::size_t j = 0; j < 3; ++j) {
+    dm::stats::GBMClassifierOptions o{12, j == 2 ? 20. : .5, 1};
+    o.subsample = j == 1 ? .5 : 1.;
+    o.seed      = 7;
+    const dm::stats::GBMClassifier m(d, "label ~ x", o);
+    const auto                     stages = m.staged_evaluation(d);
+    const auto                     losses = stages.numeric_column("mean_log_loss").values();
+    top = std::max(top, *std::max_element(losses.begin(), losses.end()));
+    left.line(stages.numeric_column("round").values(), losses, labels[j], colors[j]);
+    std::vector<double> inner, norm;
+    for (std::size_t r = 1; r <= m.n_trees(); ++r) {
+      const auto a = m.step_diagnostics(r);
+      inner.push_back(a.double_at("gradient_tree_inner", 0) / 6);
+      norm.push_back(a.double_at("tree_squared_norm", 0) / 6);
+      extent = std::max({extent, std::abs(inner.back()), norm.back()});
+    }
+    right.points(inner, norm, labels[j], colors[j], 4);
+    auto row = m.step_diagnostics(1);
+    row.add_column("setting", std::vector<std::string>{labels[j]});
+    table = table.ncols() ? table.concat_rows(row) : row;
+  }
+  left.title("A large full-sample step can raise loss")
+      .x_label("round")
+      .y_label("training mean log loss")
+      .y_limits(0, top * 1.7);
+  right
+      .line(
+          {-extent * .1, extent * 1.05}, {-extent * .1, extent * 1.05}, "identity", {100, 116, 139})
+      .title("Leaf means and the sampled rows")
+      .x_label("full-training residual inner product / n")
+      .y_label("full-training squared tree norm / n")
+      .x_limits(-extent * .1, extent * 1.1)
+      .y_limits(-extent * .1, extent * 1.9);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gbm_descent.svg");
+  std::print(
+      "First-round diagnostics; bound requires full-sample projection:\n\n{}\n",
+      table
+          .select(
+              {"setting",
+               "sample_size",
+               "full_sample",
+               "loss_before",
+               "loss_after",
+               "gradient_tree_inner",
+               "tree_squared_norm",
+               "quadratic_bound"})
+          .to_md(8));
+}
+```
+// result_begin: markdown
+First-round diagnostics; bound requires full-sample projection:
+
+| setting | sample_size | full_sample | loss_before | loss_after | gradient_tree_inner | tree_squared_norm | quadratic_bound |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| full, eta .5 | 6 | 1 | 0.69314718 | 0.58365194 | 1.5 | 1.5 | 0.58377218 |
+| half, eta .5 | 3 | 0 | 0.69314718 | 0.71376705 | 0.0 | 2.0 | 0.54731385 |
+| full, eta 20 | 6 | 1 | 0.69314718 | 1.66669693 | 1.5 | 1.5 | 20.69314718 |
+
+\image(figures/gbm_descent.svg)
+// result_end
+\caption(Full-sample residual means satisfy the projection identity; arbitrary rates and subsampling require separate checks.)
+\alttext(Training losses for three settings include the prior baseline and all twelve rounds. A diagnostic scatter compares full-training residual inner product with tree squared norm. The table exposes the first-round sample size, full-sample flag, losses, projection quantities and conditional quadratic bound.)
+
+> Iris: validation before a final test
+
+>> Declare the split and candidate settings
+
+`dm::datasets::iris()` contains 150 flowers, four numeric measurements in centimetres,
+and three species with 50 rows each. Use just Petal.Length and Petal.Width, so decision
+regions can be drawn without fixing omitted coordinates. Before fitting, zero-based rows
+with index modulo five equal to zero form the 30-row test set; those equal to one form
+the 30-row validation set; the remaining 90 rows fit the candidate models. This gives
+30/10/10 fitting/validation/test flowers per species. There are no missing values here.
+
+Fix depth two, minimum leaf size two and full-sample fitting. Search eta in {.03,.1,.3}
+and every prefix from zero through 120. `gbm_validation_search()` fits one 120-round
+model per rate, scores its fixed prefixes on the validation rows and selects the lowest
+validation mean log loss. Exact ties prefer the first supplied rate and earliest prefix.
+The 363-row candidate table includes the prior-only option for every rate. Training loss
+and accuracy accompany the validation metrics for interpretation; they do not select
+settings. This is a single declared validation split, not cross-validation or an
+uncertainty estimate. A grid endpoint winner means the best setting within this grid.
+
+```{cpp, results="markdown", file="figures/gbm_iris_validation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto               d = dm::datasets::iris();
+  std::vector<std::size_t> fitting, validation, testing;
+  for (std::size_t i = 0; i < d.nrows(); ++i) {
+    if (i % 5 == 0)
+      testing.push_back(i);
+    else if (i % 5 == 1)
+      validation.push_back(i);
+    else
+      fitting.push_back(i);
+  }
+  const auto train = d.take_rows(fitting), valid = d.take_rows(validation),
+             test                         = d.take_rows(testing);
+  const std::string               formula = "Species ~ Petal.Length + Petal.Width";
+  dm::stats::GBMClassifierOptions options{120, .1, 2};
+  options.min_samples_leaf = 2;
+  const auto search =
+      dm::stats::gbm_validation_search(train, valid, formula, options, {.03, .1, .3});
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  const std::vector<double>            rates  = {.03, .1, .3};
+  const std::vector<std::string>       labels = {"eta .03", "eta .1", "eta .3"};
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+  for (std::size_t j = 0; j < rates.size(); ++j) {
+    std::vector<std::size_t> rows;
+    for (std::size_t i = 0; i < search.candidates.nrows(); ++i)
+      if (search.candidates.double_at("learning_rate", i) == rates[j])
+        rows.push_back(i);
+    const auto curve = search.candidates.take_rows(rows);
+    left.line(
+        curve.numeric_column("round").values(),
+        curve.numeric_column("mean_log_loss").values(),
+        labels[j],
+        colors[j]);
+    if (rates[j] == search.selected_options.learning_rate) {
+      right
+          .line(
+              curve.numeric_column("round").values(),
+              curve.numeric_column("training_accuracy").values(),
+              "fitting rows",
+              {37, 99, 235})
+          .line(
+              curve.numeric_column("round").values(),
+              curve.numeric_column("accuracy").values(),
+              "validation rows",
+              {220, 38, 38});
+    }
+  }
+  left.title("Validation loss selects rate and round")
+      .x_label("round")
+      .y_label("validation mean log loss")
+      .y_limits(0, 1.6);
+  right.title("Selected rate: two accuracy curves")
+      .x_label("round")
+      .y_label("accuracy fraction")
+      .y_limits(0, 1.4);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gbm_iris_validation.svg");
+  std::print(
+      "Fitting/validation/reserved test rows: {}/{}/{}. Candidate stages: {}.\nSelected eta: {}; "
+      "selected rounds: {}.\n\nFitting data preview:\n\n{}\n\nLowest validation losses:\n\n{}\n",
+      train.nrows(),
+      valid.nrows(),
+      test.nrows(),
+      search.candidates.nrows(),
+      search.selected_options.learning_rate,
+      search.selected_rounds,
+      train.head(3).to_md(2),
+      search.candidates.sort_by("mean_log_loss", true)
+          .head(6)
+          .select(
+              {"learning_rate",
+               "round",
+               "training_mean_log_loss",
+               "mean_log_loss",
+               "training_accuracy",
+               "accuracy",
+               "brier"})
+          .to_md(8));
+}
+```
+// result_begin: markdown
+Fitting/validation/reserved test rows: 90/30/30. Candidate stages: 363.
+Selected eta: 0.3; selected rounds: 106.
+
+Fitting data preview:
+
+| Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
+| ---: | ---: | ---: | ---: | :--- |
+| 4.7 | 3.2 | 1.3 | 0.2 | setosa |
+| 4.6 | 3.1 | 1.5 | 0.2 | setosa |
+| 5.0 | 3.6 | 1.4 | 0.2 | setosa |
+
+
+Lowest validation losses:
+
+| learning_rate | round | training_mean_log_loss | mean_log_loss | training_accuracy | accuracy | brier |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.3 | 106 | 0.03396338 | 0.11568032 | 1 | 0.96666667 | 0.05850170 |
+| 0.3 | 105 | 0.03430432 | 0.11595665 | 1 | 0.96666667 | 0.05852879 |
+| 0.3 | 91 | 0.03948278 | 0.11601251 | 1 | 0.96666667 | 0.05770582 |
+| 0.3 | 92 | 0.03908797 | 0.11603254 | 1 | 0.96666667 | 0.05777753 |
+| 0.3 | 96 | 0.03749059 | 0.11605263 | 1 | 0.96666667 | 0.05805221 |
+| 0.3 | 98 | 0.03669056 | 0.11607555 | 1 | 0.96666667 | 0.05817306 |
+
+\image(figures/gbm_iris_validation.svg)
+// result_end
+\caption(Learning rate and round count are chosen using thirty validation flowers; the test flowers remain unused.)
+\alttext(The left panel plots all validation log-loss candidates for three learning rates. The right compares fitting and validation accuracy at the selected rate. Tables preview the fitting data and list the six best validation candidates, with losses and accuracies for both partitions.)
+
+The selected candidate is eta=.3 at 106 rounds, with validation log loss .11568032
+and accuracy 29/30. Its fitting accuracy is already one. The lowest validation loss
+does not occur at the largest round budget, although the rate is the largest searched.
+This selection is conditional on the declared grid and split.
+
+>> Compare prefixes of the same fitted ensemble
+
+At the selected rate, fit the 90 fitting flowers once and draw its five-round and
+selected-round prefixes. Both panels reuse the same trees. Pastel grid points indicate
+predicted species over synthetic coordinates; dark points are the observed fitting
+flowers and identify their true species. The rectangular cells arise from axis-aligned
+splits. The map is a class decision map, so a stable-looking boundary can coexist with
+changing probability estimates and log loss. No test flower is used to draw or choose it.
+
+```{cpp, results="markdown", file="figures/gbm_iris_regions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto               d = dm::datasets::iris();
+  std::vector<std::size_t> fitting, validation, testing;
+  for (std::size_t i = 0; i < d.nrows(); ++i) {
+    if (i % 5 == 0)
+      testing.push_back(i);
+    else if (i % 5 == 1)
+      validation.push_back(i);
+    else
+      fitting.push_back(i);
+  }
+  const auto train = d.take_rows(fitting), valid = d.take_rows(validation),
+             test                         = d.take_rows(testing);
+  const std::string               formula = "Species ~ Petal.Length + Petal.Width";
+  dm::stats::GBMClassifierOptions options{120, .1, 2};
+  options.min_samples_leaf = 2;
+  const auto search =
+      dm::stats::gbm_validation_search(train, valid, formula, options, {.03, .1, .3});
+  auto o    = search.selected_options;
+  o.n_trees = std::max(std::size_t(5), search.selected_rounds);
+  const dm::stats::GBMClassifier m(train, formula, o);
+  auto left  = m.plot_decision_regions("Petal.Length", "Petal.Width", 45, 5),
+       right = m.plot_decision_regions("Petal.Length", "Petal.Width", 45, search.selected_rounds);
+  const std::vector<dm::graphics::RGB> colors  = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  const std::vector<std::string>       species = {"setosa", "versicolor", "virginica"};
+  for (std::size_t k = 0; k < 3; ++k) {
+    std::vector<double> x, y;
+    for (std::size_t i = 0; i < train.nrows(); ++i)
+      if (train.string_at("Species", i) == species[k]) {
+        x.push_back(train.double_at("Petal.Length", i));
+        y.push_back(train.double_at("Petal.Width", i));
+      }
+    left.points(x, y, "", colors[k], 3);
+    right.points(x, y, "", colors[k], 3);
+  }
+  left.title("Five-round prefix")
+      .legend(species, colors)
+      .x_label("petal length (cm)")
+      .y_label("petal width (cm)")
+      .x_limits(.3, 7.7)
+      .y_limits(-.4, 3.8);
+  right.title(std::format("Selected prefix: {} rounds", search.selected_rounds))
+      .legend(species, colors)
+      .x_label("petal length (cm)")
+      .y_label("petal width (cm)")
+      .x_limits(.3, 7.7)
+      .y_limits(-.4, 3.8);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gbm_iris_regions.svg");
+  std::print(
+      "Metrics on the ninety fitting flowers, not held-out estimates:\n\n{}\n",
+      m.evaluation(train, 5).concat_rows(m.evaluation(train, search.selected_rounds)).to_md(8));
+}
+```
+// result_begin: markdown
+Metrics on the ninety fitting flowers, not held-out estimates:
+
+| round | input_rows | evaluated_rows | skipped_rows | accuracy | mean_log_loss | brier |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 5 | 90 | 90 | 0 | 0.95555556 | 0.51846468 | 0.24803344 |
+| 106 | 90 | 90 | 0 | 1.00000000 | 0.03396338 | 0.00360112 |
+
+\image(figures/gbm_iris_regions.svg)
+// result_end
+\caption(Two prefixes share a fitted tree sequence, making the effect of additional rounds directly comparable.)
+\alttext(Pastel predictions cover a regular grid in petal length and width. Dark observed points are ninety fitting flowers coloured by actual species. The panels compare five rounds with the validation-selected prefix, and the table reports fitting metrics for both.)
+
+>> Refit once and evaluate the reserved test rows
+
+Refit on the 120 combined fitting and validation flowers using the selected rate and
+round count. Keep all tree and sampling controls fixed. The API allows a prior-only
+selection: because the constructor requires a positive budget, `selected_options` then
+uses one fitted round, and the explicit `selected_rounds=0` prefix supplies the selected
+prior-only model. Predictions and evaluation below always pass that prefix.
+
+Evaluate only this final model and its empirical-prior baseline on the 30 reserved test
+flowers. The confusion table has actual classes in rows and predicted classes in
+columns. The probability panel plots the observed class's probability for each test
+flower; it is descriptive and does not establish calibration. The second panel shows
+training-derived relative gain shares. These are feature-use summaries, which can
+redistribute weight between correlated petal measurements. They are not evidence that
+one measurement would cause a species change or improve held-out loss if retained alone.
+
+```{cpp, results="markdown", file="figures/gbm_iris_test.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto               d = dm::datasets::iris();
+  std::vector<std::size_t> fitting, validation, testing;
+  for (std::size_t i = 0; i < d.nrows(); ++i) {
+    if (i % 5 == 0)
+      testing.push_back(i);
+    else if (i % 5 == 1)
+      validation.push_back(i);
+    else
+      fitting.push_back(i);
+  }
+  const auto train = d.take_rows(fitting), valid = d.take_rows(validation),
+             test                         = d.take_rows(testing);
+  const std::string               formula = "Species ~ Petal.Length + Petal.Width";
+  dm::stats::GBMClassifierOptions options{120, .1, 2};
+  options.min_samples_leaf = 2;
+  const auto search =
+      dm::stats::gbm_validation_search(train, valid, formula, options, {.03, .1, .3});
+  const auto                     combined = train.concat_rows(valid);
+  const dm::stats::GBMClassifier final_model(combined, formula, search.selected_options);
+  const auto predicted  = final_model.predict_detail(test, search.selected_rounds);
+  const auto importance = final_model.importance_table();
+  auto       left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  for (std::size_t k = 0; k < final_model.classes().size(); ++k) {
+    std::vector<double> x, p;
+    for (std::size_t i = 0; i < test.nrows(); ++i)
+      if (test.string_at("Species", i) == final_model.classes()[k]) {
+        x.push_back(test.double_at("Petal.Length", i));
+        p.push_back(predicted.probability[i][k]);
+      }
+    left.points(x, p, final_model.classes()[k], colors[k], 5);
+  }
+  left.title("Reserved test: true-class probabilities")
+      .x_label("petal length (cm)")
+      .y_label("probability assigned to actual species")
+      .y_limits(0, 1.5);
+  right
+      .bars(
+          {1, 2},
+          importance.numeric_column("relative_share").values(),
+          "relative gain share",
+          {37, 99, 235},
+          .6)
+      .title("Final ensemble: feature use")
+      .x_label("1: petal length; 2: petal width")
+      .y_label("relative share")
+      .y_limits(0, 1.25);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gbm_iris_test.svg");
+  std::print(
+      "Final refit: {} flowers; eta {}; rounds {}.\n\nReserved-test prior baseline and selected "
+      "model:\n\n{}\n\nSelected-model confusion counts:\n\n{}\n\nTraining-derived feature "
+      "summaries:\n\n{}\n",
+      combined.nrows(),
+      search.selected_options.learning_rate,
+      search.selected_rounds,
+      final_model.evaluation(test, 0)
+          .concat_rows(final_model.evaluation(test, search.selected_rounds))
+          .to_md(8),
+      final_model.confusion(test, search.selected_rounds).to_md(0),
+      importance.to_md(8));
+}
+```
+// result_begin: markdown
+Final refit: 120 flowers; eta 0.3; rounds 106.
+
+Reserved-test prior baseline and selected model:
+
+| round | input_rows | evaluated_rows | skipped_rows | accuracy | mean_log_loss | brier |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 30 | 30 | 0 | 0.33333333 | 1.09861229 | 0.66666667 |
+| 106 | 30 | 30 | 0 | 0.96666667 | 0.21296239 | 0.06703447 |
+
+
+Selected-model confusion counts:
+
+| actual | pred_setosa | pred_versicolor | pred_virginica |
+| :--- | ---: | ---: | ---: |
+| setosa | 10 | 0 | 0 |
+| versicolor | 0 | 9 | 1 |
+| virginica | 0 | 0 | 10 |
+
+
+Training-derived feature summaries:
+
+| predictor | mean_normalized_gain | relative_share |
+| :--- | ---: | ---: |
+| Petal.Length | 0.56226404 | 0.56226404 |
+| Petal.Width | 0.43773596 | 0.43773596 |
+
+\image(figures/gbm_iris_test.svg)
+// result_end
+\caption(Final test metrics follow validation selection and a 120-flower refit; gain shares describe the fitted trees.)
+\alttext(Test flowers are plotted by petal length and probability assigned to their observed species. Bars show relative training gain shares for the two predictors. Tables report prior and selected test metrics, named confusion counts and both raw mean-normalized gains and rescaled shares.)
+
+The final refit also classifies 29/30 test flowers correctly, with mean log loss
+.21296239 and Brier score .06703447, versus the prior baseline
+1.09861229 and .66666667. One versicolor is assigned to virginica; its small
+true-class probability contributes substantially to the log loss. The final test
+loss differs from the validation selection loss because both the fitted trees and
+the evaluated observations differ. These are descriptive results for this split.
+
+> Conclusion
+
+The tiny examples expose the score-to-probability calculation, simultaneous multiclass
+residuals and the distinction between classification accuracy and probability loss.
+Full-sample leaf means satisfy a projection identity that yields a sufficient descent
+bound for \(0<\eta<4\); sampling and an oversized step require separate reasoning. Training
+loss reduction alone does not certify generalization.
+
+Iris uses a declared 90/30/30 split for fitting, validation and testing, selects only by
+validation log loss, and evaluates a single refitted setting on the reserved flowers.
+The selected eta=.3 and 106-round model gets 29 of 30 reserved flowers correct; its
+mean test log loss .21296239 still records the confidently mistaken flower. These
+selection, final-loss and confusion results describe this split and grid.
+A larger dataset, repeated outer evaluation and calibration assessment would answer
+questions that these thirty test rows and training-derived gain shares cannot.
+
+> References
+
+- J. H. Friedman (2001), “Greedy function approximation: A gradient boosting machine”,
+  Annals of Statistics 29(5), 1189–1232. https://doi.org/10.1214/aos/1013203451.
+  The gradient-boosting framework; this report explicitly uses direct residual leaf means.
+- Scikit-learn, “Gradient Boosting”, official ensemble documentation:
+  https://scikit-learn.org/stable/modules/ensemble.html#gradient-boosting.
+  Its classification leaf updates and binary score convention differ from this implementation.
+- R. A. Fisher (1936), “The use of multiple measurements in taxonomic problems”,
+  Annals of Eugenics 7(2), 179–188. https://doi.org/10.1111/j.1469-1809.1936.tb02137.x.
+

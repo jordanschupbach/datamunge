@@ -41,7 +41,7 @@ zero and it is dropped, so the output is always an orthonormal basis of the span
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

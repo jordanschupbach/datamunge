@@ -38,7 +38,9 @@
 #if defined(__APPLE__)
 using datamunge_lapack_int = __LAPACK_int;
 #else
-#if defined(DATAMUNGE_LAPACK_ILP64)
+// OpenBLAS built with INTERFACE64 (as in nixpkgs) takes 64-bit integers in its LAPACK entry
+// points too; its cblas.h, included above, defines OPENBLAS_USE64BITINT in that case.
+#if defined(DATAMUNGE_LAPACK_ILP64) || defined(OPENBLAS_USE64BITINT)
 using datamunge_lapack_int = std::int64_t;
 #else
 using datamunge_lapack_int = int;

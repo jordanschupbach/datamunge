@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/mds_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # feature_columns is passed via encode_strings() -- see examples/r/clustering_ex.r for why.
 # plot_embedding_grouped's `group_labels` is ALSO a vector<string>, but this time on an

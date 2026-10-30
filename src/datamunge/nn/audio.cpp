@@ -193,6 +193,7 @@ Tensor linear_to_mel_weight_matrix(std::int64_t num_mel_bins, std::int64_t num_s
 }
 
 Tensor mel_spectrogram(const Tensor& spectrogram, const Tensor& mel_weights) {
+  detail::require_cpu(spectrogram,"mel_spectrogram");detail::require_cpu(mel_weights,"mel_spectrogram");
   if (spectrogram.dim() < 1 || mel_weights.dim() != 2 || spectrogram.size(-1) != mel_weights.size(0))
     throw std::invalid_argument("mel_spectrogram: need spectrogram [..., bins] and weights [bins, mels]");
   const I64 bins = mel_weights.size(0), mels = mel_weights.size(1);

@@ -3,7 +3,8 @@
 import argparse
 import os
 from pathlib import Path
-import runpy
+
+from pydatamunge import nn_examples
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -24,7 +25,9 @@ def main():
             f"{args.name!r} has no unique native Python implementation yet; compiled references are not used"
         )
     os.chdir(ROOT)
-    return runpy.run_path(str(matches[0]))["main"](args.arguments)
+    # The dispatcher scopes --quick/--full and output paths exactly as the R
+    # launcher does, then passes only key=value options to the example's main.
+    return nn_examples.run(args.name, args.arguments)
 
 
 if __name__ == "__main__":

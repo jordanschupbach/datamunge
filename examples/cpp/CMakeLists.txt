@@ -41,6 +41,10 @@ foreach(ENTRY ${EXAMPLES_})
   add_executable(${EXAMPLE_NAME} ${ENTRY})
   set_target_properties(${EXAMPLE_NAME} PROPERTIES CXX_STANDARD 17)
   set_property(TARGET ${EXAMPLE_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+  if(EXAMPLE_NAME STREQUAL "playground" OR EXAMPLE_NAME STREQUAL "courier_offscreen")
+    # The interactive API sketch uses the standard C++23 <print> header.
+    set_property(TARGET ${EXAMPLE_NAME} PROPERTY CXX_STANDARD 23)
+  endif()
   # target_link_libraries(${EXAMPLE_NAME} datamunge::datamunge)
   if(BUILD_W_INSTALLED)
     target_link_libraries(${EXAMPLE_NAME} PkgConfig::datamunge)
@@ -57,14 +61,14 @@ endforeach()
 option(DATAMUNGE_BUILD_NN_EXAMPLES "Build CNN and autoencoder examples" ON)
 if(DATAMUNGE_BUILD_NN_EXAMPLES)
   file(GLOB_RECURSE NN_SECTION_SOURCES CONFIGURE_DEPENDS
-       "${CMAKE_CURRENT_SOURCE_DIR}/nn/[12]_*/*.cpp"
+       "${CMAKE_CURRENT_SOURCE_DIR}/source/nn/[12]_*/*.cpp"
   )
   foreach(source ${NN_SECTION_SOURCES})
     get_filename_component(name ${source} NAME_WE)
     add_executable(${name} ${source})
     set_target_properties(${name} PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
     target_include_directories(
-      ${name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/nn ${CMAKE_CURRENT_SOURCE_DIR}/../nn
+      ${name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/nn ${CMAKE_CURRENT_SOURCE_DIR}/../nn
     )
     if(BUILD_W_INSTALLED)
       target_link_libraries(${name} PRIVATE PkgConfig::datamunge)

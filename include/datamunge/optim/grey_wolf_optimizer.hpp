@@ -30,6 +30,10 @@ public:
     double optimize(ArbitraryFunction& function, std::vector<double>& coordinates,
                      const std::vector<double>& lower_bound, const std::vector<double>& upper_bound) const;
 
+    /// @brief The options this GreyWolfOptimizer was configured with.
+    /// @return The stored options.
+    [[nodiscard]] const GreyWolfOptimizerOptions& options() const noexcept { return options_; }
+
 private:
     GreyWolfOptimizerOptions options_;
 };

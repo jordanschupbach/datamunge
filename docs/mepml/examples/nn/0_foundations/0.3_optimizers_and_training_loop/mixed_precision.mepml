@@ -1,0 +1,327 @@
+//? Title: Mixed Precision: Rounding, Loss Scaling and Skipped Updates
+//? Subtitle: Float32 master weights with explicitly emulated low-precision storage
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+We round values to binary16 and bfloat16 representable sets while retaining Float32
+storage and arithmetic on the CPU. Three experiments expose representational limits,
+recover a tiny rounded gradient through loss scaling, and compare small dense fits.
+A deliberately overflowing gradient checks that skipping an update preserves weights,
+Adam moments and its update counter. These experiments make no claim about GPU speed,
+native low-precision memory use, or bitwise agreement with a hardware mixed-precision kernel.
+)
+\toc
+
+> The method
+
+
+Binary16 has five exponent bits and ten stored fraction bits: its smallest positive
+normal is 2^-14, smallest positive subnormal 2^-24 and largest finite value 65504.
+Bfloat16 keeps Float32's eight exponent bits but only seven fraction bits. Its range
+is wider than binary16's, while spacing near one is coarser: 2^-7 versus 2^-10.
+Rounding uses nearest with ties to even. Binary16 subnormals are retained here.
+
+The native emulation rounds dense-layer inputs, master weights, matmul outputs,
+biases and bias-add outputs. The multiply/accumulate itself still uses Float32.
+Its custom autograd VJP rounds the incoming gradient to the selected format. This
+is a storage-emulation surrogate, not the derivative of piecewise-constant rounding.
+
+For a positive loss multiplier S, the intended scaling identity is
+
+$$
+ g=\nabla L=\frac{\nabla(SL)}{S}.
+$$
+\alttext(The unscaled gradient is the gradient of the scaled loss divided by its positive multiplier.)
+
+Scaling can move small gradients into the representable range before the surrogate
+rounding edge. Divide into independent Float32 buffers and check finiteness before
+calling the optimizer. Overflow causes a skipped update and scale backoff; successful
+updates eventually grow the bounded scale. The host owns this control flow.
+
+
+The concept diagram is generated from the retained local TikZ source. LaTeX with
+PGF/TikZ and standalone, plus dvisvgm, is needed only to regenerate it.
+
+```{bash, results="output", file="figures/mixed_precision_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/mixed_precision_concept.tikz > build/mixed_precision.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/mixed_precision_concept.svg build/mixed_precision_concept.dvi > build/mixed_precision.render.log 2>&1
+printf 'Rendered build/mixed_precision_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/mixed_precision_concept.svg from local TikZ source.
+// \image(figures/mixed_precision_concept.svg)
+// result_end
+\caption(Float32 master weights with explicitly emulated low-precision storage.)
+\alttext(Three connected boxes summarize the stages: mixed precision: rounding, loss scaling and skipped updates. The prose and formulas specify each operation.)
+
+> Simple examples
+
+>> Range and spacing are different constraints
+
+The table includes a tiny derivative, the subnormal boundary, a midpoint near one,
+and overflow. Both reduced formats have coarser spacing than Float32. Bfloat16 keeps
+1e-8 nonzero; binary16 rounds it to zero. At 65520, binary16 rounds to infinity.
+The plot uses only the finite values near one so that infinity is never drawn as an
+ordinary finite point.
+
+```{cpp, results="markdown", file="figures/mixed_rounding.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::nn;
+  dm::dstruct::DataFrame t;
+  std::vector<double>
+      x = {1e-8, std::ldexp(1., -24), 1., 1.00048828125, 1.001, 1.00390625, 65504., 65520.},
+      h, b;
+  for (double a : x) {
+    h.push_back(round_float16(float(a)));
+    b.push_back(round_bfloat16(float(a)));
+  }
+  t.add_column("input", x);
+  t.add_column("binary16", h);
+  t.add_column("bfloat16", b);
+  std::vector<double> near, half, bfloat;
+  for (int i = 0; i <= 128; ++i) {
+    const float a = 1 + i / 8192.f;
+    near.push_back(a);
+    half.push_back(round_float16(a));
+    bfloat.push_back(round_bfloat16(a));
+  }
+  auto p = dm::graphics::RPlot::create();
+  p.line(near, near, "identity", {22, 163, 74})
+      .line(near, half, "binary16", {37, 99, 235})
+      .line(near, bfloat, "bfloat16", {220, 38, 38})
+      .title("Representable spacing near one")
+      .x_label("Float32 input")
+      .y_label("rounded value")
+      .y_limits(.999, 1.021);
+  std::filesystem::create_directories("build");
+  p.size(950, 460).save_svg("build/mixed_rounding.svg");
+  std::print("{}\n", t.to_md(9));
+}
+```
+// result_begin: markdown
+| input | binary16 | bfloat16 |
+| ---: | ---: | ---: |
+| 0.000000010 | 0.000000000 | 0.00000001 |
+| 0.000000060 | 0.000000060 | 0.00000006 |
+| 1.000000000 | 1.000000000 | 1.00000000 |
+| 1.000488281 | 1.000000000 | 1.00000000 |
+| 1.001000000 | 1.000976562 | 1.00000000 |
+| 1.003906250 | 1.003906250 | 1.00000000 |
+| 65504.000000000 | 65504.000000000 | 65536.00000000 |
+| 65520.000000000 | inf | 65536.00000000 |
+
+\image(figures/mixed_rounding.svg)
+// result_end
+\caption(Binary16 range and bfloat16 spacing impose different representational limits.)
+\alttext(A table reports rounded tiny, near-one and large values, including binary16 infinity at 65520. A plot shows stair-step binary16 and bfloat16 rounding near one against the identity line.)
+
+>> Scaling crosses the rounded-gradient boundary
+
+For L=q(w)*1e-8 at w=1, q has the explicitly rounded VJP described above.
+Without scaling the incoming 1e-8 gradient becomes zero in binary16. A scale of
+65536 moves it into range before rounding; division afterwards recovers approximately
+1e-8. Recovery remains approximate because rounding still occurs. A bounded host
+scale with a two-success interval grows 128 to 256 and backs off to 128 on overflow.
+
+```{cpp, results="markdown", file="figures/mixed_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::nn;
+  const auto             w = scalar(1).requires_grad_();
+  dm::dstruct::DataFrame t;
+  std::vector<double>    scales = {1, 128, 65536}, rounded, recovered;
+  for (double scale : scales) {
+    const auto          loss = quantize_precision(w, PrecisionEmulation::Float16) * 1e-8;
+    const auto          g    = grad(loss * scale, {w});
+    std::vector<Tensor> unscaled;
+    if (!unscale_gradients(g, float(scale), &unscaled))
+      throw std::runtime_error("unexpected overflow");
+    rounded.push_back(g[0].item());
+    recovered.push_back(unscaled[0].item());
+  }
+  if (recovered.front() != 0 || std::abs(recovered.back() - 1e-8) > 1e-11)
+    throw std::runtime_error("scaling reference mismatch");
+  t.add_column("scale", scales);
+  t.add_column("rounded_scaled_gradient", rounded);
+  t.add_column("unscaled_gradient", recovered);
+  DynamicLossScale    policy(128, 2, 1, 256);
+  std::vector<double> states = {policy.value()};
+  policy.applied();
+  states.push_back(policy.value());
+  policy.applied();
+  states.push_back(policy.value());
+  policy.overflow();
+  states.push_back(policy.value());
+  auto                tiny = dm::graphics::RPlot::create(), host = dm::graphics::RPlot::create();
+  std::vector<double> units = recovered;
+  for (auto& v : units)
+    v /= 1e-8;
+  tiny.bars({0, 1, 2}, units, "unscaled", {37, 99, 235}, .5)
+      .title("Loss scaling prevents this underflow")
+      .x_label("scale index: 1, 128, 65536")
+      .y_label("recovered gradient / 1e-8")
+      .y_limits(0, 1.5);
+  host.line({0, 1, 2, 3}, states, "loss scale", {220, 38, 38})
+      .points({0, 1, 2, 3}, states, "events", {220, 38, 38}, 4)
+      .title("Two successes grow; overflow halves")
+      .x_label("initial, success, success, overflow")
+      .y_label("scale")
+      .y_limits(0, 350);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(tiny).add(host).size(1100, 490).fit_panels().save_svg(
+      "build/mixed_scaling.svg");
+  std::print("{}\n\nHost scales: 128, 128, 256, 128.\n", t.to_md(12));
+}
+```
+// result_begin: markdown
+| scale | rounded_scaled_gradient | unscaled_gradient |
+| ---: | ---: | ---: |
+| 1 | 0.000000000 | 0.00000000 |
+| 128 | 0.000001252 | 0.00000001 |
+| 65536 | 0.000655174 | 0.00000001 |
+
+
+Host scales: 128, 128, 256, 128.
+\image(figures/mixed_scaling.svg)
+// result_end
+\caption(Scaling changes where rounding occurs; it does not make reduced-precision gradients exact.)
+\alttext(One panel shows unscaled recovered derivatives at three loss scales. Another shows the host scale rising after two successful updates and falling after an overflow.)
+
+> A small dense model
+
+>> Master weights stay Float32 and overflow skips Adam
+
+Sixteen deterministic two-feature observations follow y=.73*x0-1.27*x1+.13.
+All three modes start with seed 11, use Adam at rate .03 and apply 400 full-batch
+updates. Parameter creation happens on the first forward pass, before constructing
+the optimizer. Only binary16 uses dynamic scaling. After its first successful update,
+a separate scale of 1e12 deliberately overflows. We compare every master weight,
+optimizer slot and counter before and after that skipped attempt. Ordinary finite
+training then continues. This is one tiny deterministic regression, not a benchmark
+or evidence that any precision is universally accurate enough.
+
+```{cpp, results="markdown", file="figures/mixed_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::nn;
+  set_num_threads(2);
+  std::vector<float> xv(32), yv(16);
+  for (int i = 0; i < 16; ++i) {
+    float a = std::sin(i * .7f), b = std::cos(i * .4f);
+    xv[2 * i]     = a;
+    xv[2 * i + 1] = b;
+    yv[i]         = .73f * a - 1.27f * b + .13f;
+  }
+  const auto               x = from_vector(xv, {16, 2}), y = from_vector(yv, {16, 1});
+  auto                     p = dm::graphics::RPlot::create();
+  dm::dstruct::DataFrame   table;
+  std::vector<std::string> names;
+  std::vector<double>      losses, skips, scale_end;
+  int                      mode = 0;
+  for (auto precision :
+       {PrecisionEmulation::Float32, PrecisionEmulation::Float16, PrecisionEmulation::BFloat16}) {
+    ParameterStore store(11);
+    auto loss = [&] { return mean(square(mixed_dense(store, "dense", x, 2, 1, precision) - y)); };
+    (void)loss();
+    OptimizerConfig c;
+    c.kind = OptimizerKind::Adam;
+    Optimizer        opt(store, .03, c);
+    DynamicLossScale scale(
+        precision == PrecisionEmulation::Float16 ? 128 : 1,
+        100,
+        1,
+        precision == PrecisionEmulation::Float16 ? 65536 : 1);
+    std::vector<double> steps = {0}, mse = {std::log10(loss().item())};
+    int                 applied = 0, skipped = 0;
+    bool                forced   = false;
+    auto                snapshot = [&] {
+      std::vector<std::vector<double>> v;
+      for (const auto& t : store.parameters())
+        v.push_back(t.to_vector<double>());
+      for (const auto& [name, t] : opt.state())
+        v.push_back(t.to_vector<double>());
+      return v;
+    };
+    for (int attempt = 0; applied < 400 && attempt < 450; ++attempt) {
+      std::vector<Tensor> g;
+      if (!unscale_gradients(grad(loss() * scale.value(), store.parameters()), scale.value(), &g)) {
+        scale.overflow();
+        ++skipped;
+        continue;
+      }
+      opt.step(g);
+      scale.applied();
+      ++applied;
+      if (applied % 10 == 0) {
+        steps.push_back(applied);
+        mse.push_back(std::log10(std::max(1e-16, loss().item())));
+      }
+      if (precision == PrecisionEmulation::Float16 && !forced) {
+        const auto before = snapshot();
+        if (unscale_gradients(grad(loss() * 1e12, store.parameters()), 1e12, &g))
+          throw std::runtime_error("forced overflow absent");
+        if (before != snapshot() || opt.iterations() != 1)
+          throw std::runtime_error("skipped attempt mutated Adam");
+        forced = true;
+        std::print("Forced overflow: all weights, moments and counter unchanged.\n\n");
+      }
+    }
+    if (applied != 400 || opt.iterations() != 400 || loss().item() >= 3e-4)
+      throw std::runtime_error("fit reference failed");
+    names.push_back(precision_name(precision));
+    losses.push_back(loss().item());
+    skips.push_back(skipped);
+    scale_end.push_back(scale.value());
+    const dm::graphics::RGB color = mode == 0   ? dm::graphics::RGB{37, 99, 235}
+                                    : mode == 1 ? dm::graphics::RGB{220, 38, 38}
+                                                : dm::graphics::RGB{22, 163, 74};
+    p.line(steps, mse, precision_name(precision), color);
+    ++mode;
+  }
+  table.add_column("storage_emulation", names);
+  table.add_column("final_mse", losses);
+  table.add_column("ordinary_overflow_skips", skips);
+  table.add_column("final_loss_scale", scale_end);
+  p.title("One deterministic dense regression")
+      .x_label("applied Adam updates")
+      .y_label("log10 full-data MSE")
+      .y_limits(-16, 2);
+  std::filesystem::create_directories("build");
+  p.size(950, 460).save_svg("build/mixed_fit.svg");
+  std::print(
+      "{}\n\nEach mode applied 400 updates; all master weights remained Float32.\n",
+      table.to_md(10));
+}
+```
+// result_begin: markdown
+Forced overflow: all weights, moments and counter unchanged.
+
+| storage_emulation | final_mse | ordinary_overflow_skips | final_loss_scale |
+| :--- | ---: | ---: | ---: |
+| float32 | 0.000000000 | 0 | 1 |
+| float16 | 0.000000105 | 0 | 2048 |
+| bfloat16 | 0.000014165 | 0 | 1 |
+
+
+Each mode applied 400 updates; all master weights remained Float32.
+\image(figures/mixed_fit.svg)
+// result_end
+\caption(Three emulated storage choices fit the same toy data; a forced overflow independently checks the skip policy.)
+\alttext(Three log10 MSE curves fall over 400 applied Adam updates. A table records final losses, ordinary skipped attempts and loss scales. Printed evidence checks that one forced overflow leaves all Adam state unchanged.)
+
+> Conclusion
+
+The experiment separates range, spacing, loss scaling and optimizer state. Reduced
+formats use Float32 carriers and arithmetic; their rounded VJPs model selected storage
+edges. Loss scaling recovers a small derivative here, and nonfinite gradients cause no
+optimizer call. Exact resume of a dynamic-scale run must also retain its host scale
+and successful-update history, separately from model/optimizer checkpoints.
+
+> References
+
+- TensorFlow authors. [Mixed precision guide|https://www.tensorflow.org/guide/mixed_precision]. Float32 master variables and loss-scaling motivation; this report uses explicit CPU storage emulation rather than native hardware kernels.
+- Kingma, D. P. and Ba, J. (2015). [Adam: A Method for Stochastic Optimization|https://arxiv.org/abs/1412.6980]. Moment state and update counting.

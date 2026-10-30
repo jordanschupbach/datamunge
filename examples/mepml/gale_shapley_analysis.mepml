@@ -51,7 +51,7 @@ blocking pair.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Deferred acceptance
@@ -207,7 +207,7 @@ of the hospital each is assigned (rank 1 = first choice).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

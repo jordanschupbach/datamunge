@@ -53,33 +53,6 @@ std::vector<int> longest_common_substring(const std::vector<int>& a, const std::
                             a.begin() + static_cast<std::ptrdiff_t>(best_end));
 }
 
-bool wildcard_match(const std::string& text, const std::string& pattern) {
-    const std::size_t n = text.size();
-    const std::size_t m = pattern.size();
-    std::size_t       i = 0;                          // index into text
-    std::size_t       j = 0;                          // index into pattern
-    std::size_t       star = std::string::npos;       // last '*' position in pattern, if any
-    std::size_t       mark = 0;                        // text index matched when that '*' was seen
-    while (i < n) {
-        if (j < m && (pattern[j] == '?' || pattern[j] == text[i])) {
-            ++i;
-            ++j;
-        } else if (j < m && pattern[j] == '*') {
-            star = j;                                  // remember the star and where we are in text
-            mark = i;
-            ++j;                                       // first try matching '*' with the empty string
-        } else if (star != std::string::npos) {
-            j = star + 1;                              // backtrack: let the star swallow one more char
-            ++mark;
-            i = mark;
-        } else {
-            return false;                              // literal mismatch with no star to fall back on
-        }
-    }
-    while (j < m && pattern[j] == '*') ++j;            // trailing stars may match the empty string
-    return j == m;
-}
-
 SuffixTree build_suffix_tree(const std::string& text) {
     SuffixTree tree;
     tree.text     = text;

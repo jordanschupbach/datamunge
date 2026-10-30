@@ -52,7 +52,7 @@ modulus up to \(2^{64}-1\):
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Square-and-multiply
@@ -182,7 +182,7 @@ bit, then verifies a few known values, checks Fermat's little theorem
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

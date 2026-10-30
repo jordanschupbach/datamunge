@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <datamunge/datasets/datasets.hpp>
 #include <datamunge/stats/arima.hpp>
 
 #include <cmath>
@@ -176,4 +177,27 @@ TEST(ARIMA, SeasonalModelFitsWithoutError) {
     EXPECT_EQ(model.seasonal_ar_coefficients().size(), 1u);
     const auto fc = model.forecast(12);
     EXPECT_EQ(fc.size(), 12u);
+}
+
+TEST(ARIMA, AirlineModelMatchesRCss) {
+    // R: arima(log(AirPassengers), c(0,1,1), list(order = c(0,1,1), period = 12), method = "CSS").
+    auto y = datamunge::datasets::air_passengers().get_column<double>("passengers").values();
+    for (double& v : y) v = std::log(v);
+    datamunge::stats::ARIMAOptions o;
+    o.d = 1; o.q = 1; o.seasonal_d = 1; o.seasonal_q = 1; o.seasonal_period = 12;
+    const datamunge::stats::ARIMA m(y, o);
+    EXPECT_NEAR(m.ma_coefficients()[0], -0.3771624, 1e-4);
+    EXPECT_NEAR(m.seasonal_ma_coefficients()[0], -0.5723791, 1e-4);
+    EXPECT_NEAR(m.sigma2(), 0.00138875, 1e-7);
+    EXPECT_NEAR(m.log_likelihood(), 245.0666, 1e-3);
+    const auto& b = m.expanded_ma_coefficients();
+    ASSERT_EQ(b.size(), 13u);
+    EXPECT_NEAR(b[12], b[0] * b[11], 1e-12);
+    const auto [f, se] = m.forecast_with_intervals(12);
+    EXPECT_NEAR(se[0], 0.0373, 1e-4);   // R predict()$se
+    EXPECT_NEAR(se[11], 0.0855, 1e-4);
+    EXPECT_NEAR(std::exp(f[6]), 669.2, 0.2);
+    const auto psi = m.psi_weights(3);
+    EXPECT_DOUBLE_EQ(psi[0], 1.0);
+    EXPECT_NEAR(psi[1], 1.0 + b[0], 1e-12);  // (1 - B)^-1 (1 + theta B): 1 + theta
 }

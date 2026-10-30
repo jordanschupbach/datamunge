@@ -52,7 +52,7 @@ spanning ~forest~.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The greedy rule and why it works
@@ -222,7 +222,7 @@ The MST is \(\{(4,5),(3,4),(2,5),(0,3),(1,4)\}\) with total weight
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

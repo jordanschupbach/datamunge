@@ -182,7 +182,7 @@ measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
 The entire analysis is one C++ program against =datamunge=:
 =dstruct::DataFrame= for the data, the formula-driven
 =stats::DecisionTreeClassifier= for every model in this report, and
-=plot::RPlot=/=plot::RLayout= for every figure -- including the
+=graphics::RPlot=/=graphics::RLayout= for every figure -- including the
 classification and decision-region plots, which the classifier itself
 knows how to draw. No external plotting or statistics package is used.
 
@@ -210,7 +210,7 @@ using datamunge::dstruct::DataFrame;
 using datamunge::stats::DecisionTreeClassifier;
 using datamunge::stats::DecisionTreeClassifierOptions;
 using datamunge::stats::SplitCriterion;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static const std::vector<std::string> kSpecies =
     {"setosa", "versicolor", "virginica"};

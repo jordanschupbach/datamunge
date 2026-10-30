@@ -37,7 +37,7 @@ of \(N/r\), so measuring the QFT output reveals \(r\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -99,7 +99,7 @@ sequence with period \(r=4\) over \(N=16\) \-\- apply the QFT, and read off the 
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

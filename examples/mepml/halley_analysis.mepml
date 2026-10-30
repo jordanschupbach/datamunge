@@ -38,7 +38,7 @@ order above Newton.)
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double ROOT2 = 1.4142135623730951;
 ```
@@ -97,7 +97,7 @@ precision in even fewer steps than Newton. We trace both errors.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double ROOT2 = 1.4142135623730951;
 

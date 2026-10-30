@@ -1,32 +1,39 @@
+/// @file ode.cpp
+/// @brief One-step ODE integrators and the adaptive backward Euler.
+
 #include <datamunge/algorithms/ode.hpp>
 
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <functional>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
 namespace datamunge::algorithms {
 
+/// @brief Small dense vector helpers and the implicit step.
 namespace {
 
+/// @brief A dense state vector.
 using Vec = std::vector<double>;
 
-// y = a + s*b
+/// @brief a + s·b.
 Vec axpy(const Vec& a, double s, const Vec& b) {
     Vec r(a.size());
     for (std::size_t i = 0; i < a.size(); ++i) r[i] = a[i] + s * b[i];
     return r;
 }
 
+/// @brief Largest absolute entry.
 double norm_inf(const Vec& a) {
     double m = 0.0;
     for (double x : a) m = std::max(m, std::fabs(x));
     return m;
 }
 
-// Solve the dense linear system A x = b in place by Gaussian elimination with partial pivoting.
+/// @brief Solves A x = b by Gaussian elimination with partial pivoting.
 Vec solve_dense(std::vector<Vec> A, Vec b) {
     const std::size_t n = b.size();
     for (std::size_t c = 0; c < n; ++c) {
@@ -47,6 +54,40 @@ Vec solve_dense(std::vector<Vec> A, Vec b) {
     Vec x(n);
     for (std::size_t i = 0; i < n; ++i) x[i] = (A[i][i] != 0.0) ? b[i] / A[i][i] : 0.0;
     return x;
+}
+
+/// @brief One backward Euler step from (t, y) of size h: solves Y = y + h f(t + h, Y) by Newton's
+///        method with a central-difference Jacobian, starting from the forward Euler predictor.
+/// @param iterations incremented once per Newton iteration, when not null.
+Vec implicit_euler_step(const OdeSystem& f, double t, const Vec& y, double h, double tol, int max_iter,
+                        long* iterations) {
+    const std::size_t dim = y.size();
+    const double      tn1 = t + h;
+    Vec               Y   = axpy(y, h, f(t, y));
+    for (int it = 0; it < max_iter; ++it) {
+        const Vec fY = f(tn1, Y);
+        Vec       G(dim);
+        for (std::size_t i = 0; i < dim; ++i) G[i] = Y[i] - y[i] - h * fY[i];
+        if (norm_inf(G) < tol) break;
+        if (iterations) ++*iterations;
+        // Central differences: exact for quadratic right-hand sides (as in chemical kinetics), so the
+        // Jacobian stays right even for components far smaller than the step eps.
+        std::vector<Vec> J(dim, Vec(dim, 0.0));
+        for (std::size_t j = 0; j < dim; ++j) {
+            const double eps = 6e-6 * std::max(1.0, std::fabs(Y[j]));
+            Vec          Yp = Y, Ym = Y;
+            Yp[j] += eps;
+            Ym[j] -= eps;
+            const Vec fp = f(tn1, Yp), fm = f(tn1, Ym);
+            for (std::size_t i = 0; i < dim; ++i) J[i][j] = (i == j ? 1.0 : 0.0) - h * (fp[i] - fm[i]) / (2 * eps);
+        }
+        Vec neg_G(dim);
+        for (std::size_t i = 0; i < dim; ++i) neg_G[i] = -G[i];
+        const Vec dY = solve_dense(J, neg_G);
+        for (std::size_t i = 0; i < dim; ++i) Y[i] += dY[i];
+        if (norm_inf(dY) < tol) break;
+    }
+    return Y;
 }
 
 } // namespace
@@ -94,43 +135,62 @@ OdeSolution backward_euler(const OdeSystem& f, std::vector<double> y0, double t0
     OdeSolution  sol;
     const double h = (t1 - t0) / steps;
     Vec          y = std::move(y0);
-    double       t = t0;
-    sol.t.push_back(t);
+    sol.t.push_back(t0);
     sol.y.push_back(y);
-    const std::size_t dim = y.size();
-
     for (int n = 0; n < steps; ++n) {
-        const double tn1 = t0 + (n + 1) * h;
-        // Solve G(Y) = Y - y_n - h f(tn1, Y) = 0 by Newton with a finite-difference Jacobian.
-        Vec Y = axpy(y, h, f(t, y)); // forward-Euler predictor as the initial guess
-        for (int it = 0; it < newton_max_iter; ++it) {
-            const Vec fY = f(tn1, Y);
-            Vec       G(dim);
-            for (std::size_t i = 0; i < dim; ++i) G[i] = Y[i] - y[i] - h * fY[i];
-            if (norm_inf(G) < newton_tol) break;
-
-            // Jacobian J = I - h * df/dY, via forward differences.
-            std::vector<Vec> J(dim, Vec(dim, 0.0));
-            for (std::size_t j = 0; j < dim; ++j) {
-                const double eps = std::sqrt(2.2e-16) * std::max(1.0, std::fabs(Y[j]));
-                Vec          Yp  = Y;
-                Yp[j] += eps;
-                const Vec fp = f(tn1, Yp);
-                for (std::size_t i = 0; i < dim; ++i)
-                    J[i][j] = (i == j ? 1.0 : 0.0) - h * (fp[i] - fY[i]) / eps;
-            }
-            Vec neg_G(dim);
-            for (std::size_t i = 0; i < dim; ++i) neg_G[i] = -G[i];
-            const Vec dY = solve_dense(J, neg_G);
-            for (std::size_t i = 0; i < dim; ++i) Y[i] += dY[i];
-            if (norm_inf(dY) < newton_tol) break;
-        }
-        y = Y;
-        t = tn1;
-        sol.t.push_back(t);
+        y = implicit_euler_step(f, t0 + n * h, y, h, newton_tol, newton_max_iter, nullptr);
+        sol.t.push_back(t0 + (n + 1) * h);
         sol.y.push_back(y);
     }
     return sol;
+}
+
+AdaptiveOdeResult backward_euler_adaptive(const OdeSystem& f, std::vector<double> y0, double t0, double t1,
+                                          double rtol, double atol, double h0, double h_max) {
+    if (!(t1 > t0)) throw std::invalid_argument("backward_euler_adaptive: t1 must exceed t0");
+    if (!(rtol > 0) || !(atol > 0) || !(h0 > 0)) throw std::invalid_argument("backward_euler_adaptive: tolerances and h0 must be positive");
+    AdaptiveOdeResult out;
+    const OdeSystem   counted = [&](double t, const Vec& y) {
+        ++out.f_evaluations;
+        return f(t, y);
+    };
+    Vec    y = std::move(y0);
+    double t = t0, h = std::min(h0, h_max);
+    out.solution.t.push_back(t);
+    out.solution.y.push_back(y);
+    const double newton_tol = std::min(1e-12, 0.01 * atol);
+    while (t < t1) {
+        if (t + h > t1) h = t1 - t;
+        const Vec full = implicit_euler_step(counted, t, y, h, newton_tol, 50, &out.newton_iterations);
+        const Vec half = implicit_euler_step(counted, t, y, h / 2, newton_tol, 50, &out.newton_iterations);
+        const Vec two  = implicit_euler_step(counted, t + h / 2, half, h / 2, newton_tol, 50, &out.newton_iterations);
+        double err = 0.0;
+        for (std::size_t i = 0; i < y.size(); ++i)
+            err = std::max(err, std::fabs(two[i] - full[i]) / (atol + rtol * std::fabs(two[i])));
+        if (err <= 1.0 || h < 1e-14 * std::max(1.0, std::fabs(t))) {
+            t += h;
+            y = two;
+            out.solution.t.push_back(t);
+            out.solution.y.push_back(y);
+            out.step_sizes.push_back(h);
+            ++out.accepted;
+        } else {
+            ++out.rejected;
+        }
+        const double scale = err > 0 ? 0.9 / std::sqrt(err) : 2.0;
+        h = std::min(h_max, h * std::clamp(scale, 0.2, 2.0));
+    }
+    return out;
+}
+
+std::complex<double> stability_function(OdeMethod method, std::complex<double> z) {
+    switch (method) {
+        case OdeMethod::ForwardEuler: return 1.0 + z;
+        case OdeMethod::BackwardEuler: return 1.0 / (1.0 - z);
+        case OdeMethod::Trapezoidal: return (1.0 + z / 2.0) / (1.0 - z / 2.0);
+        case OdeMethod::RungeKutta4: return 1.0 + z * (1.0 + z * (0.5 + z * (1.0 / 6.0 + z / 24.0)));
+    }
+    return 0.0;
 }
 
 VerletSolution velocity_verlet(const std::function<std::vector<double>(const std::vector<double>&)>& accel,

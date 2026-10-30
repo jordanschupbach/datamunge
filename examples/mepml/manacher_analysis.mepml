@@ -54,7 +54,7 @@ into the original string) and the full Manacher radius array as
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The '#'\-interleaving trick
@@ -188,7 +188,7 @@ Manacher skyline.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

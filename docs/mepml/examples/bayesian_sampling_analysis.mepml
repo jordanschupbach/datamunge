@@ -1,0 +1,603 @@
+//? Title: Gradient-Free Bayesian Sampling
+//? Subtitle: Metropolis–Hastings, Metropolis-within-Gibbs and importance sampling, checked against exact quadrature, on a robust regression of fuel economy on weight with datamunge's bayes module
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+We compare three samplers that need only a log density: random-walk Metropolis,
+Metropolis-within-Gibbs and importance sampling, all from `datamunge`'s `bayes` module. The test
+case regresses fuel economy on weight for the 32 cars in `dm::datasets::mtcars()`, with Normal
+errors and with heavier-tailed Laplace errors. With three parameters the posterior can be
+computed exactly by quadrature on a grid, and every sampler is checked against that answer. We
+derive detailed balance for Metropolis–Hastings and show that the joint-density ratio of a
+coordinate update is the full-conditional ratio. We also derive two closed forms: an exact Gibbs
+sampler on a correlation-\(\rho\) Gaussian keeps only a fraction \((1-\rho^2)/(1+\rho^2)\) of
+its draws as effective, and Gaussian importance sampling with a proposal \(k\) times too wide
+keeps \((\sqrt{2k^2-1}/k^2)^d\). The intercept and slope have posterior correlation
+\(-0.957\), and an isotropic random walk on them gives only 19 effective draws out of 20,000
+(\(\hat R=1.25\)). Learning the proposal covariance during warmup raises this to about 800, and
+centring the predictor lets Metropolis-within-Gibbs reach about 3,900. Importance sampling
+reproduces the exact log evidence of both models to within 0.03. Its Bayes factor of 2.19 in
+favour of Normal errors matches the grid's to three decimals.
+)
+
+\toc
+
+> Sampling with only a log density
+
+Hamiltonian Monte Carlo needs the gradient of the log posterior. Many models do not offer
+one. The likelihood may come from a simulator or other black box, or it may have kinks, like the
+absolute-error likelihood used below. The three methods in this report need only the ability
+to evaluate \(\log\pi(\theta)\), the log posterior up to an additive constant:
+
+- **random-walk Metropolis** (`bayes::RandomWalkMetropolis`) proposes a jump in all coordinates at once;
+- **Metropolis-within-Gibbs** (`bayes::GibbsSampler`) updates one coordinate at a time;
+- **importance sampling** (`bayes::ImportanceSampling`) reweights independent draws from a
+  Gaussian approximation, and also estimates the evidence \(p(y)\) needed to compare models.
+
+Each takes an `optim::ArbitraryFunction`. In C++, `bayes::LogDensity` wraps any lambda from
+`std::vector<double>` to `double` as one. The model here has three parameters, so the posterior
+can also be computed exactly by quadrature on a grid (`bayes::grid_posterior`). That gives every
+sampler a known answer to be checked against.
+
+> Fuel economy and weight
+
+`dm::datasets::mtcars()` lists 32 cars from the 1974 *Motor Trend* road tests. We regress fuel
+economy (miles per US gallon) on weight (thousands of pounds),
+\(\text{mpg}_i=a+b\,\text{wt}_i+e_i\), with two error laws:
+
+$$
+\text{Normal: } e_i\sim N(0,s^2),\qquad\text{Laplace: } p(e_i)=\frac1{2s}e^{-|e_i|/s}.
+$$
+\alttext(Normal errors: e i is Normal with mean 0 and variance s squared. Laplace errors: the density of e i is 1 over 2 s times e to the minus absolute e i over s.)
+
+The Normal model's maximum-likelihood fit is least squares. The Laplace model's is least
+absolute deviations, a median regression that gives large residuals less influence. Its log
+likelihood \(-\sum_i|e_i|/s\) has a kink wherever a residual is zero. Both models share weakly
+informative priors \(a\sim N(20,20^2)\), \(b\sim N(0,10^2)\), \(s\sim\text{half-Cauchy}(0,5)\). We
+sample \((a,b,\log s)\) and include the log-Jacobian \(\log s\). Every density keeps its
+normalising constant, so the integral of the unnormalised posterior is the evidence \(p(y)\).
+
+```{cpp, results="markdown", file="figures/sampling_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace by = dm::bayes;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto cars = dm::datasets::mtcars();
+  const auto& mpg = cars.get_column("mpg").values();
+  const auto& wt = cars.get_column("wt").values();
+  // Log posterior of (a, b, log s) for mpg = a + b wt + error, Normal or Laplace errors.
+  const auto model = [&](bool laplace) {
+    return by::LogDensity([&, laplace](const std::vector<double>& p) {
+      const double s = std::exp(p[2]);
+      double lp = by::normal_lpdf(p[0], 20.0, 20.0) + by::normal_lpdf(p[1], 0.0, 10.0) +
+                  by::cauchy_lpdf(s, 0.0, 5.0) + std::log(2.0) + p[2];
+      for (std::size_t i = 0; i < mpg.size(); ++i) {
+        const double mu = p[0] + p[1] * wt[i];
+        lp += laplace ? by::laplace_lpdf(mpg[i], mu, s) : by::normal_lpdf(mpg[i], mu, s);
+      }
+      return lp;
+    });
+  };
+
+  std::print("| model | \\(a\\) | \\(b\\) | \\(s\\) | corr\\((a,b)\\) | log evidence | edge mass |\n"
+             "| --- | --- | --- | --- | ---: | ---: | ---: |\n");
+  std::vector<by::GridPosterior> exact;
+  for (const bool laplace : {false, true}) {
+    auto f = model(laplace);
+    const auto g = by::grid_posterior(f, {25.0, -9.0, std::log(1.2)}, {50.0, -2.0, std::log(6.0)}, 120);
+    double s_mean = 0.0, s_sq = 0.0;  // moments of s = exp(log s) from the log s marginal
+    for (std::size_t i = 0; i < g.marginal_grid[2].size(); ++i) {
+      const double w = g.marginal_density[2][i] * (g.marginal_grid[2][1] - g.marginal_grid[2][0]);
+      s_mean += w * std::exp(g.marginal_grid[2][i]);
+      s_sq += w * std::exp(2 * g.marginal_grid[2][i]);
+    }
+    std::print("| {} | {:.2f} ± {:.2f} | {:.3f} ± {:.3f} | {:.3f} ± {:.3f} | {:.3f} | {:.3f} | {:.1e} |\n",
+               laplace ? "Laplace" : "Normal", g.mean[0], g.sd[0], g.mean[1], g.sd[1], s_mean,
+               std::sqrt(s_sq - s_mean * s_mean), g.covariance[0][1] / (g.sd[0] * g.sd[1]), g.log_evidence, g.edge_mass);
+    exact.push_back(g);
+  }
+  const double log_bf = exact[0].log_evidence - exact[1].log_evidence;
+  std::print("\nBayes factor, Normal against Laplace errors: exp({:.3f}) = {:.2f}.\n", log_bf, std::exp(log_bf));
+
+  std::vector<std::pair<double, std::size_t>> residuals;
+  for (std::size_t i = 0; i < mpg.size(); ++i)
+    residuals.push_back({mpg[i] - exact[0].mean[0] - exact[0].mean[1] * wt[i], i});
+  std::ranges::sort(residuals, [](auto l, auto r) { return std::abs(l.first) > std::abs(r.first); });
+  std::print("Largest residuals from the Normal posterior-mean line:");
+  for (std::size_t k = 0; k < 4; ++k)
+    std::print("{} {} {:+.1f}", k ? "," : "", cars.string_at("model", residuals[k].second), residuals[k].first);
+  std::print(".\n");
+
+  auto scatter = dm::graphics::RPlot::create().points(wt, mpg, "", dm::RGB{71, 85, 105}, 6.0);
+  const std::vector<dm::RGB> colours{{37, 99, 235}, {234, 88, 12}};
+  for (std::size_t m = 0; m < 2; ++m)
+    scatter.lines({1.4, 5.5}, {exact[m].mean[0] + 1.4 * exact[m].mean[1], exact[m].mean[0] + 5.5 * exact[m].mean[1]},
+                  m ? "Laplace" : "Normal", colours[m], 2.0);
+  for (std::size_t k = 0; k < 3; ++k) {
+    const std::size_t i = residuals[k].second;
+    scatter.text(wt[i] + 0.08, mpg[i] + 0.4, cars.string_at("model", i), dm::RGB{71, 85, 105}, 11.0);
+  }
+  scatter.x_limits(1.4, 6.3).y_limits(8, 36).title("Posterior-mean regression lines").x_label("weight (1000 lb)").y_label(
+      "miles per gallon");
+  auto slopes = dm::graphics::RPlot::create();
+  for (std::size_t m = 0; m < 2; ++m)
+    slopes.lines(exact[m].marginal_grid[1], exact[m].marginal_density[1], m ? "Laplace" : "Normal", colours[m], 2.0);
+  slopes.x_limits(-9, -2).title("Exact posterior of the slope").x_label("b (mpg per 1000 lb)").y_label("density");
+  dm::graphics::RLayout::create(1, 2).add(scatter).add(slopes).size(1200, 460).save_svg("build/sampling_data.svg");
+}
+```
+// result_begin: markdown
+| model | \(a\) | \(b\) | \(s\) | corr\((a,b)\) | log evidence | edge mass |
+| --- | --- | --- | --- | ---: | ---: | ---: |
+| Normal | 37.06 ± 1.95 | -5.280 ± 0.579 | 3.148 ± 0.422 | -0.957 | -89.446 | 5.8e-06 |
+| Laplace | 35.86 ± 2.20 | -5.018 ± 0.650 | 2.521 ± 0.467 | -0.971 | -90.228 | 5.2e-06 |
+
+Bayes factor, Normal against Laplace errors: exp(0.782) = 2.19.
+Largest residuals from the Normal posterior-mean line: Fiat 128 +7.0, Toyota Corolla +6.5, Chrysler Imperial +5.9, Ford Pantera L -4.5.
+\image(figures/sampling_data.svg)
+// result_end
+
+\caption(Left: the 32 cars with the posterior-mean lines of both models; the three largest residuals are labelled. Right: the exact marginal posterior density of the slope \(b\) under each model, from the grid.)
+\alttext(Left: scatter of miles per gallon (10 to 34) against weight (1.5 to 5.4 thousand pounds), falling roughly linearly, with Toyota Corolla and Fiat 128 labelled at the top left and Chrysler Imperial labelled at the bottom right above the line. A blue Normal line and a slightly flatter orange Laplace line run from about 29 mpg at 1.4 to about 8 mpg at 5.5. Right: two bell-shaped slope densities, blue Normal peaking at about -5.3 with height 0.7 and orange Laplace peaking at about -4.9 with height 0.6, slightly wider and skewed to the right.)
+
+The grid has \(120^3\) cells over \(a\in[25,50]\), \(b\in[-9,-2]\), \(\log s\in[\log1.2,\log6]\). The
+"edge mass" column is the posterior probability in the outermost layer of cells. It is tiny, so
+the box contains essentially the whole posterior.
+
+Each extra 1,000 lb costs about 5.3 mpg under the Normal model (posterior sd 0.58) and 5.0 mpg
+under the Laplace model (sd 0.65). The largest residuals are three cars that do better than their
+weight predicts: the Fiat 128 (+7.0), the Toyota Corolla (+6.5) and the heavy Chrysler Imperial
+(+5.9). The Laplace likelihood penalises these residuals linearly instead of quadratically, and
+its line is a little flatter. The evidence nevertheless prefers Normal errors, by a Bayes
+factor of \(e^{0.782}=2.19\). That is weak evidence: these residuals are not extreme enough for a
+heavy-tailed error law to pay for itself.
+
+The column that matters most for sampling is the correlation of \(a\) and \(b\), \(-0.957\) and
+\(-0.971\). The data fix the height of the line near the mean weight, 3.2 thousand lb, much more
+tightly than its intercept at weight zero, which lies far outside the data. Every pair \((a,b)\)
+that fits well therefore lies along a narrow diagonal ridge.
+
+> Metropolis–Hastings
+
+>> Detailed balance
+
+A Markov chain with transition density \(K(\theta\to\theta')\) leaves \(\pi\) invariant if
+\(\int\pi(\theta)K(\theta\to\theta')\,d\theta=\pi(\theta')\). A sufficient condition is *detailed
+balance*, \(\pi(\theta)K(\theta\to\theta')=\pi(\theta')K(\theta'\to\theta)\), because integrating
+both sides over \(\theta\) gives \(\pi(\theta')\int K(\theta'\to\theta)\,d\theta=\pi(\theta')\).
+Metropolis–Hastings proposes \(\theta'\sim q(\theta'\mid\theta)\) and accepts it with probability
+
+$$
+\alpha(\theta,\theta')=\min\Bigl(1,\frac{\pi(\theta')\,q(\theta\mid\theta')}{\pi(\theta)\,q(\theta'\mid\theta)}\Bigr).
+$$
+\alttext(alpha of theta and theta prime is the minimum of 1 and pi of theta prime times q of theta given theta prime, over pi of theta times q of theta prime given theta.)
+
+For \(\theta'\ne\theta\) the flow from \(\theta\) to \(\theta'\) is then
+\(\pi(\theta)q(\theta'\mid\theta)\alpha(\theta,\theta')=\min\bigl(\pi(\theta)q(\theta'\mid\theta),\,\pi(\theta')q(\theta\mid\theta')\bigr)\).
+This is symmetric in \(\theta\) and \(\theta'\), which is detailed balance. The normalising
+constant of \(\pi\) cancels in the ratio, so only the unnormalised log density is needed.
+Random-walk Metropolis uses \(\theta'=\theta+\varepsilon Lz\) with \(z\sim N(0,I)\). This proposal is
+symmetric, so the \(q\) terms cancel too and \(\alpha=\min(1,\pi(\theta')/\pi(\theta))\).
+
+>> Scaling the proposal
+
+Small steps are almost always accepted but move little. Large steps are almost always rejected.
+For a target made of \(d\) independent identical components, Roberts, Gelman and Gilks (1997)
+showed that as \(d\to\infty\) the efficiency is maximised by \(\varepsilon\approx2.38/\sqrt d\) in
+units of the target's standard deviation. The acceptance rate is then 0.234. Warmup tunes
+\(\varepsilon\) towards that rate by the same dual averaging that HMC uses.
+
+The theory assumes the proposal has the target's shape. An isotropic proposal (\(L=I\)) on a
+posterior whose scales differ must use a step suited to the narrowest direction, and crawls
+along the widest. With `adapt_covariance` set, `RandomWalkMetropolis` estimates the posterior
+covariance \(\hat\Sigma\) halfway through warmup and proposes with \(LL^\top=\hat\Sigma\). This is
+the *adaptive Metropolis* of Haario, Saksman and Tamminen (2001). It is equivalent to running an
+isotropic walk on the whitened parameters \(L^{-1}\theta\).
+
+>> Metropolis-within-Gibbs and correlation
+
+A Gibbs sampler updates one coordinate at a time from its full conditional
+\(\pi(\theta_j\mid\theta_{-j})\). Each such update leaves \(\pi\) invariant, since it resamples
+\(\theta_j\) from its exact conditional law, so a full sweep does too. When the conditional
+cannot be sampled directly, a scalar Metropolis step on \(\theta_j\) can stand in for it, because
+for that step
+
+$$
+\frac{\pi(\theta_j',\theta_{-j})}{\pi(\theta_j,\theta_{-j})}=\frac{\pi(\theta_j'\mid\theta_{-j})\,\pi(\theta_{-j})}{\pi(\theta_j\mid\theta_{-j})\,\pi(\theta_{-j})}=\frac{\pi(\theta_j'\mid\theta_{-j})}{\pi(\theta_j\mid\theta_{-j})}.
+$$
+\alttext(The ratio of the joint density at theta j prime and at theta j, other coordinates fixed, equals the ratio of the full conditional densities, because the marginal of the other coordinates cancels.)
+
+The joint-density ratio is the full-conditional ratio, so the step satisfies detailed balance
+for the conditional. `GibbsSampler` adapts each coordinate's step towards 0.44, the optimal
+acceptance rate of a one-dimensional random walk.
+
+Coordinate updates are slowed by correlation. Take a standard bivariate Normal with correlation
+\(\rho\) and exact conditional draws: \(\theta_1'=\rho\theta_2+\sqrt{1-\rho^2}\,z_1\), then
+\(\theta_2'=\rho\theta_1'+\sqrt{1-\rho^2}\,z_2\). Substituting the first into the second gives
+
+$$
+\theta_2'=\rho^2\theta_2+\rho\sqrt{1-\rho^2}\,z_1+\sqrt{1-\rho^2}\,z_2,
+$$
+\alttext(theta 2 prime equals rho squared times theta 2, plus rho times the square root of 1 minus rho squared times z 1, plus the square root of 1 minus rho squared times z 2.)
+
+an AR(1) process with coefficient \(\rho^2\). Its autocorrelations are \(\rho^{2t}\), so by §1's
+formula the effective fraction of draws is
+
+$$
+\frac{N_{\text{eff}}}{N}=\frac1{1+2\sum_{t\ge1}\rho^{2t}}=\frac{1-\rho^2}{1+\rho^2}.
+$$
+\alttext(N eff over N equals 1 over 1 plus twice the sum over t of rho to the 2 t, which equals 1 minus rho squared over 1 plus rho squared.)
+
+At \(\rho=0.95\) that is 0.05: twenty sweeps per independent draw, *even with exact
+conditionals*. In regression the intercept and slope are strongly correlated whenever the
+predictor's mean is far from zero relative to its spread. Centring the predictor,
+\(\text{mpg}=\alpha+b(\text{wt}-\overline{\text{wt}})\) with \(\alpha=a+b\,\overline{\text{wt}}\), is a
+linear reparameterisation of the same posterior that removes this correlation.
+
+```{cpp, results="markdown", file="figures/sampling_mixing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <numeric>
+
+namespace by = dm::bayes;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto cars = dm::datasets::mtcars();
+  const auto& mpg = cars.get_column("mpg").values();
+  const auto& wt = cars.get_column("wt").values();
+  const double wt_bar = std::accumulate(wt.begin(), wt.end(), 0.0) / static_cast<double>(wt.size());
+  // Normal model in (a, b, log s); `centred` reads its first parameter as alpha = a + b * mean(wt).
+  const auto model = [&](bool centred) {
+    return by::LogDensity([&, centred](const std::vector<double>& p) {
+      const double a = centred ? p[0] - p[1] * wt_bar : p[0];
+      const double s = std::exp(p[2]);
+      double lp = by::normal_lpdf(a, 20.0, 20.0) + by::normal_lpdf(p[1], 0.0, 10.0) +
+                  by::cauchy_lpdf(s, 0.0, 5.0) + std::log(2.0) + p[2];
+      for (std::size_t i = 0; i < mpg.size(); ++i) lp += by::normal_lpdf(mpg[i], a + p[1] * wt[i], s);
+      return lp;
+    });
+  };
+  auto exact_f = model(false);
+  const auto exact = by::grid_posterior(exact_f, {25.0, -9.0, std::log(1.2)}, {50.0, -2.0, std::log(6.0)}, 120);
+  const double rho = exact.covariance[0][1] / (exact.sd[0] * exact.sd[1]);
+  const double cov_alpha_b = exact.covariance[0][1] + wt_bar * exact.covariance[1][1];
+  const double sd_alpha = std::sqrt(exact.covariance[0][0] + 2 * wt_bar * exact.covariance[0][1] +
+                                    wt_bar * wt_bar * exact.covariance[1][1]);
+  const double rho_c = cov_alpha_b / (sd_alpha * exact.sd[1]);
+  std::print("Exact posterior correlation: corr(a, b) = {:.3f}, corr(alpha, b) = {:.3f}. "
+             "Exact-Gibbs efficiency (1 - rho^2) / (1 + rho^2): {:.3f} and {:.3f}.\n\n",
+             rho, rho_c, (1 - rho * rho) / (1 + rho * rho), (1 - rho_c * rho_c) / (1 + rho_c * rho_c));
+
+  // Four chains of 5000 kept draws per configuration; a is recovered from alpha when centred.
+  struct Run {
+    std::string name;
+    std::vector<std::vector<double>> a, b;
+    double accept;
+    double evals_per_draw;
+    std::vector<double> path_a, path_b;
+  };
+  std::vector<Run> runs;
+  for (const bool centred : {false, true})
+    for (const int sampler : {0, 1, 2}) {
+      Run run{std::string(sampler == 0 ? "RWM, isotropic" : sampler == 1 ? "RWM, adapted covariance" : "Metropolis-within-Gibbs") +
+                  (centred ? ", centred" : ""), {}, {}, 0.0, sampler == 2 ? 3.0 : 1.0, {}, {}};
+      for (std::uint64_t chain = 0; chain < 4; ++chain) {
+        auto f = model(centred);
+        std::vector<std::vector<double>> draws;
+        if (sampler < 2) {
+          by::RWMOptions o;
+          o.num_samples = 5000;
+          o.num_warmup = 2000;
+          o.initial_step_size = 0.5;
+          o.adapt_covariance = sampler == 1;
+          o.seed = chain + 1;
+          const auto r = by::RandomWalkMetropolis(o).sample(f, {20.0, 0.0, 1.0});
+          draws = r.samples;
+          run.accept += r.accept_rate / 4;
+        } else {
+          by::GibbsOptions o;
+          o.num_samples = 5000;
+          o.num_warmup = 2000;
+          o.seed = chain + 1;
+          const auto r = by::GibbsSampler(o).sample(f, {20.0, 0.0, 1.0});
+          draws = r.samples;
+          for (const double acc : r.accept_rates) run.accept += acc / 12;
+        }
+        for (auto& q : draws)
+          if (centred) q[0] -= q[1] * wt_bar;
+        run.a.push_back(by::draws_of(draws, 0));
+        run.b.push_back(by::draws_of(draws, 1));
+        if (chain == 0)
+          for (std::size_t i = 0; i < 300; ++i) {
+            run.path_a.push_back(draws[i][0]);
+            run.path_b.push_back(draws[i][1]);
+          }
+      }
+      runs.push_back(run);
+    }
+
+  std::print("| sampler | acceptance | ESS of \\(a\\) | ESS of \\(b\\) | \\(\\hat R\\) of \\(b\\) | mean of \\(b\\) | "
+             "log-density evaluations per effective draw |\n| --- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (const auto& run : runs) {
+    const auto sa = by::summarize_draws(run.a), sb = by::summarize_draws(run.b);
+    std::print("| {} | {:.3f} | {:.0f} | {:.0f} | {:.3f} | {:.3f} | {:.0f} |\n", run.name, run.accept, sa.ess, sb.ess, sb.rhat,
+               sb.mean, 20000.0 * run.evals_per_draw / std::min(sa.ess, sb.ess));
+  }
+  std::print("| exact (grid) | | | | | {:.3f} | |\n", exact.mean[1]);
+
+  // Left: 300-step paths of two uncentred samplers over the adapted sampler's cloud.
+  std::vector<double> cloud_a, cloud_b;
+  for (std::size_t i = 0; i < 5000; i += 2) {
+    cloud_a.push_back(runs[1].a[0][i]);
+    cloud_b.push_back(runs[1].b[0][i]);
+  }
+  auto paths = dm::graphics::RPlot::create()
+                   .points(cloud_a, cloud_b, "", dm::RGB{203, 213, 225}, 3.0)
+                   .lines(runs[0].path_a, runs[0].path_b, "RWM isotropic", dm::RGB{220, 38, 38}, 1.2)
+                   .lines(runs[2].path_a, runs[2].path_b, "MwG", dm::RGB{37, 99, 235}, 1.2)
+                   .x_limits(29, 46)
+                   .y_limits(-8, -2.5)
+                   .title("First 300 draws, uncentred")
+                   .x_label("intercept a")
+                   .y_label("slope b");
+  std::vector<double> lags;
+  for (int t = 0; t <= 40; ++t) lags.push_back(t);
+  auto acf = dm::graphics::RPlot::create().abline_h(0.0, dm::RGB{148, 163, 184}, 1.0);
+  const std::vector<std::pair<std::size_t, dm::RGB>> shown{
+      {0, {220, 38, 38}}, {2, {37, 99, 235}}, {1, {22, 163, 74}}, {5, {147, 51, 234}}};
+  const std::vector<std::string> labels{"RWM", "MwG", "RWM adapted", "MwG centred"};
+  for (std::size_t k = 0; k < shown.size(); ++k)
+    acf.lines(lags, dm::stats::acf(runs[shown[k].first].b[0], 40), labels[k], shown[k].second, 2.0);
+  acf.y_limits(-0.1, 1.05).title("Autocorrelation of b (chain 1)").x_label("lag").y_label("autocorrelation");
+  dm::graphics::RLayout::create(1, 2).add(paths).add(acf).size(1200, 460).save_svg("build/sampling_mixing.svg");
+}
+```
+// result_begin: markdown
+Exact posterior correlation: corr(a, b) = -0.957, corr(alpha, b) = 0.003. Exact-Gibbs efficiency (1 - rho^2) / (1 + rho^2): 0.043 and 1.000.
+
+| sampler | acceptance | ESS of \(a\) | ESS of \(b\) | \(\hat R\) of \(b\) | mean of \(b\) | log-density evaluations per effective draw |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| RWM, isotropic | 0.226 | 18 | 19 | 1.253 | -5.171 | 1093 |
+| RWM, adapted covariance | 0.223 | 771 | 832 | 1.003 | -5.275 | 26 |
+| Metropolis-within-Gibbs | 0.444 | 223 | 229 | 1.022 | -5.313 | 269 |
+| RWM, isotropic, centred | 0.227 | 610 | 611 | 1.007 | -5.270 | 33 |
+| RWM, adapted covariance, centred | 0.229 | 1480 | 1543 | 1.004 | -5.281 | 14 |
+| Metropolis-within-Gibbs, centred | 0.445 | 3950 | 3869 | 1.000 | -5.279 | 16 |
+| exact (grid) | | | | | -5.280 | |
+\image(figures/sampling_mixing.svg)
+// result_end
+
+\caption(Left: the first 300 draws of chain 1 from isotropic random-walk Metropolis (red) and Metropolis-within-Gibbs (blue), both on the uncentred parameters, over a cloud of draws from the adapted sampler (grey). Right: autocorrelation of the slope draws for four of the six configurations.)
+\alttext(Left: a narrow grey diagonal cloud of (a, b) draws running from about (31, -3.5) to (43, -7). The red isotropic random-walk path covers only a short piece of it near a = 33 to 35 in 300 steps; the blue Metropolis-within-Gibbs path moves in horizontal and vertical steps, a staircase, along a longer stretch from a = 34 to 40. Right: autocorrelation of b up to lag 40. Isotropic random walk (red) decays slowest, still 0.82 at lag 40; Metropolis-within-Gibbs (blue) is 0.38 at lag 40; adapted random walk (green) falls to about 0.03; centred Metropolis-within-Gibbs (purple) is near zero by lag 8.)
+
+Every configuration targets the same posterior, but they differ in efficiency by a factor of
+about 80. On the uncentred parameters the isotropic walk must use steps small enough for the
+ridge's narrow width. It then needs about a thousand log-density evaluations per effective draw,
+and in 5,000 iterations per chain it has not explored the ridge. \(\hat R=1.25\) flags this, and
+its posterior mean of \(b\) is 0.11 away from the exact \(-5.280\). Metropolis-within-Gibbs
+moves only parallel to the axes, so it climbs the diagonal ridge in a staircase. Its effective
+fraction of 0.011 is about a quarter of the 0.043 that the formula of §3.3 gives for exact
+conditional draws at \(\rho=-0.957\). The shortfall comes from replacing each exact draw with a
+Metropolis step.
+
+Both fixes work, and they are the same idea applied in two places. The adapted covariance
+whitens the proposal, which raises the effective sample size about 40-fold to about 800. Centring
+the predictor whitens the parameters themselves: the posterior correlation of \(\alpha\) and
+\(b\) is 0.003, which lifts every sampler. With centring, Metropolis-within-Gibbs reaches about
+3,900 effective draws from 20,000, and adapted random-walk Metropolis needs the fewest
+log-density evaluations, about 14 per effective draw. Isotropic random-walk Metropolis still lags
+after centring, because the three posterior scales still differ (\(\log s\) has a posterior sd
+of about 0.13, against about 0.58 for \(b\)). The five other configurations put the
+posterior mean of \(b\) within 0.035 of the exact value.
+
+> Importance sampling
+
+>> The estimator
+
+Importance sampling draws \(\theta_n\sim g\) independently from a proposal \(g\) and weights each
+draw by \(w_n=\tilde\pi(\theta_n)/g(\theta_n)\), where \(\tilde\pi=p(y\mid\theta)p(\theta)\) is the
+unnormalised posterior. Because
+
+$$
+E_g\Bigl[\frac{\tilde\pi(\theta)}{g(\theta)}\Bigr]=\int\tilde\pi(\theta)\,d\theta=p(y),
+$$
+\alttext(The expectation under g of pi tilde over g equals the integral of pi tilde, which is p of y.)
+
+the mean weight \(\hat Z=\frac1N\sum_nw_n\) is an unbiased estimate of the evidence, as long as
+\(g>0\) wherever \(\tilde\pi>0\). Posterior expectations use the self-normalised estimator
+\(\sum_n\bar w_nh(\theta_n)\), with \(\bar w_n=w_n/\sum_mw_m\). It is a ratio of two unbiased
+estimates, so it has a small bias, but it is consistent. Kong (1992) showed that its variance is
+roughly \(\operatorname{var}_\pi(h)\,(1+\operatorname{var}_g(w/\bar w))/N\), which suggests the
+effective sample size
+
+$$
+N_{\text{eff}}=\frac{N}{1+\operatorname{var}_g(w/E w)}\approx\frac1{\sum_n\bar w_n^2}.
+$$
+\alttext(N eff equals N over 1 plus the variance under g of the normalised weight, approximately 1 over the sum of squared normalised weights.)
+
+All the difficulty is in the variance of the weights, which depends on how well \(g\) matches
+the posterior.
+
+>> How wide should the proposal be?
+
+Take a Gaussian target \(N(0,1)\) and proposal \(N(0,k^2)\). Then \(w\propto e^{-x^2(1-1/k^2)/2}\)
+and
+
+$$
+E_g\Bigl[\Bigl(\frac{p}{g}\Bigr)^2\Bigr]=\int\frac{p(x)^2}{g(x)}\,dx=\frac{k}{\sqrt{2\pi}}\int e^{-x^2\left(1-\frac1{2k^2}\right)}dx=\frac{k^2}{\sqrt{2k^2-1}},
+$$
+\alttext(The expectation under g of p over g squared equals the integral of p squared over g, which equals k over the square root of 2 pi times the integral of e to the minus x squared times 1 minus 1 over 2 k squared, which equals k squared over the square root of 2 k squared minus 1.)
+
+which is finite only when \(k^2>1/2\). In \(d\) independent dimensions the factors multiply:
+
+$$
+\frac{N_{\text{eff}}}{N}\to\Bigl(\frac{\sqrt{2k^2-1}}{k^2}\Bigr)^d .
+$$
+\alttext(N eff over N tends to the square root of 2 k squared minus 1 over k squared, all to the power d.)
+
+The two kinds of error are not symmetric. A proposal that is too wide wastes draws, and the
+efficiency falls polynomially, to \(0.83^d\) at \(k=1.5\). A proposal narrower than
+\(1/\sqrt2\) of the target has weights of infinite variance. The estimate then converges
+erratically and its reported ESS cannot be trusted. `bayes::gaussian_importance_efficiency(k, d)`
+evaluates the formula. Below, the proposal is the mean and covariance of a pilot run of adapted
+random-walk Metropolis (`bayes::draws_mean`, `bayes::draws_covariance`), scaled by \(k^2\), and we
+estimate both models' evidence.
+
+```{cpp, results="markdown", file="figures/sampling_importance.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace by = dm::bayes;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto cars = dm::datasets::mtcars();
+  const auto& mpg = cars.get_column("mpg").values();
+  const auto& wt = cars.get_column("wt").values();
+  const auto model = [&](bool laplace) {
+    return by::LogDensity([&, laplace](const std::vector<double>& p) {
+      const double s = std::exp(p[2]);
+      double lp = by::normal_lpdf(p[0], 20.0, 20.0) + by::normal_lpdf(p[1], 0.0, 10.0) +
+                  by::cauchy_lpdf(s, 0.0, 5.0) + std::log(2.0) + p[2];
+      for (std::size_t i = 0; i < mpg.size(); ++i) {
+        const double mu = p[0] + p[1] * wt[i];
+        lp += laplace ? by::laplace_lpdf(mpg[i], mu, s) : by::normal_lpdf(mpg[i], mu, s);
+      }
+      return lp;
+    });
+  };
+
+  const std::vector<double> scales{0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 2.0, 2.5, 3.0};
+  std::vector<double> exact_evidence;
+  std::vector<std::vector<double>> ess_fraction(2), evidence(2);
+  std::print("| model | k | ESS / N | Gaussian theory | log evidence (IS) | log evidence (grid) |\n"
+             "| --- | ---: | ---: | ---: | ---: | ---: |\n");
+  for (const bool laplace : {false, true}) {
+    auto f = model(laplace);
+    exact_evidence.push_back(
+        by::grid_posterior(f, {25.0, -9.0, std::log(1.2)}, {50.0, -2.0, std::log(6.0)}, 120).log_evidence);
+    by::RWMOptions pilot_options;
+    pilot_options.num_samples = 20000;
+    pilot_options.adapt_covariance = true;
+    const auto pilot = by::RandomWalkMetropolis(pilot_options).sample(f, {20.0, 0.0, 1.0});
+    const auto centre = by::draws_mean(pilot.samples);
+    const auto shape = by::draws_covariance(pilot.samples);
+    for (const double k : scales) {
+      auto cov = shape;
+      for (auto& row : cov)
+        for (double& v : row) v *= k * k;
+      by::ImportanceSamplingOptions o;
+      o.num_samples = 20000;
+      const auto r = by::ImportanceSampling(o).sample(f, centre, cov);
+      ess_fraction[laplace].push_back(r.effective_sample_size / 20000.0);
+      evidence[laplace].push_back(r.log_evidence);
+      if (k == 0.6 || k == 0.8 || k == 1.0 || k == 1.5 || k == 3.0)
+        std::print("| {} | {:.1f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |\n", laplace ? "Laplace" : "Normal", k,
+                   r.effective_sample_size / 20000.0, by::gaussian_importance_efficiency(k, 3), r.log_evidence,
+                   exact_evidence.back());
+    }
+  }
+  const double is_bf = evidence[0][6] - evidence[1][6];
+  std::print("\nAt k = 1.5: log Bayes factor (Normal against Laplace) {:.3f} by importance sampling, {:.3f} by the grid.\n",
+             is_bf, exact_evidence[0] - exact_evidence[1]);
+
+  std::vector<double> k_grid, theory;
+  for (double k = 0.72; k <= 3.0; k += 0.01) {
+    k_grid.push_back(k);
+    theory.push_back(by::gaussian_importance_efficiency(k, 3));
+  }
+  auto left = dm::graphics::RPlot::create()
+                  .abline_v(1.0 / std::sqrt(2.0), dm::RGB{203, 213, 225}, 1.5)
+                  .lines(k_grid, theory, "Gaussian theory, d = 3", dm::RGB{17, 24, 39}, 2.0)
+                  .points(scales, ess_fraction[0], "Normal model", dm::RGB{37, 99, 235}, 7.0)
+                  .points(scales, ess_fraction[1], "Laplace model", dm::RGB{234, 88, 12}, 7.0)
+                  .x_limits(0.5, 3.1)
+                  .y_limits(0, 1.25)
+                  .y_ticks({0.0, 0.2, 0.4, 0.6, 0.8, 1.0}, {"0", "0.2", "0.4", "0.6", "0.8", "1"})
+                  .title("Importance-sampling efficiency")
+                  .x_label("proposal scale k")
+                  .y_label("ESS / N");
+  auto right = dm::graphics::RPlot::create()
+                   .abline_h(exact_evidence[0], dm::RGB{147, 197, 253}, 1.5)
+                   .abline_h(exact_evidence[1], dm::RGB{253, 186, 116}, 1.5)
+                   .lines(scales, evidence[0], "", dm::RGB{37, 99, 235}, 1.0)
+                   .points(scales, evidence[0], "Normal", dm::RGB{37, 99, 235}, 7.0)
+                   .lines(scales, evidence[1], "", dm::RGB{234, 88, 12}, 1.0)
+                   .points(scales, evidence[1], "Laplace", dm::RGB{234, 88, 12}, 7.0)
+                   .x_limits(0.5, 3.1)
+                   .title("Log evidence (lines: grid)")
+                   .x_label("proposal scale k")
+                   .y_label("log p(y)");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1200, 460).save_svg("build/sampling_importance.svg");
+}
+```
+// result_begin: markdown
+| model | k | ESS / N | Gaussian theory | log evidence (IS) | log evidence (grid) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Normal | 0.6 | 0.022 | 0.000 | -89.453 | -89.446 |
+| Normal | 0.8 | 0.188 | 0.565 | -89.440 | -89.446 |
+| Normal | 1.0 | 0.797 | 1.000 | -89.444 | -89.446 |
+| Normal | 1.5 | 0.547 | 0.575 | -89.449 | -89.446 |
+| Normal | 3.0 | 0.090 | 0.096 | -89.472 | -89.446 |
+| Laplace | 0.6 | 0.017 | 0.000 | -90.222 | -90.228 |
+| Laplace | 0.8 | 0.246 | 0.565 | -90.223 | -90.228 |
+| Laplace | 1.0 | 0.841 | 1.000 | -90.226 | -90.228 |
+| Laplace | 1.5 | 0.520 | 0.575 | -90.232 | -90.228 |
+| Laplace | 3.0 | 0.087 | 0.096 | -90.241 | -90.228 |
+
+At k = 1.5: log Bayes factor (Normal against Laplace) 0.783 by importance sampling, 0.782 by the grid.
+\image(figures/sampling_importance.svg)
+// result_end
+
+\caption(Left: effective-sample-size fraction of 20,000 importance draws against the proposal scale \(k\) for both models, with the Gaussian formula for three dimensions; the grey line is \(k=1/\sqrt2\). Right: the importance-sampling estimates of the log evidence, with the exact grid values as horizontal lines.)
+\alttext(Left: ESS fraction against proposal scale k from 0.6 to 3. The black Gaussian theory curve rises steeply from 0 at k = 0.71 to 1 at k = 1 and falls slowly to 0.1 at k = 3. Blue Normal and orange Laplace points lie close to the curve for k of 1.25 and above, peak at 0.80 and 0.84 at k = 1, and lie well below the curve for k between 0.8 and 0.9, down to about 0.02 at k = 0.6. Right: log evidence estimates against k, flat: blue Normal points near -89.45 and orange Laplace points near -90.23, each on its grid line.)
+
+For proposals at least as wide as the posterior, the efficiency follows the Gaussian formula
+closely: 0.547 and 0.520 at \(k=1.5\) against 0.575, and 0.090 and 0.087 at \(k=3\) against 0.096.
+Narrow proposals do much worse than the formula, with 0.19 and 0.25 at \(k=0.8\) against 0.565.
+This fits a posterior with heavier tails than a Gaussian. With the error scale \(s\) unknown,
+the posterior of \((a,b)\) is closer to a Student-t, and \(\log s\) is skewed. A narrow Gaussian
+proposal undersamples these tails, and the few draws that land there get large weights. Below
+\(k=1/\sqrt2\) the weight variance is infinite in theory. The reported ESS of about 0.02 at
+\(k=0.6\) then measures nothing reliable, even though the evidence estimate happens to be
+close. So a proposal should err on the wide side.
+
+The evidence itself is easier. At every scale in the table the estimate is within 0.03 of the
+grid value. At \(k=1.5\) the log Bayes factor of 0.783 matches the grid's 0.782. Importance
+sampling gives the evidence directly, while MCMC draws alone do not.
+
+> Summary
+
+- Metropolis–Hastings satisfies detailed balance because the probability flow between two states is
+  the minimum of the two directed flows. The normalising constant cancels, so a log density is
+  all it needs. A coordinate-wise Metropolis step targets the full conditional because the
+  joint-density ratio equals the conditional ratio.
+- Gradient-free samplers are limited by the posterior's shape. The intercept–slope correlation of
+  \(-0.957\) left isotropic random-walk Metropolis with 19 effective draws out of 20,000 and
+  \(\hat R=1.25\). Exact Gibbs could do no better than \((1-\rho^2)/(1+\rho^2)=0.043\) of its draws. Adapting the
+  proposal covariance (`RWMOptions::adapt_covariance`) or centring the predictor removed most of
+  the problem. Together they brought the cost to about 14 log-density evaluations per effective draw.
+- Importance sampling with a Gaussian proposal \(k\) times wider than the posterior keeps
+  \((\sqrt{2k^2-1}/k^2)^d\) of its draws as effective (`bayes::gaussian_importance_efficiency`).
+  Too narrow is far worse than too wide, and this real posterior's heavier tails made the narrow
+  side worse still.
+- Exact quadrature (`bayes::grid_posterior`) is cheap for three parameters, and every sampler
+  was checked against it. Importance sampling reproduced the evidence and the Bayes factor of
+  2.19 in favour of Normal errors over Laplace errors. That is weak evidence: the cars that beat
+  their predicted fuel economy are not outlying enough to need heavy-tailed errors.
+
+> References
+
+- Haario, H., Saksman, E. and Tamminen, J. (2001). An adaptive Metropolis algorithm.
+  *Bernoulli* 7, 223–242.
+- Henderson, H. V. and Velleman, P. F. (1981). Building multiple regression models
+  interactively. *Biometrics* 37, 391–411 (the `mtcars` data).
+- Kong, A. (1992). A note on importance sampling using standardized weights. Technical report
+  348, Department of Statistics, University of Chicago.
+- Roberts, G. O., Gelman, A. and Gilks, W. R. (1997). Weak convergence and optimal scaling of
+  random walk Metropolis algorithms. *Annals of Applied Probability* 7, 110–120.
+- Roberts, G. O. and Rosenthal, J. S. (2001). Optimal scaling for various Metropolis–Hastings
+  algorithms. *Statistical Science* 16, 351–367.

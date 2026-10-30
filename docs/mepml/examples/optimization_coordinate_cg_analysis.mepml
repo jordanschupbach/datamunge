@@ -1,0 +1,517 @@
+//? Title: Look-Ahead, Coordinate Steps and Nonlinear Conjugate Gradient
+//? Subtitle: Exact request points, rotated curvature and coupled coordinates
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A smooth objective may be easy along one coordinate system and difficult along
+another. Momentum, coordinate updates and conjugate directions exploit different
+structure. We inspect exact early steps before comparing Nesterov look-ahead,
+cyclic coordinate descent, randomized blocks and nonlinear Polak–Ribiere-plus CG
+on diagonal, rotated, coupled and Rosenbrock objectives. Callback counts and final
+gradient norms qualify every finite-budget comparison.
+)
+\toc
+
+> The method
+
+Classical momentum evaluates the gradient at x. This Nesterov implementation instead
+uses a look-ahead point x+mu*v, then v_next=mu*v-eta*gradient(x+mu*v) and
+x_next=x+v_next. A gradient-request curve can therefore show points that are not
+returned iterates. With fixed eta/mu this is not every acceleration schedule for
+strongly convex problems, and no universal rate is inferred from these runs.
+
+CoordinateDescent visits each coordinate in order, requests a full gradient, and
+backtracks a partial-gradient step until Armijo decrease holds. It does **not**
+solve the coordinate's exact one-dimensional minimisation problem. An exhausted
+search restores that coordinate. A full gradient at epoch end supplies its stop
+test. RandomizedBlockCoordinateDescent reshuffles all coordinates once per epoch,
+partitions them into blocks and performs simultaneous block steps; it samples
+permutations, rather than independent coordinate indices with replacement.
+
+The retained TikZ diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Normal documentation exports use its saved local SVG.
+
+```{bash, file="figures/opt_coordinate_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/opt_coordinate_mechanism.tikz > build/opt_coordinate_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/opt_coordinate_mechanism.svg build/opt_coordinate_mechanism.dvi > build/opt_coordinate_mechanism.render.log 2>&1
+printf 'Rendered the optimization mechanism diagram.\n'
+```
+// result_begin:
+// Rendered the optimization mechanism diagram.
+// \image(figures/opt_coordinate_mechanism.svg)
+// result_end
+\caption(The methods differ in where they request derivatives, which directions they use and how they select steps.)
+\alttext(A current or look-ahead point supplies derivatives. Axis, block or conjugate directions propose a step, which is updated directly or checked by a line search.)
+
+For nonlinear conjugate gradient, start d_0=-g_0 and use the implemented PR-plus
+coefficient, with negative values clipped and a descent fallback/restart:
+
+$$
+ \beta_t=\max\!\left(0,\frac{g_t^T(g_t-g_{t-1})}{g_{t-1}^Tg_{t-1}}\right),
+ \qquad d_t=-g_t+\beta_t d_{t-1}.
+$$
+\alttext(Polak–Ribiere-plus divides the current gradient dotted with its change by the previous squared gradient norm, clips negative results to zero, and combines the negative gradient with the old direction.)
+
+Armijo backtracking chooses a decreasing step. This is nonlinear CG, not linear
+CG with exact line minimisation: it does not guarantee a p-step solution to a
+p-dimensional quadratic. All four methods use O(p) direction/state storage beyond
+the objective. Cyclic and block epochs can request several full gradients and
+multiple trial values; equal epoch budgets are not equal work or elapsed time.
+
+> Small worked examples
+
+>> Look-ahead points and inexact coordinate minimisation
+
+Take f=x0 squared+5*x1 squared, starting at (1,2). With eta=.05 and mu=.9,
+Nesterov's first displacement is (-.1,-1), giving (.9,1). Its next gradient is
+requested at (.81,.1), not at (.9,1), and the second returned point is (.729,.05).
+The native trace prints both kinds of request.
+
+Cyclic coordinate descent starts trial rates at one and halves them. It reaches
+x0=zero using a .5 step, but accepts x1=-.5 at rate .125, rather than solving
+that coordinate exactly at rate .1. The one-epoch result has loss 1.25. For CG,
+the exact first line-minimising rate would be 404/4008, whereas the Armijo grid
+accepts .125. The two-step result is checked numerically rather than assuming
+finite-dimensional exact termination.
+
+```{cpp, results="markdown", file="figures/opt_coordinate_requests.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective                 f({2, 10}, {0, 0});
+  o::NesterovAcceleratedGradientOptions n;
+  n.step_size      = .05;
+  n.max_iterations = 2;
+  n.tolerance      = 0;
+  const auto nag =
+      o::trace_optimize<o::DifferentiableFunction>(f, o::NesterovAcceleratedGradient(n), {1, 2});
+  o::CoordinateDescentOptions c;
+  c.max_iterations = 1;
+  c.tolerance      = 0;
+  const auto cd = o::trace_optimize<o::DifferentiableFunction>(f, o::CoordinateDescent(c), {1, 2});
+  o::ConjugateGradientOptions g;
+  g.max_iterations = 2;
+  g.tolerance      = 0;
+  const auto cg = o::trace_optimize<o::DifferentiableFunction>(f, o::ConjugateGradient(g), {1, 2});
+  const auto v = nag.trace.values(), look = nag.trace.sample(f, "gradient");
+  auto       geometry =
+      dm::graphics::RPlot::create()
+          .line(
+              v.numeric_column("x0").values(),
+              v.numeric_column("x1").values(),
+              "value points",
+              {40, 100, 190})
+          .points(
+              look.numeric_column("x0").values(),
+              look.numeric_column("x1").values(),
+              "gradient requests",
+              {190, 100, 35},
+              4)
+          .title("Nesterov: value versus look-ahead")
+          .x_label("x0")
+          .y_label("x1")
+          .x_limits(0, 1.2)
+          .y_limits(0, 2.8)
+          .legend({"value points", "gradient requests"}, {{40, 100, 190}, {190, 100, 35}});
+  auto trials = o::optimization_comparison(f, {cg}, {"CG trials"})
+                    .title("CG value calls include rejected trials");
+  dm::graphics::RLayout::create(1, 2)
+      .add(geometry)
+      .add(trials)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/opt_coordinate_requests.svg");
+  std::print(
+      "Nesterov\n\n{}\n\nGradient request points\n\n{}\n\nOne coordinate epoch\n\n{}\n\nTwo CG "
+      "steps\n\n{}\n",
+      nag.summary().to_md(7),
+      look.to_md(7),
+      cd.summary().to_md(7),
+      cg.summary().to_md(7));
+}
+```
+// result_begin: markdown
+Nesterov
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.543941 | 0.543941 | 1.54135 | 5 |  | 0.729 | 0.05 |
+
+
+Gradient request points
+
+| event | value | gradient_norm | term_gradients | component | x0 | x1 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 21.0000 | 20.0997512 | 1 | nan | 1.00 | 2.0 |
+| 4 | 0.7061 | 1.9037857 | 2 | nan | 0.81 | 0.1 |
+
+
+One coordinate epoch
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.25 | 1.25 | 5 | 10 |  | 0 | -0.5 |
+
+
+Two CG steps
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.394531 | 0.394531 | 1.6817 | 12 |  | 0.5625 | 0.125 |
+
+\image(figures/opt_coordinate_requests.svg)
+// result_end
+\caption(Requested derivative points and accepted parameter points need distinct labels.)
+\alttext(Nesterov gradient requests include a look-ahead point away from the current path. The CG objective-call trace includes rejected large trial steps before backtracking accepts a decrease.)
+
+> Checking geometry and work
+
+>> A three-dimensional diagonal bowl
+
+Use curvature (2,2,2), centre (4,-2,1) and start (10,10,10). Nesterov uses
+eta=.05 and up to 5000 updates; coordinate methods and CG use their native
+budgets of 1000 epochs/steps. Randomized blocks have two coordinates and seed 42.
+These declared budgets are not a speed ranking. Every table includes the returned
+gradient norm and callback counts, and the plot samples only gradient requests.
+
+```{cpp, results="markdown", file="figures/opt_coordinate_diagonal.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective                 f({2, 2, 2}, {4, -2, 1});
+  std::vector<double>                   start{10, 10, 10};
+  o::NesterovAcceleratedGradientOptions n;
+  n.step_size      = .05;
+  n.max_iterations = 5000;
+  o::RandomizedBlockCoordinateDescentOptions b;
+  b.block_size = 2;
+  std::vector<o::OptimizationRun> runs;
+  runs.push_back(
+      o::trace_optimize<o::DifferentiableFunction>(f, o::NesterovAcceleratedGradient(n), start));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::CoordinateDescent(), start));
+  runs.push_back(
+      o::trace_optimize<o::DifferentiableFunction>(
+          f, o::RandomizedBlockCoordinateDescent(b), start));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::ConjugateGradient(), start));
+  const std::vector<std::string> labels{"Nesterov", "cyclic", "blocks", "CG"};
+  o::optimization_comparison(f, runs, labels, "gradient")
+      .title("Diagonal bowl: derivative requests")
+      .size(850, 490)
+      .save_svg("build/opt_coordinate_diagonal.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print(
+        "{}\n\n{}\n\n{}\n\n",
+        labels[i],
+        runs[i].summary().to_md(7),
+        runs[i].trace.counts().to_md(0));
+}
+```
+// result_begin: markdown
+Nesterov
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 9.88895e-18 | 9.88895e-18 | 6.28934e-09 | 387 |  | 4 | -2 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 193 |
+| value | 194 |
+| term_gradient_equivalents | 193 |
+
+
+cyclic
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 0 | 0 | 0 | 11 |  | 4 | -2 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 4 |
+| value | 7 |
+| term_gradient_equivalents | 4 |
+
+
+blocks
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 0 | 0 | 0 | 8 |  | 4 | -2 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 3 |
+| value | 5 |
+| term_gradient_equivalents | 3 |
+
+
+CG
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 0 | 0 | 0 | 5 |  | 4 | -2 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 2 |
+| value | 3 |
+| term_gradient_equivalents | 2 |
+
+
+\image(figures/opt_coordinate_diagonal.svg)
+// result_end
+\caption(A separable bowl is a transparent control for direction and callback accounting.)
+\alttext(Four gradient-request objective traces approach the known zero minimum of a diagonal bowl. Tables retain the differing number of full gradients and line-search values.)
+
+>> Rotate a stiff bowl, then couple five coordinates
+
+The first test rotates eigenvalues (2,200) through pi/4 without changing their
+condition number. Axes no longer align with independent directions. The second
+uses five diagonal curvatures (2,4,8,16,32) plus 30 times the all-ones rank-one
+matrix, with a known centre. Coupling makes partial updates interact even without
+an explicit rotation. Nesterov uses eta=.005 here; the other declared controls
+remain the same. No external dataset is needed: the known minimizers and analytic
+curvature let the experiment isolate geometry. Different dimensions and callback
+mixes prevent a universal wall-time conclusion from these traces.
+
+```{cpp, results="markdown", file="figures/opt_coordinate_geometry.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective rotated({2, 200}, {0, 0}, 0, std::numbers::pi / 4),
+      coupled({2, 4, 8, 16, 32}, {4, -2, 1, 0, .5}, 30);
+  o::NesterovAcceleratedGradientOptions n;
+  n.step_size      = .005;
+  n.max_iterations = 5000;
+  o::RandomizedBlockCoordinateDescentOptions b;
+  b.block_size = 2;
+  const std::vector<std::string>   labels{"Nesterov", "cyclic", "blocks", "CG"};
+  std::vector<dm::graphics::RPlot> plots;
+  for (auto* f : {&rotated, &coupled}) {
+    std::vector<double>             start(f == &rotated ? 2 : 5, 10);
+    std::vector<o::OptimizationRun> runs;
+    runs.push_back(
+        o::trace_optimize<o::DifferentiableFunction>(*f, o::NesterovAcceleratedGradient(n), start));
+    runs.push_back(o::trace_optimize<o::DifferentiableFunction>(*f, o::CoordinateDescent(), start));
+    runs.push_back(
+        o::trace_optimize<o::DifferentiableFunction>(
+            *f, o::RandomizedBlockCoordinateDescent(b), start));
+    runs.push_back(o::trace_optimize<o::DifferentiableFunction>(*f, o::ConjugateGradient(), start));
+    plots.push_back(
+        o::optimization_comparison(*f, runs, labels, "gradient")
+            .title(
+                f == &rotated ? "Rotated two-dimensional bowl" : "Coupled five-dimensional bowl"));
+    for (std::size_t i = 0; i < runs.size(); ++i)
+      std::print(
+          "{} {}\n\n{}\n\n",
+          f == &rotated ? "rotated" : "coupled",
+          labels[i],
+          runs[i].summary().to_md(7));
+  }
+  dm::graphics::RLayout::create(1, 2)
+      .add(plots[0])
+      .add(plots[1])
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/opt_coordinate_geometry.svg");
+}
+```
+// result_begin: markdown
+rotated Nesterov
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.51244e-17 | 1.51244e-17 | 7.77802e-09 | 641 |  | -2.74995e-09 | -2.74995e-09 |
+
+
+rotated cyclic
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.71787e-18 | 1.71787e-18 | 1.08861e-08 | 4849 |  | 8.8488e-10 | 8.09792e-10 |
+
+
+rotated blocks
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.00974e-24 | 1.00974e-24 | 2.00972e-11 | 5 |  | 7.10543e-14 | -7.10543e-14 |
+
+
+rotated CG
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.00974e-24 | 1.00974e-24 | 2.00972e-11 | 5 |  | 7.10543e-14 | -7.10543e-14 |
+
+
+coupled Nesterov
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 | x4 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- | :--- |
+| 1.68456e-19 | 1.68456e-19 | 1.33112e-09 | 625 |  | 4 | -2 | 1 | 3.5919e-11 | 0.5 |
+
+
+coupled cyclic
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 | x4 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- | :--- |
+| 1.28027e-17 | 1.28027e-17 | 1.31797e-08 | 9007 |  | 4 | -2 | 1 | 5.3729e-10 | 0.5 |
+
+
+coupled blocks
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 | x4 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- | :--- |
+| 3.01671e-18 | 3.01671e-18 | 7.17637e-09 | 2956 |  | 4 | -2 | 1 | -2.32634e-10 | 0.5 |
+
+
+coupled CG
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 | x4 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- | :--- |
+| 8.35679e-19 | 8.35679e-19 | 8.70328e-09 | 808 |  | 4 | -2 | 1 | 3.59915e-11 | 0.5 |
+
+
+\image(figures/opt_coordinate_geometry.svg)
+// result_end
+\caption(Rotation and coupling alter coordinate trajectories even when the optimum remains known.)
+\alttext(Four methods are compared on a rotated two-axis bowl and a five-axis rank-one-coupled bowl. The axes count callback requests, with distinct dimensions and budgets stated in the text.)
+
+>> Rosenbrock: curvature changes along the path
+
+For f=(1-x0)^2+100*(x1-x0 squared)^2, the minimum zero is at (1,1).
+The same direction mechanisms now see a curved, varying valley, started at
+(-1.2,1). Nesterov uses .001 and a budget of 20000 updates; coordinate and CG
+budgets remain 1000. A low final objective is checked alongside the gradient norm,
+not inferred from a visually flat convergence curve. Finite budgets and selected
+settings do not establish a global ordering among the algorithms.
+
+```{cpp, results="markdown", file="figures/opt_coordinate_rosenbrock.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::SmoothBenchmark                    f("rosenbrock");
+  std::vector<double>                   start{-1.2, 1};
+  o::NesterovAcceleratedGradientOptions n;
+  n.step_size      = .001;
+  n.max_iterations = 20000;
+  o::RandomizedBlockCoordinateDescentOptions b;
+  b.block_size = 2;
+  std::vector<o::OptimizationRun> runs;
+  runs.push_back(
+      o::trace_optimize<o::DifferentiableFunction>(f, o::NesterovAcceleratedGradient(n), start));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::CoordinateDescent(), start));
+  runs.push_back(
+      o::trace_optimize<o::DifferentiableFunction>(
+          f, o::RandomizedBlockCoordinateDescent(b), start));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::ConjugateGradient(), start));
+  const std::vector<std::string> labels{"Nesterov", "cyclic", "blocks", "CG"};
+  o::optimization_comparison(f, runs, labels, "gradient")
+      .title("Rosenbrock: derivative requests")
+      .size(850, 490)
+      .save_svg("build/opt_coordinate_rosenbrock.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print(
+        "{}\n\n{}\n\n{}\n\n",
+        labels[i],
+        runs[i].summary().to_md(7),
+        runs[i].trace.counts().to_md(0));
+}
+```
+// result_begin: markdown
+Nesterov
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.24352e-16 | 1.24352e-16 | 9.96607e-09 | 8359 |  | 1 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 4179 |
+| value | 4180 |
+| term_gradient_equivalents | 4179 |
+
+
+cyclic
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 3.84659e-09 | 3.84659e-09 | 0.000296182 | 20931 |  | 0.999938 | 0.999877 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 3000 |
+| value | 17931 |
+| term_gradient_equivalents | 3000 |
+
+
+blocks
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.000748425 | 0.000748425 | 0.0738966 | 11834 |  | 0.972776 | 0.946023 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 2000 |
+| value | 9834 |
+| term_gradient_equivalents | 2000 |
+
+
+CG
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 6.17999e-07 | 6.17999e-07 | 0.0015518 | 11513 |  | 1.00078 | 1.00157 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 1001 |
+| value | 10512 |
+| term_gradient_equivalents | 1001 |
+
+
+\image(figures/opt_coordinate_rosenbrock.svg)
+// result_end
+\caption(The changing valley tests declared settings beyond a constant Hessian.)
+\alttext(Gradient-request objective traces on Rosenbrock retain finite-budget residuals. Different budgets and callback mixes are shown explicitly and do not imply a throughput ranking.)
+
+> Conclusions and references
+
+The small examples distinguish look-ahead evaluation, partial-gradient line searches
+and exact coordinate/line minimisation. The quadratic controls isolate geometry,
+while Rosenbrock adds changing curvature. Callback accounting and actual final
+gradients qualify every result; nonlinear CG is not given the finite-step guarantee
+of ideal linear CG, and shuffled blocks are not independent coordinate draws.
+
+- J. Nocedal and S. J. Wright (2006), [Numerical Optimization](https://doi.org/10.1007/978-0-387-40065-5), nonlinear CG, line searches and coordinate geometry.
+- S. J. Wright (2015), [Coordinate Descent Algorithms](https://doi.org/10.1007/s10107-015-0892-3).
+
+> Reading the numerical evidence
+
+`trace_optimize` calls the configured native optimizer through its stated abstract
+interface. It records callback requests without inserting fitting evaluations.
+Value calls can be rejected trials; gradient calls can be look-ahead points.
+`optimization_comparison` explicitly re-evaluates selected points afterwards on
+these pure objectives. Those diagnostic calls are excluded from fitting counts.
+Callback indices are neither accepted iterations nor wall time. The plotted gap
+uses the declared reference (minimum or stated lower bound) and a display floor of 1e-14; that floor does
+not modify any optimizer update. Returned coordinates, checked objective and
+appropriate stationarity/feasibility checks carry more information than a return
+from a finite iteration budget. Native APIs do not expose a uniform stop-status flag.
+The recorder retains exceptions and rejects nonfinite requested values/gradients;
+this makes failures visible rather than letting an instrumented run continue on NaN.
+

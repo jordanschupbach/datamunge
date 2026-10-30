@@ -41,7 +41,7 @@ extreme) and then finds the farthest pair among the hull vertices.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

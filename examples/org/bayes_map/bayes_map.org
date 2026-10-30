@@ -28,7 +28,7 @@ using datamunge::bayes::HMCOptions;
 using datamunge::bayes::MAP;
 using datamunge::bayes::NUTS;
 using datamunge::bayes::NUTSOptions;
-using datamunge::plot::RPlot;
+using datamunge::graphics::RPlot;
 
 using datamunge::bayes::bernoulli_logit_lpmf;
 using datamunge::bayes::normal_lpdf;

@@ -1,0 +1,739 @@
+//? Title: Panoptic FPN things,stuff and quality
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A complete scene description must assign material labels to background pixels while separating each countable object. Panoptic FPN shares features between semantic and instance branches. This report checks overlap resolution and panoptic quality,then visibly fits the complete compact tensor model and inspects actual merged held-out maps.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segmentation/panoptic_fpn.cpp`.
+
+> The method
+
+Shared multiscale features train region proposals,aligned box/mask heads and a group-normalized semantic path. Scored instances claim pixels before semantic stuff fills gaps. Strict-IoU panoptic statistics handle void/crowd and aggregate category counts before quality averages.
+
+The editable concept diagram is `diagrams/panoptic_fpn_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/panoptic_fpn_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/panoptic_fpn_concept.tikz > build/panoptic_fpn_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/panoptic_fpn_concept.svg build/panoptic_fpn_concept.dvi > build/panoptic_fpn_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/panoptic_fpn_concept.svg)
+// result_end
+\caption(Panoptic FPN things,stuff and quality)
+\alttext(Shared scene features; Learn both tasks; then Resolve object masks; Fill remaining stuff; then Visible Adam loop; Measure merged maps.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/panoptic_fpn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  m::PanopticConfig cfg;
+  n::ParameterStore p(17), state(18);
+  cfg.size             = 64;
+  cfg.depth            = 18;
+  cfg.divisor          = 8;
+  cfg.width            = 32;
+  cfg.semantic_width   = 16;
+  cfg.groups           = 8;
+  cfg.semantic_classes = 3;
+  cfg.grayscale        = true;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) { return m::PanopticBackbone(p, state, image, cfg).semantic; },
+      "Panoptic FPN things,stuff and quality");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({2, 64, 64, 1}), options);
+  diagram.save_svg("build/panoptic_fpn_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+236 displayed nodes; 243291 reachable learned values.
+\image(figures/panoptic_fpn_architecture.svg)
+// result_end
+\caption(Executed panoptic fpn tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right panoptic fpn architecture with rotated names and exact output shapes.)
+
+> Resolve thing overlaps before filling stuff
+
+Panoptic output gives every nonvoid pixel exactly one segment ID and a category.
+Countable objects are things;materials such as ground are stuff. The instance
+branch supplies scored thing masks,and the semantic branch supplies stuff labels.
+In descending score order,an instance is rejected if its already-claimed fraction
+exceeds.5;otherwise its claimed pixels are trimmed. Score equality.5 is retained,
+and overlap equality.5 is accepted. Empty or fully consumed masks create no
+segment. Stuff categories then claim remaining pixels when their area is at
+least32. Unclaimed pixels remain void0.
+
+The hand-check below uses a3x4 grid and minimum stuff area2. Mask A claims
+four pixels;mask B shares two of its four pixels with A and retains its two
+unclaimed pixels. A third heavily overlapping mask is rejected. The remaining
+four-pixel stuff region survives while the one-pixel stuff region becomes void.
+The exact output IDs are printed as a table;catalogue categories remain separate
+from these arbitrary segment IDs.
+
+```{cpp, results="markdown", file="figures/panoptic_fpn_merge.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto semantic =
+      n::from_vector(std::vector<std::int64_t>{1, 1, 1, 2, 1, 0, 0, 2, 1, 0, 2, 2}, {3, 4});
+  std::vector<int> supports(48);
+  for (const int i : {0, 1, 4, 5})
+    supports[i] = 1;
+  for (const int i : {1, 2, 5, 6})
+    supports[12 + i] = 1;
+  for (const int i : {0, 1, 4})
+    supports[24 + i] = 1;
+  supports[47] = 1;
+  m::TensorMaskDetections masks{{n::zeros({4, 4}), n::tensor({.9, .8, .7, .49}),
+                                 n::from_vector(std::vector<std::int64_t>{3, 4, 5, 6}),
+                                 n::zeros({4}, n::DType::Int64)},
+                                n::not_equal(n::from_vector(supports, {4, 3, 4}), 0.)};
+  const auto out = m::MergeTensorPanoptic(semantic, masks, {-1, 10, 11}, .5, .5, 2);
+  const auto ids = out.ids.to_vector<int>();
+  if (ids != std::vector<int>{1, 1, 2, 3, 1, 1, 2, 3, 0, 0, 3, 3})
+    return 1;
+  auto a = n::plot_tensor_map(n::reverse(semantic.to(n::DType::Float32), {0}), 0, 3),
+       b = n::plot_tensor_map(n::reverse(out.ids.to(n::DType::Float32), {0}), 0, 3);
+  a.title("Semantic labels before merging");
+  b.title("Resolved segment IDs");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 480).fit_panels().save_svg(
+      "build/panoptic_fpn_merge.svg");
+  std::print("| row | column0 | column1 | column2 | column3 |\n|---:|---:|---:|---:|---:|\n");
+  for (int row = 0; row < 3; ++row)
+    std::print("| {} | {} | {} | {} | {} |\n", row, ids[row * 4], ids[row * 4 + 1],
+               ids[row * 4 + 2], ids[row * 4 + 3]);
+  std::print(
+      "Segment1:thing category3;segment2:thing category4;segment3:stuff category11. Exact "
+      "overlap equality.5 trims and accepts the second mask. No model or fitting.\n");
+}
+```
+// result_begin: markdown
+| row | column0 | column1 | column2 | column3 |
+|---:|---:|---:|---:|---:|
+| 0 | 1 | 1 | 2 | 3 |
+| 1 | 1 | 1 | 2 | 3 |
+| 2 | 0 | 0 | 3 | 3 |
+Segment1:thing category3;segment2:thing category4;segment3:stuff category11. Exact overlap equality.5 trims and accepts the second mask. No model or fitting.
+\image(figures/panoptic_fpn_merge.svg)
+// result_end
+\caption(Semantic class IDs0/1/2 versus merged segment IDs0/1/2/3 on the known3x4 grid,with row zero at the bottom. Both maps use[0,3];the numbers have different meanings,as the printed catalogue explains.)
+\alttext(Semantic class IDs0/1/2 versus merged segment IDs0/1/2/3 on the known3x4 grid,with row zero at the bottom. Both maps use[0,3];the numbers have different meanings,as the printed catalogue explains.)
+
+> Panoptic quality separates recognition from support accuracy
+
+For a category,only same-category segments at strict IoU greater than.5 match.
+Ground-truth void pixels inside a prediction are removed from its match union.
+Crowd truth never counts as an ordinary match or false negative;an unmatched
+prediction mostly inside void or same-category crowd is ignored. These rules
+are checked independently in the native fixtures,including exact-IoU.5 rejection.
+For one category,
+
+$$PQ=\frac{\sum_{(p,g)\in TP}IoU(p,g)}{|TP|+|FP|/2+|FN|/2},\quad
+SQ=\frac{\sum IoU(p,g)}{|TP|},\quad RQ=\frac{|TP|}{|TP|+|FP|/2+|FN|/2}.$$
+\alttext(Panoptic quality divides matched IoU by true positives plus half the false positives and false negatives;segmentation quality measures matched IoU and recognition quality measures detection success.)
+
+Sum category counts over images before macro-averaging categories with any
+TP/FP/FN. Per-category PQ equals SQ times RQ,but separately macro-averaged
+SQ and RQ need not multiply to macro PQ. Here one three-pixel segment matches
+perfectly and another three-pixel truth has only one predicted pixel:TP=1,
+FP=1,FN=1,matched IoU=1,PQ=.5,SQ=1,RQ=.5. Segment IDs differ between maps;
+matching uses category and support,not ID equality.
+
+```{cpp, results="markdown", file="figures/panoptic_fpn_quality.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  m::TensorPanopticMap truth{
+      n::from_vector(std::vector<std::int64_t>{1, 1, 1, 2, 2, 2}, {1, 6}),
+      {{1, {0, true, false}}, {2, {0, true, false}}}},
+      predicted{n::from_vector(std::vector<std::int64_t>{3, 3, 3, 4, 0, 0}, {1, 6}),
+                {{3, {0, true, false}}, {4, {0, true, false}}}};
+  const auto stats = m::PanopticStatistics(truth, predicted, 1);
+  const auto q = m::PanopticQuality(stats, n::ones({1}, n::DType::Bool));
+  if (q.pq.item() != .5 || q.sq.item() != 1 || q.rq.item() != .5)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.bars({1, 2, 3}, {q.pq.item(), q.sq.item(), q.rq.item()}, "quality", {37, 99, 235}, .6)
+      .title("Known PQ,SQ,RQ")
+      .x_label("1:PQ   2:SQ   3:RQ")
+      .y_label("category score")
+      .y_limits(0, 1.25)
+      .size(800, 550);
+  std::filesystem::create_directories("build");
+  p.save_svg("build/panoptic_fpn_quality.svg");
+  std::print("Matched IoU1,TP1,FP1,FN1 -> PQ {:.3f},SQ {:.3f},RQ {:.3f}. Strict "
+             "IoU>.5;void/crowd/empty-map fixtures pass independently.\n",
+             q.pq.item(), q.sq.item(), q.rq.item());
+}
+```
+// result_begin: markdown
+Matched IoU1,TP1,FP1,FN1 -> PQ 0.500,SQ 1.000,RQ 0.500. Strict IoU>.5;void/crowd/empty-map fixtures pass independently.
+\image(figures/panoptic_fpn_quality.svg)
+// result_end
+\caption(The hand-counted single-category scores are PQ.5,SQ1,RQ.5. Bars include zero and share[0,1.25];one correctly recognized segment does not erase the missed/extra segment penalty.)
+\alttext(The hand-counted single-category scores are PQ.5,SQ1,RQ.5. Bars include zero and share[0,1.25];one correctly recognized segment does not erase the missed/extra segment penalty.)
+
+> Route each aligned region to its own feature scale
+
+The instance heads choose level \(\operatorname{clip}(\lfloor4+\log_2(\sqrt{wh}/s_0)\rfloor,2,5)\).
+With canonical side32,boxes of side8/16/32/64 route to P2/P3/P4/P5. Constant
+feature maps expose this choice exactly. Batch0 maps contain1/2/3/4;batch1
+contains11/12/13/14. Regions from batch indices0/0/1/1 must return1/2/13/14.
+Every3x3 pooled region has total derivative9 only on its selected image/level,
+and zero on the other image. The report shows mean outputs;native checks verify
+every pooled value and image/level derivative sum.
+
+```{cpp, results="markdown", file="figures/panoptic_fpn_routing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  std::vector<n::Tensor> features;
+  for (int level = 0; level < 4; ++level) {
+    const int side = 16 >> level;
+    features.push_back(n::concat({n::full({1, side, side, 1}, double(level + 1)),
+                                  n::full({1, side, side, 1}, double(level + 11))},
+                                 0)
+                           .requires_grad_());
+  }
+  const auto boxes = n::tensor(
+                 {0., 0., 8., 8., 0., 0., 16., 16., 0., 0., 32., 32., 0., 0., 64., 64.},
+                 {4, 4}),
+             indices = n::from_vector(std::vector<std::int64_t>{0, 0, 1, 1});
+  const auto output = m::PanopticRoiAlign(features, boxes, indices, 64, 3, 32);
+  const auto mean = n::mean(output, {1, 2, 3});
+  const auto g = n::grad(n::sum(output), features);
+  std::vector<double> first, second;
+  for (const auto &v : g) {
+    const auto sums = n::sum(v, {1, 2, 3}).to_vector<double>();
+    first.push_back(sums[0]);
+    second.push_back(sums[1]);
+  }
+  auto a = dm::graphics::RPlot::create(), b = dm::graphics::RPlot::create();
+  a.bars({2, 3, 4, 5}, mean.to_vector<double>(), "pooled mean", {37, 99, 235}, .6)
+      .title("Known level/image routing")
+      .x_label("selected P level")
+      .y_label("pooled feature mean")
+      .y_limits(0, 18);
+  b.lines({2, 3, 4, 5}, first, "image0", {22, 163, 74})
+      .lines({2, 3, 4, 5}, second, "image1", {220, 38, 38})
+      .title("Gradient mass per image/level")
+      .x_label("P level")
+      .y_label("sum of source derivatives")
+      .y_limits(0, 12);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 480).fit_panels().save_svg(
+      "build/panoptic_fpn_routing.svg");
+  std::print("P2/P3/P4/P5 means1/2/13/14;selected-image derivative mass9 per "
+             "region,other-image mass0. No fitting.\n");
+}
+```
+// result_begin: markdown
+P2/P3/P4/P5 means1/2/13/14;selected-image derivative mass9 per region,other-image mass0. No fitting.
+\image(figures/panoptic_fpn_routing.svg)
+// result_end
+\caption(Known level-routed aligned features and source-gradient mass. P2/P3 receive image0 gradients;P4/P5 receive image1 gradients. This exposes both scale choice and batch-index pairing.)
+\alttext(Known level-routed aligned features and source-gradient mass. P2/P3 receive image0 gradients;P4/P5 receive image1 gradients. This exposes both scale choice and batch-index pairing.)
+
+> Full shared architecture and initialized gradient census
+
+The source full model shares ResNet50/FPN256 between RPN/aligned box/mask heads
+and a GN32 semantic branch of width128. P2/P3/P4/P5 semantic paths use1/1/2/3
+3x3/GN/ReLU stages,bilinearly upsample to stride4,and sum before linear scores.
+GN has no moving state;ResNet BN does. The complete full256px graph has
+46,027,110 learned scalars/all224 gradients. It includes80 foreground instance
+classes and54 semantic classes,hidden1024 box head and mask width256.
+
+Compact64px uses ResNet18/divisor8,FPN32,GN8 semantic width16/three classes,
+RPN hidden32,box hidden128/11 classes and mask width16/ten foreground classes.
+All489,751 learned scalars and125 parameter gradients remain active. The full
+initialized execution below checks architecture and differentiation;only the
+complete compact model is fitted later.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  for (bool compact : {false, true}) {
+    n::ParameterStore p(17), state(18);
+    m::PanopticConfig cfg;
+    if (compact) {
+      cfg.size = 64;
+      cfg.depth = 18;
+      cfg.divisor = 8;
+      cfg.width = 32;
+      cfg.semantic_width = 16;
+      cfg.groups = 8;
+      cfg.semantic_classes = 3;
+      cfg.grayscale = true;
+    }
+    const int batch = compact ? 2 : 1, channels = compact ? 1 : 3, side = cfg.size;
+    const auto image = n::sin(.13 * n::arange(0, batch * side * side * channels))
+                           .reshape({batch, side, side, channels});
+    const auto features = m::PanopticBackbone(p, state, image, cfg, true);
+    const auto rpn = m::BuildPanopticRpn(p, features, compact ? 32 : 256);
+    const double s = compact ? 1. : 4.;
+    const auto boxes = n::tensor({0., 0., 8. * s, 8. * s, 0., 0., 16. * s, 16. * s, 0., 0.,
+                                  32. * s, 32. * s, 0., 0., 64. * s, 64. * s},
+                                 {4, 4});
+    const auto indices = n::from_vector(compact ? std::vector<std::int64_t>{0, 0, 1, 1}
+                                                : std::vector<std::int64_t>{0, 0, 0, 0});
+    const auto head = m::PooledDetectionRoiHead(
+        p, m::PanopticRoiAlign(features.pyramid, boxes, indices, side, 7, compact ? 32 : 224),
+        compact ? 11 : 81, compact ? 128 : 1024);
+    const auto masks = m::MaskRcnnHead(
+        p, m::PanopticRoiAlign(features.pyramid, boxes, indices, side, 14, compact ? 32 : 224),
+        compact ? 16 : 256, compact ? 10 : 80);
+    auto loss = n::zeros({});
+    for (const auto &value : {features.semantic, rpn.objectness, rpn.deltas,
+                              head.probabilities, head.deltas, masks})
+      loss = loss + n::mean(n::square(value));
+    const auto gradient = n::grad(loss, p.parameters());
+    for (const auto &g : gradient)
+      if (!g.defined() || !std::isfinite(n::sum(n::square(g.to(n::DType::Float64))).item()) ||
+          (compact && n::sum(n::square(g)).item() <= 0))
+        return 1;
+    if (p.count() != (compact ? 489751 : 46027110) ||
+        gradient.size() != std::size_t(compact ? 125 : 224))
+      return 1;
+    std::print("{} complete Panoptic FPN:{} learned/{} BN state scalars,all{} gradients "
+               "at{}px. GN semantic state is learned affine only,no moving moments.\n",
+               compact ? "Compact" : "Full", p.count(), state.count(), gradient.size(), side);
+  }
+}
+```
+// result_begin: markdown
+Full complete Panoptic FPN:46027110 learned/53120 BN state scalars,all224 gradients at256px. GN semantic state is learned affine only,no moving moments.
+Compact complete Panoptic FPN:489751 learned/1200 BN state scalars,all125 gradients at64px. GN semantic state is learned affine only,no moving moments.
+// result_end
+
+> Actual objects over textured materials
+
+First2048 training-source MNIST digits generate64 fitting/16 validation scenes,
+seed11. First512 test-source digits generate eight test scenes,seed22. Digits
+retain individual resampled-byte>32 supports,boxes,classes and intensities.
+Only nonsupport pixels receive two textured materials,with byte bases40/100
+and deterministic0..10 variation. A near-midpoint material split varies by scene.
+Semantic targets are0 all things,1/2 the two materials;panoptic categories are
+0..9 digits and10/11 materials. Native all-pixel checks ensure supports and
+intensities survive synthesis and the stuff target matches its photometry.
+This deliberately easy material cue is a teaching task,not a realistic scene
+or a benchmark segmentation dataset.
+
+```{cpp, results="markdown", file="figures/panoptic_fpn_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto digits = n::load_mnist((cache / "mnist").string(), "train");
+  const auto data =
+      m::MakeTensorPanopticScenes(n::slice_axis(digits.images, 0, 0, 2048),
+                                  n::slice_axis(digits.labels, 0, 0, 2048), 80, 11);
+  std::vector<n::Tensor> sheet;
+  for (int row = 0; row < 4; ++row) {
+    const auto input =
+        n::slice_axis(data.instances.images, 0, row, row + 1) * n::ones({1, 1, 1, 3});
+    const auto target = n::slice_axis(data.semantic, 0, row, row + 1);
+    const auto categories = n::where(n::equal(target, 0.), n::full({}, -1., n::DType::Int64),
+                                     target + n::full({}, 9., n::DType::Int64));
+    sheet.push_back(
+        n::concat({input, m::ColorPanopticCategories(categories),
+                   m::ColorPanopticMap(data.panoptic[row]).reshape({1, 64, 64, 3})},
+                  2));
+  }
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::concat(sheet, 0), "build/panoptic_fpn_data.png", 1, 0, 1, 4, 1., 3);
+  std::print("80 actual textured64px scenes:64 fit/16 validation. Each row is input,semantic "
+             "target,panoptic truth. Semantic0 all things is black;stuff10 blue-grey/stuff11 "
+             "tan,digits retain their ten-class palette. Texture never redefines the original "
+             "object supports.\n");
+}
+```
+// result_begin: markdown
+80 actual textured64px scenes:64 fit/16 validation. Each row is input,semantic target,panoptic truth. Semantic0 all things is black;stuff10 blue-grey/stuff11 tan,digits retain their ten-class palette. Texture never redefines the original object supports.
+\image(figures/panoptic_fpn_data.png)
+// result_end
+\caption(First four actual fitting input/semantic-target/panoptic-truth triples. Semantic all-things is black;panoptic truth retains each digit category and its individual segment metadata.)
+\alttext(First four actual fitting input/semantic-target/panoptic-truth triples. Semantic all-things is black;panoptic truth retains each digit category and its individual segment metadata.)
+
+> Explicit four-task optimization and paired restoration
+
+Warm all leaves before Adam(.001),then fit512 visible updates,32epochs/batch4.
+Each training forward updates ResNet BN once. Shared FPN features supply
+1023-anchor RPN proposals,32 sampled RoIs/image(at most one-quarter positive),
+aligned box/mask losses and three-class semantic CE. The objective is
+RPN logistic/Smooth-L1 + box CE/selected Smooth-L1 + positive selected-mask BCE
++ .5 semantic CE with unit class weights,plus explicit`.00005*sum(kernel²)`.
+Every bias,GN/BN affine parameter and learned head remains optimized.
+
+Validation box AP50 selects paired learned/BN stores,as in the source. Both
+restore and reproduce the selected validation score before testing. No truth
+region is inserted at test time. Predicted semantic stuff and learned masks
+merge at instance score>=.5,overlap<=.5 and minimum stuff area32. Dataset PQ
+adds per-category IoU/TP/FP/FN before macro averaging;things/stuff scores stay
+separate. Integral mask AP remains distinct from official COCO mask AP.
+
+```{cpp, results="markdown", file="figures/panoptic_fpn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto digits = n::load_mnist((cache / "mnist").string(), "train");
+  const auto data =
+      m::MakeTensorPanopticScenes(n::slice_axis(digits.images, 0, 0, 2048),
+                                  n::slice_axis(digits.labels, 0, 0, 2048), 80, 11);
+  const auto &scenes = data.instances;
+  const auto anchors = m::CompactPanopticAnchors();
+  m::PanopticConfig cfg;
+  cfg.size = 64;
+  cfg.depth = 18;
+  cfg.divisor = 8;
+  cfg.width = 32;
+  cfg.semantic_width = 16;
+  cfg.groups = 8;
+  cfg.semantic_classes = 3;
+  cfg.grayscale = true;
+  std::vector<std::int64_t> val_rows(16);
+  std::iota(val_rows.begin(), val_rows.end(), 64);
+  n::ParameterStore p(17), state(18);
+  // Warm every backbone,FPN,semantic,RPN,box and mask leaf before Adam.
+  {
+    n::NoGradGuard guard;
+    const auto f = m::PanopticBackbone(p, state, n::zeros({2, 64, 64, 1}), cfg);
+    m::BuildPanopticRpn(p, f, 32);
+    const auto boxes = n::tensor({0., 0., 16., 16.}, {1, 4}),
+               ids = n::zeros({1}, n::DType::Int64);
+    m::PooledDetectionRoiHead(p, m::PanopticRoiAlign(f.pyramid, boxes, ids, 64, 7, 32), 11,
+                              128);
+    m::MaskRcnnHead(p, m::PanopticRoiAlign(f.pyramid, boxes, ids, 64, 14, 32), 16, 10);
+  }
+  if (p.count() != 489751)
+    return 1;
+  const auto truth_records = [](const m::TensorInstanceScenes &scenes,
+                                const std::vector<std::int64_t> &rows) {
+    std::vector<m::DetectionEvaluationTruth> result;
+    for (const auto row : rows) {
+      const auto boxes = n::boxes_to_vector(scenes.boxes[row]);
+      const auto labels = scenes.labels[row].to_vector<int>();
+      for (std::size_t k = 0; k < boxes.size(); ++k)
+        result.push_back({int(row), labels[k], boxes[k]});
+    }
+    return result;
+  };
+  const auto predict = [&](const m::TensorInstanceScenes &scenes,
+                           const std::vector<std::int64_t> &rows) {
+    n::NoGradGuard guard;
+    const auto f = m::PanopticBackbone(
+        p, state, 2. * n::gather(scenes.images, n::from_vector(rows)) - 1., cfg, false);
+    const auto rpn = m::BuildPanopticRpn(p, f, 32);
+    return std::make_pair(m::DecodeCompactPanopticInstances(p, f, rpn, anchors, rows),
+                          n::argmax(f.semantic, 3));
+  };
+  const auto val_truth = truth_records(scenes, val_rows);
+  const std::vector<int> val_ids(val_rows.begin(), val_rows.end());
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(p, .001, config);
+  n::BatchOrder order(64, 4, 29);
+  n::Generator sampling(7);
+  std::vector<n::Tensor> kernels;
+  for (const auto &leaf : p.parameters())
+    if (leaf.dim() >= 2)
+      kernels.push_back(leaf);
+  std::filesystem::create_directories("build");
+  const std::string learned = "build/panoptic_fpn_best.npz",
+                    moving = "build/panoptic_fpn_state.npz";
+  double best = -1;
+  int selected = 0, steps = 0;
+  std::int64_t mask_count = 0;
+  std::vector<double> epochs, rpns, boxes, masks, semantics, validation;
+  std::print("| epoch | RPN | box | mask | .5 semantic | val box AP50 "
+             "|\n|---:|---:|---:|---:|---:|---:|\n");
+  for (int epoch = 1; epoch <= 32; ++epoch) {
+    order.begin_epoch();
+    double r = 0, b = 0, mask = 0, sem = 0;
+    std::size_t seen = 0;
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto f = m::PanopticBackbone(
+          p, state, 2. * n::gather(scenes.images, n::from_vector(rows)) - 1., cfg, true);
+      const auto rpn = m::BuildPanopticRpn(p, f, 32);
+      const auto proposals = m::ComputeDetectionProposals(rpn, anchors, 64, 64);
+      const auto batch = m::SampleDetectionRois(scenes, rows, proposals, sampling, 32);
+      const auto target = m::MakeDetectionRpnTargets(anchors, scenes, rows, sampling);
+      const auto head = m::PooledDetectionRoiHead(
+          p, m::PanopticRoiAlign(f.pyramid, batch.pixels, batch.indices, 64, 7, 32), 11, 128);
+      const auto support = m::PositiveInstanceMaskTargets(scenes, rows, batch);
+      if (!support.indices.numel())
+        return 1;
+      const auto logits = m::MaskRcnnHead(
+          p, m::PanopticRoiAlign(f.pyramid, support.boxes, support.indices, 64, 14, 32), 16,
+          10);
+      const auto rpn_loss =
+          m::RpnLoss(rpn, target.labels, target.weights, target.targets, target.positives);
+      const auto box_loss = m::DetectionRoiLoss(head, batch.labels, batch.targets, batch.mask);
+      const auto mask_loss =
+          m::SelectedInstanceMaskLoss(logits, support.labels, support.targets);
+      const auto semantic_loss = m::SegmentationCrossEntropy(
+          f.semantic, n::gather(data.semantic, n::from_vector(rows)), 3, n::ones({3}));
+      const auto joint = rpn_loss + box_loss + mask_loss + .5 * semantic_loss;
+      auto penalty = n::zeros({});
+      for (const auto &kernel : kernels)
+        penalty = penalty + n::sum(n::square(kernel));
+      if (!std::isfinite(joint.item()))
+        return 1;
+      r += rpn_loss.item() * rows.size();
+      b += box_loss.item() * rows.size();
+      mask += mask_loss.item() * rows.size();
+      sem += .5 * semantic_loss.item() * rows.size();
+      seen += rows.size();
+      mask_count += support.indices.numel();
+      adam.minimize(joint + .00005 * penalty);
+      ++steps;
+    }
+    const auto output = predict(scenes, val_rows);
+    const auto metric = m::EvaluateDetectionDataset(
+        m::DetectionEvaluationRecords(output.first.objects), val_truth, val_ids, false, true);
+    epochs.push_back(epoch);
+    rpns.push_back(r / seen);
+    boxes.push_back(b / seen);
+    masks.push_back(mask / seen);
+    semantics.push_back(sem / seen);
+    validation.push_back(metric.ap50.item());
+    if (validation.back() > best) {
+      best = validation.back();
+      selected = epoch;
+      p.save(learned);
+      state.save(moving);
+    }
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n", epoch, rpns.back(),
+               boxes.back(), masks.back(), semantics.back(), validation.back());
+  }
+  p.load(learned);
+  state.load(moving);
+  const auto restored = m::EvaluateDetectionDataset(
+      m::DetectionEvaluationRecords(predict(scenes, val_rows).first.objects), val_truth,
+      val_ids, false, true);
+  if (std::abs(restored.ap50.item() - best) > 1e-12)
+    return 1;
+  const auto test_digits = n::load_mnist((cache / "mnist").string(), "test");
+  const auto test =
+      m::MakeTensorPanopticScenes(n::slice_axis(test_digits.images, 0, 0, 512),
+                                  n::slice_axis(test_digits.labels, 0, 0, 512), 8, 22);
+  std::vector<std::int64_t> rows(8);
+  std::iota(rows.begin(), rows.end(), 0);
+  const std::vector<int> ids(rows.begin(), rows.end());
+  const auto output = predict(test.instances, rows);
+  const auto &detected = output.first;
+  const auto predicted_semantic = output.second;
+  const auto box_quality =
+      m::EvaluateDetectionDataset(m::DetectionEvaluationRecords(detected.objects),
+                                  truth_records(test.instances, rows), ids, false, true);
+  const auto mask_ap = m::InstanceMaskAveragePrecision(detected, test.instances, 10, .5);
+  auto statistics = n::zeros({12, 4}, n::DType::Float64);
+  std::vector<n::Tensor> preview;
+  const auto image_ids = detected.objects.images.to_vector<std::int64_t>();
+  for (int row = 0; row < 8; ++row) {
+    std::vector<std::int64_t> index;
+    for (std::size_t k = 0; k < image_ids.size(); ++k)
+      if (image_ids[k] == row)
+        index.push_back(k);
+    const auto selected = n::from_vector(index);
+    m::TensorMaskDetections local{{n::gather(detected.objects.boxes, selected),
+                                   n::gather(detected.objects.scores, selected),
+                                   n::gather(detected.objects.labels, selected),
+                                   n::gather(detected.objects.images, selected)},
+                                  n::gather(detected.masks, selected)};
+    const auto semantic = n::slice_axis(predicted_semantic, 0, row, row + 1).reshape({64, 64});
+    const auto map = m::MergeTensorPanoptic(semantic, local, {-1, 10, 11}, .5, .5, 32);
+    statistics = statistics + m::PanopticStatistics(test.panoptic[row], map, 12);
+    if (row < 4) {
+      const auto input =
+          n::slice_axis(test.instances.images, 0, row, row + 1) * n::ones({1, 1, 1, 3});
+      const auto categories =
+          n::where(n::equal(semantic, 0.), n::full({}, -1., n::DType::Int64),
+                   semantic + n::full({}, 9., n::DType::Int64));
+      preview.push_back(
+          n::concat({input, m::ColorPanopticCategories(categories).reshape({1, 64, 64, 3}),
+                     m::ColorPanopticMap(test.panoptic[row]).reshape({1, 64, 64, 3}),
+                     m::ColorPanopticMap(map).reshape({1, 64, 64, 3})},
+                    2));
+    }
+  }
+  const auto things = n::less(n::arange(0, 12), 10.);
+  const auto all = m::PanopticQuality(statistics, things),
+             object = m::PanopticQuality(statistics, things, 1),
+             stuff = m::PanopticQuality(statistics, things, 0);
+  const auto semantic_quality =
+      m::SegmentationPredictionMetrics(predicted_semantic, test.semantic, 3);
+  n::save_image_grid(n::concat(preview, 0), "build/panoptic_fpn_predictions.png", 1, 0, 1, 4,
+                     1., 3);
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file("build/panoptic_fpn_predictions.png",
+                             "figures/panoptic_fpn_predictions.png",
+                             std::filesystem::copy_options::overwrite_existing);
+  auto a = dm::graphics::RPlot::create(), b = dm::graphics::RPlot::create();
+  const double high = std::max({*std::max_element(rpns.begin(), rpns.end()),
+                                *std::max_element(boxes.begin(), boxes.end()),
+                                *std::max_element(masks.begin(), masks.end()),
+                                *std::max_element(semantics.begin(), semantics.end())});
+  a.lines(epochs, rpns, "RPN", {220, 38, 38})
+      .lines(epochs, boxes, "box", {37, 99, 235})
+      .lines(epochs, masks, "mask", {147, 51, 234})
+      .lines(epochs, semantics, ".5 semantic", {22, 163, 74})
+      .title("Every fitted task")
+      .x_label("epoch")
+      .y_label("unregularized objective term")
+      .y_limits(0, 1.4 * high);
+  b.lines(epochs, validation, "box AP50", {22, 163, 74})
+      .title("Paired BN selection")
+      .x_label("epoch")
+      .y_label("inclusive VOC AP50")
+      .y_limits(0, 1.25);
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 480).fit_panels().save_svg(
+      "build/panoptic_fpn_training.svg");
+  std::print(
+      "{} learned/{} BN state scalars,{} Adam updates/{} positive mask regions;selected "
+      "epoch{},validation box AP50 {:.6f}. Test box AP50 {:.6f},integral mask AP50 "
+      "{:.6f},semantic mean IoU {:.6f};dataset category-macro PQ {:.6f},SQ {:.6f},RQ "
+      "{:.6f},things PQ {:.6f},stuff PQ {:.6f}. Counts aggregate before macro "
+      "averaging;custom integral mask AP is not official COCO.\n",
+      p.count(), state.count(), steps, mask_count, selected, best, box_quality.ap50.item(),
+      mask_ap.item(), semantic_quality.mean_iou.item(), all.pq.item(), all.sq.item(),
+      all.rq.item(), object.pq.item(), stuff.pq.item());
+}
+```
+// result_begin: markdown
+| epoch | RPN | box | mask | .5 semantic | val box AP50 |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 13.585021 | 9.596374 | 0.742217 | 0.295116 | 0.000000 |
+| 2 | 6.865145 | 3.580438 | 0.691674 | 0.159832 | 0.001430 |
+| 3 | 4.073567 | 2.270061 | 0.688828 | 0.129449 | 0.003513 |
+| 4 | 3.275501 | 2.068900 | 0.684145 | 0.113154 | 0.006698 |
+| 5 | 3.075382 | 2.031048 | 0.680022 | 0.103441 | 0.000979 |
+| 6 | 3.003755 | 2.390609 | 0.676537 | 0.097392 | 0.000000 |
+| 7 | 2.970260 | 2.062222 | 0.674229 | 0.091757 | 0.008740 |
+| 8 | 2.881698 | 2.162588 | 0.667311 | 0.089377 | 0.032794 |
+| 9 | 2.846552 | 2.240648 | 0.662455 | 0.086418 | 0.033184 |
+| 10 | 2.782635 | 2.302072 | 0.658455 | 0.083181 | 0.007414 |
+| 11 | 2.671618 | 2.224326 | 0.650228 | 0.081221 | 0.003732 |
+| 12 | 2.609564 | 2.290449 | 0.640769 | 0.079775 | 0.030560 |
+| 13 | 2.588335 | 2.216009 | 0.632512 | 0.076830 | 0.062371 |
+| 14 | 2.575900 | 2.334071 | 0.627383 | 0.076286 | 0.013442 |
+| 15 | 2.693761 | 2.285521 | 0.619732 | 0.073996 | 0.014614 |
+| 16 | 2.444915 | 2.129304 | 0.614045 | 0.072682 | 0.016959 |
+| 17 | 2.360369 | 2.195024 | 0.612568 | 0.070188 | 0.019465 |
+| 18 | 2.359026 | 2.203111 | 0.607491 | 0.068642 | 0.061793 |
+| 19 | 2.469897 | 2.310086 | 0.602084 | 0.068534 | 0.016731 |
+| 20 | 2.301879 | 2.131769 | 0.599094 | 0.066563 | 0.028036 |
+| 21 | 2.189116 | 2.096853 | 0.591074 | 0.065514 | 0.019548 |
+| 22 | 2.104406 | 2.027492 | 0.590707 | 0.064315 | 0.007965 |
+| 23 | 2.137115 | 2.059790 | 0.591912 | 0.063063 | 0.012449 |
+| 24 | 2.038163 | 2.166502 | 0.579218 | 0.062190 | 0.044925 |
+| 25 | 1.989330 | 2.188909 | 0.581071 | 0.061190 | 0.026500 |
+| 26 | 1.891744 | 2.035005 | 0.573204 | 0.059704 | 0.014435 |
+| 27 | 1.953918 | 1.914887 | 0.570120 | 0.059999 | 0.027398 |
+| 28 | 1.908526 | 2.038487 | 0.579827 | 0.060678 | 0.012560 |
+| 29 | 1.877940 | 2.048885 | 0.577123 | 0.059367 | 0.042968 |
+| 30 | 1.760610 | 2.044857 | 0.567757 | 0.057262 | 0.025089 |
+| 31 | 1.602288 | 2.104419 | 0.566026 | 0.056681 | 0.042366 |
+| 32 | 1.698036 | 2.035141 | 0.554861 | 0.056677 | 0.063308 |
+489751 learned/1200 BN state scalars,512 Adam updates/11399 positive mask regions;selected epoch32,validation box AP50 0.063308. Test box AP50 0.113274,integral mask AP50 0.000000,semantic mean IoU 0.735548;dataset category-macro PQ 0.165495,SQ 0.165495,RQ 0.181818,things PQ 0.000000,stuff PQ 0.910225. Counts aggregate before macro averaging;custom integral mask AP is not official COCO.
+\image(figures/panoptic_fpn_training.svg)
+// result_end
+\caption(Four unregularized task components and validation box AP50 selection. The code visibly optimizes the entire compact model and restores learned/BN stores together before semantic,instance and merged-map evaluation.)
+\alttext(Four unregularized task components and validation box AP50 selection. The code visibly optimizes the entire compact model and restores learned/BN stores together before semantic,instance and merged-map evaluation.)
+
+The selected epoch32 has validation box AP50.063308. Held-out semantic
+mean IoU.735548 and stuff PQ.910225 reflect the easy material cues,but thing
+PQ and integral mask AP50 are both zero. Test box AP50 is.113274. Overall
+category-macro PQ.165495 averages active stuff and missed thing categories;
+it does not establish successful instance segmentation. The actual merged
+maps below retain the missed objects and void regions.
+
+\image(figures/panoptic_fpn_predictions.png)
+\caption(First four actual held-out input/predicted-semantic/true-panoptic/predicted-panoptic quadruples. Semantic things/void are black;two stuff categories use blue-grey/tan and digit categories retain their palette. Colours identify category,while separate segment IDs retain individual objects. Missed,extra and wrong-class masks remain visible.)
+\alttext(Four real held-out textured digit scenes with semantic predictions and true versus merged predicted panoptic category maps.)
+
+> Conclusion
+
+Exact overlap,PQ and routed-gradient checks precede complete full-model differentiation and compact fitting. Visible four-task Adam,paired BN restoration,independent held-out masks and merged maps expose recognition and support errors separately. The material cues are deliberately simple teaching data;no pretrained panoptic benchmark result is claimed.
+
+> References
+
+- [Kirillov,Girshick,He and Dollár(2019),Panoptic Feature Pyramid Networks](https://arxiv.org/abs/1901.02446).
+- [Kirillov et al.(2019),Panoptic Segmentation](https://arxiv.org/abs/1801.00868).
+- [Official panoptic evaluator](https://github.com/cocodataset/panopticapi/blob/master/panopticapi/evaluation.py).

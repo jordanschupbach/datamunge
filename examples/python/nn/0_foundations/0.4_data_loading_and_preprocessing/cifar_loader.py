@@ -1,6 +1,6 @@
 # Native Python NN example. CIFAR-10/CIFAR-100 binary decoding, planar-to-NHWC conversion and labels.
-"""CMD: just python-example cifar_loader
-CIFAR-10/CIFAR-100 binary decoding, planar-to-NHWC conversion and labels.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/cifar_loader.py
+"""CIFAR-10/CIFAR-100 binary decoding, planar-to-NHWC conversion and labels.
 
 Port of tflow's cifar_loader. Write original-format records with
 deterministic pixel patterns, read them from disk, and check every output
@@ -23,6 +23,7 @@ written under output/nn/python/<mode>/fixtures/ (checks.output_dir).
 import sys
 from pathlib import Path
 
+from pydatamunge.nn_components import dataset_assets
 from pydatamunge import nn
 from pydatamunge.nn_workflows import helper
 
@@ -120,7 +121,7 @@ def main(arguments=None):
             print("    fine-label counts:" + "".join(f" {n}" for n in histogram))
             # A single standard test_batch.bin can be checked against the library loader.
             if kind == Cifar.k10 and len(files) == 1 and files[0].name == "test_batch.bin":
-                library = nn.load_cifar10(str(files[0].parent), "test")
+                library = dataset_assets.LoadCifar10(str(files[0].parent), "test")
                 ours = nn.div(nn.cast(dataset.images, nn.DType.Float32), 255.0)
                 checks.require(
                     nn.all(nn.equal(ours, library.images)).item() == 1

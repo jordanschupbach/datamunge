@@ -1,0 +1,341 @@
+//? Title: Zeller's Congruence: Calendar Arithmetic Behind Monthly Data
+//? Subtitle: March-based years, exact Gregorian cycles and calendar-normalised airline passengers
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A weekday can be computed from a calendar date without counting through its
+preceding days. Zeller's congruence achieves this by moving January and
+February to the previous year and encoding month lengths modulo seven.
+We derive both the full-year and century forms, account for negative years
+with floor division, and prove the 400-year Gregorian repeat. The dataset
+application augments `dm::datasets::air_passengers()` with month lengths,
+weekdays and weekend counts, then distinguishes monthly passenger totals
+from daily averages. An exact cycle count also revisits the old report's
+Friday-the-thirteenth question without treating calendar dates as random.
+)
+
+\toc
+
+> The data: monthly totals need a calendar denominator
+
+The built-in airline series contains 144 monthly totals from 1949 to 1960,
+in thousands of international passengers. Its columns are `year`, `month`
+and `passengers`. A monthly total combines demand with the amount of time
+in the month: February has fewer days than January even in a leap year.
+Calendar normalisation is therefore useful before comparing levels.
+It does not by itself remove growth or seasonal demand.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto air = dm::datasets::air_passengers();
+  std::print("{}\n", air.head(8).to_md());
+  std::print("\n| months | columns |\n| ---: | ---: |\n| {} | {} |\n", air.nrows(), air.ncols());
+}
+```
+// result_begin: markdown
+| year | month | passengers |
+| ---: | ---: | ---: |
+| 1949 | 1 | 112 |
+| 1949 | 2 | 118 |
+| 1949 | 3 | 132 |
+| 1949 | 4 | 129 |
+| 1949 | 5 | 121 |
+| 1949 | 6 | 135 |
+| 1949 | 7 | 148 |
+| 1949 | 8 | 148 |
+
+
+| months | columns |
+| ---: | ---: |
+| 144 | 3 |
+// result_end
+\caption(The first eight monthly records and the shape of the dataset. Passenger totals are in thousands.)
+
+> The method: put the leap day at the end of the year
+
+Let the input be a valid Gregorian date \((y,m,q)\). If \(m<3\), replace
+\(m\) by \(m+12\) and set \(Y=y-1\); otherwise set \(Y=y\).
+The adjusted year runs from March through February. All variable leap-day
+behaviour is now at its end.
+
+Define the month term
+
+$$
+M(m)=\left\lfloor\frac{13(m+1)}5\right\rfloor,\qquad 3\le m\le14.
+$$
+\alttext(The month term is the floor of thirteen times the adjusted month plus one, divided by five.)
+
+For March through February its values are 10, 13, 15, 18, 20, 23, 26,
+28, 31, 33, 36 and 39. Consecutive differences are 3 or 2, matching the
+lengths of the preceding 31- or 30-day months modulo seven. February's
+variable length appears only when the adjusted year advances.
+
+An ordinary year contributes \(365\equiv1\pmod7\). The Gregorian rule
+adds leap days in years divisible by four, omits century years and restores
+those divisible by 400. Including the month and day terms gives
+
+$$
+h=\left(q+M(m)+Y+\left\lfloor\frac Y4\right\rfloor
+ -\left\lfloor\frac Y{100}\right\rfloor
+ +\left\lfloor\frac Y{400}\right\rfloor\right)\bmod7.
+$$
+\alttext(The weekday remainder is the day plus the month term plus the shifted year, plus its leap-quarter count, minus the century count, plus the four-century count, modulo seven.)
+
+The convention is \(h=0\) Saturday, 1 Sunday, 2 Monday, through 6 Friday.
+The constant implicit in \(M\) agrees with the proleptic Gregorian anchor
+1 January year 1, a Monday: the adjusted year is zero and the sum is
+\(1+36=37\equiv2\pmod7\). Month differences, year differences and this
+anchor establish the formula for every valid date under that calendar.
+The implementation validates dates instead of assigning weekdays to
+31 April or 29 February 1900.
+
+>> Recovering the century form
+
+Write \(Y=100J+K\), where \(J=\lfloor Y/100\rfloor\) and
+\(0\le K<100\). Then the full-year part simplifies modulo seven:
+
+$$
+Y+\left\lfloor\frac Y4\right\rfloor
+ -\left\lfloor\frac Y{100}\right\rfloor
+ +\left\lfloor\frac Y{400}\right\rfloor
+=124J+K+\left\lfloor\frac K4\right\rfloor+\left\lfloor\frac J4\right\rfloor
+\equiv5J+K+\left\lfloor\frac K4\right\rfloor+\left\lfloor\frac J4\right\rfloor\pmod7.
+$$
+\alttext(Splitting the shifted year into century and year within century produces a coefficient of 124 on the century. Modulo seven this becomes five, yielding the familiar century form.)
+
+This is the original report's expression. Mathematical floor is essential
+for negative years: C++ integer division instead truncates towards zero.
+The library now uses explicit floor division and widens the year before
+subtracting one in January or February, so even the minimum `int` year is
+handled without overflow. Year zero denotes 1 BCE, using astronomical year
+numbering. The calculation is proleptic Gregorian: it does not apply a
+historical cutover to the Julian calendar.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto air = dm::datasets::air_passengers();
+  std::print("{}\n", dm::algorithms::zeller_terms(
+      int(air.double_at("year", 0)), int(air.double_at("month", 0)), 1).to_md());
+}
+```
+// result_begin: markdown
+| term | value |
+| :--- | ---: |
+| day | 1 |
+| month term | 36 |
+| shifted year | 1948 |
+| leap quarters | 487 |
+| century correction | -19 |
+| four centuries | 4 |
+| sum | 2457 |
+| weekday code | 0 |
+// result_end
+\caption(The exact signed congruence terms for the first day of the dataset's first month: January 1949. The final remainder uses the Saturday-first convention.)
+
+> Applying it: month lengths and weekend counts
+
+`gregorian_month_features` reads the dataset's year and month columns and
+returns an owned augmented table. The original rows and measurements stay
+in order. For month length \(d=7a+r\), every full week contributes two
+weekend days; only the final \(r<7\) dates need their weekday checked.
+The helper therefore needs at most six remainder checks per record.
+A weekend here means Saturday or Sunday; this is not a holiday or airline
+working-calendar model.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto air = dm::algorithms::gregorian_month_features(dm::datasets::air_passengers());
+  const auto february = air.filter([](const auto& r) { return r.get_double("month") == 2; });
+  std::print("{}\n", february.select({"year", "passengers", "calendar_days", "weekdays", "weekend_days", "start_weekday"}).to_md());
+}
+```
+// result_begin: markdown
+| year | passengers | calendar_days | weekdays | weekend_days | start_weekday |
+| ---: | ---: | ---: | ---: | ---: | :--- |
+| 1949 | 118 | 28 | 20 | 8 | Tuesday |
+| 1950 | 126 | 28 | 20 | 8 | Wednesday |
+| 1951 | 150 | 28 | 20 | 8 | Thursday |
+| 1952 | 180 | 29 | 21 | 8 | Friday |
+| 1953 | 196 | 28 | 20 | 8 | Sunday |
+| 1954 | 188 | 28 | 20 | 8 | Monday |
+| 1955 | 233 | 28 | 20 | 8 | Tuesday |
+| 1956 | 277 | 29 | 21 | 8 | Wednesday |
+| 1957 | 301 | 28 | 20 | 8 | Friday |
+| 1958 | 318 | 28 | 20 | 8 | Saturday |
+| 1959 | 342 | 28 | 20 | 8 | Sunday |
+| 1960 | 391 | 29 | 21 | 8 | Monday |
+// result_end
+\caption(All twelve Februaries, including the 29-day months in 1952, 1956 and 1960. Weekdays plus weekend days equal the calendar-day count in every record.)
+
+For a monthly total \(P_t\) and month length \(d_t\), the daily average is
+
+$$
+A_t=\frac{P_t}{d_t}.
+$$
+\alttext(Average passengers per calendar day equal monthly passengers divided by the number of calendar days in that month.)
+
+Its units are thousands per calendar day. It is not a measured daily
+series: the monthly totals do not tell us the within-month distribution.
+The next block displays both series and totals their yearly calendar
+exposure; leap years contribute 366 days.
+
+```{cpp, results="markdown", file="figures/zeller_airline_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto air = dm::algorithms::gregorian_month_features(dm::datasets::air_passengers()) |
+      dm::mutate("daily", [](const auto& r) { return r.get_double("passengers") / r.get_double("calendar_days"); }) |
+      dm::mutate("time", [](const auto& r) { return r.get_double("year") + (r.get_double("month") - 1) / 12; });
+  std::print("{}\n", (air | dm::group_by("year") | dm::summarise(
+      dm::agg::sum("passengers", "annual_passengers_thousands"), dm::agg::sum("calendar_days", "days"),
+      dm::agg::sum("weekend_days", "weekend_days"))).to_md());
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(dm::graphics::RPlot::create().line(air.get_column("time").values(), air.get_column("passengers").values(),
+      "", dm::RGB{37, 99, 235}, 2).title("Monthly totals").x_label("year").y_label("thousands per month"));
+  layout.add(dm::graphics::RPlot::create().line(air.get_column("time").values(), air.get_column("daily").values(),
+      "", dm::RGB{220, 38, 38}, 2).title("Calendar-day averages").x_label("year").y_label("thousands per day"));
+  std::filesystem::create_directories("build");
+  layout.size(1100, 460).save_svg("build/zeller_airline_rates.svg");
+}
+```
+// result_begin: markdown
+| year | annual_passengers_thousands | days | weekend_days |
+| ---: | ---: | ---: | ---: |
+| 1949 | 1520 | 365 | 105 |
+| 1950 | 1676 | 365 | 105 |
+| 1951 | 2042 | 365 | 104 |
+| 1952 | 2364 | 366 | 104 |
+| 1953 | 2700 | 365 | 104 |
+| 1954 | 2867 | 365 | 104 |
+| 1955 | 3408 | 365 | 105 |
+| 1956 | 3939 | 366 | 105 |
+| 1957 | 4421 | 365 | 104 |
+| 1958 | 4572 | 365 | 104 |
+| 1959 | 5140 | 365 | 104 |
+| 1960 | 5714 | 366 | 105 |
+
+\image(figures/zeller_airline_rates.svg)
+// result_end
+\caption(Annual passenger totals and calendar exposure, with monthly totals and daily averages plotted separately. The scales have different units; the right-hand plot is not daily-resolution data.)
+\alttext(Two time-series panels showing increasing airline passenger totals and their calendar-day averages from 1949 to 1960. Both retain strong seasonal swings.)
+
+Calendar length explains part of the difference between months. To show
+its size, group all Januaries, Februaries and so on over the twelve years.
+A 28-day February needs fewer passengers than a 31-day January to have the
+same daily average. Group means remain descriptive: the dataset has trend
+and seasonality, not randomly assigned month lengths.
+
+```{cpp, results="markdown", file="figures/zeller_monthly_profile.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto air = dm::algorithms::gregorian_month_features(dm::datasets::air_passengers()) |
+      dm::mutate("daily", [](const auto& r) { return r.get_double("passengers") / r.get_double("calendar_days"); });
+  const auto profile = air | dm::group_by("month") | dm::summarise(
+      dm::agg::mean("passengers", "mean_monthly_total"), dm::agg::mean("calendar_days", "mean_days"),
+      dm::agg::mean("daily", "mean_daily_average"));
+  std::print("{}\n", profile.to_md(5));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .line(profile.get_column("month").values(), profile.get_column("mean_daily_average").values(),
+            "calendar-day average", dm::RGB{37, 99, 235}, 2)
+      .points(profile.get_column("month").values(), profile.get_column("mean_daily_average").values(), "", dm::RGB{37, 99, 235}, 4)
+      .title("Seasonality remains after calendar normalisation")
+      .x_label("month (1=January)").y_label("mean thousands per calendar day")
+      .size(900, 460).save_svg("build/zeller_monthly_profile.svg");
+}
+```
+// result_begin: markdown
+| month | mean_monthly_total | mean_days | mean_daily_average |
+| ---: | ---: | ---: | ---: |
+| 1 | 241.75000 | 31.00 | 7.79839 |
+| 2 | 235.00000 | 28.25 | 8.30583 |
+| 3 | 270.16667 | 31.00 | 8.71505 |
+| 4 | 267.08333 | 30.00 | 8.90278 |
+| 5 | 271.83333 | 31.00 | 8.76882 |
+| 6 | 311.66667 | 30.00 | 10.38889 |
+| 7 | 351.33333 | 31.00 | 11.33333 |
+| 8 | 351.08333 | 31.00 | 11.32527 |
+| 9 | 302.41667 | 30.00 | 10.08056 |
+| 10 | 266.58333 | 31.00 | 8.59946 |
+| 11 | 232.83333 | 30.00 | 7.76111 |
+| 12 | 261.83333 | 31.00 | 8.44624 |
+
+\image(figures/zeller_monthly_profile.svg)
+// result_end
+\caption(Average month lengths, totals and daily averages, with the daily-average seasonal profile. Mean ratios are computed per record before grouping, rather than dividing one grouped mean by another.)
+\alttext(A line plot of mean passengers per calendar day by month, retaining a summer peak after adjusting for month length.)
+
+The table shows a reversal: January's mean monthly total exceeds February's,
+but February's mean per-day rate exceeds January's after allowing for its
+shorter months. The July and August peak remains large under either view.
+Month length is an exposure correction, not an explanation of that seasonality.
+
+> Why the calendar repeats, and which weekday gets the thirteenth
+
+In 400 Gregorian years there are 100 multiples of four, four century
+exceptions and one restored leap year, hence 97 leap years. The total is
+
+$$
+400\cdot365+97=146097=7\cdot20871.
+$$
+\alttext(Four hundred ordinary years plus 97 leap days make 146097 days, exactly 20871 weeks.)
+
+The leap pattern repeats and the weekday shift is zero, so every date
+recurs with the same weekday after 400 years. Any consecutive 400-year
+block contains a complete set of year residues. Counts of a given
+month-day are therefore independent of the chosen cycle start.
+
+```{cpp, results="markdown", file="figures/zeller_thirteenths.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto cycle = dm::algorithms::zeller_cycle_counts(13, 2000);
+  std::print("{}\n", cycle.to_md(6));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::barplot(cycle.get_column("count").values(), cycle.get_column<std::string>("weekday").values(), "months")
+      .abline_h(4800.0 / 7, dm::RGB{220, 38, 38}, 1)
+      .title("Weekday of the thirteenth over all 4800 months")
+      .y_label("count in a complete Gregorian cycle").size(1000, 470).save_svg("build/zeller_thirteenths.svg");
+}
+```
+// result_begin: markdown
+| weekday_code | weekday | count | proportion |
+| ---: | :--- | ---: | ---: |
+| 0 | Saturday | 684 | 0.142500 |
+| 1 | Sunday | 687 | 0.143125 |
+| 2 | Monday | 685 | 0.142708 |
+| 3 | Tuesday | 685 | 0.142708 |
+| 4 | Wednesday | 687 | 0.143125 |
+| 5 | Thursday | 684 | 0.142500 |
+| 6 | Friday | 688 | 0.143333 |
+
+\image(figures/zeller_thirteenths.svg)
+// result_end
+\caption(Exact weekday counts over a complete 400-year cycle, with the uniform-count reference 4800/7. The vertical axis starts at zero so the small difference is not exaggerated.)
+\alttext(Seven nearly equal bars counting weekdays of the thirteenth. Friday has 688 occurrences, slightly more than the others.)
+
+The calculation is an enumeration, not a statistical significance test.
+A uniformly selected month in a full cycle has a thirteenth on Friday in
+688 of 4800 cases. The small imbalance follows from month lengths and leap
+years; no sampling argument or superstition is needed. The helper also
+supports days 29 to 31, skipping months where that day does not exist.
+
+> Conclusion
+
+March-based years isolate the leap correction, and the floor terms
+account for Gregorian century exceptions. Date validation and wide signed
+arithmetic make the implementation match that mathematical contract.
+Applied to the airline series, the same calendar logic supplies real
+month lengths and weekday counts. Daily-average normalisation corrects
+exposure but leaves the demand trend and seasonal pattern. The complete
+cycle gives an exact Friday-the-thirteenth count and a strong repeatability
+check on the weekday calculation.
+
+> References
+
+- Ch. Zeller (1883). *Problema duplex calendarii fundamentale*.
+  Bulletin de la Société Mathématique de France 11, 59–61. https://doi.org/10.24033/bsmf.254
+- R `datasets::AirPassengers`, monthly airline passenger totals, 1949–1960.
+  https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/AirPassengers.html

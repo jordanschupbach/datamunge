@@ -4,6 +4,7 @@
 // optimizer built on top of it.
 
 #include <datamunge/optim/acor.hpp>
+#include <datamunge/optim/analysis.hpp>
 #include <datamunge/optim/adam.hpp>
 #include <datamunge/optim/adagrad.hpp>
 #include <datamunge/optim/adadelta.hpp>

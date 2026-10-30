@@ -1,0 +1,428 @@
+//? Title: Second-Order Optimization: Newton and a Cauchy-Point Variant
+//? Subtitle: Exact quadratic solves, changing curvature and singular-start controls
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A gradient identifies local slope, while a Hessian also describes how that slope
+changes. Newton's method uses this curvature to solve a local quadratic model,
+but a full step can be unsafe away from a well-conditioned minimum. We check an
+exact quadratic solve, compare the library's Cauchy-point trust-region variant
+and L-BFGS on Rosenbrock, and retain singular-start failures and conditioning
+sensitivity with independent final-gradient checks.
+)
+\toc
+
+> The method
+
+Expand f(x+s) approximately as f+g transpose s+.5*s transpose H*s. Stationarity
+of that local model gives H*s=-g. With an SPD constant Hessian, the undamped
+Newton step reaches the quadratic minimizer in one update. This implementation
+instead solves (H+damping*I)*delta=g by partial-pivot elimination and subtracts
+delta. Its fixed damping is not an adaptive trust-region mechanism, and there
+is no line search to reject an increasing objective.
+
+$$
+ s_N=-H^{-1}g,\qquad
+ s_\delta=-(H+\delta I)^{-1}g,\qquad
+ e_{\mathrm{next}}=\delta(H+\delta I)^{-1}e
+ \quad\text{for an SPD quadratic}.
+$$
+\alttext(The undamped Newton step solves the Hessian system against minus the gradient. Fixed diagonal damping leaves the quadratic error multiplied by delta times the inverse shifted Hessian.)
+
+The last identity proves the damping bias of a single step, with contraction at
+most delta/(lambda_min(H)+delta) for nonnegative delta. It requires positive
+curvature; shifting an indefinite or singular Hessian by a tiny fixed amount does
+not supply a general descent or stability guarantee. Dense factorisation costs
+O(p cubed) and stores O(p squared), beyond obtaining the exact Hessian.
+
+The retained TikZ diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Normal documentation exports use its saved local SVG.
+
+```{bash, file="figures/opt_second_order_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/opt_second_order_mechanism.tikz > build/opt_second_order_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/opt_second_order_mechanism.svg build/opt_second_order_mechanism.dvi > build/opt_second_order_mechanism.render.log 2>&1
+printf 'Rendered the optimization mechanism diagram.\n'
+```
+// result_begin:
+// Rendered the optimization mechanism diagram.
+// \image(figures/opt_second_order_mechanism.svg)
+// result_end
+\caption(Curvature can define a Newton solve or scale a restricted gradient direction.)
+\alttext(An exact gradient and Hessian build a local model. A Newton solve or Cauchy ray proposes a displacement; independent loss and gradient checks assess the actual returned point.)
+
+`TrustRegionNewton` here uses only a Cauchy point. Set s=-alpha*g, where
+alpha=min(g transpose g/(g transpose H*g),radius/norm(g)) for positive ray curvature;
+otherwise use the radius boundary. A strict objective decrease is accepted and
+doubles the radius, up to its maximum; failure halves it. There is no predicted
+versus actual model-reduction ratio, dogleg step or full trust-region solve.
+It stops on gradient norm, tiny radius or budget. Hessian use costs O(p squared)
+per step, but the direction remains parallel to the gradient.
+
+> Small worked example
+
+>> A quadratic distinguishes the directions in one step
+
+For f=x0 squared+4*x1 squared at (1,1), g=(2,8) and H=diag(2,8). Undamped Newton
+gives (0,0). With radius one, the Cauchy ray uses alpha=1/sqrt(68), since this is
+smaller than the free ray minimizer 68/520. Its next point is
+(1-2/sqrt(68),1-8/sqrt(68)), with positive residual loss. The contour and actual
+native results make the difference visible without claiming a universal ranking.
+
+```{cpp, results="markdown", file="figures/opt_second_order_one_step.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective f({2, 8}, {0, 0});
+  o::NewtonOptions      n;
+  n.damping        = 0;
+  n.max_iterations = 1;
+  o::TrustRegionNewtonOptions t;
+  t.max_iterations = 1;
+  const auto a     = o::trace_optimize<o::HessianFunction>(f, o::Newton(n), {1, 1}),
+             b     = o::trace_optimize<o::HessianFunction>(f, o::TrustRegionNewton(t), {1, 1});
+  std::vector<double> x, y;
+  for (double angle : dm::seql(0, 2 * std::numbers::pi, 201).values()) {
+    x.push_back(std::sqrt(5.) * std::cos(angle));
+    y.push_back(std::sqrt(1.25) * std::sin(angle));
+  }
+  auto plot = dm::graphics::RPlot::create()
+                  .line(x, y, "initial loss contour", {130, 130, 130})
+                  .line({1, a.coordinates[0]}, {1, a.coordinates[1]}, "Newton", {40, 100, 190})
+                  .line({1, b.coordinates[0]}, {1, b.coordinates[1]}, "Cauchy", {190, 100, 35})
+                  .points(
+                      {1, a.coordinates[0], b.coordinates[0]},
+                      {1, a.coordinates[1], b.coordinates[1]},
+                      "step endpoints",
+                      {30, 30, 30},
+                      4)
+                  .title("One quadratic step: two directions")
+                  .x_label("x0")
+                  .y_label("x1")
+                  .x_limits(-2.5, 2.5)
+                  .y_limits(-1.5, 2.5)
+                  .legend(
+                      {"loss contour", "Newton", "Cauchy"},
+                      {{130, 130, 130}, {40, 100, 190}, {190, 100, 35}});
+  plot.size(850, 490).save_svg("build/opt_second_order_one_step.svg");
+  std::print(
+      "Newton\n\n{}\n\nCauchy-point variant\n\n{}\n", a.summary().to_md(7), b.summary().to_md(7));
+}
+```
+// result_begin: markdown
+Newton
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | 0 | 3 |  | 0 | 0 |
+
+
+Cauchy-point variant
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.577318 | 0.577318 | 1.53364 | 4 |  | 0.757464 | 0.0298575 |
+
+\image(figures/opt_second_order_one_step.svg)
+// result_end
+\caption(An exact Hessian solve and a radius-limited steepest ray produce different first steps.)
+\alttext(Newton reaches the centre of a quadratic contour in one undamped update. The Cauchy ray moves mostly along the high-gradient coordinate and retains a nonzero low-curvature error.)
+
+> Checking changing curvature
+
+>> Rosenbrock with the same declared starting point
+
+Rosenbrock has gradient (2*(x0-1)-400*x0*(x1-x0 squared),200*(x1-x0 squared))
+and Hessian with entries H00=2-400*x1+1200*x0 squared, H01=H10=-400*x0, H11=200.
+Its zero global minimum is (1,1), but the Hessian can be indefinite elsewhere.
+Run Newton (default damping 1e-10, 100-step budget), the Cauchy variant (200), and
+L-BFGS (500) from (-1.2,1). Their derivative-request traces are post-run loss checks;
+Newton can increase the objective because it has no acceptance safeguard, while
+the Cauchy variant's strict-decrease rule can still make slow valley progress.
+Budgets, Hessian costs and line-search calls differ, so callback counts are not a
+throughput measure.
+
+```{cpp, results="markdown", file="figures/opt_second_order_rosenbrock.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::SmoothBenchmark              f("rosenbrock");
+  std::vector<o::OptimizationRun> runs;
+  runs.push_back(o::trace_optimize<o::HessianFunction>(f, o::Newton(), {-1.2, 1}));
+  runs.push_back(o::trace_optimize<o::HessianFunction>(f, o::TrustRegionNewton(), {-1.2, 1}));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::LBFGS(), {-1.2, 1}));
+  const std::vector<std::string> labels{"Newton", "Cauchy TR", "L-BFGS"};
+  o::optimization_comparison(f, runs, labels, "gradient")
+      .title("Rosenbrock: curvature mechanisms")
+      .size(850, 490)
+      .save_svg("build/opt_second_order_rosenbrock.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print(
+        "{}\n\n{}\n\n{}\n\n",
+        labels[i],
+        runs[i].summary().to_md(7),
+        runs[i].trace.counts().to_md(0));
+}
+```
+// result_begin: markdown
+Newton
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 3.43302e-20 | 3.43302e-20 | 8.28615e-09 | 14 |  | 1 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 7 |
+| hessian | 6 |
+| value | 1 |
+| term_gradient_equivalents | 7 |
+
+
+Cauchy TR
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.0742902 | 0.0742902 | 0.330221 | 601 |  | 0.727911 | 0.528249 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 200 |
+| hessian | 200 |
+| value | 201 |
+| term_gradient_equivalents | 200 |
+
+
+L-BFGS
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.9861e-13 | 1.9861e-13 | 3.80084e-06 | 105 |  | 1 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 44 |
+| value | 61 |
+| term_gradient_equivalents | 44 |
+
+
+\image(figures/opt_second_order_rosenbrock.svg)
+// result_end
+\caption(Final gradients qualify a visually flat loss curve and differing native budgets.)
+\alttext(Newton, the Cauchy-point variant and L-BFGS follow different loss trajectories on Rosenbrock. Native returned values, final gradients and callback counts accompany the curves.)
+
+>> A singular start separates an exception from a safe step
+
+At (0,.005), Rosenbrock's Hessian is diag(0,200) and its gradient is (-2,1).
+With damping zero, the native pivot threshold rejects a singular solve. With
+default damping 1e-10, the first x0 displacement is about two times ten to the ten:
+a numerically nonzero pivot permits an enormous step. It need not be a useful
+regularisation. Compare six-step runs with small/default and .1 damping against
+a six-step radius-one Cauchy run. The singular exception is printed separately;
+the finite-budget paths and final checks retain any poor Newton result rather
+than calling a non-throwing run successful.
+
+```{cpp, results="markdown", file="figures/opt_second_order_singular.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::SmoothBenchmark f("rosenbrock");
+  o::NewtonOptions   n;
+  n.damping           = 0;
+  n.max_iterations    = 6;
+  const auto singular = o::trace_optimize<o::HessianFunction>(f, o::Newton(n), {0, .005});
+  std::print("Undamped singular control\n\n{}\n\n", singular.summary().to_md(7));
+  std::vector<o::OptimizationRun> runs;
+  for (double shift : {1e-10, .1}) {
+    n.damping = shift;
+    runs.push_back(o::trace_optimize<o::HessianFunction>(f, o::Newton(n), {0, .005}));
+  }
+  o::TrustRegionNewtonOptions t;
+  t.max_iterations = 6;
+  runs.push_back(o::trace_optimize<o::HessianFunction>(f, o::TrustRegionNewton(t), {0, .005}));
+  const std::vector<std::string> labels{"shift 1e-10", "shift .1", "Cauchy TR"};
+  o::optimization_comparison(f, runs, labels, "gradient")
+      .title("Near-singular curvature: six-step budgets")
+      .size(850, 490)
+      .save_svg("build/opt_second_order_singular.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print("{}\n\n{}\n\n", labels[i], runs[i].summary().to_md(7));
+}
+```
+// result_begin: markdown
+Undamped singular control
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| nan | 1.0025 | 2.23607 | 2 | Newton: singular Hessian | 0 | 0.005 |
+
+
+shift 1e-10
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 4e+20 | 4e+20 | 5.24288e+17 | 13 |  | 2e+10 | 4e+20 |
+
+
+shift .1
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 330.413 | 330.413 | 369.777 | 13 |  | 19.1721 | 367.524 |
+
+
+Cauchy TR
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.658337 | 0.658337 | 1.57083 | 19 |  | 0.188659 | 0.0347986 |
+
+
+\image(figures/opt_second_order_singular.svg)
+// result_end
+\caption(A tiny diagonal shift avoids a zero pivot without guaranteeing a useful Newton step.)
+\alttext(Two shifted Newton paths and a radius-limited Cauchy path start at a singular Hessian. The undamped failure and all partial or returned states are retained in the tables.)
+
+>> Conditioning affects the Cauchy ray differently from an exact solve
+
+Sweep diagonal Hessians (2,kappa) for kappa=2,20,200,2000 at (1,1). Undamped
+Newton still solves each exactly in one update. The default Cauchy variant retains
+its 200-step budget and radius adaptation, so its final gradient diagnoses
+remaining error. This is a controlled geometry test, not a claim that forming and
+solving a dense Hessian is cheaper than requesting a gradient. No dataset is
+required for these exact-curvature checks.
+
+```{cpp, results="markdown", file="figures/opt_second_order_conditioning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  std::vector<double> axis, newton, trust;
+  for (double k : {2., 20., 200., 2000.}) {
+    o::QuadraticObjective f({2, k}, {0, 0});
+    o::NewtonOptions      opt;
+    opt.damping        = 0;
+    opt.max_iterations = 1;
+    const auto a       = o::trace_optimize<o::HessianFunction>(f, o::Newton(opt), {1, 1}),
+               b       = o::trace_optimize<o::HessianFunction>(f, o::TrustRegionNewton(), {1, 1});
+    axis.push_back(std::log10(k / 2));
+    newton.push_back(std::log10(std::max(1e-14, a.gradient_norm)));
+    trust.push_back(std::log10(std::max(1e-14, b.gradient_norm)));
+    std::print(
+        "High curvature {}\n\nNewton\n\n{}\n\nCauchy TR\n\n{}\n\n",
+        k,
+        a.summary().to_md(7),
+        b.summary().to_md(7));
+  }
+  auto plot = dm::graphics::RPlot::create()
+                  .line(axis, newton, "one Newton step", {40, 100, 190})
+                  .line(axis, trust, "200-step Cauchy budget", {190, 100, 35})
+                  .title("Quadratic conditioning and final gradients")
+                  .x_label("log10 condition number")
+                  .y_label("log10 final gradient norm (floor 1e-14)")
+                  .x_limits(0, 3)
+                  .y_limits(-15, 5)
+                  .legend({"one Newton step", "Cauchy budget"}, {{40, 100, 190}, {190, 100, 35}});
+  plot.size(850, 490).save_svg("build/opt_second_order_conditioning.svg");
+}
+```
+// result_begin: markdown
+High curvature 2
+
+Newton
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | 0 | 3 |  | 0 | 0 |
+
+
+Cauchy TR
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | 0 | 9 |  | 0 | 0 |
+
+
+High curvature 20
+
+Newton
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | 0 | 3 |  | 0 | 0 |
+
+
+Cauchy TR
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.16264e-18 | 1.16264e-18 | 6.72843e-09 | 39 |  | 1.85128e-10 | -3.35912e-10 |
+
+
+High curvature 200
+
+Newton
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | 0 | 3 |  | 0 | 0 |
+
+
+Cauchy TR
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.46358e-21 | 1.46358e-21 | 7.65144e-11 | 30 |  | 3.82567e-11 | 1.93201e-15 |
+
+
+High curvature 2000
+
+Newton
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | 0 | 3 |  | 0 | 0 |
+
+
+Cauchy TR
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 2.43285e-22 | 2.43285e-22 | 3.11952e-11 | 24 |  | 1.55976e-11 | 7.80659e-18 |
+
+
+\image(figures/opt_second_order_conditioning.svg)
+// result_end
+\caption(The exact quadratic solve is distinguished from a restricted ray method and its finite budget.)
+\alttext(Newton reaches the zero-gradient control for every diagonal condition number. The Cauchy variant final gradient reflects its stated iteration budget and geometry-dependent progress.)
+
+> Conclusions and references
+
+The quadratic calculation proves the undamped one-step property and quantifies
+fixed-damping error. Rosenbrock and the singular control show why it does not imply
+a globally safe full Newton step. The routine named TrustRegionNewton uses a
+Cauchy ray with objective-only radius decisions, so full trust-region model-ratio
+claims would describe a different implementation. Final loss, gradients, failures
+and callback types remain separate evidence.
+
+- J. Nocedal and S. J. Wright (2006), [Numerical Optimization](https://doi.org/10.1007/978-0-387-40065-5), Newton, quasi-Newton and trust-region models. The restricted Cauchy acceptance rule is specified above.
+
+> Reading the numerical evidence
+
+`trace_optimize` calls the configured native optimizer through its stated abstract
+interface. It records callback requests without inserting fitting evaluations.
+Value calls can be rejected trials; gradient calls can be look-ahead points.
+`optimization_comparison` explicitly re-evaluates selected points afterwards on
+these pure objectives. Those diagnostic calls are excluded from fitting counts.
+Callback indices are neither accepted iterations nor wall time. The plotted gap
+uses the declared reference (minimum or stated lower bound) and a display floor of 1e-14; that floor does
+not modify any optimizer update. Returned coordinates, checked objective and
+appropriate stationarity/feasibility checks carry more information than a return
+from a finite iteration budget. Native APIs do not expose a uniform stop-status flag.
+The recorder retains exceptions and rejects nonfinite requested values/gradients;
+this makes failures visible rather than letting an instrumented run continue on NaN.
+

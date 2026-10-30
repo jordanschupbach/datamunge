@@ -193,3 +193,127 @@ TEST(KNNRegressor, WeightedAndUniformGiveDifferentPredictionsInGeneral) {
     // Not identical in general, since neighbor distances within a k-set are rarely all equal.
     EXPECT_NE(u.rmse(), w.rmse());
 }
+
+namespace {
+
+// Small two-predictor data set with unequal scales, three classes and a numeric response.
+DataFrame small_frame(std::size_t skip = SIZE_MAX) {
+    const std::vector<double> x1{0.1, 0.4, 1.3, 2.2, 2.9, 3.1, 4.0, 4.4, 5.2, 6.1, 6.3, 7.5};
+    const std::vector<double> x2{10, 35, 20, 80, 55, 90, 40, 75, 15, 60, 95, 30};
+    const std::vector<std::string> c{"a", "a", "b", "a", "b", "c", "b", "c", "a", "c", "c", "b"};
+    std::vector<double> a, b, y;
+    std::vector<std::string> cls;
+    for (std::size_t i = 0; i < x1.size(); ++i) {
+        if (i == skip) continue;
+        a.push_back(x1[i]), b.push_back(x2[i]), cls.push_back(c[i]), y.push_back(x1[i] * 2.0 + x2[i] / 10.0);
+    }
+    DataFrame d;
+    d.add_column("x1", a);
+    d.add_column("x2", b);
+    d.add_column("cls", cls);
+    d.add_column("y", y);
+    return d;
+}
+
+DataFrame row_frame(std::size_t i) {
+    const auto all = small_frame();
+    DataFrame d;
+    d.add_column("x1", std::vector<double>{all.get_column<double>("x1").values()[i]});
+    d.add_column("x2", std::vector<double>{all.get_column<double>("x2").values()[i]});
+    return d;
+}
+
+} // namespace
+
+TEST(KNNClassifier, LeaveOneOutEqualsRefittingWithoutTheRow) {
+    for (const bool weighted : {false, true})
+        for (const std::size_t k : {1u, 3u, 4u}) {
+            const KNNClassifierOptions options{.k = k, .weighted = weighted};
+            const KNNClassifier full(small_frame(), "cls ~ x1 + x2", options);
+            for (std::size_t i = 0; i < 12; ++i) {
+                const KNNClassifier refit(small_frame(i), "cls ~ x1 + x2", options);
+                EXPECT_EQ(full.fitted_classes()[i], refit.predict(row_frame(i))[0]) << "row " << i << " k " << k;
+            }
+        }
+}
+
+TEST(KNNRegressor, LeaveOneOutEqualsRefittingWithoutTheRow) {
+    for (const auto metric : {DistanceMetric::Euclidean, DistanceMetric::Manhattan}) {
+        const KNNRegressorOptions options{.k = 3, .metric = metric, .weighted = true};
+        const KNNRegressor full(small_frame(), "y ~ x1 + x2", options);
+        for (std::size_t i = 0; i < 12; ++i) {
+            const KNNRegressor refit(small_frame(i), "y ~ x1 + x2", options);
+            EXPECT_NEAR(full.fitted_values()[i], refit.predict(row_frame(i))[0], 1e-12) << "row " << i;
+        }
+    }
+}
+
+TEST(KNNClassifier, LooAccuracyPathMatchesSeparateFits) {
+    const auto iris = datamunge::datasets::iris();
+    for (const bool weighted : {false, true}) {
+        const KNNClassifier base(iris, "Species ~ Sepal.Length + Sepal.Width", {.k = 1, .weighted = weighted});
+        const auto path = base.loo_accuracy_path(12);
+        ASSERT_EQ(path.size(), 12u);
+        for (std::size_t k = 1; k <= 12; ++k) {
+            const KNNClassifier fit(iris, "Species ~ Sepal.Length + Sepal.Width", {.k = k, .weighted = weighted});
+            EXPECT_DOUBLE_EQ(path[k - 1], fit.training_accuracy()) << "k " << k;
+        }
+    }
+}
+
+TEST(KNNRegressor, LooRmsePathMatchesSeparateFits) {
+    const auto iris = datamunge::datasets::iris();
+    const KNNRegressor base(iris, "Petal.Length ~ Sepal.Length + Sepal.Width", {.k = 1});
+    const auto path = base.loo_rmse_path(10);
+    for (std::size_t k = 1; k <= 10; ++k) {
+        const KNNRegressor fit(iris, "Petal.Length ~ Sepal.Length + Sepal.Width", {.k = k});
+        EXPECT_NEAR(path[k - 1], fit.rmse(), 1e-12) << "k " << k;
+    }
+}
+
+TEST(KNNClassifier, KneighborsByHand) {
+    DataFrame d;
+    d.add_column("x", std::vector<double>{0, 3, 1, 4});
+    d.add_column("y", std::vector<double>{0, 4, 1, 0});
+    d.add_column("c", std::vector<std::string>{"a", "b", "a", "b"});
+    const KNNClassifier knn(d, "c ~ x + y", {.k = 3, .metric = DistanceMetric::Manhattan, .standardize = false});
+    DataFrame q;
+    q.add_column("x", std::vector<double>{2.0});
+    q.add_column("y", std::vector<double>{1.0});
+    const auto nb = knn.kneighbors(q);
+    ASSERT_EQ(nb.index[0].size(), 3u);
+    EXPECT_EQ(nb.index[0][0], 2u);  // (1, 1): distance 1
+    EXPECT_EQ(nb.index[0][1], 0u);  // (0, 0): distance 3, tie with (4, 0) broken by row order
+    EXPECT_EQ(nb.index[0][2], 3u);
+    EXPECT_DOUBLE_EQ(nb.distance[0][0], 1.0);
+    EXPECT_DOUBLE_EQ(nb.distance[0][1], 3.0);
+    EXPECT_DOUBLE_EQ(nb.distance[0][2], 3.0);
+    EXPECT_EQ(knn.predict(q)[0], "a");
+}
+
+TEST(KNNAsymptoticRisk, ClosedForms) {
+    using datamunge::stats::knn_asymptotic_risk;
+    for (const double eta : {0.0, 0.1, 0.3, 0.5, 0.8}) {
+        EXPECT_NEAR(knn_asymptotic_risk(eta, 1), 2 * eta * (1 - eta), 1e-14);
+        EXPECT_NEAR(knn_asymptotic_risk(eta, 2), 2 * eta * (1 - eta), 1e-14);  // a tie is a coin flip
+        EXPECT_NEAR(knn_asymptotic_risk(eta, 7), knn_asymptotic_risk(1 - eta, 7), 1e-14);
+    }
+    // k = 3: eta P(B <= 1) + (1 - eta) P(B >= 2).
+    const double e = 0.2, p_le1 = std::pow(0.8, 3) + 3 * 0.2 * 0.64, p_ge2 = 1 - p_le1;
+    EXPECT_NEAR(knn_asymptotic_risk(e, 3), e * p_le1 + (1 - e) * p_ge2, 1e-14);
+    EXPECT_NEAR(knn_asymptotic_risk(0.5, 9), 0.5, 1e-14);
+    EXPECT_NEAR(knn_asymptotic_risk(0.2, 1001), 0.2, 1e-10);  // tends to the Bayes risk min(eta, 1 - eta)
+    EXPECT_THROW((void)knn_asymptotic_risk(1.5, 3), std::invalid_argument);
+    EXPECT_THROW((void)knn_asymptotic_risk(0.5, 0), std::invalid_argument);
+}
+
+TEST(KNNRegressor, RawDistanceTiesSurviveStandardisation) {
+    // x = 2 is equally far from x = 1 and x = 3; standardised values carry rounding error, but
+    // differences are taken on raw values, so the tie stands and row order picks x = 1.
+    DataFrame d;
+    d.add_column("x", std::vector<double>{1, 2, 3, 4, 5, 6});
+    d.add_column("y", std::vector<double>{2, 4, 3, 7, 6, 9});
+    const KNNRegressor knn(d, "y ~ x", {.k = 1});
+    const std::vector<double> expected{4, 2, 4, 3, 7, 6};
+    for (std::size_t i = 0; i < 6; ++i) EXPECT_DOUBLE_EQ(knn.fitted_values()[i], expected[i]) << "row " << i;
+}

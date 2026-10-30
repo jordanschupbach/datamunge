@@ -1,6 +1,6 @@
 # Native Python NN example. CIFAR-10 CNN with crop/flip augmentation, trained in Python.
-"""CMD: just python-example cnn_cifar10
-A small CIFAR-10 CNN trained with independent random crops and flips.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_cifar10.py
+"""A small CIFAR-10 CNN trained with independent random crops and flips.
 
 Port of tflow's cnn_cifar10. Preparation (in ~/projects/tflow_examples):
 python3 scripts/fetch_datasets.py cifar10 --split both.

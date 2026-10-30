@@ -1,0 +1,719 @@
+//? Title: Elastic Net: Thresholding, Grouping and Cross-Validation
+//? Subtitle: Exact coordinate updates, fold-local preprocessing and Iris prediction
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Predicting a continuous response from correlated measurements can produce unstable
+least-squares coefficients. We want to control coefficient size and possible sparsity
+while measuring prediction error without fitting preprocessing on validation rows.
+Elastic net combines L1 thresholding with quadratic shrinkage. Four-row examples
+expose its exact coordinate solution, sensitivity to measurement units and grouping
+of duplicated predictors. A small fold-refit check verifies the validation pipeline.
+Iris then supplies coefficient paths, complete CV diagnostics and a predeclared
+120/30-row training/test comparison of ridge, lasso, mixtures and unpenalized regression.
+Numerical convergence, training fit, CV selection and held-out performance are reported
+separately. The primary fit does not improve held-out RMSE over unpenalized regression
+on this split; neither sparsity nor shrinkage alone certifies a useful predictor.
+)
+\toc
+
+> The method
+
+>> Specify the objective in the coordinates that are penalized
+
+Let the expanded formula-design columns be x_j. With an intercept, fit training
+means mu_j and response mean y_bar; without an intercept, both origins are zero.
+Optional scaling uses s_j=sqrt(sum_i(x_ij−mu_j)^2/n), with an exactly zero divisor
+replaced by one. Define Z_ij=(x_ij−mu_j)/s_j and u_i=y_i−y_bar. The model minimizes
+
+$$
+ J(\theta)=\frac{1}{2n}\|u-Z\theta\|_2^2+
+ \lambda\left[\alpha\|\theta\|_1+\frac{1-\alpha}{2}\|\theta\|_2^2\right],
+ \quad\beta_j=\theta_j/s_j,\quad
+ b_0=\bar y-\sum_j\mu_j\beta_j.
+$$
+\alttext(The penalized objective is average squared error divided by two plus mixed L1 and squared L2 penalties on scaled slopes. Dividing by training scales restores original-unit slopes; the intercept reverses the fitted offsets.)
+
+Here lambda>=0 controls strength and alpha in [0,1] controls the L1 mixture. Alpha=0
+is `Ridge`, alpha=1 is `Lasso`; the wrappers use the same engine. The intercept is
+unpenalized, and the response is centred when appropriate but never scaled. Formula
+interactions are expanded first and then centred/scaled as their own design columns.
+Reported coefficients are in original design units, so their penalty is not generally
+lambda times their unscaled norm. `coefficient_table()` shows both coordinate systems.
+Population RMS uses n, not n−1; without an intercept it is RMS about zero.
+
+This is the direct penalized objective used in the glmnet coordinate-descent formulation.
+It does not apply the additional coefficient rescaling of the original 2005 elastic-net
+paper. Scikit-learn names the same parameters differently: its `alpha` is this lambda,
+and its `l1_ratio` is this alpha. Standardize explicitly before comparing solvers.
+
+The TikZ illustration shows a fixed penalty budget in two coefficient coordinates
+and the thresholding operation. The curved contours do not by themselves establish
+which coefficients a particular dataset will select. Regeneration requires LaTeX,
+PGF/TikZ, standalone, Latin Modern and dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/elastic_net_geometry.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/elastic_net_geometry.tikz > build/elastic_net_geometry.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/elastic_net_geometry.svg build/elastic_net_geometry.dvi > build/elastic_net_geometry.render.log 2>&1
+printf 'Rendered the local penalty and threshold diagram.\n'
+```
+// result_begin:
+// Rendered the local penalty and threshold diagram.
+// \image(figures/elastic_net_geometry.svg)
+// result_end
+\caption(L1 contributes corners and a zero region; L2 supplies additional curvature in coefficient space.)
+\alttext(Three contours show equal penalty budget one for ridge, a half-and-half elastic net and lasso. A second panel shows soft thresholding with a flat zero region between minus one half and one half and the full coordinate-update formula.)
+
+>> Derive the exact coordinate minimizer
+
+Hold every coefficient except theta_j fixed and put its old contribution back into
+the residual. The one-dimensional objective has curvature q_j, not automatically one:
+
+$$
+ \rho_j=\frac1n Z_j^T\!\left(u-\sum_{\ell\ne j}Z_\ell\theta_\ell\right),\quad
+ q_j=\frac1n\|Z_j\|_2^2,\qquad
+ \theta_j\leftarrow\frac{S(\rho_j,\lambda\alpha)}{q_j+\lambda(1-\alpha)},\quad
+ S(a,t)=\operatorname{sign}(a)\max(|a|-t,0).
+$$
+\alttext(Add back the old coordinate to form a partial residual. Its correlation with the predictor is soft-thresholded and divided by actual predictor squared norm plus the quadratic penalty.)
+
+Differentiating on the positive and negative half-lines gives the two nonzero cases;
+the subgradient interval at zero supplies the threshold region. For a zero column and
+zero denominator, choose coefficient zero. Even when standardization is disabled,
+this actual q_j is essential. Every exact coordinate update weakly decreases the
+convex objective, subject to floating-point arithmetic. Positive lambda*(1−alpha)
+makes the slope objective strictly convex; lasso and unpenalized least squares can have
+nonunique slopes when the design is dependent.
+
+For ridge, stationarity also gives
+
+$$
+ (Z^TZ+n\lambda I)\theta=Z^Tu,\qquad
+ \kappa=\frac{d_{\max}+n\lambda}{d_{\min}+n\lambda}.
+$$
+\alttext(Ridge solves penalized normal equations. Its eigenvalue condition number is the largest shifted Gram eigenvalue divided by the smallest shifted eigenvalue.)
+
+A positive lambda makes this matrix invertible, but an arbitrarily small positive
+lambda does not guarantee a small condition number. Ridge does not impose a sparsity
+threshold; nevertheless, a coefficient can be exactly zero for an irrelevant orthogonal
+or constant column. The old report's “never zero” and unconditional conditioning claims
+are therefore too strong.
+
+>> Check stationarity as well as coefficient movement
+
+Let c_j=Z_j^T(u−Z theta)/n−lambda*(1−alpha)*theta_j. Convex optimality requires
+
+$$
+ c_j=\lambda\alpha\operatorname{sign}(\theta_j)\quad(\theta_j\ne0),\qquad
+ |c_j|\le\lambda\alpha\quad(\theta_j=0).
+$$
+\alttext(At a nonzero coefficient the residual correlation minus the quadratic gradient matches the signed L1 penalty. At zero it lies inside the L1 subgradient interval.)
+
+`diagnostics()` reports the maximum violation of those conditions, objective and
+coefficient change. Stopping requires max_change<=tol and violation<=tol times
+max(1,max_j abs(Z_j^T u/n)). `max_iter` bounds full cyclic sweeps; a finite partial
+fit is returned and flagged if that limit is reached. Full-data path and individual
+fold results retain their own convergence evidence. This is a stationarity check,
+not a duality-gap certificate or a prediction guarantee. One sweep costs O(n*p);
+a length-L path with F folds costs O((F+1)*L*iterations*n*p), with warm starts.
+
+>> Keep validation preprocessing local to each training fold
+
+A finite negative `lambda` requests automatic CV. The common descending geometric
+grid uses full-training correlations: lambda_max=max(abs(Z_j^T u/n))/alpha for
+alpha>0, or a ridge-only heuristic using divisor .001. At zero correlation the maximum
+falls back to one. The default minimum/maximum ratio is .01 when n<p and .0001 otherwise;
+`lambda_min_ratio` can override it. Pure ridge has no finite all-zero cutoff. A search
+boundary means the stated grid should be reconsidered, not that a global optimum was
+found. Alpha is never tuned automatically by this API.
+
+Balanced folds use a local SplitMix64 seed. Each fold computes its own training
+predictor offsets/scales and response offset, fits the common lambdas, and predicts
+its held-out rows with those frozen quantities. The candidate grid and Formula schema
+are defined from the full training set, rather than separately per fold. CV pools
+squared error over all held-out rows, weighting rows equally even for unequal folds:
+
+$$
+ \operatorname{CV}(\lambda)=\frac1n\sum_{f=1}^F\sum_{i\in V_f}
+ \left(y_i-\widehat b_{0,-f}-x_i^T\widehat\beta_{-f}(\lambda)\right)^2.
+$$
+\alttext(Cross-validation averages held-out squared errors over rows, using coefficients and intercepts fitted without each row's fold.)
+
+The first minimum on the descending path wins exact ties. The corresponding full-
+training path fit supplies the final model. Candidates with finite but unfinished
+optimization remain visible, including their status; no finite CV points are hidden
+from the plot. The old report's divergent-fold workaround is removed: using a unit
+coordinate denominator on arbitrary fold columns and reusing full-data preprocessing
+were solver/pipeline errors, rather than reasons to conceal large errors.
+
+Formula nulls drop rows before fitting; `kept_row_indices()` records the mapping.
+Retained design/response values and arithmetic must be finite. Predictions use the
+frozen Formula schema and raw-unit coefficients; query batches never fit new offsets.
+A null-predictor query row receives NaN, while scoring omits null formula rows.
+No p-values, confidence intervals or causal conclusions follow from selected slopes.
+
+> Simple examples
+
+>> Four rows with two orthogonal predictors
+
+The columns x and z below are centred, orthogonal and have population squared norm
+one. The response is exactly 3+2*x+.2*z, so rho=(2,.2). At lambda=.5, ridge gives
+(4/3,2/15), lasso gives (1.5,0), and alpha=.5 gives (1.4,0). The intercept remains
+three. This checks the signs, threshold, denominator and unpenalized intercept together.
+
+```{cpp, results="markdown", file="figures/en_soft_threshold.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{-1, -1, 1, 1});
+  d.add_column("z", std::vector<double>{-1, 1, -1, 1});
+  d.add_column("y", std::vector<double>{.8, 1.2, 4.8, 5.2});
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+  const std::vector<std::string>       labels = {"ridge", "elastic net", "lasso"};
+  dm::dstruct::DataFrame               results;
+  std::size_t                          index = 0;
+  for (double alpha : {0., .5, 1.}) {
+    std::vector<double> grid, bx, bz;
+    for (int k = 0; k <= 40; ++k) {
+      const double                lambda = k / 20.;
+      const dm::stats::ElasticNet m(d, "y ~ x + z", {alpha, lambda});
+      grid.push_back(lambda);
+      bx.push_back(m.coefficients()[0]);
+      bz.push_back(m.coefficients()[1]);
+    }
+    left.line(grid, bx, labels[index], colors[index]);
+    right.line(grid, bz, labels[index], colors[index]);
+    const dm::stats::ElasticNet m(d, "y ~ x + z", {alpha, .5});
+    auto row = m.diagnostics().select({"alpha", "lambda", "objective", "max_kkt_violation"});
+    row.add_column("x", std::vector<double>{m.coefficients()[0]});
+    row.add_column("z", std::vector<double>{m.coefficients()[1]});
+    row.add_column("intercept", std::vector<double>{m.intercept()});
+    results = results.ncols() ? results.concat_rows(row) : row;
+    ++index;
+  }
+  left.title("Strong coordinate: score 2")
+      .x_label("lambda")
+      .y_label("coefficient of x")
+      .y_limits(0, 3.3);
+  right.title("Weak coordinate: score .2")
+      .x_label("lambda")
+      .y_label("coefficient of z")
+      .y_limits(0, .36);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/en_soft_threshold.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 7;
+  fmt.scientific = {"max_kkt_violation"};
+  std::print("{}\n\n{}\n", d.to_md(1), results.to_md(fmt));
+}
+```
+// result_begin: markdown
+| x | z | y |
+| ---: | ---: | ---: |
+| -1 | -1 | 0.8 |
+| -1 | 1 | 1.2 |
+| 1 | -1 | 4.8 |
+| 1 | 1 | 5.2 |
+
+
+| alpha | lambda | objective | max_kkt_violation | x | z | intercept |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.0 | 0.5 | 0.6733333 | 1.6653345e-16 | 1.3333333 | 0.1333333 | 3 |
+| 0.5 | 0.5 | 0.7950000 | 1.1102230e-16 | 1.4000000 | 0.0000000 | 3 |
+| 1.0 | 0.5 | 0.8950000 | 5.5511151e-17 | 1.5000000 | 0.0000000 | 3 |
+
+\image(figures/en_soft_threshold.svg)
+// result_end
+\caption(Exact orthogonal coordinates separate smooth shrinkage from the L1 zero region.)
+\alttext(Two panels show the strong and weak coefficient across lambda for ridge, elastic net and lasso. Tables contain all four input rows and coefficients, objective and KKT error at lambda one half.)
+
+>> Measurement units change the penalty unless they are normalized
+
+Replace x by x_scaled=2*x, leaving the response unchanged. With standardization the
+penalized coordinate is identical, the published slope halves from 1.4 to .7, and every
+prediction is unchanged. Without standardization, q becomes four and rho becomes four:
+the same alpha=.5, lambda=.5 gives slope (4−.25)/(4+.25)=15/17 on x_scaled. This
+changes the prediction because it changes the penalty geometry in raw units. Neither
+coefficient norm nor lambda can be compared across differently scaled fits without
+stating those coordinates.
+
+```{cpp, results="markdown", file="figures/en_units.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{-1, -1, 1, 1});
+  d.add_column("z", std::vector<double>{-1, 1, -1, 1});
+  d.add_column("y", std::vector<double>{.8, 1.2, 4.8, 5.2});
+  auto changed = d;
+  auto values  = d.numeric_column("x").values();
+  for (auto& x : values)
+    x *= 2;
+  changed = changed.mutate("x", values);
+  const dm::stats::ElasticNet base(d, "y ~ x + z", {.5, .5}),
+      scaled(changed, "y ~ x + z", {.5, .5});
+  dm::stats::ElasticNetOptions o{.5, .5};
+  o.standardize = false;
+  const dm::stats::ElasticNet raw(changed, "y ~ x + z", o);
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  left.line({1, 2, 3, 4}, base.fitted_values(), "original", {37, 99, 235})
+      .points({1, 2, 3, 4}, scaled.fitted_values(), "rescaled + normalized", {220, 38, 38}, 4)
+      .title("Scaling restores identical predictions")
+      .x_label("row")
+      .y_label("fitted response")
+      .y_limits(0, 7);
+  right.line({1, 2, 3, 4}, scaled.fitted_values(), "normalized", {37, 99, 235})
+      .points({1, 2, 3, 4}, raw.fitted_values(), "raw-unit penalty", {220, 38, 38}, 4)
+      .title("Raw-unit penalties fit a different model")
+      .x_label("row")
+      .y_label("fitted response")
+      .y_limits(0, 7);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/en_units.svg");
+  std::print(
+      "Rescaled predictors, normalized penalty:\n\n{}\n\nRescaled predictors, raw penalty:\n\n{}\n",
+      scaled.coefficient_table().to_md(8),
+      raw.coefficient_table().to_md(8));
+}
+```
+// result_begin: markdown
+Rescaled predictors, normalized penalty:
+
+| predictor | coefficient | penalty_coefficient | center | scale |
+| :--- | ---: | ---: | ---: | ---: |
+| x | 0.7 | 1.4 | 0 | 2 |
+| z | 0.0 | 0.0 | 0 | 1 |
+
+
+Rescaled predictors, raw penalty:
+
+| predictor | coefficient | penalty_coefficient | center | scale |
+| :--- | ---: | ---: | ---: | ---: |
+| x | 0.88235294 | 0.88235294 | 0 | 1 |
+| z | 0.00000000 | 0.00000000 | 0 | 1 |
+
+\image(figures/en_units.svg)
+// result_end
+\caption(Normalized fitting preserves predictions under a change of predictor units; unscaled penalties have different meanings.)
+\alttext(The first panel overlays original and normalized rescaled predictions. The second compares normalized and raw-unit penalties. Tables show original slopes, penalized slopes, offsets and scales.)
+
+> Checking the theory
+
+>> Duplicated predictors expose grouping and nonuniqueness
+
+Let x=z and y=2*x, with x=(-1,-1,1,1), lambda=1. Any lasso solution with nonnegative
+slopes summing to one is optimal. Cyclic order can put all weight on the first column;
+reversing the columns changes the reported allocation but not predictions. With
+alpha=.5, strict convexity and exchange symmetry force equal slopes. Substituting
+b_x=b_z=b gives 2−2*b=.5+.5*b, hence b=.6. Ridge gives 2/3 on each duplicate.
+
+The table also caps the mixed model at different sweep budgets. A small coefficient
+change is checked together with subgradient stationarity, rather than treating any
+returned vector as an optimized model. The plot floors KKT errors at 1e-14 only for
+logarithmic display; the table retains scientific notation and actual convergence flags.
+
+```{cpp, results="markdown", file="figures/en_grouping.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{-1, -1, 1, 1});
+  d.add_column("z", std::vector<double>{-1, -1, 1, 1});
+  d.add_column("y", std::vector<double>{-2, -2, 2, 2});
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+  const std::vector<std::string>       labels = {"ridge", "elastic net", "lasso"};
+  std::size_t                          index  = 0;
+  for (double alpha : {0., .5, 1.}) {
+    dm::stats::ElasticNetOptions o{alpha, 1};
+    o.tol = 1e-12;
+    const dm::stats::ElasticNet m(d, "y ~ x + z", o);
+    const double                offset = (double(index) - 1) * .25;
+    left.bars({1 + offset, 2 + offset}, m.coefficients(), labels[index], colors[index], .22);
+    ++index;
+  }
+  std::vector<double>    budget, errors;
+  dm::dstruct::DataFrame table;
+  for (std::size_t steps : {1, 2, 4, 8, 16, 32, 64}) {
+    dm::stats::ElasticNetOptions o{.5, 1};
+    o.max_iter = steps;
+    o.tol      = 1e-12;
+    const dm::stats::ElasticNet m(d, "y ~ x + z", o);
+    auto                        row =
+        m.diagnostics().select({"iterations", "converged", "max_kkt_violation", "objective"});
+    row.add_column("budget", std::vector<double>{double(steps)});
+    row.add_column("x", std::vector<double>{m.coefficients()[0]});
+    row.add_column("z", std::vector<double>{m.coefficients()[1]});
+    table = table.ncols() ? table.concat_rows(row) : row;
+    budget.push_back(std::log2(steps));
+    errors.push_back(
+        std::log10(std::max(1e-14, m.diagnostics().double_at("max_kkt_violation", 0))));
+  }
+  left.title("Identical predictors, different allocations")
+      .x_label("column (x=1, z=2)")
+      .y_label("coefficient")
+      .y_limits(0, 1.6);
+  right.line(budget, errors, "KKT residual", {37, 99, 235})
+      .points(budget, errors, "", {37, 99, 235}, 4)
+      .title("Stationarity improves across sweeps")
+      .x_label("log2 allowed sweep budget")
+      .y_label("log10 KKT violation, floor -14")
+      .y_limits(-14, 1);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/en_grouping.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 9;
+  fmt.scientific = {"max_kkt_violation"};
+  std::print("{}\n", table.to_md(fmt));
+}
+```
+// result_begin: markdown
+| iterations | converged | max_kkt_violation | objective | budget | x | z |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0 | 3.333333333e-01 | 1.166666667 | 1 | 1.000000000 | 0.333333333 |
+| 2 | 0 | 1.481481481e-01 | 1.113168724 | 2 | 0.777777778 | 0.481481481 |
+| 4 | 0 | 2.926383173e-02 | 1.100513823 | 4 | 0.635116598 | 0.576588935 |
+| 8 | 0 | 1.141829130e-03 | 1.100000782 | 8 | 0.601370195 | 0.599086537 |
+| 16 | 0 | 1.738365017e-06 | 1.100000000 | 16 | 0.600002086 | 0.599998609 |
+| 32 | 0 | 4.029387934e-12 | 1.100000000 | 32 | 0.600000000 | 0.600000000 |
+| 35 | 1 | 3.536615445e-13 | 1.100000000 | 64 | 0.600000000 | 0.600000000 |
+
+\image(figures/en_grouping.svg)
+// result_end
+\caption(An L2 contribution shares weight across duplicate predictors and supplies a unique slope vector; lasso need not.)
+\alttext(Grouped bars compare ridge, mixed and lasso slopes on two duplicate columns. A second panel shows KKT error versus allowed sweep budget. The table distinguishes actual sweeps, partial fits, objectives and coefficient allocations.)
+
+>> Refit a shifted small dataset fold by fold
+
+Twelve observations include one large predictor value. A training subset containing
+that row has a different mean and scale from a subset that holds it out. The native
+fold IDs let us rebuild each training/test partition explicitly, refit the selected
+lambda from scratch and compare its test MSE with `cv_fold_results()`. This is a
+pipeline consistency check, separate from the independent external solver checks.
+The held-out rows never determine these per-fold means/scales. All seven lambdas remain
+in the native CV table, and all validation rows contribute to the pooled MSE.
+
+```{cpp, results="markdown", file="figures/en_folds.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100});
+  d.add_column("y", std::vector<double>{1, 4, 4, 8, 8, 12, 12, 15, 16, 20, 20, 80});
+  dm::stats::ElasticNetOptions o{.5, -1, 7, 3};
+  o.tol = 1e-11;
+  const dm::stats::ElasticNet m(d, "y ~ x", o);
+  const auto          found = std::find(m.lambda_path().begin(), m.lambda_path().end(), m.lambda());
+  const auto          k     = std::size_t(found - m.lambda_path().begin());
+  std::vector<double> folds, means, scales, native, refit;
+  for (std::size_t f = 0; f < 3; ++f) {
+    std::vector<std::size_t> train, test;
+    for (std::size_t i = 0; i < d.nrows(); ++i)
+      (m.fold_ids()[i] == f ? test : train).push_back(i);
+    o.lambda = m.lambda();
+    const dm::stats::ElasticNet model(d.take_rows(train), "y ~ x", o);
+    folds.push_back(f);
+    means.push_back(model.feature_means()[0]);
+    scales.push_back(model.feature_scales()[0]);
+    native.push_back(m.cv_fold_results().double_at("mse", f * 7 + k));
+    refit.push_back(std::pow(model.score(d.take_rows(test)).double_at("rmse", 0), 2));
+  }
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  left.line(folds, means, "training mean", {37, 99, 235})
+      .points(folds, scales, "training RMS", {220, 38, 38}, 5)
+      .title("Each fold has its own preprocessing")
+      .x_label("held-out fold")
+      .y_label("predictor units")
+      .y_limits(0, 45);
+  right.points(native, refit, "fold refit", {37, 99, 235}, 5)
+      .title("Explicit refits reproduce fold MSE")
+      .x_label("native fold MSE")
+      .y_label("fresh-refit fold MSE");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/en_folds.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("fold", folds);
+  table.add_column("training_mean", means);
+  table.add_column("training_scale", scales);
+  table.add_column("native_MSE", native);
+  table.add_column("refit_MSE", refit);
+  std::print("Selected lambda: {:.9f}.\n\n{}\n", m.lambda(), table.to_md(8));
+}
+```
+// result_begin: markdown
+Selected lambda: 1.823363573.
+
+| fold | training_mean | training_scale | native_MSE | refit_MSE |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 15.500 | 32.0195253 | 20.15163648 | 20.15163648 |
+| 1 | 17.375 | 31.4163075 | 50.73821733 | 50.73821733 |
+| 2 | 5.875 | 2.7128168 | 60.40512660 | 60.40512660 |
+
+\image(figures/en_folds.svg)
+// result_end
+\caption(Fresh fits on the exposed fold partitions reproduce validation errors with training-only preprocessing.)
+\alttext(One panel compares the predictor mean and scale fitted in each training subset. The other compares native and explicitly refitted fold MSEs. A table gives each fold’s preprocessing and both error values.)
+
+> Iris: paths and a declared held-out comparison
+
+Iris has 150 flowers, four numeric measurements in centimetres and a species label.
+Predict Petal.Length from Sepal.Length, Sepal.Width, Petal.Width and the
+Sepal.Length:Petal.Width interaction. Species is excluded. The interaction shares
+information with its component measurements but does not guarantee a particular
+correlation in every dataset.
+
+Before fitting, reserve rows whose zero-based index is divisible by five: 120 training
+and 30 test rows, spanning the three species blocks. Training CV uses seed 42 and five
+folds. Alpha=.5 is the declared primary model. The table prints the first training
+rows, raw/penalized coefficients, selected-lambda diagnostics and the best few grid
+candidates. The two plots show the full path and every CV candidate, including any
+boundary or unfinished fit; neither plot silently trims errors.
+
+```{cpp, results="markdown", file="figures/en_iris_path.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto               d = dm::datasets::iris();
+  std::vector<std::size_t> train_rows, test_rows;
+  for (std::size_t i = 0; i < d.nrows(); ++i)
+    (i % 5 == 0 ? test_rows : train_rows).push_back(i);
+  const auto        train = d.take_rows(train_rows), test = d.take_rows(test_rows);
+  const std::string formula =
+      "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width";
+  dm::stats::ElasticNetOptions o;
+  o.alpha            = .5;
+  o.n_lambda         = 60;
+  o.max_iter         = 50000;
+  o.tol              = 1e-8;
+  o.lambda_min_ratio = 1e-6;
+  const dm::stats::ElasticNet m(train, formula, o);
+  auto                        left = m.plot_coefficient_path(), right = m.plot_cv_curve();
+  left.title("Iris training coefficient path")
+      .legend(
+          {"SL", "SW", "PW", "SL:PW"}, {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}})
+      .y_limits(-2, 4.5);
+  right.title("Five-fold error, all candidates")
+      .legend({"CV MSE", "selected"}, {{37, 99, 235}, {220, 38, 38}})
+      .y_limits(0, 4.5);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/en_iris_path.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits         = 8;
+  fmt.scientific     = {"max_kkt_violation"};
+  const auto path_ok = m.path_diagnostics().numeric_column("converged").values(),
+             fold_ok = m.cv_fold_results().numeric_column("converged").values();
+  std::print(
+      "{} training and {} reserved test rows.\nConverged path fits: {}/{}; converged fold fits: "
+      "{}/{}.\n\n{}\n\n{}\n\n{}\n\nBest grid candidates:\n\n{}\n",
+      train.nrows(),
+      test.nrows(),
+      std::count(path_ok.begin(), path_ok.end(), 1),
+      path_ok.size(),
+      std::count(fold_ok.begin(), fold_ok.end(), 1),
+      fold_ok.size(),
+      train.head(3).to_md(2),
+      m.coefficient_table().to_md(8),
+      m.diagnostics()
+          .select({"alpha", "lambda", "iterations", "converged", "max_kkt_violation", "objective"})
+          .to_md(fmt),
+      m.path_diagnostics().sort_by("cv_mse", true).head(5).to_md(fmt));
+}
+```
+// result_begin: markdown
+120 training and 30 reserved test rows.
+Converged path fits: 60/60; converged fold fits: 300/300.
+
+| Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
+| ---: | ---: | ---: | ---: | :--- |
+| 4.9 | 3.0 | 1.4 | 0.2 | setosa |
+| 4.7 | 3.2 | 1.3 | 0.2 | setosa |
+| 4.6 | 3.1 | 1.5 | 0.2 | setosa |
+
+
+| predictor | coefficient | penalty_coefficient | center | scale |
+| :--- | ---: | ---: | ---: | ---: |
+| Sepal.Length | 0.74821378 | 0.60504361 | 5.79916667 | 0.80865071 |
+| Sepal.Width | -0.60149633 | -0.26087772 | 3.03500000 | 0.43371458 |
+| Petal.Width | 1.44995588 | 1.08073331 | 1.18333333 | 0.74535599 |
+| Sepal.Length:Petal.Width | 0.00000000 | 0.00000000 | 7.35466667 | 5.10378649 |
+
+
+| alpha | lambda | iterations | converged | max_kkt_violation | objective |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.5 | 0.00237282 | 33 | 1 | 6.51531307e-09 | 0.05035302 |
+
+
+Best grid candidates:
+
+| lambda | cv_mse | iterations | converged | max_kkt_violation | objective |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.00237282 | 0.10288641 | 33 | 1 | 6.51531307e-09 | 0.05035302 |
+| 0.00187745 | 0.10289919 | 32 | 1 | 7.14157860e-09 | 0.04967232 |
+| 0.00299888 | 0.10295366 | 34 | 1 | 5.91147319e-09 | 0.05121292 |
+| 0.00148551 | 0.10298692 | 579 | 1 | 9.78781076e-09 | 0.04913353 |
+| 0.00117538 | 0.10302665 | 984 | 1 | 9.81621709e-09 | 0.04869526 |
+
+\image(figures/en_iris_path.svg)
+// result_end
+\caption(The primary model’s path, full CV curve and numerical status use only the 120 training flowers.)
+\alttext(Two plots show original-unit coefficient traces and every five-fold CV MSE. Tables expose training rows, raw and penalty coefficients, selected objective and KKT residual, and the lowest-error grid candidates. Counts report convergence across all path and fold fits.)
+
+The primary grid selects lambda=.00237282 and has three nonzero slopes: the
+interaction is zero at that penalty. All 60 full-data candidates and all 300 fold
+fits converge. The selected KKT violation is about 6.5e-9; this is numerical evidence
+about optimization, separate from the prediction checks below.
+
+>> Compare declared alpha values and an unpenalized baseline
+
+Use alpha=0,.25,.5,.75,1 as a declared sensitivity set. Each fit uses the same five
+training folds and selects its own lambda over 60 candidates; the declared 1e-6 endpoint
+ratio makes the ridge heuristic's low-penalty range accessible. Also fit lambda=0 with
+the same formula and preprocessing as an unpenalized baseline. A reported nonzero count
+uses the library threshold abs(original coefficient)>1e-10, not an effective-df formula.
+
+Only now score the reserved test rows. The baseline RMSE uses the training response
+mean, while held-out R-squared uses the test response mean in its denominator. This
+single declared split provides an illustrative comparison, not uncertainty estimates
+or a reason to choose alpha from test errors. The primary alpha remains .5. Prediction
+uses the frozen training schema and coefficients, whether a flower is queried alone
+or as part of the held-out batch.
+
+```{cpp, results="markdown", file="figures/en_iris_test.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto               d = dm::datasets::iris();
+  std::vector<std::size_t> train_rows, test_rows;
+  for (std::size_t i = 0; i < d.nrows(); ++i)
+    (i % 5 == 0 ? test_rows : train_rows).push_back(i);
+  const auto        train = d.take_rows(train_rows), test = d.take_rows(test_rows);
+  const std::string formula =
+      "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width";
+  dm::dstruct::DataFrame results;
+  std::vector<double>    alpha_grid, cv_error, test_error;
+  std::vector<double>    primary, ordinary;
+  for (double alpha : {0., .25, .5, .75, 1.}) {
+    dm::stats::ElasticNetOptions o;
+    o.alpha            = alpha;
+    o.n_lambda         = 60;
+    o.max_iter         = 50000;
+    o.tol              = 1e-8;
+    o.lambda_min_ratio = 1e-6;
+    const dm::stats::ElasticNet m(train, formula, o);
+    auto                        row = m.score(test);
+    row.add_column("alpha", std::vector<double>{alpha});
+    row.add_column("lambda", std::vector<double>{m.lambda()});
+    row.add_column("training_RMSE", std::vector<double>{m.rmse()});
+    const double cv = std::sqrt(
+        *std::min_element(m.cv_mean_squared_error().begin(), m.cv_mean_squared_error().end()));
+    row.add_column("CV_RMSE", std::vector<double>{cv});
+    row.add_column("nonzero", std::vector<double>{double(m.non_zero_coefficients())});
+    row.add_column("converged", std::vector<double>{m.converged() ? 1. : 0.});
+    row.add_column(
+        "grid_boundary",
+        std::vector<double>{
+            m.lambda() == m.lambda_path().front() || m.lambda() == m.lambda_path().back() ? 1.
+                                                                                          : 0.});
+    results = results.ncols() ? results.concat_rows(row) : row;
+    alpha_grid.push_back(alpha);
+    cv_error.push_back(cv);
+    test_error.push_back(row.double_at("rmse", 0));
+    if (alpha == .5)
+      primary = m.predict(test);
+  }
+  dm::stats::ElasticNetOptions o{.5, 0};
+  o.max_iter = 50000;
+  o.tol      = 1e-8;
+  const dm::stats::ElasticNet baseline(train, formula, o);
+  ordinary        = baseline.predict(test);
+  auto       left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  const auto actual = test.numeric_column("Petal.Length").values();
+  left.points(actual, primary, "alpha .5", {37, 99, 235}, 4)
+      .points(actual, ordinary, "lambda zero", {220, 38, 38}, 3)
+      .line({.8, 7.5}, {.8, 7.5}, "identity", {148, 163, 184})
+      .title("Predictions for 30 reserved flowers")
+      .x_label("actual petal length (cm)")
+      .y_label("predicted petal length (cm)")
+      .x_limits(.8, 7.5)
+      .y_limits(.8, 10);
+  right.line(alpha_grid, cv_error, "training CV RMSE", {37, 99, 235})
+      .points(alpha_grid, test_error, "test RMSE", {220, 38, 38}, 5)
+      .title("Declared alpha sensitivity")
+      .x_label("alpha")
+      .y_label("prediction RMSE (cm)")
+      .y_limits(0, .7);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/en_iris_test.svg");
+  std::print(
+      "{}\n\nLambda-zero baseline (converged={}):\n\n{}\n",
+      results
+          .select(
+              {"alpha",
+               "lambda",
+               "training_RMSE",
+               "CV_RMSE",
+               "rmse",
+               "r_squared",
+               "nonzero",
+               "converged",
+               "grid_boundary"})
+          .to_md(7),
+      baseline.converged(),
+      baseline.score(test).to_md(7));
+}
+```
+// result_begin: markdown
+| alpha | lambda | training_RMSE | CV_RMSE | rmse | r_squared | nonzero | converged | grid_boundary |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.00 | 0.0016857 | 0.3065773 | 0.3211602 | 0.3483351 | 0.9630340 | 4 | 1 | 1 |
+| 0.25 | 0.0014717 | 0.3066346 | 0.3209642 | 0.3488251 | 0.9629299 | 4 | 1 | 0 |
+| 0.50 | 0.0023728 | 0.3068977 | 0.3207591 | 0.3503871 | 0.9625971 | 3 | 1 | 0 |
+| 0.75 | 0.0040360 | 0.3069223 | 0.3206724 | 0.3503857 | 0.9625974 | 3 | 1 | 0 |
+| 1.00 | 0.0048351 | 0.3069542 | 0.3206757 | 0.3505214 | 0.9625685 | 3 | 1 | 0 |
+
+
+Lambda-zero baseline (converged=true):
+
+| n_input | n_scored | rmse | mae | r_squared | mean_baseline_rmse |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 30 | 30 | 0.3402703 | 0.2791999 | 0.9647259 | 1.8162203 |
+
+\image(figures/en_iris_test.svg)
+// result_end
+\caption(CV tuning occurs on training flowers; reserved-row errors and a lambda-zero baseline are reported separately.)
+\alttext(One panel compares actual held-out petal lengths with primary and unpenalized predictions. Another contrasts training CV RMSE and reserved test RMSE across declared alpha values. Tables identify selected lambdas, training and test metrics, nonzero counts, solver status and grid boundaries.)
+
+For the primary alpha=.5 fit, CV RMSE is .3208 cm and reserved-row RMSE is .3504 cm.
+The lambda-zero baseline has reserved-row RMSE .3403 cm, while predicting the training
+mean gives 1.8162 cm. Regularization therefore does not improve test RMSE on this
+split. Ridge selects the smallest lambda in its declared grid (.0016857), so its
+reported choice is a boundary result, not evidence that a wider search could not
+reduce CV error further. None of these single-split differences quantify uncertainty.
+
+> Conclusion
+
+The small examples connect the penalized objective to exact soft-thresholded coordinate
+solutions, raw-unit coefficients and equal sharing of duplicate predictors under a
+positive L2 contribution. Finite sweep budgets expose how numerical stationarity is
+checked. Explicit fold refits confirm that validation predictions use training-only
+preprocessing. Coefficient sparsity, coefficient uniqueness and predictive performance
+remain separate properties.
+
+The Iris comparison distinguishes training fit, CV selection and a reserved-row
+prediction check. These measurements describe one formula, declared grids and one
+split. They do not establish causal measurements, coefficient significance, reliable
+variable selection across resamples or a universally optimal alpha/lambda. Search
+boundaries and unfinished fits remain visible rather than being hidden from figures.
+
+> References
+
+- Zou, H. and Hastie, T. (2005). [Regularization and variable selection via the elastic net|https://doi.org/10.1111/j.1467-9868.2005.00503.x]. Journal of the Royal Statistical Society B 67(2), 301–320. Original motivation/grouping; this report uses the direct objective, without the paper’s extra rescaling.
+- Friedman, J., Hastie, T. and Tibshirani, R. (2010). [Regularization Paths for Generalized Linear Models via Coordinate Descent|https://doi.org/10.18637/jss.v033.i01]. Journal of Statistical Software 33(1), 1–22. Objective and cyclic coordinate updates.
+- scikit-learn developers. [ElasticNet|https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html]. Objective parameter correspondence and independent solver comparisons with explicitly matched preprocessing.
+- Fisher, R. A. (1936). [The use of multiple measurements in taxonomic problems|https://doi.org/10.1111/j.1469-1809.1936.tb02137.x]. Annals of Eugenics 7, 179–188. Iris context.
+

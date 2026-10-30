@@ -38,7 +38,7 @@ system); collinear overlap has no single point, so that case reports none.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -107,7 +107,7 @@ and one that meets at an endpoint, and compute the crossing point where there is
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

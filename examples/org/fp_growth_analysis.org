@@ -59,7 +59,7 @@ below mines it rather than drawing it).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::string name_set(const std::vector<std::size_t>& items) {
     static const char* names[] = {"bread", "milk", "butter", "beer", "diapers"};

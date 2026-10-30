@@ -1,4 +1,5 @@
 # Native Python NN example. Naming, eager ordering, placement and errors live here.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/graph_construction.py
 from pydatamunge import nn
 
 

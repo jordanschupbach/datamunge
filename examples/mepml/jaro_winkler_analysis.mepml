@@ -68,7 +68,7 @@ or \(\ell=0\) (no shared prefix).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -171,7 +171,7 @@ The program reproduces both numbers and tabulates several further name pairs.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

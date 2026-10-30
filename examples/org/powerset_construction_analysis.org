@@ -35,7 +35,7 @@ exponential. Missing transitions lead to the empty subset, the *dead* state.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // NFA over {0,1} that accepts strings whose n-th symbol from the end is 1.
 // It nondeterministically "guesses" which 1 is the n-th from the end.

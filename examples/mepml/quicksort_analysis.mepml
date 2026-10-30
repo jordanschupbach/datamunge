@@ -60,7 +60,7 @@ below.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Pretty-print a vector as "{ a b c }".
 static void print_vec(const std::vector<std::int64_t>& v) {
@@ -244,7 +244,7 @@ identical result, and report the comparisons it charged.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Pretty-print a vector as "{ a b c }".
 static void print_vec(const std::vector<std::int64_t>& v) {

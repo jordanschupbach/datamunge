@@ -42,7 +42,7 @@ determine \(s\) uniquely (up to the trivial solution) by Gaussian elimination ov
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -104,7 +104,7 @@ circuit, list the measurable strings \(y\) (all orthogonal to \(s\)), and recove
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

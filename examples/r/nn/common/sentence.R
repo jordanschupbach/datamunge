@@ -166,6 +166,7 @@ sentence_rows <- function(d, rows) sentence_data(sentence_select(d$tokens, rows)
 
 # Returns list(pools = list(fit, validation, test), config) from <root>/sentence.npz.
 sentence_load <- function(root) {
+    nn_components$dataset_assets$EnsureSentences(root)
     arrays <- nn$load_npz(file.path(root, "sentence.npz"))
     config_tensor <- sentence_npz(arrays, "config")
     nn_require(config_tensor$dtype() == nn$DType$Int32 && identical(sentence_shape(config_tensor), 2),

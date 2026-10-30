@@ -222,6 +222,21 @@ TEST(LM, DotFormulaIncludesAllOtherColumns) {
     EXPECT_NEAR(full.coefficients()[j], dot.coefficients()[j], 1e-9);
 }
 
+TEST(LM, DotMinusTermDropsThatColumn) {
+  // R: lm(y ~ . - w) is lm(y ~ x1 + x2 + color).
+  const auto df = make_reference_frame();
+  LM full(df, "y ~ x1 + x2 + color");
+  LM dot(df, "y ~ . - w");
+  ASSERT_EQ(full.coefficient_names(), dot.coefficient_names());
+  for (std::size_t j = 0; j < full.coefficients().size(); ++j)
+    EXPECT_NEAR(full.coefficients()[j], dot.coefficients()[j], 1e-9);
+  // Re-adding a removed term brings it back; removing a term that is absent is harmless.
+  LM back(df, "y ~ . - w + w");
+  EXPECT_EQ(back.coefficient_names().size(), LM(df, "y ~ .").coefficient_names().size());
+  LM none(df, "y ~ . - nothing - color - 1");
+  EXPECT_EQ(none.coefficient_names(), (std::vector<std::string>{"x1", "x2", "w"}));
+}
+
 TEST(LM, DropsRowsWithMissingValues) {
   auto df = make_reference_frame();
   df.set_null("x1", 0);
@@ -269,4 +284,123 @@ TEST(LM, SummaryContainsKeyStatistics) {
   EXPECT_NE(text.find("colorgreen"), std::string::npos);
   EXPECT_NE(text.find("F-statistic"), std::string::npos);
   EXPECT_NE(text.find("R-squared"), std::string::npos);
+}
+
+// Reference values from R 4.5.2 on make_reference_frame():
+//   summary(lm(y ~ x1 + x2 - 1, d))[c("r.squared", "adj.r.squared", "fstatistic")]
+TEST(LM, NoInterceptRSquaredUsesUncenteredTotalLikeR) {
+  const auto df = make_reference_frame();
+  LM model(df, "y ~ x1 + x2 - 1");
+  EXPECT_NEAR(model.r_squared(), 0.948134121291, 1e-9);
+  EXPECT_NEAR(model.adjusted_r_squared(), 0.937760945549, 1e-9);
+  EXPECT_NEAR(model.f_statistic(), 91.402492822271, 1e-7);
+
+  LmOptions options;
+  options.weights_column = "w";
+  LM weighted(df, "y ~ x1 + x2 - 1", options);
+  EXPECT_NEAR(weighted.r_squared(), 0.963978768715, 1e-9);
+  EXPECT_NEAR(weighted.adjusted_r_squared(), 0.956774522458, 1e-9);
+  EXPECT_NEAR(weighted.f_statistic(), 133.807026347439, 1e-7);
+}
+
+// logLik(), AIC(), BIC(), deviance() of lm(y ~ x1 + x2, d, weights = w) and lm(y ~ x1 + x2, d).
+TEST(LM, LogLikelihoodAicBicMatchR) {
+  const auto df = make_reference_frame();
+  LmOptions  options;
+  options.weights_column = "w";
+  LM weighted(df, "y ~ x1 + x2", options);
+  EXPECT_NEAR(weighted.log_likelihood(), -11.32069100737, 1e-9);
+  EXPECT_NEAR(weighted.aic(), 30.64138201475, 1e-9);
+  EXPECT_NEAR(weighted.bic(), 32.58100861390, 1e-9);
+  EXPECT_NEAR(weighted.rss(), 6.62069441645, 1e-9);
+
+  LM plain(df, "y ~ x1 + x2");
+  EXPECT_NEAR(plain.aic(), 30.06458544721, 1e-9);
+  LM with_color(df, "y ~ x1 + x2 + color");
+  EXPECT_NEAR(with_color.bic(), 3.14204657269, 1e-9);
+}
+
+// anova(lm(y ~ x1 + x2, d), lm(y ~ x1 + x2 + color, d)).
+TEST(LM, NestedAnovaMatchesR) {
+  const auto df = make_reference_frame();
+  LM         reduced(df, "y ~ x1 + x2");
+  LM         full(df, "y ~ x1 + x2 + color");
+  const auto test = datamunge::stats::anova(reduced, full);
+  EXPECT_EQ(test.reduced_df, 9u);
+  EXPECT_EQ(test.full_df, 7u);
+  EXPECT_EQ(test.df, 2u);
+  EXPECT_NEAR(test.reduced_rss, 4.418255952, 1e-8);
+  EXPECT_NEAR(test.full_rss, 0.263530405, 1e-8);
+  EXPECT_NEAR(test.f_value, 55.17974, 1e-4);
+  EXPECT_NEAR(test.p_value, 5.1824e-05, 1e-8);
+  EXPECT_THROW((void)datamunge::stats::anova(full, reduced), std::invalid_argument);
+}
+
+TEST(LM, CoefficientAndAnovaFramesMatchAccessors) {
+  const auto df    = make_reference_frame();
+  LM         model(df, "y ~ x1 + x2 + color");
+  const auto coef  = model.coefficient_frame(0.9);
+  const auto ci    = model.confidence_intervals(0.9);
+  ASSERT_EQ(coef.nrows(), model.rank());
+  for (std::size_t j = 0; j < model.rank(); ++j) {
+    EXPECT_EQ(coef.optional_string_at("term", j).value(), model.coefficient_names()[j]);
+    EXPECT_DOUBLE_EQ(coef.optional_double_at("estimate", j).value(), model.coefficients()[j]);
+    EXPECT_DOUBLE_EQ(coef.optional_double_at("lower", j).value(), ci[j].lower);
+    EXPECT_DOUBLE_EQ(coef.optional_double_at("upper", j).value(), ci[j].upper);
+  }
+
+  const auto rows  = model.anova();
+  const auto frame = model.anova_frame();
+  ASSERT_EQ(frame.nrows(), rows.size());
+  EXPECT_DOUBLE_EQ(frame.optional_double_at("sum_sq", 0).value(), rows[0].sum_sq);
+  EXPECT_FALSE(frame.optional_double_at("f_value", rows.size() - 1).has_value());
+  EXPECT_FALSE(frame.optional_double_at("p_value", rows.size() - 1).has_value());
+}
+
+TEST(LM, DiagnosticPlotsStayInsideTheirLimits) {
+  const auto df    = make_reference_frame();
+  LM         model(df, "y ~ x1 + x2 + color");
+  const auto fig   = model.plot_diagnostics();
+  EXPECT_EQ(fig.panel_count(), 4u);
+  for (const auto& plot : {model.plot_residuals_vs_fitted(), model.plot_normal_qq(), model.plot_scale_location(),
+                           model.plot_residuals_vs_leverage()}) {
+    ASSERT_TRUE(plot.has_x_limits() && plot.has_y_limits());
+    for (const auto& s : plot.series()) {
+      for (std::size_t i = 0; i < s.x.size(); ++i) {
+        EXPECT_GE(s.x[i], plot.x_min());
+        EXPECT_LE(s.x[i], plot.x_max());
+        EXPECT_GE(s.y[i], plot.y_min());
+        EXPECT_LE(s.y[i], plot.y_max());
+      }
+    }
+  }
+}
+
+// lowess(x1, y, f = 0.5) in R.
+TEST(Lowess, MatchesR) {
+  const auto                df = make_reference_frame();
+  std::vector<double>       x, y;
+  for (std::size_t i = 0; i < df.nrows(); ++i) {
+    x.push_back(df.optional_double_at("x1", i).value());
+    y.push_back(df.optional_double_at("y", i).value());
+  }
+  const auto                fit      = datamunge::stats::lowess(x, y, 0.5);
+  const std::vector<double> expected = {3.28250615420, 4.21059360653, 5.10249243789, 5.50391816063,
+                                        6.10445639045, 6.52941523987, 7.10679112993, 7.68896764592,
+                                        8.27607750723, 8.82531897034, 9.94542338525, 10.99191765735};
+  ASSERT_EQ(fit.y.size(), expected.size());
+  for (std::size_t i = 0; i < expected.size(); ++i) {
+    EXPECT_DOUBLE_EQ(fit.x[i], x[i]);
+    EXPECT_NEAR(fit.y[i], expected[i], 1e-10);
+  }
+  EXPECT_THROW((void)datamunge::stats::lowess({1.0, 2.0}, {1.0}), std::invalid_argument);
+}
+
+TEST(LM, FittedRowsSkipRowsWithNulls) {
+  DataFrame df;
+  df.add_column("x", std::vector<std::optional<double>>{1, std::nullopt, 3, 4, 5});
+  df.add_column("y", std::vector<std::optional<double>>{2, 3, std::nullopt, 7, 11});
+  LM model(df, "y ~ x");
+  EXPECT_EQ(model.fitted_rows(), (std::vector<std::size_t>{0, 3, 4}));
+  EXPECT_EQ(model.residuals().size(), 3u);
 }

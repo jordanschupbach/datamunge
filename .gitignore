@@ -63,6 +63,9 @@ tmp/
 
 # figures mep copies into place for mepml blocks with file= (scripts/org_to_mepml.py)
 examples/mepml/figures/
+# what the docs' mepml report programs write before mep copies it to file= (docs/mepml/examples/figures/ is kept)
+docs/mepml/examples/build/
+docs/mepml/examples/**/build/
 plans/
 /output/
 
@@ -72,3 +75,11 @@ plans/
 # R source packages and temporary SWIG staging directories.
 /datamunger_*.tar.gz
 /src/.swig-*/
+
+# Report figures are committed (the docs build never runs the reports).
+!docs/mepml/examples/figures/*.svg
+!docs/mepml/examples/**/figures/*.svg
+
+# Lossless tensor-generated dataset contact sheets are report assets.
+!docs/mepml/examples/figures/*.png
+!docs/mepml/examples/**/figures/*.png

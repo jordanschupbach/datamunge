@@ -43,7 +43,7 @@ benefit at the ~16 significant digits a =double= holds: one term already reaches
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double PI = 3.14159265358979323846;
 #+end_src

@@ -1,0 +1,544 @@
+//? Title: P-splines: A Rich Basis and a Difference Penalty
+//? Subtitle: Hand calculations, polynomial nullspaces, effective degrees of freedom and GCV, with Old Faithful data
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given noisy observations of a curve, we want a smooth estimate without deciding every bend
+in advance. A flexible spline can follow noise, while a rigid curve can miss real structure.
+P-splines separate the available shapes from their cost: B-splines supply a rich local basis,
+and differences between neighbouring coefficients penalise unnecessary variation. We derive
+the penalised equations, solve a three-point example exactly, and show why second differences
+preserve a line with the extended uniform knots used by dm::PSR. An analytic sweep checks
+shrinkage, effective degrees of freedom and two cross-validation scores. An oscillating signal
+exposes the limits of one global smoothing parameter. Finally, Old Faithful eruption durations
+predict the next waiting time; GCV, residuals and a basis-size comparison describe the fitted
+association and the limits of treating a smooth curve as a predictive model. With 25 basis
+functions, the selected fit uses 5.27 effective degrees of freedom and has a fixed-lambda
+delete-one RMSE of 5.69 minutes. Retuning 12 and 50 functions gives similar scores.
+)
+
+\toc
+
+> The method
+
+>> A local basis, then a global constraint
+
+For observed pairs \((x_i,y_i)\), choose degree \(p\), a knot sequence \(t_j\), and
+\(K\) B-spline basis functions. A fitted curve is \(f(x)=\sum_{j=0}^{K-1}\beta_j B_{j,p}(x)\).
+The Cox–de Boor recursion builds the basis from interval indicators:
+
+$$
+B_{j,0}(x)=1\{t_j\leq x<t_{j+1}\},\qquad
+B_{j,p}(x)=\frac{x-t_j}{t_{j+p}-t_j}B_{j,p-1}(x)
+ +\frac{t_{j+p+1}-x}{t_{j+p+1}-t_{j+1}}B_{j+1,p-1}(x).
+$$
+\alttext(Degree-zero B-splines indicate successive knot intervals. The degree-p basis is a weighted sum of two neighbouring degree-p-minus-one bases, with a zero contribution when a denominator vanishes.)
+
+The right domain endpoint uses its limiting basis values. Inside the domain the functions
+are nonnegative, sum to one, and at most \(p+1\) are nonzero at a point. The design matrix
+\(B_{ij}=B_{j,p}(x_i)\) therefore has local support even though the fit is global.
+These basis conventions can be checked against R's
+[splineDesign|https://stat.ethz.ch/R-manual/R-devel/library/splines/html/splineDesign.html],
+whose `ord` is \(p+1\).
+
+A first difference is \(\beta_{j+1}-\beta_j\); a second is
+\(\beta_j-2\beta_{j+1}+\beta_{j+2}\). For order \(d\), the \((K-d)\)-by-\(K\)
+matrix \(D_d\) repeats the signed binomial weights along successive diagonals. Define
+
+$$
+Q(\beta)=\|D_d\beta\|^2,\qquad P=D_d^\top D_d,\qquad
+J_\lambda(\beta)=\|y-B\beta\|^2+\lambda Q(\beta).
+$$
+\alttext(Roughness Q is the sum of squared order-d coefficient differences. The penalty matrix is D transpose D, and the objective adds lambda times Q to the residual sum of squares.)
+
+This is a *discrete coefficient penalty*. It is not exactly the integral of a squared
+curve derivative. Degree \(p\), penalty order \(d\), basis count \(K\), and smoothing
+multiplier \(\lambda\) are separate choices. In this library the data loss is a sum,
+without division by \(n\); a package using mean squared error needs a rescaled multiplier.
+The method originates with
+[Eilers and Marx (1996)|https://doi.org/10.1214/ss/1038425655].
+
+Differentiating the objective gives
+
+$$
+A_\lambda\hat\beta=B^\top y,\qquad A_\lambda=B^\top B+\lambda P,\qquad
+\hat y=S_\lambda y,\quad S_\lambda=B A_\lambda^{-1}B^\top.
+$$
+\alttext(The penalised normal equations add lambda P to B transpose B. Solving for coefficients and multiplying by B defines the linear smoother matrix S.)
+
+For \(\lambda>0\), \(v^\top A_\lambda v=\|Bv\|^2+\lambda\|D_dv\|^2\).
+Thus the solution is unique exactly when \(\ker B\cap\ker D_d=\{0\}\): a positive
+penalty can support more coefficients than observations, but it cannot identify an
+unobserved direction in its own nullspace. For \(\lambda=0\), full column rank of
+\(B\) is required. The implementation solves with Cholesky; it does not explicitly
+invert the system to obtain coefficients. It uses solves against the identity for
+leverage diagnostics. Sparse local assembly is followed by dense \(K\)-by-\(K\)
+factorisation, so this implementation is not a banded large-scale spline solver:
+work is bounded by \(O(n(p+1)^2+K^3)\), storage by \(O(n(p+1)+K^2)\), per lambda.
+Very large multipliers can cause loss of numerical definiteness.
+
+>> What survives smoothing, and what shrinks
+
+The nullspace of \(D_d\) consists of coefficient sequences polynomial in *index* of
+degree less than \(d\). If knots are uniform and extended beyond the observed domain,
+these represent polynomials in \(x\) of degree less than \(d\), provided \(d\leq p+1\).
+In particular, first differences preserve constants, and second differences preserve lines.
+`PSR(x,y,K,lambda)` uses these extended knots. Its domain has \(K-p\) uniform segments;
+there are \(K+p+1\) full knots including \(p\) extra knots on each side.
+
+Repeated boundary knots change that interpretation: coefficients affine in index need
+not describe a straight line near a clamped boundary. The size-based
+`fda::fit_pspline` overload uses repeated knots, while `PSR` extends them. Irregular
+breakpoints accepted by `PSR` also invalidate the uniform-index argument. The older
+unpenalised `BSR` facade uses repeated boundaries: it is not generally the same basis
+as `PSR`. To isolate the effect of the penalty, compare `PSR` at different multipliers
+on the same basis, including zero only when the design has full rank.
+
+For full-column-rank \(B\), whiten with \(G=B^\top B\) and diagonalise
+\(G^{-1/2}PG^{-1/2}\), whose eigenvalues are \(\rho_j\geq0\). Then
+
+$$
+\operatorname{edf}(\lambda)=\operatorname{tr}(S_\lambda)
+ =\sum_{j=1}^K\frac1{1+\lambda\rho_j}.
+$$
+\alttext(Effective degrees of freedom is the sum of shrinkage factors one over one plus lambda times each whitened penalty eigenvalue.)
+
+Each nonzero mode shrinks with \(\lambda\); nullspace modes have shrinkage one.
+Consequently edf decreases from \(K\) towards \(d\) under these rank assumptions.
+The high-penalty curve approaches least squares restricted to \(\ker D_d\), a line
+for the default uniform cubic basis with second differences.
+
+There is also an argument requiring no full-column-rank assumption. Let \(R_a,Q_a\)
+and \(R_b,Q_b\) be RSS and roughness at \(0\leq a<b\), with unique solutions.
+Optimality gives \(R_a+aQ_a\leq R_b+aQ_b\) and
+\(R_b+bQ_b\leq R_a+bQ_a\). Adding yields \(Q_b\leq Q_a\), and substitution gives
+\(R_a\leq R_b\). Increasing the penalty decreases roughness while increasing training
+error; it does not guarantee smaller error against the unknown mean.
+
+>> Leverage, deletion and automatic lambda selection
+
+For a fixed basis and multiplier, let \(h_i=(S_\lambda)_{ii}\) and
+\(e_i=y_i-\hat y_i\). Deleting row \(i\) subtracts \(b_i b_i^\top\) from
+\(A_\lambda\). The rank-one inverse identity gives the exact deletion residual
+\(e_i/(1-h_i)\), when the deleted system remains identified. Replacing the individual
+leverages by their average \(\operatorname{edf}/n\) gives GCV:
+
+$$
+\operatorname{CV}(\lambda)=\frac1n\sum_i\left(\frac{e_i}{1-h_i}\right)^2,
+\qquad
+\operatorname{GCV}(\lambda)=\frac{\operatorname{RSS}/n}{(1-\operatorname{edf}/n)^2}
+ =\frac{n\operatorname{RSS}}{(n-\operatorname{edf})^2}.
+$$
+\alttext(Leave-one-out CV averages squared leverage-corrected residuals. Generalized cross-validation substitutes the average leverage and equals n times RSS divided by n minus edf squared.)
+
+Both scores have squared response units. They can differ when leverage is uneven;
+GCV is not exact delete-one cross-validation. See
+[Golub, Heath and Wahba (1979)|https://doi.org/10.1080/00401706.1979.10489751].
+The library reports undefined deletion residuals as NaN and their overall CV as infinity;
+GCV is infinity when \(n-\operatorname{edf}\) is numerically zero. These diagnostics
+hold the full-data knots and multiplier fixed. They do not repeat tuning inside each
+training fold. Also, \(n-\operatorname{edf}\) is not generally the unbiased variance
+divisor for a non-idempotent smoother.
+
+Omitting lambda from `PSR(x,y,K)` searches \(10^{-8}\) through \(10^8\), with a
+half-decade coarse grid followed by golden-section refinement around its best point.
+This bounded search is convenient, but does not prove a global minimum. Inspect a
+path, especially if the selected value is near a search endpoint. `smoothing_path()`
+evaluates the supplied grid without selecting a value or silently skipping failed fits.
+
+> Simple worked examples
+
+>> Three points: an identity design and one penalised direction
+
+Take \(x=(0,1,2)\), \(y=(0,1,0)\), degree one and three basis functions.
+The full knots are \((-1,0,1,2,3)\). The three triangular basis functions give \(B=I_3\)
+at the observations. Only the contrast \(D=(1,-2,1)\) is penalised:
+
+$$
+P=\begin{pmatrix}1&-2&1\\-2&4&-2\\1&-2&1\end{pmatrix},\qquad
+(I+\lambda D^\top D)^{-1}=I-\frac{\lambda}{1+6\lambda}D^\top D.
+$$
+\alttext(The three-by-three penalty is the outer product of one, minus two, one with itself. Since D D transpose is six, the inverse is identity minus lambda over one plus six lambda times that outer product.)
+
+At \(\lambda=1\), this gives
+
+$$
+\hat\beta=(2,3,2)/7,\quad e=(-2,4,-2)/7,\quad
+Q=4/49,\quad \operatorname{RSS}=24/49,\quad J=4/7,\quad
+\operatorname{edf}=2+1/7=15/7.
+$$
+\alttext(The smoothed coefficients are two sevenths, three sevenths and two sevenths. Residuals are minus two sevenths, four sevenths and minus two sevenths. Roughness is four over 49, RSS 24 over 49, total objective four sevenths, and edf 15 sevenths.)
+
+The line modes survive unchanged; the single bent mode shrinks by \(1/7\).
+The table also exposes the individual leverages and deletion residuals rather than
+showing only a fitted curve.
+
+```{cpp, results="markdown", file="figures/pspline_three_points.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::Vector<> x{0,1,2}, y{0,1,0}, grid=dm::seql(0,2,201);
+  const dm::PSR fit(x,y,3,1.0,1,2), raw(x,y,3,0.0,1,2), smooth(x,y,3,100.0,1,2);
+  const auto B=fit.basis_matrix(grid);
+  auto basis=dm::graphics::RPlot::create(), curves=dm::graphics::RPlot::create();
+  const std::vector<dm::RGB> colours{{37,99,235},{220,90,35},{25,145,105}};
+  for (std::size_t j=0;j<3;++j) basis.lines(grid.values(),B.col(j),std::format("B{}",j),colours[j]);
+  basis.title("The three local basis functions").x_label("x").y_label("B_j(x)").y_limits(0,1.35);
+  curves.points(x.values(),y.values(),"Observed",{70,70,70},5)
+    .lines(grid.values(),raw.predict(grid).values(),"lambda = 0",{25,145,105})
+    .lines(grid.values(),fit.predict(grid).values(),"lambda = 1",{37,99,235},3)
+    .lines(grid.values(),smooth.predict(grid).values(),"lambda = 100",{220,90,35})
+    .title("The bent mode shrinks").x_label("x").y_label("Response").y_limits(-.1,1.5);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(basis).add(curves);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/pspline_three_points.svg");
+  std::print("{}\n\n{}\n",fit.summary().select({"lambda","edf","rss","roughness","objective","gcv","loo_cv"}).to_md(6),
+             fit.observation_details().to_md(6));
+}
+```
+// result_begin: markdown
+| lambda | edf | rss | roughness | objective | gcv | loo_cv |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2.142857 | 0.489796 | 0.081633 | 0.571429 | 2 | 3 |
+
+
+| observation | response | fitted | residual | leverage | loo_residual |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0 | 0.285714 | -0.285714 | 0.857143 | -2 |
+| 2 | 1 | 0.428571 | 0.571429 | 0.428571 | 1 |
+| 3 | 0 | 0.285714 | -0.285714 | 0.857143 | -2 |
+
+\image(figures/pspline_three_points.svg)
+// result_end
+\caption(Exact three-point penalised least squares. The basis is fixed across the three curves; lambda alone changes their curvature. Tables describe the lambda-one fit.)
+\alttext(Left: three triangular basis functions form an identity design at zero, one and two. Right: the unpenalised triangle passes through the observations, lambda one flattens it, and lambda 100 nearly reaches the constant one-third least-squares line.)
+
+At lambda one, the leverages are \((6/7,3/7,6/7)\) and the delete-one residuals
+are \((-2,1,-2)\). Their squared mean is 3, while GCV is 2. Deletion keeps the
+original basis, including both endpoint knots: the two retained observations determine
+a line, and a deleted endpoint requires linear continuation of that constrained fit.
+The facade's separate prediction rule clamps *outside* the original full-data domain.
+
+>> A cubic basis: first differences versus second differences
+
+Use seven points from \(y=2-x\) on \([0,3]\) and six cubic basis functions.
+Uniform spacing is one, with knots extended by three on each side. The Greville
+coordinates, averages of the three inner knots for each function, are
+\((-1,0,1,2,3,4)\). Polynomial reproduction gives coefficients
+\((3,2,1,0,-1,-2)\). Their first differences are all \(-1\), but their second
+differences vanish:
+
+$$
+D_1\beta=(-1,-1,-1,-1,-1)^\top,\quad \|D_1\beta\|^2=5,
+\qquad D_2\beta=0.
+$$
+\alttext(The line's six cubic coefficients descend by one at every step, so the first-difference roughness is five and the second-difference roughness is zero.)
+
+The second-order penalty preserves the line for every identifiable multiplier.
+The first-order penalty instead pulls its slope towards zero, approaching the response
+mean 0.5 as lambda grows. The coefficient plot makes the constraint visible.
+
+```{cpp, results="markdown", file="figures/pspline_nullspace.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::Vector<> x=dm::seql(0,3,7), y=2-x, grid=dm::seql(0,3,201), index=dm::seql(0,5,6);
+  const dm::PSR first(x,y,6,100.0,3,1), second(x,y,6,100.0,3,2);
+  auto coefficients=dm::graphics::RPlot::create(), curves=dm::graphics::RPlot::create();
+  coefficients.lines(index.values(),second.coefficients().values(),"Order 2",{37,99,235},3)
+    .points(index.values(),second.coefficients().values(),"",{37,99,235},4)
+    .lines(index.values(),first.coefficients().values(),"Order 1",{220,90,35},3)
+    .title("A line has affine coefficients").x_label("Basis index j").y_label("Coefficient beta_j").y_limits(-2.4,4.5);
+  curves.points(x.values(),y.values(),"Observed line",{70,70,70},4)
+    .lines(grid.values(),second.predict(grid).values(),"Order 2",{37,99,235},3)
+    .lines(grid.values(),first.predict(grid).values(),"Order 1",{220,90,35},3)
+    .title("Same cubic basis, lambda = 100").x_label("x").y_label("Response").y_limits(-1.3,3.5);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(coefficients).add(curves);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/pspline_nullspace.svg");
+  std::print("{}\n",first.summary().concat_rows(second.summary())
+    .select({"order","lambda","edf","rss","roughness"}).to_md(9));
+}
+```
+// result_begin: markdown
+| order | lambda | edf | rss | roughness |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 100 | 1.024676484 | 6.71576905 | 0.001406337 |
+| 2 | 100 | 2.005232168 | 0.00000000 | 0.000000000 |
+
+\image(figures/pspline_nullspace.svg)
+// result_end
+\caption(Changing the difference order changes what survives smoothing. Both fits use six extended cubic basis functions and lambda 100; only the second-order penalty leaves the input line unchanged.)
+\alttext(Left: second-order coefficients lie on a descending straight line from three to minus two; first-order coefficients are nearly constant. Right: the second-order fitted curve passes through the seven line observations, while the first-order curve is almost horizontal near one half.)
+
+> Checking the theory
+
+>> An exact path, including a flat GCV criterion
+
+For the three-point example at any \(\lambda>0\), the rank-one formula yields
+
+$$
+\hat\beta=\frac1{1+6\lambda}(2\lambda,1+2\lambda,2\lambda),\quad
+Q=\frac4{(1+6\lambda)^2},\quad
+\operatorname{RSS}=\frac{24\lambda^2}{(1+6\lambda)^2},\quad
+\operatorname{edf}=2+\frac1{1+6\lambda}.
+$$
+\alttext(The fitted coefficients, roughness, RSS and effective degrees of freedom are rational functions with common factor one plus six lambda.)
+
+Substitution gives GCV = 2 and exact CV = 3 for *every positive lambda*.
+This tiny dataset has no tuning information under either criterion; a flat score is
+not evidence for a unique optimum. At lambda zero it interpolates and deletion is
+unidentified, so both scores are reported as infinity rather than evaluating zero over zero.
+
+```{cpp, results="markdown", file="figures/pspline_exact_path.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::Vector<> loglambda=dm::seql(-3,3,25), lambdas=dm::exp(loglambda*std::log(10.0));
+  const auto path=dm::PSR::smoothing_path({0,1,2},{0,1,0},3,lambdas,1,2);
+  const auto exact_edf=2+1/(1+6*lambdas);
+  auto edf=dm::graphics::RPlot::create(), tradeoff=dm::graphics::RPlot::create();
+  edf.lines(loglambda.values(),exact_edf.values(),"Exact",{70,70,70},3)
+    .points(loglambda.values(),path.numeric_column("edf").values(),"Cholesky",{37,99,235},3)
+    .title("Two line modes always survive").x_label("log10(lambda)").y_label("Effective df").y_limits(1.9,3.5);
+  tradeoff.lines(loglambda.values(),path.numeric_column("roughness").values(),"Roughness Q",{220,90,35},3)
+    .lines(loglambda.values(),path.numeric_column("rss").values(),"RSS",{37,99,235},3)
+    .title("Roughness falls; training error rises").x_label("log10(lambda)").y_label("Squared response").y_limits(0,5.5);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(edf).add(tradeoff);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/pspline_exact_path.svg");
+  const auto error=dm::abs(dm::Vector<>(path.numeric_column("edf").values())-exact_edf);
+  std::print("Maximum edf error against the closed form: {:.3e}\n\n",*std::max_element(error.begin(),error.end()));
+  std::print("{}\n",dm::PSR::smoothing_path({0,1,2},{0,1,0},3,{.001,.1,1,10,1000},1,2).to_md(9));
+}
+```
+// result_begin: markdown
+Maximum edf error against the closed form: 9.726e-14
+
+| lambda | edf | rss | roughness | objective | gcv | loo_cv |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.001 | 2.994035785 | 0.000023715 | 3.952428570 | 0.003976143 | 2 | 3 |
+| 0.100 | 2.625000000 | 0.093750000 | 1.562500000 | 0.250000000 | 2 | 3 |
+| 1.000 | 2.142857143 | 0.489795918 | 0.081632653 | 0.571428571 | 2 | 3 |
+| 10.000 | 2.016393443 | 0.644987906 | 0.001074980 | 0.655737705 | 2 | 3 |
+| 1000.000 | 2.000166639 | 0.666444500 | 0.000000111 | 0.666555574 | 2 | 3 |
+
+\image(figures/pspline_exact_path.svg)
+// result_end
+\caption(A six-decade sweep checks the exact shrinkage law. The path simultaneously verifies decreasing roughness, increasing RSS and constant positive-lambda CV/GCV.)
+\alttext(Left: computed effective degrees of freedom lie on the exact curve, descending from almost three to almost two as lambda grows. Right: roughness drops from almost four to zero, while RSS rises from zero towards two thirds.)
+
+>> Known truth: one global multiplier for an oscillating signal
+
+Retain the original example's mean \(f(x)=\sin(20/(x+0.25))\), whose oscillations
+are faster near zero. It is an oscillating test function, rather than the usual
+wavelet Doppler benchmark. Here 401 equally spaced inputs have independent seeded
+normal noise with standard deviation 0.3. We compare zero penalty, GCV and a large
+fixed multiplier on exactly the same 50-function extended cubic basis.
+
+The right panel uses the whole score path, not training RSS as a selection rule.
+Known truth allows a separate grid error calculation: GCV estimates predictive
+performance from data and need not minimise error to this particular true curve.
+A single global penalty can smooth away fast local oscillations before suppressing
+all noise in the slow region.
+
+```{cpp, results="markdown", file="figures/pspline_oscillation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::set_seed(20261028);
+  const dm::Vector<> x=dm::seql(0,1,401), y=dm::sin(20/(x+.25))+dm::rnorm(0,.3,401), grid=dm::seql(0,1,801);
+  const dm::PSR raw(x,y,50,0.0), chosen(x,y,50), heavy(x,y,50,1000.0);
+  const dm::Vector<> logs=dm::seql(-5,4,37);
+  const auto path=dm::PSR::smoothing_path(x,y,50,dm::exp(logs*std::log(10.0)));
+  auto curves=dm::graphics::RPlot::create(), scores=dm::graphics::RPlot::create();
+  curves.points(x.values(),y.values(),"Samples",{170,170,170,.45},2)
+    .lines(grid.values(),raw.predict(grid).values(),"lambda = 0",{25,145,105})
+    .lines(grid.values(),heavy.predict(grid).values(),"lambda = 1000",{220,90,35})
+    .lines(grid.values(),dm::sin(20/(grid+.25)).values(),"True mean",{65,65,65},2)
+    .lines(grid.values(),chosen.predict(grid).values(),"GCV fit",{37,99,235},2)
+    .title("Fast oscillations are harder to preserve").x_label("x").y_label("Response").y_limits(-2.3,3.5);
+  scores.lines(logs.values(),path.numeric_column("gcv").values(),"GCV",{37,99,235},3)
+    .lines(logs.values(),path.numeric_column("loo_cv").values(),"Delete-one CV",{220,90,35},2)
+    .abline_v(std::log10(chosen.lambda()),{70,70,70})
+    .title("Predictive scores on the same basis").x_label("log10(lambda)").y_label("Squared response");
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(curves).add(scores);
+  std::filesystem::create_directories("build");
+  layout.size(1100,510).fit_panels().save_svg("build/pspline_oscillation.svg");
+  auto table=raw.summary().concat_rows(chosen.summary()).concat_rows(heavy.summary());
+  std::vector<double> rmse;
+  for (const auto* fit : {&raw,&chosen,&heavy}) rmse.push_back(std::sqrt(dm::mean(dm::pow(fit->predict(grid)-dm::sin(20/(grid+.25)),2))));
+  table.add_column("mean_grid_rmse",rmse);
+  std::print("{}\n",table.select({"lambda","edf","rss","roughness","gcv","loo_cv","mean_grid_rmse"}).to_md(6));
+}
+```
+// result_begin: markdown
+| lambda | edf | rss | roughness | gcv | loo_cv | mean_grid_rmse |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.000000 | 50.000000 | 61.141569 | 831.890961 | 0.199006 | 0.201738 | 0.279934 |
+| 0.001563 | 48.978355 | 61.344891 | 523.042362 | 0.198511 | 0.199525 | 0.279070 |
+| 1000.000000 | 6.014085 | 187.679484 | 0.009494 | 0.482390 | 0.482227 | 0.623732 |
+
+\image(figures/pspline_oscillation.svg)
+// result_end
+\caption(The original oscillating signal revisited with a controlled basis comparison. Table rows are zero penalty, GCV selection and lambda 1000. Mean-grid RMSE measures recovery of the noiseless curve, not prediction of a new noisy response.)
+\alttext(Left: noisy observations and the true oscillating mean are compared with unpenalised, GCV and heavily penalised fits. The heavy penalty loses oscillations near zero. Right: GCV and delete-one CV increase as the multiplier becomes too large; a vertical line marks the GCV-selected value.)
+
+GCV selects lambda 0.001563 and keeps 48.98 effective degrees of freedom, almost the
+full basis. Its mean-grid RMSE is 0.2791, versus 0.2799 without a penalty and 0.6237
+under heavy smoothing. Crucially, even the unpenalised fit misses the fastest oscillations
+near zero: this 50-function basis lacks resolution there. A smaller penalty cannot repair
+that approximation error. A richer basis is needed before treating this as solely a
+smoothing-selection problem; a global penalty can then still face unequal local complexity.
+
+> A dataset example: Old Faithful
+
+>> Data, units and the modelling question
+
+`dm::datasets::faithful()` contains 272 rows and two complete numeric columns.
+We use eruption duration in minutes as \(x\), and waiting time to the next eruption
+in minutes as \(y\). R's [dataset documentation|https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/faithful.html]
+notes that eruption times are heavily rounded. Repeated durations are legitimate
+replicate inputs, not duplicate observations to remove. The two clusters leave
+relatively little information about the middle of the curve.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto data=dm::datasets::faithful();
+  std::print("{} eruptions, {} columns.\n\n{}\n",data.nrows(),data.ncols(),data
+    | dm::pivot_longer({"eruptions","waiting"},"variable","minutes") | dm::group_by("variable")
+    | dm::summarise(dm::agg::n("n"),dm::agg::mean("minutes","mean"),dm::agg::sd("minutes","sd"),
+                    dm::agg::min("minutes","min"),dm::agg::max("minutes","max")) | dm::to_md(3));
+}
+```
+// result_begin: markdown
+272 eruptions, 2 columns.
+
+| variable | n | mean | sd | min | max |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| eruptions | 272 | 3.488 | 1.141 | 1.6 | 5.1 |
+| waiting | 272 | 70.897 | 13.595 | 43.0 | 96.0 |
+// result_end
+\caption(Old Faithful variable summaries, both measured in minutes. All 272 paired observations are retained; no standardisation or missing-value deletion is needed.)
+
+>> Fitting a rich basis and inspecting the path
+
+Start with 25 cubic basis functions and second differences. We compare a small
+fixed multiplier with automatic GCV selection and a very large multiplier approaching
+the least-squares line. The data-loss convention and knot spacing matter: lambda
+itself is not comparable across different basis sizes or different packages.
+The high-penalty curve is a useful reference, not a physically constrained geyser model.
+
+```{cpp, results="markdown", file="figures/pspline_faithful.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto data=dm::datasets::faithful();
+  const dm::Vector<> x=data.numeric_column("eruptions").values(), y=data.numeric_column("waiting").values();
+  const dm::PSR light(x,y,25,.001), chosen(x,y,25), heavy(x,y,25,1e6);
+  const auto [lo,hi]=chosen.domain(); const auto grid=dm::seql(lo,hi,301), logs=dm::seql(-4,6,41);
+  const auto path=dm::PSR::smoothing_path(x,y,25,dm::exp(logs*std::log(10.0)));
+  auto curves=dm::graphics::RPlot::create(), scores=dm::graphics::RPlot::create();
+  curves.points(x.values(),y.values(),"Eruptions",{110,110,110,.45},3)
+    .lines(grid.values(),light.predict(grid).values(),"lambda = .001",{25,145,105})
+    .lines(grid.values(),heavy.predict(grid).values(),"Near-line fit",{220,90,35},2)
+    .lines(grid.values(),chosen.predict(grid).values(),"GCV fit",{37,99,235},3)
+    .title("Next wait versus eruption duration").x_label("Eruption duration (min)").y_label("Next waiting time (min)").y_limits(35,125);
+  scores.lines(logs.values(),path.numeric_column("gcv").values(),"GCV",{37,99,235},3)
+    .lines(logs.values(),path.numeric_column("loo_cv").values(),"Delete-one CV",{220,90,35},2)
+    .abline_v(std::log10(chosen.lambda()),{70,70,70})
+    .title("Inspect the score, not only the minimum").x_label("log10(lambda)").y_label("Squared minutes");
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(curves).add(scores);
+  std::filesystem::create_directories("build");
+  layout.size(1100,510).fit_panels().save_svg("build/pspline_faithful.svg");
+  std::print("{}\n",light.summary().concat_rows(chosen.summary()).concat_rows(heavy.summary())
+    .select({"lambda","edf","rss","roughness","r_squared","gcv","loo_cv"}).to_md(6));
+}
+```
+// result_begin: markdown
+| lambda | edf | rss | roughness | r_squared | gcv | loo_cv |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.001000 | 24.036923 | 7740.40909 | 49723.961321 | 0.845461 | 34.241973 | 44.909952 |
+| 78.048067 | 5.267982 | 8415.96091 | 1.290617 | 0.831974 | 32.175278 | 32.385646 |
+| 1000000.000000 | 2.004472 | 9438.84242 | 0.000002 | 0.811551 | 35.218795 | 35.197342 |
+
+\image(figures/pspline_faithful.svg)
+// result_end
+\caption(A 25-function fit and its multiplier path. Table rows are light smoothing, the GCV choice and a nearly linear fit. The vertical line marks automatic selection; the path shows its surrounding sensitivity.)
+\alttext(Left: the two Old Faithful clusters are overlaid with lightly smoothed, GCV and nearly linear curves. Right: GCV and exact fixed-lambda delete-one scores are plotted over ten decades of smoothing.)
+
+The selected multiplier is 78.048, with edf 5.268 and in-sample R squared 0.8320.
+GCV is 32.175 square minutes; exact fixed-lambda CV is 32.386, or an RMSE of
+5.69 minutes. The light fit has edf 24.04: its CV score of 44.91 is substantially
+higher than its GCV score of 34.24, showing the effect of uneven leverage in this
+irregularly populated design. The near-line fit has edf 2.004 and CV 35.20.
+
+>> Residuals, leverage and basis-size sensitivity
+
+A useful mean curve does not account for every source of variation. Plot residuals
+in the original response units and inspect leverage where durations are unusual.
+A large corrected deletion residual can reflect either a large raw residual or a
+large leverage; it is not automatically a data error.
+
+We also retune at 12, 25 and 50 basis functions. A rich basis gives the penalty room
+to work, but finite-sample fits and GCV scores need not be invariant to its size.
+The table compares the resulting effective complexity, not just the nominal coefficient
+count. The deletion scores are internal diagnostics after selection; they do not
+constitute an independent test set or validation for future eruption sequences.
+
+```{cpp, results="markdown", file="figures/pspline_faithful_diagnostics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto data=dm::datasets::faithful();
+  const dm::Vector<> x=data.numeric_column("eruptions").values(), y=data.numeric_column("waiting").values();
+  const dm::PSR fit(x,y,25); const auto details=fit.observation_details();
+  auto residuals=dm::graphics::RPlot::create(), leverage=dm::graphics::RPlot::create();
+  residuals.points(details.numeric_column("fitted").values(),details.numeric_column("residual").values(),"",{37,99,235,.5},3)
+    .abline_h(0,{70,70,70}).title("Residual variation remains").x_label("Fitted next wait (min)").y_label("Observed - fitted (min)");
+  leverage.points(x.values(),details.numeric_column("leverage").values(),"",{220,90,35,.6},3)
+    .abline_h(fit.effective_df()/x.size(),{70,70,70})
+    .title("Leverage depends on local data support").x_label("Eruption duration (min)").y_label("Leverage h_ii");
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(residuals).add(leverage);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/pspline_faithful_diagnostics.svg");
+  auto sensitivity=dm::PSR(x,y,12).summary();
+  for (std::size_t k : {25u,50u}) sensitivity=sensitivity.concat_rows(dm::PSR(x,y,k).summary());
+  std::print("{}\n",sensitivity.select({"basis","lambda","edf","rss","gcv","loo_cv"}).to_md(6));
+}
+```
+// result_begin: markdown
+| basis | lambda | edf | rss | gcv | loo_cv |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 12 | 4.154346 | 5.124265 | 8416.21340 | 32.141598 | 32.353339 |
+| 25 | 78.048067 | 5.267982 | 8415.96091 | 32.175278 | 32.385646 |
+| 50 | 789.294958 | 5.327497 | 8413.73248 | 32.181118 | 32.392013 |
+
+\image(figures/pspline_faithful_diagnostics.svg)
+// result_end
+\caption(Residuals and leverage for the 25-function GCV fit, followed by sensitivity to retuned basis size. The leverage reference is edf/n; it is a mean, not an outlier threshold.)
+\alttext(Left: observed minus fitted waiting times are plotted against fitted waiting times with a zero reference. Right: leverage is plotted against eruption duration, with its mean marked by a horizontal line.)
+
+Across 12, 25 and 50 basis functions, automatic selection gives edf 5.12, 5.27 and
+5.33, while GCV remains between 32.14 and 32.19 square minutes. The conclusion is
+stable at this level of resolution, although the tuning multipliers themselves change.
+Residuals still span roughly minus 14 to plus 14 minutes, and leverage rises at the
+ends and in the sparsely sampled middle. Smoothing removes neither that variation
+nor the need to examine the sampling process.
+
+> Conclusion
+
+The three-point system isolates the mechanism: two unpenalised line modes and one
+shrinking curvature mode. Its exact path verifies the equations and also exposes a
+case where neither GCV nor delete-one CV can choose a unique positive multiplier.
+The cubic example shows that penalty order and boundary convention determine what
+survives smoothing. They deserve as much attention as the spline degree.
+
+On known truth, stronger smoothing trades lower coefficient roughness for higher
+training error and can erase fast oscillations. On Old Faithful, the fitted conditional
+mean is useful for description, while residuals, sparse regions and basis sensitivity
+limit its interpretation. GCV supplies a data-driven choice within a specified basis;
+it does not supply uncertainty bands, enforce monotonicity, remove serial dependence,
+or validate extrapolation. `PSR` clamps predictions outside its fitted domain.
+
+> References
+
+- P. H. C. Eilers and B. D. Marx (1996). *Flexible smoothing with B-splines and penalties.* Statistical Science 11(2), 89–102 (discussion and rejoinder to 121). [Original article|https://doi.org/10.1214/ss/1038425655].
+- G. H. Golub, M. Heath and G. Wahba (1979). *Generalized cross-validation as a method for choosing a good ridge parameter.* Technometrics 21(2), 215–223. [Original article|https://doi.org/10.1080/00401706.1979.10489751].
+- R Core Team. [splineDesign|https://stat.ethz.ch/R-manual/R-devel/library/splines/html/splineDesign.html], for an independent evaluation of an identical knot sequence, and [Old Faithful data|https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/faithful.html], for variable meanings and rounding caveats.

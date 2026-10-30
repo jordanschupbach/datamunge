@@ -1,0 +1,477 @@
+//? Title: Constrained Optimization: Feasibility Is Only Half the Check
+//? Subtitle: Exact KKT controls, multiplier updates, projection steps and a barrier path
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A constrained optimizer must reduce an objective while respecting equalities or
+inequalities, and a feasible point need not be an optimum. We derive exact primal
+and dual controls for two Euclidean projection problems, then test the library's
+augmented-Lagrangian, projection-like SQP and feasibility-backtracked log-barrier
+implementations. Separate feasibility, stationarity and complementarity diagnostics
+expose both useful progress and the limits of their native stopping rules.
+)
+\toc
+
+> The method
+
+For equalities c(x)=0 and inequalities h(x)<=0, the Lagrangian is
+L=f+lambda transpose c+nu transpose h. At a regular local solution its gradient
+vanishes, c=0, h<=0, nu>=0, and nu_j*h_j=0. These necessary KKT conditions become
+sufficient for the convex quadratic/affine examples below. A raw objective gradient
+usually does not vanish at a constrained optimum.
+
+$$
+ \nabla f+J_c^T\lambda+J_h^T\nu=0,\quad c=0,\quad h\le0,\quad
+ \nu\ge0,\quad \nu_jh_j=0.
+$$
+\alttext(KKT combines Lagrangian stationarity, equality and inequality feasibility, nonnegative inequality multipliers and complementary slackness.)
+
+The native `AugmentedLagrangian` uses L_rho=f+lambda transpose c+rho*norm(c)^2/2.
+It takes a fixed inner budget of gradient steps, capping each displacement norm at
+one, then updates lambda <- lambda+rho*c. It doubles rho unless equality feasibility
+alone meets tolerance. It does not check the final Lagrangian gradient. Inner work
+needs an objective gradient and constraint Jacobian each step; constraint dimension
+and parameter dimension govern dense multiplication cost.
+
+The retained TikZ diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Normal documentation exports use its saved local SVG.
+
+```{bash, file="figures/opt_constraints_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/opt_constraints_mechanism.tikz > build/opt_constraints_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/opt_constraints_mechanism.svg build/opt_constraints_mechanism.dvi > build/opt_constraints_mechanism.render.log 2>&1
+printf 'Rendered the optimization mechanism diagram.\n'
+```
+// result_begin:
+// Rendered the optimization mechanism diagram.
+// \image(figures/opt_constraints_mechanism.svg)
+// result_end
+\caption(A constraint mechanism needs separate evidence that the returned point satisfies the optimisation conditions.)
+\alttext(Objective steps feed penalty, projection or barrier mechanisms. The returned point is checked for feasibility, stationarity and, for inequalities, complementarity.)
+
+`SQP` here is a restricted projection-like routine, rather than a general quadratic
+programming subproblem solver. It first takes x <- x-eta*grad(f), then corrects
+each equality row sequentially by -J_k*c_k/(norm(J_k)^2+regularization).
+Its early-stop condition tests norm(c) and the *constant absolute step_size* against
+tolerance, not the actual displacement or Lagrangian gradient. For ordinary positive
+step sizes it therefore normally consumes its iteration budget.
+
+`InteriorPoint` uses c<0 and the log barrier phi_mu=f-mu*sum(log(-c)). It computes
+grad(phi_mu)=grad(f)-mu*sum(J_k/c_k), backtracking only until a candidate is strictly
+feasible. It does not require barrier-objective decrease, solve a Newton system,
+perform a phase-I feasibility search or test KKT stationarity. After every fixed
+inner budget it multiplies mu by barrier_decay. Driving mu toward zero can make
+the gradient problem stiff and exhaust floating-point feasible steps.
+
+> Small worked example
+
+>> Project a target onto one line
+
+Minimise .5*norm(x-(2,0)) squared subject to x0+x1=one. Stationarity gives
+x-target+lambda*(1,1)=0; summing and imposing the equality gives lambda=.5.
+Thus x-star=(1.5,-.5), f-star=.25. This is the perpendicular projection: a radius
+sqrt(.5) objective circle is tangent to the feasible line at the solution.
+One SQP step with eta=.5 from the origin goes to (1,0), already feasible but still
+short of the tangent optimum. The native diagnostics use the exact multiplier
+and report distance, equality residual and stationarity separately.
+
+```{cpp, results="markdown", file="figures/opt_constraints_projection.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::EqualityQuadratic f({2, 0}, 1);
+  o::SQPOptions        opt;
+  opt.step_size      = .5;
+  opt.max_iterations = 1;
+  const auto run     = o::trace_optimize<o::EqualityConstrainedFunction>(f, o::SQP(opt), {0, 0});
+  std::vector<double> a, b;
+  for (double t : dm::seql(0, 2 * std::numbers::pi, 201).values()) {
+    a.push_back(2 + std::sqrt(.5) * std::cos(t));
+    b.push_back(std::sqrt(.5) * std::sin(t));
+  }
+  auto plot = dm::graphics::RPlot::create()
+                  .line({-1, 3}, {2, -2}, "feasible line", {40, 100, 190})
+                  .line(a, b, "f = 0.25", {130, 130, 130})
+                  .points(
+                      {2, 1.5, run.coordinates[0]},
+                      {0, -.5, run.coordinates[1]},
+                      "target / optimum / first step",
+                      {190, 100, 35},
+                      4)
+                  .title("An exact constrained projection")
+                  .x_label("x0")
+                  .y_label("x1")
+                  .x_limits(-1, 3)
+                  .y_limits(-2, 3)
+                  .legend(
+                      {"feasible line", "f = 0.25", "three marked points"},
+                      {{40, 100, 190}, {130, 130, 130}, {190, 100, 35}});
+  plot.size(850, 490).save_svg("build/opt_constraints_projection.svg");
+  std::print(
+      "One SQP step\n\n{}\n\nIts KKT control\n\n{}\n\nExact optimum control\n\n{}\n",
+      run.summary().to_md(7),
+      f.diagnostics(run.coordinates).to_md(7),
+      f.diagnostics(f.optimum()).to_md(7));
+}
+```
+// result_begin: markdown
+One SQP step
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.5 | 0.5 | 1 | 4 |  | 1 | 0 |
+
+
+Its KKT control
+
+| feasibility | stationarity | distance | multiplier |
+| ---: | ---: | ---: | ---: |
+| 0 | 0.7071068 | 0.7071068 | 0.5 |
+
+
+Exact optimum control
+
+| feasibility | stationarity | distance | multiplier |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0.5 |
+
+\image(figures/opt_constraints_projection.svg)
+// result_end
+\caption(A feasible first iterate still has a nonzero KKT stationarity residual.)
+\alttext(The feasible line is tangent to the quarter-loss circle at 1.5, minus 0.5. The unconstrained target and the first projected-gradient point illustrate that feasibility and optimality differ.)
+
+> Checking the implementations
+
+>> Inner work controls augmented-Lagrangian stationarity
+
+All runs start at the feasible but suboptimal point (1,0). With zero inner steps,
+the outer feasibility test accepts it unchanged at f=.5: its exact KKT residual
+shows the missing tangential improvement. Then compare one, twenty and two hundred
+inner steps, with at most twenty outer stages and step_size=.01. More inner work
+can improve a particular solve, but geometric penalty growth and fixed rates do
+not supply a general monotonic accuracy or cost guarantee. Curves sample requested
+gradient points after the run; they are not the augmented objective. Their zero
+reference is the unconstrained lower bound, so infeasible losses below .25 are
+not mistaken for improvements over the feasible optimum.
+
+```{cpp, results="markdown", file="figures/opt_constraints_augmented.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::EqualityQuadratic            f({2, 0}, 1);
+  std::vector<o::OptimizationRun> runs;
+  for (std::size_t inner : {0, 1, 20, 200}) {
+    o::AugmentedLagrangianOptions opt;
+    opt.inner_iterations     = inner;
+    opt.max_outer_iterations = 20;
+    auto run =
+        o::trace_optimize<o::EqualityConstrainedFunction>(f, o::AugmentedLagrangian(opt), {1, 0});
+    std::print(
+        "Inner steps {}\n\n{}\n\n{}\n\n",
+        inner,
+        run.summary().to_md(7),
+        f.diagnostics(run.coordinates).to_md(7));
+    if (inner)
+      runs.push_back(std::move(run));
+  }
+  o::optimization_comparison(f, runs, {"inner 1", "inner 20", "inner 200"}, "gradient", 0)
+      .title("Augmented Lagrangian: inner work")
+      .size(850, 490)
+      .save_svg("build/opt_constraints_augmented.svg");
+}
+```
+// result_begin: markdown
+Inner steps 0
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.5 | 0.5 | 1 | 3 |  | 1 | 0 |
+
+
+| feasibility | stationarity | distance | multiplier |
+| ---: | ---: | ---: | ---: |
+| 0 | 0.7071068 | 0.7071068 | 0.5 |
+
+
+Inner steps 1
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.77861 | 1.77861 | 1.88606 | 82 |  | 0.293999 | -0.804225 |
+
+
+| feasibility | stationarity | distance | multiplier |
+| ---: | ---: | ---: | ---: |
+| 1.5102264 | 1.2437814 | 1.2437814 | 0.5 |
+
+
+Inner steps 20
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.421321 | 0.421321 | 0.917955 | 1222 |  | 1.27585 | -0.56413 |
+
+
+| feasibility | stationarity | distance | multiplier |
+| ---: | ---: | ---: | ---: |
+| 0.2882839 | 0.2331471 | 0.2331471 | 0.5 |
+
+
+Inner steps 200
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.25 | 0.25 | 0.707107 | 4209 |  | 1.5 | -0.5 |
+
+
+| feasibility | stationarity | distance | multiplier |
+| ---: | ---: | ---: | ---: |
+| 0.0000000 | 0.0000005 | 0.0000005 | 0.5 |
+
+
+\image(figures/opt_constraints_augmented.svg)
+// result_end
+\caption(Zero inner work is an exact counterexample to using feasibility as the sole optimality test.)
+\alttext(Three post-run objective traces show different amounts of inner work at gradient-requested points. Tables also retain the feasible but suboptimal zero-inner-step run and its stationarity error.)
+
+>> The routine named SQP uses linearised row corrections
+
+From the origin, compare the default regularization 1e-6 and a smaller 1e-12,
+using eta one or .5. With eta one the objective step lands on the target each
+time and the row correction nearly projects it onto the line. Nonzero denominator
+regularization leaves a small equality error. Repeating that same construction
+does not make it a full SQP QP solve. The returned raw gradient norm remains near
+sqrt(.5) at the correct constrained optimum; the Lagrangian residual is the relevant
+stationarity check. Callback counts show that these runs consume their 200-step
+budgets rather than satisfying the routine's constant-step early-stop clause.
+
+```{cpp, results="markdown", file="figures/opt_constraints_sqp.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::EqualityQuadratic            f({2, 0}, 1);
+  std::vector<o::OptimizationRun> runs;
+  std::vector<std::string>        labels{"default", "small reg", "half step"};
+  for (std::size_t i = 0; i < 3; ++i) {
+    o::SQPOptions opt;
+    if (i)
+      opt.regularization = 1e-12;
+    if (i == 2)
+      opt.step_size = .5;
+    auto run = o::trace_optimize<o::EqualityConstrainedFunction>(f, o::SQP(opt), {0, 0});
+    std::print(
+        "{}\n\n{}\n\n{}\n\n",
+        labels[i],
+        run.summary().to_md(7),
+        f.diagnostics(run.coordinates).to_md(10));
+    runs.push_back(std::move(run));
+  }
+  o::optimization_comparison(f, runs, labels, "gradient", 0)
+      .title("Projection-like SQP: requested points")
+      .size(850, 490)
+      .save_svg("build/opt_constraints_sqp.svg");
+}
+```
+// result_begin: markdown
+default
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.25 | 0.25 | 0.707106 | 601 |  | 1.5 | -0.5 |
+
+
+| feasibility | stationarity | distance | multiplier |
+| ---: | ---: | ---: | ---: |
+| 0.0000005 | 0.000000354 | 0.000000354 | 0.5 |
+
+
+small reg
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.25 | 0.25 | 0.707107 | 601 |  | 1.5 | -0.5 |
+
+
+| feasibility | stationarity | distance | multiplier |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0.5 |
+
+
+half step
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.25 | 0.25 | 0.707107 | 601 |  | 1.5 | -0.5 |
+
+
+| feasibility | stationarity | distance | multiplier |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0.5 |
+
+
+\image(figures/opt_constraints_sqp.svg)
+// result_end
+\caption(Method names do not replace checks of the implemented update and stopping condition.)
+\alttext(Three gradient-request traces approach the constrained objective control. Separate equality and Lagrangian residuals distinguish regularization effects from raw-gradient nonzero values.)
+
+>> A barrier path with an exact solution, and a default run that fails late
+
+Minimise .5*norm(x-(-1,2)) squared subject to x>=0. The constrained solution is
+(0,2), f=.5, with multipliers (1,0) under c=-x. For a fixed positive barrier
+weight, each coordinate satisfies x-target-mu/x=0. The positive root is
+
+$$
+ x_j(\mu)=\frac{t_j+\sqrt{t_j^2+4\mu}}2,\quad
+ \nu_j(\mu)=\mu/x_j(\mu),\quad x_j(\mu)\nu_j(\mu)=\mu.
+$$
+\alttext(The exact positive barrier coordinate solves the quadratic first-order condition. Its associated multiplier is mu divided by the coordinate and its complementary product is mu.)
+
+Run each of mu=1, .1 and .01 separately for 5000 inner steps at .005, then compare
+with the stable native root formula. The path tends toward the active boundary as
+mu decreases. This is a controlled fixed-barrier experiment, distinct from the
+native default schedule. The latter starts strictly feasible at (.5,.5), makes
+substantial progress, then throws when it cannot find a representable feasible
+step as the barrier shrinks. Its partial final point and error text are retained;
+a failure does not mean that every preceding step was useless.
+
+```{cpp, results="markdown", file="figures/opt_constraints_barrier.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::NonnegativeQuadratic f({-1, 2});
+  std::vector<double>     axis, a, b, exact_a, exact_b, comp;
+  for (double mu : {.01, .1, 1.}) {
+    o::InteriorPointOptions opt;
+    opt.initial_barrier      = mu;
+    opt.max_outer_iterations = 1;
+    opt.inner_iterations     = 5000;
+    opt.step_size            = .005;
+    const auto run =
+        o::trace_optimize<o::InequalityConstrainedFunction>(f, o::InteriorPoint(opt), {.5, .5});
+    const auto exact = f.barrier_optimum(mu);
+    axis.push_back(std::log10(mu));
+    a.push_back(run.coordinates[0]);
+    b.push_back(run.coordinates[1]);
+    exact_a.push_back(exact[0]);
+    exact_b.push_back(exact[1]);
+    comp.push_back(f.diagnostics(run.coordinates).double_at("complementarity", 0));
+    std::print(
+        "mu={}\n\n{}\n\n{}\n\n",
+        mu,
+        run.summary().to_md(7),
+        f.diagnostics(run.coordinates).to_md(8));
+  }
+  auto path =
+      dm::graphics::RPlot::create()
+          .line(axis, exact_a, "exact x0", {40, 100, 190})
+          .line(axis, exact_b, "exact x1", {190, 100, 35})
+          .points(axis, a, "fitted x0", {40, 100, 190}, 4)
+          .points(axis, b, "fitted x1", {190, 100, 35}, 4)
+          .title("Fixed barriers: fitted versus exact")
+          .x_label("log10 mu")
+          .y_label("coordinate")
+          .x_limits(-2, 0)
+          .y_limits(0, 3.5)
+          .legend({"x0: line + points", "x1: line + points"}, {{40, 100, 190}, {190, 100, 35}});
+  auto residual = dm::graphics::RPlot::create()
+                      .line(axis, comp, "KKT complementarity", {70, 145, 90})
+                      .points(axis, {.01, .1, 1}, "mu control", {190, 100, 35}, 4)
+                      .title("Complementarity along the path")
+                      .x_label("log10 mu")
+                      .y_label("max absolute xj * multiplier")
+                      .x_limits(-2, 0)
+                      .y_limits(0, 1.5)
+                      .legend({"observed", "mu control"}, {{70, 145, 90}, {190, 100, 35}});
+  dm::graphics::RLayout::create(1, 2).add(path).add(residual).size(1100, 490).fit_panels().save_svg(
+      "build/opt_constraints_barrier.svg");
+  const auto defaults =
+      o::trace_optimize<o::InequalityConstrainedFunction>(f, o::InteriorPoint(), {.5, .5});
+  std::print(
+      "Default schedule, retained partial result\n\n{}\n\n{}\n",
+      defaults.summary().to_md(8),
+      f.diagnostics(defaults.coordinates).to_md(8));
+}
+```
+// result_begin: markdown
+mu=0.01
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.509963 | 0.509963 | 1.00991 | 20001 |  | 0.00990195 | 2.00499 |
+
+
+| feasibility | stationarity | complementarity | distance |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 0.01 | 0.01108713 |
+
+
+mu=0.1
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.596995 | 0.596995 | 1.0927 | 20001 |  | 0.091608 | 2.04881 |
+
+
+| feasibility | stationarity | complementarity | distance |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 0.1 | 0.10379945 |
+
+
+mu=1
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.3948 | 1.3948 | 1.67021 | 20001 |  | 0.618034 | 2.41421 |
+
+
+| feasibility | stationarity | complementarity | distance |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 1 | 0.74400194 |
+
+
+Default schedule, retained partial result
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| nan | 0.5 | 1 | 37867 | InteriorPoint: unable to find feasible step | 2.28723e-16 | 2 |
+
+
+| feasibility | stationarity | complementarity | distance |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 0.00000181 | 0.00000091 |
+
+\image(figures/opt_constraints_barrier.svg)
+// result_end
+\caption(Fixed-barrier controls separate mathematical path accuracy from a very small-barrier arithmetic failure.)
+\alttext(Fitted coordinates agree with exact positive roots for three fixed barrier weights. Complementarity tracks mu. The default shrinking-barrier exception and its near-boundary partial point remain in the printed evidence.)
+
+> Conclusions and references
+
+The equality projection supplies exact primal and dual controls. It exposes a
+feasibility-only stopping counterexample and clarifies the projection-like routine
+named SQP. The orthant problem supplies a complete barrier path and complementarity
+control while preserving a late default-schedule failure. These generated problems
+need no external dataset: their known answers make stronger implementation checks
+than an unverified application optimum. General nonlinear constraints require
+regularity, appropriate scaling and fuller stationarity safeguards than these
+small native routines expose.
+
+- J. Nocedal and S. J. Wright (2006), [Numerical Optimization, second edition](https://doi.org/10.1007/978-0-387-40065-5), chapters on optimality conditions, penalties, SQP and interior-point methods. The routines above implement the restricted variants explicitly described here.
+
+> Reading the numerical evidence
+
+`trace_optimize` calls the configured native optimizer through its stated abstract
+interface. It records callback requests without inserting fitting evaluations.
+Value calls can be rejected trials; gradient calls can be look-ahead points.
+`optimization_comparison` explicitly re-evaluates selected points afterwards on
+these pure objectives. Those diagnostic calls are excluded from fitting counts.
+Callback indices are neither accepted iterations nor wall time. The plotted gap
+uses the declared reference (minimum or stated lower bound) and a display floor of 1e-14; that floor does
+not modify any optimizer update. Returned coordinates, checked objective and
+appropriate stationarity/feasibility checks carry more information than a return
+from a finite iteration budget. Native APIs do not expose a uniform stop-status flag.
+The recorder retains exceptions and rejects nonfinite requested values/gradients;
+this makes failures visible rather than letting an instrumented run continue on NaN.
+

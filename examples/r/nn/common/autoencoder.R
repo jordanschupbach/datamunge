@@ -25,8 +25,7 @@ autoencoder_find <- function(arrays, name) {
 # list(fit, validation, test) of list(images, labels, source) with tflow's integrity checks.
 autoencoder_load_saliency <- function(root) {
     file <- file.path(root, "saliency_data.npz")
-    autoencoder_require(file.exists(file),
-        paste0(file, " missing; run `just autoencoder-assets` in tflow_examples or pass data="))
+    nn_components$dataset_assets$EnsureSaliency(root)
     arrays <- nn$load_npz(file)
     result <- list()
     ids <- numeric()

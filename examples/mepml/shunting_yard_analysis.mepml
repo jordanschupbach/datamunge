@@ -36,7 +36,7 @@ pushing the result. Exponentiation \`\^\` is right-associative, so \`2 \^ 3 \^ 2
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -91,7 +91,7 @@ parentheses, and right-associative exponentiation.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

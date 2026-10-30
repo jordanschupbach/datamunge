@@ -1,10 +1,10 @@
 # Native R NN example. k-sparse autoencoder: linear encoder, top-8 signed activities per image, matched plain control.
+# CMD: nix develop .#r --command Rscript examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/k_sparse_autoencoder.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example k_sparse_autoencoder
 # k-sparse: autoencoder with LINEAR encoder and top8signed activities per image.
 # Three default epochs per model; matched plain control.
 #

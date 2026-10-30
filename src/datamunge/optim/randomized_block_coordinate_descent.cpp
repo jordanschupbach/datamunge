@@ -1,3 +1,5 @@
+/// @file randomized_block_coordinate_descent.cpp
+/// @brief RandomizedBlockCoordinateDescent native update, trial and stopping implementation.
 #include <datamunge/optim/randomized_block_coordinate_descent.hpp>
 
 #include <algorithm>
@@ -7,8 +9,12 @@
 #include <stdexcept>
 
 namespace datamunge::optim {
+/// @brief Private randomized block coordinate descent arithmetic, validation and local state.
 namespace {
 
+/// @brief Validate native step/search ranges before using callbacks.
+/// @param options Borrowed method controls.
+/// @throws std::invalid_argument A checked step, tolerance or search control is out of range.
 void validate(const RandomizedBlockCoordinateDescentOptions& options) {
     if (options.block_size == 0) throw std::invalid_argument("RandomizedBlockCoordinateDescent: block_size must be positive");
     if (options.step_size <= 0.0) throw std::invalid_argument("RandomizedBlockCoordinateDescent: step_size must be positive");

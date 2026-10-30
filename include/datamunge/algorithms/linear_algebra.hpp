@@ -17,9 +17,9 @@ namespace datamunge::algorithms {
 /// @return an orthonormal set of vectors (rows) spanning the same subspace.
 std::vector<std::vector<double>> gram_schmidt(const std::vector<std::vector<double>>& vectors);
 
-/// @brief A single eigenvalue with its eigenvector, as returned by @ref power_iteration.
+/// @brief A real eigenvalue and its unit eigenvector, shared by power and inverse iteration.
 struct EigenPair {
-    double              value{0.0}; ///< the (dominant) eigenvalue.
+    double              value{0.0}; ///< Estimated eigenvalue.
     std::vector<double> vector;     ///< a corresponding unit eigenvector.
 };
 

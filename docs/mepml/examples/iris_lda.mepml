@@ -1,0 +1,443 @@
+//? Title: The Iris Data: Summaries, Pictures and LDA
+//? Subtitle: A short mepml report built on datamunge's C++ API
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A first look at Fisher's iris data with `datamunge`: we load the 150
+flowers, summarize the four measurements overall and by species, draw a
+pairs plot and per-species boxplots, and then fit a linear discriminant
+analysis (LDA) with `stats::LDA`. Every table, number and figure below is the
+output of a small C\+\+ program in this document, compiled against the
+installed library when the report is run.
+)
+
+\toc
+
+> The data
+
+`dm::datasets::iris()` returns R's `datasets::iris`: 150 flowers,
+50 each of ~setosa~, ~versicolor~ and ~virginica~, measured in centimetres
+on sepal length and width and petal length and width. Each block in this
+report is its own program, so each one loads the data again. Every block
+starts with the single line `#include <dm/dm.hpp>`, which brings in the whole
+library under the short namespace `dm` (and the standard headers a short
+program needs). The first block just prints the size of the frame and its
+first rows. `DataFrame::to_md()` writes a
+frame as a Markdown table, like knitr's `kable()`: numbers are right-aligned,
+and each numeric column gets the fewest decimals (at most three by default)
+that show all of its values exactly.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const auto iris = dm::datasets::iris();
+  std::print("The frame has {} rows and {} columns.\n\nHere's the first 6 rows of data: \n{}\n",
+    iris.nrows(), iris.ncols(), iris.head(6).to_md());
+}
+```
+// result_begin: markdown
+The frame has 150 rows and 5 columns.
+
+Here's the first 6 rows of data: 
+| Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
+| ---: | ---: | ---: | ---: | :--- |
+| 5.1 | 3.5 | 1.4 | 0.2 | setosa |
+| 4.9 | 3.0 | 1.4 | 0.2 | setosa |
+| 4.7 | 3.2 | 1.3 | 0.2 | setosa |
+| 4.6 | 3.1 | 1.5 | 0.2 | setosa |
+| 5.0 | 3.6 | 1.4 | 0.2 | setosa |
+| 5.4 | 3.9 | 1.7 | 0.4 | setosa |
+// result_end
+\caption(The first six rows of the iris data)
+
+> Summary statistics
+
+The first table summarizes each measurement over all 150 flowers. It is a
+dplyr-style pipeline: `pivot_longer()` stacks the four measurement columns
+into one `cm` column with a `Measurement` column naming the source,
+`group_by()` and `summarise()` then reduce each measurement to its mean,
+standard deviation (with the \(n-1\) denominator), minimum, median and
+maximum, and `to_md()` ends the pipeline with the table. The `dm::agg`
+helpers name the aggregations as dplyr does, with the output column name
+second.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace agg = dm::agg;
+
+int main() {
+  std::print("{}\n", 
+    dm::datasets::iris() 
+      | dm::pivot_longer({"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"},
+                         "Measurement", "cm")
+      | dm::group_by("Measurement")
+      | dm::summarise(agg::mean("cm", "Mean"), agg::sd("cm", "SD"), agg::min("cm", "Min"),
+                      agg::median("cm", "Median"), agg::max("cm", "Max"))
+      | dm::to_md());
+}
+```
+// result_begin: markdown
+| Measurement | Mean | SD | Min | Median | Max |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Sepal.Length | 5.843 | 0.828 | 4.3 | 5.80 | 7.9 |
+| Sepal.Width | 3.057 | 0.436 | 2.0 | 3.00 | 4.4 |
+| Petal.Length | 3.758 | 1.765 | 1.0 | 4.35 | 6.9 |
+| Petal.Width | 1.199 | 0.762 | 0.1 | 1.30 | 2.5 |
+// result_end
+\caption(Each measurement over all 150 flowers, in centimetres)
+
+Grouping by species shows where the differences lie. `agg::n()` counts each
+group's rows, and `agg::across()` applies one aggregation to several columns,
+like dplyr's `summarise(n = n(), across(cols, mean))`.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace agg = dm::agg;
+
+int main() {
+  const auto iris = dm::datasets::iris();
+  const std::vector<std::string> features = {
+      "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+  std::cout << (iris
+      | dm::group_by("Species")
+      | dm::summarise(agg::n(), agg::across(features, agg::Func::Mean))
+      | dm::to_md());
+}
+```
+// result_begin: markdown
+| Species | n | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| setosa | 50 | 5.006 | 3.428 | 1.462 | 0.246 |
+| versicolor | 50 | 5.936 | 2.770 | 4.260 | 1.326 |
+| virginica | 50 | 6.588 | 2.974 | 5.552 | 2.026 |
+// result_end
+\caption(Mean of each measurement by species, in centimetres)
+
+The sepals of the three species overlap a good deal, but their petals do
+not: ~setosa~'s petals are about a quarter the length of ~virginica~'s, and
+~versicolor~ sits between the two.
+
+> Pictures
+
+A pairs plot (`graphics::Splom`, after R's `pairs()` and GGally's `ggpairs()`)
+shows every pair of measurements at once. `group_by("Species")` splits every
+panel by species. The diagonal shows each measurement's kernel density
+estimate. Above it, each panel shows the flowers with a smooth estimate of the
+mean (a local linear regression, like R's `loess()`) and a shaded 95%
+prediction band, so the band shows where a new flower of that species would
+fall. Below it, each panel shows contours of a two-dimensional kernel density
+estimate, drawn at the levels that enclose 25%, 50%, 75% and 95% of each
+species' flowers. The structure is plain: ~setosa~ is a cluster of its own in
+every panel that involves a petal measurement, while ~versicolor~ and
+~virginica~ touch.
+
+```{cpp, results="output", file="figures/iris_splom.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto iris = dm::datasets::iris();
+  auto splom = dm::graphics::Splom::create(
+      iris, {"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species"});
+  splom.title("Iris measurements by species")
+      .group_by("Species")
+      .size(1040, 840);
+  splom.save_svg("build/iris_splom.svg");
+}
+```
+// result_begin:
+// \image(figures/iris_splom.svg)
+// result_end
+\caption(Pairs plot of the four measurements: densities on the diagonal, smooths with 95% prediction bands above it, density contours below it; setosa in blue, versicolor in orange, virginica in red)
+\alttext(
+A four-by-four grid for the iris measurements. The diagonal shows one density
+curve per species; the upper panels show the flowers with a smoothed mean line
+and shaded prediction band per species; the lower panels show nested density
+contours per species. Setosa forms a separate cluster in the petal panels
+while versicolor and virginica overlap slightly.
+)
+
+Boxplots put the same information one measurement at a time. Petal length
+and width separate all three species with little overlap; sepal width is
+the only measurement in which ~setosa~ is the largest.
+
+```{cpp, results="output", file="figures/iris_boxplots.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto iris = dm::datasets::iris();
+  using ColumnType = dm::dstruct::DataFrame::ColumnType;
+  const std::vector<std::string> species = dm::unique(iris.get_column<std::string>("Species"));
+  const std::vector<std::string> features = dm::col_names(iris, ColumnType::Numeric);
+  // The pairs plot's colours: blue, orange and red.
+  const std::vector<dm::RGB> colors = {{78, 121, 167}, {242, 142, 43}, {225, 87, 89}};
+
+  auto layout = dm::graphics::RLayout::create(2, 2).size(960, 720);
+  for (const auto& f : features) {
+    std::vector<std::vector<double>> groups;
+    for (const auto& sp : species) {
+      const auto subset = iris.filter([&](const auto& r) {
+        return r.get_string("Species") == sp;
+      });
+      groups.push_back(subset.numeric_column(f).values());
+    }
+    auto bp = dm::Plot::boxplot(groups, species, colors);
+    bp.title(f).x_label("").y_label("cm").size(480, 360);
+    layout.add(bp);
+  }
+  layout.save_svg("build/iris_boxplots.svg");
+}
+```
+// result_begin:
+// \image(figures/iris_boxplots.svg)
+// result_end
+\caption(Each measurement by species)
+\alttext(
+Four boxplot panels, one per measurement, each with a box for setosa,
+versicolor and virginica; the petal panels show three well separated boxes.
+)
+
+> Linear discriminant analysis
+
+LDA models each species as a multivariate normal distribution with its own
+mean \(\mu_k\) and a covariance matrix \(\Sigma\) shared by all three. Under
+that model the most probable species for a flower \(x\) is the \(k\) that
+maximizes the linear discriminant function
+
+$$
+\delta_k(x) = x^\top \Sigma^{-1}\mu_k - \tfrac12\,\mu_k^\top \Sigma^{-1}\mu_k + \log \pi_k ,
+$$
+\alttext(delta k of x equals x transpose Sigma inverse mu k, minus one half
+mu k transpose Sigma inverse mu k, plus log pi k)
+
+where \(\pi_k\) is the prior probability of species \(k\). The same model
+also gives Fisher's discriminant axes: the directions \(w\) that maximize the
+ratio of between-species to within-species variance. With three species
+there are at most two such axes, LD1 and LD2.
+
+>> Fitting the model
+
+`stats::LDA` takes a data frame and an R-style formula. `to_md()` reports the
+fit as Markdown tables with the same content as R's `MASS::lda()` printout:
+the priors, the group means, the coefficients of each discriminant axis, and
+the proportion of trace, which says how much of the separation each axis
+carries. (`print_summary()` gives the same report as plain text.)
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::print("{}\n", dm::stats::LDA(dm::datasets::iris(), 
+      "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width").to_md());
+}
+```
+// result_begin: markdown
+Linear discriminant analysis of `Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width` on 150 observations and 3 classes; training accuracy 98.00%.
+
+Prior probabilities of groups:
+
+| setosa | versicolor | virginica |
+| ---: | ---: | ---: |
+| 0.3333 | 0.3333 | 0.3333 |
+
+Group means:
+
+| class | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width |
+| :--- | ---: | ---: | ---: | ---: |
+| setosa | 5.006 | 3.428 | 1.462 | 0.246 |
+| versicolor | 5.936 | 2.770 | 4.260 | 1.326 |
+| virginica | 6.588 | 2.974 | 5.552 | 2.026 |
+
+Coefficients of linear discriminants:
+
+| predictor | LD1 | LD2 |
+| :--- | ---: | ---: |
+| Sepal.Length | -0.8294 | 0.0241 |
+| Sepal.Width | -1.5345 | 2.1645 |
+| Petal.Length | 2.2012 | -0.9319 |
+| Petal.Width | 2.8105 | 2.8392 |
+
+Proportion of trace:
+
+| LD1 | LD2 |
+| ---: | ---: |
+| 0.9912 | 0.0088 |
+// result_end
+
+LD1 carries 99% of the separation (its proportion of trace). Its largest
+coefficients are on the petal measurements, which matches what the pictures
+above showed.
+
+>> How well it classifies
+
+The confusion matrix compares each flower's species with the one the fitted
+model predicts for it (rows are the true species, columns the predicted
+ones). `confusion_frame()` returns it as a data frame, so it pipes into
+`rename()` and `to_md()` like any other.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const dm::stats::LDA model(dm::datasets::iris(),
+    "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");
+  std::print("Training accuracy: {:.1f}%\n\n{}\n",
+     100.0 * model.training_accuracy(),
+     (model.confusion_frame() | dm::rename("actual", "True species") | dm::to_md()));
+}
+```
+// result_begin: markdown
+Training accuracy: 98.0%
+
+| True species | setosa | versicolor | virginica |
+| :--- | ---: | ---: | ---: |
+| setosa | 50 | 0 | 0 |
+| versicolor | 0 | 48 | 2 |
+| virginica | 0 | 1 | 49 |
+// result_end
+\caption(Confusion matrix of the fitted model on its own training data)
+
+Accuracy measured on the flowers the model was fitted to is optimistic. A
+fairer estimate is five-fold cross-validation: each flower goes into one of
+five folds (every fifth row, so each fold holds ten flowers of each
+species), the model is fitted to the other four folds, and the held-out fold
+is predicted.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  auto iris = dm::datasets::iris();
+  constexpr int k = 5;
+  std::vector<double> fold(iris.nrows());
+  for (std::size_t i = 0; i < fold.size(); ++i) fold[i] = static_cast<double>(i % k);
+  iris.add_column("fold", fold);
+
+  std::size_t correct = 0, total = 0;
+  // Loop through folds and update :
+  for (int f = 0; f < k; ++f) {
+    const auto train = iris.filter(
+        [&](const auto& r) { return r.get_double("fold") != f; });
+    const auto test = iris.filter(
+        [&](const auto& r) { return r.get_double("fold") == f; });
+    const dm::stats::LDA model(train,
+      "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");
+    const auto predicted = model.predict(test);
+    const auto& actual = test.string_column("Species").values();
+    std::size_t hits = 0;
+    for (std::size_t i = 0; i < predicted.size(); ++i) hits += predicted[i] == actual[i];
+    std::print("fold {}: {:2} / {} correct\n", f + 1, hits, predicted.size());
+    correct += hits;
+    total += predicted.size();
+  }
+  std::print("\ncross-validated accuracy: {:.1f}% ({} / {})\n",
+    100.0 * static_cast<double>(correct) / total, correct, total);
+}
+```
+// result_begin:
+// fold 1: 29 / 30 correct
+// fold 2: 30 / 30 correct
+// fold 3: 30 / 30 correct
+// fold 4: 28 / 30 correct
+// fold 5: 30 / 30 correct
+//
+// cross-validated accuracy: 98.0% (147 / 150)
+// result_end
+
+>> The discriminant space
+
+Projecting every flower onto LD1 and LD2 turns the fitted model into a
+picture. `dm::plot()` draws an object's default picture and returns a
+`graphics::Figure`, which is titled, sized and saved the same way whatever
+is in it (`save_svg()`, `save_png()`, `save_pdf()`, or `to_svg()` for the
+text). For an LDA fit it draws that projection, coloured by the true
+species, over the model's decision regions: each shaded area is where
+the model predicts that species, and the dark lines are the boundaries
+between them. In discriminant space LDA assigns a flower to the species whose
+mean is nearest (after a small adjustment for the priors), so the boundaries
+are straight lines and each region is a convex polygon. With three species
+the two axes carry the whole model, so these regions are exactly the model's
+predictions.
+
+The three groups line up along LD1, with ~setosa~ far from the other two.
+The flowers on the wrong side of the ~versicolor~ / ~virginica~ boundary are
+the three misclassified in the confusion matrix.
+
+```{cpp, results="output", file="figures/iris_lda_discriminants.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const dm::stats::LDA model(
+      dm::datasets::iris(), "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");
+  dm::plot(model).size(840, 560).save_svg("build/iris_lda_discriminants.svg");
+}
+```
+// result_begin:
+// \image(figures/iris_lda_discriminants.svg)
+// result_end
+\caption(The iris flowers on the two discriminant axes, coloured by species, over the model's decision regions)
+\alttext(
+A scatter plot of LD1 against LD2 with three clusters of points on a
+background split into three shaded regions by two straight boundary lines;
+setosa is far to one side and versicolor and virginica sit next to each
+other, with three flowers on the wrong side of the line between them.
+)
+
+>> Boundaries on the petals
+
+Decision regions can also be drawn in the measurements themselves when the
+model uses two of them. The petals carry most of the separation, so a model
+with only petal length and width is a natural choice. For a model with two
+predictors `dm::plot()` gives two panels: the discriminant space as before,
+and the predictor space, shaded by the species the model predicts at each
+point. The boundaries are straight lines in both, because LDA's discriminant
+functions are linear in the measurements.
+
+```{cpp, results="output", file="figures/iris_lda_petal_regions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const dm::stats::LDA petals(dm::datasets::iris(), "Species ~ Petal.Length + Petal.Width");
+  dm::plot(petals)
+      .title("LDA on petal length and width")
+      .size(1200, 520)
+      .save_svg("build/iris_lda_petal_regions.svg");
+  std::print("training accuracy: {:.1f}%\n", 100.0 * petals.training_accuracy());
+}
+```
+// result_begin:
+// training accuracy: 96.0%
+// \image(figures/iris_lda_petal_regions.svg)
+// result_end
+\caption(An LDA on petal length and width: the flowers in discriminant space (left) and in the petal plane (right), each over the model's decision regions)
+\alttext(
+Two panels. Left: the flowers on LD1 and LD2 over three shaded regions.
+Right: petal width against petal length on a background split into three
+shaded regions by two straight lines: setosa's small petals sit alone in the
+lower left, versicolor in the middle and virginica in the upper right, with a
+few flowers near the versicolor-virginica line.
+)
+
+The two petal measurements alone classify 96% of the training flowers
+correctly, against 98% for all four; the six errors all sit near the line
+between ~versicolor~ and ~virginica~.
+
+> Conclusion
+
+The four measurements separate ~setosa~ from the other species completely, and
+the petal measurements do most of the work. LDA confirms this: one discriminant
+axis carries almost all of the separation, the fitted model misclassifies only
+three ~versicolor~ and ~virginica~ flowers, and five-fold cross-validation gives
+the same 98% accuracy, so the fit is not an artefact of testing on the training
+data. A model on the petals alone does nearly as well, and its decision regions
+show why: two straight lines in the petal plane separate the species almost
+perfectly. The longer report in `examples/mepml/lda_iris_analysis.mepml` derives
+LDA in detail and predicts new flowers.

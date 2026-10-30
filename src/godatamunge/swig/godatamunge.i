@@ -73,6 +73,7 @@
 %ignore datamunge::stats::LDAPrediction;
 %ignore datamunge::datasets::iris;
 %ignore datamunge::datasets::penguins;
+%ignore datamunge::datasets::tooth_growth;
 %ignore datamunge::bayes::AutodiffModel;
 %ignore datamunge::bayes::normal_lpdf;
 %ignore datamunge::bayes::cauchy_lpdf;
@@ -82,6 +83,7 @@
 %ignore datamunge::bayes::student_t_lpdf;
 %ignore datamunge::bayes::bernoulli_logit_lpmf;
 %ignore datamunge::bayes::poisson_log_lpmf;
+%ignore datamunge::bayes::laplace_lpdf;
 %ignore datamunge::bayes::MAPOptions;
 %ignore datamunge::bayes::MAP;
 %ignore datamunge::bayes::HMCOptions;
@@ -234,6 +236,7 @@
 %include "datamunge/optim/rbf_gaussian_process_surrogate.hpp"
 %include "datamunge/bayes/map.hpp"
 %include "datamunge/bayes/hmc.hpp"
+%ignore datamunge::bayes::NUTS::sample_chains;
 %include "datamunge/bayes/nuts.hpp"
 %include "datamunge/bayes/rwm.hpp"
 %include "datamunge/bayes/gibbs.hpp"

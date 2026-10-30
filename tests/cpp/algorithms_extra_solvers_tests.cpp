@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <datamunge/algorithms/linear_solvers.hpp>
+#include <datamunge/algorithms/network_analysis.hpp>
 
 #include <cmath>
 #include <random>
@@ -122,4 +123,97 @@ TEST(Levinson, MatchesDenseSolveOnToeplitz) {
         const Vector x = levinson_solve(row, b);
         EXPECT_LT(residual(T, x, b), 1e-7);
     }
+}
+
+TEST(BiCGOperator, MatchesDenseBiCGAndSolvesNonSymmetricSystems) {
+    std::mt19937 rng(21);
+    std::uniform_real_distribution<double> u(-1.0, 1.0);
+    const std::size_t n = 40;
+    std::vector<std::vector<double>> a(n, std::vector<double>(n));
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j < n; ++j) a[i][j] = (i == j ? 8.0 : 0.0) + u(rng);
+    std::vector<double> b(n);
+    for (auto& v : b) v = u(rng);
+    const auto mul = [&](bool transpose) {
+        return [&, transpose](const std::vector<double>& v) {
+            std::vector<double> y(n, 0.0);
+            for (std::size_t i = 0; i < n; ++i)
+                for (std::size_t j = 0; j < n; ++j) y[i] += (transpose ? a[j][i] : a[i][j]) * v[j];
+            return y;
+        };
+    };
+    const auto run = datamunge::algorithms::biconjugate_gradient(mul(false), mul(true), b, 200, 1e-12);
+    ASSERT_TRUE(run.converged);
+    EXPECT_FALSE(run.breakdown);
+    EXPECT_EQ(run.products, 2 * run.iterations);
+    EXPECT_EQ(run.residual_history.size(), static_cast<std::size_t>(run.iterations) + 1);
+    const auto ax = mul(false)(run.x);
+    for (std::size_t i = 0; i < n; ++i) EXPECT_NEAR(ax[i], b[i], 1e-9);
+    const auto dense = datamunge::algorithms::biconjugate_gradient(a, b, 200, 1e-14);
+    for (std::size_t i = 0; i < n; ++i) EXPECT_NEAR(dense.x[i], run.x[i], 1e-9);
+}
+
+TEST(BiCGOperator, BreaksDownOnASwapMatrix) {
+    // A = [[0, 1], [1, 0]] is orthogonal, but p~^T A p = 0 at the first step for b = e1.
+    const auto swap = [](const std::vector<double>& v) { return std::vector<double>{v[1], v[0]}; };
+    const auto run = datamunge::algorithms::biconjugate_gradient(swap, swap, {1.0, 0.0}, 10, 1e-12);
+    EXPECT_TRUE(run.breakdown);
+    EXPECT_FALSE(run.converged);
+    EXPECT_EQ(run.iterations, 0);
+}
+
+TEST(BiCGOperator, LeftEigenvectorShadowIsASeriousBreakdownAndARandomShadowFixesIt) {
+    // A = I - alpha P^T for a row-stochastic P: 1^T A = (1 - alpha) 1^T, so the shadow b = 1/n
+    // spans an A^T-invariant line and r~_1 = 0 exactly.
+    const std::size_t n = 30;
+    const double alpha = 0.9;
+    std::mt19937 rng(2);
+    std::vector<std::vector<std::size_t>> out(n);
+    for (std::size_t i = 0; i < n; ++i)
+        for (int e = 0; e < 3; ++e) out[i].push_back(rng() % n);
+    const auto A = [&](const std::vector<double>& v) {
+        std::vector<double> y = v;
+        for (std::size_t i = 0; i < n; ++i)
+            for (const auto j : out[i]) y[j] -= alpha / 3.0 * v[i];
+        return y;
+    };
+    const auto At = [&](const std::vector<double>& v) {
+        std::vector<double> y = v;
+        for (std::size_t i = 0; i < n; ++i)
+            for (const auto j : out[i]) y[i] -= alpha / 3.0 * v[j];
+        return y;
+    };
+    const std::vector<double> b(n, (1 - alpha) / n);
+    const auto stuck = datamunge::algorithms::biconjugate_gradient(A, At, b, 200, 1e-12);
+    EXPECT_TRUE(stuck.breakdown);
+    EXPECT_EQ(stuck.iterations, 1);
+    std::vector<double> shadow(n);
+    std::uniform_real_distribution<double> u(0.5, 1.5);
+    for (auto& v : shadow) v = u(rng);
+    const auto run = datamunge::algorithms::biconjugate_gradient(A, At, b, 200, 1e-12, shadow);
+    EXPECT_TRUE(run.converged) << run.iterations << " " << run.breakdown << " " << run.residual_history.back();
+    EXPECT_THROW((void)datamunge::algorithms::biconjugate_gradient(A, At, b, 10, 1e-12, {1.0}), std::invalid_argument);
+}
+
+TEST(PageRankSystem, SolvingTheSystemReproducesPageRank) {
+    std::mt19937 rng(8);
+    const std::size_t n = 60;
+    std::vector<std::pair<std::size_t, std::size_t>> edges;
+    for (std::size_t u = 0; u < n; ++u)
+        for (int e = 0; e < 4; ++e) edges.emplace_back(u, rng() % n);
+    const auto sys = datamunge::algorithms::page_rank_system(n, edges, 0.85);
+    const auto power = datamunge::algorithms::page_rank(n, edges, 0.85, 1e-15, 10000);
+    std::vector<double> shadow(n);
+    for (auto& v : shadow) v = 0.5 + (rng() % 1000) / 1000.0;
+    const auto run = datamunge::algorithms::biconjugate_gradient(
+        [&](const std::vector<double>& v) { return sys.matrix.spmv(v); },
+        [&](const std::vector<double>& v) { return sys.transpose.spmv(v); }, sys.rhs, 500, 1e-13, shadow);
+    ASSERT_TRUE(run.converged);
+    double total = 0;
+    for (std::size_t i = 0; i < n; ++i) {
+        EXPECT_NEAR(run.x[i], power[i], 1e-10);
+        total += run.x[i];
+    }
+    EXPECT_NEAR(total, 1.0, 1e-10);
+    EXPECT_THROW((void)datamunge::algorithms::page_rank_system(3, {{0, 1}, {1, 2}}, 0.85), std::invalid_argument);
 }

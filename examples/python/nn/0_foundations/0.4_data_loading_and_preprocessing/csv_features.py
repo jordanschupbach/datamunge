@@ -1,6 +1,6 @@
 # Native Python NN example. CSV parsing and training-only numeric/categorical feature columns.
-"""CMD: just python-example csv_features
-CSV parsing and training-only numeric/categorical feature columns.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/csv_features.py
+"""CSV parsing and training-only numeric/categorical feature columns.
 
 Port of tflow's csv_features. Read a table containing quoted commas, escaped
 quotes, embedded newlines, CRLF, missing values and held-out categories.

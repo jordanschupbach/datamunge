@@ -1,3 +1,6 @@
+/// @file importance_sampling.cpp
+/// @brief Gaussian-proposal importance sampling and its Gaussian efficiency formula.
+
 #include <datamunge/bayes/importance_sampling.hpp>
 
 #include <datamunge/linalg/cholesky.hpp>
@@ -10,8 +13,9 @@
 
 namespace datamunge::bayes {
 
+/// @brief Constants for the Gaussian proposal density.
 namespace {
-constexpr double kTwoPi = 6.283185307179586476925286766559;
+constexpr double kTwoPi = 6.283185307179586476925286766559; ///< 2 pi.
 } // namespace
 
 ImportanceSampling::ImportanceSampling(ImportanceSamplingOptions options) : options_(options) {}
@@ -85,6 +89,14 @@ ImportanceSamplingResult ImportanceSampling::sample(optim::ArbitraryFunction& lo
     result.log_evidence = max_lw + std::log(sum_exp) - std::log(static_cast<double>(n));
 
     return result;
+}
+
+double gaussian_importance_efficiency(const double scale, const int dimension) {
+    if (!(scale > 0.0) || dimension < 1)
+        throw std::invalid_argument("gaussian_importance_efficiency: scale and dimension must be positive");
+    const double k2 = scale * scale;
+    if (k2 <= 0.5) return 0.0;
+    return std::pow(std::sqrt(2.0 * k2 - 1.0) / k2, dimension);
 }
 
 } // namespace datamunge::bayes

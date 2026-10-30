@@ -46,7 +46,7 @@ the cubic method below a threshold.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<std::vector<double>> naive(const std::vector<std::vector<double>>& A, const std::vector<std::vector<double>>& B) {
     const std::size_t m = A.size(), k = A[0].size(), n = B[0].size();

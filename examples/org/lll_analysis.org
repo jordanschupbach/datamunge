@@ -41,7 +41,7 @@ steps, leaving a basis whose first vector is provably within a factor \(2^{(n-1)
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static double norm2(const std::vector<long long>& v) {
     double s = 0; for (long long c : v) s += (double)c * (double)c; return s;

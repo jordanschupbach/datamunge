@@ -1,0 +1,185 @@
+//? Title: Regularized Regression: Shrinkage and Exact Zeros
+//? Subtitle: Match the penalty convention before comparing coefficients
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An unpenalised fit can use large unstable coefficients or retain weak predictors. We compare
+ridge, lasso and elastic-net proximal updates on an orthogonal design with a closed-form optimum.
+A fixed penalty path makes shrinkage and exact threshold zeros visible without claiming a
+validation-selected penalty.
+)
+\toc
+
+> The method
+
+With nonnegative mask m (zero for an unpenalised intercept), the objective is
+
+$$
+J(w)=\frac{\|Xw-y\|^2}{2N}+\lambda_1\sum_j m_j|w_j|+
+\frac{\lambda_2}{2}\sum_j m_jw_j^2,\quad
+w_j^*=\frac{\mathrm{sign}(a_j)\max(|a_j|-\lambda_1,0)}{1+\lambda_2}
+\quad(X^TX/N=I,m_j=1).
+$$
+\alttext(Elastic net adds weighted absolute and squared penalties. On orthogonal penalised columns its solution soft-thresholds each least-squares coefficient then divides by one plus the ridge penalty.)
+
+For the smooth part, g=Xᵀ(Xw-y)/N+lambda2 m*w. A step first forms z=w-rate*g and then
+soft-thresholds z by rate*lambda1*m. A sufficiently small step (at most the reciprocal smooth
+Lipschitz constant) gives descent. Lasso's proximal step produces exact zeros; taking an ordinary
+gradient of |w| generally does not. Penalty strength depends on loss normalisation and predictor
+scales. The visible loop uses tensor SGD for the smooth objective, then applies the L1 proximal map
+under NoGradGuard. copy_ preserves the learnable leaf captured by the optimizer; rebinding w
+would leave that optimizer attached to the old tensor. Adam with the same scalar threshold
+would not implement this Euclidean proximal-SGD objective.
+
+The concept diagram has a retained TikZ source in `diagrams/regularized_regression_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/regularized_regression_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/regularized_regression_concept.tikz > build/regularized_regression_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/regularized_regression_concept.svg build/regularized_regression_concept.dvi > build/regularized_regression_concept.render.log 2>&1
+printf 'Rendered build/regularized_regression_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/regularized_regression_concept.svg from local TikZ source.
+// \image(figures/regularized_regression_concept.svg)
+// result_end
+\caption(Match the penalty convention before comparing coefficients)
+\alttext(Least-squares gradient; plus ridge term Then Gradient step z; rate within bound Then Soft threshold; exact lasso zeros.)
+
+> Simple examples
+
+A balanced two-level design has orthogonal intercept and slope. The target is 1+.2x; the intercept is never penalised.
+
+```{cpp, results="markdown", file="figures/regularized_regression_threshold.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto x = n::tensor({-1, -1, 1, 1}, {4, 1}, dtype);
+  const auto X = n::concat({n::ones_like(x), x}, 1), y = 1 + x * .2;
+  const auto mask = n::tensor({0, 1}, {2, 1}, dtype);
+  std::vector<double> setting, actual, expected, intercept;
+  std::vector<std::string> method;
+  double worst = 0;
+  for (int j = 0; j < 3; ++j) {
+    const double l1 = j == 0 ? 0 : .3, l2 = j == 1 ? 0 : .5, rate = .4;
+    auto w = n::zeros({2, 1}, dtype).requires_grad_();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Sgd;
+    n::Optimizer optimizer({w}, rate, config);
+    for (int step = 0; step < 150; ++step) {
+      const auto smooth =
+          .5 * n::mean(n::square(n::matmul(X, w) - y)) + .5 * l2 * n::sum(mask * n::square(w));
+      optimizer.minimize(smooth);
+      // Proximal SGD: preserve the leaf retained by the optimizer.
+      n::NoGradGuard guard;
+      w.copy_(n::sign(w) * n::relu(n::abs(w) - rate * l1 * mask));
+    }
+    const double exact = std::max(.2 - l1, 0.) / (1 + l2);
+    worst = std::max(worst, std::abs(w.at({1, 0}) - exact));
+    if (std::abs(w.at({0, 0}) - 1) > 1e-10 || worst > 1e-10)
+      return 1;
+    setting.push_back(j);
+    actual.push_back(w.at({1, 0}));
+    expected.push_back(exact);
+    intercept.push_back(w.at({0, 0}));
+    method.push_back(j == 0 ? "ridge" : j == 1 ? "lasso" : "elastic net");
+  }
+  auto p = dm::graphics::RPlot::create();
+  p.bars(setting, actual, "slope", {37, 99, 235}, .6)
+      .title("SGD plus explicit L1 proximal projection")
+      .x_label("ridge=0, lasso=1, elastic net=2")
+      .y_label("coefficient")
+      .y_limits(0, .2);
+  std::filesystem::create_directories("build");
+  p.size(850, 430).save_svg("build/regularized_regression_threshold.svg");
+  dm::dstruct::DataFrame t;
+  t.add_column("method", method);
+  t.add_column("intercept", intercept);
+  t.add_column("slope", actual);
+  t.add_column("closed_form", expected);
+  std::print("{}\n", t.to_md(8));
+}
+```
+// result_begin: markdown
+| method | intercept | slope | closed_form |
+| :--- | ---: | ---: | ---: |
+| ridge | 1 | 0.13333333 | 0.13333333 |
+| lasso | 1 | 0.00000000 | 0.00000000 |
+| elastic net | 1 | 0.00000000 | 0.00000000 |
+
+\image(figures/regularized_regression_threshold.svg)
+// result_end
+\caption(Ridge shrinks the weak coefficient; penalties above its absolute score set it exactly to zero.)
+\alttext(Ridge shrinks the weak coefficient; penalties above its absolute score set it exactly to zero.)
+
+> Checking the theory
+
+```{cpp, results="markdown", file="figures/regularized_regression_path.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto x = n::tensor({-1, -1, 1, 1}, {4, 1}, dtype);
+  const auto X = n::concat({n::ones_like(x), x}, 1), y = 1 + x * .8;
+  const auto mask = n::tensor({0, 1}, {2, 1}, dtype);
+  std::vector<double> setting, actual, expected, intercept;
+  std::vector<std::string> method;
+  double worst = 0;
+  for (int j = 0; j < 21; ++j) {
+    const double l1 = j / 20., l2 = .5, rate = .4;
+    auto w = n::zeros({2, 1}, dtype).requires_grad_();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Sgd;
+    n::Optimizer optimizer({w}, rate, config);
+    for (int step = 0; step < 150; ++step) {
+      const auto smooth =
+          .5 * n::mean(n::square(n::matmul(X, w) - y)) + .5 * l2 * n::sum(mask * n::square(w));
+      optimizer.minimize(smooth);
+      // Proximal SGD: preserve the leaf retained by the optimizer.
+      n::NoGradGuard guard;
+      w.copy_(n::sign(w) * n::relu(n::abs(w) - rate * l1 * mask));
+    }
+    const double exact = std::max(.8 - l1, 0.) / (1 + l2);
+    worst = std::max(worst, std::abs(w.at({1, 0}) - exact));
+    if (std::abs(w.at({0, 0}) - 1) > 1e-10 || worst > 1e-10)
+      return 1;
+    setting.push_back(l1);
+    actual.push_back(w.at({1, 0}));
+    expected.push_back(exact);
+    intercept.push_back(w.at({0, 0}));
+    method.push_back(j == 0 ? "ridge" : j == 1 ? "lasso" : "elastic net");
+  }
+  auto p = dm::graphics::RPlot::create();
+  p.lines(setting, actual, "proximal SGD", {37, 99, 235})
+      .points(setting, expected, "closed form", {234, 88, 12})
+      .title("Tensor optimizer with an explicit soft threshold")
+      .x_label("lambda1")
+      .y_label("slope");
+  std::filesystem::create_directories("build");
+  p.size(850, 430).save_svg("build/regularized_regression_path.svg");
+  std::print("21 penalty settings; maximum closed-form error {:.12f}.\n", worst);
+}
+```
+// result_begin: markdown
+21 penalty settings; maximum closed-form error 0.000000000000.
+\image(figures/regularized_regression_path.svg)
+// result_end
+\caption(Every point on the proximal path agrees with the orthogonal soft-threshold solution.)
+\alttext(Every point on the proximal path agrees with the orthogonal soft-threshold solution.)
+
+
+> Conclusion
+
+The orthogonal solution explains both ridge shrinkage and lasso zeros under the exact loss
+normalisation used here. The fixed penalty path verifies implementation rather than choosing a
+model. Correlated predictors and training-only scaling require separate validation and KKT checks.
+
+> References
+
+- [Parikh and Boyd (2014), Proximal Algorithms](https://web.stanford.edu/~boyd/papers/prox_algs.html).

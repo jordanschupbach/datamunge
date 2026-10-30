@@ -32,7 +32,7 @@ it \-\- the decisive advantage over reference counting.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -88,7 +88,7 @@ form an unreachable cycle; object 5 is isolated garbage; and \(6\to7\) is an unr
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

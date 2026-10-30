@@ -67,8 +67,7 @@ struct DigitPool {
 /// MNIST pools from saliency_data.npz.
 inline std::vector<DigitPool> LoadSaliency(const std::filesystem::path& root) {
   const auto file = root / "saliency_data.npz";
-  check::Require(std::filesystem::exists(file),
-                 file.string() + " missing; run `just autoencoder-assets` in tflow_examples, or pass data=");
+  dataset_assets::EnsureSaliency(root.string());
   Arrays a;
   for (auto& [name, t] : nn::load_npz(file.string())) a.emplace(name, t);
   std::vector<DigitPool> result;

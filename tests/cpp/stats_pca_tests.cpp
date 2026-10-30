@@ -72,8 +72,8 @@ TEST(PCA, UnscaledUsesCovarianceNotCorrelation) {
   PCA scaled(iris, kIrisFeatures, PCAOptions{true, true});
   PCA unscaled(iris, kIrisFeatures, PCAOptions{true, false});
 
-  // Sepal.Length has a much larger raw variance than the others, so unscaled PCA's first
-  // component should explain a larger share of variance than scaled PCA's.
+  // On Iris, raw covariance PCA concentrates more variance in PC1 than scaled PCA.
+  // Petal.Length has the largest raw variance; this ordering is dataset-specific.
   EXPECT_GT(unscaled.explained_variance_ratio()[0], scaled.explained_variance_ratio()[0]);
 }
 

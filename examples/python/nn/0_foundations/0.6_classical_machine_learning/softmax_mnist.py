@@ -1,5 +1,7 @@
 # Native Python NN example. Model composition and training run in Python.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.6_classical_machine_learning/softmax_mnist.py
 """The canonical linear softmax MNIST classifier through datamunge::nn SWIG ops."""
+from pydatamunge.nn_components import dataset_assets
 from pydatamunge import nn
 import json
 import math
@@ -55,7 +57,7 @@ def main(arguments=None):
     ):
         raise ValueError("positive epochs, batch and learning rate required")
     nn.set_num_threads(args["threads"])
-    train, test = nn.load_mnist(args["data"], "train"), nn.load_mnist(
+    train, test = dataset_assets.LoadMnist(args["data"], "train"), dataset_assets.LoadMnist(
         args["data"], "test"
     )
     if tuple(train.images.shape()) != (60000, 28, 28, 1) or tuple(

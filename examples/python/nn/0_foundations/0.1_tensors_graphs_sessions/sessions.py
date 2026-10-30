@@ -1,4 +1,5 @@
 # Native Python NN example. Eager feeds, fetches, side effects and timings.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/sessions.py
 """Session concepts expressed as ordinary functions over the C++ tensor API."""
 from time import perf_counter
 from pydatamunge import nn

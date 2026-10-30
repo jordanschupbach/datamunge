@@ -38,7 +38,7 @@ transposition (not necessarily of adjacent positions).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -105,7 +105,7 @@ that consecutive permutations differ in exactly two positions \-\- a single swap
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

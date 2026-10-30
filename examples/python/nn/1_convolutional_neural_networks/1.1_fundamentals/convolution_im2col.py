@@ -1,4 +1,5 @@
 # Native Python NN example. Patch extraction and checks execute in Python.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/convolution_im2col.py
 """Convolution as explicit NHWC im2col, core GEMM, and additive col2im."""
 import math
 from pydatamunge import nn

@@ -1,0 +1,982 @@
+//? Title: Locally Linear Embedding: Unrolling Manifolds
+//? Subtitle: Reconstruction weights and the bottom eigenvectors of M derived, checked by hand on a few points, on a flat sheet and on the Swiss roll, and applied to iris and handwritten digits, using datamunge's stats::LLE
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Data measured in many dimensions often vary in only a few: a sheet of points rolled up in 3-D,
+or images of a digit that change by a handful of strokes. We want low-dimensional coordinates
+that follow such a curved surface, keeping neighbours together, where a linear projection
+such as PCA would fold distant parts of the surface on top of each other. Locally Linear
+Embedding (LLE) does this with two linear-algebra steps: it describes each point as a weighted
+average of its nearest neighbours, then finds the coordinates that the same weights reconstruct
+best, as the bottom eigenvectors of a sparse matrix. We derive both steps and check them by
+hand on four points, on seven points on a line, where the answer is exact, and on a spiral. On
+a flat sheet LLE recovers the true coordinates exactly. On the Swiss roll it unrolls the long
+direction (\(R^2=0.99\) against arc length) for a band of neighbourhood sizes, where PCA gets
+0.08. Two failure modes are explained by the theory. With too little regularisation the weights
+reconstruct the raw coordinates exactly, and LLE returns a linear projection. With too many
+neighbours, edges bridge the layers of the roll. A third limit is that the short side of a long
+sheet competes with harmonics of the long side. On iris the neighbour graph falls into two
+pieces, which LLE embeds on separate axes. On handwritten digits it separates six classes
+better than PCA.
+)
+
+\toc
+
+> The problem
+
+We have \(n\) points \(x_1,\dots,x_n\in\mathbb R^D\) that lie on or near a smooth surface of dimension
+\(d\ll D\), a *manifold*. We want points \(y_1,\dots,y_n\in\mathbb R^d\), one per \(x_i\), such that
+points close on the manifold stay close, and points far apart on the manifold stay apart. The
+second half is where linear methods fail. PCA projects onto the \(d\)-dimensional plane of
+largest variance. If the manifold is curved, a projection lays its distant parts on top of each
+other: the end of a rolled sheet lands on its middle.
+
+Nothing about the manifold is given except the sample. LLE uses one assumption: each small
+neighbourhood of the manifold is nearly flat, so each point is nearly an affine combination of
+its neighbours. These local descriptions overlap, and a global coordinate system that respects
+all of them at once is the embedding.
+
+> The method
+
+>> Step 1: neighbours
+
+For each point, find its \(k\) nearest neighbours \(\mathcal N(i)\) in Euclidean distance (ties broken by
+index). \(k\) sets the scale at which the manifold is assumed flat: large enough that the
+neighbours span the \(d\) local directions, small enough that they stay on the same part of the
+manifold. Collect the edges \(i\to j\), \(j\in\mathcal N(i)\), into the *neighbour graph*.
+
+>> Step 2: reconstruction weights
+
+Choose weights \(w_{ij}\) (zero unless \(j\in\mathcal N(i)\)) that reconstruct each point from its
+neighbours as an affine combination:
+
+$$
+\min_{w_i}\ \varepsilon_i(w_i)=\Big\lVert x_i-\sum_{j\in\mathcal N(i)}w_{ij}x_j\Big\rVert^2
+\quad\text{subject to}\quad \sum_{j}w_{ij}=1.
+$$
+\alttext(Minimise over the weights w i the reconstruction error epsilon i, the squared norm of x i minus the sum over the neighbours j of w i j times x j, subject to the weights summing to 1.)
+
+Because the weights sum to one, \(x_i-\sum_jw_{ij}x_j=\sum_jw_{ij}(x_i-x_j)\), so the error is a
+quadratic form \(\varepsilon_i=w_i^\top Cw_i\) in the *local Gram matrix*
+\(C_{ab}=(x_i-n_a)^\top(x_i-n_b)\) of the neighbour offsets \(n_a\in\mathcal N(i)\). The Lagrangian
+\(w^\top Cw-2\lambda(\mathbf 1^\top w-1)\) is stationary where \(Cw=\lambda\mathbf 1\), and the constraint fixes
+\(\lambda\):
+
+$$
+w_i=\frac{C^{-1}\mathbf 1}{\mathbf 1^\top C^{-1}\mathbf 1}.
+$$
+\alttext(The weight vector w i equals C inverse times the vector of ones, divided by the sum of the entries of C inverse times the vector of ones.)
+
+The weights are unchanged if the neighbourhood is rotated (\(C\) is unchanged), scaled
+(\(C\) is multiplied by a constant that cancels) or translated (the offsets do not change, and the
+constraint makes translation of \(x_i\) and its neighbours together harmless). So they describe the
+shape of the neighbourhood, not where it sits or how it is turned. If the manifold is locally
+flat, the same weights should reconstruct \(y_i\) from its neighbours' \(y_j\) in the
+manifold's own coordinates, which is the idea behind step 3. Weights may be negative: a point
+outside the convex hull of its neighbours is an extrapolation.
+
+*The ridge.* \(C\) is a \(k\times k\) Gram matrix of vectors in \(\mathbb R^D\), so its rank is at most
+\(\min(k,D)\). With more neighbours than dimensions (\(k>D\)), \(C\) is singular and many weight
+vectors reconstruct \(x_i\) exactly. LLE adds a ridge before solving:
+
+$$
+C\ \leftarrow\ C+r\operatorname{tr}(C)\,I .
+$$
+\alttext(C is replaced by C plus r times the trace of C times the identity.)
+
+This solves \(\min_w\ \varepsilon_i(w)+r\operatorname{tr}(C)\lVert w\rVert^2\) under the same constraint. As
+\(r\to0\) it picks the exact reconstruction with the smallest weights. As \(r\to\infty\) every weight
+tends to \(1/k\), the plain neighbour average. Scaling by \(\operatorname{tr}(C)\) makes \(r\)
+dimensionless. datamunge's `regularization` is \(r\), with scikit-learn's meaning (its `reg`)
+and default \(10^{-3}\).
+
+>> Step 3: the embedding is a set of eigenvectors
+
+Keep the weights fixed and choose the low-dimensional points they reconstruct best. Write
+\(Y\) for the \(n\times d\) matrix with rows \(y_i^\top\) and \(W\) for the sparse matrix of weights:
+
+$$
+\Phi(Y)=\sum_{i=1}^n\Big\lVert y_i-\sum_jw_{ij}y_j\Big\rVert^2=\lVert(I-W)Y\rVert_F^2=\operatorname{tr}\big(Y^\top MY\big),
+\qquad M=(I-W)^\top(I-W).
+$$
+\alttext(Phi of Y equals the sum over i of the squared norm of y i minus the sum over j of w i j y j. This equals the squared Frobenius norm of I minus W times Y, which equals the trace of Y transpose M Y, where M is I minus W transpose times I minus W.)
+
+\(\Phi\) is unchanged by translating every \(y_i\) (rows of \(W\) sum to one), and \(Y=0\) is a trivial
+minimiser. To rule both out, fix the centre and the scale: \(\mathbf 1^\top Y=0\) and \(Y^\top Y=I\).
+\(M\) is symmetric positive semi-definite. Because \((I-W)\mathbf 1=0\), the constant vector is an
+eigenvector with eigenvalue 0. By the Rayleigh–Ritz theorem, the minimum of
+\(\operatorname{tr}(Y^\top MY)\) over orthonormal \(Y\) orthogonal to \(\mathbf 1\) is attained by the eigenvectors of the
+\(d\) smallest remaining eigenvalues \(\lambda_1\le\dots\le\lambda_d\), and equals their sum. Each column is
+an eigenvector, and its eigenvalue is its own cost, \(v^\top Mv\). `LLE::cost()` evaluates this cost
+for any candidate coordinate, so the arc length of a roll can be compared with what LLE found.
+
+*Disconnected neighbour graphs.* Weights only link a point to its neighbours. If the neighbour
+graph splits into \(c\) connected components, \(M\) is block diagonal (after reordering) and the
+indicator vector of every component is a null vector: \(M\) has \(c\) zero eigenvalues, not one.
+They are all discarded. The remaining eigenvectors are orthogonal to every indicator, so each
+coordinate sums to zero on every component. Generically, each coordinate is an eigenvector of
+one block only, so different components are embedded on different axes and nothing relates
+their positions. `connected_components()` reports \(c\).
+
+*Why the ridge is not optional.* Suppose every point is reconstructed exactly, as happens when
+\(k>D\) and \(r=0\). Then for any linear function \(\ell(x)=a^\top x\),
+
+$$
+\ell(x_i)-\sum_jw_{ij}\ell(x_j)=a^\top\Big(x_i-\sum_jw_{ij}x_j\Big)=0,
+$$
+\alttext(l of x i minus the sum over j of w i j times l of x j equals a transpose times x i minus the sum of w i j x j, which is 0.)
+
+so each of the \(D\) raw coordinates (centred) costs nothing. LLE then returns some linear
+projection of the data. For a flat sheet that is exactly right, but for a curved one it is no
+better than PCA. A ridge makes the reconstruction slightly inexact, so the raw coordinates
+acquire a cost while the manifold's own coordinates stay cheap. The ridge is how LLE tells the
+two apart.
+
+>> Computation
+
+Neighbours take \(O(n^2D)\) by brute force, the weights \(O(nk^3)\), and \(M\) has \(O(nk^2)\)
+non-zeros. datamunge computes the full eigendecomposition of \(M\) with
+`linalg::symmetric_eigen()` (Householder tridiagonalisation and implicit QL, \(O(n^3)\), about
+one second at \(n=1000\)). The trivial eigenvectors are known in advance (the component
+indicators), so they are moved above the spectrum by adding \(\sigma\,e e^\top/|e|\) for each
+indicator \(e\), with \(\sigma\) above a Gershgorin bound. This leaves the other eigenpairs
+unchanged. Without it, a near-zero embedding eigenvalue can mix with the constant vector, and
+the coordinate no longer sums to zero. Each column has unit length, and its sign is fixed so
+that its largest entry is positive. On the Swiss roll below the embedding agrees with
+scikit-learn's `LocallyLinearEmbedding(eigen_solver="dense")` to \(2\times10^{-9}\).
+
+> Simple examples
+
+>> Reconstruction weights by hand
+
+Three neighbours \((1,0),(0,1),(-1,-1)\) around the origin: their mean is the origin, so
+\(w=(\tfrac13,\tfrac13,\tfrac13)\) reconstructs it exactly. With \(k=3>D=2\) the matrix \(C\) is singular
+(rank 2), so the exact reconstruction is unique only because \(\mathbf 1^\top w=1\) adds the third
+equation.
+
+Four neighbours \(n_1=(1,0)\), \(n_2=(-1,0)\), \(n_3=(0,1)\), \(n_4=(0,-2)\) of \(x=(0,0)\) admit a line of exact
+reconstructions: \(w_1=w_2\) (from the first coordinate), \(w_3=2w_4\) (from the second), and
+\(2w_1+3w_4=1\). The small ridge picks the one with the smallest \(\lVert w\rVert^2=2w_1^2+5w_4^2\).
+Minimising it on the line gives \(4w_1=2\mu\) and \(10w_4=3\mu\), so \(w_1=w_2=\tfrac5{19}=0.263\),
+\(w_3=\tfrac6{19}=0.316\) and \(w_4=\tfrac3{19}=0.158\). The far neighbour gets the smallest weight, and
+the near one on the same axis gets twice as much to balance it.
+
+```{cpp, results="markdown", file="figures/lle_weights.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto three = dm::stats::lle_reconstruction_weights({0.0, 0.0}, {{1.0, 0.0}, {0.0, 1.0}, {-1.0, -1.0}}, 0.0);
+  std::print("Three neighbours, r = 0: {::.6f}\n\n", three);
+
+  // Four neighbours of the origin in the plane: more neighbours than dimensions.
+  const std::vector<std::vector<double>> nb{{1.0, 0.0}, {-1.0, 0.0}, {0.0, 1.0}, {0.0, -2.0}};
+  auto residual = [&](const std::vector<double>& w) {
+    double ex = 0.0, ey = 0.0;
+    for (std::size_t j = 0; j < 4; ++j) ex += w[j] * nb[j][0], ey += w[j] * nb[j][1];
+    return std::hypot(ex, ey);
+  };
+  std::vector<double> rs{1e-9, 1e-3, 0.1, 1.0, 10.0, 1000.0}, w[4], err;
+  for (const double r : rs) {
+    const auto wr = dm::stats::lle_reconstruction_weights({0.0, 0.0}, nb, r);
+    for (std::size_t j = 0; j < 4; ++j) w[j].push_back(wr[j]);
+    err.push_back(residual(wr));
+  }
+  DF table;
+  table.add_column("r", rs);
+  for (std::size_t j = 0; j < 4; ++j) table.add_column(std::format("w{}", j + 1), w[j]);
+  table.add_column("|x - sum w n|", err);
+  DF::MarkdownOptions md;
+  md.scientific = {"r"};
+  md.column_digits = {{"r", 0}};
+  std::print("{}\n", table.to_md(md));
+
+  auto points = dm::graphics::RPlot::create();
+  const auto w0 = dm::stats::lle_reconstruction_weights({0.0, 0.0}, nb, 1e-9);
+  for (std::size_t j = 0; j < 4; ++j) {
+    points.segments({0.0}, {0.0}, {nb[j][0]}, {nb[j][1]}, dm::RGB{148, 163, 184}, 1.5);
+    const double dx = nb[j][0] == 0.0 ? 0.55 : 0.0, dy = nb[j][1] == 0.0 ? 0.3 : 0.0;
+    points.text(nb[j][0] + dx, nb[j][1] + dy, std::format("w{} = {:.3f}", j + 1, w0[j]), dm::RGB{37, 99, 235}, 14.0);
+  }
+  points.points({1.0, -1.0, 0.0, 0.0}, {0.0, 0.0, 1.0, -2.0}, dm::RGB{37, 99, 235}, 7.0);
+  points.points({0.0}, {0.0}, dm::RGB{17, 24, 39}, 7.0).text(0.3, -0.3, "x", dm::RGB{17, 24, 39}, 16.0);
+  points.x_limits(-1.8, 1.8).y_limits(-2.5, 1.5).title("Four neighbours of x, r -> 0").x_label("").y_label("");
+
+  auto curves = dm::graphics::RPlot::create();
+  const auto grid = dm::seql(-6.0, 3.0, 181);
+  std::vector<double> lg(grid.begin(), grid.end()), c[3];
+  for (const double g : lg) {
+    const auto wr = dm::stats::lle_reconstruction_weights({0.0, 0.0}, nb, std::pow(10.0, g));
+    c[0].push_back(wr[0]), c[1].push_back(wr[2]), c[2].push_back(wr[3]);
+  }
+  curves.lines(lg, c[0], "w1 = w2", dm::RGB{37, 99, 235}).lines(lg, c[1], "w3", dm::RGB{22, 163, 74})
+      .lines(lg, c[2], "w4", dm::RGB{220, 38, 38}).abline_h(0.25, dm::RGB{148, 163, 184});
+  curves.x_limits(-6.0, 3.0).y_limits(0.1, 0.38).title("Weights against the ridge r")
+      .x_label("log10 r").y_label("weight");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(points).add(curves).size(1100, 480).fit_panels();
+  fig.save_svg("build/lle_weights.svg");
+}
+```
+// result_begin: markdown
+Three neighbours, r = 0: [0.333333, 0.333333, 0.333333]
+
+| r | w1 | w2 | w3 | w4 | \|x - sum w n\| |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1e-09 | 0.263 | 0.263 | 0.316 | 0.158 | 0.000 |
+| 1e-03 | 0.263 | 0.263 | 0.316 | 0.158 | 0.000 |
+| 1e-01 | 0.261 | 0.261 | 0.307 | 0.170 | 0.032 |
+| 1e+00 | 0.255 | 0.255 | 0.277 | 0.213 | 0.149 |
+| 1e+01 | 0.251 | 0.251 | 0.254 | 0.244 | 0.234 |
+| 1e+03 | 0.250 | 0.250 | 0.250 | 0.250 | 0.250 |
+
+\image(figures/lle_weights.svg)
+// result_end
+
+\caption(Left: the four neighbours of \(x\) and their weights as \(r\to0\), the minimum-norm exact reconstruction \((5,5,6,3)/19\). Right: the weights as the ridge grows; all tend to \(1/k=0.25\) (grey). Table: the weights and the reconstruction error \(\lVert x-\sum_jw_jn_j\rVert\) for six values of \(r\).)
+\alttext(Left: a black point x at the origin joined by grey lines to four blue neighbours at 1 0, minus 1 0, 0 1 and 0 minus 2, labelled w1 equals 0.263, w2 equals 0.263, w3 equals 0.316 and w4 equals 0.158. Right: three curves of weight against log10 r from minus 6 to 3. They are flat at 0.316, 0.263 and 0.158 up to about r equals 0.01, then converge to 0.25 by r equals 100.)
+
+The library reproduces \((5,5,6,3)/19\). Up to \(r=10^{-3}\) the weights and the exact
+reconstruction are unchanged to three decimals. By \(r=1\) the weights have moved halfway to equal,
+and the reconstruction misses \(x\) by 0.149. At \(r=1000\) the reconstruction is the neighbours'
+mean, \((0,-0.25)\), at distance 0.25.
+
+>> Seven points on a line
+
+Take seven equally spaced points \(x_i=(1+0.6i,\,2+0.8i)\), \(i=0,\dots,6\), on a line in the plane, with
+\(k=2\). An interior point is the midpoint of its two neighbours, so its weights are
+\((\tfrac12,\tfrac12)\). An end point, \(x_0\), has neighbours \(x_1,x_2\) on the same side and is the
+extrapolation \(x_0=2x_1-x_2\), so its weights are \((2,-1)\). Both reconstructions are exact and
+are also exact for any affine function of the position on the line, in particular for the
+index \(i\). So \(M\) has a two-dimensional null space, spanned by \(\mathbf 1\) and \(i\). The
+embedding is the centred and normalised index, \(\pm(i-3)/\sqrt{28}\) (since \(\sum(i-3)^2=28\)). The
+sign is arbitrary; datamunge makes the largest entry positive, which on this symmetric
+example is the first point's.
+
+>> Points on a spiral
+
+The next example is curved. Sixty points on the spiral \((t\cos t,\ t\sin t)\), \(t\in[1.5\pi,4.5\pi]\),
+evenly spaced in \(t\), are the Swiss roll seen end on. The arc length
+\(s(t)=\int_0^t\sqrt{1+\tau^2}\,d\tau=\tfrac12(t\sqrt{1+t^2}+\operatorname{asinh}t)\) is the manifold's own
+coordinate. Successive points are 1.5 apart on the inside and 4.5 apart on the outside, so even
+spacing in \(t\) is far from even in \(s\). With \(k=2=D\) the matrix \(C\) is invertible and no
+reconstruction is exact. With \(k=4>D\) every point is reconstructed exactly, the situation
+of *Why the ridge is not optional*.
+
+```{cpp, results="markdown", file="figures/lle_spiral.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  // Seven equally spaced points on a line in the plane.
+  DF line;
+  line.add_column("x", (1.0 + 0.6 * dm::seql(0.0, 6.0, 7)).values());
+  line.add_column("y", (2.0 + 0.8 * dm::seql(0.0, 6.0, 7)).values());
+  const dm::stats::LLE on_line(line, {"x", "y"}, {.n_components = 1, .n_neighbors = 2, .regularization = 1e-9});
+  std::vector<std::string> nbrs, wts;
+  std::vector<double> theory;
+  for (int i = 0; i < 7; ++i) {
+    nbrs.push_back(std::format("{}", on_line.neighbors()[i]));
+    wts.push_back(std::format("{::.3f}", on_line.weights()[i]));
+    theory.push_back((3 - i) / std::sqrt(28.0));
+  }
+  DF table;
+  table.add_column("i", dm::seql(0.0, 6.0, 7).values());
+  table.add_column("neighbours", nbrs);
+  table.add_column("weights", wts);
+  table.add_column("Y", on_line.dimension(0));
+  table.add_column("(3 - i)/sqrt(28)", theory);
+  std::print("{}\n\nEigenvalues of M, smallest first: {:.1e}, {:.1e}, then {:.4f}.\n\n", table.to_md(),
+             on_line.eigenvalues()[6], on_line.eigenvalues()[5], on_line.eigenvalues()[4]);
+
+  // Sixty points on the spiral (t cos t, t sin t), evenly spaced in t.
+  std::vector<double> sx, sz, s;
+  for (int i = 0; i < 60; ++i) {
+    const double t = 1.5 * std::numbers::pi * (1.0 + 2.0 * i / 59.0);
+    sx.push_back(t * std::cos(t)), sz.push_back(t * std::sin(t));
+    s.push_back(0.5 * (t * std::sqrt(1.0 + t * t) + std::asinh(t)));
+  }
+  DF spiral;
+  spiral.add_column("x", sx);
+  spiral.add_column("z", sz);
+  spiral.add_column("s", s);
+  DF fits;
+  std::vector<double> ks{2, 4}, lam, cs, cx, cz, r2s, r2xz;
+  std::vector<std::vector<double>> coords;
+  for (const double k : ks) {
+    const dm::stats::LLE lle(spiral, {"x", "z"}, {.n_components = 1, .n_neighbors = static_cast<std::size_t>(k)});
+    lam.push_back(lle.eigenvalues()[58]);
+    cs.push_back(lle.cost(s)), cx.push_back(lle.cost(sx)), cz.push_back(lle.cost(sz));
+    DF fit = spiral;
+    fit.add_column("Y", lle.dimension(0));
+    r2s.push_back(dm::stats::LM(fit, "Y ~ s").r_squared());
+    r2xz.push_back(dm::stats::LM(fit, "Y ~ x + z").r_squared());
+    coords.push_back(lle.dimension(0));
+  }
+  fits.add_column("k", ks);
+  fits.add_column("lambda_1", lam);
+  fits.add_column("cost of s", cs);
+  fits.add_column("cost of x", cx);
+  fits.add_column("cost of z", cz);
+  fits.add_column("R2 of Y on s", r2s);
+  fits.add_column("R2 of Y on x, z", r2xz);
+  DF::MarkdownOptions md;
+  md.digits = 2;
+  md.column_digits = {{"R2 of Y on s", 4}, {"R2 of Y on x, z", 4}};
+  md.scientific = {"lambda_1", "cost of s", "cost of x", "cost of z"};
+  std::print("{}\n", fits.to_md(md));
+
+  const dm::stats::LLE chain(spiral, {"x", "z"}, {.n_components = 1, .n_neighbors = 2});
+  auto view = dm::graphics::RPlot::create();
+  for (std::size_t i = 0; i < 60; ++i)
+    for (const auto j : chain.neighbors()[i])
+      view.segments({sx[i]}, {sz[i]}, {sx[j]}, {sz[j]}, dm::RGB{148, 163, 184}, 1.2);
+  view.points_colored(sx, sz, dm::graphics::value_colors(s), 5.0);
+  view.x_limits(-12.0, 15.0).y_limits(-12.0, 15.0).title("Spiral and its 2-NN graph").x_label("x").y_label("z");
+
+  auto embed = dm::graphics::RPlot::create();
+  embed.points(s, coords[0], "k = 2", dm::RGB{37, 99, 235}, 5.0).points(s, coords[1], "k = 4", dm::RGB{220, 38, 38}, 5.0);
+  embed.y_limits(-0.35, 0.65).title("LLE coordinate against arc length").x_label("arc length s").y_label("Y");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(view).add(embed).size(1100, 480).fit_panels();
+  fig.save_svg("build/lle_spiral.svg");
+}
+```
+// result_begin: markdown
+| i | neighbours | weights | Y | (3 - i)/sqrt(28) |
+| ---: | :--- | :--- | ---: | ---: |
+| 0 | [1, 2] | [2.000, -1.000] | 0.567 | 0.567 |
+| 1 | [0, 2] | [0.500, 0.500] | 0.378 | 0.378 |
+| 2 | [3, 1] | [0.500, 0.500] | 0.189 | 0.189 |
+| 3 | [4, 2] | [0.500, 0.500] | 0.000 | 0.000 |
+| 4 | [3, 5] | [0.500, 0.500] | -0.189 | -0.189 |
+| 5 | [4, 6] | [0.500, 0.500] | -0.378 | -0.378 |
+| 6 | [5, 4] | [2.000, -1.000] | -0.567 | -0.567 |
+
+
+Eigenvalues of M, smallest first: 0.0e+00, 1.3e-15, then 0.0583.
+
+| k | lambda_1 | cost of s | cost of x | cost of z | R2 of Y on s | R2 of Y on x, z |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 2.05e-08 | 1.04e-07 | 1.92e-04 | 1.96e-04 | 1.0000 | 0.1101 |
+| 4 | 1.35e-06 | 2.84e-04 | 2.85e-05 | 2.98e-05 | 0.1107 | 0.5396 |
+
+\image(figures/lle_spiral.svg)
+// result_end
+
+\caption(Left: sixty points on the spiral, coloured by arc length, with the edges of the 2-nearest-neighbour graph. Right: the one-dimensional LLE coordinate against arc length, for \(k=2\) (blue) and \(k=4\) (red). Tables: the seven-point line, with each point's neighbours, weights and embedding, against the closed form; then, for the spiral, the smallest non-trivial eigenvalue, the costs \(v^\top Mv\) of the centred unit-length arc length and raw coordinates, and how well the embedding is explained by \(s\) and by \((x,z)\).)
+\alttext(Left: a spiral of sixty points, one and a half turns, coloured from purple at the inner end to yellow at the outer end, with grey edges joining successive points only. Right: blue points for k equals 2 lie on a straight rising line from about minus 0.18 at arc length 12 to 0.25 at arc length 102. Red points for k equals 4 form a U: they fall from 0.15 at arc length 12 to minus 0.16 near arc length 48, then rise to 0.29, so points on the two arms of the U share coordinates and the order along the spiral is lost.)
+
+The line reproduces the closed form exactly: the weights are \((\tfrac12,\tfrac12)\) inside and
+\((2,-1)\) at the ends, the two smallest eigenvalues are zero to rounding, and the embedding is
+\((3-i)/\sqrt{28}\).
+
+On the spiral with \(k=2\), the coordinate is a linear function of the *arc length*
+(\(R^2=1.0000\)), not of \(t\), although the points are evenly spaced in \(t\). Near each point the
+spiral is almost a straight segment. The weights place \(x_i\) between its neighbours in
+proportion to the distances, and that is exactly what reconstructs \(s\). The cost table shows
+the mechanism: \(s\) costs \(10^{-7}\), the raw coordinates \(x\) and \(z\) about \(2\times10^{-4}\), so the
+cheapest coordinate is \(s\). With \(k=4\) the order flips. The four weights now reconstruct
+every point exactly in the plane, so \(x\) and \(z\) become nearly free (they cost only what the
+ridge allows), and \(s\), which the spiral's curvature stops from being reconstructed by a
+four-point stencil, costs more. More than half of the embedding's variance is now a linear function of \(x\) and \(z\)
+(\(R^2=0.54\)), and it folds back on itself, so it no longer orders the points along the spiral. The same competition decides the Swiss roll's
+regularisation below.
+
+> Checking the theory
+
+>> A flat sheet is recovered exactly
+
+If the data lie on a \(d\)-dimensional plane in \(\mathbb R^D\), every intrinsic coordinate is an
+affine function of the raw coordinates. The argument of *Why the ridge is not optional* then
+works in LLE's favour: as \(r\to0\) the weights reconstruct each point exactly, the plane's own
+coordinates \((u,v)\) are null vectors of \(M\), and the embedding spans exactly
+\(\{u-\bar u,\ v-\bar v\}\). The check: 500 points uniform on a \(10\times6\) rectangle, mapped into
+\(\mathbb R^3\) by an affine map of rank 2, embedded with \(k=10\).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  // 500 points (u, v) on a 10 x 6 rectangle, placed in 3-D by an affine map of rank 2.
+  dm::set_seed(5);
+  const auto u = dm::runif(0.0, 10.0, 500), v = dm::runif(0.0, 6.0, 500);
+  DF sheet;
+  sheet.add_column("u", u.values());
+  sheet.add_column("v", v.values());
+  sheet.add_column("x", (0.8 * u - 0.3 * v + 1.0).values());
+  sheet.add_column("y", (0.2 * u + 0.9 * v).values());
+  sheet.add_column("z", (0.5 * u + 0.4 * v - 2.0).values());
+
+  std::vector<double> regs{1e-9, 1e-3, 1e-1}, l1, l2, l3, r2u, r2v, orth;
+  for (const double r : regs) {
+    const dm::stats::LLE lle(sheet, {"x", "y", "z"}, {.n_components = 2, .n_neighbors = 10, .regularization = r});
+    const auto& ev = lle.eigenvalues();
+    l1.push_back(ev[498]), l2.push_back(ev[497]), l3.push_back(ev[496]);
+    DF fit = sheet;
+    fit.add_column("Y1", lle.dimension(0));
+    fit.add_column("Y2", lle.dimension(1));
+    r2u.push_back(dm::stats::LM(fit, "u ~ Y1 + Y2").r_squared());
+    r2v.push_back(dm::stats::LM(fit, "v ~ Y1 + Y2").r_squared());
+    const auto& Y = lle.embedding();
+    double worst = 0.0;  // largest deviation of Y'Y from the identity, and of Y's column sums from 0
+    for (std::size_t a = 0; a < 2; ++a) {
+      double sum = 0.0;
+      for (std::size_t i = 0; i < 500; ++i) sum += Y(i, a);
+      worst = std::max(worst, std::abs(sum));
+      for (std::size_t b = 0; b < 2; ++b) {
+        double dot = 0.0;
+        for (std::size_t i = 0; i < 500; ++i) dot += Y(i, a) * Y(i, b);
+        worst = std::max(worst, std::abs(dot - (a == b ? 1.0 : 0.0)));
+      }
+    }
+    orth.push_back(worst);
+  }
+  DF table;
+  table.add_column("r", regs);
+  table.add_column("lambda_1", l1);
+  table.add_column("lambda_2", l2);
+  table.add_column("lambda_3", l3);
+  table.add_column("R2 of u", r2u);
+  table.add_column("R2 of v", r2v);
+  table.add_column("constraint error", orth);
+  DF::MarkdownOptions md;
+  md.digits = 2;
+  md.column_digits = {{"R2 of u", 6}, {"R2 of v", 6}, {"r", 0}};
+  md.scientific = {"r", "lambda_1", "lambda_2", "lambda_3", "constraint error"};
+  std::print("{}\n", table.to_md(md));
+}
+```
+// result_begin: markdown
+| r | lambda_1 | lambda_2 | lambda_3 | R2 of u | R2 of v | constraint error |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1e-09 | -1.38e-15 | 3.24e-15 | 1.68e-06 | 1.000000 | 1.000000 | 5.40e-15 |
+| 1e-03 | 1.79e-08 | 8.24e-08 | 3.15e-06 | 0.999084 | 0.999152 | 3.33e-15 |
+| 1e-01 | 2.53e-05 | 9.38e-05 | 2.18e-04 | 0.982547 | 0.950397 | 1.80e-14 |
+// result_end
+
+\caption(LLE of a flat sheet in \(\mathbb R^3\) with \(k=10\), for three ridges: the three smallest non-trivial eigenvalues of \(M\), the \(R^2\) of the true coordinates \(u\) and \(v\) regressed on the embedding, and the largest error in the constraints \(Y^\top Y=I\), \(\mathbf 1^\top Y=0\).)
+
+With \(r=10^{-9}\) the two embedding eigenvalues are zero to rounding, the third is \(10^9\) times
+larger, and \(u\) and \(v\) are linear functions of the embedding to six decimals: LLE recovers the
+sheet up to an affine map, as predicted. The default ridge \(10^{-3}\) makes the reconstructions
+slightly inexact. The two eigenvalues become \(10^{-8}\) and \(10^{-7}\), still 40 times below the
+third, and \(R^2\) drops only to 0.999. A large ridge, \(10^{-1}\), pulls the weights towards plain
+averages, which bend the coordinates near the edges of the sheet (\(R^2\) 0.98 and 0.95). The
+constraints hold to \(10^{-14}\) in every case.
+
+>> The Swiss roll
+
+The Swiss roll (`dm::datasets::swiss_roll`) is the spiral of the last section extruded to
+height 21: \((t\cos t,\ h,\ t\sin t)\) with \(t\) uniform on \([1.5\pi,4.5\pi]\) and \(h\) uniform on
+\([0,21]\). Unrolled, it is a flat \(89\times21\) rectangle with coordinates (arc length \(s\), height
+\(h\)), and the generator returns both. We embed 1000 points into two dimensions. Each method is
+scored three ways. The \(R^2\) of \(s\) and of \(h\), each regressed on \((Y_1,Y_2)\), is 1 for an
+unrolling up to an affine map. Trustworthiness and continuity \(T(10)\) and \(C(10)\)
+(`stats::trustworthiness`, Venna and Kaski 2001) range over \([0,1]\). \(T\) penalises points that
+are neighbours in the embedding but not in the data (folds), and \(C\) penalises the reverse
+(tears).
+
+```{cpp, results="markdown", file="figures/lle_swiss_roll.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto roll = dm::datasets::swiss_roll(1000, 0.0, 1);
+  const std::vector<std::string> xyz{"x", "y", "z"};
+  const dm::stats::LLE lle(roll, xyz, {.n_components = 2, .n_neighbors = 12});
+  const dm::stats::PCA pca(roll, xyz, {.center = true, .scale = false});
+  std::print("{}\n", lle.summary());
+
+  const auto& s = roll.numeric_column("arc_length").values();
+  const auto by_s = dm::graphics::value_colors(s);
+  const auto by_h = dm::graphics::value_colors(roll.numeric_column("height").values());
+  auto panel = [](const std::vector<double>& a, const std::vector<double>& b, const std::vector<dm::RGB>& col,
+                  const std::string& title, const std::string& xl, const std::string& yl) {
+    auto p = dm::graphics::RPlot::create();
+    p.points_colored(a, b, col, 3.0).title(title).x_label(xl).y_label(yl);
+    return p;
+  };
+  auto fig = dm::graphics::RLayout::create(2, 2);
+  fig.add(panel(roll.numeric_column("x").values(), roll.numeric_column("z").values(), by_s,
+                "The roll end on, coloured by s", "x", "z"))
+      .add(panel(pca.component_scores(0), pca.component_scores(1), by_s, "PCA, coloured by s", "PC1", "PC2"))
+      .add(panel(lle.dimension(0), lle.dimension(1), by_s, "LLE (k = 12), coloured by s", "Y1", "Y2"))
+      .add(panel(lle.dimension(0), lle.dimension(1), by_h, "LLE (k = 12), coloured by height", "Y1", "Y2"))
+      .size(1100, 900)
+      .fit_panels();
+  fig.save_svg("build/lle_swiss_roll.svg");
+}
+```
+// result_begin: markdown
+Locally Linear Embedding
+Features: x, y, z
+Distance metric: euclidean
+n_neighbors: 12, regularization: 0.001
+Number of obs: 1000, dimensions: 2
+Neighbour-graph components: 1
+Embedding eigenvalues (costs):
+  Dim1: 1.8053e-08
+  Dim2: 2.5330e-07
+
+\image(figures/lle_swiss_roll.svg)
+// result_end
+
+\caption(The Swiss roll (1000 points) and two embeddings, coloured by arc length \(s\) (viridis, purple at the inner end) or by height. Top left: the roll seen along its axis. Top right: the first two principal components. Bottom: LLE with \(k=12\) and the default ridge, coloured by \(s\) (left) and by height (right).)
+\alttext(Top left: a spiral of points coloured purple at the centre to yellow at the outer end. Top right: PCA shows the spiral flattened with layers overlapping: purple inner points sit inside a ring of blue and green points, so far-apart parts of the roll share the same place. Bottom left: LLE spreads the points into a wedge, purple at the wide left end, green to yellow at the narrow right end, so colour changes smoothly from left to right. Bottom right: the same wedge coloured by height: purple at the top and yellow at the bottom on the left half, but on the right half the colours are compressed into a thin bent band.)
+
+LLE turns the roll into a single sheet: colour by \(s\) changes monotonically from left to right
+and no layers overlap, while PCA stacks the inner turn inside the outer one. The sheet is
+distorted into a wedge, though. The narrow end squeezes the height into a thin band, the
+classical look of LLE on this example (scikit-learn's gallery shows the same shape). The tables
+below vary \(k\) and \(r\).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+int main() {
+  const auto roll = dm::datasets::swiss_roll(1000, 0.0, 1);
+  const std::vector<std::string> xyz{"x", "y", "z"};
+  const auto& t = roll.numeric_column("t").values();
+
+  DF rows;
+  using Cell = std::optional<double>;
+  auto add = [&](const std::string& method, Cell k, Cell bridges, const Matrix& Y) {
+    DF fit = roll;
+    fit.add_column("Y1", Y.col(0));
+    fit.add_column("Y2", Y.col(1));
+    DF row;
+    row.add_column("method", std::vector<std::string>{method});
+    row.add_column("k", std::vector<Cell>{k});
+    row.add_column("bridging edges", std::vector<Cell>{bridges});
+    row.add_column("R2 of s", std::vector<double>{dm::stats::LM(fit, "arc_length ~ Y1 + Y2").r_squared()});
+    row.add_column("R2 of h", std::vector<double>{dm::stats::LM(fit, "height ~ Y1 + Y2").r_squared()});
+    row.add_column("T(10)", std::vector<double>{dm::stats::trustworthiness(roll, xyz, Y, 10)});
+    row.add_column("C(10)", std::vector<double>{dm::stats::continuity(roll, xyz, Y, 10)});
+    rows = rows.nrows() == 0 ? row : rows.bind_rows(row);
+  };
+  // A bridging edge joins neighbours on different layers of the roll (|t_i - t_j| > 3; layers are 2 pi apart).
+  auto bridges = [&](const std::vector<std::vector<std::size_t>>& neighbors) {
+    double count = 0;
+    for (std::size_t i = 0; i < neighbors.size(); ++i)
+      for (const auto j : neighbors[i]) count += std::abs(t[i] - t[j]) > 3.0;
+    return count;
+  };
+  for (const std::size_t k : {5, 6, 8, 10, 12, 15, 20, 30}) {
+    const dm::stats::LLE lle(roll, xyz, {.n_components = 2, .n_neighbors = k});
+    add("LLE", static_cast<double>(k), bridges(lle.neighbors()), lle.embedding());
+  }
+  for (const std::size_t k : {6, 10}) {
+    const dm::stats::LLE same_graph(roll, xyz, {.n_neighbors = k});
+    const dm::stats::Isomap iso(roll, xyz, {.n_components = 2, .n_neighbors = k});
+    add("Isomap", static_cast<double>(k), bridges(same_graph.neighbors()), iso.embedding());
+  }
+  const dm::stats::PCA pca(roll, xyz, {.center = true, .scale = false});
+  add("PCA", std::nullopt, std::nullopt, Matrix::from_columns({pca.component_scores(0), pca.component_scores(1)}));
+  DF::MarkdownOptions md;
+  md.na = "";
+  std::print("{}\n", rows.to_md(md));
+}
+```
+// result_begin: markdown
+| method | k | bridging edges | R2 of s | R2 of h | T(10) | C(10) |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| LLE | 5 | 0 | 0.426 | 0.008 | 0.898 | 0.974 |
+| LLE | 6 | 0 | 0.994 | 0.241 | 0.980 | 0.992 |
+| LLE | 8 | 1 | 0.991 | 0.765 | 0.995 | 0.995 |
+| LLE | 10 | 4 | 0.981 | 0.729 | 0.996 | 0.996 |
+| LLE | 12 | 8 | 0.987 | 0.695 | 0.996 | 0.996 |
+| LLE | 15 | 14 | 0.994 | 0.689 | 0.996 | 0.996 |
+| LLE | 20 | 46 | 0.438 | 0.572 | 0.878 | 0.982 |
+| LLE | 30 | 251 | 0.001 | 0.962 | 0.862 | 0.988 |
+| Isomap | 6 | 0 | 1.000 | 0.973 | 0.999 | 0.999 |
+| Isomap | 10 | 4 | 0.842 | 0.030 | 0.986 | 0.995 |
+| PCA |  |  | 0.084 | 0.246 | 0.944 | 0.994 |
+// result_end
+
+\caption(Two-dimensional embeddings of the Swiss roll for a range of neighbourhood sizes \(k\) (LLE with \(r=10^{-3}\)), Isomap on the same neighbour graphs, and PCA. Bridging edges: neighbour pairs on different layers of the roll. \(R^2\): the true coordinate regressed on the two embedding coordinates. \(T\), \(C\): trustworthiness and continuity with 10 neighbours.)
+
+There is a band of good \(k\), from 6 to 15, where the arc length is recovered with
+\(R^2\ge0.98\) and trustworthiness is about 0.996. Below it, \(k=5\) gives too few neighbours to
+span the two local directions robustly. Above it, the number of bridging edges grows, from 8 at
+\(k=12\) to 46 at \(k=20\) and 251 at \(k=30\), and the unrolling collapses: a bridge tells LLE that
+two layers are the same place. A few bridges are tolerated, because each point has several
+other neighbours on its own layer. Isomap is the contrast. It embeds the shortest-path distances
+of the neighbour graph, so on a clean graph (\(k=6\), no bridges) it unrolls the sheet almost
+perfectly, recovering both \(s\) and \(h\) (\(R^2\) 1.000 and 0.973), far better than LLE. But
+one bridge shortcuts every path that uses it: at \(k=10\) four bridges lower its \(R^2\) of \(s\)
+to 0.84 and lose the height. LLE never recovers the height well, which the next two sections
+explain.
+
+The regularisation decides which coordinates are cheap, as the spiral showed. The following
+table varies \(r\) at \(k=12\). It gives the costs of the true coordinates \(s\), \(h\) and of the raw
+coordinates \(x\), \(z\) (each centred and scaled to unit length), and how much of the embedding is
+a linear function of the raw coordinates.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  const auto roll = dm::datasets::swiss_roll(1000, 0.0, 1);
+  std::vector<double> regs{1e-9, 1e-6, 1e-4, 1e-3, 1e-2, 1e-1, 1.0}, l1, cs, ch, cx, cz, lin, r2s, r2h, trust;
+  for (const double r : regs) {
+    const dm::stats::LLE lle(roll, {"x", "y", "z"}, {.n_components = 2, .n_neighbors = 12, .regularization = r});
+    l1.push_back(lle.eigenvalues()[998]);
+    cs.push_back(lle.cost(roll.numeric_column("arc_length").values()));
+    ch.push_back(lle.cost(roll.numeric_column("height").values()));
+    cx.push_back(lle.cost(roll.numeric_column("x").values()));
+    cz.push_back(lle.cost(roll.numeric_column("z").values()));
+    DF fit = roll;
+    fit.add_column("Y1", lle.dimension(0));
+    fit.add_column("Y2", lle.dimension(1));
+    lin.push_back(0.5 * (dm::stats::LM(fit, "Y1 ~ x + y + z").r_squared() + dm::stats::LM(fit, "Y2 ~ x + y + z").r_squared()));
+    r2s.push_back(dm::stats::LM(fit, "arc_length ~ Y1 + Y2").r_squared());
+    r2h.push_back(dm::stats::LM(fit, "height ~ Y1 + Y2").r_squared());
+    trust.push_back(dm::stats::trustworthiness(roll, {"x", "y", "z"}, lle.embedding(), 10));
+  }
+  DF table;
+  table.add_column("r", regs);
+  table.add_column("lambda_1", l1);
+  table.add_column("cost of s", cs);
+  table.add_column("cost of h", ch);
+  table.add_column("cost of x", cx);
+  table.add_column("cost of z", cz);
+  table.add_column("linear in x,y,z", lin);
+  table.add_column("R2 of s", r2s);
+  table.add_column("R2 of h", r2h);
+  table.add_column("T(10)", trust);
+  DF::MarkdownOptions md;
+  md.digits = 1;
+  md.column_digits = {{"r", 0}, {"linear in x,y,z", 3}, {"R2 of s", 3}, {"R2 of h", 3}, {"T(10)", 3}};
+  md.scientific = {"r", "lambda_1", "cost of s", "cost of h", "cost of x", "cost of z"};
+  std::print("{}\n", table.to_md(md));
+}
+```
+// result_begin: markdown
+| r | lambda_1 | cost of s | cost of h | cost of x | cost of z | linear in x,y,z | R2 of s | R2 of h | T(10) |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1e-09 | -6.3e-15 | 1.1e-05 | 1.2e-18 | 7.6e-17 | 8.0e-17 | 1.000 | 0.069 | 0.670 | 0.874 |
+| 1e-06 | 8.7e-15 | 1.1e-05 | 1.2e-12 | 7.5e-11 | 7.9e-11 | 0.973 | 0.243 | 0.997 | 0.828 |
+| 1e-04 | 3.2e-11 | 1.1e-05 | 1.1e-08 | 5.6e-07 | 5.4e-07 | 0.453 | 0.937 | 0.769 | 0.969 |
+| 1e-03 | 1.8e-08 | 1.2e-05 | 8.2e-07 | 1.9e-05 | 1.8e-05 | 0.421 | 0.987 | 0.695 | 0.996 |
+| 1e-02 | 7.9e-07 | 3.4e-05 | 4.6e-05 | 1.3e-04 | 1.2e-04 | 0.311 | 0.979 | 0.033 | 0.988 |
+| 1e-01 | 2.9e-06 | 4.2e-04 | 1.4e-03 | 5.2e-04 | 3.6e-04 | 0.406 | 0.957 | 0.006 | 0.940 |
+| 1e+00 | 1.3e-06 | 1.3e-03 | 6.9e-03 | 2.1e-03 | 1.4e-03 | 0.416 | 0.964 | 0.004 | 0.938 |
+// result_end
+
+\caption(LLE of the Swiss roll with \(k=12\) for ridges from \(10^{-9}\) to 1: the smallest non-trivial eigenvalue; the costs \(v^\top Mv\) of the unit-length centred arc length, height and raw coordinates \(x\), \(z\); the mean \(R^2\) of the two embedding coordinates regressed on \((x,y,z)\); the \(R^2\) of \(s\) and \(h\) on the embedding; and trustworthiness.)
+
+The theory predicts the first row exactly. With \(r=10^{-9}\), twelve weights reconstruct each
+point of \(\mathbb R^3\) exactly, the raw coordinates cost about \(10^{-16}\), and the embedding *is* a
+linear projection of the data (\(R^2\) of 1.000 on \((x,y,z)\)). It is no better than PCA
+(\(R^2\) of \(s\) 0.07). The height \(h=y\) is itself a raw coordinate, which is why \(R^2\) of \(h\)
+is high in the first two rows. As \(r\) grows from \(10^{-6}\) to \(10^{-4}\), the raw coordinates'
+cost rises like \(r^2\), while the cost of \(s\) barely moves. Between \(10^{-4}\) and \(10^{-3}\)
+they cross, and that is where the unrolling appears. At \(r=10^{-3}\), scikit-learn's default,
+\(x\) and \(z\) cost \(1.9\times10^{-5}\) against \(1.2\times10^{-5}\) for \(s\). The linear part of the
+embedding falls to about 0.4, which is the part the height, a raw coordinate, explains. For
+\(r\ge10^{-2}\) the weights approach plain averages, all costs grow together, and the height is lost
+(\(R^2\le0.03\)) though \(s\) survives. Trustworthiness peaks at the default. The window in which
+both the arc length and some of the height come through is about one decade wide.
+
+>> Which eigenvectors come first
+
+LLE returns the cheapest coordinates, which need not be the ones we hope for. The bottom
+eigenvectors of \(M\) behave like the smooth vibration modes of the sheet (Belkin and Niyogi 2003
+relate \(M\) to the square of the manifold's Laplacian). On an \(L_1\times L_2\) rectangle, the low
+modes are \(\cos(m\pi s/L_1)\cos(n\pi h/L_2)\), ordered by \((m/L_1)^2+(n/L_2)^2\). The Swiss roll's sheet
+is \(89\times21\), about 4.25 times longer than tall, so on this ordering the first few harmonics
+along \(s\), \(\cos(m\pi s/L_1)\) for \(m\le4\), are cheaper than the first mode across, \(\cos(\pi h/L_2)\).
+The picture is only a heuristic for LLE, but it predicts the competition: the second coordinate
+can be \(h\) or \(\cos(2\pi s/L_1)\), a function of \(s\) that carries no new information. To see what LLE actually finds, we compute five coordinates and
+regress each on \(s\), on the harmonics \(\cos(m\pi u)\) with \(u=(s-s_{\min})/(s_{\max}-s_{\min})\), and on
+\(h\). Then we stretch the roll's height to make the sheet less elongated.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  auto roll = dm::datasets::swiss_roll(1000, 0.0, 1);
+  const auto s = roll.numeric_column("arc_length").values();
+  const auto [s_min, s_max] = std::ranges::minmax(s);
+  std::vector<double> c1, c2, c3;
+  for (const double si : s) {
+    const double u = std::numbers::pi * (si - s_min) / (s_max - s_min);
+    c1.push_back(std::cos(u)), c2.push_back(std::cos(2 * u)), c3.push_back(std::cos(3 * u));
+  }
+  roll.add_column("cos1", c1);
+  roll.add_column("cos2", c2);
+  roll.add_column("cos3", c3);
+
+  const dm::stats::LLE lle(roll, {"x", "y", "z"}, {.n_components = 5, .n_neighbors = 12});
+  const std::vector<std::string> targets{"arc_length", "cos1", "cos2", "cos3", "height"};
+  std::vector<double> eig;
+  std::vector<std::vector<double>> r2(targets.size());
+  for (std::size_t c = 0; c < 5; ++c) {
+    eig.push_back(lle.eigenvalues()[998 - c]);
+    DF fit = roll;
+    fit.add_column("Y", lle.dimension(c));
+    for (std::size_t j = 0; j < targets.size(); ++j) r2[j].push_back(dm::stats::LM(fit, targets[j] + " ~ Y").r_squared());
+  }
+  DF table;
+  table.add_column("coordinate", dm::seql(1.0, 5.0, 5).values());
+  table.add_column("eigenvalue", eig);
+  for (std::size_t j = 0; j < targets.size(); ++j) table.add_column("R2 " + targets[j], r2[j]);
+  DF::MarkdownOptions md;
+  md.digits = 2;
+  md.column_digits = {{"eigenvalue", 1}};
+  md.scientific = {"eigenvalue"};
+  std::print("{}\n\n", table.to_md(md));
+
+  // Stretch the height so the sheet is less elongated.
+  std::vector<double> factors{1.0, 1.5, 2.0, 3.0, 4.0}, ratio, rs, rh;
+  for (const double f : factors) {
+    DF tall = roll;
+    tall.add_column("y_tall", (f * dm::Vector<>(roll.numeric_column("y").values())).values());
+    const dm::stats::LLE stretched(tall, {"x", "y_tall", "z"}, {.n_components = 2, .n_neighbors = 8});
+    tall.add_column("Y1", stretched.dimension(0));
+    tall.add_column("Y2", stretched.dimension(1));
+    ratio.push_back((s_max - s_min) / (21.0 * f));
+    rs.push_back(dm::stats::LM(tall, "arc_length ~ Y1 + Y2").r_squared());
+    rh.push_back(dm::stats::LM(tall, "height ~ Y1 + Y2").r_squared());
+  }
+  DF stretch;
+  stretch.add_column("height factor", factors);
+  stretch.add_column("length / height", ratio);
+  stretch.add_column("R2 of s", rs);
+  stretch.add_column("R2 of h", rh);
+  std::print("{}\n", stretch.to_md());
+}
+```
+// result_begin: markdown
+| coordinate | eigenvalue | R2 arc_length | R2 cos1 | R2 cos2 | R2 cos3 | R2 height |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1.8e-08 | 0.98 | 0.96 | 0.13 | 0.05 | 0.01 |
+| 2 | 2.5e-07 | 0.01 | 0.01 | 0.08 | 0.03 | 0.68 |
+| 3 | 3.4e-07 | 0.00 | 0.01 | 0.63 | 0.14 | 0.16 |
+| 4 | 9.4e-07 | 0.01 | 0.01 | 0.01 | 0.03 | 0.14 |
+| 5 | 2.6e-06 | 0.00 | 0.00 | 0.13 | 0.43 | 0.00 |
+
+
+| height factor | length / height | R2 of s | R2 of h |
+| ---: | ---: | ---: | ---: |
+| 1.0 | 4.250 | 0.991 | 0.765 |
+| 1.5 | 2.833 | 0.785 | 0.790 |
+| 2.0 | 2.125 | 0.935 | 0.913 |
+| 3.0 | 1.417 | 0.070 | 0.955 |
+| 4.0 | 1.062 | 0.003 | 0.992 |
+// result_end
+
+\caption(Top: the first five LLE coordinates of the Swiss roll (\(k=12\)), each regressed on the arc length, on three cosine harmonics of it and on the height. Bottom: two-dimensional LLE (\(k=8\)) of the roll with its height multiplied by a factor, so that the unrolled sheet is less elongated.)
+
+The first coordinate is the arc length (\(R^2=0.98\)), or equally its first harmonic. Coordinates
+2 to 4 have eigenvalues within a factor of 4 of each other and split the height between them
+(\(R^2\) 0.68, 0.16 and 0.14), mixed with the second harmonic of \(s\) (0.63 in coordinate 3).
+Coordinate 5 is mostly the third harmonic. The height arrives earlier than the rectangle
+ordering suggests, but not as one clean coordinate, so its \(R^2\) on the first two coordinates
+stays near 0.7. Stretching the height changes the balance: at twice the height (length/height
+2.1) both coordinates are recovered with \(R^2>0.9\). The response is not monotone, though. At
+1.5 times the height both are worse, and from 3 times on the arc length drops out of the first
+two coordinates altogether, although the rectangle ordering would still put it first. LLE has
+no notion of which smooth function is a "coordinate". Asking for more dimensions than needed
+and choosing among them is often necessary.
+
+> A dataset example
+
+>> Iris: a neighbour graph in two pieces
+
+Fisher's iris data (`dm::datasets::iris()`) has four measurements of 150 flowers from three
+species. The species are not used in the fit. Setosa is far from the other two species in petal
+size, so for small \(k\) no setosa flower has a neighbour of another species, nor the reverse,
+and the neighbour graph has two components.
+
+```{cpp, results="markdown", file="figures/lle_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto iris = dm::datasets::iris();
+  const std::vector<std::string> features{"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+  const auto& species = iris.string_column("Species").values();
+
+  std::vector<double> ks{5, 10, 20, 24, 25, 30, 50}, comps, trust;
+  for (const double k : ks) {
+    const dm::stats::LLE lle(iris, features, {.n_neighbors = static_cast<std::size_t>(k)});
+    comps.push_back(static_cast<double>(lle.connected_components()));
+    trust.push_back(dm::stats::trustworthiness(iris, features, lle.embedding(), 10));
+  }
+  DF sweep;
+  sweep.add_column("k", ks);
+  sweep.add_column("components", comps);
+  sweep.add_column("T(10)", trust);
+  std::print("{}\n\n", sweep.to_md());
+
+  const dm::stats::LLE split(iris, features, {.n_neighbors = 10});
+  DF support = iris;
+  support.add_column("Y1", split.dimension(0));
+  support.add_column("Y2", split.dimension(1));
+  const auto ranges = support | dm::group_by("Species") |
+                      dm::summarise(dm::agg::min("Y1", "min Y1"), dm::agg::max("Y1", "max Y1"),
+                                    dm::agg::min("Y2", "min Y2"), dm::agg::max("Y2", "max Y2"));
+  DF::MarkdownOptions md;
+  md.digits = 1;
+  md.scientific = {"min Y1", "max Y1", "min Y2", "max Y2"};
+  std::print("{}\n", ranges.to_md(md));
+
+  const dm::stats::PCA pca(iris, features, {.center = true, .scale = false});
+  const auto pcs = dm::linalg::DenseMatrix<double>::from_columns({pca.component_scores(0), pca.component_scores(1)});
+  std::print("PCA: T(10) = {:.3f}.\n", dm::stats::trustworthiness(iris, features, pcs, 10));
+
+  const dm::stats::LLE joined(iris, features, {.n_neighbors = 30});
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(split.plot_embedding(species).title("k = 10: two components").y_limits(-0.35, 0.5))
+      .add(joined.plot_embedding(species).title("k = 30: one component").y_limits(-0.35, 0.5))
+      .size(1100, 480)
+      .fit_panels();
+  fig.save_svg("build/lle_iris.svg");
+}
+```
+// result_begin: markdown
+| k | components | T(10) |
+| ---: | ---: | ---: |
+| 5 | 2 | 0.912 |
+| 10 | 2 | 0.913 |
+| 20 | 2 | 0.917 |
+| 24 | 2 | 0.913 |
+| 25 | 1 | 0.944 |
+| 30 | 1 | 0.980 |
+| 50 | 1 | 0.974 |
+
+
+| Species | min Y1 | max Y1 | min Y2 | max Y2 |
+| :--- | ---: | ---: | ---: | ---: |
+| setosa | 0.0e+00 | 0.0e+00 | -2.6e-01 | 3.5e-01 |
+| versicolor | -1.8e-01 | 1.8e-02 | 0.0e+00 | 0.0e+00 |
+| virginica | -7.9e-02 | 2.7e-01 | 0.0e+00 | 0.0e+00 |
+
+PCA: T(10) = 0.983.
+\image(figures/lle_iris.svg)
+// result_end
+
+\caption(LLE of the four iris measurements, coloured by species (not used in the fit). Left: \(k=10\), where the neighbour graph has two components. Right: \(k=30\), where it is connected. Tables: components and trustworthiness against \(k\); the range of each coordinate within each species at \(k=10\).)
+\alttext(Left: a cross. The 50 setosa points lie on the vertical axis from about minus 0.26 to 0.35 with Dim1 exactly 0; the versicolor and virginica points lie on the horizontal axis from about minus 0.18 to 0.27 with Dim2 exactly 0, versicolor mostly left of virginica. Right: setosa forms a vertical column at Dim1 about minus 0.1; versicolor and virginica form one rising band to the right, versicolor at the left end and virginica at the right.)
+
+The graph stays split up to \(k=24\) and joins at \(k=25\). In the split case each coordinate lives
+on one component, as the theory says. The first coordinate is exactly zero on every setosa
+flower and orders versicolor against virginica. The second is zero on versicolor and virginica
+and spreads setosa out. The picture is a cross whose arms are unrelated: the distance between a
+setosa point and a versicolor point means nothing. With \(k=30\) the graph is connected, the two
+groups are placed relative to each other, and trustworthiness rises from 0.913 to 0.980. Iris
+is nearly linear, though: PCA's two components are as trustworthy (0.983). LLE adds nothing
+here once the graph is connected. Its useful lesson is the diagnostic: check
+`connected_components()` before interpreting the axes.
+
+>> Handwritten digits
+
+The 8×8 handwritten digits (`dm::datasets::digits()`) are 64-dimensional, and images of one digit
+vary in a few ways: slant, thickness, size. We embed the 1083 images of the digits 0 to 5.
+
+```{cpp, results="markdown", file="figures/lle_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto digits = dm::datasets::digits().filter([](const auto& row) { return row.get_double("digit") < 6; });
+  std::vector<std::string> pixels, labels;
+  for (int i = 0; i < 64; ++i) pixels.push_back(std::format("pixel_{}", i));
+  for (const double d : digits.numeric_column("digit").values()) labels.push_back(std::format("{}", d));
+
+  const dm::stats::PCA pca(digits, pixels, {.center = true, .scale = false});
+  const auto pcs = dm::linalg::DenseMatrix<double>::from_columns({pca.component_scores(0), pca.component_scores(1)});
+  std::vector<std::string> method{"PCA"};
+  std::vector<double> trust{dm::stats::trustworthiness(digits, pixels, pcs, 10)};
+  std::vector<double> cont{dm::stats::continuity(digits, pixels, pcs, 10)};
+  for (const std::size_t k : {10, 30}) {
+    const dm::stats::LLE lle(digits, pixels, {.n_neighbors = k});
+    method.push_back(std::format("LLE, k = {} ({} component)", k, lle.connected_components()));
+    trust.push_back(dm::stats::trustworthiness(digits, pixels, lle.embedding(), 10));
+    cont.push_back(dm::stats::continuity(digits, pixels, lle.embedding(), 10));
+  }
+  DF table;
+  table.add_column("method", method);
+  table.add_column("T(10)", trust);
+  table.add_column("C(10)", cont);
+  std::print("{} images of the digits 0 to 5.\n\n{}\n", digits.nrows(), table.to_md());
+
+  const dm::stats::LLE lle(digits, pixels, {.n_neighbors = 10});
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(pca.plot_scores(labels).title("PCA").y_limits(-35.0, 75.0))
+      .add(lle.plot_embedding(labels).title("LLE, k = 10").y_limits(-0.05, 0.135))
+      .size(1100, 480)
+      .fit_panels();
+  fig.save_svg("build/lle_digits.svg");
+}
+```
+// result_begin: markdown
+1083 images of the digits 0 to 5.
+
+| method | T(10) | C(10) |
+| :--- | ---: | ---: |
+| PCA | 0.868 | 0.958 |
+| LLE, k = 10 (1 component) | 0.943 | 0.974 |
+| LLE, k = 30 (1 component) | 0.785 | 0.881 |
+
+\image(figures/lle_digits.svg)
+// result_end
+
+\caption(The 1083 images of the digits 0 to 5 embedded in two dimensions, coloured by digit (not used in the fit). Left: the first two principal components. Right: LLE with \(k=10\). Table: trustworthiness and continuity with 10 neighbours.)
+\alttext(Left: PCA shows six overlapping clouds: 0 at the bottom, 4 at the left, 1 at the top, 2 at the right, 3 at the lower right, and 5 in the middle overlapping 1, 2 and 3. Right: LLE shows compact, mostly separate groups: 4 as a short vertical strip at the bottom left, 1 as a strip at the left plus a small strip near the top, 5 as a diagonal streak in the lower middle, 3 as a cluster in the centre right, 2 spread across the top centre, and 0 collapsed into a tight dot at the far right.)
+
+LLE with \(k=10\) separates the six digits into compact groups, and its trustworthiness (0.943)
+is well above PCA's (0.868): its neighbours in the plane are mostly neighbours in pixel space.
+Each group is squeezed into a short curve or a dot (all the zeros land on nearly one point). LLE's unit-variance constraint lets the
+cheapest solution put whole clusters almost on top of each other along one direction, a known
+weakness that modified variants (Hessian LLE, LTSA, modified LLE) address. With \(k=30\)
+neighbourhoods span several digits, and trustworthiness drops below PCA's.
+
+> Conclusion
+
+LLE reduces nonlinear dimensionality reduction to linear algebra: a small constrained least
+squares problem per point, then the bottom eigenvectors of one sparse matrix. Each step was
+checked here against a closed form: the minimum-norm weights \((5,5,6,3)/19\), the line's
+embedding \((3-i)/\sqrt{28}\), and the exact recovery of a flat sheet. The theory also explains
+the failures. With \(k\) larger than the input dimension and too small a ridge, the raw
+coordinates become free and LLE returns a linear projection, so the ridge is essential and has a
+window of about one decade. Too large a \(k\) bridges separate parts of the manifold. A
+disconnected neighbour graph embeds its components on unrelated axes. On a long thin sheet, the
+short direction competes with harmonics of the long one, so the coordinate we want may not be
+among the first two. When these are respected, LLE unrolls the Swiss roll's long direction
+(\(R^2=0.99\)), where PCA gets 0.08, and separates handwritten digits more faithfully than PCA. It
+needs no distances along the manifold. That makes it far less sensitive than Isomap to a few
+bridging edges, although Isomap on a clean neighbour graph unrolls the roll better. It does need care with \(k\) and \(r\), and its output is a distorted, unit-variance
+picture, not a map that preserves distances.
+
+> References
+
+- S. T. Roweis and L. K. Saul (2000). "Nonlinear dimensionality reduction by locally linear embedding". *Science* 290(5500), 2323–2326. doi:10.1126/science.290.5500.2323
+- L. K. Saul and S. T. Roweis (2003). "Think globally, fit locally: unsupervised learning of low dimensional manifolds". *Journal of Machine Learning Research* 4, 119–155.
+- M. Belkin and P. Niyogi (2003). "Laplacian eigenmaps for dimensionality reduction and data representation". *Neural Computation* 15(6), 1373–1396. doi:10.1162/089976603321780317
+- J. Venna and S. Kaski (2001). "Neighborhood preservation in nonlinear projection methods: an experimental study". *ICANN 2001*, LNCS 2130, 485–491. doi:10.1007/3-540-44668-0_68
+- J. B. Tenenbaum, V. de Silva and J. C. Langford (2000). "A global geometric framework for nonlinear dimensionality reduction". *Science* 290(5500), 2319–2323. doi:10.1126/science.290.5500.2319
+- scikit-learn, `LocallyLinearEmbedding`: https://scikit-learn.org/stable/modules/generated/sklearn.manifold.LocallyLinearEmbedding.html

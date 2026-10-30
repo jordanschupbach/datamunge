@@ -1,9 +1,9 @@
-// A small persistent thread pool for nn kernels.
-//
-// One job runs at a time: the caller splits [begin, end) into chunks, the
-// workers and the caller take chunks from a shared counter, and the caller
-// waits until every chunk is done. A thread that finds the pool busy (another
-// user thread, or a nested parallel_for) runs its range serially instead.
+/// @file parallel.cpp
+/// @brief Persistent thread pool and serial fallback for neural network kernels.
+///
+/// One job runs at a time: workers and the caller claim chunks from a shared
+/// counter, and the caller waits for all claimed work. Concurrent submitters
+/// and nested parallel_for calls use serial fallback instead of waiting on the pool.
 
 #include "datamunge/nn/parallel.hpp"
 
@@ -19,8 +19,10 @@
 
 namespace datamunge::nn {
 
+/// @brief Process-wide pool ownership and per-thread nesting state.
 namespace {
 
+/// @brief Uses a positive DATAMUNGE_NUM_THREADS value, else hardware concurrency with a fallback of one.
 int default_threads() {
   if (const char* env = std::getenv("DATAMUNGE_NUM_THREADS")) {
     const int n = std::atoi(env);
@@ -30,18 +32,26 @@ int default_threads() {
   return hw == 0 ? 1 : static_cast<int>(hw);
 }
 
+/// @brief Whether this thread is already in a parallel region, preventing recursive pool submission.
 thread_local bool tls_in_parallel = false;
 
 /// One parallel_for call. Workers hold a shared_ptr to the job they joined,
 /// so a worker that wakes late can only touch that (finished) job's counters,
 /// never the next job's.
 struct Job {
+  /// @brief Borrowed callback; the submitting caller keeps it alive until every chunk finishes.
   const std::function<void(std::int64_t)>* body{nullptr};
+  /// @brief Total chunk indices available to be claimed, in [0, chunks).
   std::int64_t                             chunks{0};
+  /// @brief Atomic index for the next chunk claimed by any participating thread.
   std::atomic<std::int64_t>                next{0};
-  std::int64_t                             remaining{0};  // guarded by mutex
-  std::exception_ptr                       error;         // guarded by mutex
+  /// @brief Unfinished chunk count, published once per participant while holding mutex.
+  std::int64_t                             remaining{0};
+  /// @brief First published callback failure, guarded by mutex and rethrown by the submitter.
+  std::exception_ptr                       error;
+  /// @brief Protects completion accounting and the stored exception.
   std::mutex                               mutex;
+  /// @brief Signals the submitter after all chunks have finished.
   std::condition_variable                  done;
 
   /// Runs chunks until none are left.
@@ -72,12 +82,17 @@ struct Job {
   }
 };
 
+/// @brief Serializes submitted jobs and retains worker threads between kernel calls.
 class Pool {
  public:
+  /// @brief Starts the configured worker count minus one; the caller supplies the remaining thread.
   Pool() { resize(threads_ - 1); }
+  /// @brief Signals all workers to stop and joins them before pool state is destroyed.
   ~Pool() { resize(0); }
 
+  /// @brief Returns the configured total parallelism, including the submitting thread.
   int  threads() const { return threads_; }
+  /// @brief Waits for the active submission and rebuilds the pool for a positive total thread count.
   void set_threads(int n) {
     std::lock_guard<std::mutex> submit(submit_mutex_);
     threads_ = n;
@@ -112,6 +127,8 @@ class Pool {
   }
 
  private:
+  /// @brief Stops and joins current workers, then creates the requested number of worker threads.
+  /// The caller must exclude active submissions, except during initial construction/destruction.
   void resize(int workers) {
     {
       std::lock_guard<std::mutex> lock(mutex_);
@@ -124,6 +141,7 @@ class Pool {
     for (int i = 0; i < workers; ++i) workers_.emplace_back([this] { loop(); });
   }
 
+  /// @brief Worker entry point: waits for new job generations and contributes chunks until stopped.
   void loop() {
     tls_in_parallel = true;
     std::uint64_t seen;
@@ -144,16 +162,27 @@ class Pool {
     }
   }
 
+  /// @brief Configured total threads, counting both workers and a submitting caller.
   int                      threads_{default_threads()};
+  /// @brief Owned persistent workers, joined before replacement or destruction.
   std::vector<std::thread> workers_;
-  std::mutex               submit_mutex_, mutex_;
+  /// @brief Serializes whole submissions and pool reconfiguration.
+  std::mutex               submit_mutex_;
+  /// @brief Protects the published job, generation counter, and worker stop signal.
+  std::mutex               mutex_;
+  /// @brief Notifies idle workers of a new job generation or a stop request.
   std::condition_variable  wake_;
-  std::shared_ptr<Job>     job_;  // guarded by mutex_
+  /// @brief Published job retained by participating workers, guarded by mutex_.
+  std::shared_ptr<Job>     job_;
+  /// @brief Job generation observed by workers, incremented under mutex_ on publication.
   std::uint64_t            generation_{0};
+  /// @brief Stop signal checked by workers while holding mutex_.
   bool                     stop_{false};
 };
 
+/// @brief Returns the lazily constructed process-wide kernel pool.
 Pool& pool() {
+  /// @brief Persistent workers and submission state, joined when static destruction runs.
   static Pool instance;
   return instance;
 }
@@ -177,6 +206,7 @@ void parallel_for(std::int64_t begin, std::int64_t end, std::int64_t grain,
   // A few chunks per thread balances uneven work without much overhead.
   const std::int64_t chunks = std::min<std::int64_t>((n + grain - 1) / grain, std::int64_t{threads} * 4);
   const std::int64_t step   = (n + chunks - 1) / chunks;
+  // Translate a claimed chunk number to a disjoint nonempty part of the caller's range.
   const std::function<void(std::int64_t)> body = [&](std::int64_t c) {
     const std::int64_t lo = begin + c * step;
     const std::int64_t hi = std::min(end, lo + step);

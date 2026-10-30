@@ -77,3 +77,39 @@ TEST(SortingHybrid, StoogeSortMatchesStdSort) {
         ASSERT_EQ(a, want) << "n=" << n;
     }
 }
+
+TEST(BeadSortPartitions, ConjugationAndGravity) {
+    using namespace datamunge::algorithms;
+    // 3 + 1 + 4 + 1 + 5: column heights #{a > j} for j = 0..4.
+    const std::vector<unsigned> a{3, 1, 4, 1, 5};
+    EXPECT_EQ(bead_columns(a), (std::vector<unsigned>{5, 3, 3, 2, 1}));
+    EXPECT_EQ(conjugate_partition(conjugate_partition(a)), (std::vector<unsigned>{5, 4, 3, 1, 1}));
+    EXPECT_TRUE(conjugate_partition({0, 0}).empty());
+
+    const auto fall = bead_sort_gravity(a);
+    ASSERT_EQ(fall.after.size(), 5U);
+    // After the fall, row r (top first) holds the (r+1)-th smallest value.
+    for (std::size_t r = 0; r < 5; ++r) {
+        unsigned beads = 0;
+        for (const auto c : fall.after[r]) beads += c;
+        EXPECT_EQ(beads, (std::vector<unsigned>{1, 1, 3, 4, 5})[r]);
+    }
+    long long total = 0;
+    for (const long long m : fall.moves_per_tick) total += m;
+    EXPECT_EQ(total, fall.bead_moves);
+    EXPECT_LE(fall.ticks, 4);
+    // Column 4 has one bead starting in the bottom row: no fall. Column 2's beads start in rows 0, 2, 4.
+    EXPECT_GT(fall.ticks, 0);
+}
+
+TEST(BeadSortPartitions, MatchesStdSortOnRandomArrays) {
+    std::mt19937 rng(7);
+    for (int trial = 0; trial < 200; ++trial) {
+        std::vector<unsigned> v(rng() % 50);
+        for (auto& x : v) x = rng() % 40;
+        auto expected = v;
+        std::sort(expected.begin(), expected.end());
+        datamunge::algorithms::bead_sort(v);
+        EXPECT_EQ(v, expected);
+    }
+}

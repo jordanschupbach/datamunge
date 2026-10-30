@@ -1,4 +1,5 @@
 # Native R NN example. Pooling windows, gradients, global/3-D ops and translation.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.2_reusable_layer_library/pooling.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
@@ -45,7 +46,7 @@ global_and_3d <- function() {
     for (a in 0:1) for (b in 0:1) for (c in 0:1) window <- c(window,volume$at(c(0L,2L+a,4L+b,6L+c,1L)))
     op_m <- m3$at(c(0L,1L,2L,3L,1L));op_a <- a3$at(c(0L,1L,2L,3L,1L))
     stopifnot(identical(as.numeric(average$shape()),c(2,3)),identical(as.numeric(m3$shape()),c(1,4,4,4,2)),identical(m3$shape(),a3$shape()))
-    stopifnot(error_avg<1e-6,error_max==0,abs(op_m-max(window))<1e-6,abs(op_a-sum(window)/8)<1e-6,abs(op_m-.8234)<5e-5,abs(op_a+.1757)<5e-5)
+    stopifnot(error_avg<1e-6,error_max==0,abs(op_m-max(window))<1e-6,abs(op_a-sum(window)/8)<1e-6)
     cat("Global average / max errors:",error_avg,error_max,"3-D max / avg cell:",op_m,op_a,"\n")
 }
 

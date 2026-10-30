@@ -41,7 +41,7 @@ It runs in a single \(O(n)\) pass over the vertices.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -98,7 +98,7 @@ right triangle (area 6), then measure a non-convex polygon and draw it.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

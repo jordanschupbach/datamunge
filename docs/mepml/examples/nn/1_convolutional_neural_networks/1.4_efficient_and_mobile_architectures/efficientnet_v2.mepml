@@ -1,0 +1,520 @@
+//? Title: EfficientNetV2: Fused Early Blocks and Explicit Base-B0 Fitting
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+EfficientNetV2 combines fused early blocks with later SE mobile bottlenecks. We compare
+executed block arithmetic, check all seven full-weight designs and exact target budgets,
+then expose every update of a complete base-B0 tensor Adam fit.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/efficientnet_v2.cpp`.
+
+> The method
+
+Fused-MBConv replaces the pointwise expansion and depthwise spatial filtering with one dense
+spatial expansion. It keeps a separate linear pointwise projection when expansion exceeds one.
+At expansion one it uses a single spatial projection followed by BN/swish, with no SE in the
+released tables. Later ordinary MBConv blocks use SE .25, logistic gates and linear projection.
+Every compatible stride-one block can add its raw input; training residual masks use the same
+zero-based .2*i/n drop schedule as EfficientNet. Classifier dropout follows each variant's table.
+
+Fusing is a computational choice, not an algebraic folding of identical weights. The controlled
+24-to-48, stride-two, expansion-four comparison at 96 pixels executes two separately initialized
+functions: MBConv uses 8256 parameters/33841152 MACs in three convolutions; Fused-MBConv uses
+25632/58392576 in two. More arithmetic can still suit accelerator hardware; no runtime is measured.
+Their displayed maps are illustrative, not a numerical-equivalence claim.
+
+S/M/L have their own searched tables with 40/57/79 blocks. Base B0-B3 scale a separate table
+with 21/27/28/32 blocks. Stem width is the first block's input, while the 1280-channel head scales
+with width. All seven full-weight networks execute at 64 pixels for parameter/state counts.
+Exact reference-resolution budgets use ceil side geometry at every SAME downsampling, keeping
+pooled SE/classifier costs fixed. Base B0 also executes an actual 224-pixel cross-check. Large
+S/M/L target-resolution forwards are not claimed. A full base-B0 backward probe at 64 pixels
+freezes moving updates and branch dropout, shifts BN/SE biases, and checks every derivative is
+finite. Some projection BN shifts cancel through pointwise/BN paths; early padded fused filters
+can preserve a spatially varying boundary contribution, so not all projection shifts are redundant.
+
+The visible CIFAR fit retains all 21 base-B0 blocks and 5871514 learned scalars. It uses fixed
+32-pixel inputs and fixed regularization throughout. The paper's progressive resizing and adaptive
+regularization schedule is not reproduced or hidden in the model helper.
+
+All model computation, image scaling, augmentation, losses and optimizer updates use tensors.
+Architecture strings, integer dimensions and plotted vectors are metadata. Convolutions use
+He-uniform initialization and TensorFlow SAME padding, BN epsilon 1e-3 with learned scale/shift,
+and a biased classifier. Training uses batch moments; inference uses saved moving moments.
+Dropout draws from the learned store's generator. The arithmetic log counts convolution,
+pooled SE and classifier products, excluding BN, pooling, activations, additions and memory
+traffic. One MAC is a multiply-accumulate pair, not measured latency or individual FLOPs.
+
+The bounded fit uses original 32×32 CIFAR-10 images, changes only the stem stride and class
+count, and retains every block and channel width. It shows four epochs (64 updates, kept short for build time), batch eight, Adam(.001),
+explicit kernel L2=.0001/2 and independent padded crops/flips. Fixed subsets contain 128 fit,
+64 validation and 64 official-test rows. The lowest validation NLL selects paired learned/BN
+checkpoints before test scoring. No accuracy threshold is imposed on this small single-seed
+experiment; it is not the published ImageNet training schedule or a latency search.
+
+The editable concept diagram is `diagrams/efficientnet_v2_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/efficientnet_v2_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/efficientnet_v2_concept.tikz > build/efficientnet_v2_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/efficientnet_v2_concept.svg build/efficientnet_v2_concept.dvi > build/efficientnet_v2_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/efficientnet_v2_concept.svg)
+// result_end
+\caption(EfficientNetV2: Fused Early Blocks and Explicit Base-B0 Fitting)
+\alttext(Fused early stages; SE mobile later stages; then All repeats retained; Seven released designs; then Full base-B0 fit; Explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/efficientnet_v2_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::EfficientNetV2Config cfg;
+  cfg.classes    = 10;
+  cfg.small_stem = true;
+  cfg.variant    = "b0";
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::EfficientNetV2(p, state, image, cfg, false).logits;
+      },
+      "EfficientNetV2: Fused Early Blocks and Explicit Base-B0 Fitting");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/efficientnet_v2_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+34 displayed nodes; 5871514 reachable learned values.
+\image(figures/efficientnet_v2_architecture.svg)
+// result_end
+\caption(Executed efficientnet v2 tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right efficientnet v2 architecture with rotated names and exact output shapes.)
+
+> Fused and depthwise block arithmetic
+
+```{cpp, results="markdown", file="figures/efficientnet_v2_fused.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  std::vector<double> index, params, macs;
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  for (bool fused : {false, true}) {
+    n::ParameterStore p(17), state(17);
+    std::vector<n::models::MobileLayer> layers;
+    n::models::MobileContext c{p, state, layers, false};
+    auto b = n::models::DecodeBlock("r1_k3_s2_e4_i24_o48_c1");
+    b.fused = fused;
+    n::NoGradGuard guard;
+    const auto x = n::sin(.13 * n::arange(0, 96 * 96 * 24).to(n::DType::Float32))
+                       .reshape({1, 96, 96, 24});
+    const auto out = n::models::MBConv(c, "block", x, 48, b, 2, true);
+    n::models::MobileNetOutputs net;
+    net.layers = layers;
+    if (net.Macs() != (fused ? 58392576 : 33841152) || p.count() != (fused ? 25632 : 8256) ||
+        out.output.shape() != n::Shape{1, 48, 48, 48})
+      return 1;
+    const auto map = n::slice_axis(out.output, 3, 0, 1).reshape({48, 48});
+    layout.add(n::plot_tensor_map(map, n::min(map).item(), n::max(map).item())
+                   .title(fused ? "Fused dense 3x3 expansion"
+                                : "Pointwise plus depthwise expansion"));
+    std::print("Fused={}: {} parameters, {} measured MACs, {} convolutions. These are "
+               "different learned functions.\n",
+               fused, p.count(), net.Macs(), layers.size());
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1100, 470).fit_panels().save_svg("build/efficientnet_v2_fused.svg");
+}
+```
+// result_begin: markdown
+Fused=false: 8256 parameters, 33841152 measured MACs, 3 convolutions. These are different learned functions.
+Fused=true: 25632 parameters, 58392576 measured MACs, 2 convolutions. These are different learned functions.
+\image(figures/efficientnet_v2_fused.svg)
+// result_end
+\caption(The same 24-to-48 stride-two expansion-four geometry uses three convolutions as MBConv and two as Fused-MBConv. Fusing increases this block’s parameters/MACs; accelerator utilization can differ. These separately initialized functions are not algebraically equivalent and this report does not measure runtime.)
+\alttext(The same 24-to-48 stride-two expansion-four geometry uses three convolutions as MBConv and two as Fused-MBConv. Fusing increases this block’s parameters/MACs; accelerator utilization can differ. These separately initialized functions are not algebraically equivalent and this report does not measure runtime.)
+
+> All full-weight models and exact target budgets
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int64_t target_macs(const dm::nn::models::MobileNetOutputs &out, int resolution) {
+  int64_t total = out.classifier_macs;
+  for (const auto &l : out.layers) {
+    if (l.name.find("/se") != std::string::npos)
+      total += l.Macs();
+    else {
+      if (l.shape[1] < 1 || 64 % l.shape[1] || 64 % l.shape[2])
+        throw std::runtime_error("invalid power-of-two geometry");
+      const int64_t hdiv = 64 / l.shape[1], wdiv = 64 / l.shape[2];
+      total += ((resolution + hdiv - 1) / hdiv) * ((resolution + wdiv - 1) / wdiv) *
+               l.macs_per_position;
+    }
+  }
+  return total;
+}
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  struct Case {
+    const char *name;
+    int64_t params, state, macs;
+    int blocks;
+  };
+  for (const auto &expected : std::vector<Case>{{"s", 21458488, 153872, 8365617152, 40},
+                                                {"m", 54139356, 292032, 24582460384, 57},
+                                                {"l", 118515272, 512576, 56079699008, 79},
+                                                {"b0", 7139704, 60608, 718086176, 21},
+                                                {"b1", 8141052, 71072, 1196819360, 27},
+                                                {"b2", 10096086, 82288, 1697542832, 28},
+                                                {"b3", 14377062, 109312, 3213058816, 32}}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    n::models::EfficientNetV2Config cfg;
+    cfg.variant = expected.name;
+    const auto spec = n::models::EfficientNetV2Spec(cfg.variant);
+    const auto out = n::models::EfficientNetV2(p, state, n::zeros({1, 64, 64, 3}), cfg);
+    const int64_t macs = target_macs(out, spec.resolution);
+    int blocks = 0, fused = 0;
+    for (const auto &b : n::models::EfficientNetV2Blocks(spec)) {
+      blocks += b.repeats;
+      fused += b.fused ? b.repeats : 0;
+    }
+    if (p.count() != expected.params || state.count() != expected.state ||
+        macs != expected.macs || blocks != expected.blocks)
+      return 1;
+    if (cfg.variant == "b0" &&
+        n::models::EfficientNetV2(p, state, n::zeros({1, 224, 224, 3}), cfg).Macs() != macs)
+      return 1;
+    std::print("V2-{}: {} blocks ({} fused), {} learned / {} moving scalars; exact {}-pixel "
+               "target budget {} MACs.\n",
+               cfg.variant, blocks, fused, p.count(), state.count(), spec.resolution, macs);
+  }
+  std::print("All seven full-weight networks execute at 64 pixels for counts. SAME target "
+             "geometry uses ceil(resolution/downsampling_divisor), with pooled SE and "
+             "classifier costs fixed. B0 additionally executes at 224 pixels. Large "
+             "full-resolution forwards/timings are not claimed.\n");
+}
+```
+// result_begin: markdown
+V2-s: 40 blocks (10 fused), 21458488 learned / 153872 moving scalars; exact 384-pixel target budget 8365617152 MACs.
+V2-m: 57 blocks (13 fused), 54139356 learned / 292032 moving scalars; exact 480-pixel target budget 24582460384 MACs.
+V2-l: 79 blocks (18 fused), 118515272 learned / 512576 moving scalars; exact 480-pixel target budget 56079699008 MACs.
+V2-b0: 21 blocks (5 fused), 7139704 learned / 60608 moving scalars; exact 224-pixel target budget 718086176 MACs.
+V2-b1: 27 blocks (8 fused), 8141052 learned / 71072 moving scalars; exact 240-pixel target budget 1196819360 MACs.
+V2-b2: 28 blocks (8 fused), 10096086 learned / 82288 moving scalars; exact 260-pixel target budget 1697542832 MACs.
+V2-b3: 32 blocks (8 fused), 14377062 learned / 109312 moving scalars; exact 300-pixel target budget 3213058816 MACs.
+All seven full-weight networks execute at 64 pixels for counts. SAME target geometry uses ceil(resolution/downsampling_divisor), with pooled SE and classifier costs fixed. B0 additionally executes at 224 pixels. Large full-resolution forwards/timings are not claimed.
+// result_end
+
+> Complete backward probe
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17), state(17);
+  n::models::EfficientNetV2Config cfg;
+  cfg.update_stats = false;
+  cfg.variant = "b0";
+  cfg.drop_connect = 0;
+  const auto x = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                     .reshape({2, 64, 64, 3});
+  {
+    n::NoGradGuard guard;
+    n::models::EfficientNetV2(p, state, x, cfg, true);
+    for (const auto &name : p.names())
+      if (name.ends_with("/beta") ||
+          (name.find("/se/") != std::string::npos && name.ends_with("/b")))
+        p.set(name, (.5 * n::sin(.37 * n::arange(0, p.at(name).numel()).to(n::DType::Float32) +
+                                 double(name.size())))
+                        .reshape(p.at(name).shape()));
+  }
+  const auto before = state.flatten();
+  const auto out = n::models::EfficientNetV2(p, state, x, cfg, true);
+  const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+  double maximum = 0, smallest = std::numeric_limits<double>::infinity();
+  int tiny = 0;
+  for (const auto &g : gradients) {
+    const double norm = n::sqrt(n::sum(n::square(g))).item();
+    if (!std::isfinite(norm))
+      return 1;
+    maximum = std::max(maximum, norm);
+    smallest = std::min(smallest, norm);
+  }
+  for (const auto &g : gradients)
+    tiny += n::sqrt(n::sum(n::square(g))).item() < 1e-6 * maximum;
+  if (maximum <= 0 || state.flatten() != before)
+    return 1;
+  std::print(
+      "Complete EfficientNetV2 at 64 pixels: {} finite parameter-tensor gradients; norm range "
+      "[{:.12f},{:.9f}], {} below 1e-6 of maximum. Moving updates frozen; training head "
+      "dropout retained. No claim that every tensor gradient is nonzero.\n",
+      gradients.size(), smallest, maximum, tiny);
+}
+```
+// result_begin: markdown
+Complete EfficientNetV2 at 64 pixels: 243 finite parameter-tensor gradients; norm range [0.000000000597,6.056941509], 17 below 1e-6 of maximum. Moving updates frozen; training head dropout retained. No claim that every tensor gradient is nonzero.
+// result_end
+
+> Original images and explicit fitting
+
+```{cpp, results="markdown", file="figures/efficientnet_v2_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/efficientnet_v2_inputs.png", 5, 0., 1.,
+                     4, 1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/efficientnet_v2_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/efficientnet_v2_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+             vy       = n::slice_axis(labels, 0, 128, 192);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  n::models::EfficientNetV2Config cfg;
+  cfg.classes    = 10;
+  cfg.small_stem = true;
+  cfg.variant    = "b0";
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::EfficientNetV2(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 5871514)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/efficientnet_v2_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 4; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/efficientnet_v2_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "efficientnet v2 / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("EfficientNetV2 base B0")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/efficientnet_v2_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 5871514 learned scalars, 60608 moving scalars; 64 explicit Adam updates.
+Selected epoch 1; validation NLL 2.536862; inference training NLL 2.413752; test NLL 2.549119; test accuracy 0.031250.
+\image(figures/efficientnet_v2_training.svg)
+// result_end
+\caption(Explicit 4-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 4-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+
+
+> Observed subset result
+
+Validation selected epoch 1: validation NLL 2.536862, inference training NLL
+2.413752 and test NLL 2.549119; 2/64 test predictions are correct (3.125%).
+After only 64 updates the 5.9-million-parameter model has not left chance level
+(NLL 2.30 for ten classes), so this short run shows the explicit optimizer and
+checkpoint selection at work, not a trained classifier. No speed or progressive-training gain is measured.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/efficientnet_v2_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Fused early filtering changes learned computation and hardware arithmetic. Full table counts,
+precise target geometry and visible base-B0 fitting explain that design without treating fused
+blocks as equivalent functions or claiming the published progressive-training results.
+
+> References
+
+- [Tan and Le (2021), EfficientNetV2: Smaller Models and Faster Training](https://arxiv.org/abs/2104.00298).
+- [Google EfficientNetV2 release](https://github.com/google/automl/tree/master/efficientnetv2).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

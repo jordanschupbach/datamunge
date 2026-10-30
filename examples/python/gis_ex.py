@@ -1,3 +1,4 @@
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/gis_ex.py
 # Demonstrates datamunge.ShapeLayer: reading a shapefile (.shp geometry + .dbf attributes) and
 # drawing it as a map. Real .shp/.dbf files are large binary bundles that don't belong in this
 # repo, so this example first writes a tiny synthetic shapefile by hand (two "counties": one

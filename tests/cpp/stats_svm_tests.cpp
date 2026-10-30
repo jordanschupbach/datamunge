@@ -135,3 +135,123 @@ TEST(SVM, SummaryContainsKeyInformation) {
     EXPECT_NE(text.find("Support Vectors"), std::string::npos);
     EXPECT_NE(text.find("setosa"), std::string::npos);
 }
+
+TEST(SVM, TwoPointSolutionMatchesClosedFormAcrossScalesAndCosts) {
+    for (double a : {0.5, 1.0, 2.0, 4.0}) for (double cost : {0.01, 0.1, 1.0, 10.0}) {
+        DataFrame data;
+        data.add_column("x", std::vector<double>{-a,a});
+        data.add_column("label", std::vector<std::string>{"left","right"});
+        SVMOptions options;
+        options.kernel=SVMKernel::Linear; options.scale=false; options.cost=cost;
+        const SVM model(data,"label ~ x",options);
+        const double alpha=std::min(cost,1.0/(2*a*a));
+        const auto rows=model.training_details(), diag=model.diagnostics();
+        const double norm=4*a*a*alpha*alpha;
+        for (std::size_t i=0;i<2;++i) {
+            EXPECT_NEAR(rows.double_at("alpha",i),alpha,1e-10);
+            EXPECT_NEAR(rows.double_at("margin",i),2*a*a*alpha,1e-10);
+        }
+        EXPECT_NEAR(diag.double_at("norm_squared",0),norm,1e-10);
+        EXPECT_NEAR(diag.double_at("dual",0),2*alpha-0.5*norm,1e-10);
+        EXPECT_NEAR(diag.double_at("gap",0),0,1e-10);
+        EXPECT_NEAR(diag.double_at("equality_residual",0),0,1e-12);
+        EXPECT_NEAR(diag.double_at("max_kkt_violation",0),0,1e-10);
+        EXPECT_NEAR(diag.double_at("bias",0),0,1e-12);
+        EXPECT_DOUBLE_EQ(model.error(data),0.0);
+    }
+}
+
+TEST(SVM, XorPolynomialHasKnownCoefficientsAndObjective) {
+    DataFrame data;
+    data.add_column("x",std::vector<double>{-1,1,-1,1});
+    data.add_column("z",std::vector<double>{-1,1,1,-1});
+    data.add_column("label",std::vector<std::string>{"same","same","unlike","unlike"});
+    SVMOptions opt;
+    opt.kernel=SVMKernel::Polynomial; opt.gamma=1; opt.degree=2; opt.scale=false; opt.cost=10; opt.tolerance=1e-8;
+    const SVM model(data,"label ~ x + z",opt);
+    const auto details=model.training_details(), diag=model.diagnostics();
+    // Opposite corners have identical mapped features, so individual coefficients
+    // are non-unique. Their sum per class, margins and objectives are unique.
+    EXPECT_NEAR(details.double_at("alpha",0)+details.double_at("alpha",1),0.25,1e-8);
+    EXPECT_NEAR(details.double_at("alpha",2)+details.double_at("alpha",3),0.25,1e-8);
+    for (std::size_t i=0;i<4;++i) EXPECT_NEAR(details.double_at("margin",i),1,1e-8);
+    EXPECT_NEAR(diag.double_at("norm_squared",0),0.5,1e-8);
+    EXPECT_NEAR(diag.double_at("dual",0),0.25,1e-8);
+    EXPECT_NEAR(diag.double_at("gap",0),0,1e-8);
+}
+
+TEST(SVM, PairDecisionsReproduceVotesAndTrainingDetails) {
+    const auto iris=datamunge::datasets::iris();
+    const SVM model(iris,"Species ~ .");
+    const auto values=model.decision_function(iris);
+    const auto prediction=model.predict_detail(iris);
+    const auto rows=model.training_details();
+    ASSERT_EQ(values.cols(),3u); ASSERT_EQ(values.rows(),150u);
+    ASSERT_EQ(rows.nrows(),300u);
+    for (std::size_t row=0;row<150;++row) {
+        std::vector<double> votes(3,0);
+        std::size_t p=0;
+        for (std::size_t i=0;i<3;++i) for (std::size_t j=i+1;j<3;++j,++p)
+            ++votes[values(row,p)>=0 ? i : j];
+        EXPECT_EQ(votes,prediction.votes[row]);
+    }
+    for (std::size_t r=0;r<rows.nrows();++r) {
+        const auto pair=r/100;
+        const auto input_row=static_cast<std::size_t>(rows.double_at("row",r));
+        EXPECT_NEAR(values(input_row,pair),rows.double_at("decision",r),1e-6);
+    }
+}
+
+TEST(SVM, MissingRowsKeepOriginalIndicesAndAreExcludedFromError) {
+    DataFrame data;
+    data.add_column("x",std::vector<std::optional<double>>{-2,std::nullopt,-1,1,2});
+    data.add_column("label",std::vector<std::string>{"a","a","a","b","b"});
+    const SVM model(data,"label ~ x");
+    const auto rows=model.training_details();
+    ASSERT_EQ(rows.nrows(),4u);
+    EXPECT_DOUBLE_EQ(rows.double_at("row",0),0);
+    EXPECT_DOUBLE_EQ(rows.double_at("row",1),2);
+    const auto decisions=model.decision_function(data);
+    EXPECT_TRUE(std::isnan(decisions(1,0)));
+    EXPECT_EQ(model.predict(data)[1],"");
+    EXPECT_DOUBLE_EQ(model.error(data),0);
+    DataFrame unlabelled; unlabelled.add_column("x",std::vector<double>{1});
+    EXPECT_THROW((void)model.error(unlabelled),std::invalid_argument);
+    DataFrame no_labels;
+    no_labels.add_column("x",std::vector<double>{1});
+    no_labels.add_column("label",std::vector<std::optional<std::string>>{std::nullopt});
+    EXPECT_THROW((void)model.error(no_labels),std::invalid_argument);
+    EXPECT_EQ(model.predict(unlabelled).size(),1u);
+}
+
+TEST(SVM, RegionPlotValidatesAxesAndSupportsTheirReversal) {
+    const SVM model(datamunge::datasets::iris(),"Species ~ Petal.Length + Petal.Width");
+    EXPECT_NO_THROW((void)model.plot_decision_regions("Petal.Length","Petal.Width",10));
+    EXPECT_NO_THROW((void)model.plot_decision_regions("Petal.Width","Petal.Length",10));
+    EXPECT_THROW((void)model.plot_decision_regions("Petal.Length","missing"),std::invalid_argument);
+    EXPECT_THROW((void)model.plot_decision_regions("Petal.Length","Petal.Length"),std::invalid_argument);
+    EXPECT_THROW((void)model.plot_decision_regions("Petal.Length","Petal.Width",10,std::array<double,4>{0,0,0,1}),std::invalid_argument);
+    const SVM four(datamunge::datasets::iris(),"Species ~ .");
+    EXPECT_THROW((void)four.plot_decision_regions("Petal.Length","Petal.Width"),std::invalid_argument);
+}
+
+TEST(SVM, RejectsInvalidOptimizationOptions) {
+    const auto data=datamunge::datasets::iris();
+    SVMOptions opt;
+    opt.cost=0; EXPECT_THROW(SVM(data,"Species ~ .",opt),std::invalid_argument);
+    opt.cost=1; opt.max_passes=0; EXPECT_THROW(SVM(data,"Species ~ .",opt),std::invalid_argument);
+    opt.max_passes=50; opt.tolerance=-1; EXPECT_THROW(SVM(data,"Species ~ .",opt),std::invalid_argument);
+}
+
+
+TEST(SVM, ErrorAcceptsAnEmptyStringAsAnObservedClass) {
+    DataFrame data;
+    data.add_column("x",std::vector<double>{-2,-1,1,2});
+    data.add_column("label",std::vector<std::string>{"","","other","other"});
+    const SVM model(data,"label ~ x");
+    EXPECT_DOUBLE_EQ(model.error(data),0);
+    DataFrame query;
+    query.add_column("x",std::vector<double>{-1});
+    query.add_column("label",std::vector<std::string>{"other"});
+    EXPECT_DOUBLE_EQ(model.error(query),1);
+}

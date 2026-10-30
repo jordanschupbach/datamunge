@@ -43,7 +43,7 @@ for utility but as a cautionary tale about recursion that fails to divide the pr
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Count the recursive calls stooge sort makes for size n.
 static long g_calls = 0;

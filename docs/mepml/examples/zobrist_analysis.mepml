@@ -1,0 +1,357 @@
+//? Title: Zobrist Hashing: Updating a Digit One Pixel at a Time
+//? Subtitle: XOR cancellation, collision expectations and the limits of random-looking hashes
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A Zobrist hash assigns a random key to each cell/category pair and XORs the
+keys belonging to a configuration. Replacing one cell takes two key lookups
+and two XORs, regardless of the configuration's size. We apply this idea to
+the 8 by 8 handwritten images in `dm::datasets::digits()`: grey levels are
+categories, and changing pixels is the analogue of changing board squares.
+We derive the update identity and the expected number of colliding pairs,
+verify every step of an image transformation, and compare truncated hashes
+across 64 seeded key tables. A four-configuration identity explains why
+these hashes must not be treated as fully independent random numbers.
+)
+
+\toc
+
+> The data: small images as categorical configurations
+
+The built-in digits frame contains 1797 images, each with 64 integer pixel
+values from 0 (white) to 16 (dark), plus a numeric digit label. The image,
+rather than its class, is the object to identify. Remove `digit` before
+encoding: otherwise two identical images with different labels would hash
+differently. The remaining column order is row-major pixel order.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto digits = dm::datasets::digits();
+  std::print("{}\n", digits.select({"pixel_0", "pixel_1", "pixel_2", "pixel_3", "digit"}).head(6).to_md());
+}
+```
+// result_begin: markdown
+| pixel_0 | pixel_1 | pixel_2 | pixel_3 | digit |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 5 | 13 | 0 |
+| 0 | 0 | 0 | 12 | 1 |
+| 0 | 0 | 0 | 4 | 2 |
+| 0 | 0 | 7 | 15 | 3 |
+| 0 | 0 | 0 | 1 | 4 |
+| 0 | 0 | 12 | 10 | 5 |
+// result_end
+\caption(The first six records, showing the beginning of each image and its label. Hashing uses all 64 pixels.)
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto digits = dm::datasets::digits();
+  std::print("{}\n", (digits.select({"digit", "pixel_27", "pixel_28"}) |
+      dm::group_by("digit") | dm::summarise_each(dm::mean)).to_md());
+}
+```
+// result_begin: markdown
+| digit | pixel_27 | pixel_28 |
+| ---: | ---: | ---: |
+| 0 | 1.994 | 0.140 |
+| 1 | 14.286 | 13.863 |
+| 2 | 4.740 | 12.096 |
+| 3 | 8.940 | 14.273 |
+| 4 | 6.354 | 7.354 |
+| 5 | 12.038 | 8.973 |
+| 6 | 8.110 | 3.884 |
+| 7 | 6.251 | 12.134 |
+| 8 | 13.218 | 13.322 |
+| 9 | 12.189 | 13.228 |
+// result_end
+\caption(Mean intensities at two central pixels by digit. These structured configurations differ substantially from independent random cells.)
+
+```{cpp, file="figures/zobrist_pixels.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  auto pixels = dm::datasets::digits();
+  pixels.remove_column("digit");
+  const auto boards = dm::algorithms::zobrist_boards(pixels.head(2), 17);
+  std::vector<double> cells(64);
+  std::iota(cells.begin(), cells.end(), 0);
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .line(cells, std::vector<double>(boards[0].begin(), boards[0].end()), "first image: 0", dm::RGB{37, 99, 235}, 2)
+      .line(cells, std::vector<double>(boards[1].begin(), boards[1].end()), "second image: 1", dm::RGB{220, 38, 38}, 2)
+      .title("The two configurations before hashing")
+      .x_label("row-major pixel index").y_label("grey-level category")
+      .y_limits(0, 16).size(900, 460).save_svg("build/zobrist_pixels.svg");
+}
+```
+// result_begin:
+// \image(figures/zobrist_pixels.svg)
+// result_end
+\caption(The first two images as row-major intensity profiles. Runs of white pixels share category zero; the central strokes differ.)
+\alttext(Two pixel-intensity profiles over 64 positions, with long shared zero runs and different nonzero central strokes.)
+
+> The method: cancellation replaces a complete scan
+
+Let \(x=(x_0,\ldots,x_{c-1})\) be a configuration with \(q\) categories
+per cell. Generate keys \(K_{i,v}\) for each cell \(i\) and category
+\(v\ne0\), with \(K_{i,0}=0\). For a \(b\)-bit hash,
+
+$$
+H(x)=\bigoplus_{i=0}^{c-1}K_{i,x_i}.
+$$
+\alttext(H of x is the bitwise exclusive or over cells i of the key for cell i and its category x i.)
+
+XOR is associative and commutative, and \(a\oplus a=0\). Replacing
+\(x_j=u\) by \(v\) therefore gives
+
+$$
+H(x')=H(x)\oplus K_{j,u}\oplus K_{j,v}.
+$$
+\alttext(The updated hash equals the old hash exclusive or the old cell key exclusive or the replacement cell key.)
+
+The old contribution cancels and the new one is inserted. Reversing the
+replacement cancels the same two keys again, restoring the original hash.
+For a set \(S\) of changed cells, the same argument gives
+
+$$
+H(y)=H(x)\oplus\bigoplus_{j\in S}\left(K_{j,x_j}\oplus K_{j,y_j}\right).
+$$
+\alttext(H of y equals H of x exclusive or, over changed cells, the old and new category keys.)
+
+The result depends only on the final configuration, not the order of
+updates. This is why positions reached by different move sequences can
+share a transposition-table entry. Real game keys must also encode every
+rule-relevant state variable, such as side to move and castling rights.
+Here the configuration contains only pixels; the digit label is metadata.
+
+Initialising the table costs \(O(cq)\) time and space; computing a full
+hash costs \(O(c)\); one changed cell costs \(O(1)\). Updating \(k\)
+known changes costs \(O(k)\), but discovering those changes by comparing
+two complete images still costs \(O(c)\). This distinction prevents a
+false speed claim for unrelated records.
+
+> Applying it: turning the first digit into the second
+
+`zobrist_boards` accepts the dataset directly after dropping its label.
+It validates integer categories instead of silently rounding them.
+`zobrist_transition` changes differing cells in index order and independently
+recomputes each intermediate board's hash. Hashes are hexadecimal strings:
+putting a 64-bit integer into a double would lose precision.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  auto pixels = dm::datasets::digits();
+  pixels.remove_column("digit");
+  const auto boards = dm::algorithms::zobrist_boards(pixels, 17);
+  const auto table = dm::algorithms::zobrist_init(pixels.ncols(), 17, 2024);
+  const auto trace = dm::algorithms::zobrist_transition(table, boards[0], boards[1]);
+  std::print("{}\n", trace.head(8).to_md());
+  std::print("\n| changed cells | verified updates |\n| ---: | ---: |\n| {} | {:.0f} |\n",
+      trace.nrows(), dm::sum(trace.get_column("verified").values()));
+}
+```
+// result_begin: markdown
+| cell | old_piece | new_piece | flipped_bits | verified | incremental | full |
+| ---: | ---: | ---: | ---: | ---: | :--- | :--- |
+| 2 | 5 | 0 | 31 | 1 | 0x5d3201337d11e6eb | 0x5d3201337d11e6eb |
+| 3 | 13 | 12 | 36 | 1 | 0x67f98897a6c891a5 | 0x67f98897a6c891a5 |
+| 4 | 9 | 13 | 36 | 1 | 0x295e143a28752192 | 0x295e143a28752192 |
+| 5 | 1 | 5 | 24 | 1 | 0x886e54e670359f06 | 0x886e54e670359f06 |
+| 10 | 13 | 0 | 32 | 1 | 0xe75a2416d04f2ad7 | 0xe75a2416d04f2ad7 |
+| 11 | 15 | 11 | 25 | 1 | 0xbf35bc5dc08e1896 | 0xbf35bc5dc08e1896 |
+| 12 | 10 | 16 | 37 | 1 | 0x1ba761306a42b72d | 0x1ba761306a42b72d |
+| 13 | 15 | 9 | 28 | 1 | 0xdaf7fd94e7c7c460 | 0xdaf7fd94e7c7c460 |
+
+
+| changed cells | verified updates |
+| ---: | ---: |
+| 42 | 42 |
+// result_end
+\caption(The first eight replacements, with independently recomputed hashes, and verification totals for the complete transformation. The trace checks correctness and deliberately performs full scans; it is not a benchmark.)
+
+```{cpp, file="figures/zobrist_changes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  auto pixels = dm::datasets::digits();
+  pixels.remove_column("digit");
+  const auto boards = dm::algorithms::zobrist_boards(pixels, 17);
+  const auto t = dm::algorithms::zobrist_init(64, 17, 2024);
+  const auto trace = dm::algorithms::zobrist_transition(t, boards[0], boards[1]);
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .points(trace.get_column("cell").values(), trace.get_column("flipped_bits").values(),
+              "changed hash bits", dm::RGB{37, 99, 235}, 4)
+      .abline_h(32, dm::RGB{220, 38, 38}, 1)
+      .title("One pixel replacement changes about half the hash bits")
+      .x_label("changed pixel index").y_label("changed bits out of 64")
+      .y_limits(0, 64).size(900, 460).save_svg("build/zobrist_changes.svg");
+}
+```
+// result_begin:
+// \image(figures/zobrist_changes.svg)
+// result_end
+\caption(Hash-bit changes during the transformation. The horizontal line is the ideal mean of 32, not an acceptance threshold.)
+\alttext(A scatter plot of the number of changed hash bits against changed pixel index, with a reference line at 32 out of 64.)
+
+For ideal independent keys a single nontrivial replacement produces a
+uniform XOR difference, so the number of changed bits has distribution
+\(\operatorname{Binomial}(64,1/2)\): mean 32 and standard deviation 4.
+A large jump is therefore expected, but an attractive scatter plot alone
+cannot establish randomness or security.
+
+> Collisions: count pairs, and separate repeated data
+
+Fix two distinct configurations \(x\ne y\). Choose any differing cell.
+At least one nonzero-category key at that cell occurs exactly once in
+\(H(x)\oplus H(y)\). Condition on all other keys: this remaining key is
+uniform, so the XOR is zero with probability \(2^{-b}\). This proof
+still works with category zero keyed to zero. The all-zero board itself
+has a deterministic hash, so not every individual board hash is uniform.
+
+For \(n\) distinct input boards, define a collision as an unordered pair
+whose truncated hashes agree. Linearity of expectation gives
+
+$$
+C_b=\sum_{i<j}\mathbf{1}\{H_b(x_i)=H_b(x_j)\},\qquad
+\mathbb{E}[C_b]=\binom{n}{2}2^{-b},\qquad
+\Pr(C_b\ge1)\le\min\left(1,\binom{n}{2}2^{-b}\right).
+$$
+\alttext(C b counts matching pairs. Its expectation is n choose 2 times 2 to the minus b. The chance of any collision is at most the smaller of 1 and that expectation.)
+
+The final inequality is the union bound; it needs no independence between
+pair events. By contrast, \(1-\exp(-\mathbb{E}C_b)\) is a birthday/Poisson
+approximation, not an exact theorem here. Repeated input boards must first
+be removed: equal data are not hash failures. A bucket with \(r\) distinct
+boards contributes \(r(r-1)/2\) pairs, not merely \(r-1\).
+
+The library removes exact duplicates and averages over 64 consecutive
+MT19937-64 seeds. Ideal-key theory is a model for those pseudorandom tables;
+consecutive seeds are not a proof of independent randomness.
+
+```{cpp, results="markdown", file="figures/zobrist_collisions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  auto pixels = dm::datasets::digits();
+  pixels.remove_column("digit");
+  const auto boards = dm::algorithms::zobrist_boards(pixels, 17);
+  std::print("| records | distinct pixel arrays |\n| ---: | ---: |\n| {} | {} |\n\n",
+             pixels.nrows(), pixels.drop_duplicates().nrows());
+  const auto profile = dm::algorithms::zobrist_collision_profile(boards, 17, {8, 10, 12, 14, 16, 20, 24, 32, 64});
+  std::print("{}\n", profile.to_md());
+  std::print("\n| retained bits | exact ideal expected pairs |\n| ---: | ---: |\n");
+  for (std::size_t r = 7; r < profile.nrows(); ++r)
+    std::print("| {:.0f} | {:.8e} |\n", profile.double_at("bits", r), profile.double_at("expected_pairs", r));
+  const auto visible = profile.head(7);
+  auto observed = visible.get_column("mean_pairs").values();
+  auto expected = visible.get_column("expected_pairs").values();
+  for (auto& v : observed) v = std::log10(v);
+  for (auto& v : expected) v = std::log10(v);
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .line(visible.get_column("bits").values(), expected,
+            "ideal expectation", dm::RGB{220, 38, 38}, 2)
+      .points(visible.get_column("bits").values(), observed,
+              "mean of 64 tables", dm::RGB{37, 99, 235}, 5)
+      .title("Colliding digit-image pairs after truncation")
+      .x_label("retained low bits").y_label("log10(colliding pairs)")
+      .size(900, 480).save_svg("build/zobrist_collisions.svg");
+}
+```
+// result_begin: markdown
+| records | distinct pixel arrays |
+| ---: | ---: |
+| 1797 | 1797 |
+
+| bits | mean_pairs | min_pairs | max_pairs | expected_pairs |
+| ---: | ---: | ---: | ---: | ---: |
+| 8 | 6317.766 | 6144 | 6563 | 6303.539 |
+| 10 | 1574.219 | 1495 | 1657 | 1575.885 |
+| 12 | 391.719 | 349 | 436 | 393.971 |
+| 14 | 97.484 | 75 | 115 | 98.493 |
+| 16 | 24.453 | 14 | 39 | 24.623 |
+| 20 | 1.609 | 0 | 4 | 1.539 |
+| 24 | 0.078 | 0 | 1 | 0.096 |
+| 32 | 0.000 | 0 | 0 | 0.000 |
+| 64 | 0.000 | 0 | 0 | 0.000 |
+
+
+| retained bits | exact ideal expected pairs |
+| ---: | ---: |
+| 32 | 3.75720207e-04 |
+| 64 | 8.74791775e-14 |
+\image(figures/zobrist_collisions.svg)
+// result_end
+\caption(Colliding pairs at different widths: mean, minimum and maximum over 64 tables, and ideal-key expectation. The figure shows the widths where collisions are measurable.)
+\alttext(Mean observed collision counts and ideal expectations versus retained hash width. Counts decrease exponentially as more bits are retained.)
+
+All 1797 images are distinct. At eight bits the observed mean is close to
+the ideal expectation; at 24 bits only five pairs occur across all 64
+tables. At 64 bits the ideal expected count per table is about
+\(8.75\times10^{-14}\). Thus zero observed collisions at full width is
+unsurprising and cannot validate such a small probability experimentally.
+The additional scientific-notation rows preserve expectations that round
+to zero in the main table.
+
+> A deterministic dependency that survives every seed
+
+Take four configurations that agree everywhere except at two cells, where
+they contain respectively \((a,c),(a,d),(b,c),(b,d)\). Every key appears
+an even number of times across their hashes. Consequently,
+
+$$
+H(a,c)\oplus H(a,d)\oplus H(b,c)\oplus H(b,d)=0.
+$$
+\alttext(The exclusive or of the four hashes at the corners of a two-cell category rectangle is always zero.)
+
+Once three hashes are known the fourth is determined. Fully independent
+uniform 64-bit hashes would satisfy this identity only with probability
+\(2^{-64}\). This does not force a pair collision and does not contradict
+the pairwise collision proof. It does rule out treating every collection
+of configurations as fully independent, and makes Zobrist hashing unsuitable
+as an adversarial integrity check.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto t = dm::algorithms::zobrist_init(2, 3, 2024);
+  std::uint64_t rectangle = 0;
+  std::print("| two-cell configuration | hash |\n| :--- | :--- |\n");
+  for (const std::vector<int> x : {std::vector<int>{1, 1}, {1, 2}, {2, 1}, {2, 2}}) {
+    const auto h = dm::algorithms::zobrist_hash(t, x);
+    rectangle ^= h;
+    std::print("| ({}, {}) | 0x{:016x} |\n", x[0], x[1], h);
+  }
+  std::print("| XOR of all four | 0x{:016x} |\n", rectangle);
+}
+```
+// result_begin: markdown
+| two-cell configuration | hash |
+| :--- | :--- |
+| (1, 1) | 0xd8daffcd1a59f103 |
+| (1, 2) | 0xc94c64f7f77d1cac |
+| (2, 1) | 0x8f709823cb5ab8b4 |
+| (2, 2) | 0x9ee60319267e551b |
+| XOR of all four | 0x0000000000000000 |
+// result_end
+\caption(A four-configuration XOR dependency, verified with the same public API used for the images.)
+
+> Conclusion
+
+The incremental identity holds at every changed pixel, and reduced-width
+collisions can be measured against an exact expectation without claiming
+full independence. At 64 bits and this dataset's size, the ideal union
+bound is tiny; seeing no collisions provides little additional evidence.
+A cache that must return exact answers should verify the stored configuration
+after a hash match. Wider keys reduce accidental collisions but do not remove
+the algebraic dependencies. For changing categorical states, the useful
+property is cheap, reversible updates with a precisely defined collision model.
+
+> References
+
+- A. L. Zobrist (1970). *A New Hashing Method With Application for Game Playing*.
+  University of Wisconsin, Technical Report 88.
+  https://research.cs.wisc.edu/techreports/1970/TR88.pdf
+- M. Pătraşcu and M. Thorup (2011 preprint). *The Power of Simple Tabulation Hashing*.
+  https://arxiv.org/abs/1011.5200

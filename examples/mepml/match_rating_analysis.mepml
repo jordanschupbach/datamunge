@@ -45,7 +45,7 @@ trivial in a 12-letter one, and the sliding threshold encodes exactly that intui
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -119,7 +119,7 @@ against the threshold it must clear.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -34,7 +34,7 @@ whose smaller factor is near \(\sqrt{n}\)). That square-root wall is why trial d
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -105,7 +105,7 @@ semiprimes of growing size (worst case for trial division).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

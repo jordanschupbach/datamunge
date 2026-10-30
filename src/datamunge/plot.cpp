@@ -1,21 +1,30 @@
 #include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/figure.hpp>
 
 #include <datamunge/datamunge.hpp>
 #include <datamunge/random/distributions.hpp>
+#include <datamunge/algorithms/checksums.hpp>
+
+#include "plot/cmu_serif_font_data.hpp"
 
 #include <algorithm>
 #include <array>
+#include <charconv>
+#include <cctype>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <functional>
 #include <iomanip>
 #include <memory>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #if defined(DATAMUNGE_HAVE_X11)
@@ -24,7 +33,7 @@
 #include <X11/Xutil.h>
 #endif
 
-namespace datamunge::plot {
+namespace datamunge::graphics {
 namespace {
 
 struct Bounds {
@@ -43,6 +52,14 @@ struct Layout {
   double plot_h{0.0};
   Bounds bounds{};
 };
+
+/// @brief Baseline offset (in em) that visually centers a line of text on a y coordinate.
+constexpr double kTextCenterEm = 0.35;
+/// @brief Font size of the X11 viewer's toolbar labels.
+constexpr double kButtonFontPx = 13.0;
+
+/// @brief Baseline of x-axis tick labels: a 6px gap below the axis plus room for @p px-sized text.
+double x_tick_baseline(const Layout& layout, double px) { return layout.top + layout.plot_h + 6.0 + 1.5 * px; }
 
 struct Image {
   std::size_t               width{0};
@@ -121,7 +138,9 @@ struct Image {
 
 std::string rgb_css(RGB c) {
   std::ostringstream out;
-  out << "rgb(" << c.r << "," << c.g << "," << c.b << ")";
+  // Same clamping as the raster path, so out-of-range channels still give a valid SVG color.
+  out << "rgb(" << std::clamp(c.r, 0, 255) << "," << std::clamp(c.g, 0, 255) << "," << std::clamp(c.b, 0, 255)
+      << ")";
   return out.str();
 }
 
@@ -248,19 +267,16 @@ Bounds compute_bounds(const Plot& plot) {
   return b;
 }
 
-Layout compute_layout(const Plot& plot) {
-  Layout layout;
-  layout.plot_w = static_cast<double>(plot.width()) - layout.left - layout.right;
-  layout.plot_h = static_cast<double>(plot.height()) - layout.top - layout.bottom;
-  if (layout.plot_w <= 0.0 || layout.plot_h <= 0.0) {
-    throw std::runtime_error("Plot::save: invalid plot dimensions");
-  }
-  layout.bounds = compute_bounds(plot);
-  return layout;
-}
-
 Layout compute_layout(const Plot& plot, Bounds bounds) {
   Layout layout;
+  if (plot.has_custom_margins()) {
+    layout.left = plot.margin_left();
+    layout.right = plot.margin_right();
+    layout.top = plot.margin_top();
+    layout.bottom = plot.margin_bottom();
+  } else if (!plot.subtitle_text().empty()) {
+    layout.top += 24.0;
+  }
   layout.plot_w = static_cast<double>(plot.width()) - layout.left - layout.right;
   layout.plot_h = static_cast<double>(plot.height()) - layout.top - layout.bottom;
   if (layout.plot_w <= 0.0 || layout.plot_h <= 0.0) {
@@ -269,6 +285,8 @@ Layout compute_layout(const Plot& plot, Bounds bounds) {
   layout.bounds = bounds;
   return layout;
 }
+
+Layout compute_layout(const Plot& plot) { return compute_layout(plot, compute_bounds(plot)); }
 
 double map_x(const Layout& layout, double x) {
   return layout.left
@@ -296,25 +314,115 @@ std::string format_tick(double value) {
   return s;
 }
 
+/// @brief One axis tick: its pixel coordinate along the axis and its label.
+struct AxisTick {
+  double      pixel; ///< x pixel for the horizontal axis, y pixel for the vertical one
+  std::string label; ///< text drawn beside the tick
+};
+
+/// @brief Ticks for one axis: the custom labels (at their positions, or 0, 1, 2, ...) when any
+///        are set, otherwise six evenly spaced numeric ticks across the visible range.
+std::vector<AxisTick> axis_ticks(const Layout&                   layout,
+                                 bool                            horizontal,
+                                 bool                            pretty,
+                                 const std::vector<std::string>& labels,
+                                 const std::vector<double>&      positions) {
+  std::vector<AxisTick> ticks;
+  if (!labels.empty()) {
+    for (std::size_t i = 0; i < labels.size(); ++i) {
+      const double value = positions.empty() ? static_cast<double>(i) : positions[i];
+      ticks.push_back({horizontal ? map_x(layout, value) : map_y(layout, value), labels[i]});
+    }
+    return ticks;
+  }
+  const double lo = horizontal ? layout.bounds.x_min : layout.bounds.y_min;
+  const double hi = horizontal ? layout.bounds.x_max : layout.bounds.y_max;
+  if (pretty && hi > lo) {
+    // Heckbert's nice number nearest a fifth of the range: 1, 2, 5 or 10 times 10^k.
+    const double raw = (hi - lo) / 5.0;
+    const double magnitude = std::pow(10.0, std::floor(std::log10(raw)));
+    const double fraction = raw / magnitude;
+    const double nice = fraction < 1.5 ? 1.0 : fraction < 3.0 ? 2.0 : fraction < 7.0 ? 5.0 : 10.0;
+    const double step = nice * magnitude;
+    for (double v = std::ceil(lo / step) * step; v <= hi + step * 1e-9; v += step) {
+      const double value = std::abs(v) < step * 1e-9 ? 0.0 : v;
+      ticks.push_back({horizontal ? map_x(layout, value) : map_y(layout, value), format_tick(value)});
+    }
+    return ticks;
+  }
+  for (int i = 0; i <= 5; ++i) {
+    const double fraction = static_cast<double>(i) / 5.0;
+    const double pixel = horizontal ? layout.left + layout.plot_w * fraction
+                                    : layout.top + layout.plot_h - layout.plot_h * fraction;
+    ticks.push_back({pixel, format_tick(lo + (hi - lo) * fraction)});
+  }
+  return ticks;
+}
+
+std::vector<AxisTick> x_axis_ticks(const Plot& plot, const Layout& layout) {
+  return axis_ticks(layout, true, plot.pretty_ticks_enabled(), plot.x_tick_label_list(), plot.x_tick_position_list());
+}
+
+std::vector<AxisTick> y_axis_ticks(const Plot& plot, const Layout& layout) {
+  return axis_ticks(layout, false, plot.pretty_ticks_enabled(), plot.y_tick_label_list(), plot.y_tick_position_list());
+}
+
+/// @brief True when a tick's pixel lies within [lo, hi] (with half a pixel of slack).
+bool tick_inside(double pixel, double lo, double hi) { return pixel >= lo - 0.5 && pixel <= hi + 0.5; }
+
+/// @brief @p color mixed toward black by @p amount in [0, 1]; keeps alpha.
+RGB darken(RGB color, double amount) {
+  const auto mix = [amount](int channel) { return static_cast<int>(std::lround(channel * (1.0 - amount))); };
+  return RGB{mix(color.r), mix(color.g), mix(color.b), color.alpha};
+}
+
+/// @brief CSS font stack for SVG text: the embedded Computer Modern subset, then installed copies.
+constexpr const char* kSvgFontFamily = "'datamunge CMU Serif','CMU Serif','Latin Modern Roman','Computer Modern',serif";
+
+/// @brief `<defs>` block embedding the CMU Serif subset (WOFF, base64) for SVG text; built once.
+const std::string& svg_font_defs() {
+  static const std::string defs = [] {
+    constexpr char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    const auto*    data = detail::cmu_serif::woff;
+    const std::size_t size = std::size(detail::cmu_serif::woff);
+    std::string    b64;
+    b64.reserve((size + 2) / 3 * 4);
+    for (std::size_t i = 0; i < size; i += 3) {
+      const std::uint32_t n = (std::uint32_t{data[i]} << 16) | (i + 1 < size ? std::uint32_t{data[i + 1]} << 8 : 0U)
+                            | (i + 2 < size ? std::uint32_t{data[i + 2]} : 0U);
+      b64 += alphabet[(n >> 18) & 63U];
+      b64 += alphabet[(n >> 12) & 63U];
+      b64 += i + 1 < size ? alphabet[(n >> 6) & 63U] : '=';
+      b64 += i + 2 < size ? alphabet[n & 63U] : '=';
+    }
+    return "  <defs><style>@font-face{font-family:'datamunge CMU Serif';src:url(data:font/woff;base64," + b64
+         + ") format('woff');}</style></defs>\n";
+  }();
+  return defs;
+}
+
 void write_axes_and_grid(std::ostringstream& out, const Plot& plot, const Layout& layout) {
   out << "  <rect width=\"100%\" height=\"100%\" fill=\"" << rgb_css(plot.background_color())
       << "\"/>\n";
   out << "  <style>"
-      << "text{font-family:Helvetica,Arial,sans-serif;fill:" << rgb_css(plot.axes_color()) << ";}"
+      // The default colour applies only to text without its own fill attribute: a CSS rule
+      // would otherwise override the per-label colour of text().
+      << "text{font-family:" << kSvgFontFamily << ";}text:not([fill]){fill:" << rgb_css(plot.axes_color()) << ";}"
       << "</style>\n";
-
-  const bool categorical = !plot.x_tick_label_list().empty();
 
   if (!plot.axes_hidden()) {
     if (plot.grid_visible()) {
-      for (int i = 0; i <= 5; ++i) {
-        const double tx = layout.left + layout.plot_w * static_cast<double>(i) / 5.0;
-        const double ty = layout.top + layout.plot_h * static_cast<double>(i) / 5.0;
-        out << "  <line x1=\"" << tx << "\" y1=\"" << layout.top << "\" x2=\"" << tx
+      // Grid lines sit on the ticks, so they line up with the labels.
+      for (const auto& tick : x_axis_ticks(plot, layout)) {
+        if (!tick_inside(tick.pixel, layout.left, layout.left + layout.plot_w)) continue;
+        out << "  <line x1=\"" << tick.pixel << "\" y1=\"" << layout.top << "\" x2=\"" << tick.pixel
             << "\" y2=\"" << layout.top + layout.plot_h << "\" stroke=\""
             << rgb_css(plot.major_grid_color()) << "\" stroke-width=\"1\"/>\n";
-        out << "  <line x1=\"" << layout.left << "\" y1=\"" << ty << "\" x2=\""
-            << layout.left + layout.plot_w << "\" y2=\"" << ty << "\" stroke=\""
+      }
+      for (const auto& tick : y_axis_ticks(plot, layout)) {
+        if (!tick_inside(tick.pixel, layout.top, layout.top + layout.plot_h)) continue;
+        out << "  <line x1=\"" << layout.left << "\" y1=\"" << tick.pixel << "\" x2=\""
+            << layout.left + layout.plot_w << "\" y2=\"" << tick.pixel << "\" stroke=\""
             << rgb_css(plot.major_grid_color()) << "\" stroke-width=\"1\"/>\n";
       }
     }
@@ -326,40 +434,26 @@ void write_axes_and_grid(std::ostringstream& out, const Plot& plot, const Layout
         << layout.left << "\" y2=\"" << layout.top + layout.plot_h << "\" stroke=\""
         << rgb_css(plot.axes_color()) << "\" stroke-width=\"2\"/>\n";
 
-    if (categorical) {
-      const auto& labels = plot.x_tick_label_list();
-      for (std::size_t i = 0; i < labels.size(); ++i) {
-        const double tx = map_x(layout, static_cast<double>(i));
-        out << "  <text x=\"" << tx << "\" y=\"" << layout.top + layout.plot_h + 24
-            << "\" font-size=\"12\" text-anchor=\"middle\">" << xml_escape(labels[i])
-            << "</text>\n";
-      }
-      for (int i = 0; i <= 5; ++i) {
-        const double yv = layout.bounds.y_min + (layout.bounds.y_max - layout.bounds.y_min)
-                                                     * static_cast<double>(i) / 5.0;
-        const double ty = layout.top + layout.plot_h - layout.plot_h * static_cast<double>(i) / 5.0;
-        out << "  <text x=\"" << layout.left - 10 << "\" y=\"" << ty + 4
-            << "\" font-size=\"12\" text-anchor=\"end\">" << format_tick(yv) << "</text>\n";
-      }
-    } else {
-      for (int i = 0; i <= 5; ++i) {
-        const double xv = layout.bounds.x_min + (layout.bounds.x_max - layout.bounds.x_min)
-                                                     * static_cast<double>(i) / 5.0;
-        const double yv = layout.bounds.y_min + (layout.bounds.y_max - layout.bounds.y_min)
-                                                     * static_cast<double>(i) / 5.0;
-        const double tx = layout.left + layout.plot_w * static_cast<double>(i) / 5.0;
-        const double ty = layout.top + layout.plot_h - layout.plot_h * static_cast<double>(i) / 5.0;
-        out << "  <text x=\"" << tx << "\" y=\"" << layout.top + layout.plot_h + 24
-            << "\" font-size=\"12\" text-anchor=\"middle\">" << format_tick(xv) << "</text>\n";
-        out << "  <text x=\"" << layout.left - 10 << "\" y=\"" << ty + 4
-            << "\" font-size=\"12\" text-anchor=\"end\">" << format_tick(yv) << "</text>\n";
-      }
+    for (const auto& tick : x_axis_ticks(plot, layout)) {
+      out << "  <text x=\"" << tick.pixel << "\" y=\"" << x_tick_baseline(layout, plot.tick_font_px())
+          << "\" font-size=\"" << plot.tick_font_px() << "\" text-anchor=\"middle\">" << xml_escape(tick.label)
+          << "</text>\n";
+    }
+    for (const auto& tick : y_axis_ticks(plot, layout)) {
+      out << "  <text x=\"" << layout.left - 10 << "\" y=\"" << tick.pixel + kTextCenterEm * plot.tick_font_px()
+          << "\" font-size=\"" << plot.tick_font_px() << "\" text-anchor=\"end\">" << xml_escape(tick.label)
+          << "</text>\n";
     }
   }
 
   out << "  <text x=\"" << plot.width() / 2.0
       << "\" y=\"36\" font-size=\"24\" text-anchor=\"middle\">"
       << xml_escape(plot.title_text()) << "</text>\n";
+  if (!plot.subtitle_text().empty()) {
+    out << "  <text x=\"" << plot.width() / 2.0
+        << "\" y=\"60\" font-size=\"16\" text-anchor=\"middle\">"
+        << xml_escape(plot.subtitle_text()) << "</text>\n";
+  }
   if (!plot.axes_hidden()) {
     out << "  <text x=\"" << plot.width() / 2.0 << "\" y=\"" << plot.height() - 20
         << "\" font-size=\"16\" text-anchor=\"middle\">" << xml_escape(plot.x_label_text())
@@ -368,6 +462,45 @@ void write_axes_and_grid(std::ostringstream& out, const Plot& plot, const Layout
         << "\" font-size=\"16\" text-anchor=\"middle\" transform=\"rotate(-90 24 "
         << plot.height() / 2.0 << ")\">" << xml_escape(plot.y_label_text()) << "</text>\n";
   }
+}
+
+/// @brief Number of legend rows: explicit legend() entries, else one per labelled non-text series.
+std::size_t legend_row_count(const Plot& plot) {
+  if (!plot.legend_entries().empty()) return plot.legend_entries().size();
+  std::size_t rows = 0;
+  for (const auto& series : plot.series())
+    if (!series.label.empty() && series.kind != DataSeries::Kind::Text) ++rows;
+  return rows;
+}
+
+/// @brief Pixel geometry of one box-and-whisker series (see DataSeries::Kind::Box).
+struct BoxGeometry {
+  double cx, left, right, cap_left, cap_right;  ///< Horizontal pixel positions.
+  double lo, q1, median, q3, hi;               ///< Vertical pixel positions.
+  std::vector<double> outliers;                ///< Vertical pixel positions of outliers.
+};
+
+BoxGeometry box_geometry(const DataSeries& series, const Layout& layout) {
+  const double position = series.x[0];
+  const double half = series.bar_width / 2.0;
+  BoxGeometry g{};
+  g.cx = map_x(layout, position);
+  g.left = map_x(layout, position - half);
+  g.right = map_x(layout, position + half);
+  g.cap_left = map_x(layout, position - half / 2.0);
+  g.cap_right = map_x(layout, position + half / 2.0);
+  g.lo = map_y(layout, series.y[0]);
+  g.q1 = map_y(layout, series.y[1]);
+  g.median = map_y(layout, series.y[2]);
+  g.q3 = map_y(layout, series.y[3]);
+  g.hi = map_y(layout, series.y[4]);
+  for (std::size_t i = 5; i < series.y.size(); ++i) g.outliers.push_back(map_y(layout, series.y[i]));
+  return g;
+}
+
+/// @brief Returns a scatter point's recycled palette color, falling back to the series color.
+RGB scatter_color(const DataSeries& series, std::size_t index) {
+  return series.point_colors.empty() ? series.color : series.point_colors[index % series.point_colors.size()];
 }
 
 void write_series(std::ostringstream& out, const Plot& plot, const Layout& layout) {
@@ -410,11 +543,13 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
       }
       case DataSeries::Kind::Scatter: {
         for (std::size_t i = 0; i < series.x.size(); ++i) {
+          const RGB point_color = scatter_color(series, i);
+          const double point_alpha = std::clamp(point_color.alpha, 0.0, 1.0);
           out << "  <circle cx=\"" << map_x(layout, series.x[i]) << "\" cy=\""
               << map_y(layout, series.y[i]) << "\" r=\"" << series.marker_size << "\" fill=\""
-              << color << "\"";
-          if (translucent) {
-            out << " fill-opacity=\"" << alpha << "\"";
+              << rgb_css(point_color) << "\"";
+          if (point_alpha < 1.0) {
+            out << " fill-opacity=\"" << point_alpha << "\"";
           }
           out << "/>\n";
         }
@@ -438,40 +573,25 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
         if (series.x.empty() || series.y.size() < 5) {
           break;
         }
-        const double position = series.x[0];
-        const double lo = series.y[0];
-        const double q1 = series.y[1];
-        const double median = series.y[2];
-        const double q3 = series.y[3];
-        const double hi = series.y[4];
-        const double half = series.bar_width / 2.0;
-        const double cx = map_x(layout, position);
-        const double x_left = map_x(layout, position - half);
-        const double x_right = map_x(layout, position + half);
-        out << "  <line x1=\"" << cx << "\" y1=\"" << map_y(layout, lo) << "\" x2=\"" << cx
-            << "\" y2=\"" << map_y(layout, q1) << "\" stroke=\"" << color
-            << "\" stroke-width=\"1.5\"/>\n";
-        out << "  <line x1=\"" << cx << "\" y1=\"" << map_y(layout, q3) << "\" x2=\"" << cx
-            << "\" y2=\"" << map_y(layout, hi) << "\" stroke=\"" << color
-            << "\" stroke-width=\"1.5\"/>\n";
-        out << "  <line x1=\"" << x_left << "\" y1=\"" << map_y(layout, lo) << "\" x2=\""
-            << x_right << "\" y2=\"" << map_y(layout, lo) << "\" stroke=\"" << color
-            << "\" stroke-width=\"1.5\"/>\n";
-        out << "  <line x1=\"" << x_left << "\" y1=\"" << map_y(layout, hi) << "\" x2=\""
-            << x_right << "\" y2=\"" << map_y(layout, hi) << "\" stroke=\"" << color
-            << "\" stroke-width=\"1.5\"/>\n";
-        const double box_top = map_y(layout, q3);
-        const double box_bottom = map_y(layout, q1);
-        out << "  <rect x=\"" << x_left << "\" y=\"" << box_top << "\" width=\""
-            << (x_right - x_left) << "\" height=\"" << (box_bottom - box_top) << "\" fill=\""
-            << color << "\" fill-opacity=\"0.35\" stroke=\"" << color
-            << "\" stroke-width=\"1.5\"/>\n";
-        out << "  <line x1=\"" << x_left << "\" y1=\"" << map_y(layout, median) << "\" x2=\""
-            << x_right << "\" y2=\"" << map_y(layout, median) << "\" stroke=\"" << color
-            << "\" stroke-width=\"2\"/>\n";
-        for (std::size_t i = 5; i < series.y.size(); ++i) {
-          out << "  <circle cx=\"" << cx << "\" cy=\"" << map_y(layout, series.y[i])
-              << "\" r=\"3\" fill=\"" << color << "\"/>\n";
+        // R's boxplot look: whisker caps half the box width (staplewex = 0.5), a box filled
+        // with the series color, and a darker outline, median and open-circle outliers.
+        const auto geo = box_geometry(series, layout);
+        const std::string ink = rgb_css(darken(series.color, 0.35));
+        const auto line = [&](double x0, double y0, double x1, double y1, double width) {
+          out << "  <line x1=\"" << x0 << "\" y1=\"" << y0 << "\" x2=\"" << x1 << "\" y2=\"" << y1
+              << "\" stroke=\"" << ink << "\" stroke-width=\"" << width << "\"/>\n";
+        };
+        line(geo.cx, geo.lo, geo.cx, geo.q1, 1.5);
+        line(geo.cx, geo.q3, geo.cx, geo.hi, 1.5);
+        line(geo.cap_left, geo.lo, geo.cap_right, geo.lo, 1.5);
+        line(geo.cap_left, geo.hi, geo.cap_right, geo.hi, 1.5);
+        out << "  <rect x=\"" << geo.left << "\" y=\"" << geo.q3 << "\" width=\"" << (geo.right - geo.left)
+            << "\" height=\"" << (geo.q1 - geo.q3) << "\" fill=\"" << color << "\" fill-opacity=\"0.55\" stroke=\""
+            << ink << "\" stroke-width=\"1.5\"/>\n";
+        line(geo.left, geo.median, geo.right, geo.median, 2.5);
+        for (const double y : geo.outliers) {
+          out << "  <circle cx=\"" << geo.cx << "\" cy=\"" << y << "\" r=\"3\" fill=\"none\" stroke=\"" << ink
+              << "\" stroke-width=\"1.2\"/>\n";
         }
         break;
       }
@@ -493,7 +613,7 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
           break;
         }
         out << "  <text x=\"" << map_x(layout, series.x[0]) << "\" y=\""
-            << map_y(layout, series.y[0]) << "\" font-size=\"" << series.marker_size
+            << map_y(layout, series.y[0]) << "\" dy=\"0.35em\" font-size=\"" << series.marker_size
             << "\" fill=\"" << color << "\" text-anchor=\"middle\">" << xml_escape(series.label)
             << "</text>\n";
         break;
@@ -514,11 +634,21 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
   }
 
   double legend_y = layout.top;
+  if (const std::size_t rows = legend_row_count(plot); rows > 0) {
+    // Translucent backing so the legend stays readable over data.
+    const double x0 = layout.left + layout.plot_w - 140.0;
+    out << "  <rect x=\"" << x0 - 8 << "\" y=\"" << legend_y - 18 << "\" width=\"" << 140.0 - 6 + 8
+        << "\" height=\"" << 20.0 * static_cast<double>(rows) + 6 << "\" rx=\"3\" fill=\""
+        << rgb_css(plot.background_color()) << "\" fill-opacity=\"0.85\"/>\n";
+  }
   if (!plot.legend_entries().empty()) {
     for (const auto& entry : plot.legend_entries()) {
       const double x0 = layout.left + layout.plot_w - 140.0;
       out << "  <rect x=\"" << x0 << "\" y=\"" << legend_y - 12
-          << "\" width=\"18\" height=\"8\" fill=\"" << rgb_css(entry.color) << "\"/>\n";
+          << "\" width=\"18\" height=\"8\" fill=\"" << rgb_css(entry.color) << "\"";
+      if (entry.color.alpha < 1.0)
+        out << " fill-opacity=\"" << std::clamp(entry.color.alpha, 0.0, 1.0) << "\"";
+      out << "/>\n";
       out << "  <text x=\"" << x0 + 26 << "\" y=\"" << legend_y - 4 << "\" font-size=\"12\">"
           << xml_escape(entry.label) << "</text>\n";
       legend_y += 20.0;
@@ -552,66 +682,10 @@ std::string svg_string(const Plot& plot) {
   out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" << plot.width()
       << "\" height=\"" << plot.height() << "\" viewBox=\"0 0 " << plot.width() << " "
       << plot.height() << "\">\n";
+  out << svg_font_defs();
   out << svg_body(plot);
   out << "</svg>\n";
   return out.str();
-}
-
-using Glyph = std::array<std::uint8_t, 7>;
-
-Glyph glyph_for(char ch) {
-  if (ch >= 'a' && ch <= 'z') {
-    ch = static_cast<char>(ch - 'a' + 'A');
-  }
-  switch (ch) {
-    case 'A': return {0x0E, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11};
-    case 'B': return {0x1E, 0x11, 0x11, 0x1E, 0x11, 0x11, 0x1E};
-    case 'C': return {0x0E, 0x11, 0x10, 0x10, 0x10, 0x11, 0x0E};
-    case 'D': return {0x1E, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1E};
-    case 'E': return {0x1F, 0x10, 0x10, 0x1E, 0x10, 0x10, 0x1F};
-    case 'F': return {0x1F, 0x10, 0x10, 0x1E, 0x10, 0x10, 0x10};
-    case 'G': return {0x0E, 0x11, 0x10, 0x10, 0x13, 0x11, 0x0E};
-    case 'H': return {0x11, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11};
-    case 'I': return {0x1F, 0x04, 0x04, 0x04, 0x04, 0x04, 0x1F};
-    case 'J': return {0x07, 0x02, 0x02, 0x02, 0x12, 0x12, 0x0C};
-    case 'K': return {0x11, 0x12, 0x14, 0x18, 0x14, 0x12, 0x11};
-    case 'L': return {0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1F};
-    case 'M': return {0x11, 0x1B, 0x15, 0x15, 0x11, 0x11, 0x11};
-    case 'N': return {0x11, 0x19, 0x19, 0x15, 0x13, 0x13, 0x11};
-    case 'O': return {0x0E, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0E};
-    case 'P': return {0x1E, 0x11, 0x11, 0x1E, 0x10, 0x10, 0x10};
-    case 'Q': return {0x0E, 0x11, 0x11, 0x11, 0x15, 0x12, 0x0D};
-    case 'R': return {0x1E, 0x11, 0x11, 0x1E, 0x14, 0x12, 0x11};
-    case 'S': return {0x0F, 0x10, 0x10, 0x0E, 0x01, 0x01, 0x1E};
-    case 'T': return {0x1F, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04};
-    case 'U': return {0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0E};
-    case 'V': return {0x11, 0x11, 0x11, 0x11, 0x11, 0x0A, 0x04};
-    case 'W': return {0x11, 0x11, 0x11, 0x15, 0x15, 0x1B, 0x11};
-    case 'X': return {0x11, 0x11, 0x0A, 0x04, 0x0A, 0x11, 0x11};
-    case 'Y': return {0x11, 0x11, 0x0A, 0x04, 0x04, 0x04, 0x04};
-    case 'Z': return {0x1F, 0x01, 0x02, 0x04, 0x08, 0x10, 0x1F};
-    case '0': return {0x0E, 0x11, 0x13, 0x15, 0x19, 0x11, 0x0E};
-    case '1': return {0x04, 0x0C, 0x14, 0x04, 0x04, 0x04, 0x1F};
-    case '2': return {0x0E, 0x11, 0x01, 0x02, 0x04, 0x08, 0x1F};
-    case '3': return {0x1E, 0x01, 0x01, 0x0E, 0x01, 0x01, 0x1E};
-    case '4': return {0x02, 0x06, 0x0A, 0x12, 0x1F, 0x02, 0x02};
-    case '5': return {0x1F, 0x10, 0x10, 0x1E, 0x01, 0x01, 0x1E};
-    case '6': return {0x0E, 0x10, 0x10, 0x1E, 0x11, 0x11, 0x0E};
-    case '7': return {0x1F, 0x01, 0x02, 0x04, 0x08, 0x08, 0x08};
-    case '8': return {0x0E, 0x11, 0x11, 0x0E, 0x11, 0x11, 0x0E};
-    case '9': return {0x0E, 0x11, 0x11, 0x0F, 0x01, 0x01, 0x0E};
-    case '.': return {0x00, 0x00, 0x00, 0x00, 0x00, 0x0C, 0x0C};
-    case ',': return {0x00, 0x00, 0x00, 0x00, 0x0C, 0x0C, 0x08};
-    case '-': return {0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00};
-    case '+': return {0x00, 0x04, 0x04, 0x1F, 0x04, 0x04, 0x00};
-    case ':': return {0x00, 0x0C, 0x0C, 0x00, 0x0C, 0x0C, 0x00};
-    case '/': return {0x01, 0x02, 0x02, 0x04, 0x08, 0x08, 0x10};
-    case '(': return {0x02, 0x04, 0x08, 0x08, 0x08, 0x04, 0x02};
-    case ')': return {0x08, 0x04, 0x02, 0x02, 0x02, 0x04, 0x08};
-    case '_': return {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F};
-    case ' ': return {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    default: return {0x00, 0x0E, 0x01, 0x06, 0x04, 0x00, 0x04};
-  }
 }
 
 void draw_circle(Image& image, double cx, double cy, double radius, RGB color) {
@@ -640,7 +714,8 @@ void draw_circle(Image& image, double cx, double cy, double radius, RGB color) {
       }
       if (covered_samples != 0) {
         image.blend_pixel(
-            x, y, color, static_cast<double>(covered_samples) / (samples_per_axis * samples_per_axis));
+            x, y, color, std::clamp(color.alpha, 0.0, 1.0) *
+                static_cast<double>(covered_samples) / (samples_per_axis * samples_per_axis));
       }
     }
   }
@@ -659,158 +734,327 @@ void draw_line(Image& image, double x0, double y0, double x1, double y1, RGB col
   }
 }
 
-void draw_char(Image& image, int x, int y, char ch, RGB color, int scale) {
-  const Glyph glyph = glyph_for(ch);
-  for (int row = 0; row < 7; ++row) {
-    for (int col = 0; col < 5; ++col) {
-      if (((glyph[row] >> (4 - col)) & 0x1U) != 0U) {
-        image.fill_rect(x + col * scale,
-                        y + row * scale,
-                        x + (col + 1) * scale - 1,
-                        y + (row + 1) * scale - 1,
-                        color);
-      }
-    }
-  }
-}
+// ---- Text: embedded Computer Modern (CMU Serif) --------------------------------------------
 
-int draw_text(Image& image, int x, int y, const std::string& text, RGB color, int scale) {
-  int cursor = x;
-  for (char ch : text) {
-    draw_char(image, cursor, y, ch, color, scale);
-    cursor += 6 * scale;
-  }
-  return cursor;
-}
+namespace font = detail::cmu_serif;
 
-void draw_vertical_text(Image& image, int x, int y, const std::string& text, RGB color, int scale) {
-  int cursor_y = y;
-  for (char ch : text) {
-    draw_char(image, x, cursor_y, ch, color, scale);
-    cursor_y += 8 * scale;
-  }
-}
+/// @brief Where a text run sits relative to its anchor x (SVG `text-anchor`).
+enum class TextAnchor { Start, Middle, End };
 
-Image rasterize(const Plot& plot) {
-  const Layout layout = compute_layout(plot);
-  Image image(plot.width(), plot.height(), plot.background_color());
-  const RGB axis_color = plot.axes_color();
-
-  if (plot.grid_visible()) {
-    for (int i = 0; i <= 5; ++i) {
-      const double tx = layout.left + layout.plot_w * static_cast<double>(i) / 5.0;
-      const double ty = layout.top + layout.plot_h * static_cast<double>(i) / 5.0;
-      draw_line(image, tx, layout.top, tx, layout.top + layout.plot_h, plot.major_grid_color(), 1.0);
-      draw_line(image, layout.left, ty, layout.left + layout.plot_w, ty, plot.major_grid_color(), 1.0);
-    }
-  }
-
-  draw_line(image,
-            layout.left,
-            layout.top + layout.plot_h,
-            layout.left + layout.plot_w,
-            layout.top + layout.plot_h,
-            axis_color,
-            2.0);
-  draw_line(image,
-            layout.left,
-            layout.top,
-            layout.left,
-            layout.top + layout.plot_h,
-            axis_color,
-            2.0);
-
-  for (int i = 0; i <= 5; ++i) {
-    const double xv = layout.bounds.x_min
-                    + (layout.bounds.x_max - layout.bounds.x_min) * static_cast<double>(i) / 5.0;
-    const double yv = layout.bounds.y_min
-                    + (layout.bounds.y_max - layout.bounds.y_min) * static_cast<double>(i) / 5.0;
-    const int tx = static_cast<int>(
-        std::lround(layout.left + layout.plot_w * static_cast<double>(i) / 5.0));
-    const int ty = static_cast<int>(
-        std::lround(layout.top + layout.plot_h - layout.plot_h * static_cast<double>(i) / 5.0));
-    const std::string x_label = format_tick(xv);
-    const std::string y_label = format_tick(yv);
-    draw_text(image,
-              tx - static_cast<int>(x_label.size()) * 6,
-              static_cast<int>(layout.top + layout.plot_h + 18.0),
-              x_label,
-              axis_color,
-              2);
-    draw_text(image, 8, ty - 6, y_label, axis_color, 2);
-  }
-
-  const std::string title = plot.title_text();
-  const int title_width = static_cast<int>(title.size()) * 12;
-  draw_text(image, static_cast<int>(plot.width() / 2) - title_width / 2, 18, title, axis_color, 2);
-
-  const std::string x_text = plot.x_label_text();
-  const int x_width = static_cast<int>(x_text.size()) * 12;
-  draw_text(image,
-            static_cast<int>(plot.width() / 2) - x_width / 2,
-            static_cast<int>(plot.height()) - 32,
-            x_text,
-            axis_color,
-            2);
-  draw_vertical_text(image, 24, 72, plot.y_label_text(), axis_color, 2);
-
-  for (const auto& series : plot.series()) {
-    if (series.kind == DataSeries::Kind::Line) {
-      for (std::size_t i = 1; i < series.x.size(); ++i) {
-        draw_line(image,
-                  map_x(layout, series.x[i - 1]),
-                  map_y(layout, series.y[i - 1]),
-                  map_x(layout, series.x[i]),
-                  map_y(layout, series.y[i]),
-                  series.color,
-                  series.stroke_width);
-      }
-    } else if (series.kind == DataSeries::Kind::Scatter) {
-      for (std::size_t i = 0; i < series.x.size(); ++i) {
-        draw_circle(image,
-                    map_x(layout, series.x[i]),
-                    map_y(layout, series.y[i]),
-                    std::max(1.0, series.marker_size),
-                    series.color);
-      }
-    } else if (series.kind == DataSeries::Kind::Bar) {
-      for (std::size_t i = 0; i < series.x.size(); ++i) {
-        const int x_left = static_cast<int>(
-            std::lround(map_x(layout, series.x[i] - series.bar_width / 2.0)));
-        const int x_right = static_cast<int>(
-            std::lround(map_x(layout, series.x[i] + series.bar_width / 2.0)));
-        const int y0 = static_cast<int>(std::lround(map_y(layout, 0.0)));
-        const int y1 = static_cast<int>(std::lround(map_y(layout, series.y[i])));
-        image.fill_rect(x_left, std::min(y0, y1), x_right, std::max(y0, y1), series.color);
-      }
-    }
-  }
-
-  int legend_y = static_cast<int>(layout.top);
-  for (const auto& series : plot.series()) {
-    if (series.label.empty()) {
+/// @brief Decodes UTF-8, mapping malformed sequences to U+FFFD.
+std::vector<char32_t> decode_utf8(const std::string& text) {
+  std::vector<char32_t> out;
+  out.reserve(text.size());
+  for (std::size_t i = 0; i < text.size();) {
+    const auto lead = static_cast<unsigned char>(text[i]);
+    const int  extra = lead < 0x80 ? 0 : (lead >> 5) == 0x6 ? 1 : (lead >> 4) == 0xE ? 2 : (lead >> 3) == 0x1E ? 3 : -1;
+    if (extra < 0 || i + static_cast<std::size_t>(extra) >= text.size()) {
+      out.push_back(U'�');
+      ++i;
       continue;
     }
-    const int x0 = static_cast<int>(layout.left + layout.plot_w - 160.0);
-    image.fill_rect(x0, legend_y - 10, x0 + 18, legend_y - 2, series.color);
-    draw_text(image, x0 + 28, legend_y - 16, series.label, axis_color, 2);
-    legend_y += 24;
+    char32_t cp = extra == 0 ? lead : lead & (0x3F >> extra);
+    bool     ok = true;
+    for (int k = 1; k <= extra; ++k) {
+      const auto next = static_cast<unsigned char>(text[i + static_cast<std::size_t>(k)]);
+      if ((next & 0xC0) != 0x80) {
+        ok = false;
+        break;
+      }
+      cp = (cp << 6) | (next & 0x3F);
+    }
+    out.push_back(ok ? cp : U'�');
+    i += ok ? static_cast<std::size_t>(extra) + 1 : 1;
+  }
+  return out;
+}
+
+/// @brief Index of @p cp in the embedded glyph table, or of '?' when the font lacks it.
+std::size_t glyph_index(char32_t cp) {
+  const auto begin = std::begin(font::glyphs);
+  const auto end = std::end(font::glyphs);
+  const auto found = std::lower_bound(begin, end, cp, [](const font::GlyphEntry& g, char32_t c) { return g.codepoint < c; });
+  if (found != end && found->codepoint == cp) return static_cast<std::size_t>(found - begin);
+  return cp == U'?' ? 0 : glyph_index(U'?');
+}
+
+/// @brief Pair kerning between two glyph indices, in font units (0 when unkerned).
+int kerning(std::size_t left, std::size_t right) {
+  const auto key = std::pair{left, right};
+  const auto found = std::lower_bound(std::begin(font::kerning), std::end(font::kerning), key,
+                                      [](const font::KernPair& k, const std::pair<std::size_t, std::size_t>& v) {
+                                        return std::pair<std::size_t, std::size_t>{k.left, k.right} < v;
+                                      });
+  if (found != std::end(font::kerning) && found->left == left && found->right == right) return found->value;
+  return 0;
+}
+
+/// @brief Glyph indices of @p text plus each glyph's pen x offset in font units; returns the total advance.
+double layout_glyphs(const std::string& text, std::vector<std::size_t>& indices, std::vector<double>& offsets) {
+  indices.clear();
+  offsets.clear();
+  double pen = 0.0;
+  for (const char32_t cp : decode_utf8(text)) {
+    const std::size_t index = glyph_index(cp);
+    if (!indices.empty()) pen += kerning(indices.back(), index);
+    indices.push_back(index);
+    offsets.push_back(pen);
+    pen += font::glyphs[index].advance;
+  }
+  return pen;
+}
+
+/// @brief Width in pixels of @p text set in the embedded font at @p px pixels per em.
+[[maybe_unused]] double text_width(const std::string& text, double px) {
+  std::vector<std::size_t> indices;
+  std::vector<double>      offsets;
+  return layout_glyphs(text, indices, offsets) * px / font::units_per_em;
+}
+
+/// @brief Exact-area coverage accumulator: lines add signed area, a running row sum yields coverage.
+class CoverageRaster {
+ public:
+  CoverageRaster(int width, int height)
+      : width_(width), height_(height), acc_(static_cast<std::size_t>(width + 3) * static_cast<std::size_t>(height), 0.0f) {}
+
+  /// @brief Adds the signed area contributed by the edge from (x0, y0) to (x1, y1).
+  void line(double x0, double y0, double x1, double y1) {
+    if (y0 == y1) return;
+    const float dir = y0 < y1 ? 1.0f : -1.0f;
+    if (y0 > y1) {
+      std::swap(x0, x1);
+      std::swap(y0, y1);
+    }
+    const double dxdy = (x1 - x0) / (y1 - y0);
+    const int    row_begin = std::max(0, static_cast<int>(std::floor(y0)));
+    const int    row_end = std::min(height_, static_cast<int>(std::ceil(y1)));
+    const int    stride = width_ + 3;
+    double       x = x0 + (std::max(y0, static_cast<double>(row_begin)) - y0) * dxdy;
+    for (int row = row_begin; row < row_end; ++row) {
+      const double dy = std::min(static_cast<double>(row + 1), y1) - std::max(static_cast<double>(row), y0);
+      const double x_next = x + dxdy * dy;
+      const float  d = static_cast<float>(dy) * dir;
+      const double lo = std::clamp(std::min(x, x_next), 0.0, static_cast<double>(width_));
+      const double hi = std::clamp(std::max(x, x_next), 0.0, static_cast<double>(width_));
+      float*       cells = acc_.data() + static_cast<std::size_t>(row) * static_cast<std::size_t>(stride);
+      const int    lo_i = static_cast<int>(std::floor(lo));
+      const int    hi_i = static_cast<int>(std::ceil(hi));
+      if (hi_i <= lo_i + 1) {
+        const double mid = 0.5 * (lo + hi) - lo_i;
+        cells[lo_i] += d * static_cast<float>(1.0 - mid);
+        cells[lo_i + 1] += d * static_cast<float>(mid);
+      } else {
+        const double s = 1.0 / (hi - lo);
+        const double lo_f = lo - lo_i;
+        const double a0 = 0.5 * s * (1.0 - lo_f) * (1.0 - lo_f);
+        const double hi_f = hi - hi_i + 1.0;
+        const double am = 0.5 * s * hi_f * hi_f;
+        cells[lo_i] += d * static_cast<float>(a0);
+        if (hi_i == lo_i + 2) {
+          cells[lo_i + 1] += d * static_cast<float>(1.0 - a0 - am);
+        } else {
+          const double a1 = s * (1.5 - lo_f);
+          cells[lo_i + 1] += d * static_cast<float>(a1 - a0);
+          for (int c = lo_i + 2; c < hi_i - 1; ++c) cells[c] += d * static_cast<float>(s);
+          const double a2 = a1 + (hi_i - lo_i - 3) * s;
+          cells[hi_i - 1] += d * static_cast<float>(1.0 - a2 - am);
+        }
+        cells[hi_i] += d * static_cast<float>(am);
+      }
+      x = x_next;
+    }
   }
 
-  return image;
+  /// @brief Blends the accumulated coverage into @p image at offset (@p ox, @p oy).
+  void composite(Image& image, int ox, int oy, RGB color) const {
+    const double opacity = std::clamp(color.alpha, 0.0, 1.0);
+    const int    stride = width_ + 3;
+    for (int row = 0; row < height_; ++row) {
+      float        sum = 0.0f;
+      const float* cells = acc_.data() + static_cast<std::size_t>(row) * static_cast<std::size_t>(stride);
+      for (int col = 0; col < width_; ++col) {
+        sum += cells[col];
+        const double coverage = std::min(1.0, static_cast<double>(std::fabs(sum)));
+        // A mild gamma lift keeps Computer Modern's hairline serifs legible at small sizes.
+        if (coverage > 1.0 / 255.0) image.blend_pixel(ox + col, oy + row, color, opacity * std::pow(coverage, 0.8));
+      }
+    }
+  }
+
+ private:
+  int                width_;  ///< raster width in pixels
+  int                height_; ///< raster height in pixels
+  std::vector<float> acc_;    ///< per-row signed area deltas (3 columns of slack)
+};
+
+/// @brief Draws @p text with its baseline at (@p x, @p y) in @p px-pixel Computer Modern.
+///        @p vertical rotates it 90 degrees counter-clockwise about the anchor, like SVG rotate(-90).
+void draw_text(Image&             image,
+               double             x,
+               double             y,
+               const std::string& text,
+               RGB                color,
+               double             px,
+               TextAnchor         anchor = TextAnchor::Start,
+               bool               vertical = false) {
+  if (text.empty() || px <= 0.0) return;
+  std::vector<std::size_t> indices;
+  std::vector<double>      offsets;
+  const double             scale = px / font::units_per_em;
+  const double             width = layout_glyphs(text, indices, offsets) * scale;
+  const double             shift = anchor == TextAnchor::Middle ? -width / 2.0 : anchor == TextAnchor::End ? -width : 0.0;
+
+  // Text space: u along the baseline, v downward. Map to the image, rotating when vertical.
+  const auto to_image = [&](double u, double v) {
+    u += shift;
+    return vertical ? std::pair{x + v, y - u} : std::pair{x + u, y + v};
+  };
+  std::vector<std::array<double, 4>> edges;
+  for (std::size_t g = 0; g < indices.size(); ++g) {
+    const auto&   glyph = font::glyphs[indices[g]];
+    const double  origin = offsets[g] * scale;
+    const auto*   pts = font::points + 2U * glyph.point_begin;
+    std::pair<double, double> start{}, pen{};
+    const auto point = [&](int k) { return to_image(origin + pts[2 * k] * scale, -pts[2 * k + 1] * scale); };
+    int next = 0;
+    for (std::uint32_t o = 0; o < glyph.op_count; ++o) {
+      switch (font::ops[glyph.op_begin + o]) {
+        case font::MOVE:
+          start = pen = point(next++);
+          break;
+        case font::LINE: {
+          const auto p = point(next++);
+          edges.push_back({pen.first, pen.second, p.first, p.second});
+          pen = p;
+          break;
+        }
+        case font::QUAD:
+        case font::CUBIC: {
+          const bool cubic = font::ops[glyph.op_begin + o] == font::CUBIC;
+          const auto c1 = point(next++);
+          const auto c2 = point(next++);
+          const auto c3 = cubic ? point(next++) : c2;
+          const auto end = cubic ? c3 : c2;
+          const double hull = std::hypot(c1.first - pen.first, c1.second - pen.second)
+                            + std::hypot(c2.first - c1.first, c2.second - c1.second)
+                            + (cubic ? std::hypot(c3.first - c2.first, c3.second - c2.second) : 0.0);
+          const int steps = std::clamp(static_cast<int>(std::ceil(std::sqrt(hull) * 1.5)), 1, 24);
+          auto prev = pen;
+          for (int s = 1; s <= steps; ++s) {
+            const double t = static_cast<double>(s) / steps;
+            const double m = 1.0 - t;
+            std::pair<double, double> p;
+            if (cubic) {
+              const double a = m * m * m, b = 3 * m * m * t, c = 3 * m * t * t, d = t * t * t;
+              p = {a * pen.first + b * c1.first + c * c2.first + d * c3.first,
+                   a * pen.second + b * c1.second + c * c2.second + d * c3.second};
+            } else {
+              const double a = m * m, b = 2 * m * t, c = t * t;
+              p = {a * pen.first + b * c1.first + c * c2.first, a * pen.second + b * c1.second + c * c2.second};
+            }
+            edges.push_back({prev.first, prev.second, p.first, p.second});
+            prev = p;
+          }
+          pen = end;
+          break;
+        }
+        case font::CLOSE:
+          if (pen != start) edges.push_back({pen.first, pen.second, start.first, start.second});
+          pen = start;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+  if (edges.empty()) return;
+
+  double min_x = edges[0][0], max_x = min_x, min_y = edges[0][1], max_y = min_y;
+  for (const auto& e : edges) {
+    min_x = std::min({min_x, e[0], e[2]});
+    max_x = std::max({max_x, e[0], e[2]});
+    min_y = std::min({min_y, e[1], e[3]});
+    max_y = std::max({max_y, e[1], e[3]});
+  }
+  // Clip the raster to the image so huge or off-canvas text stays cheap.
+  const int ox = std::max(0, static_cast<int>(std::floor(min_x)));
+  const int oy = std::max(0, static_cast<int>(std::floor(min_y)));
+  const int x_end = std::min(static_cast<int>(image.width), static_cast<int>(std::ceil(max_x)) + 1);
+  const int y_end = std::min(static_cast<int>(image.height), static_cast<int>(std::ceil(max_y)) + 1);
+  if (x_end <= ox || y_end <= oy) return;
+  CoverageRaster raster(x_end - ox, y_end - oy);
+  for (const auto& e : edges) raster.line(e[0] - ox, e[1] - oy, e[2] - ox, e[3] - oy);
+  raster.composite(image, ox, oy, color);
+}
+
+/// @brief Draws manual legend entries, or the automatic non-text series legend when none exist.
+void draw_legend(Image& image, const Plot& plot, const Layout& layout) {
+  int legend_y = static_cast<int>(layout.top);
+  const int x0 = static_cast<int>(layout.left + layout.plot_w - 140.0);
+  /// @brief Draws one legend swatch and label, then advances to the next row (same geometry as SVG).
+  const auto draw_entry = [&](const std::string& label, RGB color) {
+    image.fill_rect(x0, legend_y - 12, x0 + 18, legend_y - 4, color);
+    draw_text(image, x0 + 26, legend_y - 4, label, plot.axes_color(), 12.0);
+    legend_y += 20;
+  };
+  const std::size_t rows = legend_row_count(plot);
+  if (rows > 0) {
+    // Translucent backing so the legend stays readable over data.
+    const RGB bg = plot.background_color();
+    const int right = static_cast<int>(layout.left + layout.plot_w) - 6;
+    for (int y = legend_y - 18; y < legend_y - 18 + 20 * static_cast<int>(rows) + 6; ++y)
+      for (int x = x0 - 8; x < right; ++x) image.blend_pixel(x, y, bg, 0.85);
+  }
+  if (!plot.legend_entries().empty()) {
+    for (const auto& entry : plot.legend_entries()) draw_entry(entry.label, entry.color);
+  } else {
+    for (const auto& series : plot.series()) {
+      if (!series.label.empty() && series.kind != DataSeries::Kind::Text)
+        draw_entry(series.label, series.color);
+    }
+  }
+}
+
+/// @brief Fills a simple or self-intersecting polygon (even-odd rule) given in pixel space,
+///        sampling each pixel at its centre and blending with the color's alpha.
+void fill_polygon(Image& image, const std::vector<double>& px, const std::vector<double>& py, RGB color) {
+  if (px.size() < 3) return;
+  const auto [y_lo, y_hi] = std::minmax_element(py.begin(), py.end());
+  const int  row_begin = std::max(0, static_cast<int>(std::floor(*y_lo)));
+  const int  row_end = std::min(static_cast<int>(image.height) - 1, static_cast<int>(std::ceil(*y_hi)));
+  const double opacity = std::clamp(color.alpha, 0.0, 1.0);
+  std::vector<double> crossings;
+  for (int row = row_begin; row <= row_end; ++row) {
+    const double y = static_cast<double>(row) + 0.5;
+    crossings.clear();
+    for (std::size_t i = 0, j = px.size() - 1; i < px.size(); j = i++) {
+      const bool spans = (py[i] <= y && py[j] > y) || (py[j] <= y && py[i] > y);
+      if (spans) crossings.push_back(px[i] + (y - py[i]) / (py[j] - py[i]) * (px[j] - px[i]));
+    }
+    std::sort(crossings.begin(), crossings.end());
+    for (std::size_t k = 0; k + 1 < crossings.size(); k += 2) {
+      const int col_begin = static_cast<int>(std::ceil(crossings[k] - 0.5));
+      const int col_end = static_cast<int>(std::floor(crossings[k + 1] - 0.5));
+      for (int col = col_begin; col <= col_end; ++col) image.blend_pixel(col, row, color, opacity);
+    }
+  }
 }
 
 Image rasterize(const Plot& plot, Bounds bounds) {
   const Layout layout = compute_layout(plot, bounds);
+  const double tick_px = plot.tick_font_px();
   Image image(plot.width(), plot.height(), plot.background_color());
   const RGB axis_color = plot.axes_color();
 
+  if (!plot.axes_hidden()) {
   if (plot.grid_visible()) {
-    for (int i = 0; i <= 5; ++i) {
-      const double tx = layout.left + layout.plot_w * static_cast<double>(i) / 5.0;
-      const double ty = layout.top + layout.plot_h * static_cast<double>(i) / 5.0;
-      draw_line(image, tx, layout.top, tx, layout.top + layout.plot_h, plot.major_grid_color(), 1.0);
-      draw_line(image, layout.left, ty, layout.left + layout.plot_w, ty, plot.major_grid_color(), 1.0);
+    for (const auto& tick : x_axis_ticks(plot, layout)) {
+      if (!tick_inside(tick.pixel, layout.left, layout.left + layout.plot_w)) continue;
+      draw_line(image, tick.pixel, layout.top, tick.pixel, layout.top + layout.plot_h, plot.major_grid_color(), 1.0);
+    }
+    for (const auto& tick : y_axis_ticks(plot, layout)) {
+      if (!tick_inside(tick.pixel, layout.top, layout.top + layout.plot_h)) continue;
+      draw_line(image, layout.left, tick.pixel, layout.left + layout.plot_w, tick.pixel, plot.major_grid_color(), 1.0);
     }
   }
 
@@ -829,39 +1073,26 @@ Image rasterize(const Plot& plot, Bounds bounds) {
             axis_color,
             2.0);
 
-  for (int i = 0; i <= 5; ++i) {
-    const double xv = layout.bounds.x_min
-                    + (layout.bounds.x_max - layout.bounds.x_min) * static_cast<double>(i) / 5.0;
-    const double yv = layout.bounds.y_min
-                    + (layout.bounds.y_max - layout.bounds.y_min) * static_cast<double>(i) / 5.0;
-    const int tx = static_cast<int>(
-        std::lround(layout.left + layout.plot_w * static_cast<double>(i) / 5.0));
-    const int ty = static_cast<int>(
-        std::lround(layout.top + layout.plot_h - layout.plot_h * static_cast<double>(i) / 5.0));
-    const std::string x_label = format_tick(xv);
-    const std::string y_label = format_tick(yv);
-    draw_text(image,
-              tx - static_cast<int>(x_label.size()) * 6,
-              static_cast<int>(layout.top + layout.plot_h + 18.0),
-              x_label,
-              axis_color,
-              2);
-    draw_text(image, 8, ty - 6, y_label, axis_color, 2);
+  for (const auto& tick : x_axis_ticks(plot, layout)) {
+    draw_text(image, tick.pixel, x_tick_baseline(layout, tick_px), tick.label, axis_color, tick_px,
+              TextAnchor::Middle);
+  }
+  for (const auto& tick : y_axis_ticks(plot, layout)) {
+    draw_text(image, layout.left - 10.0, tick.pixel + kTextCenterEm * tick_px, tick.label, axis_color, tick_px,
+              TextAnchor::End);
+  }
   }
 
-  const std::string title = plot.title_text();
-  const int title_width = static_cast<int>(title.size()) * 12;
-  draw_text(image, static_cast<int>(plot.width() / 2) - title_width / 2, 18, title, axis_color, 2);
+  const double mid_x = static_cast<double>(plot.width()) / 2.0;
+  draw_text(image, mid_x, 36.0, plot.title_text(), axis_color, 24.0, TextAnchor::Middle);
+  draw_text(image, mid_x, 60.0, plot.subtitle_text(), axis_color, 16.0, TextAnchor::Middle);
 
-  const std::string x_text = plot.x_label_text();
-  const int x_width = static_cast<int>(x_text.size()) * 12;
-  draw_text(image,
-            static_cast<int>(plot.width() / 2) - x_width / 2,
-            static_cast<int>(plot.height()) - 32,
-            x_text,
-            axis_color,
-            2);
-  draw_vertical_text(image, 24, 72, plot.y_label_text(), axis_color, 2);
+  if (!plot.axes_hidden()) {
+    draw_text(image, mid_x, static_cast<double>(plot.height()) - 20.0, plot.x_label_text(), axis_color, 16.0,
+              TextAnchor::Middle);
+    draw_text(image, 24.0, static_cast<double>(plot.height()) / 2.0, plot.y_label_text(), axis_color, 16.0,
+              TextAnchor::Middle, true);
+  }
 
   for (const auto& series : plot.series()) {
     if (series.kind == DataSeries::Kind::Line) {
@@ -880,7 +1111,7 @@ Image rasterize(const Plot& plot, Bounds bounds) {
                     map_x(layout, series.x[i]),
                     map_y(layout, series.y[i]),
                     std::max(1.0, series.marker_size),
-                    series.color);
+                    scatter_color(series, i));
       }
     } else if (series.kind == DataSeries::Kind::Bar) {
       for (std::size_t i = 0; i < series.x.size(); ++i) {
@@ -892,22 +1123,68 @@ Image rasterize(const Plot& plot, Bounds bounds) {
         const int y1 = static_cast<int>(std::lround(map_y(layout, series.y[i])));
         image.fill_rect(x_left, std::min(y0, y1), x_right, std::max(y0, y1), series.color);
       }
+    } else if (series.kind == DataSeries::Kind::Box) {
+      if (series.x.empty() || series.y.size() < 5) continue;
+      const auto geo = box_geometry(series, layout);
+      const RGB ink = darken(series.color, 0.35);
+      RGB fill = series.color;
+      fill.alpha = 0.55 * std::clamp(series.color.alpha, 0.0, 1.0);
+      fill_polygon(image, {geo.left, geo.right, geo.right, geo.left}, {geo.q3, geo.q3, geo.q1, geo.q1}, fill);
+      draw_line(image, geo.cx, geo.lo, geo.cx, geo.q1, ink, 1.5);
+      draw_line(image, geo.cx, geo.q3, geo.cx, geo.hi, ink, 1.5);
+      draw_line(image, geo.cap_left, geo.lo, geo.cap_right, geo.lo, ink, 1.5);
+      draw_line(image, geo.cap_left, geo.hi, geo.cap_right, geo.hi, ink, 1.5);
+      for (const auto& [x0, y0, x1, y1] : {std::array{geo.left, geo.q3, geo.right, geo.q3},
+                                           std::array{geo.right, geo.q3, geo.right, geo.q1},
+                                           std::array{geo.right, geo.q1, geo.left, geo.q1},
+                                           std::array{geo.left, geo.q1, geo.left, geo.q3}}) {
+        draw_line(image, x0, y0, x1, y1, ink, 1.5);
+      }
+      draw_line(image, geo.left, geo.median, geo.right, geo.median, ink, 2.5);
+      for (const double y : geo.outliers) {
+        draw_circle(image, geo.cx, y, 3.6, ink);
+        draw_circle(image, geo.cx, y, 2.4, plot.background_color());
+      }
+    } else if (series.kind == DataSeries::Kind::Text) {
+      if (series.x.empty()) continue;
+      // Centered on the point both ways, like R's text() (SVG uses dy="0.35em" to match).
+      draw_text(image, map_x(layout, series.x[0]), map_y(layout, series.y[0]) + kTextCenterEm * series.marker_size,
+                series.label, series.color, series.marker_size, TextAnchor::Middle);
+    } else if (series.kind == DataSeries::Kind::Polygon) {
+      std::vector<double> px(series.x.size());
+      std::vector<double> py(series.y.size());
+      for (std::size_t i = 0; i < series.x.size(); ++i) {
+        px[i] = map_x(layout, series.x[i]);
+        py[i] = map_y(layout, series.y[i]);
+      }
+      if (series.filled) {
+        fill_polygon(image, px, py, series.color);
+      } else {
+        for (std::size_t i = 0; i < px.size(); ++i) {
+          const std::size_t next = (i + 1) % px.size();
+          draw_line(image, px[i], py[i], px[next], py[next], series.color, series.stroke_width);
+        }
+      }
+    } else if (series.kind == DataSeries::Kind::Segment) {
+      for (std::size_t i = 0; i + 1 < series.x.size(); i += 2) {
+        draw_line(image,
+                  map_x(layout, series.x[i]),
+                  map_y(layout, series.y[i]),
+                  map_x(layout, series.x[i + 1]),
+                  map_y(layout, series.y[i + 1]),
+                  series.color,
+                  series.stroke_width);
+      }
     }
   }
 
-  int legend_y = static_cast<int>(layout.top);
-  for (const auto& series : plot.series()) {
-    if (series.label.empty()) {
-      continue;
-    }
-    const int x0 = static_cast<int>(layout.left + layout.plot_w - 160.0);
-    image.fill_rect(x0, legend_y - 10, x0 + 18, legend_y - 2, series.color);
-    draw_text(image, x0 + 28, legend_y - 16, series.label, axis_color, 2);
-    legend_y += 24;
-  }
+  draw_legend(image, plot, layout);
 
   return image;
 }
+
+Image rasterize(const Plot& plot) { return rasterize(plot, compute_bounds(plot)); }
+
 
 void write_be32(std::ostream& out, std::uint32_t value) {
   out.put(static_cast<char>((value >> 24U) & 0xFFU));
@@ -944,14 +1221,7 @@ void write_png_chunk(std::ostream& out, const char type[4], const std::vector<st
 }
 
 std::uint32_t adler32_bytes(const std::vector<std::uint8_t>& data) {
-  constexpr std::uint32_t mod = 65521U;
-  std::uint32_t a = 1U;
-  std::uint32_t b = 0U;
-  for (std::uint8_t byte : data) {
-    a = (a + byte) % mod;
-    b = (b + a) % mod;
-  }
-  return (b << 16U) | a;
+  return algorithms::adler32({reinterpret_cast<const char*>(data.data()), data.size()});
 }
 
 std::vector<std::uint8_t> zlib_store_compress(const std::vector<std::uint8_t>& raw) {
@@ -983,12 +1253,7 @@ std::vector<std::uint8_t> zlib_store_compress(const std::vector<std::uint8_t>& r
   return out;
 }
 
-void save_png_image(const Image& image, const std::string& path) {
-  std::ofstream out(path, std::ios::binary);
-  if (!out) {
-    throw std::runtime_error("Plot::save: could not open PNG output file");
-  }
-
+void write_png_image(const Image& image, std::ostream& out) {
   const std::array<unsigned char, 8> signature = {0x89U, 'P', 'N', 'G', '\r', '\n', 0x1AU, '\n'};
   out.write(reinterpret_cast<const char*>(signature.data()),
             static_cast<std::streamsize>(signature.size()));
@@ -1033,12 +1298,7 @@ std::string hex_encode(const std::vector<std::uint8_t>& bytes) {
   return out;
 }
 
-void save_pdf_image(const Image& image, const std::string& path) {
-  std::ofstream out(path, std::ios::binary);
-  if (!out) {
-    throw std::runtime_error("Plot::save: could not open PDF output file");
-  }
-
+void write_pdf_image(const Image& image, std::ostream& out) {
   const std::string image_hex = hex_encode(image.pixels);
   std::ostringstream content_stream;
   content_stream << "q\n"
@@ -1086,133 +1346,46 @@ void save_pdf_image(const Image& image, const std::string& path) {
   out << "startxref\n" << xref_offset << "\n%%EOF\n";
 }
 
-#if defined(DATAMUNGE_HAVE_X11)
-unsigned long expand_component(unsigned value, unsigned long mask) {
-  if (mask == 0UL) {
-    return 0UL;
+/// @brief Encodes @p image as PNG bytes in memory.
+std::vector<std::uint8_t> encode_png(const Image& image) {
+  std::ostringstream out(std::ios::binary);
+  write_png_image(image, out);
+  const std::string bytes = out.str();
+  return {bytes.begin(), bytes.end()};
+}
+
+/// @brief Encodes @p image as a one-page PDF in memory.
+std::vector<std::uint8_t> encode_pdf(const Image& image) {
+  std::ostringstream out(std::ios::binary);
+  write_pdf_image(image, out);
+  const std::string bytes = out.str();
+  return {bytes.begin(), bytes.end()};
+}
+
+/// @brief Writes @p bytes to @p path, replacing any existing file.
+void write_bytes(const std::vector<std::uint8_t>& bytes, const std::string& path, const char* who) {
+  std::ofstream out(path, std::ios::binary);
+  if (!out) {
+    throw std::runtime_error(std::string(who) + ": could not open output file " + path);
   }
-  unsigned shift = 0;
-  while (((mask >> shift) & 1UL) == 0UL) {
-    ++shift;
+  out.write(reinterpret_cast<const char*>(bytes.data()), static_cast<std::streamsize>(bytes.size()));
+}
+
+/// @brief Writes @p text to @p path, replacing any existing file.
+void write_text(const std::string& text, const std::string& path, const char* who) {
+  std::ofstream out(path);
+  if (!out) {
+    throw std::runtime_error(std::string(who) + ": could not open output file " + path);
   }
-  unsigned bits = 0;
-  while (((mask >> (shift + bits)) & 1UL) != 0UL) {
-    ++bits;
-  }
-  const unsigned long max_mask = (1UL << bits) - 1UL;
-  const unsigned long scaled = (static_cast<unsigned long>(value) * max_mask + 127UL) / 255UL;
-  return (scaled << shift) & mask;
+  out << text;
 }
 
-unsigned long rgb_to_native_pixel(const Visual* visual, RGB color) {
-  return expand_component(static_cast<unsigned>(std::clamp(color.r, 0, 255)), visual->red_mask)
-       | expand_component(static_cast<unsigned>(std::clamp(color.g, 0, 255)), visual->green_mask)
-       | expand_component(static_cast<unsigned>(std::clamp(color.b, 0, 255)), visual->blue_mask);
+void save_png_image(const Image& image, const std::string& path) {
+  write_bytes(encode_png(image), path, "Plot::save");
 }
 
-struct ViewerButton {
-  enum class Action {
-    PlotZoomIn,
-    PlotZoomOut,
-    PlotLeft,
-    PlotRight,
-    PlotUp,
-    PlotDown,
-    PlotReset,
-  };
-
-  int         x{0};
-  int         y{0};
-  int         w{0};
-  int         h{0};
-  std::string label;
-  Action      action{Action::PlotZoomIn};
-};
-
-void draw_button(Image& image, const ViewerButton& button) {
-  const RGB border{55, 65, 81};
-  const RGB fill{243, 244, 246};
-  const RGB text{31, 41, 55};
-  image.fill_rect(button.x, button.y, button.x + button.w, button.y + button.h, border);
-  image.fill_rect(
-      button.x + 1, button.y + 1, button.x + button.w - 1, button.y + button.h - 1, fill);
-  const int text_width = static_cast<int>(button.label.size()) * 6;
-  draw_text(image,
-            button.x + std::max(4, (button.w - text_width) / 2),
-            button.y + std::max(3, (button.h - 7) / 2),
-            button.label,
-            text,
-            1);
-}
-
-std::vector<ViewerButton> make_viewer_buttons() {
-  constexpr int x0 = 10;
-  constexpr int y0 = 8;
-  constexpr int h = 26;
-  constexpr int gap = 8;
-  const std::vector<std::pair<std::string, ViewerButton::Action>> specs = {
-      {"PLOT+", ViewerButton::Action::PlotZoomIn},
-      {"PLOT-", ViewerButton::Action::PlotZoomOut},
-      {"LEFT", ViewerButton::Action::PlotLeft},
-      {"RIGHT", ViewerButton::Action::PlotRight},
-      {"UP", ViewerButton::Action::PlotUp},
-      {"DOWN", ViewerButton::Action::PlotDown},
-      {"RESET", ViewerButton::Action::PlotReset},
-  };
-
-  std::vector<ViewerButton> buttons;
-  buttons.reserve(specs.size());
-  int cursor_x = x0;
-  for (const auto& spec : specs) {
-    const int width = 18 + static_cast<int>(spec.first.size()) * 6;
-    buttons.push_back(ViewerButton{cursor_x, y0, width, h, spec.first, spec.second});
-    cursor_x += width + gap;
-  }
-  return buttons;
-}
-
-const ViewerButton* find_button_at(const std::vector<ViewerButton>& buttons, int x, int y) {
-  for (const auto& button : buttons) {
-    if (x >= button.x && x <= button.x + button.w && y >= button.y && y <= button.y + button.h) {
-      return &button;
-    }
-  }
-  return nullptr;
-}
-
-void copy_image_to_ximage(const Image& image, const Visual* visual, XImage* ximage) {
-  for (int y = 0; y < static_cast<int>(image.height); ++y) {
-    for (int x = 0; x < static_cast<int>(image.width); ++x) {
-      const std::size_t idx =
-          (static_cast<std::size_t>(y) * image.width + static_cast<std::size_t>(x)) * 3U;
-      const RGB color{
-          static_cast<int>(image.pixels[idx + 0U]),
-          static_cast<int>(image.pixels[idx + 1U]),
-          static_cast<int>(image.pixels[idx + 2U]),
-      };
-      XPutPixel(ximage, x, y, rgb_to_native_pixel(visual, color));
-    }
-  }
-}
-
-void zoom_bounds(Bounds& bounds, double factor) {
-  const double cx = (bounds.x_min + bounds.x_max) * 0.5;
-  const double cy = (bounds.y_min + bounds.y_max) * 0.5;
-  const double half_width = std::max((bounds.x_max - bounds.x_min) * factor * 0.5, 1e-9);
-  const double half_height = std::max((bounds.y_max - bounds.y_min) * factor * 0.5, 1e-9);
-  bounds.x_min = cx - half_width;
-  bounds.x_max = cx + half_width;
-  bounds.y_min = cy - half_height;
-  bounds.y_max = cy + half_height;
-}
-
-void pan_bounds(Bounds& bounds, double dx_fraction, double dy_fraction) {
-  const double dx = (bounds.x_max - bounds.x_min) * dx_fraction;
-  const double dy = (bounds.y_max - bounds.y_min) * dy_fraction;
-  bounds.x_min += dx;
-  bounds.x_max += dx;
-  bounds.y_min += dy;
-  bounds.y_max += dy;
+void save_pdf_image(const Image& image, const std::string& path) {
+  write_bytes(encode_pdf(image), path, "Plot::save");
 }
 
 void blit_scaled_image(const Image& src,
@@ -1279,6 +1452,161 @@ void blit_scaled_image(const Image& src,
   }
 }
 
+/// @brief Tiles already-rasterized panels row-major into one image, each scaled to fit its cell.
+Image tile_panels(const std::vector<Image>& panels,
+                  std::size_t               rows,
+                  std::size_t               cols,
+                  std::size_t               width,
+                  std::size_t               height,
+                  const std::string&        title) {
+  Image     out(width, height, {255, 255, 255});
+  const int band = title.empty() ? 0 : static_cast<int>(RLayout::title_band_px);
+  if (band > 0) {
+    draw_text(out, static_cast<double>(width) / 2.0, band * 0.7, title, {55, 65, 81}, 24.0, TextAnchor::Middle);
+  }
+  const int cell_w = static_cast<int>(width / cols);
+  const int cell_h = (static_cast<int>(height) - band) / static_cast<int>(rows);
+  for (std::size_t i = 0; i < panels.size(); ++i) {
+    const int col = static_cast<int>(i % cols);
+    const int row = static_cast<int>(i / cols);
+    blit_scaled_image(panels[i], out, col * cell_w, band + row * cell_h, cell_w, cell_h, 1.0, 0.0, 0.0);
+  }
+  return out;
+}
+
+/// @brief Rasterizes every panel of @p layout and tiles them into one image.
+Image rasterize_layout(const RLayout& layout) {
+  std::vector<Image> images;
+  images.reserve(layout.panel_count());
+  for (std::size_t i = 0; i < layout.panel_count(); ++i) images.push_back(rasterize(layout.panel(i)));
+  return tile_panels(images, layout.rows(), layout.cols(), layout.width(), layout.height(),
+                     layout.title_text());
+}
+
+#if defined(DATAMUNGE_HAVE_X11)
+unsigned long expand_component(unsigned value, unsigned long mask) {
+  if (mask == 0UL) {
+    return 0UL;
+  }
+  unsigned shift = 0;
+  while (((mask >> shift) & 1UL) == 0UL) {
+    ++shift;
+  }
+  unsigned bits = 0;
+  while (((mask >> (shift + bits)) & 1UL) != 0UL) {
+    ++bits;
+  }
+  const unsigned long max_mask = (1UL << bits) - 1UL;
+  const unsigned long scaled = (static_cast<unsigned long>(value) * max_mask + 127UL) / 255UL;
+  return (scaled << shift) & mask;
+}
+
+unsigned long rgb_to_native_pixel(const Visual* visual, RGB color) {
+  return expand_component(static_cast<unsigned>(std::clamp(color.r, 0, 255)), visual->red_mask)
+       | expand_component(static_cast<unsigned>(std::clamp(color.g, 0, 255)), visual->green_mask)
+       | expand_component(static_cast<unsigned>(std::clamp(color.b, 0, 255)), visual->blue_mask);
+}
+
+struct ViewerButton {
+  enum class Action {
+    PlotZoomIn,
+    PlotZoomOut,
+    PlotLeft,
+    PlotRight,
+    PlotUp,
+    PlotDown,
+    PlotReset,
+  };
+
+  int         x{0};
+  int         y{0};
+  int         w{0};
+  int         h{0};
+  std::string label;
+  Action      action{Action::PlotZoomIn};
+};
+
+void draw_button(Image& image, const ViewerButton& button) {
+  const RGB border{55, 65, 81};
+  const RGB fill{243, 244, 246};
+  const RGB text{31, 41, 55};
+  image.fill_rect(button.x, button.y, button.x + button.w, button.y + button.h, border);
+  image.fill_rect(
+      button.x + 1, button.y + 1, button.x + button.w - 1, button.y + button.h - 1, fill);
+  draw_text(image, button.x + button.w / 2.0, button.y + button.h / 2.0 + kTextCenterEm * kButtonFontPx,
+            button.label, text, kButtonFontPx, TextAnchor::Middle);
+}
+
+std::vector<ViewerButton> make_viewer_buttons() {
+  constexpr int x0 = 10;
+  constexpr int y0 = 8;
+  constexpr int h = 26;
+  constexpr int gap = 8;
+  const std::vector<std::pair<std::string, ViewerButton::Action>> specs = {
+      {"PLOT+", ViewerButton::Action::PlotZoomIn},
+      {"PLOT-", ViewerButton::Action::PlotZoomOut},
+      {"LEFT", ViewerButton::Action::PlotLeft},
+      {"RIGHT", ViewerButton::Action::PlotRight},
+      {"UP", ViewerButton::Action::PlotUp},
+      {"DOWN", ViewerButton::Action::PlotDown},
+      {"RESET", ViewerButton::Action::PlotReset},
+  };
+
+  std::vector<ViewerButton> buttons;
+  buttons.reserve(specs.size());
+  int cursor_x = x0;
+  for (const auto& spec : specs) {
+    const int width = 18 + static_cast<int>(std::ceil(text_width(spec.first, kButtonFontPx)));
+    buttons.push_back(ViewerButton{cursor_x, y0, width, h, spec.first, spec.second});
+    cursor_x += width + gap;
+  }
+  return buttons;
+}
+
+const ViewerButton* find_button_at(const std::vector<ViewerButton>& buttons, int x, int y) {
+  for (const auto& button : buttons) {
+    if (x >= button.x && x <= button.x + button.w && y >= button.y && y <= button.y + button.h) {
+      return &button;
+    }
+  }
+  return nullptr;
+}
+
+void copy_image_to_ximage(const Image& image, const Visual* visual, XImage* ximage) {
+  for (int y = 0; y < static_cast<int>(image.height); ++y) {
+    for (int x = 0; x < static_cast<int>(image.width); ++x) {
+      const std::size_t idx =
+          (static_cast<std::size_t>(y) * image.width + static_cast<std::size_t>(x)) * 3U;
+      const RGB color{
+          static_cast<int>(image.pixels[idx + 0U]),
+          static_cast<int>(image.pixels[idx + 1U]),
+          static_cast<int>(image.pixels[idx + 2U]),
+      };
+      XPutPixel(ximage, x, y, rgb_to_native_pixel(visual, color));
+    }
+  }
+}
+
+void zoom_bounds(Bounds& bounds, double factor) {
+  const double cx = (bounds.x_min + bounds.x_max) * 0.5;
+  const double cy = (bounds.y_min + bounds.y_max) * 0.5;
+  const double half_width = std::max((bounds.x_max - bounds.x_min) * factor * 0.5, 1e-9);
+  const double half_height = std::max((bounds.y_max - bounds.y_min) * factor * 0.5, 1e-9);
+  bounds.x_min = cx - half_width;
+  bounds.x_max = cx + half_width;
+  bounds.y_min = cy - half_height;
+  bounds.y_max = cy + half_height;
+}
+
+void pan_bounds(Bounds& bounds, double dx_fraction, double dy_fraction) {
+  const double dx = (bounds.x_max - bounds.x_min) * dx_fraction;
+  const double dy = (bounds.y_max - bounds.y_min) * dy_fraction;
+  bounds.x_min += dx;
+  bounds.x_max += dx;
+  bounds.y_min += dy;
+  bounds.y_max += dy;
+}
+
 Image render_viewer_frame(const Image&                     plot_image,
                           int                              window_width,
                           int                              window_height,
@@ -1305,9 +1633,17 @@ Image render_viewer_frame(const Image&                     plot_image,
   return frame;
 }
 
-void show_x11_plot(const Plot& plot, const std::string& title_hint) {
+/// @brief What the interactive viewer needs from a figure: a renderer plus data-space zoom/pan.
+struct ViewerModel {
+  std::function<Image()>             render;
+  std::function<void(double)>        zoom;  ///< scales every data range by the factor
+  std::function<void(double, double)> pan;   ///< shifts every data range by fractions of itself
+  std::function<void()>              reset; ///< restores the original data ranges
+};
+
+void run_x11_viewer(const ViewerModel& model, const std::string& title_hint) {
   constexpr int menu_height = 44;
-  Image plot_image = rasterize(plot);
+  Image plot_image = model.render();
   Display* display = XOpenDisplay(nullptr);
   if (display == nullptr) {
     throw std::runtime_error("Plot::show: could not connect to the X11 display");
@@ -1339,8 +1675,6 @@ void show_x11_plot(const Plot& plot, const std::string& title_hint) {
   GC gc = XCreateGC(display, window, 0, nullptr);
   XImage* ximage = nullptr;
   std::unique_ptr<char[]> buffer;
-  Bounds current_bounds = compute_bounds(plot);
-  const Bounds original_bounds = current_bounds;
   double image_zoom = 1.0;
   double image_pan_x = 0.0;
   double image_pan_y = 0.0;
@@ -1375,7 +1709,7 @@ void show_x11_plot(const Plot& plot, const std::string& title_hint) {
     ximage->data = buffer.get();
   };
 
-  auto rerasterize_plot = [&]() { plot_image = rasterize(plot, current_bounds); };
+  auto rerasterize_plot = [&]() { plot_image = model.render(); };
 
   auto redraw = [&]() {
     if (ximage == nullptr || static_cast<int>(ximage->width) != window_width
@@ -1455,25 +1789,25 @@ void show_x11_plot(const Plot& plot, const std::string& title_hint) {
       if (button != nullptr) {
         switch (button->action) {
           case ViewerButton::Action::PlotZoomIn:
-            zoom_bounds(current_bounds, 0.8);
+            model.zoom(0.8);
             break;
           case ViewerButton::Action::PlotZoomOut:
-            zoom_bounds(current_bounds, 1.25);
+            model.zoom(1.25);
             break;
           case ViewerButton::Action::PlotLeft:
-            pan_bounds(current_bounds, -0.1, 0.0);
+            model.pan(-0.1, 0.0);
             break;
           case ViewerButton::Action::PlotRight:
-            pan_bounds(current_bounds, 0.1, 0.0);
+            model.pan(0.1, 0.0);
             break;
           case ViewerButton::Action::PlotUp:
-            pan_bounds(current_bounds, 0.0, 0.1);
+            model.pan(0.0, 0.1);
             break;
           case ViewerButton::Action::PlotDown:
-            pan_bounds(current_bounds, 0.0, -0.1);
+            model.pan(0.0, -0.1);
             break;
           case ViewerButton::Action::PlotReset:
-            current_bounds = original_bounds;
+            model.reset();
             break;
         }
         rerasterize_plot();
@@ -1498,6 +1832,19 @@ void show_x11_plot(const Plot& plot, const std::string& title_hint) {
   // error and causes Xlib's default error handler to terminate the process.
   XCloseDisplay(display);
 }
+
+void show_x11_plot(const Plot& plot, const std::string& title_hint) {
+  Bounds       current = compute_bounds(plot);
+  const Bounds original = current;
+  const ViewerModel model{
+      [&]() { return rasterize(plot, current); },
+      [&](double factor) { zoom_bounds(current, factor); },
+      [&](double dx, double dy) { pan_bounds(current, dx, dy); },
+      [&]() { current = original; },
+  };
+  run_x11_viewer(model, title_hint);
+}
+
 #endif
 
 } // namespace
@@ -1510,6 +1857,11 @@ Plot& Plot::size(std::size_t width, std::size_t height) {
 
 Plot& Plot::title(std::string value) {
   title_ = std::move(value);
+  return *this;
+}
+
+Plot& Plot::subtitle(std::string value) {
+  subtitle_ = std::move(value);
   return *this;
 }
 
@@ -1570,6 +1922,58 @@ Plot& Plot::hide_axes(bool enabled) {
 
 Plot& Plot::x_tick_labels(std::vector<std::string> labels) {
   x_tick_labels_ = std::move(labels);
+  x_tick_positions_.clear();
+  return *this;
+}
+
+Plot& Plot::x_ticks(std::vector<double> positions, std::vector<std::string> labels) {
+  if (positions.size() != labels.size()) {
+    throw std::invalid_argument("Plot::x_ticks: positions and labels must have the same length");
+  }
+  x_tick_positions_ = std::move(positions);
+  x_tick_labels_ = std::move(labels);
+  return *this;
+}
+
+Plot& Plot::y_tick_labels(std::vector<std::string> labels) {
+  y_tick_labels_ = std::move(labels);
+  y_tick_positions_.clear();
+  return *this;
+}
+
+Plot& Plot::y_ticks(std::vector<double> positions, std::vector<std::string> labels) {
+  if (positions.size() != labels.size()) {
+    throw std::invalid_argument("Plot::y_ticks: positions and labels must have the same length");
+  }
+  y_tick_positions_ = std::move(positions);
+  y_tick_labels_ = std::move(labels);
+  return *this;
+}
+
+Plot& Plot::margins(double left, double right, double top, double bottom) {
+  for (double margin : {left, right, top, bottom}) {
+    if (!std::isfinite(margin) || margin < 0.0) {
+      throw std::invalid_argument("Plot::margins: margins must be finite and non-negative");
+    }
+  }
+  has_margins_ = true;
+  margin_left_ = left;
+  margin_right_ = right;
+  margin_top_ = top;
+  margin_bottom_ = bottom;
+  return *this;
+}
+
+Plot& Plot::pretty_ticks(bool enabled) {
+  pretty_ticks_ = enabled;
+  return *this;
+}
+
+Plot& Plot::tick_font_size(double pixels) {
+  if (!std::isfinite(pixels) || pixels <= 0.0) {
+    throw std::invalid_argument("Plot::tick_font_size: size must be positive and finite");
+  }
+  tick_font_size_ = pixels;
   return *this;
 }
 
@@ -1591,19 +1995,25 @@ void Plot::save(const std::string& path) const {
     save_svg(path);
     return;
   }
-
-  const Image image = rasterize(*this);
   if (ext == ".png") {
-    save_png_image(image, path);
+    save_png(path);
     return;
   }
   if (ext == ".pdf") {
-    save_pdf_image(image, path);
+    save_pdf(path);
     return;
   }
 
   throw std::invalid_argument("Plot::save: unsupported extension");
 }
+
+std::vector<std::uint8_t> Plot::to_png() const { return encode_png(rasterize(*this)); }
+
+std::vector<std::uint8_t> Plot::to_pdf() const { return encode_pdf(rasterize(*this)); }
+
+void Plot::save_png(const std::string& path) const { write_bytes(to_png(), path, "Plot::save_png"); }
+
+void Plot::save_pdf(const std::string& path) const { write_bytes(to_pdf(), path, "Plot::save_pdf"); }
 
 void Plot::view(const std::string& title_hint) const {
   show(title_hint);
@@ -1611,7 +2021,8 @@ void Plot::view(const std::string& title_hint) const {
 
 void Plot::show(const std::string& title_hint) const {
 #if defined(DATAMUNGE_HAVE_X11)
-  show_x11_plot(*this, title_hint);
+  // Like RLayout::show and Splom::show: an empty hint names the window after the plot.
+  show_x11_plot(*this, title_hint.empty() ? title_ : title_hint);
 #else
   (void)title_hint;
   throw std::runtime_error("Plot::show: X11 support was not enabled at build time");
@@ -1633,6 +2044,9 @@ Plot& Plot::add_legend_entry(LegendEntry entry) {
   return *this;
 }
 
+RPlot::RPlot(std::vector<double> x, std::vector<double> y)
+    : RPlot((require_xy_same_size(x, y, "Plot(x, y)"), RPlot::plot(std::move(x), std::move(y)))) {}
+
 RPlot RPlot::create() {
   return RPlot{};
 }
@@ -1644,6 +2058,11 @@ RPlot& RPlot::size(std::size_t width, std::size_t height) {
 
 RPlot& RPlot::title(std::string value) {
   Plot::title(std::move(value));
+  return *this;
+}
+
+RPlot& RPlot::subtitle(std::string value) {
+  Plot::subtitle(std::move(value));
   return *this;
 }
 
@@ -1697,9 +2116,80 @@ RPlot& RPlot::x_tick_labels(std::vector<std::string> labels) {
   return *this;
 }
 
+RPlot& RPlot::x_ticks(std::vector<double> positions, std::vector<std::string> labels) {
+  Plot::x_ticks(std::move(positions), std::move(labels));
+  return *this;
+}
+
+RPlot& RPlot::y_tick_labels(std::vector<std::string> labels) {
+  Plot::y_tick_labels(std::move(labels));
+  return *this;
+}
+
+RPlot& RPlot::y_ticks(std::vector<double> positions, std::vector<std::string> labels) {
+  Plot::y_ticks(std::move(positions), std::move(labels));
+  return *this;
+}
+
+RPlot& RPlot::margins(double left, double right, double top, double bottom) {
+  Plot::margins(left, right, top, bottom);
+  return *this;
+}
+
+RPlot& RPlot::tick_font_size(double pixels) {
+  Plot::tick_font_size(pixels);
+  return *this;
+}
+
+RPlot& RPlot::pretty_ticks(bool enabled) {
+  Plot::pretty_ticks(enabled);
+  return *this;
+}
+
 RPlot& RPlot::xlab(std::string value) { return x_label(std::move(value)); }
 
 RPlot& RPlot::ylab(std::string value) { return y_label(std::move(value)); }
+
+RPlot& RPlot::set_title(std::string value) { return title(std::move(value)); }
+
+RPlot& RPlot::set_subtitle(std::string value) { return subtitle(std::move(value)); }
+
+RPlot& RPlot::set_xlab(std::string value) { return xlab(std::move(value)); }
+
+RPlot& RPlot::set_ylab(std::string value) { return ylab(std::move(value)); }
+
+RPlot& RPlot::set_col(RGB color) {
+  for (auto& series : series_) {
+    series.color = color;
+    series.point_colors.clear();
+  }
+  return *this;
+}
+
+RPlot& RPlot::set_col(std::string color) {
+  std::transform(color.begin(), color.end(), color.begin(),
+                 [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+  const std::array<std::pair<std::string_view, RGB>, 11> named{{
+      {"black", {0, 0, 0}}, {"white", {255, 255, 255}}, {"red", {255, 0, 0}},
+      {"green", {0, 128, 0}}, {"blue", {0, 0, 255}}, {"yellow", {255, 255, 0}},
+      {"cyan", {0, 255, 255}}, {"magenta", {255, 0, 255}}, {"gray", {128, 128, 128}},
+      {"grey", {128, 128, 128}}, {"transparent", {0, 0, 0, 0.0}}}};
+  for (const auto& entry : named) {
+    if (color == entry.first) return set_col(entry.second);
+  }
+  if ((color.size() == 7 || color.size() == 9) && color.front() == '#') {
+    std::uint32_t value = 0;
+    const auto parsed = std::from_chars(color.data() + 1, color.data() + color.size(), value, 16);
+    if (parsed.ec == std::errc{} && parsed.ptr == color.data() + color.size()) {
+      const double alpha = color.size() == 9 ? (value & 0xff) / 255.0 : 1.0;
+      if (color.size() == 9) value >>= 8;
+      return set_col(RGB{static_cast<int>((value >> 16) & 0xff),
+                         static_cast<int>((value >> 8) & 0xff),
+                         static_cast<int>(value & 0xff), alpha});
+    }
+  }
+  throw std::invalid_argument("RPlot::set_col: unknown color " + color);
+}
 
 RPlot RPlot::plot(std::vector<double> x, std::vector<double> y, std::string type, std::string label, RGB color) {
   require_xy_same_size(x, y, "RPlot::plot");
@@ -1724,18 +2214,25 @@ RPlot RPlot::hist(std::vector<double> data, std::size_t bins, std::string label,
   if (bins == 0) {
     throw std::invalid_argument("RPlot::hist: bins must be positive");
   }
+  if (!std::all_of(data.begin(), data.end(), [](double value) { return std::isfinite(value); })) {
+    throw std::invalid_argument("RPlot::hist: data must be finite");
+  }
   double lo = *std::min_element(data.begin(), data.end());
   double hi = *std::max_element(data.begin(), data.end());
   if (hi <= lo) {
     hi = lo + 1.0;
   }
   const double bin_width = (hi - lo) / static_cast<double>(bins);
+  if (!std::isfinite(hi - lo) || !std::isfinite(bin_width) || bin_width <= 0.0) {
+    throw std::invalid_argument("RPlot::hist: bin range must have finite positive width");
+  }
 
   std::vector<double> counts(bins, 0.0);
   for (double value : data) {
-    auto idx = static_cast<std::ptrdiff_t>((value - lo) / bin_width);
-    idx = std::clamp<std::ptrdiff_t>(idx, 0, static_cast<std::ptrdiff_t>(bins) - 1);
-    counts[static_cast<std::size_t>(idx)] += 1.0;
+    const double position = (value - lo) / bin_width;
+    const auto idx = position >= static_cast<double>(bins - 1)
+        ? bins - 1 : static_cast<std::size_t>(position);
+    counts[idx] += 1.0;
   }
 
   std::vector<double> centers(bins);
@@ -1841,6 +2338,18 @@ RPlot RPlot::boxplot(std::vector<std::vector<double>> groups, std::vector<std::s
   return p;
 }
 
+RPlot RPlot::boxplot(std::vector<std::vector<double>> groups, std::vector<std::string> names, std::vector<RGB> colors) {
+  if (colors.empty()) {
+    throw std::invalid_argument("RPlot::boxplot: colors must not be empty");
+  }
+  const auto count = groups.size();
+  RPlot p = boxplot(std::move(groups), std::move(names), colors.front());
+  for (std::size_t g = 0; g < count; ++g) {
+    p.series_[g].color = colors[g % colors.size()];
+  }
+  return p;
+}
+
 RPlot RPlot::pie(std::vector<double> values, std::vector<std::string> names, std::vector<RGB> colors) {
   if (values.empty()) {
     throw std::invalid_argument("RPlot::pie: values must not be empty");
@@ -1939,6 +2448,21 @@ RPlot& RPlot::points(std::vector<double> x, std::vector<double> y, std::string l
   series.y = std::move(y);
   series.label = std::move(label);
   series.color = color;
+  series.marker_size = marker_size;
+  add_series(std::move(series));
+  return *this;
+}
+
+RPlot& RPlot::points_colored(std::vector<double> x, std::vector<double> y,
+                             std::vector<RGB> colors, double marker_size) {
+  require_xy_same_size(x, y, "RPlot::points_colored");
+  if (colors.empty()) throw std::invalid_argument("RPlot::points_colored: empty palette");
+  DataSeries series;
+  series.kind = DataSeries::Kind::Scatter;
+  series.x = std::move(x);
+  series.y = std::move(y);
+  series.color = colors.front();
+  series.point_colors = std::move(colors);
   series.marker_size = marker_size;
   add_series(std::move(series));
   return *this;
@@ -2068,6 +2592,167 @@ RPlot& RPlot::polygon(std::vector<double> x, std::vector<double> y, RGB color, b
   return *this;
 }
 
+RPlot& RPlot::image(const std::vector<double>& x, const std::vector<double>& y,
+                    const std::vector<std::vector<double>>& z, std::vector<RGB> palette, double z_min,
+                    double z_max) {
+  if (x.size() < 2 || y.size() < 2 || z.size() != x.size()) {
+    throw std::invalid_argument("RPlot::image: need at least 2 x and y centres and one row of z per x");
+  }
+  for (const auto& row : z) {
+    if (row.size() != y.size()) throw std::invalid_argument("RPlot::image: each row of z needs one value per y");
+  }
+  for (std::size_t i = 1; i < x.size(); ++i) {
+    if (!(x[i] > x[i - 1])) throw std::invalid_argument("RPlot::image: x must be increasing");
+  }
+  for (std::size_t j = 1; j < y.size(); ++j) {
+    if (!(y[j] > y[j - 1])) throw std::invalid_argument("RPlot::image: y must be increasing");
+  }
+  if (palette.empty()) palette = terrain_colors(12);
+  double lo = std::numeric_limits<double>::infinity(), hi = -lo;
+  for (const auto& row : z) {
+    for (const double v : row) {
+      if (std::isnan(v)) continue;
+      lo = std::min(lo, v);
+      hi = std::max(hi, v);
+    }
+  }
+  if (!std::isnan(z_min)) lo = z_min;
+  if (!std::isnan(z_max)) hi = z_max;
+  // Cell edges: midpoints between centres, a half step beyond the ends.
+  auto edges = [](const std::vector<double>& c) {
+    std::vector<double> e(c.size() + 1);
+    e.front() = c.front() - (c[1] - c[0]) / 2.0;
+    e.back() = c.back() + (c[c.size() - 1] - c[c.size() - 2]) / 2.0;
+    for (std::size_t k = 1; k < c.size(); ++k) e[k] = (c[k - 1] + c[k]) / 2.0;
+    return e;
+  };
+  const auto ex = edges(x), ey = edges(y);
+  const double span = hi > lo ? hi - lo : 1.0;
+  for (std::size_t i = 0; i < x.size(); ++i) {
+    for (std::size_t j = 0; j < y.size(); ++j) {
+      const double v = z[i][j];
+      if (std::isnan(v)) continue;
+      const double t = std::clamp((v - lo) / span, 0.0, 1.0);
+      const auto k = std::min(palette.size() - 1, static_cast<std::size_t>(t * static_cast<double>(palette.size())));
+      DataSeries series;
+      series.kind = DataSeries::Kind::Polygon;
+      series.filled = true;
+      series.color = palette[k];
+      series.x = {ex[i], ex[i + 1], ex[i + 1], ex[i]};
+      series.y = {ey[j], ey[j], ey[j + 1], ey[j + 1]};
+      add_series(std::move(series));
+    }
+  }
+  return *this;
+}
+
+std::vector<RGB> terrain_colors(std::size_t n) {
+  if (n == 0) throw std::invalid_argument("terrain_colors: n must be at least 1");
+  // R: k = n %/% 2; hue 4/12 -> 2/12 -> 0, saturation 1 -> 1 -> 0, value 0.65 -> 0.9 -> 0.95.
+  auto hsv = [](double h, double s, double v) {
+    const double c = v * s, hp = h * 6.0, xx = c * (1.0 - std::abs(std::fmod(hp, 2.0) - 1.0)), m = v - c;
+    double r = 0, g = 0, b = 0;
+    if (hp < 1) r = c, g = xx;
+    else if (hp < 2) r = xx, g = c;
+    else if (hp < 3) g = c, b = xx;
+    else if (hp < 4) g = xx, b = c;
+    else if (hp < 5) r = xx, b = c;
+    else r = c, b = xx;
+    auto to8 = [](double u) { return static_cast<std::uint8_t>(std::lround(255.0 * u)); };
+    return RGB{to8(r + m), to8(g + m), to8(b + m)};
+  };
+  auto seq = [](double a, double b, std::size_t len, std::size_t i) {
+    return len <= 1 ? a : a + (b - a) * static_cast<double>(i) / static_cast<double>(len - 1);
+  };
+  std::vector<RGB> out;
+  const std::size_t k = n / 2;
+  for (std::size_t i = 0; i < k; ++i)
+    out.push_back(hsv(seq(4.0 / 12, 2.0 / 12, k, i), 1.0, seq(0.65, 0.9, k, i)));
+  const std::size_t rest = n - k;
+  for (std::size_t i = 1; i <= rest; ++i)
+    out.push_back(hsv(seq(2.0 / 12, 0.0, rest + 1, i), seq(1.0, 0.0, rest + 1, i), seq(0.9, 0.95, rest + 1, i)));
+  return out;
+}
+
+std::vector<RGB> diverging_colors(std::size_t n) {
+  if (n == 0) throw std::invalid_argument("diverging_colors: n must be at least 1");
+  static constexpr std::array<std::array<double, 3>, 7> anchors{{{33, 102, 172},
+                                                                 {103, 169, 207},
+                                                                 {209, 229, 240},
+                                                                 {247, 247, 247},
+                                                                 {253, 219, 199},
+                                                                 {239, 138, 98},
+                                                                 {178, 24, 43}}};
+  std::vector<RGB> out;
+  for (std::size_t i = 0; i < n; ++i) {
+    const double      t = n == 1 ? 0.5 : static_cast<double>(i) / static_cast<double>(n - 1);
+    const double      u = t * 6.0;
+    const std::size_t k = std::min<std::size_t>(5, static_cast<std::size_t>(u));
+    const double      w = u - static_cast<double>(k);
+    auto mix = [&](std::size_t c) {
+      return static_cast<int>(std::lround((1.0 - w) * anchors[k][c] + w * anchors[k + 1][c]));
+    };
+    out.push_back(RGB{mix(0), mix(1), mix(2)});
+  }
+  return out;
+}
+
+std::vector<RGB> viridis_colors(std::size_t n) {
+  if (n == 0) throw std::invalid_argument("viridis_colors: n must be at least 1");
+  // viridisLite::viridis(10), interpolated linearly.
+  static constexpr std::array<std::array<double, 3>, 10> anchors{{{68, 1, 84},
+                                                                  {72, 40, 120},
+                                                                  {62, 74, 137},
+                                                                  {49, 104, 142},
+                                                                  {38, 130, 142},
+                                                                  {31, 158, 137},
+                                                                  {53, 183, 121},
+                                                                  {109, 205, 89},
+                                                                  {180, 222, 44},
+                                                                  {253, 231, 37}}};
+  std::vector<RGB> out;
+  for (std::size_t i = 0; i < n; ++i) {
+    const double      t = n == 1 ? 0.0 : static_cast<double>(i) / static_cast<double>(n - 1);
+    const double      u = t * 9.0;
+    const std::size_t k = std::min<std::size_t>(8, static_cast<std::size_t>(u));
+    const double      w = u - static_cast<double>(k);
+    auto mix = [&](std::size_t c) {
+      return static_cast<int>(std::lround((1.0 - w) * anchors[k][c] + w * anchors[k + 1][c]));
+    };
+    out.push_back(RGB{mix(0), mix(1), mix(2)});
+  }
+  return out;
+}
+
+std::vector<RGB> value_colors(const std::vector<double>& values, std::vector<RGB> palette, double z_min,
+                              double z_max) {
+  if (palette.empty()) palette = viridis_colors(256);
+  double lo = z_min, hi = z_max;
+  if (std::isnan(lo) || std::isnan(hi)) {
+    double data_lo = std::numeric_limits<double>::infinity(), data_hi = -data_lo;
+    for (const double v : values) {
+      if (std::isnan(v)) continue;
+      data_lo = std::min(data_lo, v);
+      data_hi = std::max(data_hi, v);
+    }
+    if (std::isnan(lo)) lo = data_lo;
+    if (std::isnan(hi)) hi = data_hi;
+  }
+  const double     span = hi - lo;
+  const auto       last = static_cast<double>(palette.size() - 1);
+  std::vector<RGB> out;
+  out.reserve(values.size());
+  for (const double v : values) {
+    if (std::isnan(v)) {
+      out.push_back(RGB{190, 190, 190});
+      continue;
+    }
+    const double t = (span > 0.0 && std::isfinite(span)) ? std::clamp((v - lo) / span, 0.0, 1.0) : 0.5;
+    out.push_back(palette[static_cast<std::size_t>(std::lround(t * last))]);
+  }
+  return out;
+}
+
 RPlot& RPlot::segments(std::vector<double> x0, std::vector<double> y0, std::vector<double> x1, std::vector<double> y1, RGB color, double stroke_width) {
   if (x0.size() != y0.size() || x0.size() != x1.size() || x0.size() != y1.size()) {
     throw std::invalid_argument("RPlot::segments: x0, y0, x1, y1 must have the same size");
@@ -2105,7 +2790,7 @@ RLayout& RLayout::add(const Plot& panel) {
   if (panels_.size() >= rows_ * cols_) {
     throw std::invalid_argument("RLayout::add: layout is already full");
   }
-  panels_.push_back(Panel{panel.width(), panel.height(), svg_body(panel)});
+  panels_.push_back(Panel{panel, svg_body(panel)});
   return *this;
 }
 
@@ -2115,22 +2800,42 @@ RLayout& RLayout::size(std::size_t width, std::size_t height) {
   return *this;
 }
 
+RLayout& RLayout::title(std::string value) {
+  title_ = std::move(value);
+  return *this;
+}
+
+const Plot& RLayout::panel(std::size_t index) const {
+  if (index >= panels_.size()) {
+    throw std::out_of_range("RLayout::panel: index out of range");
+  }
+  return panels_[index].plot;
+}
+
 std::string RLayout::to_svg() const {
   std::ostringstream out;
+  const double band = title_.empty() ? 0.0 : static_cast<double>(title_band_px);
   const double cell_w = static_cast<double>(width_) / static_cast<double>(cols_);
-  const double cell_h = static_cast<double>(height_) / static_cast<double>(rows_);
+  const double cell_h = (static_cast<double>(height_) - band) / static_cast<double>(rows_);
   out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
   out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" << width_ << "\" height=\""
       << height_ << "\" viewBox=\"0 0 " << width_ << " " << height_ << "\">\n";
+  out << svg_font_defs();
   out << "  <rect width=\"100%\" height=\"100%\" fill=\"rgb(255,255,255)\"/>\n";
+  if (!title_.empty()) {
+    out << "  <text x=\"" << static_cast<double>(width_) / 2.0 << "\" y=\"" << band * 0.7
+        << "\" font-size=\"24\" text-anchor=\"middle\" "
+        << "font-family=\"" << kSvgFontFamily << "\" fill=\"rgb(55,65,81)\">"
+        << xml_escape(title_) << "</text>\n";
+  }
   for (std::size_t i = 0; i < panels_.size(); ++i) {
     const std::size_t row = i / cols_;
     const std::size_t col = i % cols_;
     const double       x = static_cast<double>(col) * cell_w;
-    const double       y = static_cast<double>(row) * cell_h;
+    const double       y = band + static_cast<double>(row) * cell_h;
     out << "  <svg x=\"" << x << "\" y=\"" << y << "\" width=\"" << cell_w << "\" height=\""
-        << cell_h << "\" viewBox=\"0 0 " << panels_[i].width << " " << panels_[i].height
-        << "\">\n"
+        << cell_h << "\" viewBox=\"0 0 " << panels_[i].plot.width() << " "
+        << panels_[i].plot.height() << "\">\n"
         << panels_[i].svg_fragment << "  </svg>\n";
   }
   out << "</svg>\n";
@@ -2146,7 +2851,172 @@ void RLayout::save_svg(const std::string& path) const {
 }
 
 void RLayout::save(const std::string& path) const {
-  save_svg(path);
+  const auto ext = std::filesystem::path(path).extension().string();
+  if (ext == ".svg" || ext.empty()) {
+    save_svg(path);
+  } else if (ext == ".png") {
+    save_png(path);
+  } else if (ext == ".pdf") {
+    save_pdf(path);
+  } else {
+    throw std::invalid_argument("RLayout::save: unsupported extension");
+  }
 }
 
-} // namespace datamunge::plot
+std::vector<std::uint8_t> RLayout::to_png() const { return encode_png(rasterize_layout(*this)); }
+
+std::vector<std::uint8_t> RLayout::to_pdf() const { return encode_pdf(rasterize_layout(*this)); }
+
+void RLayout::save_png(const std::string& path) const { write_bytes(to_png(), path, "RLayout::save_png"); }
+
+void RLayout::save_pdf(const std::string& path) const { write_bytes(to_pdf(), path, "RLayout::save_pdf"); }
+
+RLayout& RLayout::fit_panels() {
+  const std::size_t band = title_.empty() ? 0 : title_band_px;
+  const std::size_t cell_w = std::max<std::size_t>(1, width_ / cols_);
+  const std::size_t cell_h = std::max<std::size_t>(1, (height_ > band ? height_ - band : 1) / rows_);
+  // Below min_panel_px the margins would not fit, so draw on a larger canvas with the cell's
+  // aspect ratio and let rendering scale it into the cell.
+  const double shortest = static_cast<double>(std::min(cell_w, cell_h));
+  const double scale = shortest < static_cast<double>(min_panel_px) ? min_panel_px / shortest : 1.0;
+  const auto canvas_w = static_cast<std::size_t>(std::lround(static_cast<double>(cell_w) * scale));
+  const auto canvas_h = static_cast<std::size_t>(std::lround(static_cast<double>(cell_h) * scale));
+  for (auto& panel : panels_) {
+    panel.plot.size(canvas_w, canvas_h);
+    panel.svg_fragment = svg_body(panel.plot);
+  }
+  return *this;
+}
+
+void RLayout::view(const std::string& title_hint) const {
+  show(title_hint);
+}
+
+void RLayout::show(const std::string& title_hint) const {
+  if (panels_.empty()) {
+    throw std::invalid_argument("RLayout::show: layout has no panels");
+  }
+#if defined(DATAMUNGE_HAVE_X11)
+  struct PanelView {
+    Bounds current;
+    Bounds original;
+  };
+  std::vector<PanelView> views;
+  views.reserve(panels_.size());
+  for (const auto& panel : panels_) {
+    const Bounds bounds = compute_bounds(panel.plot);
+    views.push_back(PanelView{bounds, bounds});
+  }
+  const ViewerModel model{
+      [&]() {
+        std::vector<Image> images;
+        images.reserve(panels_.size());
+        for (std::size_t i = 0; i < panels_.size(); ++i) {
+          images.push_back(rasterize(panels_[i].plot, views[i].current));
+        }
+        return tile_panels(images, rows_, cols_, width_, height_, title_);
+      },
+      [&](double factor) {
+        for (auto& view : views) zoom_bounds(view.current, factor);
+      },
+      [&](double dx, double dy) {
+        for (auto& view : views) pan_bounds(view.current, dx, dy);
+      },
+      [&]() {
+        for (auto& view : views) view.current = view.original;
+      },
+  };
+  run_x11_viewer(model, title_hint.empty() ? title_ : title_hint);
+#else
+  (void)title_hint;
+  throw std::runtime_error("RLayout::show: X11 support was not enabled at build time");
+#endif
+}
+
+Figure::Figure(Plot plot) : content_(std::move(plot)) {}
+
+Figure::Figure(RLayout layout) : content_(std::move(layout)) {}
+
+Figure& Figure::title(std::string value) {
+  if (auto* plot = std::get_if<Plot>(&content_)) {
+    plot->title(std::move(value));
+  } else if (single_) {
+    // Keep a single plot's title on the plot itself, not in a figure band.
+    auto& layout = std::get<RLayout>(content_);
+    Plot inner = layout.panel(0);
+    inner.title(std::move(value));
+    content_ = RLayout::create(1, 1).add(inner).size(layout.width(), layout.height()).fit_panels();
+  } else {
+    std::get<RLayout>(content_).title(std::move(value)).fit_panels();
+  }
+  return *this;
+}
+
+Figure& Figure::size(std::size_t width, std::size_t height) {
+  if (auto* plot = std::get_if<Plot>(&content_)) {
+    // A small single plot is drawn as a 1 x 1 grid so its canvas can stay min_panel_px or more.
+    if (std::min(width, height) < RLayout::min_panel_px) {
+      content_ = RLayout::create(1, 1).add(*plot).size(width, height).fit_panels();
+      single_ = true;
+      return *this;
+    }
+    plot->size(width, height);
+  } else {
+    std::get<RLayout>(content_).size(width, height).fit_panels();
+  }
+  return *this;
+}
+
+std::size_t Figure::width() const noexcept {
+  return std::visit([](const auto& c) { return c.width(); }, content_);
+}
+
+std::size_t Figure::height() const noexcept {
+  return std::visit([](const auto& c) { return c.height(); }, content_);
+}
+
+const std::string& Figure::title_text() const noexcept {
+  if (single_) return std::get<RLayout>(content_).panel(0).title_text();
+  return std::visit([](const auto& c) -> const std::string& { return c.title_text(); }, content_);
+}
+
+bool Figure::is_grid() const noexcept { return !single_ && std::holds_alternative<RLayout>(content_); }
+
+std::size_t Figure::panel_count() const noexcept {
+  if (const auto* layout = std::get_if<RLayout>(&content_)) return single_ ? 1 : layout->panel_count();
+  return 1;
+}
+
+const Plot& Figure::panel(std::size_t index) const {
+  if (const auto* layout = std::get_if<RLayout>(&content_)) return layout->panel(index);
+  if (index != 0) throw std::out_of_range("Figure::panel: index out of range");
+  return std::get<Plot>(content_);
+}
+
+std::string Figure::to_svg() const {
+  return std::visit([](const auto& c) { return c.to_svg(); }, content_);
+}
+
+std::vector<std::uint8_t> Figure::to_png() const {
+  return std::visit([](const auto& c) { return c.to_png(); }, content_);
+}
+
+std::vector<std::uint8_t> Figure::to_pdf() const {
+  return std::visit([](const auto& c) { return c.to_pdf(); }, content_);
+}
+
+void Figure::save(const std::string& path) const {
+  std::visit([&](const auto& c) { c.save(path); }, content_);
+}
+
+void Figure::save_svg(const std::string& path) const { write_text(to_svg(), path, "Figure::save_svg"); }
+
+void Figure::save_png(const std::string& path) const { write_bytes(to_png(), path, "Figure::save_png"); }
+
+void Figure::save_pdf(const std::string& path) const { write_bytes(to_pdf(), path, "Figure::save_pdf"); }
+
+void Figure::show(const std::string& title_hint) const {
+  std::visit([&](const auto& c) { c.show(title_hint); }, content_);
+}
+
+} // namespace datamunge::graphics

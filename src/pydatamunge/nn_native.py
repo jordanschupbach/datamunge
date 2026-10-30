@@ -477,6 +477,125 @@ class StringVector(object):
 
 # Register StringVector in _nn_native:
 _nn_native.StringVector_swigregister(StringVector)
+class PaddingPair(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _nn_native.PaddingPair_swiginit(self, _nn_native.new_PaddingPair(*args))
+    first = property(_nn_native.PaddingPair_first_get, _nn_native.PaddingPair_first_set)
+    second = property(_nn_native.PaddingPair_second_get, _nn_native.PaddingPair_second_set)
+    def __len__(self):
+        return 2
+    def __repr__(self):
+        return str((self.first, self.second))
+    def __getitem__(self, index):
+        if not (index % 2):
+            return self.first
+        else:
+            return self.second
+    def __setitem__(self, index, val):
+        if not (index % 2):
+            self.first = val
+        else:
+            self.second = val
+    __swig_destroy__ = _nn_native.delete_PaddingPair
+
+# Register PaddingPair in _nn_native:
+_nn_native.PaddingPair_swigregister(PaddingPair)
+class PaddingPairs(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.PaddingPairs_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.PaddingPairs___bool__(self)
+
+    def __len__(self):
+        return _nn_native.PaddingPairs___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.PaddingPairs___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.PaddingPairs___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.PaddingPairs___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.PaddingPairs_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.PaddingPairs_append(self, x)
+
+    def empty(self):
+        return _nn_native.PaddingPairs_empty(self)
+
+    def size(self):
+        return _nn_native.PaddingPairs_size(self)
+
+    def swap(self, v):
+        return _nn_native.PaddingPairs_swap(self, v)
+
+    def begin(self):
+        return _nn_native.PaddingPairs_begin(self)
+
+    def end(self):
+        return _nn_native.PaddingPairs_end(self)
+
+    def rbegin(self):
+        return _nn_native.PaddingPairs_rbegin(self)
+
+    def rend(self):
+        return _nn_native.PaddingPairs_rend(self)
+
+    def clear(self):
+        return _nn_native.PaddingPairs_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.PaddingPairs_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.PaddingPairs_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.PaddingPairs_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.PaddingPairs_swiginit(self, _nn_native.new_PaddingPairs(*args))
+
+    def push_back(self, x):
+        return _nn_native.PaddingPairs_push_back(self, x)
+
+    def front(self):
+        return _nn_native.PaddingPairs_front(self)
+
+    def back(self):
+        return _nn_native.PaddingPairs_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.PaddingPairs_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.PaddingPairs_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.PaddingPairs_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.PaddingPairs_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.PaddingPairs_capacity(self)
+    __swig_destroy__ = _nn_native.delete_PaddingPairs
+
+# Register PaddingPairs in _nn_native:
+_nn_native.PaddingPairs_swigregister(PaddingPairs)
 class Int64Pair(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -1767,6 +1886,10 @@ Activation_Softplus = _nn_native.Activation_Softplus
 Activation_Softsign = _nn_native.Activation_Softsign
 Activation_Sigmoid = _nn_native.Activation_Sigmoid
 Activation_Tanh = _nn_native.Activation_Tanh
+Activation_HardSigmoid = _nn_native.Activation_HardSigmoid
+Activation_HardSwish = _nn_native.Activation_HardSwish
+Activation_HardTanh = _nn_native.Activation_HardTanh
+Activation_LogSigmoid = _nn_native.Activation_LogSigmoid
 
 def activation_name(activation):
     return _nn_native.activation_name(activation)
@@ -1788,6 +1911,9 @@ class DenseOptions(object):
 
 # Register DenseOptions in _nn_native:
 _nn_native.DenseOptions_swigregister(DenseOptions)
+cvar = _nn_native.cvar
+kLastActivation = cvar.kLastActivation
+
 
 def dense(*args):
     return _nn_native.dense(*args)
@@ -3291,7 +3417,6 @@ class NmsResult(object):
 
 # Register NmsResult in _nn_native:
 _nn_native.NmsResult_swigregister(NmsResult)
-cvar = _nn_native.cvar
 kUnmatched = cvar.kUnmatched
 kIgnored = cvar.kIgnored
 
@@ -3700,4 +3825,5443 @@ class Mt19937_64(object):
 
 # Register Mt19937_64 in _nn_native:
 _nn_native.Mt19937_64_swigregister(Mt19937_64)
+memory_components__Kind_Ntm = _nn_native.memory_components__Kind_Ntm
+memory_components__Kind_Dnc = _nn_native.memory_components__Kind_Dnc
+memory_components__Kind_MemNet = _nn_native.memory_components__Kind_MemNet
+memory_components__Kind_KeyValue = _nn_native.memory_components__Kind_KeyValue
+class memory_components__Model(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, kind, example):
+        _nn_native.memory_components__Model_swiginit(self, _nn_native.new_memory_components__Model(kind, example))
+
+    def parameters(self):
+        return _nn_native.memory_components__Model_parameters(self)
+
+    def Leaves(self, batch):
+        return _nn_native.memory_components__Model_Leaves(self, batch)
+
+    def Forward(self, leaves, batch):
+        return _nn_native.memory_components__Model_Forward(self, leaves, batch)
+
+    def Loss(self, outputs, batch):
+        return _nn_native.memory_components__Model_Loss(self, outputs, batch)
+
+    def Evaluate(self, batch):
+        return _nn_native.memory_components__Model_Evaluate(self, batch)
+
+    def Predict(self, batch):
+        return _nn_native.memory_components__Model_Predict(self, batch)
+
+    def Arrays(self):
+        return _nn_native.memory_components__Model_Arrays(self)
+
+    def Load(self, file):
+        return _nn_native.memory_components__Model_Load(self, file)
+
+    def StateNames(self):
+        return _nn_native.memory_components__Model_StateNames(self)
+
+    def Step(self, input, previous):
+        return _nn_native.memory_components__Model_Step(self, input, previous)
+    __swig_destroy__ = _nn_native.delete_memory_components__Model
+
+# Register memory_components__Model in _nn_native:
+_nn_native.memory_components__Model_swigregister(memory_components__Model)
+
+def memory_components__Fixtures(kind, directory):
+    return _nn_native.memory_components__Fixtures(kind, directory)
+
+def memory_components__CompareRecords(root, tf, init, records, test_key):
+    return _nn_native.memory_components__CompareRecords(root, tf, init, records, test_key)
+
+def memory_components__CompareNpz(first, second):
+    return _nn_native.memory_components__CompareNpz(first, second)
+
+def memory_components__PrepareData(directory, overwrite=False):
+    return _nn_native.memory_components__PrepareData(directory, overwrite)
+
+def memory_components__PrepareDataset(directory, copy_task):
+    return _nn_native.memory_components__PrepareDataset(directory, copy_task)
+class ImageDatasetPair(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _nn_native.ImageDatasetPair_swiginit(self, _nn_native.new_ImageDatasetPair(*args))
+    first = property(_nn_native.ImageDatasetPair_first_get, _nn_native.ImageDatasetPair_first_set)
+    second = property(_nn_native.ImageDatasetPair_second_get, _nn_native.ImageDatasetPair_second_set)
+    def __len__(self):
+        return 2
+    def __repr__(self):
+        return str((self.first, self.second))
+    def __getitem__(self, index):
+        if not (index % 2):
+            return self.first
+        else:
+            return self.second
+    def __setitem__(self, index, val):
+        if not (index % 2):
+            self.first = val
+        else:
+            self.second = val
+    __swig_destroy__ = _nn_native.delete_ImageDatasetPair
+
+# Register ImageDatasetPair in _nn_native:
+_nn_native.ImageDatasetPair_swigregister(ImageDatasetPair)
+
+def example_runtime__Full():
+    return _nn_native.example_runtime__Full()
+
+def example_runtime__Describe():
+    return _nn_native.example_runtime__Describe()
+
+def example_runtime__Limit(requested, quick_limit):
+    return _nn_native.example_runtime__Limit(requested, quick_limit)
+
+def example_runtime__LimitInt64(requested, quick_limit):
+    return _nn_native.example_runtime__LimitInt64(requested, quick_limit)
+
+def dataset_assets__DataRoot():
+    return _nn_native.dataset_assets__DataRoot()
+
+def dataset_assets__EnsureMnist(*args):
+    return _nn_native.dataset_assets__EnsureMnist(*args)
+
+def dataset_assets__EnsureCifar(*args):
+    return _nn_native.dataset_assets__EnsureCifar(*args)
+
+def dataset_assets__EnsureSaliency(directory):
+    return _nn_native.dataset_assets__EnsureSaliency(directory)
+
+def dataset_assets__LoadMnist(directory, split):
+    return _nn_native.dataset_assets__LoadMnist(directory, split)
+
+def dataset_assets__LoadCifar10(directory, split):
+    return _nn_native.dataset_assets__LoadCifar10(directory, split)
+
+def dataset_assets__LoadCifar100(directory, split, fine=True):
+    return _nn_native.dataset_assets__LoadCifar100(directory, split, fine)
+
+def dataset_assets__EnsureSentences(directory):
+    return _nn_native.dataset_assets__EnsureSentences(directory)
+
+def paths__DataRoot():
+    return _nn_native.paths__DataRoot()
+
+def paths__Dataset(name):
+    return _nn_native.paths__Dataset(name)
+
+def paths__OutputRoot():
+    return _nn_native.paths__OutputRoot()
+
+def paths__OutputDir(relative):
+    return _nn_native.paths__OutputDir(relative)
+
+def check__Require(condition, message):
+    return _nn_native.check__Require(condition, message)
+
+def check__TrainingQuality(condition, message):
+    return _nn_native.check__TrainingQuality(condition, message)
+
+def check__Near(actual, expected, tolerance, message):
+    return _nn_native.check__Near(actual, expected, tolerance, message)
+
+def image_training__ImageBatch(dataset, rows, augmentation=None):
+    return _nn_native.image_training__ImageBatch(dataset, rows, augmentation)
+class image_training__ImageMetrics(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    loss = property(_nn_native.image_training__ImageMetrics_loss_get, _nn_native.image_training__ImageMetrics_loss_set)
+    accuracy = property(_nn_native.image_training__ImageMetrics_accuracy_get, _nn_native.image_training__ImageMetrics_accuracy_set)
+    confusion = property(_nn_native.image_training__ImageMetrics_confusion_get, _nn_native.image_training__ImageMetrics_confusion_set)
+
+    def __init__(self):
+        _nn_native.image_training__ImageMetrics_swiginit(self, _nn_native.new_image_training__ImageMetrics())
+    __swig_destroy__ = _nn_native.delete_image_training__ImageMetrics
+
+# Register image_training__ImageMetrics in _nn_native:
+_nn_native.image_training__ImageMetrics_swigregister(image_training__ImageMetrics)
+class image_training__ImageTrainingConfig(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    name = property(_nn_native.image_training__ImageTrainingConfig_name_get, _nn_native.image_training__ImageTrainingConfig_name_set)
+    classes = property(_nn_native.image_training__ImageTrainingConfig_classes_get, _nn_native.image_training__ImageTrainingConfig_classes_set)
+    epochs = property(_nn_native.image_training__ImageTrainingConfig_epochs_get, _nn_native.image_training__ImageTrainingConfig_epochs_set)
+    batch = property(_nn_native.image_training__ImageTrainingConfig_batch_get, _nn_native.image_training__ImageTrainingConfig_batch_set)
+    validation_rows = property(_nn_native.image_training__ImageTrainingConfig_validation_rows_get, _nn_native.image_training__ImageTrainingConfig_validation_rows_set)
+    maximum_fit_rows = property(_nn_native.image_training__ImageTrainingConfig_maximum_fit_rows_get, _nn_native.image_training__ImageTrainingConfig_maximum_fit_rows_set)
+    learning_rate = property(_nn_native.image_training__ImageTrainingConfig_learning_rate_get, _nn_native.image_training__ImageTrainingConfig_learning_rate_set)
+    l2 = property(_nn_native.image_training__ImageTrainingConfig_l2_get, _nn_native.image_training__ImageTrainingConfig_l2_set)
+    label_smoothing = property(_nn_native.image_training__ImageTrainingConfig_label_smoothing_get, _nn_native.image_training__ImageTrainingConfig_label_smoothing_set)
+    augment = property(_nn_native.image_training__ImageTrainingConfig_augment_get, _nn_native.image_training__ImageTrainingConfig_augment_set)
+    minimum_test_accuracy = property(_nn_native.image_training__ImageTrainingConfig_minimum_test_accuracy_get, _nn_native.image_training__ImageTrainingConfig_minimum_test_accuracy_set)
+    seed = property(_nn_native.image_training__ImageTrainingConfig_seed_get, _nn_native.image_training__ImageTrainingConfig_seed_set)
+
+    def __init__(self):
+        _nn_native.image_training__ImageTrainingConfig_swiginit(self, _nn_native.new_image_training__ImageTrainingConfig())
+    __swig_destroy__ = _nn_native.delete_image_training__ImageTrainingConfig
+
+# Register image_training__ImageTrainingConfig in _nn_native:
+_nn_native.image_training__ImageTrainingConfig_swigregister(image_training__ImageTrainingConfig)
+
+def image_training__TrainingCrossEntropy(logits, labels, classes, smoothing):
+    return _nn_native.image_training__TrainingCrossEntropy(logits, labels, classes, smoothing)
+
+def image_training__L2Penalty(params):
+    return _nn_native.image_training__L2Penalty(params)
+
+def image_training__WithL2(objective, params, l2):
+    return _nn_native.image_training__WithL2(objective, params, l2)
+
+def image_training__LoadCifar10(directory):
+    return _nn_native.image_training__LoadCifar10(directory)
+
+def resnet__NormalizedConv(p, state, name, input, out, kernel, cfg, stride, pad, relu):
+    return _nn_native.resnet__NormalizedConv(p, state, name, input, out, kernel, cfg, stride, pad, relu)
+class nn_components__LogitsModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    builder = property(_nn_native.nn_components__LogitsModel_builder_get, _nn_native.nn_components__LogitsModel_builder_set)
+
+    def call(self, params, state, images, training):
+        return _nn_native.nn_components__LogitsModel_call(self, params, state, images, training)
+
+    def __call__(self, params, state, images, training=False):
+        return self.call(params, state, images, training)
+
+
+    def __init__(self):
+        _nn_native.nn_components__LogitsModel_swiginit(self, _nn_native.new_nn_components__LogitsModel())
+    __swig_destroy__ = _nn_native.delete_nn_components__LogitsModel
+
+# Register nn_components__LogitsModel in _nn_native:
+_nn_native.nn_components__LogitsModel_swigregister(nn_components__LogitsModel)
+
+def resnet_demo__ResNetBlockChecks(bottleneck):
+    return _nn_native.resnet_demo__ResNetBlockChecks(bottleneck)
+
+def resnet_demo__FullResNetChecks(depth, parameter_count, state_count):
+    return _nn_native.resnet_demo__FullResNetChecks(depth, parameter_count, state_count)
+
+def resnet_demo__CompactResNet(depth):
+    return _nn_native.resnet_demo__CompactResNet(depth)
+
+def architecture__SinePixels(shape, scale, frequency):
+    return _nn_native.architecture__SinePixels(shape, scale, frequency)
+
+def architecture__GradientNormRange(p, objective, what):
+    return _nn_native.architecture__GradientNormRange(p, objective, what)
+
+def architecture__CountWithPrefix(p, prefix):
+    return _nn_native.architecture__CountWithPrefix(p, prefix)
+
+def architecture__RequireShape(x, expected, what):
+    return _nn_native.architecture__RequireShape(x, expected, what)
+
+def mobile_checks__Pattern(shape, scale, phase):
+    return _nn_native.mobile_checks__Pattern(shape, scale, phase)
+
+def mobile_checks__EndsWith(name, suffix):
+    return _nn_native.mobile_checks__EndsWith(name, suffix)
+
+def mobile_checks__ShiftBetas(p, se_biases=True):
+    return _nn_native.mobile_checks__ShiftBetas(p, se_biases)
+
+def mobile_checks__GradientNorms(p, objective):
+    return _nn_native.mobile_checks__GradientNorms(p, objective)
+
+def preact__Normalize(p, state, name, input, cfg):
+    return _nn_native.preact__Normalize(p, state, name, input, cfg)
+class dpn__DPNBlockOutputsVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.dpn__DPNBlockOutputsVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.dpn__DPNBlockOutputsVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.dpn__DPNBlockOutputsVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.dpn__DPNBlockOutputsVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_empty(self)
+
+    def size(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.dpn__DPNBlockOutputsVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_begin(self)
+
+    def end(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_rend(self)
+
+    def clear(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.dpn__DPNBlockOutputsVector_swiginit(self, _nn_native.new_dpn__DPNBlockOutputsVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.dpn__DPNBlockOutputsVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_front(self)
+
+    def back(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.dpn__DPNBlockOutputsVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.dpn__DPNBlockOutputsVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.dpn__DPNBlockOutputsVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_dpn__DPNBlockOutputsVector
+
+# Register dpn__DPNBlockOutputsVector in _nn_native:
+_nn_native.dpn__DPNBlockOutputsVector_swigregister(dpn__DPNBlockOutputsVector)
+class dpn__DPNBlockOutputsVectorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_empty(self)
+
+    def size(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_begin(self)
+
+    def end(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_rend(self)
+
+    def clear(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.dpn__DPNBlockOutputsVectorVector_swiginit(self, _nn_native.new_dpn__DPNBlockOutputsVectorVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_front(self)
+
+    def back(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.dpn__DPNBlockOutputsVectorVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_dpn__DPNBlockOutputsVectorVector
+
+# Register dpn__DPNBlockOutputsVectorVector in _nn_native:
+_nn_native.dpn__DPNBlockOutputsVectorVector_swigregister(dpn__DPNBlockOutputsVectorVector)
+
+def dpn__ChannelSlice(x, start, count):
+    return _nn_native.dpn__ChannelSlice(x, start, count)
+class mobilenet__MobileLayerVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.mobilenet__MobileLayerVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.mobilenet__MobileLayerVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.mobilenet__MobileLayerVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.mobilenet__MobileLayerVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.mobilenet__MobileLayerVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.mobilenet__MobileLayerVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.mobilenet__MobileLayerVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.mobilenet__MobileLayerVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.mobilenet__MobileLayerVector_empty(self)
+
+    def size(self):
+        return _nn_native.mobilenet__MobileLayerVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.mobilenet__MobileLayerVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.mobilenet__MobileLayerVector_begin(self)
+
+    def end(self):
+        return _nn_native.mobilenet__MobileLayerVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.mobilenet__MobileLayerVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.mobilenet__MobileLayerVector_rend(self)
+
+    def clear(self):
+        return _nn_native.mobilenet__MobileLayerVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.mobilenet__MobileLayerVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.mobilenet__MobileLayerVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.mobilenet__MobileLayerVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.mobilenet__MobileLayerVector_swiginit(self, _nn_native.new_mobilenet__MobileLayerVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.mobilenet__MobileLayerVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.mobilenet__MobileLayerVector_front(self)
+
+    def back(self):
+        return _nn_native.mobilenet__MobileLayerVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.mobilenet__MobileLayerVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.mobilenet__MobileLayerVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.mobilenet__MobileLayerVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.mobilenet__MobileLayerVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.mobilenet__MobileLayerVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_mobilenet__MobileLayerVector
+
+# Register mobilenet__MobileLayerVector in _nn_native:
+_nn_native.mobilenet__MobileLayerVector_swigregister(mobilenet__MobileLayerVector)
+class mobilenet__MobileNetV3BlockVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.mobilenet__MobileNetV3BlockVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.mobilenet__MobileNetV3BlockVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.mobilenet__MobileNetV3BlockVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_empty(self)
+
+    def size(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_begin(self)
+
+    def end(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_rend(self)
+
+    def clear(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.mobilenet__MobileNetV3BlockVector_swiginit(self, _nn_native.new_mobilenet__MobileNetV3BlockVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_front(self)
+
+    def back(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.mobilenet__MobileNetV3BlockVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_mobilenet__MobileNetV3BlockVector
+
+# Register mobilenet__MobileNetV3BlockVector in _nn_native:
+_nn_native.mobilenet__MobileNetV3BlockVector_swigregister(mobilenet__MobileNetV3BlockVector)
+
+def condensenet__BNReLU(c, name, x):
+    return _nn_native.condensenet__BNReLU(c, name, x)
+class condensenet__CondenseContextHandle(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    layers = property(_nn_native.condensenet__CondenseContextHandle_layers_get, _nn_native.condensenet__CondenseContextHandle_layers_set)
+    context = property(_nn_native.condensenet__CondenseContextHandle_context_get, _nn_native.condensenet__CondenseContextHandle_context_set)
+
+    def __init__(self, p, state, training, momentum=.9, progress=0):
+        _nn_native.condensenet__CondenseContextHandle_swiginit(self, _nn_native.new_condensenet__CondenseContextHandle(p, state, training, momentum, progress))
+
+    def get(self):
+        return _nn_native.condensenet__CondenseContextHandle_get(self)
+    __swig_destroy__ = _nn_native.delete_condensenet__CondenseContextHandle
+
+# Register condensenet__CondenseContextHandle in _nn_native:
+_nn_native.condensenet__CondenseContextHandle_swigregister(condensenet__CondenseContextHandle)
+
+def condensenet__LearnedGroupConvHandle(handle, name, x, outputs, groups, condense):
+    return _nn_native.condensenet__LearnedGroupConvHandle(handle, name, x, outputs, groups, condense)
+
+def ghostnet__PadSpatial(x, pad):
+    return _nn_native.ghostnet__PadSpatial(x, pad)
+
+def regnet__ConvBN(c, name, x, out, kernel, stride, groups, relu):
+    return _nn_native.regnet__ConvBN(c, name, x, out, kernel, stride, groups, relu)
+
+def regnet__Block(c, name, x, out, stride, group_width, se):
+    return _nn_native.regnet__Block(c, name, x, out, stride, group_width, se)
+class shufflenet__ShuffleContextHandle(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    layers = property(_nn_native.shufflenet__ShuffleContextHandle_layers_get, _nn_native.shufflenet__ShuffleContextHandle_layers_set)
+    context = property(_nn_native.shufflenet__ShuffleContextHandle_context_get, _nn_native.shufflenet__ShuffleContextHandle_context_set)
+
+    def __init__(self, p, state, training, momentum=.9, update_stats=True, record_layers=False):
+        _nn_native.shufflenet__ShuffleContextHandle_swiginit(self, _nn_native.new_shufflenet__ShuffleContextHandle(p, state, training, momentum, update_stats, record_layers))
+
+    def get(self):
+        return _nn_native.shufflenet__ShuffleContextHandle_get(self)
+
+    def layer_count(self):
+        return _nn_native.shufflenet__ShuffleContextHandle_layer_count(self)
+
+    def layer_shape(self, index):
+        return _nn_native.shufflenet__ShuffleContextHandle_layer_shape(self, index)
+
+    def layer_cost(self, index):
+        return _nn_native.shufflenet__ShuffleContextHandle_layer_cost(self, index)
+    __swig_destroy__ = _nn_native.delete_shufflenet__ShuffleContextHandle
+
+# Register shufflenet__ShuffleContextHandle in _nn_native:
+_nn_native.shufflenet__ShuffleContextHandle_swigregister(shufflenet__ShuffleContextHandle)
+class mnist__Metrics(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    loss = property(_nn_native.mnist__Metrics_loss_get, _nn_native.mnist__Metrics_loss_set)
+    accuracy = property(_nn_native.mnist__Metrics_accuracy_get, _nn_native.mnist__Metrics_accuracy_set)
+    confusion = property(_nn_native.mnist__Metrics_confusion_get, _nn_native.mnist__Metrics_confusion_set)
+
+    def __init__(self):
+        _nn_native.mnist__Metrics_swiginit(self, _nn_native.new_mnist__Metrics())
+    __swig_destroy__ = _nn_native.delete_mnist__Metrics
+
+# Register mnist__Metrics in _nn_native:
+_nn_native.mnist__Metrics_swigregister(mnist__Metrics)
+
+def alexnet_checks__BuildingBlockChecks():
+    return _nn_native.alexnet_checks__BuildingBlockChecks()
+
+def alexnet_checks__FullArchitectureChecks():
+    return _nn_native.alexnet_checks__FullArchitectureChecks()
+
+def alexnet_checks__CompactConfig():
+    return _nn_native.alexnet_checks__CompactConfig()
+
+def alexnet_checks__DropoutChecks():
+    return _nn_native.alexnet_checks__DropoutChecks()
+
+def xception_checks__SeparableActivationChecks():
+    return _nn_native.xception_checks__SeparableActivationChecks()
+
+def xception_checks__FullArchitectureChecks():
+    return _nn_native.xception_checks__FullArchitectureChecks()
+
+def densenet_checks__FeatureReuseChecks():
+    return _nn_native.densenet_checks__FeatureReuseChecks()
+
+def densenet_checks__TransitionCheck():
+    return _nn_native.densenet_checks__TransitionCheck()
+
+def densenet_checks__FullChecks(cifar):
+    return _nn_native.densenet_checks__FullChecks(cifar)
+
+def ghostnet_checks__ModuleChecks():
+    return _nn_native.ghostnet_checks__ModuleChecks()
+
+def ghostnet_checks__CostChecks():
+    return _nn_native.ghostnet_checks__CostChecks()
+
+def ghostnet_checks__GradientChecks():
+    return _nn_native.ghostnet_checks__GradientChecks()
+
+def mobilenet_v2_checks__ManifoldChecks():
+    return _nn_native.mobilenet_v2_checks__ManifoldChecks()
+
+def mobilenet_v2_checks__BlockChecks():
+    return _nn_native.mobilenet_v2_checks__BlockChecks()
+
+def mobilenet_v2_checks__CostChecks():
+    return _nn_native.mobilenet_v2_checks__CostChecks()
+
+def mobilenet_v2_checks__GradientChecks():
+    return _nn_native.mobilenet_v2_checks__GradientChecks()
+
+def mnasnet_checks__BlockStringChecks():
+    return _nn_native.mnasnet_checks__BlockStringChecks()
+
+def mnasnet_checks__CostChecks():
+    return _nn_native.mnasnet_checks__CostChecks()
+
+def mnasnet_checks__GradientChecks():
+    return _nn_native.mnasnet_checks__GradientChecks()
+
+def convnext_checks__BlockChecks():
+    return _nn_native.convnext_checks__BlockChecks()
+
+def convnext_checks__CostChecks():
+    return _nn_native.convnext_checks__CostChecks()
+
+def convnext_checks__GradientChecks():
+    return _nn_native.convnext_checks__GradientChecks()
+
+def efficientnet_checks__CostChecks():
+    return _nn_native.efficientnet_checks__CostChecks()
+
+def efficientnet_checks__DropConnectChecks():
+    return _nn_native.efficientnet_checks__DropConnectChecks()
+
+def efficientnet_checks__GradientChecks():
+    return _nn_native.efficientnet_checks__GradientChecks()
+
+def efficientnet_v2_checks__CostChecks():
+    return _nn_native.efficientnet_v2_checks__CostChecks()
+
+def efficientnet_v2_checks__FusedChecks():
+    return _nn_native.efficientnet_v2_checks__FusedChecks()
+
+def efficientnet_v2_checks__GradientChecks():
+    return _nn_native.efficientnet_v2_checks__GradientChecks()
+
+def preactivation_resnet_checks__IdentityChecks():
+    return _nn_native.preactivation_resnet_checks__IdentityChecks()
+
+def preactivation_resnet_checks__NonzeroResidualCheck():
+    return _nn_native.preactivation_resnet_checks__NonzeroResidualCheck()
+
+def preactivation_resnet_checks__FullChecks(depth, parameters, state_parameters):
+    return _nn_native.preactivation_resnet_checks__FullChecks(depth, parameters, state_parameters)
+
+def pyramidnet_checks__WidthChecks():
+    return _nn_native.pyramidnet_checks__WidthChecks()
+
+def pyramidnet_checks__UnitChecks():
+    return _nn_native.pyramidnet_checks__UnitChecks()
+
+def pyramidnet_checks__FullChecks():
+    return _nn_native.pyramidnet_checks__FullChecks()
+
+def res2net_checks__ScaleChecks(scale, stage, stride):
+    return _nn_native.res2net_checks__ScaleChecks(scale, stage, stride)
+
+def res2net_checks__FullChecks():
+    return _nn_native.res2net_checks__FullChecks()
+
+def resnext_checks__AggregationChecks():
+    return _nn_native.resnext_checks__AggregationChecks()
+
+def resnext_checks__FullChecks():
+    return _nn_native.resnext_checks__FullChecks()
+
+def revnet_checks__InverseChecks():
+    return _nn_native.revnet_checks__InverseChecks()
+
+def revnet_checks__GradientChecks():
+    return _nn_native.revnet_checks__GradientChecks()
+
+def revnet_checks__MemoryChecks():
+    return _nn_native.revnet_checks__MemoryChecks()
+
+def revnet_checks__CountChecks():
+    return _nn_native.revnet_checks__CountChecks()
+
+def cbam_checks__ModuleChecks():
+    return _nn_native.cbam_checks__ModuleChecks()
+
+def cbam_checks__FullChecks():
+    return _nn_native.cbam_checks__FullChecks()
+
+def non_local_checks__BlockChecks():
+    return _nn_native.non_local_checks__BlockChecks()
+
+def non_local_checks__FullChecks():
+    return _nn_native.non_local_checks__FullChecks()
+
+def non_local_checks__UseNonLocal(cfg, update_stats=True, subsample=True):
+    return _nn_native.non_local_checks__UseNonLocal(cfg, update_stats, subsample)
+
+def octconv_checks__LayerChecks():
+    return _nn_native.octconv_checks__LayerChecks()
+
+def octconv_checks__CostChecks():
+    return _nn_native.octconv_checks__CostChecks()
+
+def octconv_checks__GradientChecks():
+    return _nn_native.octconv_checks__GradientChecks()
+
+def repvgg_checks__BlockChecks():
+    return _nn_native.repvgg_checks__BlockChecks()
+
+def repvgg_checks__NetworkChecks():
+    return _nn_native.repvgg_checks__NetworkChecks()
+
+def repvgg_checks__CostChecks():
+    return _nn_native.repvgg_checks__CostChecks()
+
+def repvgg_checks__GradientChecks():
+    return _nn_native.repvgg_checks__GradientChecks()
+
+def sknet_checks__UnitChecks():
+    return _nn_native.sknet_checks__UnitChecks()
+
+def sknet_checks__FullChecks():
+    return _nn_native.sknet_checks__FullChecks()
+
+def ae__Rows(d, rows):
+    return _nn_native.ae__Rows(d, rows)
+
+def ae__Find(arrays, name):
+    return _nn_native.ae__Find(arrays, name)
+
+def ae__MaxAbsDiff(a, b, count):
+    return _nn_native.ae__MaxAbsDiff(a, b, count)
+
+def ae__Mse(prediction, original):
+    return _nn_native.ae__Mse(prediction, original)
+
+def ae__PixelMean(fit):
+    return _nn_native.ae__PixelMean(fit)
+
+def ae__Constant(mean, n):
+    return _nn_native.ae__Constant(mean, n)
+
+def ae__Arrays(store):
+    return _nn_native.ae__Arrays(store)
+
+def ae__CheckGradients(store, gradients, finite, nonzero):
+    return _nn_native.ae__CheckGradients(store, gradients, finite, nonzero)
+
+def ae__Row(x, b):
+    return _nn_native.ae__Row(x, b)
+class ae__ConvAeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    conv1 = property(_nn_native.ae__ConvAeOutput_conv1_get, _nn_native.ae__ConvAeOutput_conv1_set)
+    pool1 = property(_nn_native.ae__ConvAeOutput_pool1_get, _nn_native.ae__ConvAeOutput_pool1_set)
+    conv2 = property(_nn_native.ae__ConvAeOutput_conv2_get, _nn_native.ae__ConvAeOutput_conv2_set)
+    code = property(_nn_native.ae__ConvAeOutput_code_get, _nn_native.ae__ConvAeOutput_code_set)
+    decoder1 = property(_nn_native.ae__ConvAeOutput_decoder1_get, _nn_native.ae__ConvAeOutput_decoder1_set)
+    reconstruction = property(_nn_native.ae__ConvAeOutput_reconstruction_get, _nn_native.ae__ConvAeOutput_reconstruction_set)
+
+    def __init__(self):
+        _nn_native.ae__ConvAeOutput_swiginit(self, _nn_native.new_ae__ConvAeOutput())
+    __swig_destroy__ = _nn_native.delete_ae__ConvAeOutput
+
+# Register ae__ConvAeOutput in _nn_native:
+_nn_native.ae__ConvAeOutput_swigregister(ae__ConvAeOutput)
+
+def ae__ConvAeDecode(p, code, decoder1=None):
+    return _nn_native.ae__ConvAeDecode(p, code, decoder1)
+
+def ae__ConvolutionalAutoencoder(p, image):
+    return _nn_native.ae__ConvolutionalAutoencoder(p, image)
+
+def ae__VaeReparameterize(mu, log_variance, epsilon):
+    return _nn_native.ae__VaeReparameterize(mu, log_variance, epsilon)
+
+def ae__VaeKl(mu, log_variance):
+    return _nn_native.ae__VaeKl(mu, log_variance)
+
+def ae__VaePixelNll(logits, target):
+    return _nn_native.ae__VaePixelNll(logits, target)
+class ae__VaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mu = property(_nn_native.ae__VaeOutput_mu_get, _nn_native.ae__VaeOutput_mu_set)
+    log_variance = property(_nn_native.ae__VaeOutput_log_variance_get, _nn_native.ae__VaeOutput_log_variance_set)
+    z = property(_nn_native.ae__VaeOutput_z_get, _nn_native.ae__VaeOutput_z_set)
+    logits = property(_nn_native.ae__VaeOutput_logits_get, _nn_native.ae__VaeOutput_logits_set)
+    probability = property(_nn_native.ae__VaeOutput_probability_get, _nn_native.ae__VaeOutput_probability_set)
+    reconstruction_nll = property(_nn_native.ae__VaeOutput_reconstruction_nll_get, _nn_native.ae__VaeOutput_reconstruction_nll_set)
+    kl = property(_nn_native.ae__VaeOutput_kl_get, _nn_native.ae__VaeOutput_kl_set)
+    loss = property(_nn_native.ae__VaeOutput_loss_get, _nn_native.ae__VaeOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.ae__VaeOutput_swiginit(self, _nn_native.new_ae__VaeOutput())
+    __swig_destroy__ = _nn_native.delete_ae__VaeOutput
+
+# Register ae__VaeOutput in _nn_native:
+_nn_native.ae__VaeOutput_swigregister(ae__VaeOutput)
+
+def ae__VaeDecodeLogits(p, z):
+    return _nn_native.ae__VaeDecodeLogits(p, z)
+
+def ae__VariationalAutoencoder(p, image, epsilon):
+    return _nn_native.ae__VariationalAutoencoder(p, image, epsilon)
+
+def ae__GaussianNoise(shape, samples, seed):
+    return _nn_native.ae__GaussianNoise(shape, samples, seed)
+class ae__VaeNoiseBank(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    standard = property(_nn_native.ae__VaeNoiseBank_standard_get, _nn_native.ae__VaeNoiseBank_standard_set)
+    epsilon = property(_nn_native.ae__VaeNoiseBank_epsilon_get, _nn_native.ae__VaeNoiseBank_epsilon_set)
+
+    def __init__(self):
+        _nn_native.ae__VaeNoiseBank_swiginit(self, _nn_native.new_ae__VaeNoiseBank())
+    __swig_destroy__ = _nn_native.delete_ae__VaeNoiseBank
+
+# Register ae__VaeNoiseBank in _nn_native:
+_nn_native.ae__VaeNoiseBank_swigregister(ae__VaeNoiseBank)
+
+def ae__VaeNoise(n, samples, seed):
+    return _nn_native.ae__VaeNoise(n, samples, seed)
+
+def ae__VaeNoiseAt(bank, k):
+    return _nn_native.ae__VaeNoiseAt(bank, k)
+
+def ae__Flatten(images):
+    return _nn_native.ae__Flatten(images)
+class ae__DenseAeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    code = property(_nn_native.ae__DenseAeOutput_code_get, _nn_native.ae__DenseAeOutput_code_set)
+    reconstruction = property(_nn_native.ae__DenseAeOutput_reconstruction_get, _nn_native.ae__DenseAeOutput_reconstruction_set)
+
+    def __init__(self):
+        _nn_native.ae__DenseAeOutput_swiginit(self, _nn_native.new_ae__DenseAeOutput())
+    __swig_destroy__ = _nn_native.delete_ae__DenseAeOutput
+
+# Register ae__DenseAeOutput in _nn_native:
+_nn_native.ae__DenseAeOutput_swigregister(ae__DenseAeOutput)
+
+def ae__UndercompleteAutoencoder(p, input, features=784, latent=32):
+    return _nn_native.ae__UndercompleteAutoencoder(p, input, features, latent)
+
+def ae__ReconstructionMse(prediction, original):
+    return _nn_native.ae__ReconstructionMse(prediction, original)
+
+def ae__CorruptForDenoising(clean, standard_noise, sigma):
+    return _nn_native.ae__CorruptForDenoising(clean, standard_noise, sigma)
+
+def ae__FirstOfDigit(labels, digit):
+    return _nn_native.ae__FirstOfDigit(labels, digit)
+
+def ae__SameArrays(a, b):
+    return _nn_native.ae__SameArrays(a, b)
+class ae__SaliencyDataVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.ae__SaliencyDataVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.ae__SaliencyDataVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.ae__SaliencyDataVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.ae__SaliencyDataVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.ae__SaliencyDataVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.ae__SaliencyDataVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.ae__SaliencyDataVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.ae__SaliencyDataVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.ae__SaliencyDataVector_empty(self)
+
+    def size(self):
+        return _nn_native.ae__SaliencyDataVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.ae__SaliencyDataVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.ae__SaliencyDataVector_begin(self)
+
+    def end(self):
+        return _nn_native.ae__SaliencyDataVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.ae__SaliencyDataVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.ae__SaliencyDataVector_rend(self)
+
+    def clear(self):
+        return _nn_native.ae__SaliencyDataVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.ae__SaliencyDataVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.ae__SaliencyDataVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.ae__SaliencyDataVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.ae__SaliencyDataVector_swiginit(self, _nn_native.new_ae__SaliencyDataVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.ae__SaliencyDataVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.ae__SaliencyDataVector_front(self)
+
+    def back(self):
+        return _nn_native.ae__SaliencyDataVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.ae__SaliencyDataVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.ae__SaliencyDataVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.ae__SaliencyDataVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.ae__SaliencyDataVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.ae__SaliencyDataVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_ae__SaliencyDataVector
+
+# Register ae__SaliencyDataVector in _nn_native:
+_nn_native.ae__SaliencyDataVector_swigregister(ae__SaliencyDataVector)
+
+def ae__CompetitiveMask(scores, lifetime, k=8):
+    return _nn_native.ae__CompetitiveMask(scores, lifetime, k)
+class ae__CompetitiveAutoencoderOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    raw = property(_nn_native.ae__CompetitiveAutoencoderOutput_raw_get, _nn_native.ae__CompetitiveAutoencoderOutput_raw_set)
+    mask = property(_nn_native.ae__CompetitiveAutoencoderOutput_mask_get, _nn_native.ae__CompetitiveAutoencoderOutput_mask_set)
+    training_code = property(_nn_native.ae__CompetitiveAutoencoderOutput_training_code_get, _nn_native.ae__CompetitiveAutoencoderOutput_training_code_set)
+    code = property(_nn_native.ae__CompetitiveAutoencoderOutput_code_get, _nn_native.ae__CompetitiveAutoencoderOutput_code_set)
+    training_reconstruction = property(_nn_native.ae__CompetitiveAutoencoderOutput_training_reconstruction_get, _nn_native.ae__CompetitiveAutoencoderOutput_training_reconstruction_set)
+    reconstruction = property(_nn_native.ae__CompetitiveAutoencoderOutput_reconstruction_get, _nn_native.ae__CompetitiveAutoencoderOutput_reconstruction_set)
+
+    def __init__(self):
+        _nn_native.ae__CompetitiveAutoencoderOutput_swiginit(self, _nn_native.new_ae__CompetitiveAutoencoderOutput())
+    __swig_destroy__ = _nn_native.delete_ae__CompetitiveAutoencoderOutput
+
+# Register ae__CompetitiveAutoencoderOutput in _nn_native:
+_nn_native.ae__CompetitiveAutoencoderOutput_swigregister(ae__CompetitiveAutoencoderOutput)
+
+def ae__CompetitiveAutoencoder(p, input, lifetime, plain=False):
+    return _nn_native.ae__CompetitiveAutoencoder(p, input, lifetime, plain)
+
+def ae__CheckCompetitiveSupport(probe, lifetime, plain):
+    return _nn_native.ae__CheckCompetitiveSupport(probe, lifetime, plain)
+
+def ae__CompetitiveChecks():
+    return _nn_native.ae__CompetitiveChecks()
+
+def ae__SameTensorBits(first, second):
+    return _nn_native.ae__SameTensorBits(first, second)
+
+def ae__LoadSaliency(root):
+    return _nn_native.ae__LoadSaliency(root)
+
+def ae__SaveData(file, pools):
+    return _nn_native.ae__SaveData(file, pools)
+class seg__SegmentationData(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    count = property(_nn_native.seg__SegmentationData_count_get, _nn_native.seg__SegmentationData_count_set)
+    height = property(_nn_native.seg__SegmentationData_height_get, _nn_native.seg__SegmentationData_height_set)
+    width = property(_nn_native.seg__SegmentationData_width_get, _nn_native.seg__SegmentationData_width_set)
+    classes = property(_nn_native.seg__SegmentationData_classes_get, _nn_native.seg__SegmentationData_classes_set)
+    images = property(_nn_native.seg__SegmentationData_images_get, _nn_native.seg__SegmentationData_images_set)
+    labels = property(_nn_native.seg__SegmentationData_labels_get, _nn_native.seg__SegmentationData_labels_set)
+
+    def __init__(self):
+        _nn_native.seg__SegmentationData_swiginit(self, _nn_native.new_seg__SegmentationData())
+    __swig_destroy__ = _nn_native.delete_seg__SegmentationData
+
+# Register seg__SegmentationData in _nn_native:
+_nn_native.seg__SegmentationData_swigregister(seg__SegmentationData)
+
+def seg__SegmentationShapes(count, size, seed):
+    return _nn_native.seg__SegmentationShapes(count, size, seed)
+
+def seg__SegmentationBatch(data, rows):
+    return _nn_native.seg__SegmentationBatch(data, rows)
+
+def seg__SegmentationLossChecks():
+    return _nn_native.seg__SegmentationLossChecks()
+class seg__SegmentationModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    logits = property(_nn_native.seg__SegmentationModel_logits_get, _nn_native.seg__SegmentationModel_logits_set)
+    auxiliary = property(_nn_native.seg__SegmentationModel_auxiliary_get, _nn_native.seg__SegmentationModel_auxiliary_set)
+    auxiliary_weight = property(_nn_native.seg__SegmentationModel_auxiliary_weight_get, _nn_native.seg__SegmentationModel_auxiliary_weight_set)
+
+    def __init__(self):
+        _nn_native.seg__SegmentationModel_swiginit(self, _nn_native.new_seg__SegmentationModel())
+    __swig_destroy__ = _nn_native.delete_seg__SegmentationModel
+
+# Register seg__SegmentationModel in _nn_native:
+_nn_native.seg__SegmentationModel_swigregister(seg__SegmentationModel)
+class seg__SegmentationConfig(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    name = property(_nn_native.seg__SegmentationConfig_name_get, _nn_native.seg__SegmentationConfig_name_set)
+    warm_start = property(_nn_native.seg__SegmentationConfig_warm_start_get, _nn_native.seg__SegmentationConfig_warm_start_set)
+    epochs = property(_nn_native.seg__SegmentationConfig_epochs_get, _nn_native.seg__SegmentationConfig_epochs_set)
+    batch = property(_nn_native.seg__SegmentationConfig_batch_get, _nn_native.seg__SegmentationConfig_batch_set)
+    learning_rate = property(_nn_native.seg__SegmentationConfig_learning_rate_get, _nn_native.seg__SegmentationConfig_learning_rate_set)
+    l2 = property(_nn_native.seg__SegmentationConfig_l2_get, _nn_native.seg__SegmentationConfig_l2_set)
+    minimum_test_iou = property(_nn_native.seg__SegmentationConfig_minimum_test_iou_get, _nn_native.seg__SegmentationConfig_minimum_test_iou_set)
+    accuracy = property(_nn_native.seg__SegmentationConfig_accuracy_get, _nn_native.seg__SegmentationConfig_accuracy_set)
+    seed = property(_nn_native.seg__SegmentationConfig_seed_get, _nn_native.seg__SegmentationConfig_seed_set)
+
+    def __init__(self):
+        _nn_native.seg__SegmentationConfig_swiginit(self, _nn_native.new_seg__SegmentationConfig())
+    __swig_destroy__ = _nn_native.delete_seg__SegmentationConfig
+
+# Register seg__SegmentationConfig in _nn_native:
+_nn_native.seg__SegmentationConfig_swigregister(seg__SegmentationConfig)
+class seg__SegmentationMetrics(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mean_iou = property(_nn_native.seg__SegmentationMetrics_mean_iou_get, _nn_native.seg__SegmentationMetrics_mean_iou_set)
+    pixel_accuracy = property(_nn_native.seg__SegmentationMetrics_pixel_accuracy_get, _nn_native.seg__SegmentationMetrics_pixel_accuracy_set)
+    confusion = property(_nn_native.seg__SegmentationMetrics_confusion_get, _nn_native.seg__SegmentationMetrics_confusion_set)
+
+    def __init__(self):
+        _nn_native.seg__SegmentationMetrics_swiginit(self, _nn_native.new_seg__SegmentationMetrics())
+    __swig_destroy__ = _nn_native.delete_seg__SegmentationMetrics
+
+# Register seg__SegmentationMetrics in _nn_native:
+_nn_native.seg__SegmentationMetrics_swigregister(seg__SegmentationMetrics)
+
+def seg__CheckSegmentationDemonstration(cfg, losses, result):
+    return _nn_native.seg__CheckSegmentationDemonstration(cfg, losses, result)
+
+def seg__SegmentationTrainingChecks():
+    return _nn_native.seg__SegmentationTrainingChecks()
+
+def seg__ConfusionMeanIou(confusion, classes):
+    return _nn_native.seg__ConfusionMeanIou(confusion, classes)
+
+def fcn__SpatialCrop(source, reference, offset=0):
+    return _nn_native.fcn__SpatialCrop(source, reference, offset)
+
+def fcn__BilinearKernel(stride, channels):
+    return _nn_native.fcn__BilinearKernel(stride, channels)
+
+def fcn__BilinearDeconvolution(source, stride, channels, valid=False):
+    return _nn_native.fcn__BilinearDeconvolution(source, stride, channels, valid)
+
+def unet__CenterCropTo(source, reference):
+    return _nn_native.unet__CenterCropTo(source, reference)
+
+def unet__ConvPair(*args):
+    return _nn_native.unet__ConvPair(*args)
+
+def unet__UpConv(p, name, x, out):
+    return _nn_native.unet__UpConv(p, name, x, out)
+class segnet__IndexedPoolVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.segnet__IndexedPoolVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.segnet__IndexedPoolVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.segnet__IndexedPoolVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.segnet__IndexedPoolVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.segnet__IndexedPoolVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.segnet__IndexedPoolVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.segnet__IndexedPoolVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.segnet__IndexedPoolVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.segnet__IndexedPoolVector_empty(self)
+
+    def size(self):
+        return _nn_native.segnet__IndexedPoolVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.segnet__IndexedPoolVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.segnet__IndexedPoolVector_begin(self)
+
+    def end(self):
+        return _nn_native.segnet__IndexedPoolVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.segnet__IndexedPoolVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.segnet__IndexedPoolVector_rend(self)
+
+    def clear(self):
+        return _nn_native.segnet__IndexedPoolVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.segnet__IndexedPoolVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.segnet__IndexedPoolVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.segnet__IndexedPoolVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.segnet__IndexedPoolVector_swiginit(self, _nn_native.new_segnet__IndexedPoolVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.segnet__IndexedPoolVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.segnet__IndexedPoolVector_front(self)
+
+    def back(self):
+        return _nn_native.segnet__IndexedPoolVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.segnet__IndexedPoolVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.segnet__IndexedPoolVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.segnet__IndexedPoolVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.segnet__IndexedPoolVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.segnet__IndexedPoolVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_segnet__IndexedPoolVector
+
+# Register segnet__IndexedPoolVector in _nn_native:
+_nn_native.segnet__IndexedPoolVector_swigregister(segnet__IndexedPoolVector)
+class segnet__IndexedPool(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    values = property(_nn_native.segnet__IndexedPool_values_get, _nn_native.segnet__IndexedPool_values_set)
+    indices = property(_nn_native.segnet__IndexedPool_indices_get, _nn_native.segnet__IndexedPool_indices_set)
+    shape = property(_nn_native.segnet__IndexedPool_shape_get, _nn_native.segnet__IndexedPool_shape_set)
+
+    def __init__(self):
+        _nn_native.segnet__IndexedPool_swiginit(self, _nn_native.new_segnet__IndexedPool())
+    __swig_destroy__ = _nn_native.delete_segnet__IndexedPool
+
+# Register segnet__IndexedPool in _nn_native:
+_nn_native.segnet__IndexedPool_swigregister(segnet__IndexedPool)
+
+def segnet__PoolWithIndices(input):
+    return _nn_native.segnet__PoolWithIndices(input)
+
+def segnet__IndexUnpool(values, record):
+    return _nn_native.segnet__IndexUnpool(values, record)
+class segnet__SegNetOutputs(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    logits = property(_nn_native.segnet__SegNetOutputs_logits_get, _nn_native.segnet__SegNetOutputs_logits_set)
+    pooling = property(_nn_native.segnet__SegNetOutputs_pooling_get, _nn_native.segnet__SegNetOutputs_pooling_set)
+    unpooled = property(_nn_native.segnet__SegNetOutputs_unpooled_get, _nn_native.segnet__SegNetOutputs_unpooled_set)
+
+    def __init__(self):
+        _nn_native.segnet__SegNetOutputs_swiginit(self, _nn_native.new_segnet__SegNetOutputs())
+    __swig_destroy__ = _nn_native.delete_segnet__SegNetOutputs
+
+# Register segnet__SegNetOutputs in _nn_native:
+_nn_native.segnet__SegNetOutputs_swigregister(segnet__SegNetOutputs)
+
+def segnet__SegNet(*args):
+    return _nn_native.segnet__SegNet(*args)
+
+def deeplab__ResizeLike(x, like):
+    return _nn_native.deeplab__ResizeLike(x, like)
+
+def seg__SquaredDistance1D(f):
+    return _nn_native.seg__SquaredDistance1D(f)
+
+def seg__SegmentationDirectory(name):
+    return _nn_native.seg__SegmentationDirectory(name)
+
+def seg__SegmentationConfusion(logits, labels, classes):
+    return _nn_native.seg__SegmentationConfusion(logits, labels, classes)
+
+def seg__SegmentationPreviewLogits(logits, data, filename):
+    return _nn_native.seg__SegmentationPreviewLogits(logits, data, filename)
+
+def seg__SquaredDistance2D(seeds, height, width):
+    return _nn_native.seg__SquaredDistance2D(seeds, height, width)
+
+def deeplab__AtrousScorePyramid(p, name, features, classes, rates):
+    return _nn_native.deeplab__AtrousScorePyramid(p, name, features, classes, rates)
+class sentence__SentenceDataVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.sentence__SentenceDataVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.sentence__SentenceDataVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.sentence__SentenceDataVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.sentence__SentenceDataVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.sentence__SentenceDataVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.sentence__SentenceDataVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.sentence__SentenceDataVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.sentence__SentenceDataVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.sentence__SentenceDataVector_empty(self)
+
+    def size(self):
+        return _nn_native.sentence__SentenceDataVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.sentence__SentenceDataVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.sentence__SentenceDataVector_begin(self)
+
+    def end(self):
+        return _nn_native.sentence__SentenceDataVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.sentence__SentenceDataVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.sentence__SentenceDataVector_rend(self)
+
+    def clear(self):
+        return _nn_native.sentence__SentenceDataVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.sentence__SentenceDataVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.sentence__SentenceDataVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.sentence__SentenceDataVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.sentence__SentenceDataVector_swiginit(self, _nn_native.new_sentence__SentenceDataVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.sentence__SentenceDataVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.sentence__SentenceDataVector_front(self)
+
+    def back(self):
+        return _nn_native.sentence__SentenceDataVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.sentence__SentenceDataVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.sentence__SentenceDataVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.sentence__SentenceDataVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.sentence__SentenceDataVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.sentence__SentenceDataVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_sentence__SentenceDataVector
+
+# Register sentence__SentenceDataVector in _nn_native:
+_nn_native.sentence__SentenceDataVector_swigregister(sentence__SentenceDataVector)
+class sentence__KimAdadelta(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, p):
+        _nn_native.sentence__KimAdadelta_swiginit(self, _nn_native.new_sentence__KimAdadelta(p))
+
+    def Step(self, gradients):
+        return _nn_native.sentence__KimAdadelta_Step(self, gradients)
+    slots = property(_nn_native.sentence__KimAdadelta_slots_get)
+    __swig_destroy__ = _nn_native.delete_sentence__KimAdadelta
+
+# Register sentence__KimAdadelta in _nn_native:
+_nn_native.sentence__KimAdadelta_swigregister(sentence__KimAdadelta)
+
+def replay__Get(arrays, key):
+    return _nn_native.replay__Get(arrays, key)
+
+def replay__MaxAbsDiff(a, b):
+    return _nn_native.replay__MaxAbsDiff(a, b)
+
+def replay__Adam():
+    return _nn_native.replay__Adam()
+
+def sentence__Select(x, rows):
+    return _nn_native.sentence__Select(x, rows)
+
+def sentence__Range(begin, end):
+    return _nn_native.sentence__Range(begin, end)
+
+def sentence__SquaredNorms(gradients):
+    return _nn_native.sentence__SquaredNorms(gradients)
+
+def sentence__SentenceCE(logits, labels):
+    return _nn_native.sentence__SentenceCE(logits, labels)
+
+def sentence__Npz(a, key):
+    return _nn_native.sentence__Npz(a, key)
+
+def sentence__SaveStores(path, p, s=None):
+    return _nn_native.sentence__SaveStores(path, p, s)
+
+def sentence__RestoreStores(path, p, s=None):
+    return _nn_native.sentence__RestoreStores(path, p, s)
+
+def sentence__SentenceMetrics(name, labels, logits):
+    return _nn_native.sentence__SentenceMetrics(name, labels, logits)
+
+def sentence__Confusion(labels_tensor, predictions, classes):
+    return _nn_native.sentence__Confusion(labels_tensor, predictions, classes)
+
+def sentence__PrintConfusion(name, cells, classes):
+    return _nn_native.sentence__PrintConfusion(name, cells, classes)
+
+def sentence__Positive(logits):
+    return _nn_native.sentence__Positive(logits)
+class sentence__SentenceModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    parameters = property(_nn_native.sentence__SentenceModel_parameters_get)
+    config = property(_nn_native.sentence__SentenceModel_config_get, _nn_native.sentence__SentenceModel_config_set)
+    dropout = property(_nn_native.sentence__SentenceModel_dropout_get)
+
+    def __init__(self, c, training=True):
+        _nn_native.sentence__SentenceModel_swiginit(self, _nn_native.new_sentence__SentenceModel(c, training))
+
+    def Forward(self, d, training):
+        return _nn_native.sentence__SentenceModel_Forward(self, d, training)
+
+    def Loss(self, d):
+        return _nn_native.sentence__SentenceModel_Loss(self, d)
+
+    def Predict(self, d):
+        return _nn_native.sentence__SentenceModel_Predict(self, d)
+
+    def PredictAll(self, d):
+        return _nn_native.sentence__SentenceModel_PredictAll(self, d)
+
+    def Save(self, path):
+        return _nn_native.sentence__SentenceModel_Save(self, path)
+
+    def Restore(self, path):
+        return _nn_native.sentence__SentenceModel_Restore(self, path)
+    __swig_destroy__ = _nn_native.delete_sentence__SentenceModel
+
+# Register sentence__SentenceModel in _nn_native:
+_nn_native.sentence__SentenceModel_swigregister(sentence__SentenceModel)
+class series__SeriesDataVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.series__SeriesDataVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.series__SeriesDataVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.series__SeriesDataVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.series__SeriesDataVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.series__SeriesDataVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.series__SeriesDataVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.series__SeriesDataVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.series__SeriesDataVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.series__SeriesDataVector_empty(self)
+
+    def size(self):
+        return _nn_native.series__SeriesDataVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.series__SeriesDataVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.series__SeriesDataVector_begin(self)
+
+    def end(self):
+        return _nn_native.series__SeriesDataVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.series__SeriesDataVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.series__SeriesDataVector_rend(self)
+
+    def clear(self):
+        return _nn_native.series__SeriesDataVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.series__SeriesDataVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.series__SeriesDataVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.series__SeriesDataVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.series__SeriesDataVector_swiginit(self, _nn_native.new_series__SeriesDataVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.series__SeriesDataVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.series__SeriesDataVector_front(self)
+
+    def back(self):
+        return _nn_native.series__SeriesDataVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.series__SeriesDataVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.series__SeriesDataVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.series__SeriesDataVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.series__SeriesDataVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.series__SeriesDataVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_series__SeriesDataVector
+
+# Register series__SeriesDataVector in _nn_native:
+_nn_native.series__SeriesDataVector_swigregister(series__SeriesDataVector)
+class series__SeriesModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    parameters = property(_nn_native.series__SeriesModel_parameters_get)
+    state = property(_nn_native.series__SeriesModel_state_get)
+    config = property(_nn_native.series__SeriesModel_config_get, _nn_native.series__SeriesModel_config_set)
+
+    def __init__(self, *args):
+        _nn_native.series__SeriesModel_swiginit(self, _nn_native.new_series__SeriesModel(*args))
+
+    def Forward(self, d, mode):
+        return _nn_native.series__SeriesModel_Forward(self, d, mode)
+
+    def CalibrateFit(self, fitting):
+        return _nn_native.series__SeriesModel_CalibrateFit(self, fitting)
+
+    def Loss(self, d):
+        return _nn_native.series__SeriesModel_Loss(self, d)
+
+    def Predict(self, d):
+        return _nn_native.series__SeriesModel_Predict(self, d)
+
+    def Save(self, path):
+        return _nn_native.series__SeriesModel_Save(self, path)
+
+    def Restore(self, path):
+        return _nn_native.series__SeriesModel_Restore(self, path)
+    __swig_destroy__ = _nn_native.delete_series__SeriesModel
+
+# Register series__SeriesModel in _nn_native:
+_nn_native.series__SeriesModel_swigregister(series__SeriesModel)
+
+def series__SeriesMetrics(name, d, logits):
+    return _nn_native.series__SeriesMetrics(name, d, logits)
+class sensor__SensorModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    parameters = property(_nn_native.sensor__SensorModel_parameters_get)
+    state = property(_nn_native.sensor__SensorModel_state_get)
+    config = property(_nn_native.sensor__SensorModel_config_get, _nn_native.sensor__SensorModel_config_set)
+    weights = property(_nn_native.sensor__SensorModel_weights_get, _nn_native.sensor__SensorModel_weights_set)
+
+    def __init__(self, *args):
+        _nn_native.sensor__SensorModel_swiginit(self, _nn_native.new_sensor__SensorModel(*args))
+
+    def Logits(self, d):
+        return _nn_native.sensor__SensorModel_Logits(self, d)
+
+    def Loss(self, d):
+        return _nn_native.sensor__SensorModel_Loss(self, d)
+
+    def Predict(self, d):
+        return _nn_native.sensor__SensorModel_Predict(self, d)
+
+    def Save(self, path):
+        return _nn_native.sensor__SensorModel_Save(self, path)
+
+    def Restore(self, path):
+        return _nn_native.sensor__SensorModel_Restore(self, path)
+    __swig_destroy__ = _nn_native.delete_sensor__SensorModel
+
+# Register sensor__SensorModel in _nn_native:
+_nn_native.sensor__SensorModel_swigregister(sensor__SensorModel)
+
+def sensor__PrintSensor(name, logits, d, classes):
+    return _nn_native.sensor__PrintSensor(name, logits, d, classes)
+class charcnn__CharacterModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    parameters = property(_nn_native.charcnn__CharacterModel_parameters_get)
+    config = property(_nn_native.charcnn__CharacterModel_config_get, _nn_native.charcnn__CharacterModel_config_set)
+    dropout = property(_nn_native.charcnn__CharacterModel_dropout_get)
+
+    def __init__(self, *args):
+        _nn_native.charcnn__CharacterModel_swiginit(self, _nn_native.new_charcnn__CharacterModel(*args))
+
+    def Forward(self, d, training):
+        return _nn_native.charcnn__CharacterModel_Forward(self, d, training)
+
+    def Loss(self, d):
+        return _nn_native.charcnn__CharacterModel_Loss(self, d)
+
+    def Predict(self, d):
+        return _nn_native.charcnn__CharacterModel_Predict(self, d)
+
+    def Save(self, path):
+        return _nn_native.charcnn__CharacterModel_Save(self, path)
+
+    def Restore(self, path):
+        return _nn_native.charcnn__CharacterModel_Restore(self, path)
+    __swig_destroy__ = _nn_native.delete_charcnn__CharacterModel
+
+# Register charcnn__CharacterModel in _nn_native:
+_nn_native.charcnn__CharacterModel_swigregister(charcnn__CharacterModel)
+
+def charcnn__CharacterPredict(model, d):
+    return _nn_native.charcnn__CharacterPredict(model, d)
+class tcn__TcnModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    parameters = property(_nn_native.tcn__TcnModel_parameters_get)
+    state = property(_nn_native.tcn__TcnModel_state_get)
+    config = property(_nn_native.tcn__TcnModel_config_get, _nn_native.tcn__TcnModel_config_set)
+    dropout = property(_nn_native.tcn__TcnModel_dropout_get)
+
+    def __init__(self, *args):
+        _nn_native.tcn__TcnModel_swiginit(self, _nn_native.new_tcn__TcnModel(*args))
+
+    def Forward(self, d, training):
+        return _nn_native.tcn__TcnModel_Forward(self, d, training)
+
+    def Loss(self, d):
+        return _nn_native.tcn__TcnModel_Loss(self, d)
+
+    def Predict(self, d, all_times=False):
+        return _nn_native.tcn__TcnModel_Predict(self, d, all_times)
+
+    def Save(self, path):
+        return _nn_native.tcn__TcnModel_Save(self, path)
+
+    def Restore(self, path):
+        return _nn_native.tcn__TcnModel_Restore(self, path)
+    __swig_destroy__ = _nn_native.delete_tcn__TcnModel
+
+# Register tcn__TcnModel in _nn_native:
+_nn_native.tcn__TcnModel_swigregister(tcn__TcnModel)
+class wavestack__WaveDataVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.wavestack__WaveDataVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.wavestack__WaveDataVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.wavestack__WaveDataVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.wavestack__WaveDataVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.wavestack__WaveDataVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.wavestack__WaveDataVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.wavestack__WaveDataVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.wavestack__WaveDataVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.wavestack__WaveDataVector_empty(self)
+
+    def size(self):
+        return _nn_native.wavestack__WaveDataVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.wavestack__WaveDataVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.wavestack__WaveDataVector_begin(self)
+
+    def end(self):
+        return _nn_native.wavestack__WaveDataVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.wavestack__WaveDataVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.wavestack__WaveDataVector_rend(self)
+
+    def clear(self):
+        return _nn_native.wavestack__WaveDataVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.wavestack__WaveDataVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.wavestack__WaveDataVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.wavestack__WaveDataVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.wavestack__WaveDataVector_swiginit(self, _nn_native.new_wavestack__WaveDataVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.wavestack__WaveDataVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.wavestack__WaveDataVector_front(self)
+
+    def back(self):
+        return _nn_native.wavestack__WaveDataVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.wavestack__WaveDataVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.wavestack__WaveDataVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.wavestack__WaveDataVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.wavestack__WaveDataVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.wavestack__WaveDataVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_wavestack__WaveDataVector
+
+# Register wavestack__WaveDataVector in _nn_native:
+_nn_native.wavestack__WaveDataVector_swigregister(wavestack__WaveDataVector)
+
+def wavestack__MuLawEncode(sample):
+    return _nn_native.wavestack__MuLawEncode(sample)
+
+def wavestack__MuLawDecode(code):
+    return _nn_native.wavestack__MuLawDecode(code)
+class wavestack__WaveStackModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    parameters = property(_nn_native.wavestack__WaveStackModel_parameters_get)
+    config = property(_nn_native.wavestack__WaveStackModel_config_get, _nn_native.wavestack__WaveStackModel_config_set)
+    loss_start = property(_nn_native.wavestack__WaveStackModel_loss_start_get, _nn_native.wavestack__WaveStackModel_loss_start_set)
+
+    def __init__(self, *args):
+        _nn_native.wavestack__WaveStackModel_swiginit(self, _nn_native.new_wavestack__WaveStackModel(*args))
+
+    def Logits(self, codes):
+        return _nn_native.wavestack__WaveStackModel_Logits(self, codes)
+
+    def Gradients(self, d):
+        return _nn_native.wavestack__WaveStackModel_Gradients(self, d)
+
+    def Predict(self, input, next=False):
+        return _nn_native.wavestack__WaveStackModel_Predict(self, input, next)
+
+    def Save(self, path):
+        return _nn_native.wavestack__WaveStackModel_Save(self, path)
+
+    def Restore(self, path):
+        return _nn_native.wavestack__WaveStackModel_Restore(self, path)
+    __swig_destroy__ = _nn_native.delete_wavestack__WaveStackModel
+
+# Register wavestack__WaveStackModel in _nn_native:
+_nn_native.wavestack__WaveStackModel_swigregister(wavestack__WaveStackModel)
+class wavestack__WaveScore(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    nll = property(_nn_native.wavestack__WaveScore_nll_get, _nn_native.wavestack__WaveScore_nll_set)
+    mse = property(_nn_native.wavestack__WaveScore_mse_get, _nn_native.wavestack__WaveScore_mse_set)
+    exact = property(_nn_native.wavestack__WaveScore_exact_get, _nn_native.wavestack__WaveScore_exact_set)
+    samples = property(_nn_native.wavestack__WaveScore_samples_get, _nn_native.wavestack__WaveScore_samples_set)
+
+    def __init__(self):
+        _nn_native.wavestack__WaveScore_swiginit(self, _nn_native.new_wavestack__WaveScore())
+    __swig_destroy__ = _nn_native.delete_wavestack__WaveScore
+
+# Register wavestack__WaveScore in _nn_native:
+_nn_native.wavestack__WaveScore_swigregister(wavestack__WaveScore)
+
+def wavestack__WaveMetrics(name, logits, d):
+    return _nn_native.wavestack__WaveMetrics(name, logits, d)
+
+def wavestack__WavePriors(fit):
+    return _nn_native.wavestack__WavePriors(fit)
+
+def wavestack__WaveWrite(path, codes, row):
+    return _nn_native.wavestack__WaveWrite(path, codes, row)
+
+def wavestack__WaveGenerate(model, data, directory):
+    return _nn_native.wavestack__WaveGenerate(model, data, directory)
+
+def sal__F(t):
+    return _nn_native.sal__F(t)
+
+def sal__I(t):
+    return _nn_native.sal__I(t)
+
+def sal__FromF(v, s):
+    return _nn_native.sal__FromF(v, s)
+
+def sal__FromI(v):
+    return _nn_native.sal__FromI(v)
+
+def sal__Scalar(v):
+    return _nn_native.sal__Scalar(v)
+
+def sal__Pick(d, rows):
+    return _nn_native.sal__Pick(d, rows)
+
+def sal__Images(images):
+    return _nn_native.sal__Images(images)
+
+def sal__CheckTargets(classes, n):
+    return _nn_native.sal__CheckTargets(classes, n)
+class sal__SaliencyModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    parameters = property(_nn_native.sal__SaliencyModel_parameters_get)
+
+    def __init__(self, *args):
+        _nn_native.sal__SaliencyModel_swiginit(self, _nn_native.new_sal__SaliencyModel(*args))
+
+    def Forward(self, images):
+        return _nn_native.sal__SaliencyModel_Forward(self, images)
+
+    def Predict(self, *args):
+        return _nn_native.sal__SaliencyModel_Predict(self, *args)
+
+    def Gradient(self, *args):
+        return _nn_native.sal__SaliencyModel_Gradient(self, *args)
+
+    def Loss(self, d):
+        return _nn_native.sal__SaliencyModel_Loss(self, d)
+
+    def ParameterGradients(self, d):
+        return _nn_native.sal__SaliencyModel_ParameterGradients(self, d)
+
+    def ExportFile(self, file):
+        return _nn_native.sal__SaliencyModel_ExportFile(self, file)
+
+    def AssignNamed(self, weights):
+        return _nn_native.sal__SaliencyModel_AssignNamed(self, weights)
+    __swig_destroy__ = _nn_native.delete_sal__SaliencyModel
+
+# Register sal__SaliencyModel in _nn_native:
+_nn_native.sal__SaliencyModel_swigregister(sal__SaliencyModel)
+
+def sal__SaliencyPredict(model, d):
+    return _nn_native.sal__SaliencyPredict(model, d)
+
+def sal__SaliencyMetrics(name, d, logits):
+    return _nn_native.sal__SaliencyMetrics(name, d, logits)
+
+def sal__SaliencyByte(x):
+    return _nn_native.sal__SaliencyByte(x)
+class sal__Canvas(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    h = property(_nn_native.sal__Canvas_h_get, _nn_native.sal__Canvas_h_set)
+    w = property(_nn_native.sal__Canvas_w_get, _nn_native.sal__Canvas_w_set)
+    px = property(_nn_native.sal__Canvas_px_get, _nn_native.sal__Canvas_px_set)
+
+    def __init__(self, height, width, fill=220):
+        _nn_native.sal__Canvas_swiginit(self, _nn_native.new_sal__Canvas(height, width, fill))
+
+    def Set(self, y, x, c, value):
+        return _nn_native.sal__Canvas_Set(self, y, x, c, value)
+
+    def Gray(self, y, x, value):
+        return _nn_native.sal__Canvas_Gray(self, y, x, value)
+    __swig_destroy__ = _nn_native.delete_sal__Canvas
+
+# Register sal__Canvas in _nn_native:
+_nn_native.sal__Canvas_swigregister(sal__Canvas)
+
+def sal__FirstPerDigit(test):
+    return _nn_native.sal__FirstPerDigit(test)
+
+def sal__TopTwo(logits):
+    return _nn_native.sal__TopTwo(logits)
+class occlusion__OcclusionSpec(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    height = property(_nn_native.occlusion__OcclusionSpec_height_get, _nn_native.occlusion__OcclusionSpec_height_set)
+    width = property(_nn_native.occlusion__OcclusionSpec_width_get, _nn_native.occlusion__OcclusionSpec_width_set)
+    stride_y = property(_nn_native.occlusion__OcclusionSpec_stride_y_get, _nn_native.occlusion__OcclusionSpec_stride_y_set)
+    stride_x = property(_nn_native.occlusion__OcclusionSpec_stride_x_get, _nn_native.occlusion__OcclusionSpec_stride_x_set)
+
+    def __init__(self):
+        _nn_native.occlusion__OcclusionSpec_swiginit(self, _nn_native.new_occlusion__OcclusionSpec())
+    __swig_destroy__ = _nn_native.delete_occlusion__OcclusionSpec
+
+# Register occlusion__OcclusionSpec in _nn_native:
+_nn_native.occlusion__OcclusionSpec_swigregister(occlusion__OcclusionSpec)
+class occlusion__OcclusionResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    patches = property(_nn_native.occlusion__OcclusionResult_patches_get, _nn_native.occlusion__OcclusionResult_patches_set)
+    n = property(_nn_native.occlusion__OcclusionResult_n_get, _nn_native.occlusion__OcclusionResult_n_set)
+    h = property(_nn_native.occlusion__OcclusionResult_h_get, _nn_native.occlusion__OcclusionResult_h_set)
+    w = property(_nn_native.occlusion__OcclusionResult_w_get, _nn_native.occlusion__OcclusionResult_w_set)
+    c = property(_nn_native.occlusion__OcclusionResult_c_get, _nn_native.occlusion__OcclusionResult_c_set)
+    classes = property(_nn_native.occlusion__OcclusionResult_classes_get, _nn_native.occlusion__OcclusionResult_classes_set)
+    rectangles = property(_nn_native.occlusion__OcclusionResult_rectangles_get, _nn_native.occlusion__OcclusionResult_rectangles_set)
+    coverage = property(_nn_native.occlusion__OcclusionResult_coverage_get, _nn_native.occlusion__OcclusionResult_coverage_set)
+    original_logits = property(_nn_native.occlusion__OcclusionResult_original_logits_get, _nn_native.occlusion__OcclusionResult_original_logits_set)
+    occluded_logits = property(_nn_native.occlusion__OcclusionResult_occluded_logits_get, _nn_native.occlusion__OcclusionResult_occluded_logits_set)
+    original_score = property(_nn_native.occlusion__OcclusionResult_original_score_get, _nn_native.occlusion__OcclusionResult_original_score_set)
+    occluded_score = property(_nn_native.occlusion__OcclusionResult_occluded_score_get, _nn_native.occlusion__OcclusionResult_occluded_score_set)
+    occluded_inputs = property(_nn_native.occlusion__OcclusionResult_occluded_inputs_get, _nn_native.occlusion__OcclusionResult_occluded_inputs_set)
+    drops = property(_nn_native.occlusion__OcclusionResult_drops_get, _nn_native.occlusion__OcclusionResult_drops_set)
+    pixel_mean = property(_nn_native.occlusion__OcclusionResult_pixel_mean_get, _nn_native.occlusion__OcclusionResult_pixel_mean_set)
+
+    def drop(self, p, b):
+        return _nn_native.occlusion__OcclusionResult_drop(self, p, b)
+
+    def mean(self, b, y, x):
+        return _nn_native.occlusion__OcclusionResult_mean(self, b, y, x)
+
+    def score(self, p, b):
+        return _nn_native.occlusion__OcclusionResult_score(self, p, b)
+
+    def input(self, p, b, y, x, ch):
+        return _nn_native.occlusion__OcclusionResult_input(self, p, b, y, x, ch)
+
+    def __init__(self):
+        _nn_native.occlusion__OcclusionResult_swiginit(self, _nn_native.new_occlusion__OcclusionResult())
+    __swig_destroy__ = _nn_native.delete_occlusion__OcclusionResult
+
+# Register occlusion__OcclusionResult in _nn_native:
+_nn_native.occlusion__OcclusionResult_swigregister(occlusion__OcclusionResult)
+
+def smooth__GaussianNoise(shape, samples, seed):
+    return _nn_native.smooth__GaussianNoise(shape, samples, seed)
+
+def sentence__RequireLiveGradients(*args):
+    return _nn_native.sentence__RequireLiveGradients(*args)
+
+def sentence__ExportArrays(*args):
+    return _nn_native.sentence__ExportArrays(*args)
+
+def sentence__CopyIfExists(_from, to):
+    return _nn_native.sentence__CopyIfExists(_from, to)
+
+def sentence__LoadSentences(root):
+    return _nn_native.sentence__LoadSentences(root)
+
+def sentence__Snapshot(*args):
+    return _nn_native.sentence__Snapshot(*args)
+
+def replay__TfModels(name):
+    return _nn_native.replay__TfModels(name)
+
+def replay__SameBits(*args):
+    return _nn_native.replay__SameBits(*args)
+
+def replay__LoadInto(p, file):
+    return _nn_native.replay__LoadInto(p, file)
+
+def replay__MaxDiff(*args):
+    return _nn_native.replay__MaxDiff(*args)
+
+def replay__History(file, column=1):
+    return _nn_native.replay__History(file, column)
+
+def replay__CopyAssets(_from, to, files):
+    return _nn_native.replay__CopyAssets(_from, to, files)
+
+def series__LoadSeries(root):
+    return _nn_native.series__LoadSeries(root)
+
+def sensor__LoadSensor(root):
+    return _nn_native.sensor__LoadSensor(root)
+
+def sensor__CompareWithTflow(root, tf_dir):
+    return _nn_native.sensor__CompareWithTflow(root, tf_dir)
+
+def charcnn__LoadCharacters(root):
+    return _nn_native.charcnn__LoadCharacters(root)
+
+def wavestack__LoadWaveStack(root):
+    return _nn_native.wavestack__LoadWaveStack(root)
+
+def sal__SaliencyConvFeatures(p, image):
+    return _nn_native.sal__SaliencyConvFeatures(p, image)
+
+def sal__SaliencyCnn(p, image):
+    return _nn_native.sal__SaliencyCnn(p, image)
+
+def sal__GuidedSaliencyConvFeatures(p, image):
+    return _nn_native.sal__GuidedSaliencyConvFeatures(p, image)
+
+def sal__LoadArrays(file):
+    return _nn_native.sal__LoadArrays(file)
+
+def sal__SaveArrays(file, arrays):
+    return _nn_native.sal__SaveArrays(file, arrays)
+
+def sal__SaliencyPng(path, canvas):
+    return _nn_native.sal__SaliencyPng(path, canvas)
+
+def sal__SignedColor(g):
+    return _nn_native.sal__SignedColor(g)
+
+def sal__SourceDir(value):
+    return _nn_native.sal__SourceDir(value)
+
+def sal__DefaultSource():
+    return _nn_native.sal__DefaultSource()
+
+def sal__RestoreSource(source, model, initial):
+    return _nn_native.sal__RestoreSource(source, model, initial)
+
+def sal__SaliencyGallery(directory, examples, targets, runners, gradients, alternative, random, peak):
+    return _nn_native.sal__SaliencyGallery(directory, examples, targets, runners, gradients, alternative, random, peak)
+class detector__Box(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detector__Box_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detector__Box___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detector__Box___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detector__Box___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detector__Box___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detector__Box___setitem__(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detector__Box_swiginit(self, _nn_native.new_detector__Box(*args))
+
+    def empty(self):
+        return _nn_native.detector__Box_empty(self)
+
+    def size(self):
+        return _nn_native.detector__Box_size(self)
+
+    def swap(self, v):
+        return _nn_native.detector__Box_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detector__Box_begin(self)
+
+    def end(self):
+        return _nn_native.detector__Box_end(self)
+
+    def rbegin(self):
+        return _nn_native.detector__Box_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detector__Box_rend(self)
+
+    def front(self):
+        return _nn_native.detector__Box_front(self)
+
+    def back(self):
+        return _nn_native.detector__Box_back(self)
+
+    def fill(self, u):
+        return _nn_native.detector__Box_fill(self, u)
+    __swig_destroy__ = _nn_native.delete_detector__Box
+
+# Register detector__Box in _nn_native:
+_nn_native.detector__Box_swigregister(detector__Box)
+class detector__BoxVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detector__BoxVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detector__BoxVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detector__BoxVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detector__BoxVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detector__BoxVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detector__BoxVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.detector__BoxVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.detector__BoxVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.detector__BoxVector_empty(self)
+
+    def size(self):
+        return _nn_native.detector__BoxVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.detector__BoxVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detector__BoxVector_begin(self)
+
+    def end(self):
+        return _nn_native.detector__BoxVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.detector__BoxVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detector__BoxVector_rend(self)
+
+    def clear(self):
+        return _nn_native.detector__BoxVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.detector__BoxVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.detector__BoxVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.detector__BoxVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detector__BoxVector_swiginit(self, _nn_native.new_detector__BoxVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.detector__BoxVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.detector__BoxVector_front(self)
+
+    def back(self):
+        return _nn_native.detector__BoxVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.detector__BoxVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.detector__BoxVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.detector__BoxVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.detector__BoxVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.detector__BoxVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_detector__BoxVector
+
+# Register detector__BoxVector in _nn_native:
+_nn_native.detector__BoxVector_swigregister(detector__BoxVector)
+class detector__BoxVectorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detector__BoxVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detector__BoxVectorVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detector__BoxVectorVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detector__BoxVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detector__BoxVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detector__BoxVectorVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.detector__BoxVectorVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.detector__BoxVectorVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.detector__BoxVectorVector_empty(self)
+
+    def size(self):
+        return _nn_native.detector__BoxVectorVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.detector__BoxVectorVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detector__BoxVectorVector_begin(self)
+
+    def end(self):
+        return _nn_native.detector__BoxVectorVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.detector__BoxVectorVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detector__BoxVectorVector_rend(self)
+
+    def clear(self):
+        return _nn_native.detector__BoxVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.detector__BoxVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.detector__BoxVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.detector__BoxVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detector__BoxVectorVector_swiginit(self, _nn_native.new_detector__BoxVectorVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.detector__BoxVectorVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.detector__BoxVectorVector_front(self)
+
+    def back(self):
+        return _nn_native.detector__BoxVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.detector__BoxVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.detector__BoxVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.detector__BoxVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.detector__BoxVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.detector__BoxVectorVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_detector__BoxVectorVector
+
+# Register detector__BoxVectorVector in _nn_native:
+_nn_native.detector__BoxVectorVector_swigregister(detector__BoxVectorVector)
+class detector__BoxVariances(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detector__BoxVariances_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detector__BoxVariances___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detector__BoxVariances___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detector__BoxVariances___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detector__BoxVariances___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detector__BoxVariances___setitem__(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detector__BoxVariances_swiginit(self, _nn_native.new_detector__BoxVariances(*args))
+
+    def empty(self):
+        return _nn_native.detector__BoxVariances_empty(self)
+
+    def size(self):
+        return _nn_native.detector__BoxVariances_size(self)
+
+    def swap(self, v):
+        return _nn_native.detector__BoxVariances_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detector__BoxVariances_begin(self)
+
+    def end(self):
+        return _nn_native.detector__BoxVariances_end(self)
+
+    def rbegin(self):
+        return _nn_native.detector__BoxVariances_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detector__BoxVariances_rend(self)
+
+    def front(self):
+        return _nn_native.detector__BoxVariances_front(self)
+
+    def back(self):
+        return _nn_native.detector__BoxVariances_back(self)
+
+    def fill(self, u):
+        return _nn_native.detector__BoxVariances_fill(self, u)
+    __swig_destroy__ = _nn_native.delete_detector__BoxVariances
+
+# Register detector__BoxVariances in _nn_native:
+_nn_native.detector__BoxVariances_swigregister(detector__BoxVariances)
+class IntVectorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.IntVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.IntVectorVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.IntVectorVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.IntVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.IntVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.IntVectorVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.IntVectorVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.IntVectorVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.IntVectorVector_empty(self)
+
+    def size(self):
+        return _nn_native.IntVectorVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.IntVectorVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.IntVectorVector_begin(self)
+
+    def end(self):
+        return _nn_native.IntVectorVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.IntVectorVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.IntVectorVector_rend(self)
+
+    def clear(self):
+        return _nn_native.IntVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.IntVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.IntVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.IntVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.IntVectorVector_swiginit(self, _nn_native.new_IntVectorVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.IntVectorVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.IntVectorVector_front(self)
+
+    def back(self):
+        return _nn_native.IntVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.IntVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.IntVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.IntVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.IntVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.IntVectorVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_IntVectorVector
+
+# Register IntVectorVector in _nn_native:
+_nn_native.IntVectorVector_swigregister(IntVectorVector)
+class DoubleVectorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.DoubleVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.DoubleVectorVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.DoubleVectorVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.DoubleVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.DoubleVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.DoubleVectorVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.DoubleVectorVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.DoubleVectorVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.DoubleVectorVector_empty(self)
+
+    def size(self):
+        return _nn_native.DoubleVectorVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.DoubleVectorVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.DoubleVectorVector_begin(self)
+
+    def end(self):
+        return _nn_native.DoubleVectorVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.DoubleVectorVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.DoubleVectorVector_rend(self)
+
+    def clear(self):
+        return _nn_native.DoubleVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.DoubleVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.DoubleVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.DoubleVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.DoubleVectorVector_swiginit(self, _nn_native.new_DoubleVectorVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.DoubleVectorVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.DoubleVectorVector_front(self)
+
+    def back(self):
+        return _nn_native.DoubleVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.DoubleVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.DoubleVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.DoubleVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.DoubleVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.DoubleVectorVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_DoubleVectorVector
+
+# Register DoubleVectorVector in _nn_native:
+_nn_native.DoubleVectorVector_swigregister(DoubleVectorVector)
+class IntQuad(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.IntQuad_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.IntQuad___bool__(self)
+
+    def __len__(self):
+        return _nn_native.IntQuad___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.IntQuad___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.IntQuad___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.IntQuad___setitem__(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.IntQuad_swiginit(self, _nn_native.new_IntQuad(*args))
+
+    def empty(self):
+        return _nn_native.IntQuad_empty(self)
+
+    def size(self):
+        return _nn_native.IntQuad_size(self)
+
+    def swap(self, v):
+        return _nn_native.IntQuad_swap(self, v)
+
+    def begin(self):
+        return _nn_native.IntQuad_begin(self)
+
+    def end(self):
+        return _nn_native.IntQuad_end(self)
+
+    def rbegin(self):
+        return _nn_native.IntQuad_rbegin(self)
+
+    def rend(self):
+        return _nn_native.IntQuad_rend(self)
+
+    def front(self):
+        return _nn_native.IntQuad_front(self)
+
+    def back(self):
+        return _nn_native.IntQuad_back(self)
+
+    def fill(self, u):
+        return _nn_native.IntQuad_fill(self, u)
+    __swig_destroy__ = _nn_native.delete_IntQuad
+
+# Register IntQuad in _nn_native:
+_nn_native.IntQuad_swigregister(IntQuad)
+class IntQuadVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.IntQuadVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.IntQuadVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.IntQuadVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.IntQuadVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.IntQuadVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.IntQuadVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.IntQuadVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.IntQuadVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.IntQuadVector_empty(self)
+
+    def size(self):
+        return _nn_native.IntQuadVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.IntQuadVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.IntQuadVector_begin(self)
+
+    def end(self):
+        return _nn_native.IntQuadVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.IntQuadVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.IntQuadVector_rend(self)
+
+    def clear(self):
+        return _nn_native.IntQuadVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.IntQuadVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.IntQuadVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.IntQuadVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.IntQuadVector_swiginit(self, _nn_native.new_IntQuadVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.IntQuadVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.IntQuadVector_front(self)
+
+    def back(self):
+        return _nn_native.IntQuadVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.IntQuadVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.IntQuadVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.IntQuadVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.IntQuadVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.IntQuadVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_IntQuadVector
+
+# Register IntQuadVector in _nn_native:
+_nn_native.IntQuadVector_swigregister(IntQuadVector)
+class detector__DetectionScenes(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    height = property(_nn_native.detector__DetectionScenes_height_get, _nn_native.detector__DetectionScenes_height_set)
+    width = property(_nn_native.detector__DetectionScenes_width_get, _nn_native.detector__DetectionScenes_width_set)
+    pixels = property(_nn_native.detector__DetectionScenes_pixels_get, _nn_native.detector__DetectionScenes_pixels_set)
+    boxes = property(_nn_native.detector__DetectionScenes_boxes_get, _nn_native.detector__DetectionScenes_boxes_set)
+    labels = property(_nn_native.detector__DetectionScenes_labels_get, _nn_native.detector__DetectionScenes_labels_set)
+
+    def size(self):
+        return _nn_native.detector__DetectionScenes_size(self)
+
+    def __init__(self):
+        _nn_native.detector__DetectionScenes_swiginit(self, _nn_native.new_detector__DetectionScenes())
+    __swig_destroy__ = _nn_native.delete_detector__DetectionScenes
+
+# Register detector__DetectionScenes in _nn_native:
+_nn_native.detector__DetectionScenes_swigregister(detector__DetectionScenes)
+class detector__Detection(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.detector__Detection_image_get, _nn_native.detector__Detection_image_set)
+    label = property(_nn_native.detector__Detection_label_get, _nn_native.detector__Detection_label_set)
+    score = property(_nn_native.detector__Detection_score_get, _nn_native.detector__Detection_score_set)
+    box = property(_nn_native.detector__Detection_box_get, _nn_native.detector__Detection_box_set)
+
+    def __init__(self):
+        _nn_native.detector__Detection_swiginit(self, _nn_native.new_detector__Detection())
+    __swig_destroy__ = _nn_native.delete_detector__Detection
+
+# Register detector__Detection in _nn_native:
+_nn_native.detector__Detection_swigregister(detector__Detection)
+
+def detector__NonMaxSuppression(*args):
+    return _nn_native.detector__NonMaxSuppression(*args)
+
+def detector__ClassNms(detections, iou, max_per_image=100):
+    return _nn_native.detector__ClassNms(detections, iou, max_per_image)
+class detector__ApResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    ap50 = property(_nn_native.detector__ApResult_ap50_get, _nn_native.detector__ApResult_ap50_set)
+    ap50_voc07 = property(_nn_native.detector__ApResult_ap50_voc07_get, _nn_native.detector__ApResult_ap50_voc07_set)
+    ap75 = property(_nn_native.detector__ApResult_ap75_get, _nn_native.detector__ApResult_ap75_set)
+    coco = property(_nn_native.detector__ApResult_coco_get, _nn_native.detector__ApResult_coco_set)
+    per_class50 = property(_nn_native.detector__ApResult_per_class50_get, _nn_native.detector__ApResult_per_class50_set)
+
+    def __init__(self):
+        _nn_native.detector__ApResult_swiginit(self, _nn_native.new_detector__ApResult())
+    __swig_destroy__ = _nn_native.delete_detector__ApResult
+
+# Register detector__ApResult in _nn_native:
+_nn_native.detector__ApResult_swigregister(detector__ApResult)
+
+def detector__EvaluateDetections(detections, scenes, rows, classes):
+    return _nn_native.detector__EvaluateDetections(detections, scenes, rows, classes)
+
+def detector__AnchorGrid(rows, cols, stride, sizes, ratios):
+    return _nn_native.detector__AnchorGrid(rows, cols, stride, sizes, ratios)
+
+def detector__EncodeBox(anchor, box):
+    return _nn_native.detector__EncodeBox(anchor, box)
+
+def detector__MatchAnchors(anchors, truth, positive, negative):
+    return _nn_native.detector__MatchAnchors(anchors, truth, positive, negative)
+
+def detector__MatchSsd(anchors, truth):
+    return _nn_native.detector__MatchSsd(anchors, truth)
+
+def detector__SmoothL1(difference):
+    return _nn_native.detector__SmoothL1(difference)
+
+def detector__ApSummary(r):
+    return _nn_native.detector__ApSummary(r)
+class detector__DetectorTrainingConfig(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    name = property(_nn_native.detector__DetectorTrainingConfig_name_get, _nn_native.detector__DetectorTrainingConfig_name_set)
+    warm_start = property(_nn_native.detector__DetectorTrainingConfig_warm_start_get, _nn_native.detector__DetectorTrainingConfig_warm_start_set)
+    epochs = property(_nn_native.detector__DetectorTrainingConfig_epochs_get, _nn_native.detector__DetectorTrainingConfig_epochs_set)
+    batch = property(_nn_native.detector__DetectorTrainingConfig_batch_get, _nn_native.detector__DetectorTrainingConfig_batch_set)
+    fit = property(_nn_native.detector__DetectorTrainingConfig_fit_get, _nn_native.detector__DetectorTrainingConfig_fit_set)
+    validation = property(_nn_native.detector__DetectorTrainingConfig_validation_get, _nn_native.detector__DetectorTrainingConfig_validation_set)
+    classes = property(_nn_native.detector__DetectorTrainingConfig_classes_get, _nn_native.detector__DetectorTrainingConfig_classes_set)
+    learning_rate = property(_nn_native.detector__DetectorTrainingConfig_learning_rate_get, _nn_native.detector__DetectorTrainingConfig_learning_rate_set)
+    l2 = property(_nn_native.detector__DetectorTrainingConfig_l2_get, _nn_native.detector__DetectorTrainingConfig_l2_set)
+    minimum_test_ap50 = property(_nn_native.detector__DetectorTrainingConfig_minimum_test_ap50_get, _nn_native.detector__DetectorTrainingConfig_minimum_test_ap50_set)
+    accuracy = property(_nn_native.detector__DetectorTrainingConfig_accuracy_get, _nn_native.detector__DetectorTrainingConfig_accuracy_set)
+
+    def __init__(self):
+        _nn_native.detector__DetectorTrainingConfig_swiginit(self, _nn_native.new_detector__DetectorTrainingConfig())
+    __swig_destroy__ = _nn_native.delete_detector__DetectorTrainingConfig
+
+# Register detector__DetectorTrainingConfig in _nn_native:
+_nn_native.detector__DetectorTrainingConfig_swigregister(detector__DetectorTrainingConfig)
+
+def detector__CheckDetectorDemonstration(cfg, epoch_losses, result):
+    return _nn_native.detector__CheckDetectorDemonstration(cfg, epoch_losses, result)
+
+def detector__SaveCheckpoint(params, state, prefix):
+    return _nn_native.detector__SaveCheckpoint(params, state, prefix)
+
+def detector__RestoreCheckpoint(params, state, prefix):
+    return _nn_native.detector__RestoreCheckpoint(params, state, prefix)
+class detector__DetectionVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detector__DetectionVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detector__DetectionVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detector__DetectionVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detector__DetectionVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detector__DetectionVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detector__DetectionVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.detector__DetectionVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.detector__DetectionVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.detector__DetectionVector_empty(self)
+
+    def size(self):
+        return _nn_native.detector__DetectionVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.detector__DetectionVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detector__DetectionVector_begin(self)
+
+    def end(self):
+        return _nn_native.detector__DetectionVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.detector__DetectionVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detector__DetectionVector_rend(self)
+
+    def clear(self):
+        return _nn_native.detector__DetectionVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.detector__DetectionVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.detector__DetectionVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.detector__DetectionVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detector__DetectionVector_swiginit(self, _nn_native.new_detector__DetectionVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.detector__DetectionVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.detector__DetectionVector_front(self)
+
+    def back(self):
+        return _nn_native.detector__DetectionVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.detector__DetectionVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.detector__DetectionVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.detector__DetectionVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.detector__DetectionVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.detector__DetectionVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_detector__DetectionVector
+
+# Register detector__DetectionVector in _nn_native:
+_nn_native.detector__DetectionVector_swigregister(detector__DetectionVector)
+class detector__RpnLevelVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detector__RpnLevelVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detector__RpnLevelVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detector__RpnLevelVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detector__RpnLevelVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detector__RpnLevelVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detector__RpnLevelVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.detector__RpnLevelVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.detector__RpnLevelVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.detector__RpnLevelVector_empty(self)
+
+    def size(self):
+        return _nn_native.detector__RpnLevelVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.detector__RpnLevelVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detector__RpnLevelVector_begin(self)
+
+    def end(self):
+        return _nn_native.detector__RpnLevelVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.detector__RpnLevelVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detector__RpnLevelVector_rend(self)
+
+    def clear(self):
+        return _nn_native.detector__RpnLevelVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.detector__RpnLevelVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.detector__RpnLevelVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.detector__RpnLevelVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detector__RpnLevelVector_swiginit(self, _nn_native.new_detector__RpnLevelVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.detector__RpnLevelVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.detector__RpnLevelVector_front(self)
+
+    def back(self):
+        return _nn_native.detector__RpnLevelVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.detector__RpnLevelVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.detector__RpnLevelVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.detector__RpnLevelVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.detector__RpnLevelVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.detector__RpnLevelVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_detector__RpnLevelVector
+
+# Register detector__RpnLevelVector in _nn_native:
+_nn_native.detector__RpnLevelVector_swigregister(detector__RpnLevelVector)
+
+def detector__BoxArea(b):
+    return _nn_native.detector__BoxArea(b)
+
+def detector__BoxIoU(a, b):
+    return _nn_native.detector__BoxIoU(a, b)
+class detector__Digits(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    pixels = property(_nn_native.detector__Digits_pixels_get, _nn_native.detector__Digits_pixels_set)
+    labels = property(_nn_native.detector__Digits_labels_get, _nn_native.detector__Digits_labels_set)
+
+    def size(self):
+        return _nn_native.detector__Digits_size(self)
+
+    def __init__(self):
+        _nn_native.detector__Digits_swiginit(self, _nn_native.new_detector__Digits())
+    __swig_destroy__ = _nn_native.delete_detector__Digits
+
+# Register detector__Digits in _nn_native:
+_nn_native.detector__Digits_swigregister(detector__Digits)
+class detector__SceneConfig(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    scenes = property(_nn_native.detector__SceneConfig_scenes_get, _nn_native.detector__SceneConfig_scenes_set)
+    height = property(_nn_native.detector__SceneConfig_height_get, _nn_native.detector__SceneConfig_height_set)
+    width = property(_nn_native.detector__SceneConfig_width_get, _nn_native.detector__SceneConfig_width_set)
+    max_objects = property(_nn_native.detector__SceneConfig_max_objects_get, _nn_native.detector__SceneConfig_max_objects_set)
+    min_size = property(_nn_native.detector__SceneConfig_min_size_get, _nn_native.detector__SceneConfig_min_size_set)
+    max_size = property(_nn_native.detector__SceneConfig_max_size_get, _nn_native.detector__SceneConfig_max_size_set)
+    max_overlap = property(_nn_native.detector__SceneConfig_max_overlap_get, _nn_native.detector__SceneConfig_max_overlap_set)
+    seed = property(_nn_native.detector__SceneConfig_seed_get, _nn_native.detector__SceneConfig_seed_set)
+
+    def __init__(self):
+        _nn_native.detector__SceneConfig_swiginit(self, _nn_native.new_detector__SceneConfig())
+    __swig_destroy__ = _nn_native.delete_detector__SceneConfig
+
+# Register detector__SceneConfig in _nn_native:
+_nn_native.detector__SceneConfig_swigregister(detector__SceneConfig)
+
+def Inputs(digits):
+    return _nn_native.Inputs(digits)
+
+def Config(cfg):
+    return _nn_native.Config(cfg)
+
+def Legacy(data):
+    return _nn_native.Legacy(data)
+
+def detector__MakeDetectionScenes(digits, cfg):
+    return _nn_native.detector__MakeDetectionScenes(digits, cfg)
+
+def detector__SceneImages(scenes, rows):
+    return _nn_native.detector__SceneImages(scenes, rows)
+
+def detector__Square(b, margin):
+    return _nn_native.detector__Square(b, margin)
+
+def detector__ComponentProposals(scenes, row, thresholds, gap):
+    return _nn_native.detector__ComponentProposals(scenes, row, thresholds, gap)
+
+def detector__EncodeBoxWith(anchor, box, variance):
+    return _nn_native.detector__EncodeBoxWith(anchor, box, variance)
+
+def detector__ClipBox(b, height, width):
+    return _nn_native.detector__ClipBox(b, height, width)
+class detector__ScenePair(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _nn_native.detector__ScenePair_swiginit(self, _nn_native.new_detector__ScenePair(*args))
+    first = property(_nn_native.detector__ScenePair_first_get, _nn_native.detector__ScenePair_first_set)
+    second = property(_nn_native.detector__ScenePair_second_get, _nn_native.detector__ScenePair_second_set)
+    def __len__(self):
+        return 2
+    def __repr__(self):
+        return str((self.first, self.second))
+    def __getitem__(self, index):
+        if not (index % 2):
+            return self.first
+        else:
+            return self.second
+    def __setitem__(self, index, val):
+        if not (index % 2):
+            self.first = val
+        else:
+            self.second = val
+    __swig_destroy__ = _nn_native.delete_detector__ScenePair
+
+# Register detector__ScenePair in _nn_native:
+_nn_native.detector__ScenePair_swigregister(detector__ScenePair)
+
+def detector__FeatureBox(b, stride, feature_size):
+    return _nn_native.detector__FeatureBox(b, stride, feature_size)
+
+def detector__StrideFourBackbone(p, images):
+    return _nn_native.detector__StrideFourBackbone(p, images)
+class detector__RoiBatch(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    rois = property(_nn_native.detector__RoiBatch_rois_get, _nn_native.detector__RoiBatch_rois_set)
+    pixels = property(_nn_native.detector__RoiBatch_pixels_get, _nn_native.detector__RoiBatch_pixels_set)
+    targets = property(_nn_native.detector__RoiBatch_targets_get, _nn_native.detector__RoiBatch_targets_set)
+    indices = property(_nn_native.detector__RoiBatch_indices_get, _nn_native.detector__RoiBatch_indices_set)
+    labels = property(_nn_native.detector__RoiBatch_labels_get, _nn_native.detector__RoiBatch_labels_set)
+    mask = property(_nn_native.detector__RoiBatch_mask_get, _nn_native.detector__RoiBatch_mask_set)
+
+    def __init__(self):
+        _nn_native.detector__RoiBatch_swiginit(self, _nn_native.new_detector__RoiBatch())
+    __swig_destroy__ = _nn_native.delete_detector__RoiBatch
+
+# Register detector__RoiBatch in _nn_native:
+_nn_native.detector__RoiBatch_swigregister(detector__RoiBatch)
+
+def detector__RoiHead(p, features, rois, indices, classes, hidden=256):
+    return _nn_native.detector__RoiHead(p, features, rois, indices, classes, hidden)
+
+def detector__RoiTensor(boxes):
+    return _nn_native.detector__RoiTensor(boxes)
+
+def detector__IndexTensor(indices):
+    return _nn_native.detector__IndexTensor(indices)
+
+def detector__RoiLoss(h, b, classes):
+    return _nn_native.detector__RoiLoss(h, b, classes)
+class detector__RpnTargets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    labels = property(_nn_native.detector__RpnTargets_labels_get, _nn_native.detector__RpnTargets_labels_set)
+    weights = property(_nn_native.detector__RpnTargets_weights_get, _nn_native.detector__RpnTargets_weights_set)
+    targets = property(_nn_native.detector__RpnTargets_targets_get, _nn_native.detector__RpnTargets_targets_set)
+    positives = property(_nn_native.detector__RpnTargets_positives_get, _nn_native.detector__RpnTargets_positives_set)
+
+    def __init__(self):
+        _nn_native.detector__RpnTargets_swiginit(self, _nn_native.new_detector__RpnTargets())
+    __swig_destroy__ = _nn_native.delete_detector__RpnTargets
+
+# Register detector__RpnTargets in _nn_native:
+_nn_native.detector__RpnTargets_swigregister(detector__RpnTargets)
+
+def detector__ComputeProposals(rpn, anchors, height, width):
+    return _nn_native.detector__ComputeProposals(rpn, anchors, height, width)
+
+def retinanet__PadSpatial(x, pad):
+    return _nn_native.retinanet__PadSpatial(x, pad)
+
+def retinanet__RetinaAnchors(cells, first_size=32):
+    return _nn_native.retinanet__RetinaAnchors(cells, first_size)
+
+def retinanet__MakeRetinaTargets(anchors, scenes, rows, classes):
+    return _nn_native.retinanet__MakeRetinaTargets(anchors, scenes, rows, classes)
+
+def retinanet__DecodeRetina(probabilities, deltas, anchors, scenes, rows, classes):
+    return _nn_native.retinanet__DecodeRetina(probabilities, deltas, anchors, scenes, rows, classes)
+class fcos__FcosPoint(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    y = property(_nn_native.fcos__FcosPoint_y_get, _nn_native.fcos__FcosPoint_y_set)
+    x = property(_nn_native.fcos__FcosPoint_x_get, _nn_native.fcos__FcosPoint_x_set)
+    stride = property(_nn_native.fcos__FcosPoint_stride_get, _nn_native.fcos__FcosPoint_stride_set)
+    minimum = property(_nn_native.fcos__FcosPoint_minimum_get, _nn_native.fcos__FcosPoint_minimum_set)
+    maximum = property(_nn_native.fcos__FcosPoint_maximum_get, _nn_native.fcos__FcosPoint_maximum_set)
+
+    def __init__(self):
+        _nn_native.fcos__FcosPoint_swiginit(self, _nn_native.new_fcos__FcosPoint())
+    __swig_destroy__ = _nn_native.delete_fcos__FcosPoint
+
+# Register fcos__FcosPoint in _nn_native:
+_nn_native.fcos__FcosPoint_swigregister(fcos__FcosPoint)
+
+def fcos__PointTensor(points):
+    return _nn_native.fcos__PointTensor(points)
+
+def fcos__FcosPoints(cells, range_scale=1.):
+    return _nn_native.fcos__FcosPoints(cells, range_scale)
+
+def fcos__FcosCenterness(d):
+    return _nn_native.fcos__FcosCenterness(d)
+class fcos__FcosTargetArrays(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    classes = property(_nn_native.fcos__FcosTargetArrays_classes_get, _nn_native.fcos__FcosTargetArrays_classes_set)
+    distances = property(_nn_native.fcos__FcosTargetArrays_distances_get, _nn_native.fcos__FcosTargetArrays_distances_set)
+    positive = property(_nn_native.fcos__FcosTargetArrays_positive_get, _nn_native.fcos__FcosTargetArrays_positive_set)
+    centerness = property(_nn_native.fcos__FcosTargetArrays_centerness_get, _nn_native.fcos__FcosTargetArrays_centerness_set)
+
+    def __init__(self):
+        _nn_native.fcos__FcosTargetArrays_swiginit(self, _nn_native.new_fcos__FcosTargetArrays())
+    __swig_destroy__ = _nn_native.delete_fcos__FcosTargetArrays
+
+# Register fcos__FcosTargetArrays in _nn_native:
+_nn_native.fcos__FcosTargetArrays_swigregister(fcos__FcosTargetArrays)
+
+def fcos__MakeFcosTargets(points, scenes, rows, classes, center_radius=1.5):
+    return _nn_native.fcos__MakeFcosTargets(points, scenes, rows, classes, center_radius)
+
+def fcos__MakeFcosTargetArrays(points, scenes, rows, classes, center_radius=1.5):
+    return _nn_native.fcos__MakeFcosTargetArrays(points, scenes, rows, classes, center_radius)
+
+def fcos__DecodeFcos(net, points, scenes, rows, classes):
+    return _nn_native.fcos__DecodeFcos(net, points, scenes, rows, classes)
+
+def fcos__DetectFcos(p, state, cfg, points, scenes, rows, classes):
+    return _nn_native.fcos__DetectFcos(p, state, cfg, points, scenes, rows, classes)
+class fcos__FcosPointVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.fcos__FcosPointVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.fcos__FcosPointVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.fcos__FcosPointVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.fcos__FcosPointVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.fcos__FcosPointVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.fcos__FcosPointVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.fcos__FcosPointVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.fcos__FcosPointVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.fcos__FcosPointVector_empty(self)
+
+    def size(self):
+        return _nn_native.fcos__FcosPointVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.fcos__FcosPointVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.fcos__FcosPointVector_begin(self)
+
+    def end(self):
+        return _nn_native.fcos__FcosPointVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.fcos__FcosPointVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.fcos__FcosPointVector_rend(self)
+
+    def clear(self):
+        return _nn_native.fcos__FcosPointVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.fcos__FcosPointVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.fcos__FcosPointVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.fcos__FcosPointVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.fcos__FcosPointVector_swiginit(self, _nn_native.new_fcos__FcosPointVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.fcos__FcosPointVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.fcos__FcosPointVector_front(self)
+
+    def back(self):
+        return _nn_native.fcos__FcosPointVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.fcos__FcosPointVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.fcos__FcosPointVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.fcos__FcosPointVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.fcos__FcosPointVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.fcos__FcosPointVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_fcos__FcosPointVector
+
+# Register fcos__FcosPointVector in _nn_native:
+_nn_native.fcos__FcosPointVector_swigregister(fcos__FcosPointVector)
+
+def ssd__SsdDefaultBoxes(cells, sizes, steps, per_cell):
+    return _nn_native.ssd__SsdDefaultBoxes(cells, sizes, steps, per_cell)
+class ssd__SsdLossOutputs(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    loss = property(_nn_native.ssd__SsdLossOutputs_loss_get, _nn_native.ssd__SsdLossOutputs_loss_set)
+
+    def selected_negatives_mask(self):
+        return _nn_native.ssd__SsdLossOutputs_selected_negatives_mask(self)
+
+    def __init__(self):
+        _nn_native.ssd__SsdLossOutputs_swiginit(self, _nn_native.new_ssd__SsdLossOutputs())
+    __swig_destroy__ = _nn_native.delete_ssd__SsdLossOutputs
+
+# Register ssd__SsdLossOutputs in _nn_native:
+_nn_native.ssd__SsdLossOutputs_swigregister(ssd__SsdLossOutputs)
+
+def ssd__SsdLoss(logits, deltas, labels, targets, classes):
+    return _nn_native.ssd__SsdLoss(logits, deltas, labels, targets, classes)
+class ssd__SsdTargets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    labels = property(_nn_native.ssd__SsdTargets_labels_get, _nn_native.ssd__SsdTargets_labels_set)
+    targets = property(_nn_native.ssd__SsdTargets_targets_get, _nn_native.ssd__SsdTargets_targets_set)
+
+    def __init__(self):
+        _nn_native.ssd__SsdTargets_swiginit(self, _nn_native.new_ssd__SsdTargets())
+    __swig_destroy__ = _nn_native.delete_ssd__SsdTargets
+
+# Register ssd__SsdTargets in _nn_native:
+_nn_native.ssd__SsdTargets_swigregister(ssd__SsdTargets)
+
+def ssd__MakeSsdTargets(anchors, scenes, rows, background):
+    return _nn_native.ssd__MakeSsdTargets(anchors, scenes, rows, background)
+
+def centernet__CenterGaussianRadius(h, w, overlap=.7):
+    return _nn_native.centernet__CenterGaussianRadius(h, w, overlap)
+class centernet__Grid(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    n = property(_nn_native.centernet__Grid_n_get, _nn_native.centernet__Grid_n_set)
+    h = property(_nn_native.centernet__Grid_h_get, _nn_native.centernet__Grid_h_set)
+    w = property(_nn_native.centernet__Grid_w_get, _nn_native.centernet__Grid_w_set)
+    c = property(_nn_native.centernet__Grid_c_get, _nn_native.centernet__Grid_c_set)
+    v = property(_nn_native.centernet__Grid_v_get, _nn_native.centernet__Grid_v_set)
+
+    def __init__(self, *args):
+        _nn_native.centernet__Grid_swiginit(self, _nn_native.new_centernet__Grid(*args))
+
+    def tensor(self):
+        return _nn_native.centernet__Grid_tensor(self)
+    __swig_destroy__ = _nn_native.delete_centernet__Grid
+
+# Register centernet__Grid in _nn_native:
+_nn_native.centernet__Grid_swigregister(centernet__Grid)
+
+def centernet__DrawCenterGaussian(heatmap, batch, row, col, label, radius):
+    return _nn_native.centernet__DrawCenterGaussian(heatmap, batch, row, col, label, radius)
+class centernet__CenterTargets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    heatmap = property(_nn_native.centernet__CenterTargets_heatmap_get, _nn_native.centernet__CenterTargets_heatmap_set)
+    size = property(_nn_native.centernet__CenterTargets_size_get, _nn_native.centernet__CenterTargets_size_set)
+    offset = property(_nn_native.centernet__CenterTargets_offset_get, _nn_native.centernet__CenterTargets_offset_set)
+    mask = property(_nn_native.centernet__CenterTargets_mask_get, _nn_native.centernet__CenterTargets_mask_set)
+    collisions = property(_nn_native.centernet__CenterTargets_collisions_get, _nn_native.centernet__CenterTargets_collisions_set)
+
+    def __init__(self):
+        _nn_native.centernet__CenterTargets_swiginit(self, _nn_native.new_centernet__CenterTargets())
+    __swig_destroy__ = _nn_native.delete_centernet__CenterTargets
+
+# Register centernet__CenterTargets in _nn_native:
+_nn_native.centernet__CenterTargets_swigregister(centernet__CenterTargets)
+
+def centernet__CenterLoss(*args):
+    return _nn_native.centernet__CenterLoss(*args)
+
+def centernet__MakeCenterTargets(scenes, rows, classes):
+    return _nn_native.centernet__MakeCenterTargets(scenes, rows, classes)
+
+def centernet__DecodeCenter(peaks, size, offset, scenes, rows):
+    return _nn_native.centernet__DecodeCenter(peaks, size, offset, scenes, rows)
+
+def centernet__DetectCenter(p, state, cfg, scenes, rows):
+    return _nn_native.centernet__DetectCenter(p, state, cfg, scenes, rows)
+
+def hungarian__HungarianAssignment(cost):
+    return _nn_native.hungarian__HungarianAssignment(cost)
+
+def detr__GeneralizedIou(*args):
+    return _nn_native.detr__GeneralizedIou(*args)
+class detr__DetrTargets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    labels = property(_nn_native.detr__DetrTargets_labels_get, _nn_native.detr__DetrTargets_labels_set)
+    boxes = property(_nn_native.detr__DetrTargets_boxes_get, _nn_native.detr__DetrTargets_boxes_set)
+    positive = property(_nn_native.detr__DetrTargets_positive_get, _nn_native.detr__DetrTargets_positive_set)
+    batch = property(_nn_native.detr__DetrTargets_batch_get, _nn_native.detr__DetrTargets_batch_set)
+    queries = property(_nn_native.detr__DetrTargets_queries_get, _nn_native.detr__DetrTargets_queries_set)
+    classes = property(_nn_native.detr__DetrTargets_classes_get, _nn_native.detr__DetrTargets_classes_set)
+
+    def __init__(self):
+        _nn_native.detr__DetrTargets_swiginit(self, _nn_native.new_detr__DetrTargets())
+    __swig_destroy__ = _nn_native.delete_detr__DetrTargets
+
+# Register detr__DetrTargets in _nn_native:
+_nn_native.detr__DetrTargets_swigregister(detr__DetrTargets)
+
+def detr__SceneMetadata(scenes, rows):
+    return _nn_native.detr__SceneMetadata(scenes, rows)
+
+def detr__DetrLayerLoss(logits, boxes, t):
+    return _nn_native.detr__DetrLayerLoss(logits, boxes, t)
+
+def detr__MatchDetrTargets(logits, boxes, queries, scenes, rows, classes):
+    return _nn_native.detr__MatchDetrTargets(logits, boxes, queries, scenes, rows, classes)
+
+def detr__DetrLoss(net, scenes, rows, classes):
+    return _nn_native.detr__DetrLoss(net, scenes, rows, classes)
+
+def detr__DecodeDetr(logits, boxes, scenes, rows, classes):
+    return _nn_native.detr__DecodeDetr(logits, boxes, scenes, rows, classes)
+
+def detr__DetectDetr(p, state, cfg, scenes, rows, classes):
+    return _nn_native.detr__DetectDetr(p, state, cfg, scenes, rows, classes)
+
+def detector__TensorMosaicRows(source, rows):
+    return _nn_native.detector__TensorMosaicRows(source, rows)
+
+def detector__LegacyMosaicRows(data):
+    return _nn_native.detector__LegacyMosaicRows(data)
+
+def detector__MosaicScenes(source, selections):
+    return _nn_native.detector__MosaicScenes(source, selections)
+
+def detector__CopyDetectionRows(source, rows):
+    return _nn_native.detector__CopyDetectionRows(source, rows)
+
+def detector__FlipDetectionScene(source, row):
+    return _nn_native.detector__FlipDetectionScene(source, row)
+class detector__DetectionTransformVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detector__DetectionTransformVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detector__DetectionTransformVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detector__DetectionTransformVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detector__DetectionTransformVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detector__DetectionTransformVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detector__DetectionTransformVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.detector__DetectionTransformVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.detector__DetectionTransformVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.detector__DetectionTransformVector_empty(self)
+
+    def size(self):
+        return _nn_native.detector__DetectionTransformVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.detector__DetectionTransformVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detector__DetectionTransformVector_begin(self)
+
+    def end(self):
+        return _nn_native.detector__DetectionTransformVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.detector__DetectionTransformVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detector__DetectionTransformVector_rend(self)
+
+    def clear(self):
+        return _nn_native.detector__DetectionTransformVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.detector__DetectionTransformVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.detector__DetectionTransformVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.detector__DetectionTransformVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detector__DetectionTransformVector_swiginit(self, _nn_native.new_detector__DetectionTransformVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.detector__DetectionTransformVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.detector__DetectionTransformVector_front(self)
+
+    def back(self):
+        return _nn_native.detector__DetectionTransformVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.detector__DetectionTransformVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.detector__DetectionTransformVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.detector__DetectionTransformVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.detector__DetectionTransformVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.detector__DetectionTransformVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_detector__DetectionTransformVector
+
+# Register detector__DetectionTransformVector in _nn_native:
+_nn_native.detector__DetectionTransformVector_swigregister(detector__DetectionTransformVector)
+class detector__DetectionTransform(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    scale = property(_nn_native.detector__DetectionTransform_scale_get, _nn_native.detector__DetectionTransform_scale_set)
+    shift_y = property(_nn_native.detector__DetectionTransform_shift_y_get, _nn_native.detector__DetectionTransform_shift_y_set)
+    shift_x = property(_nn_native.detector__DetectionTransform_shift_x_get, _nn_native.detector__DetectionTransform_shift_x_set)
+    exposure = property(_nn_native.detector__DetectionTransform_exposure_get, _nn_native.detector__DetectionTransform_exposure_set)
+
+    def __init__(self):
+        _nn_native.detector__DetectionTransform_swiginit(self, _nn_native.new_detector__DetectionTransform())
+    __swig_destroy__ = _nn_native.delete_detector__DetectionTransform
+
+# Register detector__DetectionTransform in _nn_native:
+_nn_native.detector__DetectionTransform_swigregister(detector__DetectionTransform)
+
+def detector__TransformDetectionScenes(source, rows, transforms):
+    return _nn_native.detector__TransformDetectionScenes(source, rows, transforms)
+
+def detector__MakeBox(ymin, xmin, ymax, xmax):
+    return _nn_native.detector__MakeBox(ymin, xmin, ymax, xmax)
+
+def detector__BoxValues(box):
+    return _nn_native.detector__BoxValues(box)
+
+def detector__MakeBoxVariances(y, x, height, width):
+    return _nn_native.detector__MakeBoxVariances(y, x, height, width)
+class detector__Mt19937_64(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    engine = property(_nn_native.detector__Mt19937_64_engine_get, _nn_native.detector__Mt19937_64_engine_set)
+
+    def __init__(self, seed):
+        _nn_native.detector__Mt19937_64_swiginit(self, _nn_native.new_detector__Mt19937_64(seed))
+
+    def next(self):
+        return _nn_native.detector__Mt19937_64_next(self)
+
+    def uniform_int(self, low, high):
+        return _nn_native.detector__Mt19937_64_uniform_int(self, low, high)
+
+    def uniform_float(self, low, high):
+        return _nn_native.detector__Mt19937_64_uniform_float(self, low, high)
+
+    def shuffle(self, values):
+        return _nn_native.detector__Mt19937_64_shuffle(self, values)
+    __swig_destroy__ = _nn_native.delete_detector__Mt19937_64
+
+# Register detector__Mt19937_64 in _nn_native:
+_nn_native.detector__Mt19937_64_swigregister(detector__Mt19937_64)
+
+def detector__ClassAp(detections, scenes, rows, label, threshold, voc):
+    return _nn_native.detector__ClassAp(detections, scenes, rows, label, threshold, voc)
+
+def detector__DecodeBox(anchor, delta):
+    return _nn_native.detector__DecodeBox(anchor, delta)
+
+def detector__DecodeBoxWith(anchor, delta, variance):
+    return _nn_native.detector__DecodeBoxWith(anchor, delta, variance)
+
+def detector__TrainingDirectory(name):
+    return _nn_native.detector__TrainingDirectory(name)
+
+def detector__LoadDigits(directory, split):
+    return _nn_native.detector__LoadDigits(directory, split)
+
+def detector__StandardScenes(directory, size=64):
+    return _nn_native.detector__StandardScenes(directory, size)
+
+def detector__CropScene(scenes, row, box, size):
+    return _nn_native.detector__CropScene(scenes, row, box, size)
+
+def detector__SampleRois(scenes, row, index, candidates, total, background, stride, feature_size, random, batch):
+    return _nn_native.detector__SampleRois(scenes, row, index, candidates, total, background, stride, feature_size, random, batch)
+
+def detector__MakeRpnTargets(anchors, scenes, rows, random, per_image=128):
+    return _nn_native.detector__MakeRpnTargets(anchors, scenes, rows, random, per_image)
+
+def detector__RpnProposals(objectness, deltas, anchors, height, width, before=300, after=100):
+    return _nn_native.detector__RpnProposals(objectness, deltas, anchors, height, width, before, after)
+
+def detr__DetrCorners(center_size):
+    return _nn_native.detr__DetrCorners(center_size)
+class IntPair(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _nn_native.IntPair_swiginit(self, _nn_native.new_IntPair(*args))
+    first = property(_nn_native.IntPair_first_get, _nn_native.IntPair_first_set)
+    second = property(_nn_native.IntPair_second_get, _nn_native.IntPair_second_set)
+    def __len__(self):
+        return 2
+    def __repr__(self):
+        return str((self.first, self.second))
+    def __getitem__(self, index):
+        if not (index % 2):
+            return self.first
+        else:
+            return self.second
+    def __setitem__(self, index, val):
+        if not (index % 2):
+            self.first = val
+        else:
+            self.second = val
+    __swig_destroy__ = _nn_native.delete_IntPair
+
+# Register IntPair in _nn_native:
+_nn_native.IntPair_swigregister(IntPair)
+class IntPairVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.IntPairVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.IntPairVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.IntPairVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.IntPairVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.IntPairVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.IntPairVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.IntPairVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.IntPairVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.IntPairVector_empty(self)
+
+    def size(self):
+        return _nn_native.IntPairVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.IntPairVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.IntPairVector_begin(self)
+
+    def end(self):
+        return _nn_native.IntPairVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.IntPairVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.IntPairVector_rend(self)
+
+    def clear(self):
+        return _nn_native.IntPairVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.IntPairVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.IntPairVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.IntPairVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.IntPairVector_swiginit(self, _nn_native.new_IntPairVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.IntPairVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.IntPairVector_front(self)
+
+    def back(self):
+        return _nn_native.IntPairVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.IntPairVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.IntPairVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.IntPairVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.IntPairVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.IntPairVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_IntPairVector
+
+# Register IntPairVector in _nn_native:
+_nn_native.IntPairVector_swigregister(IntPairVector)
+class TensorTriple(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.TensorTriple_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.TensorTriple___bool__(self)
+
+    def __len__(self):
+        return _nn_native.TensorTriple___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.TensorTriple___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.TensorTriple___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.TensorTriple___setitem__(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.TensorTriple_swiginit(self, _nn_native.new_TensorTriple(*args))
+
+    def empty(self):
+        return _nn_native.TensorTriple_empty(self)
+
+    def size(self):
+        return _nn_native.TensorTriple_size(self)
+
+    def swap(self, v):
+        return _nn_native.TensorTriple_swap(self, v)
+
+    def begin(self):
+        return _nn_native.TensorTriple_begin(self)
+
+    def end(self):
+        return _nn_native.TensorTriple_end(self)
+
+    def rbegin(self):
+        return _nn_native.TensorTriple_rbegin(self)
+
+    def rend(self):
+        return _nn_native.TensorTriple_rend(self)
+
+    def front(self):
+        return _nn_native.TensorTriple_front(self)
+
+    def back(self):
+        return _nn_native.TensorTriple_back(self)
+
+    def fill(self, u):
+        return _nn_native.TensorTriple_fill(self, u)
+    __swig_destroy__ = _nn_native.delete_TensorTriple
+
+# Register TensorTriple in _nn_native:
+_nn_native.TensorTriple_swigregister(TensorTriple)
+class yolo__Dimension(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.yolo__Dimension_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.yolo__Dimension___bool__(self)
+
+    def __len__(self):
+        return _nn_native.yolo__Dimension___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.yolo__Dimension___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.yolo__Dimension___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.yolo__Dimension___setitem__(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.yolo__Dimension_swiginit(self, _nn_native.new_yolo__Dimension(*args))
+
+    def empty(self):
+        return _nn_native.yolo__Dimension_empty(self)
+
+    def size(self):
+        return _nn_native.yolo__Dimension_size(self)
+
+    def swap(self, v):
+        return _nn_native.yolo__Dimension_swap(self, v)
+
+    def begin(self):
+        return _nn_native.yolo__Dimension_begin(self)
+
+    def end(self):
+        return _nn_native.yolo__Dimension_end(self)
+
+    def rbegin(self):
+        return _nn_native.yolo__Dimension_rbegin(self)
+
+    def rend(self):
+        return _nn_native.yolo__Dimension_rend(self)
+
+    def front(self):
+        return _nn_native.yolo__Dimension_front(self)
+
+    def back(self):
+        return _nn_native.yolo__Dimension_back(self)
+
+    def fill(self, u):
+        return _nn_native.yolo__Dimension_fill(self, u)
+    __swig_destroy__ = _nn_native.delete_yolo__Dimension
+
+# Register yolo__Dimension in _nn_native:
+_nn_native.yolo__Dimension_swigregister(yolo__Dimension)
+class yolo__DimensionVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.yolo__DimensionVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.yolo__DimensionVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.yolo__DimensionVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.yolo__DimensionVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.yolo__DimensionVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.yolo__DimensionVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.yolo__DimensionVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.yolo__DimensionVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.yolo__DimensionVector_empty(self)
+
+    def size(self):
+        return _nn_native.yolo__DimensionVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.yolo__DimensionVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.yolo__DimensionVector_begin(self)
+
+    def end(self):
+        return _nn_native.yolo__DimensionVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.yolo__DimensionVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.yolo__DimensionVector_rend(self)
+
+    def clear(self):
+        return _nn_native.yolo__DimensionVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.yolo__DimensionVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.yolo__DimensionVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.yolo__DimensionVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.yolo__DimensionVector_swiginit(self, _nn_native.new_yolo__DimensionVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.yolo__DimensionVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.yolo__DimensionVector_front(self)
+
+    def back(self):
+        return _nn_native.yolo__DimensionVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.yolo__DimensionVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.yolo__DimensionVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.yolo__DimensionVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.yolo__DimensionVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.yolo__DimensionVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_yolo__DimensionVector
+
+# Register yolo__DimensionVector in _nn_native:
+_nn_native.yolo__DimensionVector_swigregister(yolo__DimensionVector)
+class IntBoxPair(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _nn_native.IntBoxPair_swiginit(self, _nn_native.new_IntBoxPair(*args))
+    first = property(_nn_native.IntBoxPair_first_get, _nn_native.IntBoxPair_first_set)
+    second = property(_nn_native.IntBoxPair_second_get, _nn_native.IntBoxPair_second_set)
+    def __len__(self):
+        return 2
+    def __repr__(self):
+        return str((self.first, self.second))
+    def __getitem__(self, index):
+        if not (index % 2):
+            return self.first
+        else:
+            return self.second
+    def __setitem__(self, index, val):
+        if not (index % 2):
+            self.first = val
+        else:
+            self.second = val
+    __swig_destroy__ = _nn_native.delete_IntBoxPair
+
+# Register IntBoxPair in _nn_native:
+_nn_native.IntBoxPair_swigregister(IntBoxPair)
+class IntBoxPairVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.IntBoxPairVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.IntBoxPairVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.IntBoxPairVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.IntBoxPairVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.IntBoxPairVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.IntBoxPairVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.IntBoxPairVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.IntBoxPairVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.IntBoxPairVector_empty(self)
+
+    def size(self):
+        return _nn_native.IntBoxPairVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.IntBoxPairVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.IntBoxPairVector_begin(self)
+
+    def end(self):
+        return _nn_native.IntBoxPairVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.IntBoxPairVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.IntBoxPairVector_rend(self)
+
+    def clear(self):
+        return _nn_native.IntBoxPairVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.IntBoxPairVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.IntBoxPairVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.IntBoxPairVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.IntBoxPairVector_swiginit(self, _nn_native.new_IntBoxPairVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.IntBoxPairVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.IntBoxPairVector_front(self)
+
+    def back(self):
+        return _nn_native.IntBoxPairVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.IntBoxPairVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.IntBoxPairVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.IntBoxPairVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.IntBoxPairVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.IntBoxPairVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_IntBoxPairVector
+
+# Register IntBoxPairVector in _nn_native:
+_nn_native.IntBoxPairVector_swigregister(IntBoxPairVector)
+
+def wordtree__WordTreeLoss(output, labels, tree):
+    return _nn_native.wordtree__WordTreeLoss(output, labels, tree)
+class yolo__YoloV1Targets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    object = property(_nn_native.yolo__YoloV1Targets_object_get, _nn_native.yolo__YoloV1Targets_object_set)
+    boxes = property(_nn_native.yolo__YoloV1Targets_boxes_get, _nn_native.yolo__YoloV1Targets_boxes_set)
+    labels = property(_nn_native.yolo__YoloV1Targets_labels_get, _nn_native.yolo__YoloV1Targets_labels_set)
+    discarded = property(_nn_native.yolo__YoloV1Targets_discarded_get, _nn_native.yolo__YoloV1Targets_discarded_set)
+
+    def __init__(self):
+        _nn_native.yolo__YoloV1Targets_swiginit(self, _nn_native.new_yolo__YoloV1Targets())
+    __swig_destroy__ = _nn_native.delete_yolo__YoloV1Targets
+
+# Register yolo__YoloV1Targets in _nn_native:
+_nn_native.yolo__YoloV1Targets_swigregister(yolo__YoloV1Targets)
+
+def yolo__YoloSceneMetadata(scenes, rows, pixels=False):
+    return _nn_native.yolo__YoloSceneMetadata(scenes, rows, pixels)
+
+def yolo__MakeYoloV1Targets(scenes, rows, grid=7):
+    return _nn_native.yolo__MakeYoloV1Targets(scenes, rows, grid)
+
+def yolo__YoloV1Loss(prediction, t, classes, grid=7):
+    return _nn_native.yolo__YoloV1Loss(prediction, t, classes, grid)
+
+def yolo__DecodeYoloV1(values, rows, scenes, classes, grid, detections):
+    return _nn_native.yolo__DecodeYoloV1(values, rows, scenes, classes, grid, detections)
+
+def yolo__YoloV1PretrainingCrops(scenes, begin, end):
+    return _nn_native.yolo__YoloV1PretrainingCrops(scenes, begin, end)
+
+def yolo__YoloV1PretrainingBatch(crops, rows):
+    return _nn_native.yolo__YoloV1PretrainingBatch(crops, rows)
+
+def yolo__YoloV1PretrainedName(name):
+    return _nn_native.yolo__YoloV1PretrainedName(name)
+class yolo__YoloV1Classifier(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    cfg = property(_nn_native.yolo__YoloV1Classifier_cfg_get, _nn_native.yolo__YoloV1Classifier_cfg_set)
+    parameters = property(_nn_native.yolo__YoloV1Classifier_parameters_get)
+    state = property(_nn_native.yolo__YoloV1Classifier_state_get)
+
+    def __init__(self, config):
+        _nn_native.yolo__YoloV1Classifier_swiginit(self, _nn_native.new_yolo__YoloV1Classifier(config))
+
+    @staticmethod
+    def AdamConfig():
+        return _nn_native.yolo__YoloV1Classifier_AdamConfig()
+
+    @staticmethod
+    def Init(p, s, c):
+        return _nn_native.yolo__YoloV1Classifier_Init(p, s, c)
+
+    @staticmethod
+    def Loss(logits, y):
+        return _nn_native.yolo__YoloV1Classifier_Loss(logits, y)
+
+    @staticmethod
+    def WeightPenalty(p):
+        return _nn_native.yolo__YoloV1Classifier_WeightPenalty(p)
+
+    def Evaluate(self, x, y):
+        return _nn_native.yolo__YoloV1Classifier_Evaluate(self, x, y)
+    __swig_destroy__ = _nn_native.delete_yolo__YoloV1Classifier
+
+# Register yolo__YoloV1Classifier in _nn_native:
+_nn_native.yolo__YoloV1Classifier_swigregister(yolo__YoloV1Classifier)
+
+def yolo__EvaluateYoloV1Pretraining(model, crops):
+    return _nn_native.yolo__EvaluateYoloV1Pretraining(model, crops)
+class yolo__YoloV1PretrainedWeights(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def parameter_names(self):
+        return _nn_native.yolo__YoloV1PretrainedWeights_parameter_names(self)
+
+    def state_names(self):
+        return _nn_native.yolo__YoloV1PretrainedWeights_state_names(self)
+
+    def parameter(self, name):
+        return _nn_native.yolo__YoloV1PretrainedWeights_parameter(self, name)
+
+    def state_value(self, name):
+        return _nn_native.yolo__YoloV1PretrainedWeights_state_value(self, name)
+
+    def __init__(self):
+        _nn_native.yolo__YoloV1PretrainedWeights_swiginit(self, _nn_native.new_yolo__YoloV1PretrainedWeights())
+    __swig_destroy__ = _nn_native.delete_yolo__YoloV1PretrainedWeights
+
+# Register yolo__YoloV1PretrainedWeights in _nn_native:
+_nn_native.yolo__YoloV1PretrainedWeights_swigregister(yolo__YoloV1PretrainedWeights)
+
+def yolo__CaptureYoloV1Pretrained(model):
+    return _nn_native.yolo__CaptureYoloV1Pretrained(model)
+
+def yolo__DimensionTensor(x):
+    return _nn_native.yolo__DimensionTensor(x)
+
+def yolo__DimensionIoU(a, b):
+    return _nn_native.yolo__DimensionIoU(a, b)
+
+def yolo__ClusterDimensions(x, count):
+    return _nn_native.yolo__ClusterDimensions(x, count)
+class yolo__YoloV2Targets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    geometry = property(_nn_native.yolo__YoloV2Targets_geometry_get, _nn_native.yolo__YoloV2Targets_geometry_set)
+    positive = property(_nn_native.yolo__YoloV2Targets_positive_get, _nn_native.yolo__YoloV2Targets_positive_set)
+    confidence = property(_nn_native.yolo__YoloV2Targets_confidence_get, _nn_native.yolo__YoloV2Targets_confidence_set)
+    weights = property(_nn_native.yolo__YoloV2Targets_weights_get, _nn_native.yolo__YoloV2Targets_weights_set)
+    labels = property(_nn_native.yolo__YoloV2Targets_labels_get, _nn_native.yolo__YoloV2Targets_labels_set)
+    collisions = property(_nn_native.yolo__YoloV2Targets_collisions_get, _nn_native.yolo__YoloV2Targets_collisions_set)
+
+    def __init__(self):
+        _nn_native.yolo__YoloV2Targets_swiginit(self, _nn_native.new_yolo__YoloV2Targets())
+    __swig_destroy__ = _nn_native.delete_yolo__YoloV2Targets
+
+# Register yolo__YoloV2Targets in _nn_native:
+_nn_native.yolo__YoloV2Targets_swigregister(yolo__YoloV2Targets)
+
+def yolo__MakeYoloV2Targets(raw, shape, priors, scenes, rows, coarse):
+    return _nn_native.yolo__MakeYoloV2Targets(raw, shape, priors, scenes, rows, coarse)
+class yolo__YoloV2Weights(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    detection = property(_nn_native.yolo__YoloV2Weights_detection_get, _nn_native.yolo__YoloV2Weights_detection_set)
+    classification = property(_nn_native.yolo__YoloV2Weights_classification_get, _nn_native.yolo__YoloV2Weights_classification_set)
+    classification_labels = property(_nn_native.yolo__YoloV2Weights_classification_labels_get, _nn_native.yolo__YoloV2Weights_classification_labels_set)
+
+    def __init__(self):
+        _nn_native.yolo__YoloV2Weights_swiginit(self, _nn_native.new_yolo__YoloV2Weights())
+    __swig_destroy__ = _nn_native.delete_yolo__YoloV2Weights
+
+# Register yolo__YoloV2Weights in _nn_native:
+_nn_native.yolo__YoloV2Weights_swigregister(yolo__YoloV2Weights)
+
+def yolo__YoloV2Loss(raw, t, classes, w, tree=None):
+    return _nn_native.yolo__YoloV2Loss(raw, t, classes, w, tree)
+
+def yolo__DecodeYoloV2Detections(raw, shape, probabilities, classes, priors, scenes, rows, hierarchy, detections):
+    return _nn_native.yolo__DecodeYoloV2Detections(raw, shape, probabilities, classes, priors, scenes, rows, hierarchy, detections)
+
+def yolo__LogisticCrossEntropy(x, y):
+    return _nn_native.yolo__LogisticCrossEntropy(x, y)
+class yolo__YoloV3LevelTargets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    geometry = property(_nn_native.yolo__YoloV3LevelTargets_geometry_get, _nn_native.yolo__YoloV3LevelTargets_geometry_set)
+    classes = property(_nn_native.yolo__YoloV3LevelTargets_classes_get, _nn_native.yolo__YoloV3LevelTargets_classes_set)
+    positive = property(_nn_native.yolo__YoloV3LevelTargets_positive_get, _nn_native.yolo__YoloV3LevelTargets_positive_set)
+    objectness_weight = property(_nn_native.yolo__YoloV3LevelTargets_objectness_weight_get, _nn_native.yolo__YoloV3LevelTargets_objectness_weight_set)
+    geometry_weight = property(_nn_native.yolo__YoloV3LevelTargets_geometry_weight_get, _nn_native.yolo__YoloV3LevelTargets_geometry_weight_set)
+    areas = property(_nn_native.yolo__YoloV3LevelTargets_areas_get, _nn_native.yolo__YoloV3LevelTargets_areas_set)
+    grid = property(_nn_native.yolo__YoloV3LevelTargets_grid_get, _nn_native.yolo__YoloV3LevelTargets_grid_set)
+    class_count = property(_nn_native.yolo__YoloV3LevelTargets_class_count_get, _nn_native.yolo__YoloV3LevelTargets_class_count_set)
+
+    def __init__(self):
+        _nn_native.yolo__YoloV3LevelTargets_swiginit(self, _nn_native.new_yolo__YoloV3LevelTargets())
+    __swig_destroy__ = _nn_native.delete_yolo__YoloV3LevelTargets
+
+# Register yolo__YoloV3LevelTargets in _nn_native:
+_nn_native.yolo__YoloV3LevelTargets_swigregister(yolo__YoloV3LevelTargets)
+class yolo__YoloV3Targets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    collisions = property(_nn_native.yolo__YoloV3Targets_collisions_get, _nn_native.yolo__YoloV3Targets_collisions_set)
+
+    def level(self, index):
+        return _nn_native.yolo__YoloV3Targets_level(self, index)
+
+    def __init__(self):
+        _nn_native.yolo__YoloV3Targets_swiginit(self, _nn_native.new_yolo__YoloV3Targets())
+    __swig_destroy__ = _nn_native.delete_yolo__YoloV3Targets
+
+# Register yolo__YoloV3Targets in _nn_native:
+_nn_native.yolo__YoloV3Targets_swigregister(yolo__YoloV3Targets)
+
+def yolo__YoloV3Loss(raw, t, classes):
+    return _nn_native.yolo__YoloV3Loss(raw, t, classes)
+
+def yolo__DecodeYoloV3Level(raw, level, priors, scenes, rows, detections):
+    return _nn_native.yolo__DecodeYoloV3Level(raw, level, priors, scenes, rows, detections)
+
+def yolo__DecodeYoloV5Boxes(raw, priors, level):
+    return _nn_native.yolo__DecodeYoloV5Boxes(raw, priors, level)
+class yolo__YoloV5LevelTargets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    geometry = property(_nn_native.yolo__YoloV5LevelTargets_geometry_get, _nn_native.yolo__YoloV5LevelTargets_geometry_set)
+    classes = property(_nn_native.yolo__YoloV5LevelTargets_classes_get, _nn_native.yolo__YoloV5LevelTargets_classes_set)
+    positive = property(_nn_native.yolo__YoloV5LevelTargets_positive_get, _nn_native.yolo__YoloV5LevelTargets_positive_set)
+    quality = property(_nn_native.yolo__YoloV5LevelTargets_quality_get, _nn_native.yolo__YoloV5LevelTargets_quality_set)
+    class_count = property(_nn_native.yolo__YoloV5LevelTargets_class_count_get, _nn_native.yolo__YoloV5LevelTargets_class_count_set)
+
+    def __init__(self):
+        _nn_native.yolo__YoloV5LevelTargets_swiginit(self, _nn_native.new_yolo__YoloV5LevelTargets())
+    __swig_destroy__ = _nn_native.delete_yolo__YoloV5LevelTargets
+
+# Register yolo__YoloV5LevelTargets in _nn_native:
+_nn_native.yolo__YoloV5LevelTargets_swigregister(yolo__YoloV5LevelTargets)
+class yolo__YoloV5Targets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    collisions = property(_nn_native.yolo__YoloV5Targets_collisions_get, _nn_native.yolo__YoloV5Targets_collisions_set)
+
+    def level(self, index):
+        return _nn_native.yolo__YoloV5Targets_level(self, index)
+
+    def __init__(self):
+        _nn_native.yolo__YoloV5Targets_swiginit(self, _nn_native.new_yolo__YoloV5Targets())
+    __swig_destroy__ = _nn_native.delete_yolo__YoloV5Targets
+
+# Register yolo__YoloV5Targets in _nn_native:
+_nn_native.yolo__YoloV5Targets_swigregister(yolo__YoloV5Targets)
+
+def yolo__YoloV5Loss(raw, t, classes, priors):
+    return _nn_native.yolo__YoloV5Loss(raw, t, classes, priors)
+
+def yolo__DecodeYoloV5Level(raw, level, priors, scenes, rows, out):
+    return _nn_native.yolo__DecodeYoloV5Level(raw, level, priors, scenes, rows, out)
+class instance__InstanceScenes(detector__DetectionScenes):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def instance_count(self, scene):
+        return _nn_native.instance__InstanceScenes_instance_count(self, scene)
+
+    def instance_mask(self, scene, object):
+        return _nn_native.instance__InstanceScenes_instance_mask(self, scene, object)
+
+    def __init__(self):
+        _nn_native.instance__InstanceScenes_swiginit(self, _nn_native.new_instance__InstanceScenes())
+    __swig_destroy__ = _nn_native.delete_instance__InstanceScenes
+
+# Register instance__InstanceScenes in _nn_native:
+_nn_native.instance__InstanceScenes_swigregister(instance__InstanceScenes)
+
+def instance__LegacyScenes(data):
+    return _nn_native.instance__LegacyScenes(data)
+
+def instance__MakeInstanceScenes(digits, cfg):
+    return _nn_native.instance__MakeInstanceScenes(digits, cfg)
+class instance__MaskDetection(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    box = property(_nn_native.instance__MaskDetection_box_get, _nn_native.instance__MaskDetection_box_set)
+    mask = property(_nn_native.instance__MaskDetection_mask_get, _nn_native.instance__MaskDetection_mask_set)
+
+    def __init__(self):
+        _nn_native.instance__MaskDetection_swiginit(self, _nn_native.new_instance__MaskDetection())
+    __swig_destroy__ = _nn_native.delete_instance__MaskDetection
+
+# Register instance__MaskDetection in _nn_native:
+_nn_native.instance__MaskDetection_swigregister(instance__MaskDetection)
+
+def instance__MaskIoU(a, b):
+    return _nn_native.instance__MaskIoU(a, b)
+
+def instance__TensorAnnotations(scenes):
+    return _nn_native.instance__TensorAnnotations(scenes)
+
+def instance__MaskAveragePrecision(predictions, scenes, classes, threshold):
+    return _nn_native.instance__MaskAveragePrecision(predictions, scenes, classes, threshold)
+class instance__MaskDetectionVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.instance__MaskDetectionVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.instance__MaskDetectionVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.instance__MaskDetectionVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.instance__MaskDetectionVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.instance__MaskDetectionVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.instance__MaskDetectionVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.instance__MaskDetectionVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.instance__MaskDetectionVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.instance__MaskDetectionVector_empty(self)
+
+    def size(self):
+        return _nn_native.instance__MaskDetectionVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.instance__MaskDetectionVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.instance__MaskDetectionVector_begin(self)
+
+    def end(self):
+        return _nn_native.instance__MaskDetectionVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.instance__MaskDetectionVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.instance__MaskDetectionVector_rend(self)
+
+    def clear(self):
+        return _nn_native.instance__MaskDetectionVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.instance__MaskDetectionVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.instance__MaskDetectionVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.instance__MaskDetectionVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.instance__MaskDetectionVector_swiginit(self, _nn_native.new_instance__MaskDetectionVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.instance__MaskDetectionVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.instance__MaskDetectionVector_front(self)
+
+    def back(self):
+        return _nn_native.instance__MaskDetectionVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.instance__MaskDetectionVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.instance__MaskDetectionVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.instance__MaskDetectionVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.instance__MaskDetectionVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.instance__MaskDetectionVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_instance__MaskDetectionVector
+
+# Register instance__MaskDetectionVector in _nn_native:
+_nn_native.instance__MaskDetectionVector_swigregister(instance__MaskDetectionVector)
+
+def maskrcnn__AlignCrops(boxes, cells, stride, bins):
+    return _nn_native.maskrcnn__AlignCrops(boxes, cells, stride, bins)
+
+def maskrcnn__RoiAlign(feature, boxes, indices, cells, stride, bins):
+    return _nn_native.maskrcnn__RoiAlign(feature, boxes, indices, cells, stride, bins)
+
+def maskrcnn__MaskHead(p, pooled, width=256, classes=80):
+    return _nn_native.maskrcnn__MaskHead(p, pooled, width, classes)
+
+def maskrcnn__SelectedMaskLoss(logits, labels, targets, classes):
+    return _nn_native.maskrcnn__SelectedMaskLoss(logits, labels, targets, classes)
+
+def maskrcnn__PooledRoiHead(p, pooled, classes, hidden=256):
+    return _nn_native.maskrcnn__PooledRoiHead(p, pooled, classes, hidden)
+
+def maskrcnn__DecodePixelRois(out, rows, boxes, classes):
+    return _nn_native.maskrcnn__DecodePixelRois(out, rows, boxes, classes)
+class maskrcnn__MaskTargets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    boxes = property(_nn_native.maskrcnn__MaskTargets_boxes_get, _nn_native.maskrcnn__MaskTargets_boxes_set)
+    indices = property(_nn_native.maskrcnn__MaskTargets_indices_get, _nn_native.maskrcnn__MaskTargets_indices_set)
+    labels = property(_nn_native.maskrcnn__MaskTargets_labels_get, _nn_native.maskrcnn__MaskTargets_labels_set)
+    targets = property(_nn_native.maskrcnn__MaskTargets_targets_get, _nn_native.maskrcnn__MaskTargets_targets_set)
+
+    def __init__(self):
+        _nn_native.maskrcnn__MaskTargets_swiginit(self, _nn_native.new_maskrcnn__MaskTargets())
+    __swig_destroy__ = _nn_native.delete_maskrcnn__MaskTargets
+
+# Register maskrcnn__MaskTargets in _nn_native:
+_nn_native.maskrcnn__MaskTargets_swigregister(maskrcnn__MaskTargets)
+
+def maskrcnn__PositiveMaskTargets(scenes, rows, batch):
+    return _nn_native.maskrcnn__PositiveMaskTargets(scenes, rows, batch)
+class panoptic__PanopticMap(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    ids = property(_nn_native.panoptic__PanopticMap_ids_get, _nn_native.panoptic__PanopticMap_ids_set)
+
+    def segment_ids(self):
+        return _nn_native.panoptic__PanopticMap_segment_ids(self)
+
+    def segment(self, id):
+        return _nn_native.panoptic__PanopticMap_segment(self, id)
+
+    def has_segment(self, id):
+        return _nn_native.panoptic__PanopticMap_has_segment(self, id)
+
+    def __init__(self):
+        _nn_native.panoptic__PanopticMap_swiginit(self, _nn_native.new_panoptic__PanopticMap())
+    __swig_destroy__ = _nn_native.delete_panoptic__PanopticMap
+
+# Register panoptic__PanopticMap in _nn_native:
+_nn_native.panoptic__PanopticMap_swigregister(panoptic__PanopticMap)
+class panoptic__PqStat(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    iou = property(_nn_native.panoptic__PqStat_iou_get, _nn_native.panoptic__PqStat_iou_set)
+    tp = property(_nn_native.panoptic__PqStat_tp_get, _nn_native.panoptic__PqStat_tp_set)
+    fp = property(_nn_native.panoptic__PqStat_fp_get, _nn_native.panoptic__PqStat_fp_set)
+    fn = property(_nn_native.panoptic__PqStat_fn_get, _nn_native.panoptic__PqStat_fn_set)
+
+    def __init__(self):
+        _nn_native.panoptic__PqStat_swiginit(self, _nn_native.new_panoptic__PqStat())
+    __swig_destroy__ = _nn_native.delete_panoptic__PqStat
+
+# Register panoptic__PqStat in _nn_native:
+_nn_native.panoptic__PqStat_swigregister(panoptic__PqStat)
+class panoptic__PqResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    pq = property(_nn_native.panoptic__PqResult_pq_get, _nn_native.panoptic__PqResult_pq_set)
+    sq = property(_nn_native.panoptic__PqResult_sq_get, _nn_native.panoptic__PqResult_sq_set)
+    rq = property(_nn_native.panoptic__PqResult_rq_get, _nn_native.panoptic__PqResult_rq_set)
+    classes = property(_nn_native.panoptic__PqResult_classes_get, _nn_native.panoptic__PqResult_classes_set)
+
+    def __init__(self):
+        _nn_native.panoptic__PqResult_swiginit(self, _nn_native.new_panoptic__PqResult())
+    __swig_destroy__ = _nn_native.delete_panoptic__PqResult
+
+# Register panoptic__PqResult in _nn_native:
+_nn_native.panoptic__PqResult_swigregister(panoptic__PqResult)
+
+def panoptic__TensorMap(map):
+    return _nn_native.panoptic__TensorMap(map)
+
+def panoptic__TensorInstances(instances, height, width):
+    return _nn_native.panoptic__TensorInstances(instances, height, width)
+
+def panoptic__MergePanoptic(semantic, instances, semantic_categories, score=.5, overlap=.5, stuff_area=32):
+    return _nn_native.panoptic__MergePanoptic(semantic, instances, semantic_categories, score, overlap, stuff_area)
+
+def panoptic__DenseStats(stats, classes):
+    return _nn_native.panoptic__DenseStats(stats, classes)
+
+def panoptic__LegacyStats(statistics):
+    return _nn_native.panoptic__LegacyStats(statistics)
+class panoptic__PanopticMapVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.panoptic__PanopticMapVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.panoptic__PanopticMapVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.panoptic__PanopticMapVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.panoptic__PanopticMapVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.panoptic__PanopticMapVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.panoptic__PanopticMapVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.panoptic__PanopticMapVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.panoptic__PanopticMapVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.panoptic__PanopticMapVector_empty(self)
+
+    def size(self):
+        return _nn_native.panoptic__PanopticMapVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.panoptic__PanopticMapVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.panoptic__PanopticMapVector_begin(self)
+
+    def end(self):
+        return _nn_native.panoptic__PanopticMapVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.panoptic__PanopticMapVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.panoptic__PanopticMapVector_rend(self)
+
+    def clear(self):
+        return _nn_native.panoptic__PanopticMapVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.panoptic__PanopticMapVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.panoptic__PanopticMapVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.panoptic__PanopticMapVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.panoptic__PanopticMapVector_swiginit(self, _nn_native.new_panoptic__PanopticMapVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.panoptic__PanopticMapVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.panoptic__PanopticMapVector_front(self)
+
+    def back(self):
+        return _nn_native.panoptic__PanopticMapVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.panoptic__PanopticMapVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.panoptic__PanopticMapVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.panoptic__PanopticMapVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.panoptic__PanopticMapVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.panoptic__PanopticMapVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_panoptic__PanopticMapVector
+
+# Register panoptic__PanopticMapVector in _nn_native:
+_nn_native.panoptic__PanopticMapVector_swigregister(panoptic__PanopticMapVector)
+
+def panoptic__PanopticLevels(boxes, canonical):
+    return _nn_native.panoptic__PanopticLevels(boxes, canonical)
+
+def panoptic__PanopticRoiAlign(features, boxes, indices, image_size, bins, canonical=224):
+    return _nn_native.panoptic__PanopticRoiAlign(features, boxes, indices, image_size, bins, canonical)
+class panoptic__PanopticScenes(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    instances = property(_nn_native.panoptic__PanopticScenes_instances_get, _nn_native.panoptic__PanopticScenes_instances_set)
+    semantic = property(_nn_native.panoptic__PanopticScenes_semantic_get, _nn_native.panoptic__PanopticScenes_semantic_set)
+    panoptic = property(_nn_native.panoptic__PanopticScenes_panoptic_get, _nn_native.panoptic__PanopticScenes_panoptic_set)
+
+    def __init__(self):
+        _nn_native.panoptic__PanopticScenes_swiginit(self, _nn_native.new_panoptic__PanopticScenes())
+    __swig_destroy__ = _nn_native.delete_panoptic__PanopticScenes
+
+# Register panoptic__PanopticScenes in _nn_native:
+_nn_native.panoptic__PanopticScenes_swigregister(panoptic__PanopticScenes)
+
+def panoptic__MakePanopticScenes(digits, count, seed):
+    return _nn_native.panoptic__MakePanopticScenes(digits, count, seed)
+
+def panoptic__PanopticSemanticTargets(scenes, rows):
+    return _nn_native.panoptic__PanopticSemanticTargets(scenes, rows)
+
+def yolact__LinearMasks(prototypes, coefficients):
+    return _nn_native.yolact__LinearMasks(prototypes, coefficients)
+
+def yolact__CroppedMaskLoss(logits, targets, crop):
+    return _nn_native.yolact__CroppedMaskLoss(logits, targets, crop)
+
+def yolact__YolactMatching(anchors, truth):
+    return _nn_native.yolact__YolactMatching(anchors, truth)
+
+def yolact__YolactAnchors(net, size, compact):
+    return _nn_native.yolact__YolactAnchors(net, size, compact)
+class yolact__YolactTargets(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    batch = property(_nn_native.yolact__YolactTargets_batch_get, _nn_native.yolact__YolactTargets_batch_set)
+    anchors = property(_nn_native.yolact__YolactTargets_anchors_get, _nn_native.yolact__YolactTargets_anchors_set)
+    side = property(_nn_native.yolact__YolactTargets_side_get, _nn_native.yolact__YolactTargets_side_set)
+    cells = property(_nn_native.yolact__YolactTargets_cells_get, _nn_native.yolact__YolactTargets_cells_set)
+    classes = property(_nn_native.yolact__YolactTargets_classes_get, _nn_native.yolact__YolactTargets_classes_set)
+    labels = property(_nn_native.yolact__YolactTargets_labels_get, _nn_native.yolact__YolactTargets_labels_set)
+    deltas = property(_nn_native.yolact__YolactTargets_deltas_get, _nn_native.yolact__YolactTargets_deltas_set)
+    pairs = property(_nn_native.yolact__YolactTargets_pairs_get, _nn_native.yolact__YolactTargets_pairs_set)
+    mask_targets = property(_nn_native.yolact__YolactTargets_mask_targets_get, _nn_native.yolact__YolactTargets_mask_targets_set)
+    crop = property(_nn_native.yolact__YolactTargets_crop_get, _nn_native.yolact__YolactTargets_crop_set)
+    semantic = property(_nn_native.yolact__YolactTargets_semantic_get, _nn_native.yolact__YolactTargets_semantic_set)
+
+    def __init__(self):
+        _nn_native.yolact__YolactTargets_swiginit(self, _nn_native.new_yolact__YolactTargets())
+    __swig_destroy__ = _nn_native.delete_yolact__YolactTargets
+
+# Register yolact__YolactTargets in _nn_native:
+_nn_native.yolact__YolactTargets_swigregister(yolact__YolactTargets)
+class yolact__YolactLoss(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    loss = property(_nn_native.yolact__YolactLoss_loss_get, _nn_native.yolact__YolactLoss_loss_set)
+    mask_loss = property(_nn_native.yolact__YolactLoss_mask_loss_get, _nn_native.yolact__YolactLoss_mask_loss_set)
+
+    def negatives_mask(self):
+        return _nn_native.yolact__YolactLoss_negatives_mask(self)
+
+    def __init__(self):
+        _nn_native.yolact__YolactLoss_swiginit(self, _nn_native.new_yolact__YolactLoss())
+    __swig_destroy__ = _nn_native.delete_yolact__YolactLoss
+
+# Register yolact__YolactLoss in _nn_native:
+_nn_native.yolact__YolactLoss_swigregister(yolact__YolactLoss)
+
+def yolact__TensorTargets(t):
+    return _nn_native.yolact__TensorTargets(t)
+
+def yolact__BuildYolactLoss(net, target):
+    return _nn_native.yolact__BuildYolactLoss(net, target)
+
+def yolact__FastNms(detections, threshold=.5, top_k=200, limit=100):
+    return _nn_native.yolact__FastNms(detections, threshold, top_k, limit)
+
+def yolact__DecodeYolact(net, anchors, scenes, chunk, classes):
+    return _nn_native.yolact__DecodeYolact(net, anchors, scenes, chunk, classes)
+class detection_evaluation__EvaluationTruth(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.detection_evaluation__EvaluationTruth_image_get, _nn_native.detection_evaluation__EvaluationTruth_image_set)
+    label = property(_nn_native.detection_evaluation__EvaluationTruth_label_get, _nn_native.detection_evaluation__EvaluationTruth_label_set)
+    box = property(_nn_native.detection_evaluation__EvaluationTruth_box_get, _nn_native.detection_evaluation__EvaluationTruth_box_set)
+    difficult = property(_nn_native.detection_evaluation__EvaluationTruth_difficult_get, _nn_native.detection_evaluation__EvaluationTruth_difficult_set)
+    crowd = property(_nn_native.detection_evaluation__EvaluationTruth_crowd_get, _nn_native.detection_evaluation__EvaluationTruth_crowd_set)
+
+    def __init__(self):
+        _nn_native.detection_evaluation__EvaluationTruth_swiginit(self, _nn_native.new_detection_evaluation__EvaluationTruth())
+    __swig_destroy__ = _nn_native.delete_detection_evaluation__EvaluationTruth
+
+# Register detection_evaluation__EvaluationTruth in _nn_native:
+_nn_native.detection_evaluation__EvaluationTruth_swigregister(detection_evaluation__EvaluationTruth)
+class detection_evaluation__EvaluationImage(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    id = property(_nn_native.detection_evaluation__EvaluationImage_id_get, _nn_native.detection_evaluation__EvaluationImage_id_set)
+    height = property(_nn_native.detection_evaluation__EvaluationImage_height_get, _nn_native.detection_evaluation__EvaluationImage_height_set)
+    width = property(_nn_native.detection_evaluation__EvaluationImage_width_get, _nn_native.detection_evaluation__EvaluationImage_width_set)
+
+    def filename_string(self):
+        return _nn_native.detection_evaluation__EvaluationImage_filename_string(self)
+
+    def __init__(self):
+        _nn_native.detection_evaluation__EvaluationImage_swiginit(self, _nn_native.new_detection_evaluation__EvaluationImage())
+    __swig_destroy__ = _nn_native.delete_detection_evaluation__EvaluationImage
+
+# Register detection_evaluation__EvaluationImage in _nn_native:
+_nn_native.detection_evaluation__EvaluationImage_swigregister(detection_evaluation__EvaluationImage)
+class detection_evaluation__DatasetAp(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    ap50 = property(_nn_native.detection_evaluation__DatasetAp_ap50_get, _nn_native.detection_evaluation__DatasetAp_ap50_set)
+    ap75 = property(_nn_native.detection_evaluation__DatasetAp_ap75_get, _nn_native.detection_evaluation__DatasetAp_ap75_set)
+    ap = property(_nn_native.detection_evaluation__DatasetAp_ap_get, _nn_native.detection_evaluation__DatasetAp_ap_set)
+    voc07 = property(_nn_native.detection_evaluation__DatasetAp_voc07_get, _nn_native.detection_evaluation__DatasetAp_voc07_set)
+    classes = property(_nn_native.detection_evaluation__DatasetAp_classes_get, _nn_native.detection_evaluation__DatasetAp_classes_set)
+
+    def per_class50_labels(self):
+        return _nn_native.detection_evaluation__DatasetAp_per_class50_labels(self)
+
+    def per_class50_value(self, label):
+        return _nn_native.detection_evaluation__DatasetAp_per_class50_value(self, label)
+
+    def __init__(self):
+        _nn_native.detection_evaluation__DatasetAp_swiginit(self, _nn_native.new_detection_evaluation__DatasetAp())
+    __swig_destroy__ = _nn_native.delete_detection_evaluation__DatasetAp
+
+# Register detection_evaluation__DatasetAp in _nn_native:
+_nn_native.detection_evaluation__DatasetAp_swigregister(detection_evaluation__DatasetAp)
+
+def detection_evaluation__TensorPredictions(predictions):
+    return _nn_native.detection_evaluation__TensorPredictions(predictions)
+
+def detection_evaluation__TensorTruth(truth):
+    return _nn_native.detection_evaluation__TensorTruth(truth)
+
+def detection_evaluation__DatasetClassAp(predictions, truth, image_ids, label, threshold, coco):
+    return _nn_native.detection_evaluation__DatasetClassAp(predictions, truth, image_ids, label, threshold, coco)
+
+def detection_evaluation__EvaluateDataset(predictions, truth, images, coco):
+    return _nn_native.detection_evaluation__EvaluateDataset(predictions, truth, images, coco)
+class detection_evaluation__EvaluationTruthVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detection_evaluation__EvaluationTruthVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detection_evaluation__EvaluationTruthVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detection_evaluation__EvaluationTruthVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_empty(self)
+
+    def size(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_begin(self)
+
+    def end(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_rend(self)
+
+    def clear(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detection_evaluation__EvaluationTruthVector_swiginit(self, _nn_native.new_detection_evaluation__EvaluationTruthVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_front(self)
+
+    def back(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.detection_evaluation__EvaluationTruthVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_detection_evaluation__EvaluationTruthVector
+
+# Register detection_evaluation__EvaluationTruthVector in _nn_native:
+_nn_native.detection_evaluation__EvaluationTruthVector_swigregister(detection_evaluation__EvaluationTruthVector)
+class detection_evaluation__EvaluationImageVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detection_evaluation__EvaluationImageVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detection_evaluation__EvaluationImageVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detection_evaluation__EvaluationImageVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.detection_evaluation__EvaluationImageVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.detection_evaluation__EvaluationImageVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_empty(self)
+
+    def size(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.detection_evaluation__EvaluationImageVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_begin(self)
+
+    def end(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_rend(self)
+
+    def clear(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.detection_evaluation__EvaluationImageVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detection_evaluation__EvaluationImageVector_swiginit(self, _nn_native.new_detection_evaluation__EvaluationImageVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.detection_evaluation__EvaluationImageVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_front(self)
+
+    def back(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.detection_evaluation__EvaluationImageVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.detection_evaluation__EvaluationImageVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.detection_evaluation__EvaluationImageVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.detection_evaluation__EvaluationImageVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.detection_evaluation__EvaluationImageVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_detection_evaluation__EvaluationImageVector
+
+# Register detection_evaluation__EvaluationImageVector in _nn_native:
+_nn_native.detection_evaluation__EvaluationImageVector_swigregister(detection_evaluation__EvaluationImageVector)
+class detection__Box(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    x1 = property(_nn_native.detection__Box_x1_get, _nn_native.detection__Box_x1_set)
+    y1 = property(_nn_native.detection__Box_y1_get, _nn_native.detection__Box_y1_set)
+    x2 = property(_nn_native.detection__Box_x2_get, _nn_native.detection__Box_x2_set)
+    y2 = property(_nn_native.detection__Box_y2_get, _nn_native.detection__Box_y2_set)
+
+    def __init__(self):
+        _nn_native.detection__Box_swiginit(self, _nn_native.new_detection__Box())
+    __swig_destroy__ = _nn_native.delete_detection__Box
+
+# Register detection__Box in _nn_native:
+_nn_native.detection__Box_swigregister(detection__Box)
+
+def detection__Validate(b):
+    return _nn_native.detection__Validate(b)
+
+def detection__IoU(a, b):
+    return _nn_native.detection__IoU(a, b)
+class detection__GroundTruth(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.detection__GroundTruth_image_get, _nn_native.detection__GroundTruth_image_set)
+    label = property(_nn_native.detection__GroundTruth_label_get, _nn_native.detection__GroundTruth_label_set)
+    box = property(_nn_native.detection__GroundTruth_box_get, _nn_native.detection__GroundTruth_box_set)
+
+    def __init__(self):
+        _nn_native.detection__GroundTruth_swiginit(self, _nn_native.new_detection__GroundTruth())
+    __swig_destroy__ = _nn_native.delete_detection__GroundTruth
+
+# Register detection__GroundTruth in _nn_native:
+_nn_native.detection__GroundTruth_swigregister(detection__GroundTruth)
+class detection__Detection(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.detection__Detection_image_get, _nn_native.detection__Detection_image_set)
+    label = property(_nn_native.detection__Detection_label_get, _nn_native.detection__Detection_label_set)
+    box = property(_nn_native.detection__Detection_box_get, _nn_native.detection__Detection_box_set)
+    score = property(_nn_native.detection__Detection_score_get, _nn_native.detection__Detection_score_set)
+
+    def __init__(self):
+        _nn_native.detection__Detection_swiginit(self, _nn_native.new_detection__Detection())
+    __swig_destroy__ = _nn_native.delete_detection__Detection
+
+# Register detection__Detection in _nn_native:
+_nn_native.detection__Detection_swigregister(detection__Detection)
+class detection__DetectionMetrics(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    ap = property(_nn_native.detection__DetectionMetrics_ap_get, _nn_native.detection__DetectionMetrics_ap_set)
+    map = property(_nn_native.detection__DetectionMetrics_map_get, _nn_native.detection__DetectionMetrics_map_set)
+
+    def __init__(self):
+        _nn_native.detection__DetectionMetrics_swiginit(self, _nn_native.new_detection__DetectionMetrics())
+    __swig_destroy__ = _nn_native.delete_detection__DetectionMetrics
+
+# Register detection__DetectionMetrics in _nn_native:
+_nn_native.detection__DetectionMetrics_swigregister(detection__DetectionMetrics)
+
+def detection__DetectionMap(truth, detections, classes, threshold=.5):
+    return _nn_native.detection__DetectionMap(truth, detections, classes, threshold)
+class detection__GroundTruthVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detection__GroundTruthVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detection__GroundTruthVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detection__GroundTruthVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detection__GroundTruthVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detection__GroundTruthVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detection__GroundTruthVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.detection__GroundTruthVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.detection__GroundTruthVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.detection__GroundTruthVector_empty(self)
+
+    def size(self):
+        return _nn_native.detection__GroundTruthVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.detection__GroundTruthVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detection__GroundTruthVector_begin(self)
+
+    def end(self):
+        return _nn_native.detection__GroundTruthVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.detection__GroundTruthVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detection__GroundTruthVector_rend(self)
+
+    def clear(self):
+        return _nn_native.detection__GroundTruthVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.detection__GroundTruthVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.detection__GroundTruthVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.detection__GroundTruthVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detection__GroundTruthVector_swiginit(self, _nn_native.new_detection__GroundTruthVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.detection__GroundTruthVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.detection__GroundTruthVector_front(self)
+
+    def back(self):
+        return _nn_native.detection__GroundTruthVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.detection__GroundTruthVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.detection__GroundTruthVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.detection__GroundTruthVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.detection__GroundTruthVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.detection__GroundTruthVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_detection__GroundTruthVector
+
+# Register detection__GroundTruthVector in _nn_native:
+_nn_native.detection__GroundTruthVector_swigregister(detection__GroundTruthVector)
+class detection__DetectionVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.detection__DetectionVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.detection__DetectionVector___bool__(self)
+
+    def __len__(self):
+        return _nn_native.detection__DetectionVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.detection__DetectionVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.detection__DetectionVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.detection__DetectionVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.detection__DetectionVector_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.detection__DetectionVector_append(self, x)
+
+    def empty(self):
+        return _nn_native.detection__DetectionVector_empty(self)
+
+    def size(self):
+        return _nn_native.detection__DetectionVector_size(self)
+
+    def swap(self, v):
+        return _nn_native.detection__DetectionVector_swap(self, v)
+
+    def begin(self):
+        return _nn_native.detection__DetectionVector_begin(self)
+
+    def end(self):
+        return _nn_native.detection__DetectionVector_end(self)
+
+    def rbegin(self):
+        return _nn_native.detection__DetectionVector_rbegin(self)
+
+    def rend(self):
+        return _nn_native.detection__DetectionVector_rend(self)
+
+    def clear(self):
+        return _nn_native.detection__DetectionVector_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.detection__DetectionVector_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.detection__DetectionVector_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.detection__DetectionVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.detection__DetectionVector_swiginit(self, _nn_native.new_detection__DetectionVector(*args))
+
+    def push_back(self, x):
+        return _nn_native.detection__DetectionVector_push_back(self, x)
+
+    def front(self):
+        return _nn_native.detection__DetectionVector_front(self)
+
+    def back(self):
+        return _nn_native.detection__DetectionVector_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.detection__DetectionVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.detection__DetectionVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.detection__DetectionVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.detection__DetectionVector_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.detection__DetectionVector_capacity(self)
+    __swig_destroy__ = _nn_native.delete_detection__DetectionVector
+
+# Register detection__DetectionVector in _nn_native:
+_nn_native.detection__DetectionVector_swigregister(detection__DetectionVector)
+class im2col__PatchGeometry(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    n = property(_nn_native.im2col__PatchGeometry_n_get, _nn_native.im2col__PatchGeometry_n_set)
+    h = property(_nn_native.im2col__PatchGeometry_h_get, _nn_native.im2col__PatchGeometry_h_set)
+    w = property(_nn_native.im2col__PatchGeometry_w_get, _nn_native.im2col__PatchGeometry_w_set)
+    c = property(_nn_native.im2col__PatchGeometry_c_get, _nn_native.im2col__PatchGeometry_c_set)
+    kh = property(_nn_native.im2col__PatchGeometry_kh_get, _nn_native.im2col__PatchGeometry_kh_set)
+    kw = property(_nn_native.im2col__PatchGeometry_kw_get, _nn_native.im2col__PatchGeometry_kw_set)
+    sh = property(_nn_native.im2col__PatchGeometry_sh_get, _nn_native.im2col__PatchGeometry_sh_set)
+    sw = property(_nn_native.im2col__PatchGeometry_sw_get, _nn_native.im2col__PatchGeometry_sw_set)
+    dh = property(_nn_native.im2col__PatchGeometry_dh_get, _nn_native.im2col__PatchGeometry_dh_set)
+    dw = property(_nn_native.im2col__PatchGeometry_dw_get, _nn_native.im2col__PatchGeometry_dw_set)
+    oh = property(_nn_native.im2col__PatchGeometry_oh_get, _nn_native.im2col__PatchGeometry_oh_set)
+    ow = property(_nn_native.im2col__PatchGeometry_ow_get, _nn_native.im2col__PatchGeometry_ow_set)
+    top = property(_nn_native.im2col__PatchGeometry_top_get, _nn_native.im2col__PatchGeometry_top_set)
+    left = property(_nn_native.im2col__PatchGeometry_left_get, _nn_native.im2col__PatchGeometry_left_set)
+
+    def __init__(self, *args):
+        _nn_native.im2col__PatchGeometry_swiginit(self, _nn_native.new_im2col__PatchGeometry(*args))
+
+    def rows(self):
+        return _nn_native.im2col__PatchGeometry_rows(self)
+
+    def columns(self):
+        return _nn_native.im2col__PatchGeometry_columns(self)
+
+    def InputShape(self):
+        return _nn_native.im2col__PatchGeometry_InputShape(self)
+    __swig_destroy__ = _nn_native.delete_im2col__PatchGeometry
+
+# Register im2col__PatchGeometry in _nn_native:
+_nn_native.im2col__PatchGeometry_swigregister(im2col__PatchGeometry)
+
+def im2col__Im2Col(input, g):
+    return _nn_native.im2col__Im2Col(input, g)
+
+def im2col__Col2Im(columns, g):
+    return _nn_native.im2col__Col2Im(columns, g)
+class receptive__ReceptiveField(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    width = property(_nn_native.receptive__ReceptiveField_width_get, _nn_native.receptive__ReceptiveField_width_set)
+    jump = property(_nn_native.receptive__ReceptiveField_jump_get, _nn_native.receptive__ReceptiveField_jump_set)
+    start = property(_nn_native.receptive__ReceptiveField_start_get, _nn_native.receptive__ReceptiveField_start_set)
+
+    def After(self, kernel, stride, padding_before, dilation=1):
+        return _nn_native.receptive__ReceptiveField_After(self, kernel, stride, padding_before, dilation)
+
+    def Bounds(self, coordinate):
+        return _nn_native.receptive__ReceptiveField_Bounds(self, coordinate)
+
+    def __init__(self):
+        _nn_native.receptive__ReceptiveField_swiginit(self, _nn_native.new_receptive__ReceptiveField())
+    __swig_destroy__ = _nn_native.delete_receptive__ReceptiveField
+
+# Register receptive__ReceptiveField in _nn_native:
+_nn_native.receptive__ReceptiveField_swigregister(receptive__ReceptiveField)
+
+def yolo__MakeDimension(height, width):
+    return _nn_native.yolo__MakeDimension(height, width)
+
+def yolo__DimensionValues(d):
+    return _nn_native.yolo__DimensionValues(d)
+
+def yolo__WriteYoloV1Bootstrap(weights, cfg, prefix):
+    return _nn_native.yolo__WriteYoloV1Bootstrap(weights, cfg, prefix)
+
+def yolo__DecodeYoloV2(raw, offset, row, col, cells, prior, height, width):
+    return _nn_native.yolo__DecodeYoloV2(raw, offset, row, col, cells, prior, height, width)
+
+def yolo__MakeYoloV3Targets(coarse, middle, fine, priors, scenes, rows):
+    return _nn_native.yolo__MakeYoloV3Targets(coarse, middle, fine, priors, scenes, rows)
+
+def yolo__MakeYoloV5Targets(coarse, middle, fine, priors, scenes, rows):
+    return _nn_native.yolo__MakeYoloV5Targets(coarse, middle, fine, priors, scenes, rows)
+
+def yolo__DecodeYoloV5(raw, offset, row, col, cells, prior, stride, height, width):
+    return _nn_native.yolo__DecodeYoloV5(raw, offset, row, col, cells, prior, stride, height, width)
+class yolo__CspContextHandle(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    context = property(_nn_native.yolo__CspContextHandle_context_get, _nn_native.yolo__CspContextHandle_context_set)
+
+    def __init__(self, parameters, state, training=False, update_stats=True):
+        _nn_native.yolo__CspContextHandle_swiginit(self, _nn_native.new_yolo__CspContextHandle(parameters, state, training, update_stats))
+
+    def get(self):
+        return _nn_native.yolo__CspContextHandle_get(self)
+    __swig_destroy__ = _nn_native.delete_yolo__CspContextHandle
+
+# Register yolo__CspContextHandle in _nn_native:
+_nn_native.yolo__CspContextHandle_swigregister(yolo__CspContextHandle)
+
+def instance__PasteMask(probabilities, offset, side, classes, label, box, height, width):
+    return _nn_native.instance__PasteMask(probabilities, offset, side, classes, label, box, height, width)
+
+def instance__ExportInstanceMasks(scenes, detections, filename):
+    return _nn_native.instance__ExportInstanceMasks(scenes, detections, filename)
+
+def panoptic__PanopticAreas(map):
+    return _nn_native.panoptic__PanopticAreas(map)
+class panoptic__PqStatsHandle(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    stats = property(_nn_native.panoptic__PqStatsHandle_stats_get, _nn_native.panoptic__PqStatsHandle_stats_set)
+
+    def labels(self):
+        return _nn_native.panoptic__PqStatsHandle_labels(self)
+
+    def at(self, label):
+        return _nn_native.panoptic__PqStatsHandle_at(self, label)
+
+    def has(self, label):
+        return _nn_native.panoptic__PqStatsHandle_has(self, label)
+
+    def add(self, sample):
+        return _nn_native.panoptic__PqStatsHandle_add(self, sample)
+
+    def __init__(self):
+        _nn_native.panoptic__PqStatsHandle_swiginit(self, _nn_native.new_panoptic__PqStatsHandle())
+    __swig_destroy__ = _nn_native.delete_panoptic__PqStatsHandle
+
+# Register panoptic__PqStatsHandle in _nn_native:
+_nn_native.panoptic__PqStatsHandle_swigregister(panoptic__PqStatsHandle)
+
+def panoptic__PanopticStats(truth, prediction):
+    return _nn_native.panoptic__PanopticStats(truth, prediction)
+
+def panoptic__PanopticQuality(stats, things, subset=-1):
+    return _nn_native.panoptic__PanopticQuality(stats, things, subset)
+
+def panoptic__PanopticPreview(data, semantic, predicted, filename):
+    return _nn_native.panoptic__PanopticPreview(data, semantic, predicted, filename)
+class yolact__Mt19937(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    engine = property(_nn_native.yolact__Mt19937_engine_get, _nn_native.yolact__Mt19937_engine_set)
+
+    def __init__(self, seed):
+        _nn_native.yolact__Mt19937_swiginit(self, _nn_native.new_yolact__Mt19937(seed))
+
+    def next(self):
+        return _nn_native.yolact__Mt19937_next(self)
+    __swig_destroy__ = _nn_native.delete_yolact__Mt19937
+
+# Register yolact__Mt19937 in _nn_native:
+_nn_native.yolact__Mt19937_swigregister(yolact__Mt19937)
+
+def yolact__MakeYolactTargets(net, anchors, scenes, rows, classes, random):
+    return _nn_native.yolact__MakeYolactTargets(net, anchors, scenes, rows, classes, random)
+
+def detection_evaluation__LoadEvaluationImages(directory):
+    return _nn_native.detection_evaluation__LoadEvaluationImages(directory)
+
+def detection_evaluation__LoadEvaluationTruth(directory):
+    return _nn_native.detection_evaluation__LoadEvaluationTruth(directory)
+
+def detection_evaluation__LoadPredictionsJson(path):
+    return _nn_native.detection_evaluation__LoadPredictionsJson(path)
 

@@ -45,7 +45,7 @@ doubles per iteration: 1, 3, 8, 19, 41, ... So four iterations already exceed th
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double PI = 3.14159265358979323846;
 ```
@@ -102,7 +102,7 @@ to watch the digit count double until double precision runs out.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double PI = 3.14159265358979323846;
 

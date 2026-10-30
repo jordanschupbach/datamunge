@@ -1,3 +1,5 @@
+/// @file svrg.cpp
+/// @brief SVRG native update, trial and stopping implementation.
 #include <datamunge/optim/svrg.hpp>
 
 #include <cmath>
@@ -19,7 +21,9 @@ double SVRG::optimize(DifferentiableSeparableFunction& function, std::vector<dou
     double value = function.evaluate(coordinates);
     for (std::size_t epoch = 0; epoch < options_.max_epochs; ++epoch) {
         const std::vector<double> snapshot = coordinates;
-        const auto snapshot_gradient = function.gradient(snapshot);
+        auto snapshot_gradient = function.gradient(snapshot);
+        // Components are sampled uniformly, as in SGD/SAGA: use the mean snapshot.
+        for (auto& component : snapshot_gradient) component /= static_cast<double>(terms);
         for (std::size_t step = 0; step < inner; ++step) {
             const std::size_t i = sample(rng);
             const auto current_gradient = function.gradient_term(coordinates, i);

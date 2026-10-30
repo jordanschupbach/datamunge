@@ -1,22 +1,21 @@
 #pragma once
-
+/// @file inla_integration_strategy.hpp
+/// @brief Bindable enum selecting finite-grid or mode-only hyperparameter treatment.
 namespace datamunge::bayes {
-
-/// @brief Split into its own header (rather than living inline in inla.hpp) so it can be
-///        exposed to SWIG bindings independently of bayes::INLA itself: INLA::fit() takes
-///        std::function callback parameters that can't cross the language boundary (same
-///        reasoning as AutodiffModel -- see its doc comment), but stats::INLAMixedModel
-///        exposes this enum in its plain, fully bindable INLAMixedModelOptions struct.
+/// @brief Treatment of hyperparameter uncertainty in Gaussian-strategy INLA.
+/// The finite grid is a numerical approximation; EB omits hyperparameter mixing.
+/// Total variance decomposes into within/between terms but need not exceed EB variance.
+/// Separated from callback-based INLA so mixed-model bindings can expose this enum.
+/// @par Example
+/// @code
+/// dm::bayes::INLAOptions o;
+/// o.strategy=dm::bayes::INLAIntegrationStrategy::EmpiricalBayes;
+/// @endcode
+/// @par References
+/// - Rue, Martino and Chopin (2009). https://doi.org/10.1111/j.1467-9868.2008.00700.x
+/// @see INLA, INLAOptions
 enum class INLAIntegrationStrategy {
-    /// @brief Integrate pi(theta|y) over a grid built from the Laplace-approximated curvature
-    ///        at its mode (principal axes via eigendecomposition, points spaced in posterior-SD
-    ///        units) -- the full "integrated nested Laplace approximation", accounting for
-    ///        hyperparameter uncertainty in the latent field's marginal variances.
-    Grid,
-    /// @brief Empirical Bayes: treat theta as known at its posterior mode (no integration).
-    ///        Cheaper, but understates latent-field uncertainty by ignoring theta's own
-    ///        posterior spread -- matches INLA's own "eb" strategy.
-    EmpiricalBayes,
+  Grid,          ///< Integrate the bounded approximate hyperposterior on a rotated tensor grid.
+  EmpiricalBayes ///< Use only the selected mode; no integrated evidence is computed.
 };
-
 } // namespace datamunge::bayes

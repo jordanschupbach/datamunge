@@ -1,0 +1,213 @@
+//? Title: Principal Components: Variance, Projection and Kernel Centring
+//? Subtitle: Fit the centre once and preserve it for every new query batch
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Correlated measurements can be represented in fewer orthogonal coordinates, but projection
+must use a fixed training centre and scale. We recover the known axes of four points, check
+variance lost by a rank-one reconstruction and check linear Gram and covariance spectra. A built-in
+Iris example then illustrates descriptive covariance geometry.
+)
+\toc
+
+> The method
+
+After centring the data matrix X, its thin SVD X=USVᵀ gives orthonormal axes V and scores US.
+The sample covariance eigenvalues are s_j²/(N-1). Keeping q leading components minimises
+squared reconstruction error over rank-q orthogonal projections:
+
+$$
+\|X-XV_qV_q^T\|_F^2=\sum_{j>q}s_j^2.
+$$
+\alttext(The total squared rank-q reconstruction residual is the sum of discarded squared singular values.)
+
+The report fits a unit direction with explicit tensor SGD and a two-axis subspace with
+explicit tensor Adam. In the latter, differentiable QR maps unconstrained weights to
+orthonormal columns at every step; QR does not supply the data-dependent optimum.
+The reconstruction loss is that of a tied linear autoencoder. SVD is used only to
+check the final minimum. Learned axes may rotate within the same principal subspace,
+so compare reconstruction error rather than individual vector signs. Each objective
+evaluation costs O(NDq), plus O(Dq²) for its QR constraint.
+
+The optimum follows by rotating into V coordinates, where the Frobenius norm separates into squared
+column norms. Scaling predictors changes covariance PCA to correlation PCA; the toy uses unscaled data, while Iris uses tensor-computed sample standard deviations. Kernel PCA instead centres a Gram
+matrix K with H=I-11ᵀ/N and diagonalises HKH. Its eigenvalues are Gram eigenvalues, not sample
+variances; divide by N-1 to compare with covariance PCA. Query centring must use training means,
+not each query batch's own mean. No input-space inverse is claimed for kernel PCA.
+
+The concept diagram has a retained TikZ source in `diagrams/principal_components_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/principal_components_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/principal_components_concept.tikz > build/principal_components_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/principal_components_concept.svg build/principal_components_concept.dvi > build/principal_components_concept.render.log 2>&1
+printf 'Rendered build/principal_components_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/principal_components_concept.svg from local TikZ source.
+// \image(figures/principal_components_concept.svg)
+// result_end
+\caption(Fit the centre once and preserve it for every new query batch)
+\alttext(Tensor centre and scale; freeze for later queries. Then Reconstruction loss; orthonormal parameter map. Then Explicit SGD or Adam; SVD checks final error.)
+
+> Simple examples
+
+Four points (±2,0),(0,±1) have zero mean and diagonal sample covariance (8/3,2/3). Keeping only x loses total squared error 2.
+
+```{cpp, results="markdown", file="figures/principal_components_four.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto x = n::tensor({-2, 0, 2, 0, 0, -1, 0, 1}, {4, 2}, dtype);
+  const auto centre = n::mean(x, {0}, true), z = x - centre;
+  auto direction = n::tensor({.8, .6}, {2, 1}, dtype).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Sgd;
+  n::Optimizer optimizer({direction}, .1, config);
+  for (int step = 0; step < 250; ++step) {
+    const auto unit = direction / n::sqrt(n::sum(n::square(direction)));
+    const auto reconstruction = n::matmul(n::matmul(z, unit), unit, false, true);
+    const auto loss = n::sum(n::square(z - reconstruction)) / 4.;
+    optimizer.minimize(loss);
+  }
+  n::NoGradGuard guard;
+  const auto unit = direction / n::sqrt(n::sum(n::square(direction)));
+  const auto reconstruction = n::matmul(n::matmul(z, unit), unit, false, true);
+  const double error = n::sum(n::square(z - reconstruction)).item();
+  const auto oracle = n::svd(z);
+  if (std::abs(error - 2) > 1e-10 || std::abs(n::square(oracle.s).at({0}) - 8) > 1e-10)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.points(n::select(x, 1, 0).to_vector<double>(), n::select(x, 1, 1).to_vector<double>(),
+           "all four inputs", {37, 99, 235}, 7)
+      .points(n::select(reconstruction, 1, 0).to_vector<double>(),
+              n::select(reconstruction, 1, 1).to_vector<double>(), "rank-one projection",
+              {234, 88, 12}, 4)
+      .title("Tensor SGD learns the leading principal direction")
+      .x_label("x")
+      .y_label("y");
+  std::filesystem::create_directories("build");
+  p.size(820, 420).save_svg("build/principal_components_four.svg");
+  std::print("Learned unit axis {}; reconstruction SSE {:.9f}; SVD sample variances {}.\n",
+             unit.to_vector<double>(), error, (n::square(oracle.s) / 3.).to_vector<double>());
+}
+```
+// result_begin: markdown
+Learned unit axis [1, 5.68448261274509e-37]; reconstruction SSE 2.000000000; SVD sample variances [2.6666666666666647, 0.6666666666666669].
+\image(figures/principal_components_four.svg)
+// result_end
+\caption(The first axis captures four times the variance of the second axis.)
+\alttext(The first axis captures four times the variance of the second axis.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto x = n::tensor({-2, 0, 2, 0, 0, -1, 0, 1}, {4, 2}, n::DType::Float64);
+  // This is an independent algebraic check, not a fitted model constructor.
+  const auto z = x - n::mean(x, {0}, true), gram = n::matmul(z, z, false, true);
+  const auto covariance = n::matmul(z, z, true, false) / 3.;
+  const auto eigen = n::eigh(gram).e, variance = n::eigh(covariance).e;
+  if (std::abs(eigen.at({3}) - 8) > 1e-10 || std::abs(eigen.at({2}) - 2) > 1e-10)
+    return 1;
+  const auto queries = n::slice_axis(x, 0, 0, 2);
+  const auto K = n::exp(-.13 * n::sum(n::square(n::expand_dims(x, 1) - x), {2}));
+  const auto train_columns = n::mean(K, {0}, true), grand = n::mean(K);
+  const auto cross = n::exp(-.13 * n::sum(n::square(n::expand_dims(queries, 1) - x), {2}));
+  const auto whole = cross - n::mean(cross, {1}, true) - train_columns + grand;
+  const auto first = n::slice_axis(cross, 0, 0, 1);
+  const auto alone = first - n::mean(first, {1}, true) - train_columns + grand;
+  const double error = n::max(n::abs(n::slice_axis(whole, 0, 0, 1) - alone)).item();
+  if (error > 1e-12)
+    return 1;
+  std::print("Linear Gram eigenvalues {}; covariance eigenvalues {}; RBF query-centering "
+             "error {:.12f}.\n",
+             eigen.to_vector<double>(), variance.to_vector<double>(), error);
+}
+```
+// result_begin: markdown
+Linear Gram eigenvalues [0, 0, 1.9999999999999998, 7.999999999999999]; covariance eigenvalues [0.6666666666666666, 2.6666666666666665]; RBF query-centering error 0.000000000000.
+// result_end
+
+> A dataset example
+
+The 150 Iris rows have four predictors. Tensor preprocessing uses their sample standard deviations; no species label enters fitting. QR-normalised weights span the two learned axes, which can rotate within the optimal subspace.
+
+```{cpp, results="markdown", file="figures/principal_components_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto iris = dm::datasets::iris();
+  const std::vector<std::string> columns{"Sepal.Length", "Sepal.Width", "Petal.Length",
+                                         "Petal.Width"};
+  std::vector<double> values;
+  for (size_t row = 0; row < iris.nrows(); ++row)
+    for (const auto &column : columns)
+      values.push_back(iris.get_column(column).values()[row]);
+  const auto x = n::from_vector(values, {150, 4});
+  const auto centre = n::mean(x, {0}, true);
+  const auto scale = n::sqrt(n::sum(n::square(x - centre), {0}, true) / 149.);
+  const auto z = (x - centre) / scale;
+  n::Generator rng(17);
+  auto weights = n::normal({4, 2}, 0, 1, rng, dtype).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer({weights}, .03, config);
+  for (int step = 0; step < 800; ++step) {
+    // QR is a differentiable constraint map; Adam still fits the weights.
+    const auto axes = n::qr(weights).q;
+    const auto reconstruction = n::matmul(n::matmul(z, axes), axes, false, true);
+    optimizer.minimize(n::sum(n::square(z - reconstruction)) / 150.);
+  }
+  n::NoGradGuard guard;
+  const auto axes = n::qr(weights).q, scores = n::matmul(z, axes);
+  const auto oracle = n::svd(z);
+  const double error = n::sum(n::square(z - n::matmul(scores, axes, false, true))).item();
+  const double exact = n::sum(n::square(n::slice_axis(oracle.s, 0, 2, 4))).item();
+  const double orthogonality =
+      n::max(n::abs(n::matmul(axes, axes, true, false) - n::eye(2, dtype))).item();
+  const auto part = n::matmul((n::slice_axis(x, 0, 0, 7) - centre) / scale, axes);
+  const double batching = n::max(n::abs(part - n::slice_axis(scores, 0, 0, 7))).item();
+  if (std::abs(error - exact) > 1e-6 || orthogonality > 1e-10 || batching > 1e-10)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.points(n::select(scores, 1, 0).to_vector<double>(),
+           n::select(scores, 1, 1).to_vector<double>(), "all 150 Iris rows", {37, 99, 235}, 4)
+      .title("Adam learns the leading PCA subspace")
+      .x_label("learned coordinate 1")
+      .y_label("learned coordinate 2");
+  std::filesystem::create_directories("build");
+  p.size(850, 450).save_svg("build/principal_components_iris.svg");
+  std::print("Learned reconstruction SSE {:.9f}; SVD oracle {:.9f}; orthogonality {:.12f}; "
+             "batching error {:.12f}.\n",
+             error, exact, orthogonality, batching);
+}
+```
+// result_begin: markdown
+Learned reconstruction SSE 24.953285088; SVD oracle 24.953285088; orthogonality 0.000000000000; batching error 0.000000000000.
+\image(figures/principal_components_iris.svg)
+// result_end
+\caption(The learned two-dimensional subspace projects every standardised Iris observation.)
+\alttext(The learned two-dimensional subspace projects every standardised Iris observation.)
+
+
+> Conclusion
+
+The known covariance and discarded-variance identity agree on the four-point example. Fixed
+training centring makes projections independent of query batching. PCA describes variance,
+not necessarily class separation, and kernel coordinates do not provide an input-space pre-image.
+
+> References
+
+- [Jolliffe and Cadima (2016), Principal component analysis: a review and recent developments](https://doi.org/10.1098/rsta.2015.0202).
+- [Schölkopf, Smola and Müller (1998), Nonlinear Component Analysis as a Kernel Eigenvalue Problem](https://doi.org/10.1162/089976698300017467).

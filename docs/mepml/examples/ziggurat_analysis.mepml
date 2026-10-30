@@ -1,0 +1,353 @@
+//? Title: Ziggurat Sampling: Equal-Area Proposals and Gaussian Measurement Replicates
+//? Subtitle: Deriving the fast path, checking the tails and simulating the eight schools
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The Ziggurat method makes most normal draws with a table lookup, a multiply
+and a comparison. We derive its equal-area proposal rectangles, the wedge
+acceptance test and exponential-tail rejection step. Actual path counts
+separate fast proposals from successful returns, and Monte Carlo checks
+cover both supported table sizes. The application uses
+`dm::datasets::eight_schools()` directly: we perturb each reported estimate
+by its standard error, then compare simulated positive fractions with
+closed-form normal probabilities. These are conditional measurement
+replicates; the sampler does not supply a hierarchical inference model.
+)
+
+\toc
+
+> The data: eight estimates with different uncertainties
+
+The eight-schools frame has eight rows and three columns: a school label,
+an estimated coaching effect in test-score points, and its standard error.
+It is small enough to inspect in full. Standard errors differ considerably,
+so a single common noise scale would discard information.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("{}\n", dm::datasets::eight_schools().to_md());
+}
+```
+// result_begin: markdown
+| school | effect | std_error |
+| :--- | ---: | ---: |
+| A | 28 | 15 |
+| B | 8 | 10 |
+| C | -3 | 16 |
+| D | 7 | 11 |
+| E | -1 | 9 |
+| F | 1 | 11 |
+| G | 18 | 10 |
+| H | 12 | 18 |
+// result_end
+\caption(The built-in eight-schools measurements: estimated effects and their standard errors, both in score points.)
+
+```{cpp, file="figures/ziggurat_schools.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto schools = dm::datasets::eight_schools();
+  const auto y = schools.get_column("effect").values();
+  const auto se = schools.get_column("std_error").values();
+  std::vector<double> x(8), lo(8), hi(8);
+  for (std::size_t i = 0; i < 8; ++i) { x[i] = i + 1; lo[i] = y[i] - se[i]; hi[i] = y[i] + se[i]; }
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .segments(x, lo, x, hi, dm::RGB{96, 165, 250}, 2)
+      .points(x, y, "reported estimate", dm::RGB{37, 99, 235}, 5)
+      .abline_h(0, dm::RGB{100, 100, 100}, 1)
+      .title("Eight schools: effects and measurement uncertainty")
+      .x_label("school (1=A, ..., 8=H)").y_label("test-score points")
+      .size(900, 460).save_svg("build/ziggurat_schools.svg");
+}
+```
+// result_begin:
+// \image(figures/ziggurat_schools.svg)
+// result_end
+\caption(Reported estimates with one-standard-error bars. These bars describe measurement uncertainty, rather than the Monte Carlo error of a simulation.)
+\alttext(Eight estimated school effects plotted with vertical standard-error bars and a horizontal line at zero. Most bars overlap zero.)
+
+> The method: a proposal envelope with equal areas
+
+Symmetry lets us derive the algorithm on the positive half-line using the
+unnormalised normal kernel \(f(x)=e^{-x^2/2}\). Normalisation cancels in
+rejection ratios. Choose decreasing boundaries
+\(x_1=r>x_2>\cdots>x_N=0\). Layer zero combines the rectangle under
+height \(f(r)\) from zero to \(r\), with the remaining tail. Its area is
+
+$$
+V=rf(r)+\int_r^\infty f(t)\,dt
+ =rf(r)+\sqrt{\frac{\pi}{2}}\operatorname{erfc}\!\left(\frac{r}{\sqrt2}\right).
+$$
+\alttext(The common proposal area V equals r times f of r plus the positive normal-kernel tail integral beyond r.)
+
+Represent this base proposal by an artificial width \(x_0=V/f(r)>r\).
+Every other proposal is a rectangle of width \(x_i\) between heights
+\(f(x_i)\) and \(f(x_{i+1})\). Equal area requires
+
+$$
+x_i\left[f(x_{i+1})-f(x_i)\right]=V,\qquad
+x_{i+1}=\sqrt{-2\log\!\left(f(x_i)+\frac{V}{x_i}\right)}.
+$$
+\alttext(Rectangle i has area x i times the difference between its upper and lower heights. Solving for the next boundary gives the square root of minus two times the logarithm of f of x i plus V divided by x i.)
+
+The last rectangle closes at the peak: \(x_{N-1}[1-f(x_{N-1})]=V\).
+Together with the tail-area equation, this determines \(r\) for a chosen
+\(N\). The implementation stores established constants for 128 and 256
+layers; other layer counts are rejected, since reusing those constants
+would no longer construct an equal-area cover.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  for (std::size_t n : {128, 256}) {
+    const dm::algorithms::ZigguratNormal sampler(n);
+    std::print("{} layers, r={:.12f}\n\n{}\n", n, sampler.tail_boundary(), sampler.table().head(5).to_md(8));
+  }
+}
+```
+// result_begin: markdown
+128 layers, r=3.442619855899
+
+| layer | outer | inner | lower | upper | rectangle_area | fast_fraction |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 3.71308625 | 3.44261986 | 0.00000000 | 0.00266963 | 0.00991256 | 0.92715860 |
+| 1 | 3.44261986 | 3.22308498 | 0.00266963 | 0.00554900 | 0.00991256 | 0.93623029 |
+| 2 | 3.22308498 | 3.08322886 | 0.00554900 | 0.00862448 | 0.00991256 | 0.95660799 |
+| 3 | 3.08322886 | 2.97869625 | 0.00862448 | 0.01183948 | 0.00991256 | 0.96609638 |
+| 4 | 2.97869625 | 2.89434401 | 0.01183948 | 0.01516730 | 0.00991256 | 0.97168149 |
+
+256 layers, r=3.654152885361
+
+| layer | outer | inner | lower | upper | rectangle_area | fast_fraction |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 3.91075796 | 3.65415289 | 0.00000000 | 0.00126029 | 0.00492867 | 0.93438482 |
+| 1 | 3.65415289 | 3.44927830 | 0.00126029 | 0.00260907 | 0.00492867 | 0.94393377 |
+| 2 | 3.44927830 | 3.32024473 | 0.00260907 | 0.00403797 | 0.00492867 | 0.96259114 |
+| 3 | 3.32024473 | 3.22457505 | 0.00403797 | 0.00552240 | 0.00492867 | 0.97118595 |
+| 4 | 3.22457505 | 3.14788929 | 0.00552240 | 0.00705088 | 0.00492867 | 0.97621834 |
+// result_end
+\caption(The first five proposal rectangles for each supported layer count. Their areas agree up to the precision of the tabulated constants; the base row uses the artificial proposal width.)
+
+```{cpp, file="figures/ziggurat_envelope.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::algorithms::ZigguratNormal(128).plot_envelope(16).save_svg("build/ziggurat_envelope.svg");
+}
+```
+// result_begin:
+// \image(figures/ziggurat_envelope.svg)
+// result_end
+\caption(The positive density kernel and every sixteenth proposal rectangle. Selected rectangles are separated by omitted strips. The base is drawn at its physical width r, with the normal tail continuing to its right.)
+\alttext(A decreasing normal density curve with a selection of equal-area horizontal proposal rectangles. Rectangles protrude slightly above the curve at their right edges.)
+
+>> Why almost every draw takes the fast path
+
+Choose \(I\) uniformly from \(0,\ldots,N-1\), independently draw
+\(U\) uniformly from \((-1,1)\), and set \(X=Ux_I\). If
+\(|U|<x_{I+1}/x_I\), the point is in a region known to lie under the
+curve, so it can be accepted without evaluating an exponential. The
+per-proposal probability of this shortcut is
+
+$$
+p_{\rm fast}=\frac1N\sum_{i=0}^{N-1}\frac{x_{i+1}}{x_i},\qquad
+p_{\rm accept}=\frac{\sqrt{\pi/2}}{NV}.
+$$
+\alttext(The fast-path probability is the average inner-to-outer width ratio. Overall proposal acceptance is the positive normal-kernel area divided by the total envelope area N V.)
+
+These probabilities use proposals as the denominator. The fraction of
+returned samples that took the fast path is instead
+\(p_{\rm fast}/p_{\rm accept}\). Rejected proposals restart the outer
+loop, so confusing the two denominators overstates or understates the
+shortcut rate.
+
+If \(I>0\) and the shortcut fails, sample a height uniformly between the
+two strip boundaries and accept only if it lies below \(f(X)\). Dividing
+the height comparison by \(f(X)\) gives the implementation's test
+
+$$
+a_1+W(a_0-a_1)<1,\quad
+a_0=e^{-(x_I^2-X^2)/2},\quad
+a_1=e^{-(x_{I+1}^2-X^2)/2},\quad W\sim U(0,1).
+$$
+\alttext(The wedge accepts when a uniformly interpolated boundary-height ratio is below one, with each ratio scaled by the kernel at the proposed coordinate.)
+
+This samples uniformly under the curve within the strip. Equal proposal
+areas make uniform layer selection correct. Repeating after rejection
+leaves exactly the target normal density. Construction and storage cost
+\(O(N)\); each sample takes expected \(O(1)\) time, with no finite
+worst-case rejection count. This implementation uses separate engine draws
+for the coordinate and index, following Doornik's remedy for shared-bit
+selection dependencies; it does not claim a universal speed advantage.
+
+>> The base layer and exponential tail
+
+A base proposal inside \(r\) is accepted by the shortcut. The remaining
+base mass selects the normal tail. Set \(X=r+E\), propose
+\(E\sim\operatorname{Exp}(r)\), and note
+
+$$
+f(r+e)=f(r)e^{-re-e^2/2}.
+$$
+\alttext(The normal kernel at r plus e factors into the kernel at r, an exponential decay with rate r, and an additional exponential of minus e squared over two.)
+
+Relative to the exponential proposal, the remaining acceptance factor is
+\(e^{-e^2/2}\). If \(Y\sim\operatorname{Exp}(1)\), accepting when
+\(2Y\ge E^2\) has exactly that probability. Restore the original sign.
+The code forms exponential draws with `-log1p(-u)` for
+\(u\in[0,1)\), avoiding the undefined endpoint in `-log(u)` when a
+finite-precision uniform source returns zero.
+
+> Checking the sampler, including the uncommon paths
+
+Actual counters should obey \(\text{fast}+\text{wedge}+\text{tail}=n\)
+and \(\text{proposals}=n+\text{rejected}\). Tail proposals have their
+own inner retry loop and are counted separately. A million returns makes
+the rare tail branch visible for both table sizes.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  for (std::size_t n : {128, 256})
+    std::print("{}\n", dm::algorithms::ZigguratNormal(n).diagnostics(1000000).to_md(6));
+}
+```
+// result_begin: markdown
+| layers | draws | proposals | fast | wedge | tail | rejected | tail_trials | fast_per_proposal | expected_fast_per_proposal | expected_acceptance |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 128 | 1000000 | 1012478 | 984504 | 14926 | 570 | 12478 | 609 | 0.972371 | 0.972440 | 0.987789 |
+
+| layers | draws | proposals | fast | wedge | tail | rejected | tail_trials | fast_per_proposal | expected_fast_per_proposal | expected_acceptance |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 256 | 1000000 | 1006847 | 991783 | 7947 | 270 | 6847 | 290 | 0.985038 | 0.985081 | 0.993322 |
+// result_end
+\caption(Instrumented path counts and theoretical probabilities. Outer rejections and inner tail retries are different events.)
+
+The 128-layer run uses 1 012 478 outer proposals for a million returned
+values; the 256-layer run uses 1 006 847. Their observed fast-per-proposal
+fractions, 0.972371 and 0.985038, agree with the width-ratio predictions.
+Both runs exercise hundreds of tail returns, including inner retries.
+
+For a standard normal sample, the sample mean has standard error
+\(1/\sqrt n\), the sample variance has standard error approximately
+\(\sqrt{2/(n-1)}\), and the empirical two-sided tail beyond \(t\)
+has standard error \(\sqrt{p_t(1-p_t)/n}\), where
+\(p_t=\operatorname{erfc}(t/\sqrt2)\). The table reports Monte Carlo
+checks and a KS comparison against the fully specified \(N(0,1)\),
+without fitting its parameters to the generated sample.
+
+```{cpp, results="markdown", file="figures/ziggurat_qq.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("| layers | n | mean | sample sd | fraction beyond 3.5 | exact tail | tail MC SE | KS D | KS p |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t n : {128, 256}) {
+    const auto z = dm::algorithms::ZigguratNormal(n).draw(1000000);
+    const double p = std::erfc(3.5 / std::sqrt(2.0));
+    const auto tail = std::count_if(z.begin(), z.end(), [](double v) { return std::abs(v) > 3.5; });
+    const auto ks = dm::stats::ks_test_one_sample_normal(z);
+    std::print("| {} | {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.4f} |\n",
+        n, z.size(), dm::mean(z), dm::sd(z), double(tail) / z.size(), p,
+        std::sqrt(p * (1-p) / z.size()), ks.statistic, ks.p_value);
+  }
+  const auto display = dm::algorithms::ZigguratNormal().draw(3000);
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::qqnorm(display).abline(0, 1, dm::RGB{220, 38, 38}, 1)
+      .title("Ziggurat draws against the specified standard normal")
+      .size(800, 500).save_svg("build/ziggurat_qq.svg");
+}
+```
+// result_begin: markdown
+| layers | n | mean | sample sd | fraction beyond 3.5 | exact tail | tail MC SE | KS D | KS p |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 128 | 1000000 | 0.000921 | 1.001819 | 0.000460 | 0.000465 | 0.000022 | 0.001208 | 0.1082 |
+| 256 | 1000000 | 0.000129 | 1.001558 | 0.000496 | 0.000465 | 0.000022 | 0.000886 | 0.4125 |
+\image(figures/ziggurat_qq.svg)
+// result_end
+\caption(Moments, an explicit tail check and KS statistics for a million draws. The Q-Q plot uses a separate 3000-draw display and the identity line, rather than a line fitted to the sample.)
+\alttext(A normal quantile plot of generated values against theoretical standard-normal quantiles, with an identity reference line.)
+
+Both sample means are within one theoretical standard error of zero.
+The observed standard deviations are about 1.002, and the two measured
+3.5-sigma tail fractions are within two Monte Carlo standard errors of
+the exact value. An independent R calculation on the same saved draws
+reproduces the means, standard deviations, tail counts and KS statistics.
+R's asymptotic KS p-values differ slightly because this library applies
+the Stephens finite-sample correction.
+
+> Applying it to the schools
+
+We condition on each reported effect \(y_j\) as a hypothetical mean and
+use its reported standard error \(s_j\) as the scale of a new
+measurement. Under this plug-in Gaussian model,
+
+$$
+Y_j^*=y_j+s_j Z,\qquad
+\mathbb E[Y_j^*]=y_j,\qquad
+\operatorname{sd}(Y_j^*)=s_j,\qquad
+\Pr(Y_j^*>0)=\Phi(y_j/s_j).
+$$
+\alttext(A replicate equals the reported effect plus its standard error times a standard normal draw. Its mean and standard deviation equal those inputs, and its probability of being positive is the normal CDF of their ratio.)
+
+This provides a direct oracle for a useful simulation. It does not mean
+that \(\Phi(y_j/s_j)\) is the probability a fixed unknown effect is
+positive; that interpretation requires a specified inferential model.
+The library preserves the original dataset columns and adds simulated
+means, standard deviations and positive fractions.
+
+```{cpp, results="markdown", file="figures/ziggurat_probabilities.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto simulation = dm::algorithms::ZigguratNormal().simulate_measurements(
+      dm::datasets::eight_schools(), "effect", "std_error", 200000);
+  std::print("{}\n", simulation.to_md(5));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .points(simulation.get_column("normal_positive").values(), simulation.get_column("mc_positive").values(),
+              "school replicate", dm::RGB{37, 99, 235}, 5)
+      .abline(0, 1, dm::RGB{220, 38, 38}, 1)
+      .title("Positive measurement replicates: simulation and exact model")
+      .x_label("exact normal probability").y_label("simulated positive fraction")
+      .x_limits(0.3, 1).y_limits(0.3, 1).size(800, 500).save_svg("build/ziggurat_probabilities.svg");
+}
+```
+// result_begin: markdown
+| school | effect | std_error | mc_mean | mc_sd | mc_positive | normal_positive | mc_positive_se |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| A | 28 | 15 | 28.00578 | 15.00507 | 0.96869 | 0.96903 | 0.00039 |
+| B | 8 | 10 | 8.03871 | 10.00825 | 0.78882 | 0.78814 | 0.00091 |
+| C | -3 | 16 | -3.02672 | 16.04012 | 0.42462 | 0.42563 | 0.00111 |
+| D | 7 | 11 | 6.97565 | 11.02172 | 0.73647 | 0.73773 | 0.00098 |
+| E | -1 | 9 | -0.99755 | 9.01929 | 0.45458 | 0.45576 | 0.00111 |
+| F | 1 | 11 | 1.00696 | 10.95882 | 0.53690 | 0.53622 | 0.00112 |
+| G | 18 | 10 | 18.00188 | 10.01858 | 0.96317 | 0.96407 | 0.00042 |
+| H | 12 | 18 | 12.00771 | 17.98352 | 0.74710 | 0.74751 | 0.00097 |
+
+\image(figures/ziggurat_probabilities.svg)
+// result_end
+\caption(Simulated measurement summaries, exact positive probabilities and their theoretical Monte Carlo standard errors. The plot compares positive fractions to the exact model for all eight schools.)
+\alttext(Eight simulated positive fractions plotted against exact normal probabilities, close to the identity line.)
+
+`mc_positive_se` measures simulation error only. Increasing the number of
+draws by four halves this error, but it does not reduce any school's
+reported standard error. More simulation cannot create more observations.
+
+> Conclusion
+
+The equal-area construction explains uniform layer selection, and the
+width ratios explain the cheap acceptance path. Explicit counters check
+both the common shortcut and the rare tail branch. Gaussian measurement
+replicates give exact distributional oracles on a real dataset, while the
+separate Monte Carlo standard errors show what simulation accuracy means.
+A sampler test can reveal implementation mistakes; passing a few moment,
+tail and KS checks does not certify all possible serial or high-dimensional
+properties of a random stream.
+
+> References
+
+- G. Marsaglia and W. W. Tsang (2000). *The Ziggurat Method for Generating Random Variables*.
+  Journal of Statistical Software 5(8). https://doi.org/10.18637/jss.v005.i08
+- J. A. Doornik (2005). *An Improved Ziggurat Method to Generate Normal Random Samples*.
+  https://doornik.com/research/ziggurat.pdf

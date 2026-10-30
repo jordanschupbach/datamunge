@@ -1,0 +1,406 @@
+//? Title: xoshiro256**: Scrambling a Linear State and Separating Simulation Streams
+//? Subtitle: A reversible transition, jump polynomials, multi-seed checks and an Old Faithful bootstrap
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+xoshiro256** combines a four-word linear state transition with a nonlinear
+output permutation. We derive the transition's inverse, explain why the
+star-star scrambler preserves a uniform word, and distinguish those facts
+from the published maximal-period result. Jump polynomials provide widely
+separated deterministic stream starting points. A seven-test battery is
+examined over two reported 40-seed ranges rather than one attractive run. Finally, the generator
+drives a nonparametric bootstrap of the mean waiting time in
+`dm::datasets::faithful()`, with an exact conditional variance as an oracle
+and jump-separated streams showing Monte Carlo variation.
+)
+
+\toc
+
+> The data: two measurements of Old Faithful
+
+The built-in dataset has 272 records: eruption duration and waiting time
+to the next eruption, both in minutes. The waiting times are strongly
+associated with eruption duration and have two main groups. The simulation
+target below is the mean waiting time; no normal distribution is fitted to
+the raw waiting-time data.
+
+```{cpp, results="markdown", file="figures/xoshiro_faithful.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto data = dm::datasets::faithful();
+  std::print("{}\n", data.head(6).to_md());
+  std::print("\n{}\n", (data | dm::pivot_longer({"eruptions", "waiting"}, "variable", "minutes") |
+      dm::group_by("variable") | dm::summarise(dm::agg::n("n"), dm::agg::mean("minutes", "mean"),
+      dm::agg::sd("minutes", "sd"), dm::agg::min("minutes", "min"), dm::agg::max("minutes", "max"))).to_md(4));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().points(data.get_column("eruptions").values(), data.get_column("waiting").values(),
+      "eruptions", dm::RGB{37, 99, 235}, 3)
+      .title("Old Faithful: eruption duration and subsequent waiting")
+      .x_label("eruption duration (minutes)").y_label("waiting time (minutes)")
+      .size(900, 480).save_svg("build/xoshiro_faithful.svg");
+}
+```
+// result_begin: markdown
+| eruptions | waiting |
+| ---: | ---: |
+| 3.600 | 79 |
+| 1.800 | 54 |
+| 3.333 | 74 |
+| 2.283 | 62 |
+| 4.533 | 85 |
+| 2.883 | 55 |
+
+
+| variable | n | mean | sd | min | max |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| eruptions | 272 | 3.4878 | 1.1414 | 1.6 | 5.1 |
+| waiting | 272 | 70.8971 | 13.5950 | 43.0 | 96.0 |
+
+\image(figures/xoshiro_faithful.svg)
+// result_end
+\caption(First rows, univariate summaries and the paired measurements used in the bootstrap application.)
+\alttext(A scatter plot of eruption duration against waiting time, showing shorter eruptions with shorter waits and longer eruptions with longer waits.)
+
+> The method: a linear transition with a nonlinear output
+
+Let the four 64-bit state words be \((a,b,c,d)\). All shifts truncate to
+64 bits, all arithmetic wraps modulo \(2^{64}\), and \(\oplus\) means
+bitwise XOR. The output before the state advances is
+
+$$
+y=9\,\operatorname{rotl}(5b,7)\pmod{2^{64}}.
+$$
+\alttext(The output is nine times a seven-bit left rotation of five times the second state word, modulo two to the sixty-four.)
+
+Multiplication by an odd integer is invertible modulo \(2^{64}\), and a
+rotation is a permutation of bit positions. The composition is therefore
+a permutation of 64-bit words: a uniform input word stays uniform. Carries
+make multiplication nonlinear over bitwise XOR, obscuring the linear
+structure of the underlying engine. This is not a cryptographic claim.
+
+Writing the in-place reference transition as simultaneous assignments gives
+
+$$
+T(a,b,c,d)=\left(a\oplus b\oplus d,\ a\oplus b\oplus c,\
+a\oplus c\oplus(b\ll17),\ \operatorname{rotl}(b\oplus d,45)\right).
+$$
+\alttext(The four replacement state words are XOR combinations of the old words, one truncated left shift and one rotation.)
+
+Each operation is linear over \(\mathbf F_2\), so \(T\) is a binary
+linear transformation on 256 state bits. The all-zero state is absorbing
+and must be excluded. Seed construction fills the four words with
+successive SplitMix64 outputs. Its odd counter increment visits distinct
+counter words, and its invertible scrambling maps those to distinct
+outputs, so these four words cannot all be zero. A direct-state constructor
+also rejects the all-zero state.
+
+>> Deriving the inverse, without confusing reversibility with period
+
+Suppose the next state is \((u,v,w,z)\). Put
+\(q=\operatorname{rotr}(z,45)=b\oplus d\) and \(t=w\oplus v\).
+Then
+
+$$
+a=u\oplus q,\qquad t=b\oplus(b\ll17),\qquad
+b=t\oplus(t\ll17)\oplus(t\ll34)\oplus(t\ll51),\qquad
+c=v\oplus a\oplus b,\qquad d=q\oplus b.
+$$
+\alttext(The old state can be recovered by undoing the rotation, an XOR-shift inverse using shifts 17, 34 and 51, and the remaining XOR assignments.)
+
+The finite XOR-shift inverse works because four left shifts of 17 bits
+erase a 64-bit word: the geometric series in the shift operator terminates.
+This proves the transition is reversible. Reversibility alone does not
+prove every nonzero state belongs to a single cycle. The authors' primitive
+characteristic polynomial supplies the stronger period result
+\(2^{256}-1\); a short sample cannot establish that period experimentally.
+A 64-bit seed also selects only a small subset of possible initial states.
+
+> Jumping to distant starting points
+
+Let \(\chi(X)\) be the transition's degree-256 characteristic polynomial.
+Reduce a desired power of \(X\) modulo \(\chi\). By the
+Cayley–Hamilton identity, evaluating that reduced polynomial at \(T\)
+gives the same state jump:
+
+$$
+p_J(X)=X^J\bmod\chi(X),\qquad
+T^J s=p_J(T)s=\bigoplus_{j=0}^{255}[X^j]p_J(X)\,T^j s.
+$$
+\alttext(Reduce X to the jump distance modulo the characteristic polynomial. The resulting coefficients select an XOR of at most 256 successive transformed states, equal to the distant target state.)
+
+The library uses the published polynomials for `jump()` at distance
+\(2^{128}\) and `long_jump()` at \(2^{192}\). Each needs 256 transition
+steps and XOR accumulation, rather than that enormous number of explicit
+steps. The following table starts from the authors' state order
+\((1,2,3,4)\). The regression suite checks these states and output words
+against compiled upstream reference C code.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("| position | s0 | s1 | s2 | s3 | next output |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n");
+  for (int mode : {0, 1, 2}) {
+    dm::random::Xoshiro256StarStar rng(std::array<std::uint64_t,4>{1,2,3,4});
+    if (mode == 1) rng.jump();
+    if (mode == 2) rng.long_jump();
+    const auto s = rng.state();
+    std::print("| {} | {:016x} | {:016x} | {:016x} | {:016x} | {:016x} |\n",
+        mode == 0 ? "initial" : mode == 1 ? "2^128 jump" : "2^192 jump", s[0], s[1], s[2], s[3], rng.next_u64());
+  }
+}
+```
+// result_begin: markdown
+| position | s0 | s1 | s2 | s3 | next output |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| initial | 0000000000000001 | 0000000000000002 | 0000000000000003 | 0000000000000004 | 0000000000002d00 |
+| 2^128 jump | 8c7a153956b5f3d1 | 701f1a713401d85e | 6527f66a65469085 | 8386b786c4408050 | bbd2f312298443d8 |
+| 2^192 jump | 096a8eb71295a400 | dbf84991e50f4516 | 534ee745810d2a0e | 31655ca1a2215bf1 | 527752a1d792704d |
+// result_end
+\caption(Exact raw states and outputs, rendered as hexadecimal words so no 64-bit integer is rounded through a floating-point column.)
+
+Streams starting \(j2^{128}\) raw transitions apart have disjoint state
+ranges provided each consumes less than \(2^{128}\) outputs and the ranges
+do not wrap around the full period. This is spacing, not a proof of
+statistical independence. A raw-state snapshot excludes a cached second
+normal variate in the common distribution interface; jumps clear that
+cache so a previous stream's cached draw cannot be returned after a jump.
+Copying an entire generator object preserves both its raw state and cache.
+
+> Testing more than one seed
+
+The existing battery checks marginal uniformity, uniform serial pairs,
+lag-one correlation, two raw bit frequencies and the raw low-byte counts.
+Its p-values are interpreted under an ideal random-stream model. One
+unremarkable run is weak evidence, and one small p-value is not automatically
+a reproducible defect.
+
+For a continuous, correctly calibrated test statistic, its null p-value
+is uniform on \((0,1)\). Running the battery on 40 fresh seeds lets us
+inspect each test's p-value distribution with another KS test. Discrete
+counts and approximate first-level reference distributions make this
+uniformity approximate. With 40 ideal runs, about two p-values below 0.05
+and two above 0.95 are expected per test; seven second-level tests also
+create multiple opportunities for an apparently unusual result.
+
+```{cpp, results="markdown", file="figures/xoshiro_bit_frequencies.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::random::Xoshiro256StarStar one(2026), bits(2026);
+  std::print("{}\n", dm::random::quality_tests(one, 100000).to_md(5));
+  const auto repeated = dm::random::quality_tests_over_seeds([](std::uint64_t seed) {
+    return std::make_unique<dm::random::Xoshiro256StarStar>(seed);
+  }, 40, 100000);
+  std::print("\nSeeds 1 to 40:\n\n{}\n", repeated.select({"test", "mean_p", "small_p_count", "large_p_count", "ks_p_value"}).to_md(5));
+  const auto follow_up = dm::random::quality_tests_over_seeds([](std::uint64_t seed) {
+    return std::make_unique<dm::random::Xoshiro256StarStar>(seed);
+  }, 40, 100000, 41);
+  std::print("\nSeeds 41 to 80:\n\n{}\n", follow_up.select({"test", "mean_p", "small_p_count", "large_p_count", "ks_p_value"}).to_md(5));
+  auto frequencies = dm::random::bit_frequencies(bits, 100000);
+  std::vector<double> positions(64);
+  std::iota(positions.begin(), positions.end(), 0);
+  for (auto& f : frequencies) f = (f - 0.5) * 2 * std::sqrt(100000.0);
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().points(positions, frequencies, "bit-frequency z", dm::RGB{37, 99, 235}, 4)
+      .abline_h(3, dm::RGB{220, 38, 38}, 1).abline_h(-3, dm::RGB{220, 38, 38}, 1)
+      .title("Raw-bit frequencies over 100000 xoshiro256** outputs")
+      .x_label("bit position (0=lowest)").y_label("(frequency - 1/2) / ideal SE")
+      .y_limits(-4.5, 4.5).size(900, 480).save_svg("build/xoshiro_bit_frequencies.svg");
+}
+```
+// result_begin: markdown
+| test | statistic | df | p_value |
+| :--- | ---: | ---: | ---: |
+| Uniformity, chi-square (100 cells) | 107.01000 | 99 | 0.27370 |
+| Uniformity, Kolmogorov-Smirnov | 0.00366 | 0 | 0.13711 |
+| Serial pairs, chi-square (10 x 10 cells) | 104.77000 | 99 | 0.32653 |
+| Lag-1 correlation, z = r sqrt(n) | 0.11084 | 0 | 0.91175 |
+| Monobit, lowest bit (z) | 0.23401 | 0 | 0.81498 |
+| Monobit, highest bit (z) | 1.21431 | 0 | 0.22463 |
+| Lowest byte, chi-square (256 cells) | 294.45120 | 255 | 0.04519 |
+
+
+Seeds 1 to 40:
+
+| test | mean_p | small_p_count | large_p_count | ks_p_value |
+| :--- | ---: | ---: | ---: | ---: |
+| Uniformity, chi-square (100 cells) | 0.47513 | 6 | 4 | 0.57836 |
+| Uniformity, Kolmogorov-Smirnov | 0.49693 | 3 | 0 | 0.99775 |
+| Serial pairs, chi-square (10 x 10 cells) | 0.50472 | 0 | 1 | 0.50400 |
+| Lag-1 correlation, z = r sqrt(n) | 0.54057 | 3 | 3 | 0.34947 |
+| Monobit, lowest bit (z) | 0.46650 | 3 | 2 | 0.35201 |
+| Monobit, highest bit (z) | 0.43760 | 1 | 0 | 0.31484 |
+| Lowest byte, chi-square (256 cells) | 0.44451 | 5 | 1 | 0.23188 |
+
+
+Seeds 41 to 80:
+
+| test | mean_p | small_p_count | large_p_count | ks_p_value |
+| :--- | ---: | ---: | ---: | ---: |
+| Uniformity, chi-square (100 cells) | 0.51523 | 3 | 1 | 0.55299 |
+| Uniformity, Kolmogorov-Smirnov | 0.56410 | 2 | 4 | 0.63069 |
+| Serial pairs, chi-square (10 x 10 cells) | 0.58406 | 1 | 1 | 0.00788 |
+| Lag-1 correlation, z = r sqrt(n) | 0.46222 | 4 | 3 | 0.51332 |
+| Monobit, lowest bit (z) | 0.55935 | 1 | 3 | 0.18516 |
+| Monobit, highest bit (z) | 0.51993 | 2 | 3 | 0.67562 |
+| Lowest byte, chi-square (256 cells) | 0.49782 | 4 | 3 | 0.82709 |
+
+\image(figures/xoshiro_bit_frequencies.svg)
+// result_end
+\caption(A single battery, two separately reported 40-seed p-value summaries, and raw-bit frequencies from a fresh seed-2026 engine. The horizontal lines in the figure are pointwise three-standard-error references, not simultaneous confidence bounds.)
+\alttext(A scatter plot of standardised frequencies for all 64 output bits, with reference lines at plus and minus three standard errors.)
+
+The first range gives an unusually high second-level KS p-value, about
+0.998, for the uniformity-KS test. A separately reported follow-up on seeds
+41 to 80 instead gives a small serial-pair second-level p-value, about
+0.0079. Both ranges are retained. With fourteen second-level results and
+an exploratory follow-up, neither isolated extreme should be turned into
+a claim of certification or a reproducible generator defect.
+
+These small diagnostics are not substitutes for a large dedicated PRNG
+suite or an analysis of high-dimensional dependencies. Adjacent seeds do
+not mathematically guarantee independent streams. We use published jump
+spacing for the simulation-stream comparison below.
+
+> Applying it: a bootstrap with an exact conditional variance
+
+Let the waiting times be \(x_1,\ldots,x_n\), and draw a resampled
+observation uniformly from those \(n\) values. Conditional on the data,
+its mean is \(\bar x\) and its variance uses the denominator \(n\).
+The mean of \(n\) independent resampled values therefore has
+
+$$
+\mathbb E_*[\bar X^*]=\bar x,\qquad
+\operatorname{Var}_*(\bar X^*)=\frac1{n^2}\sum_{i=1}^{n}(x_i-\bar x)^2
+=\frac{n-1}{n^2}s^2.
+$$
+\alttext(The conditional bootstrap mean has expectation equal to the sample mean and variance equal to the sum of squared centred observations divided by n squared, or n minus one times the usual sample variance divided by n squared.)
+
+This is an exact oracle for the mean under the resampling model, not an
+asymptotic standard-error formula. The bootstrap draws come through
+`uniform_u64(0,n-1)`, whose multiply-and-reject mapping is unbiased.
+Using a raw word modulo \(n\) would generally be biased when \(n\)
+does not divide \(2^{64}\). The new bootstrap overload accepts the
+caller-owned engine and reuses the existing interval calculations.
+`BootstrapOptions::seed` controls only the default-engine overload; the
+supplied engine's seed 2026 determines the draws here.
+
+```{cpp, results="markdown", file="figures/xoshiro_bootstrap.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto waiting = dm::datasets::faithful().get_column("waiting").values();
+  dm::random::Xoshiro256StarStar rng(2026);
+  const auto result = dm::stats::Bootstrap({5000, 0.95, 42}).run(waiting, dm::mean, rng);
+  const double n = waiting.size();
+  const double exact_se = dm::sd(waiting) * std::sqrt(n - 1) / n;
+  std::print("| n | mean (min) | exact conditional SE | simulated SE | simulated bias | percentile lower | percentile upper |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n"
+             "| {:.0f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",
+      n, result.estimate, exact_se, result.standard_error, result.bias,
+      result.percentile_interval.first, result.percentile_interval.second);
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::hist(result.replicates, 40, "bootstrap means", dm::RGB{147, 197, 253})
+      .abline_v(result.estimate, dm::RGB{220, 38, 38}, 2)
+      .title("5000 resampled mean waiting times")
+      .x_label("mean waiting time (minutes)").y_label("replicates")
+      .size(900, 480).save_svg("build/xoshiro_bootstrap.svg");
+}
+```
+// result_begin: markdown
+| n | mean (min) | exact conditional SE | simulated SE | simulated bias | percentile lower | percentile upper |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 272 | 70.897059 | 0.822800 | 0.840913 | -0.015371 | 69.264430 | 72.536765 |
+\image(figures/xoshiro_bootstrap.svg)
+// result_end
+\caption(The 5000-replicate bootstrap and exact conditional standard error. The red line marks the original sample mean; interval endpoints are percentile quantiles of the simulated means.)
+\alttext(A near-bell-shaped histogram of bootstrap mean waiting times, centred near the original sample mean of about 71 minutes.)
+
+The simulated standard error is 0.84091 minutes, about 2.2% above the exact
+conditional value 0.82280. Under the approximate normal-replicate model,
+Monte Carlo error for this standard-deviation estimate is about 0.00823,
+so the difference is roughly 2.2 Monte Carlo standard errors. Independent
+Python arithmetic reproduces all 5000 resampled means exactly, and R
+reproduces the summary and percentile endpoints. That verifies the
+calculation while leaving the finite-simulation difference visible.
+
+> Jump-separated streams and Monte Carlo variation
+
+The next example copies a stream's starting state for each bootstrap, then
+jumps the untouched starting-state generator before making the next copy.
+This gives starts exactly \(2^{128}\) raw transitions apart, rather
+than adding a jump after a variable amount of resampling work.
+
+Each run uses 2000 replicates. If those mean replicates are approximately
+normal, the Monte Carlo standard error of their estimated standard deviation
+is approximately \(\sigma_*/\sqrt{2(B-1)}\). The plotted reference band
+uses twice that quantity; it is a rough diagnostic for simulation noise,
+not a confidence interval for the geyser's population mean.
+
+```{cpp, results="markdown", file="figures/xoshiro_streams.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto waiting = dm::datasets::faithful().get_column("waiting").values();
+  const double n = waiting.size(), exact = dm::sd(waiting) * std::sqrt(n - 1) / n;
+  const double band = 2 * exact / std::sqrt(2.0 * (2000 - 1));
+  dm::random::Xoshiro256StarStar start(2026);
+  std::vector<double> ids, se;
+  std::print("| stream | estimated SE | exact conditional SE |\n| ---: | ---: | ---: |\n");
+  for (int k = 0; k < 8; ++k) {
+    auto stream = start;
+    const auto result = dm::stats::Bootstrap({2000, 0.95, 42}).run(waiting, dm::mean, stream);
+    ids.push_back(k); se.push_back(result.standard_error);
+    std::print("| {} | {:.6f} | {:.6f} |\n", k, result.standard_error, exact);
+    start.jump();
+  }
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().points(ids, se, "stream estimate", dm::RGB{37, 99, 235}, 5)
+      .line({0, 7}, {exact, exact}, "exact model SE", dm::RGB{220, 38, 38}, 2)
+      .line({0, 7}, {exact - band, exact - band}, "rough MC band", dm::RGB{100, 100, 100}, 1)
+      .line({0, 7}, {exact + band, exact + band}, "", dm::RGB{100, 100, 100}, 1)
+      .title("Bootstrap SE estimates from eight jump-spaced streams")
+      .x_label("stream index").y_label("standard error (minutes)")
+      .size(900, 480).save_svg("build/xoshiro_streams.svg");
+}
+```
+// result_begin: markdown
+| stream | estimated SE | exact conditional SE |
+| ---: | ---: | ---: |
+| 0 | 0.837298 | 0.822800 |
+| 1 | 0.839694 | 0.822800 |
+| 2 | 0.843221 | 0.822800 |
+| 3 | 0.829831 | 0.822800 |
+| 4 | 0.833505 | 0.822800 |
+| 5 | 0.840068 | 0.822800 |
+| 6 | 0.822840 | 0.822800 |
+| 7 | 0.812786 | 0.822800 |
+\image(figures/xoshiro_streams.svg)
+// result_end
+\caption(Estimated bootstrap standard errors across eight jump-spaced starting states, with the exact conditional model value and a rough Monte Carlo variation band.)
+\alttext(Eight estimated bootstrap standard errors near the exact conditional standard error, with horizontal reference and Monte Carlo variation-band lines.)
+
+Increasing the number of replicates reduces simulation noise, not the
+uncertainty inherent in the observations. This resampling model treats
+records as exchangeable. Serial dependence between eruptions would need
+a different resampling scheme, such as a block bootstrap; generator
+quality cannot repair a misspecified sampling model.
+
+> Conclusion
+
+The transition is a reversible binary linear map; the output scrambler is
+a word permutation, and the maximal period relies on the published
+primitive polynomial. Reference-code agreement and small statistical
+batteries check different properties. On the geyser dataset, a caller-owned
+xoshiro stream drives the existing bootstrap API and can be checked against
+an exact conditional variance. Jump spacing organises reproducible stream
+starting points, while the variation of their estimates keeps Monte Carlo
+error separate from the data model's uncertainty.
+
+> References
+
+- D. Blackman and S. Vigna (2021). *Scrambled Linear Pseudorandom Number Generators*.
+  ACM Transactions on Mathematical Software 47(4). https://doi.org/10.1145/3460772
+- Authors' xoshiro256** 1.0 transition and jump source, https://prng.di.unimi.it/xoshiro256starstar.c
+- B. Efron (1979). *Bootstrap Methods: Another Look at the Jackknife*.
+  Annals of Statistics 7(1), 1–26. https://doi.org/10.1214/aos/1176344552
+- D. E. Knuth. *The Art of Computer Programming*, volume 2, section 3.3.1.
+  https://www-cs-faculty.stanford.edu/~knuth/taocp.html

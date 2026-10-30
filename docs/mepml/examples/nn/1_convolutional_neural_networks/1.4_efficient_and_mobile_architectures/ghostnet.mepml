@@ -1,0 +1,578 @@
+//? Title: GhostNet: Intrinsic Maps and Cheap Feature Generation
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Ghost modules derive additional maps from a smaller intrinsic representation. We inspect
+ceiling/trimming and exact derivatives, verify released model budgets and complete gradients,
+then explicitly fit all sixteen CIFAR bottlenecks through tensor Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/ghostnet.cpp`.
+
+> The method
+
+A ratio-s ghost module produces ceil(Cout/s) intrinsic maps with a primary 1×1/BN, then
+uses a depthwise 3×3 multiplier s-1 to generate more maps. Concatenation puts intrinsic
+maps first and trims the tail to Cout; odd requested widths therefore compute some unused
+maps. Optional ReLU follows both BN stages. The controlled fixture disables it so a primary
+identity and cheap gain two yield [x0,x1,x2,2x0,2x1] for five outputs, with exact input
+sum derivatives [3,3,1] and zero data gradient for the discarded generated x2 filter.
+
+For Cout divisible by s, primary kernel k, cheap kernel d and Cin=c, the dense/ghost
+kernel-product ratio is
+
+$$R=\frac{s c k^2}{c k^2+(s-1)d^2}.$$
+\alttext(Cheap generation replaces many dense spatial products, with a remaining depthwise overhead.)
+
+At 160→960, s=2,k=1,d=3 this is 1.893491, checked from actual kernel sizes and output
+shape MACs. It is an arithmetic/kernel-storage ratio, not measured runtime or a compressed
+model-file ratio. BN, activations, memory traffic, ceiling overhead and device kernels can
+change practical costs. Complete learned totals below include BN and biases separately.
+
+Each bottleneck uses activated Ghost1, a strided depthwise/BN when needed, optional pooled
+SE with ReLU/hard sigmoid, linear Ghost2 and shortcut addition without post-ReLU. Dimension
+changes use a depthwise/BN plus pointwise/BN shortcut. SE reduction aligns mid*.25 to four.
+The full network has sixteen released bottlenecks, a 3×3/2 stem, final 1×1/BN/ReLU to
+scaled 960, global pooling, biased 1×1/ReLU to fixed 1280, dropout .2 and a classifier.
+Widths align to four. Full widths .5/1/1.3 have 2587292/5182508/7358820 learned scalars
+and 10984/21968/28536 moving scalars, with 42.33/141.15/227.00 million counted MACs at 224.
+He-uniform fan-in is an initialization adaptation; BN learns gamma/beta with epsilon 1e-5.
+
+The complete full-width backward probe uses 64-pixel synthetic inputs without dropout. It
+shifts BN betas/SE biases, retaining every bottleneck. A BN shift is redundant only when its
+consumers linearly pass channel constants into later training BN. Projection-depthwise shifts,
+strided no-SE depthwise shifts and eligible residual-stream shifts are identified from the actual
+unit topology, separately from nonredundant gradients. Zero gradients there are not disconnected
+filters. Moving updates are disabled for this diagnostic, not for the dataset fit.
+
+The visible fit retains full width/all sixteen bottlenecks on original 32×32 CIFAR images,
+changing only the stem stride and class count. It has 3914318 learned and 21968 moving scalars.
+Ten batch-eight epochs use 64 fit/32 validation/32 official-test rows, Adam(.001), explicit
+kernel L2=.0001/2 and independent padded crops/flips. Validation selects paired learned/moving
+state checkpoints before testing. The tensor library performs preprocessing, forward, loss and
+optimization. This tiny single-seed experiment differs from the larger source fit and published
+ImageNet training; it cannot reproduce benchmark accuracy or establish architecture superiority.
+
+The editable concept diagram is `diagrams/ghostnet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/ghostnet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/ghostnet_concept.tikz > build/ghostnet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/ghostnet_concept.svg build/ghostnet_concept.dvi > build/ghostnet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/ghostnet_concept.svg)
+// result_end
+\caption(GhostNet: Intrinsic Maps and Cheap Feature Generation)
+\alttext(Intrinsic primary maps; Cheap depthwise maps; then Concatenate and trim; Ghost bottleneck sum; then Complete CIFAR model; Explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/ghostnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::GhostNetConfig cfg;
+  cfg.classes    = 10;
+  cfg.small_stem = true;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::GhostNet(p, state, image, cfg, false).logits;
+      },
+      "GhostNet: Intrinsic Maps and Cheap Feature Generation");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/ghostnet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+354 displayed nodes; 3914318 reachable learned values.
+\image(figures/ghostnet_architecture.svg)
+// result_end
+\caption(Executed ghostnet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right ghostnet architecture with rotated names and exact output shapes.)
+
+> Simple intrinsic/cheap map example
+
+Odd requested width makes the concatenation/trimming rule visible.
+
+```{cpp, results="markdown", file="figures/ghostnet_module.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), state(17, type);
+  std::vector<n::models::MobileLayer> layers;
+  n::models::MobileContext c{p, state, layers, false};
+  const auto x = n::linspace(-1, 1, 75, type).reshape({1, 5, 5, 3}).detach().requires_grad_();
+  {
+    n::NoGradGuard guard;
+    n::models::GhostModule(c, "g", x, 5, false);
+  }
+  p.set("g/primary/W", n::eye(3, type).reshape({1, 1, 3, 3}));
+  const auto delta =
+      n::one_hot(n::from_vector(std::vector<int64_t>{4}), 9, 1, 0, type).reshape({3, 3, 1, 1});
+  p.set("g/cheap/W", 2 * delta * n::ones({1, 1, 3, 1}, type));
+  for (const auto *part : {"primary", "cheap"})
+    p.set(std::string("g/") + part + "/bn/gamma", n::full({3}, std::sqrt(1.00001), type));
+  const auto out = n::models::GhostModule(c, "g", x, 5, false);
+  const auto expected = n::slice_axis(n::concat({x, 2 * x}, 3), 3, 0, 5);
+  const auto gradients = n::grad(n::sum(out.output), {x, p.at("g/cheap/W")});
+  const auto target = n::from_vector(std::vector<double>{3, 3, 1});
+  if (n::max(n::abs(out.intrinsic - x)).item() > 1e-12 ||
+      n::max(n::abs(out.ghost - 2 * x)).item() > 1e-12 ||
+      n::max(n::abs(out.output - expected)).item() > 1e-12 ||
+      n::max(n::abs(gradients[0] - target)).item() > 1e-12 ||
+      n::max(n::abs(n::slice_axis(gradients[1], 2, 2, 3))).item() != 0)
+    return 1;
+  auto channel = [](const auto &t, int64_t k) {
+    return n::slice_axis(t, 3, k, k + 1).reshape({5, 5});
+  };
+  auto derivative = dm::graphics::RPlot::create();
+  derivative.lines({0, 1, 2}, {3, 3, 1}, "input derivative", {147, 51, 234})
+      .title("Trimmed output sum derivative")
+      .x_label("input channel")
+      .y_label("d sum(output) / dx")
+      .y_limits(0, 4.5);
+  auto layout = dm::graphics::RLayout::create(2, 2);
+  layout
+      .add(
+          n::plot_tensor_map(channel(out.intrinsic, 0), -2, 2).title("Intrinsic channel zero"))
+      .add(n::plot_tensor_map(channel(out.ghost, 0), -2, 2)
+               .title("Cheap channel: twice intrinsic"))
+      .add(n::plot_tensor_map(channel(out.output, 3), -2, 2)
+               .title("First ghost output after concatenation"))
+      .add(derivative);
+  std::filesystem::create_directories("build");
+  layout.size(1100, 920).fit_panels().save_svg("build/ghostnet_module.svg");
+  std::print("Requested five channels: three intrinsic + three generated, concatenated then "
+             "trimmed. Output is [x0,x1,x2,2x0,2x1]; input derivatives [3,3,1]. The discarded "
+             "generated x2 filter has zero data gradient.\n");
+}
+```
+// result_begin: markdown
+Requested five channels: three intrinsic + three generated, concatenated then trimmed. Output is [x0,x1,x2,2x0,2x1]; input derivatives [3,3,1]. The discarded generated x2 filter has zero data gradient.
+\image(figures/ghostnet_module.svg)
+// result_end
+\caption(The controlled ratio-two module retains signed values by disabling ReLU. BN inference scaling is set to identity. Five requested channels demonstrate ceiling/trimming, including zero data gradient for the discarded generated channel; the computed cheap tensor still contains all three maps.)
+\alttext(The controlled ratio-two module retains signed values by disabling ReLU. BN inference scaling is set to identity. Five requested channels demonstrate ceiling/trimming, including zero data gradient for the discarded generated channel; the computed cheap tensor still contains all three maps.)
+
+> Complete model and arithmetic budgets
+
+Kernel ratios and complete learned counts answer different questions.
+
+```{cpp, results="markdown", file="figures/ghostnet_budget.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  std::vector<double> widths, parameters, work;
+  for (auto [width, count, moving, macs] :
+       std::vector<std::tuple<double, int64_t, int64_t, int64_t>>{
+           {.5, 2587292, 10984, 42328152},
+           {1, 5182508, 21968, 141150512},
+           {1.3, 7358820, 28536, 227003256}}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    n::models::GhostNetConfig cfg;
+    cfg.width = width;
+    const auto out = n::models::GhostNet(p, state, n::zeros({1, 224, 224, 3}), cfg);
+    if (p.count() != count || state.count() != moving || out.Macs() != macs ||
+        n::models::GhostNetBlocks().size() != 16 || out.features.size(1) != 7)
+      return 1;
+    widths.push_back(width);
+    parameters.push_back(double(count) / 1e6);
+    work.push_back(double(macs) / 1e6);
+    std::print("GhostNet {}x: {} learned / {} moving scalars, {} kernel/SE/head/classifier "
+               "MACs per image.\n",
+               width, count, moving, macs);
+  }
+  {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    std::vector<n::models::MobileLayer> cheap, dense;
+    n::models::MobileContext a{p, state, cheap, false}, b{p, state, dense, false};
+    const auto x = n::zeros({1, 7, 7, 160});
+    n::models::GhostModule(a, "ghost", x, 960, true);
+    n::models::GhostConvBN(b, "plain", x, 960, 1, 1, false, true);
+    int64_t gw = 0, dw = 0, gm = 0, dm = 0;
+    for (const auto &l : cheap) {
+      gw += p.at(l.name + "/W").numel();
+      gm += l.Macs();
+    }
+    for (const auto &l : dense) {
+      dw += p.at(l.name + "/W").numel();
+      dm += l.Macs();
+    }
+    const double formula = 2. * 160 / (160 + 9);
+    if (std::abs(double(dw) / gw - formula) > 1e-12 ||
+        std::abs(double(dm) / gm - formula) > 1e-12)
+      return 1;
+    std::print("160->960 at 7x7: dense/ghost kernel and MAC ratio {:.9f}; excludes "
+               "BN/bias/activation work. This is an arithmetic ratio, not measured speedup.\n",
+               formula);
+  }
+  auto count = dm::graphics::RPlot::create(), macs = dm::graphics::RPlot::create();
+  count.lines(widths, parameters, "learned", {37, 99, 235})
+      .title("Complete GhostNet parameter budget")
+      .x_label("width multiplier")
+      .y_label("million learned scalars")
+      .y_limits(0, 10);
+  macs.lines(widths, work, "kernel MACs", {234, 88, 12})
+      .title("Measured-shape arithmetic at 224")
+      .x_label("width multiplier")
+      .y_label("million MACs per image")
+      .y_limits(0, 300);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(count)
+      .add(macs)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/ghostnet_budget.svg");
+}
+```
+// result_begin: markdown
+GhostNet 0.5x: 2587292 learned / 10984 moving scalars, 42328152 kernel/SE/head/classifier MACs per image.
+GhostNet 1x: 5182508 learned / 21968 moving scalars, 141150512 kernel/SE/head/classifier MACs per image.
+GhostNet 1.3x: 7358820 learned / 28536 moving scalars, 227003256 kernel/SE/head/classifier MACs per image.
+160->960 at 7x7: dense/ghost kernel and MAC ratio 1.893491124; excludes BN/bias/activation work. This is an arithmetic ratio, not measured speedup.
+\image(figures/ghostnet_budget.svg)
+// result_end
+\caption(All three released-width counts and measured-shape MAC budgets are checked. The module ratio compares kernel weights/products only; complete learned totals additionally include BN and biases. The ceiling rule can add overhead when output channels are not divisible by the ghost ratio.)
+\alttext(All three released-width counts and measured-shape MAC budgets are checked. The module ratio compares kernel weights/products only; complete learned totals additionally include BN and biases. The ceiling rule can add overhead when output channels are not divisible by the ghost ratio.)
+
+> Complete-model gradient checks
+
+Topology determines which BN shifts are removed downstream.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17), state(17);
+  n::models::GhostNetConfig cfg;
+  cfg.keep_probability = 1;
+  cfg.update_stats = false;
+  const auto blocks = n::models::GhostNetBlocks();
+  std::vector<bool> identity;
+  int width = 16;
+  for (const auto &b : blocks) {
+    identity.push_back(b.stride == 1 && width == b.out);
+    width = b.out;
+  }
+  std::set<std::string> removable;
+  for (size_t j = 0; j < blocks.size(); ++j) {
+    const auto prefix = "block" + std::to_string(j + 1);
+    if (!identity[j])
+      removable.insert(prefix + "/shortcut/depthwise/bn/beta");
+    if (blocks[j].stride > 1 && blocks[j].se == 0)
+      removable.insert(prefix + "/depthwise/bn/beta");
+    bool pointwise = true;
+    for (size_t k = j + 1; k < blocks.size(); ++k)
+      if (!identity[k]) {
+        pointwise = false;
+        break;
+      }
+    if (pointwise) {
+      removable.insert(prefix + "/ghost2/cheap/bn/beta");
+      if (!identity[j])
+        removable.insert(prefix + "/shortcut/pointwise/bn/beta");
+    }
+  }
+  const auto x = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                     .reshape({2, 64, 64, 3});
+  {
+    n::NoGradGuard guard;
+    n::models::GhostNet(p, state, x, cfg, true);
+    for (const auto &name : p.names())
+      if (name.ends_with("/beta") ||
+          (name.find("/se/") != std::string::npos && name.ends_with("/b")))
+        p.set(name, (.5 * n::sin(.37 * n::arange(0, p.at(name).numel()).to(n::DType::Float32) +
+                                 double(name.size())))
+                        .reshape(p.at(name).shape()));
+  }
+  const auto out = n::models::GhostNet(p, state, x, cfg, true);
+  const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+  double largest = 0, minimum = std::numeric_limits<double>::infinity(), removed = 0;
+  size_t count = 0;
+  for (size_t i = 0; i < gradients.size(); ++i) {
+    const double norm = n::sqrt(n::sum(n::square(gradients[i]))).item();
+    if (!std::isfinite(norm))
+      return 1;
+    largest = std::max(largest, norm);
+    if (removable.count(p.names()[i])) {
+      ++count;
+      removed = std::max(removed, norm);
+    } else
+      minimum = std::min(minimum, norm);
+  }
+  if (count != removable.size() || removed > 1e-5 * largest || minimum <= 0)
+    return 1;
+  std::print("Complete full-width 16-block backward at 64 pixels: {} finite parameter-tensor "
+             "gradients; {} redundant BN shifts max {:.9f}; other minimum {:.9f}, overall "
+             "maximum {:.9f}.\n",
+             gradients.size(), count, removed, minimum, largest);
+}
+```
+// result_begin: markdown
+Complete full-width 16-block backward at 64 pixels: 272 finite parameter-tensor gradients; 13 redundant BN shifts max 0.000000012; other minimum 0.001900218, overall maximum 3.001646042.
+// result_end
+
+> Dataset and explicit fitting
+
+Original images precede the visible optimizer loop.
+
+```{cpp, results="markdown", file="figures/ghostnet_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/ghostnet_inputs.png", 5, 0., 1., 4, 1.,
+                     4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/ghostnet_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/ghostnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 64), ty = n::slice_axis(labels, 0, 0, 64);
+  const auto vx = 2 * n::slice_axis(images, 0, 64, 96) - 1, vy = n::slice_axis(labels, 0, 64, 96);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 32) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 32);
+  n::models::GhostNetConfig cfg;
+  cfg.classes    = 10;
+  cfg.small_stem = true;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::GhostNet(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 3914318 || state.count() != 21968)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(64, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/ghostnet_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 10; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/ghostnet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "ghostnet / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 32)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("GhostNet 1.0x, complete CIFAR model")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/ghostnet_training.svg");
+  std::print(
+      "64 fit / 32 validation / 32 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+64 fit / 32 validation / 32 official-test rows; 3914318 learned scalars, 21968 moving scalars; 80 explicit Adam updates.
+Selected epoch 10; validation NLL 2.348713; inference training NLL 2.039306; test NLL 2.766860; test accuracy 0.125000.
+\image(figures/ghostnet_training.svg)
+// result_end
+\caption(Explicit ten-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit ten-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)
+
+
+The selected epoch is 10, the last: validation NLL 2.348713, inference training NLL
+2.039306, and official-test NLL 2.766860 with accuracy 0.125000 (4 of 32). After 80
+updates this is poor generalization on the tiny test subset, no better than chance
+(NLL ln 10 ≈ 2.30), despite improving training loss. The gradient/topology
+checks establish implementation properties; the fit does not demonstrate an
+accuracy benefit. Augmented training uses batch moments, while restored inference
+uses saved moving moments, so their training losses need not coincide.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/ghostnet_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Cheap depthwise generation reuses intrinsic maps while ceiling and trimming determine actual
+work and gradients. Exact fixtures, complete model budgets and a visible Adam fit connect that
+mechanism to the released classifier without confusing arithmetic savings with measured speed.
+
+> References
+
+- [Han et al. (2020), GhostNet](https://arxiv.org/abs/1911.11907).
+- [Authors' implementation](https://github.com/huawei-noah/Efficient-AI-Backbones/blob/master/ghostnet_pytorch/ghostnet.py).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

@@ -38,7 +38,7 @@ to `K0RN` \-\- something neither Soundex nor NYSIIS does exactly.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -104,7 +104,7 @@ to its Metaphone key length \-\- the gap is the spelling that pronunciation disc
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

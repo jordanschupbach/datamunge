@@ -42,7 +42,7 @@ instead of trial-dividing each value. The running time is \(L_n[\tfrac12,1]=\exp
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -108,7 +108,7 @@ directly \-\- they fall out of the congruence of squares.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

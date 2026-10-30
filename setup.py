@@ -204,9 +204,11 @@ subprocess.run([sys.executable, "scripts/prebuild_nn_api.py", "python"], check=T
 extensions.append(Extension(
     "pydatamunge._nn_native",
     sources=["src/nn_python_wrap.cpp"],
-    include_dirs=["include"], language="c++", define_macros=macros,
+    # examples/nn: header-only example components bound by examples/bindings/nn_components.i.
+    include_dirs=["include", "examples/nn", "examples/bindings"], language="c++", define_macros=macros,
     extra_compile_args=list(compile_args), extra_link_args=list(link_args),
-    depends=extensions[0].depends + ["prebindings/nn/src/nn.i"],
+    depends=extensions[0].depends + ["prebindings/nn/src/nn.i", "examples/bindings/nn_components.i"]
+    + sorted(p.as_posix() for p in Path("examples/nn/common").rglob("*.hpp")),
 ))
 
 # Example support is opt-in: ordinary wheels keep the small core-only surface.
@@ -221,7 +223,7 @@ if os.environ.get("DATAMUNGE_BUILD_NN_EXAMPLES") == "1":
                 "include",
                 "examples/bindings",
                 "examples/nn",
-                "examples/cpp/nn",
+                "examples/cpp/source/nn",
             ],
             language="c++",
             define_macros=macros,

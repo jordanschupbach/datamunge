@@ -1,3 +1,5 @@
+/// @file simulated_annealing.cpp
+/// @brief SimulatedAnnealing native update, trial and stopping implementation.
 #include <datamunge/optim/simulated_annealing.hpp>
 
 #include <algorithm>

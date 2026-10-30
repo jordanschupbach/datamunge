@@ -1,6 +1,7 @@
 #pragma once
 
-// Umbrella header for datamunge::algorithms -- general combinatorial, graph, and string algorithms.
+/// @file algorithms.hpp
+/// @brief Umbrella header for datamunge::algorithms: general combinatorial, graph and string algorithms.
 
 #include <datamunge/algorithms/aho_corasick.hpp>
 #include <datamunge/algorithms/automaton.hpp>
@@ -9,6 +10,7 @@
 #include <datamunge/algorithms/alopex.hpp>
 #include <datamunge/algorithms/advanced_graph.hpp>
 #include <datamunge/algorithms/approximate_counting.hpp>
+#include <datamunge/algorithms/addition_chain.hpp>
 #include <datamunge/algorithms/arc_consistency.hpp>
 #include <datamunge/algorithms/association_rules.hpp>
 #include <datamunge/algorithms/arnoldi_iteration.hpp>
@@ -17,7 +19,10 @@
 #include <datamunge/algorithms/bellman_ford.hpp>
 #include <datamunge/algorithms/berlekamp.hpp>
 #include <datamunge/algorithms/berlekamp_massey.hpp>
+#include <datamunge/algorithms/lfsr.hpp>
+#include <datamunge/algorithms/high_water_mark.hpp>
 #include <datamunge/algorithms/bicubic_interpolation.hpp>
+#include <datamunge/algorithms/bidirectional_search.hpp>
 #include <datamunge/algorithms/birkhoff_interpolation.hpp>
 #include <datamunge/algorithms/bkm.hpp>
 #include <datamunge/algorithms/borwein_pi.hpp>
@@ -30,6 +35,7 @@
 #include <datamunge/algorithms/blast.hpp>
 #include <datamunge/algorithms/banker.hpp>
 #include <datamunge/algorithms/bernstein_vazirani.hpp>
+#include <datamunge/algorithms/fourier_sampling.hpp>
 #include <datamunge/algorithms/bully_election.hpp>
 #include <datamunge/algorithms/burrows_wheeler.hpp>
 #include <datamunge/algorithms/bresenham.hpp>
@@ -52,6 +58,7 @@
 #include <datamunge/algorithms/connected_components.hpp>
 #include <datamunge/algorithms/davis_putnam.hpp>
 #include <datamunge/algorithms/decision_tree_induction.hpp>
+#include <datamunge/algorithms/id3_diagnostics.hpp>
 #include <datamunge/algorithms/difference_map.hpp>
 #include <datamunge/algorithms/diffie_hellman.hpp>
 #include <datamunge/algorithms/dijkstra.hpp>
@@ -71,10 +78,12 @@
 #include <datamunge/algorithms/earley_parser.hpp>
 #include <datamunge/algorithms/elias_gamma.hpp>
 #include <datamunge/algorithms/exact_cover.hpp>
+#include <datamunge/algorithms/sudoku.hpp>
 #include <datamunge/algorithms/exp_golomb.hpp>
 #include <datamunge/algorithms/exchange_sorts.hpp>
 #include <datamunge/algorithms/exponential_backoff.hpp>
 #include <datamunge/algorithms/fft.hpp>
+#include <datamunge/algorithms/fft_diagnostics.hpp>
 #include <datamunge/algorithms/fibonacci_coding.hpp>
 #include <datamunge/algorithms/flood_fill.hpp>
 #include <datamunge/algorithms/extended_euclidean.hpp>
@@ -103,7 +112,9 @@
 #include <datamunge/algorithms/graph_hard.hpp>
 #include <datamunge/algorithms/graph_layout.hpp>
 #include <datamunge/algorithms/hamming_code.hpp>
+#include <datamunge/algorithms/hamming_distance.hpp>
 #include <datamunge/algorithms/hmm.hpp>
+#include <datamunge/algorithms/gaussian_hmm.hpp>
 #include <datamunge/algorithms/hopcroft_karp.hpp>
 #include <datamunge/algorithms/hungarian.hpp>
 #include <datamunge/algorithms/index_calculus.hpp>
@@ -159,6 +170,7 @@
 #include <datamunge/algorithms/number_theory.hpp>
 #include <datamunge/algorithms/number_theory_extra.hpp>
 #include <datamunge/algorithms/number_theory_advanced.hpp>
+#include <datamunge/algorithms/aks.hpp>
 #include <datamunge/algorithms/number_theory_more.hpp>
 #include <datamunge/algorithms/odds_algorithm.hpp>
 #include <datamunge/algorithms/object_graph.hpp>
@@ -222,16 +234,19 @@
 #include <datamunge/algorithms/routing_batch.hpp>
 #include <datamunge/algorithms/run_length_encoding.hpp>
 #include <datamunge/algorithms/rule_learners.hpp>
+#include <datamunge/algorithms/zero_r.hpp>
 #include <datamunge/algorithms/structured_svm.hpp>
 #include <datamunge/algorithms/sutherland_hodgman.hpp>
 #include <datamunge/algorithms/rvm.hpp>
 #include <datamunge/algorithms/selection_operators.hpp>
+#include <datamunge/algorithms/sieve_of_atkin.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
 #include <datamunge/algorithms/simon.hpp>
 #include <datamunge/algorithms/simplex.hpp>
 #include <datamunge/algorithms/sss_star.hpp>
 #include <datamunge/algorithms/stone_sip.hpp>
 #include <datamunge/algorithms/search_batch.hpp>
+#include <datamunge/algorithms/backtracking.hpp>
 #include <datamunge/algorithms/schreier_sims.hpp>
 #include <datamunge/algorithms/search_more.hpp>
 #include <datamunge/algorithms/sequence_alignment.hpp>
@@ -260,6 +275,7 @@
 #include <datamunge/algorithms/unary_coding.hpp>
 #include <datamunge/algorithms/token_bucket.hpp>
 #include <datamunge/algorithms/trigram_search.hpp>
+#include <datamunge/algorithms/terrain_search.hpp>
 #include <datamunge/algorithms/tour_search.hpp>
 #include <datamunge/algorithms/uniform_binary_search.hpp>
 #include <datamunge/algorithms/uniform_cost_search.hpp>
@@ -272,3 +288,6 @@
 #include <datamunge/algorithms/zeller.hpp>
 #include <datamunge/algorithms/zobrist_hashing.hpp>
 #include <datamunge/algorithms/xiaolin_wu_line.hpp>
+#include <datamunge/algorithms/winnow.hpp>
+#include <datamunge/algorithms/wildcard.hpp>
+#include <datamunge/algorithms/warnsdorff.hpp>

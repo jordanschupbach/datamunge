@@ -45,7 +45,7 @@ iterated to convergence; kernels whose \(\alpha_j\) blow up are dropped.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -116,7 +116,7 @@ fit error and the number of relevance vectors kept.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

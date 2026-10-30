@@ -37,7 +37,7 @@ simplified polyline, and by construction it never deviates from the original by 
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

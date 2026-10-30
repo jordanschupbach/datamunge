@@ -1,0 +1,1326 @@
+//? Title: Random Forests: Many Decorrelated Trees
+//? Subtitle: Bagging, random predictor subsets, out-of-bag error, Breiman's strength and correlation bound, and impurity against permutation importance, derived, checked by hand and by simulation, and applied to Fisher's iris data, using datamunge's stats::RandomForestClassifier
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A classification tree is quick to grow and easy to read, but unstable: a slightly different
+training set gives a different tree, and that variance is most of its error. A random forest grows
+many deep trees, each on a bootstrap sample of the rows and with a random subset of the predictors
+tried at each split, and lets them vote. The rows a tree never saw estimate the forest's error
+without a test set. This report derives why voting helps: the variance of the vote share falls to
+\(\rho\sigma^2\), where \(\rho\) is the correlation between trees, and Breiman's bound ties the error to tree
+strength and correlation. It works a three-stump forest by hand and checks the theory by
+simulation. The bootstrap leaves out \(e^{-1}\) of the rows, as predicted, and the vote variance follows
+\(\rho\sigma^2+(1-\rho)\sigma^2/B\). One predictor per split lowers \(\rho\) from 0.19 to 0.15. Out-of-bag error is too
+high with few trees and matches the test error once the forest is large. On Breiman's twonorm
+benchmark the forest's test error rises from 3.5% to 7.5% as the predictors tried per split go from
+1 to all 20, because the trees' correlation grows while their strength stays flat. Single trees
+have 23% error. On Fisher's iris data the forest's out-of-bag accuracy is 95.3%, against 95.0% on
+held-out flowers and 94.3% for a single tree. Impurity importance gives a pure-noise predictor 3%
+of the credit; permutation importance correctly gives it none. Along the way the tree's split
+search became a sort-and-sweep (identical trees, three times faster), and a misalignment bug that
+corrupted out-of-bag results whenever rows had missing values was fixed. Out-of-bag votes,
+margins, strength and correlation, and permutation importance were added. The forest agrees with
+scikit-learn's.
+)
+
+\toc
+
+> The problem
+
+We have \(n\) labelled examples \((x_i,y_i)\), with \(x_i\in\mathbb R^p\) and \(y_i\) one of \(K\) classes, and want a
+rule that classifies new examples well. A classification tree is an attractive rule: it needs no
+scaling of the predictors, handles interactions and nonlinear boundaries, and is fast. Grown deep,
+it has little bias. But it is unstable: a small change in the training data changes the early
+splits, and with them the whole tree. Its predictions have a high variance, and that variance is
+most of its error.
+
+A random forest (Breiman, 2001) keeps the tree and attacks the variance. It grows many deep trees,
+each on a bootstrap sample of the rows and each restricted, at every split, to a random subset of
+the predictors, and lets them vote. Two questions follow. Why does the vote help, and by how much?
+And how good is the forest on new data, when every row was used to train it? The rows each tree
+did not see answer the second question without a held-out test set.
+
+> The method
+
+>> Trees as building blocks
+
+A classification tree splits the predictor space into rectangles by recursive binary splits
+\(x_j\le c\). At a node holding rows with class shares \(\hat p_1,\dots,\hat p_K\), the Gini impurity is
+\(G=1-\sum_k\hat p_k^2\), and the split chosen is the one with the largest decrease
+
+$$
+\Delta(j,c)=G-\frac{n_L}{n}G_L-\frac{n_R}{n}G_R ,
+$$
+\alttext(Delta of j and c equals G minus n L over n times G L minus n R over n times G R.)
+
+where \(n_L\), \(n_R\) and \(G_L\), \(G_R\) are the sizes and impurities of the two children. The candidate
+thresholds \(c\) are the midpoints between consecutive distinct values of \(x_j\). Sorting the node's
+rows by \(x_j\) once and moving them one at a time from the right child to the left gives every
+candidate's class counts in \(O(n\log n)\) per predictor. (Recounting all rows at each threshold, as
+`DecisionTreeClassifier` did before this report, costs \(O(n\cdot U)\) for \(U\) distinct values; the
+two give identical trees.) Growing continues until a node is pure, too small or at `max_depth`.
+A leaf predicts its majority class.
+
+>> Bagging and the variance of a vote
+
+Bagging (bootstrap aggregating; Breiman, 1996) fits \(B\) trees \(h_1,\dots,h_B\), each to a bootstrap
+sample: \(n\) rows drawn with replacement. The forest predicts by majority vote, using the vote
+shares
+
+$$
+Q_j(x)=\frac1B\sum_{t=1}^B\mathbf 1\{h_t(x)=j\},\qquad \hat f(x)=\arg\max_jQ_j(x).
+$$
+\alttext(Q j of x is one over B times the sum over trees t of the indicator that tree t votes for class j at x. The forest predicts the class with the largest Q j.)
+
+Fix a point \(x\) and a class \(j\), and let \(V_t=\mathbf 1\{h_t(x)=j\}\). Over the randomness of the training
+data and of the samples, the \(V_t\) have a common variance \(\sigma^2\), and any two of them have the same
+correlation \(\rho\), because the trees are grown by the same random recipe from the same data. Then
+
+$$
+\mathrm{Var}\,Q_j(x)=\frac1{B^2}\Big(B\sigma^2+B(B-1)\rho\sigma^2\Big)=\rho\sigma^2+\frac{1-\rho}{B}\,\sigma^2 .
+$$
+\alttext(The variance of Q j of x is one over B squared times B sigma squared plus B times B minus 1 times rho sigma squared, which equals rho sigma squared plus 1 minus rho over B times sigma squared.)
+
+Adding trees removes the second term, but not the first. As \(B\to\infty\) the variance falls to
+\(\rho\sigma^2\), set by how similar the trees are. Bagging leaves each tree's bias unchanged, so the
+whole gain is in variance, and it is limited by \(\rho\).
+
+>> Random predictor subsets
+
+The trees of a bagged ensemble are similar: if one predictor is the best splitter, nearly every
+bootstrap sample puts it at the root. A random forest lowers \(\rho\) by choosing, at every node, \(m\)
+of the \(p\) predictors at random and splitting only on those (`max_features`). Each tree becomes a
+little worse, because it sometimes has to split on a weaker predictor, but the trees are less
+alike. With \(m=p\) the forest is bagging; the usual default for classification is \(m=\lfloor\sqrt p\rfloor\).
+
+>> Out-of-bag estimation
+
+A bootstrap sample misses row \(i\) with probability
+
+$$
+q_n=\Big(1-\frac1n\Big)^n\;\longrightarrow\;e^{-1}=0.3679 .
+$$
+\alttext(q n equals 1 minus 1 over n, to the power n, which tends to e to the minus 1, 0.3679.)
+
+Row \(i\) is then *out of bag* for that tree. The number of trees for which a row is out of bag is
+binomial, \(\mathrm{Bin}(B,q_n)\), with mean \(Bq_n\); a row is never out of bag with probability
+\((1-q_n)^B\). The out-of-bag prediction of row \(i\) is the majority vote of the trees that did not
+train on it, and the out-of-bag error is the share of rows whose out-of-bag prediction is wrong.
+Each of these votes is a fair test: the trees involved never saw the row. Two biases remain. Each
+row is voted on by only about \(0.37B\) trees, so the out-of-bag error estimates the error of a
+forest of about \(0.37B\) trees and is too pessimistic when \(B\) is small. And those trees were fit to
+\(n-1\) rows' worth of data rather than \(n\), which matters little.
+
+>> Strength, correlation and Breiman's bound
+
+Let \(P_\Theta\) denote probability over the random tree recipe \(\Theta\) (sample and predictor subsets) with
+the training data fixed. The *margin* of an example is
+
+$$
+\mathrm{mr}(x,y)=P_\Theta\big(h(x,\Theta)=y\big)-\max_{j\ne y}P_\Theta\big(h(x,\Theta)=j\big),
+$$
+\alttext(The margin of x and y is the probability that a random tree votes for the true class y, minus the largest probability that it votes for any other class j.)
+
+the limiting vote share of the true class minus that of the strongest wrong class. The infinite
+forest errs exactly when the margin is negative, so its error is \(\mathrm{PE}^*=P_{X,Y}(\mathrm{mr}<0)\). Call
+\(s=E_{X,Y}\,\mathrm{mr}\) the *strength* of the forest. If \(s>0\), Chebyshev's inequality gives
+\(\mathrm{PE}^*\le\mathrm{var}(\mathrm{mr})/s^2\).
+
+Breiman (2001) splits \(\mathrm{var}(\mathrm{mr})\) into tree strength and tree correlation. Write
+\(\hat\jmath(x,y)\) for the strongest wrong class and \(\mathrm{rmg}(\Theta,x,y)=\mathbf 1\{h(x,\Theta)=y\}-\mathbf 1\{h(x,\Theta)=\hat\jmath\}\)
+for the *raw margin* of one tree, so that \(\mathrm{mr}=E_\Theta\,\mathrm{rmg}\). For two independent recipes
+\(\Theta,\Theta'\), \(\mathrm{mr}^2=E_{\Theta,\Theta'}[\mathrm{rmg}(\Theta)\,\mathrm{rmg}(\Theta')]\), hence
+
+$$
+\mathrm{var}(\mathrm{mr})=E_{\Theta,\Theta'}\big[\rho(\Theta,\Theta')\,\mathrm{sd}(\Theta)\,\mathrm{sd}(\Theta')\big]=\bar\rho\,\big(E_\Theta\,\mathrm{sd}(\Theta)\big)^2 ,
+$$
+\alttext(The variance of the margin equals the expectation over two independent trees of their correlation times their standard deviations, which defines rho bar as that variance divided by the square of the mean standard deviation.)
+
+where \(\rho(\Theta,\Theta')\) is the correlation over \((X,Y)\) of the two trees' raw margins, \(\mathrm{sd}(\Theta)\) the
+standard deviation of one tree's raw margin, and \(\bar\rho\) their weighted mean correlation. Since
+\((E_\Theta\mathrm{sd})^2\le E_\Theta\mathrm{var}(\Theta)\le E_\Theta E_{X,Y}\mathrm{rmg}^2-s^2\le1-s^2\),
+
+$$
+\mathrm{PE}^*\le\frac{\bar\rho\,(1-s^2)}{s^2}.
+$$
+\alttext(The generalisation error of the forest is at most rho bar times 1 minus s squared, over s squared.)
+
+The bound is loose, but it names the trade-off that \(m\) controls: a smaller \(m\) lowers \(\bar\rho\) and,
+eventually, \(s\). Every quantity in it can be estimated out of bag: \(Q_j(x_i)\) from the out-of-bag
+votes gives the margins and \(s\), and for tree \(t\), with \(p_{1t}\) and \(p_{2t}\) the shares of its out-of-bag
+rows on which it votes for \(y_i\) and for \(\hat\jmath_i\), \(\mathrm{sd}_t=\sqrt{p_{1t}+p_{2t}-(p_{1t}-p_{2t})^2}\).
+`strength_correlation()` returns these estimates, `oob_margins()` the margins.
+
+>> Importance of a predictor
+
+The *mean decrease in impurity* (MDI) credits each split's weighted decrease \((n_{\text{node}}/n)\Delta\) to the
+predictor it uses, normalises the credits of each tree to sum to 1 and averages over trees
+(`feature_importance()`). It is computed on the rows each tree was trained on, so it rewards
+splits that only fit noise. A continuous predictor unrelated to the class offers \(n-1\) thresholds,
+and deep in a tree, among a handful of rows, some threshold on it always lowers the impurity.
+
+The *permutation importance* (Breiman, 2001) asks instead how much worse each tree does on its
+out-of-bag rows when the values of \(x_j\) are shuffled among them, breaking the link between \(x_j\)
+and the class while keeping its distribution (`permutation_importance()`). For a predictor
+independent of the class and the other predictors, shuffling changes nothing in distribution, so
+its expected importance is zero, whatever the trees did with it. The mean of the per-tree drops is
+the importance; their standard deviation over \(\sqrt B\) is its standard error.
+
+>> Computation
+
+With the sweep, growing a tree on \(n\) rows costs \(O(m\,n\log n)\) per level, and a prediction costs one
+root-to-leaf walk. The forest stores how many times each row was drawn into each tree and every
+tree's vote on every training row, so the out-of-bag votes, the accuracy after each tree
+(`oob_accuracy_path()`), the margins and the strength and correlation need no further tree
+evaluations. `tree_votes(x)` and `vote_share(x)` evaluate all trees at one point without building
+a data frame, which is what the decision-region plots and the simulations below use.
+
+> Simple examples
+
+>> Three stumps by hand
+
+Ten points on a line, \(x=1,\dots,10\), with classes *a a a b a b b a b b*. A forest of three *stumps*
+(trees of depth 1) is small enough to follow completely. The table shows how many times each row
+was drawn into each tree's bootstrap sample, the votes it gets from the trees that did not draw it,
+and its out-of-bag prediction.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+  d.add_column("y", std::vector<std::string>{"a", "a", "a", "b", "a", "b", "b", "a", "b", "b"});
+  const dm::stats::RandomForestClassifier forest(d, "y ~ x", {.n_trees = 3, .max_depth = 1, .seed = 1});
+
+  for (std::size_t t = 0; t < 3; ++t) {
+    const auto nodes = forest.tree(t).node_frame();
+    std::print("- Tree {}: \\(x\\le{}\\) gives *{}*, otherwise *{}*.\n", t + 1, nodes.double_at("threshold", 0),
+               nodes.string_at("class", 1), nodes.string_at("class", 2));
+  }
+  std::vector<std::vector<double>> drawn(3);
+  std::vector<std::string> votes, oob = forest.oob_predictions();
+  for (std::size_t t = 0; t < 3; ++t)
+    for (const int c : forest.in_bag_counts(t)) drawn[t].push_back(c);
+  for (std::size_t i = 0; i < 10; ++i) {
+    const auto v = forest.tree_votes({d.double_at("x", i)});
+    std::string s;
+    for (std::size_t t = 0; t < 3; ++t)
+      if (drawn[t][i] == 0) s += std::format("{}{} (tree {})", s.empty() ? "" : ", ", forest.classes()[v[t]], t + 1);
+    votes.push_back(s.empty() ? "none" : s);
+    if (oob[i].empty()) oob[i] = "-";
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("x", d.get_column<double>("x").values());
+  table.add_column("y", d.get_column<std::string>("y").values());
+  for (std::size_t t = 0; t < 3; ++t) table.add_column(std::format("drawn, tree {}", t + 1), drawn[t]);
+  table.add_column("out-of-bag votes", votes);
+  table.add_column("OOB prediction", oob);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 0;
+  std::print("\n{}\n\n", table.to_md(md));
+
+  const double q = std::pow(0.9, 10);
+  std::print("Out-of-bag accuracy: {:.4f}. Rows never out of bag: expected 10(1-q)^3 = {:.2f} with q = {:.4f}.\n",
+             forest.oob_accuracy(), 10 * std::pow(1 - q, 3), q);
+}
+```
+// result_begin: markdown
+- Tree 1: \(x\le3\) gives *a*, otherwise *b*.
+- Tree 2: \(x\le5.5\) gives *a*, otherwise *b*.
+- Tree 3: \(x\le5.5\) gives *a*, otherwise *b*.
+
+| x | y | drawn, tree 1 | drawn, tree 2 | drawn, tree 3 | out-of-bag votes | OOB prediction |
+| ---: | :--- | ---: | ---: | ---: | :--- | :--- |
+| 1 | a | 3 | 1 | 0 | a (tree 3) | a |
+| 2 | a | 1 | 1 | 2 | none | - |
+| 3 | a | 0 | 2 | 0 | a (tree 1), a (tree 3) | a |
+| 4 | b | 1 | 0 | 1 | a (tree 2) | a |
+| 5 | a | 0 | 2 | 2 | b (tree 1) | b |
+| 6 | b | 3 | 1 | 1 | none | - |
+| 7 | b | 0 | 1 | 2 | b (tree 1) | b |
+| 8 | a | 0 | 1 | 0 | b (tree 1), b (tree 3) | b |
+| 9 | b | 1 | 0 | 0 | b (tree 2), b (tree 3) | b |
+| 10 | b | 1 | 1 | 2 | none | - |
+
+
+Out-of-bag accuracy: 0.5714. Rows never out of bag: expected 10(1-q)^3 = 2.76 with q = 0.3487.
+// result_end
+
+Each column of draws sums to 10, the size of a bootstrap sample. Tree 1 drew \(x=1\) three times,
+2, 4, 6 three times, 9 and 10. Its *a*'s (1 and 2) all lie below its *b*'s, so the split at the
+midpoint of 2 and 4, \(x\le3\), is pure on both sides. Trees 2 and 3 drew the *a* at \(x=5\) and split
+after it, at 5.5. Each tree leaves out a few rows (4, 2 and 4 here, against \(10q_{10}=3.49\) on
+average). The rows \(x=2\), 6 and 10 were drawn by all three trees, so they get no out-of-bag vote,
+against 2.76 expected. The other seven rows get one or two votes from trees that never saw them.
+Four are right (\(x=1\), 3, 7, 9), so the out-of-bag accuracy is \(4/7=0.571\). The three misses are the
+interleaved points that no single threshold classifies: the *b* at 4 and the *a*'s at 5 and 8. On
+its own training rows, by contrast, the vote of the three trees gets eight of the ten points right.
+
+>> Bagging smooths a step
+
+The same ten points with 500 trees. A single tree jumps from one class to the other at fixed
+thresholds; the vote share of a forest changes in many small steps, one for each threshold some
+tree chose.
+
+```{cpp, results="markdown", file="figures/rf_bagging.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+  d.add_column("y", std::vector<std::string>{"a", "a", "a", "b", "a", "b", "b", "a", "b", "b"});
+  const dm::stats::DecisionTreeClassifier stump(d, "y ~ x", {.max_depth = 1}), deep(d, "y ~ x", {.max_depth = 10});
+  const dm::stats::RandomForestClassifier stumps(d, "y ~ x", {.n_trees = 500, .max_depth = 1});
+  const dm::stats::RandomForestClassifier deeps(d, "y ~ x", {.n_trees = 500, .max_depth = 10});
+
+  std::vector<double> grid, s1, s2, t1, t2;
+  for (double x = 0.5; x <= 10.5 + 1e-9; x += 0.01) {
+    grid.push_back(x);
+    t1.push_back(double(stump.predict_row({x})));
+    t2.push_back(double(deep.predict_row({x})));
+    s1.push_back(stumps.vote_share({x})[1]);
+    s2.push_back(deeps.vote_share({x})[1]);
+  }
+  // Where the 500 stumps put their threshold.
+  std::vector<double> centres, share;
+  for (int k = 1; k <= 9; ++k) centres.push_back(k + 0.5), share.push_back(0.0);
+  for (std::size_t t = 0; t < stumps.n_trees(); ++t) {
+    const auto nodes = stumps.tree(t).node_frame();
+    share[std::size_t(nodes.double_at("threshold", 0) - 1.5 + 0.5)] += 1.0 / stumps.n_trees();
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("split between x = k and k + 1, k + 0.5", centres);
+  table.add_column("share of the 500 stumps", share);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 3;
+  md.column_digits = {{"split between x = k and k + 1, k + 0.5", 1}};
+  std::print("{}\n\nOut-of-bag accuracy: 500 stumps {:.3f}, 500 deep trees {:.3f}.\n\n", table.to_md(md),
+             stumps.oob_accuracy(), deeps.oob_accuracy());
+  std::vector<double> at_stumps, at_deeps;
+  for (std::size_t i = 0; i < 10; ++i) {
+    at_stumps.push_back(stumps.vote_share({d.double_at("x", i)})[1]);
+    at_deeps.push_back(deeps.vote_share({d.double_at("x", i)})[1]);
+  }
+  dm::dstruct::DataFrame shares;
+  shares.add_column("x", d.get_column<double>("x").values());
+  shares.add_column("y", d.get_column<std::string>("y").values());
+  shares.add_column("share b, 500 stumps", at_stumps);
+  shares.add_column("share b, 500 deep trees", at_deeps);
+  md.column_digits = {{"x", 0}};
+  std::print("{}\n\n", shares.to_md(md));
+
+  const dm::RGB ink{17, 24, 39}, grey{148, 163, 184}, blue{37, 99, 235}, red{220, 38, 38};
+  std::vector<double> xa, xb;
+  for (std::size_t i = 0; i < 10; ++i) (d.string_at("y", i) == "a" ? xa : xb).push_back(d.double_at("x", i));
+  auto left = dm::graphics::RPlot::create();
+  left.lines(grid, t2, "one deep tree", grey, 1.5).lines(grid, t1, "one stump", ink, 1.5)
+      .lines(grid, s1, "500 stumps", blue, 2.0).lines(grid, s2, "500 deep trees", red, 2.0)
+      .points(xa, std::vector<double>(xa.size(), 0.0), "class a", ink, 7.0)
+      .points(xb, std::vector<double>(xb.size(), 1.0), "class b", red, 7.0);
+  left.y_ticks({0.0, 0.25, 0.5, 0.75, 1.0}, {"0", "0.25", "0.5", "0.75", "1"});
+  left.x_limits(0.5, 10.5).y_limits(-0.05, 2.0).title("Vote share for class b").x_label("x").y_label("share of trees voting b");
+  auto right = dm::graphics::RPlot::create();
+  right.bars(centres, share, "share of stumps", dm::RGB{147, 197, 253}, 0.8);
+  right.x_limits(0.5, 10.5).y_limits(0.0, 1.15 * *std::max_element(share.begin(), share.end()))
+      .title("Where the stumps split").x_label("threshold").y_label("share of the 500 stumps");
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(left);
+  fig.add(right);
+  fig.size(1100, 460).fit_panels();
+  fig.save_svg("build/rf_bagging.svg");
+}
+```
+// result_begin: markdown
+| split between x = k and k + 1, k + 0.5 | share of the 500 stumps |
+| ---: | ---: |
+| 1.5 | 0.000 |
+| 2.5 | 0.030 |
+| 3.5 | 0.386 |
+| 4.5 | 0.068 |
+| 5.5 | 0.256 |
+| 6.5 | 0.078 |
+| 7.5 | 0.020 |
+| 8.5 | 0.104 |
+| 9.5 | 0.058 |
+
+
+Out-of-bag accuracy: 500 stumps 0.600, 500 deep trees 0.500.
+
+| x | y | share b, 500 stumps | share b, 500 deep trees |
+| ---: | :--- | ---: | ---: |
+| 1 | a | 0.020 | 0.016 |
+| 2 | a | 0.020 | 0.016 |
+| 3 | a | 0.050 | 0.086 |
+| 4 | b | 0.406 | 0.670 |
+| 5 | a | 0.464 | 0.304 |
+| 6 | b | 0.712 | 0.724 |
+| 7 | b | 0.782 | 0.908 |
+| 8 | a | 0.782 | 0.354 |
+| 9 | b | 0.886 | 0.752 |
+| 10 | b | 0.942 | 0.930 |
+
+
+\image(figures/rf_bagging.svg)
+// result_end
+
+\caption(Left: the predicted class of one stump (black) and one fully grown tree (grey), drawn as 0 for *a* and 1 for *b*, and the vote share for *b* of 500 bootstrapped stumps (blue) and 500 bootstrapped deep trees (red). The ten training points are drawn at 0 (*a*) and 1 (*b*). Right: how often each midpoint was chosen as a stump's threshold.)
+\alttext(Left: step curves over x from 0.5 to 10.5. The single stump jumps from 0 to 1 at x equals 3.5; the single deep tree jumps up and down at every change of class, dropping to 0 around x equals 5 and 8. The 500-stump vote share rises in small steps from 0.02 to 0.94; the 500-deep-tree share rises more steeply but dips to about 0.3 at x equals 5 and 0.35 at x equals 8. Black dots at height 0 mark the a points at 1, 2, 3, 5 and 8; red dots at height 1 the b points. Right: a bar chart of stump thresholds, tallest at 3.5 (0.39) and 5.5 (0.26), then 8.5 (0.10), with small bars elsewhere and none at 1.5.)
+
+The single stump fitted to all ten points splits at 3.5 and gets 8 of 10 right. The bootstrap
+moves that threshold: 38.6% of the 500 stumps split after \(x=3\) and 25.6% after \(x=5\), the two
+cuts that separate the most points, and the rest spread over the other gaps. The vote share of
+the stumps therefore rises in steps, from 0.02 at \(x\le2\) through 0.41 at \(x=4\) to 0.94 at \(x=10\): it
+reads like a smoothed probability of class *b*. The deep trees each fit their own sample
+exactly, so their vote follows the data more closely: 0.30 at the *a* at \(x=5\) and 0.35 at the *a*
+at 8, where each deep tree that drew the point predicts *a* there. Fitting the data more closely
+is not better here. The out-of-bag accuracy is 0.600 for the stumps and 0.500 for the deep trees,
+whose isolated *a*'s at 5 and 8 are exactly what a held-out vote gets wrong.
+
+>> A noisy disc in the plane
+
+A two-dimensional example shows the variance at work. The points are uniform on the square
+\([-1,1]^2\), class 1 inside the disc of radius \(\sqrt{2/\pi}=0.798\) that fills half the square, class 2
+outside, and 15% of the labels flipped (`dm::datasets::circle`). The Bayes rule is the disc
+itself, with error 0.15. We fit 200 points and measure the error on 20000 fresh ones.
+
+```{cpp, results="markdown", file="figures/rf_circle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto train = dm::datasets::circle(200, 2, 0.15, 1), test = dm::datasets::circle(20000, 2, 0.15, 2);
+  const auto truth = test.get_column<std::string>("class").values();
+  struct Model {
+    std::string name;
+    dm::stats::RandomForestClassifierOptions options;
+  };
+  const std::vector<Model> models{{"one tree (all rows, m = 2)", {.n_trees = 1, .max_features = 2, .bootstrap = false}},
+                                  {"bagging (500 trees, m = 2)", {.n_trees = 500, .max_features = 2}},
+                                  {"random forest (500 trees, m = 1)", {.n_trees = 500, .max_features = 1}}};
+  std::vector<std::string> names;
+  std::vector<double> test_error, train_error;
+  std::vector<std::optional<double>> oob_error;  // none for the unbootstrapped tree
+  std::vector<dm::graphics::RPlot> plots;
+  for (const auto& m : models) {
+    const dm::stats::RandomForestClassifier forest(train, "class ~ x1 + x2", m.options);
+    const auto predicted = forest.predict(test);
+    double wrong = 0.0;
+    for (std::size_t i = 0; i < truth.size(); ++i) wrong += predicted[i] != truth[i];
+    names.push_back(m.name);
+    test_error.push_back(wrong / truth.size());
+    train_error.push_back(1.0 - forest.training_accuracy());
+    oob_error.push_back(m.options.bootstrap ? std::optional(1.0 - forest.oob_accuracy()) : std::nullopt);
+    if (m.options.n_trees == 1 || m.options.max_features == 1) {
+      auto p = forest.plot_decision_regions("x1", "x2", 150, std::array<double, 4>{-1.0, 1.0, -1.0, 1.3});
+      std::vector<double> cx, cy;
+      for (int k = 0; k <= 200; ++k)
+        cx.push_back(std::sqrt(2.0 / std::numbers::pi) * std::cos(k * std::numbers::pi / 100)),
+            cy.push_back(std::sqrt(2.0 / std::numbers::pi) * std::sin(k * std::numbers::pi / 100));
+      p.lines(cx, cy, dm::RGB{17, 24, 39}, 1.5);
+      p.title(m.options.n_trees == 1 ? "One tree" : "Random forest, 500 trees");
+      plots.push_back(p);
+    }
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("model", names);
+  table.add_column("training error", train_error);
+  table.add_column("out-of-bag error", oob_error);
+  table.add_column("test error", test_error);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 3;
+  std::print("{}\n\nBayes error: 0.150.\n\n", table.to_md(md));
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  for (auto& p : plots) fig.add(p);
+  fig.size(1100, 520).fit_panels();
+  fig.save_svg("build/rf_circle.svg");
+}
+```
+// result_begin: markdown
+| model | training error | out-of-bag error | test error |
+| :--- | ---: | ---: | ---: |
+| one tree (all rows, m = 2) | 0.015 | NA | 0.242 |
+| bagging (500 trees, m = 2) | 0.000 | 0.185 | 0.226 |
+| random forest (500 trees, m = 1) | 0.015 | 0.170 | 0.212 |
+
+
+Bayes error: 0.150.
+
+\image(figures/rf_circle.svg)
+// result_end
+
+\caption(The class predicted over the square by one tree grown on all 200 points (left) and by a random forest of 500 trees with \(m=1\) (right). Class 1 is blue, class 2 red. The forest's shading is darkest where at least 90% of the trees agree, paler for 60% to 90%, palest below 60%. The black circle is the Bayes boundary; the dots are the 200 training points.)
+\alttext(Two maps of the square from minus 1 to 1 with blue and red training points and a black circle of radius 0.8. Left, one tree: solid blue and red rectangles, a blue block roughly filling the circle but with red slivers and notches inside it around red points and blue strips outside it, including thin vertical blue stripes near x1 equals minus 0.85 and 0.8. Right, the forest: dark blue in the middle of the disc, dark red in the corners, and pale or almost white bands along the circle and around isolated points of the wrong colour, where the trees disagree.)
+
+All three models fit their training points almost perfectly (training error 0.015 or 0), and all
+are far above the Bayes error on new points. The single tree has test error 0.242. Bagging 500
+trees lowers it to 0.226, and choosing one predictor at random per split lowers it further to
+0.212. The single tree's map shows why it does badly: rectangles chase individual flipped labels,
+leaving red notches inside the disc and blue strips outside it. The forest still makes small
+pockets around some flipped points (its trees are grown deep), but the votes average most of
+them away, and the pale shading marks where the trees disagree: along the true boundary and
+around isolated points of the wrong class. The out-of-bag errors (0.185 and 0.170) are below the
+test errors by about 0.04 for this one training set. The simulation below shows that this is
+noise in the out-of-bag estimate, not a bias.
+
+> Checking the theory
+
+>> How often a row is out of bag
+
+For several \(n\), a forest of 500 trees on \(n\) rows. The table gives the share of rows each tree
+leaves out, against \(q_n\). Splitting the 500 trees into 50 forests of 10, it gives the mean and
+variance, over all rows and forests, of the number of trees for which a row is out of bag, against
+the binomial \(10q_n\) and \(10q_n(1-q_n)\). Splitting them into 100 forests of 5, it gives the share
+of rows never out of bag, against \((1-q_n)^5\).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::vector<double> ns, frac, q, mean_count, mean_th, var_count, var_th, never5, never5_th;
+  for (const std::size_t n : {10, 20, 50, 150, 1000}) {
+    std::vector<double> x(n);
+    std::vector<std::string> y(n);
+    for (std::size_t i = 0; i < n; ++i) x[i] = double(i), y[i] = i % 2 ? "a" : "b";
+    dm::dstruct::DataFrame d;
+    d.add_column("x", x);
+    d.add_column("y", y);
+    const dm::stats::RandomForestClassifier forest(d, "y ~ x", {.n_trees = 500, .max_depth = 1});
+    // Whether each row is out of bag for each tree; the 500 trees are then grouped into
+    // 50 forests of 10 and 100 forests of 5.
+    std::vector<std::vector<int>> out(500);
+    double left_out = 0.0;
+    for (std::size_t t = 0; t < 500; ++t) {
+      for (const int c : forest.in_bag_counts(t)) out[t].push_back(c == 0);
+      left_out += std::accumulate(out[t].begin(), out[t].end(), 0.0) / (500.0 * n);
+    }
+    std::vector<double> counts10;
+    double never = 0.0;
+    for (std::size_t i = 0; i < n; ++i) {
+      for (std::size_t g = 0; g < 50; ++g) {
+        int c = 0;
+        for (std::size_t t = 10 * g; t < 10 * g + 10; ++t) c += out[t][i];
+        counts10.push_back(c);
+      }
+      for (std::size_t g = 0; g < 100; ++g) {
+        int c = 0;
+        for (std::size_t t = 5 * g; t < 5 * g + 5; ++t) c += out[t][i];
+        never += (c == 0) / (100.0 * n);
+      }
+    }
+    double m = 0.0, v = 0.0;
+    for (const double c : counts10) m += c / counts10.size();
+    for (const double c : counts10) v += (c - m) * (c - m) / (counts10.size() - 1.0);
+    const double qn = std::pow(1.0 - 1.0 / n, double(n));
+    ns.push_back(n), frac.push_back(left_out), q.push_back(qn), mean_count.push_back(m), mean_th.push_back(10 * qn);
+    var_count.push_back(v), var_th.push_back(10 * qn * (1 - qn)), never5.push_back(never), never5_th.push_back(std::pow(1 - qn, 5));
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("n", ns);
+  table.add_column("share left out", frac);
+  table.add_column("q_n", q);
+  table.add_column("OOB trees of 10, mean", mean_count);
+  table.add_column("10 q_n", mean_th);
+  table.add_column("variance", var_count);
+  table.add_column("10 q_n (1 - q_n)", var_th);
+  table.add_column("never OOB in 5 trees", never5);
+  table.add_column("(1 - q_n)^5", never5_th);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"n", 0}, {"OOB trees of 10, mean", 3}, {"10 q_n", 3}, {"variance", 3}, {"10 q_n (1 - q_n)", 3}};
+  std::print("{}\n", table.to_md(md));
+}
+```
+// result_begin: markdown
+| n | share left out | q_n | OOB trees of 10, mean | 10 q_n | variance | 10 q_n (1 - q_n) | never OOB in 5 trees | (1 - q_n)^5 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 10 | 0.3476 | 0.3487 | 3.476 | 3.487 | 2.202 | 2.271 | 0.1130 | 0.1172 |
+| 20 | 0.3612 | 0.3585 | 3.612 | 3.585 | 2.426 | 2.300 | 0.1140 | 0.1087 |
+| 50 | 0.3612 | 0.3642 | 3.612 | 3.642 | 2.213 | 2.316 | 0.1064 | 0.1039 |
+| 150 | 0.3661 | 0.3666 | 3.661 | 3.666 | 2.260 | 2.322 | 0.0983 | 0.1019 |
+| 1000 | 0.3678 | 0.3677 | 3.678 | 3.677 | 2.307 | 2.325 | 0.1000 | 0.1011 |
+// result_end
+
+\caption(Out-of-bag bookkeeping of forests of 500 trees on \(n\) rows, against the bootstrap probabilities.)
+
+The share of rows a tree leaves out matches \(q_n\) to within 0.003, rising from 0.349 at \(n=10\) towards
+\(e^{-1}=0.368\). The number of trees, out of 10, for which a row is out of bag has the binomial mean and
+variance to within sampling error. With only 5 trees about one row in ten gets no out-of-bag vote
+at all and is left out of the estimate; with 100 trees the chance is \(0.632^{100}\approx10^{-20}\).
+
+>> The variance of the vote
+
+The variance law \(\rho\sigma^2+(1-\rho)\sigma^2/B\) is checked on the noisy disc. For each of 1000 training sets of 200
+points, a forest of 100 trees is grown, and the vote of every tree at the point \(x_0=(0.5,0.5)\) is
+recorded (\(x_0\) is inside the disc, where class 1 has probability 0.85). The votes give \(\sigma^2\), the
+variance of one tree's vote, and \(\rho\), the correlation between two trees of the same forest. The
+variance over training sets of the vote share of the first \(B\) trees is then compared with the law,
+for bagging (\(m=2\)) and for the random forest (\(m=1\)).
+
+```{cpp, results="markdown", file="figures/rf_variance.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const int reps = 1000, B = 100;
+  const std::vector<int> sizes{1, 2, 3, 5, 10, 20, 50, 100};
+  auto fig = dm::graphics::RPlot::create();
+  std::vector<double> col_m, col_B, col_sim, col_law;
+  const dm::RGB colours[2] = {{37, 99, 235}, {220, 38, 38}};
+  for (const std::size_t m : {1, 2}) {
+    std::vector<std::vector<double>> votes(reps, std::vector<double>(B));
+    for (int r = 0; r < reps; ++r) {
+      const auto train = dm::datasets::circle(200, 2, 0.15, 1000 + r);
+      const dm::stats::RandomForestClassifier forest(train, "class ~ x1 + x2",
+                                                     {.n_trees = B, .max_features = m, .seed = std::uint64_t(r + 1)});
+      const auto v = forest.tree_votes({0.5, 0.5});
+      for (int t = 0; t < B; ++t) votes[r][t] = forest.classes()[v[t]] == "1";
+    }
+    double mean = 0.0, var = 0.0, cov = 0.0;
+    for (const auto& row : votes)
+      for (const double v : row) mean += v / (reps * B);
+    for (const auto& row : votes)
+      for (const double v : row) var += (v - mean) * (v - mean) / (reps * B);
+    for (const auto& row : votes)  // disjoint pairs of trees from the same forest
+      for (int t = 0; t + 1 < B; t += 2) cov += (row[t] - mean) * (row[t + 1] - mean) / (reps * B / 2);
+    const double rho = cov / var;
+    std::print("m = {}: mean vote for class 1 {:.4f}, sigma^2 = {:.4f}, rho = {:.4f}, limit rho sigma^2 = {:.4f}\n\n",
+               m, mean, var, rho, rho * var);
+    std::vector<double> lx, sim, law;
+    for (const int b : sizes) {
+      double sm = 0.0, sv = 0.0;
+      std::vector<double> share(reps);
+      for (int r = 0; r < reps; ++r) {
+        for (int t = 0; t < b; ++t) share[r] += votes[r][t] / b;
+        sm += share[r] / reps;
+      }
+      for (const double s : share) sv += (s - sm) * (s - sm) / (reps - 1);
+      lx.push_back(std::log10(b)), sim.push_back(sv), law.push_back(rho * var + (1 - rho) * var / b);
+      col_m.push_back(m), col_B.push_back(b), col_sim.push_back(sv), col_law.push_back(law.back());
+    }
+    std::vector<double> gx, gy;
+    for (double lb = 0.0; lb <= 2.0 + 1e-9; lb += 0.02)
+      gx.push_back(lb), gy.push_back(rho * var + (1 - rho) * var / std::pow(10.0, lb));
+    const auto c = colours[m - 1];
+    fig.lines(gx, gy, std::format("m = {}, law", m), c, 2.0).points(lx, sim, std::format("m = {}, simulated", m), c, 7.0);
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("m", col_m);
+  table.add_column("B", col_B);
+  table.add_column("variance, simulated", col_sim);
+  table.add_column("rho sigma^2 + (1 - rho) sigma^2 / B", col_law);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"m", 0}, {"B", 0}};
+  std::print("{}\n\n", table.to_md(md));
+  fig.x_ticks({0.0, std::log10(2.0), std::log10(5.0), 1.0, std::log10(20.0), std::log10(50.0), 2.0},
+              {"1", "2", "5", "10", "20", "50", "100"})
+      .x_limits(-0.05, 2.05).y_limits(0.0, 0.3).title("Variance of the vote share at (0.5, 0.5)")
+      .x_label("number of trees B").y_label("variance over training sets");
+  fig.size(800, 500);
+  fig.save_svg("build/rf_variance.svg");
+}
+```
+// result_begin: markdown
+m = 1: mean vote for class 1 0.7522, sigma^2 = 0.1864, rho = 0.1516, limit rho sigma^2 = 0.0283
+
+m = 2: mean vote for class 1 0.7500, sigma^2 = 0.1875, rho = 0.1868, limit rho sigma^2 = 0.0350
+
+| m | B | variance, simulated | rho sigma^2 + (1 - rho) sigma^2 / B |
+| ---: | ---: | ---: | ---: |
+| 1 | 1 | 0.1852 | 0.1864 |
+| 1 | 2 | 0.0994 | 0.1073 |
+| 1 | 3 | 0.0769 | 0.0810 |
+| 1 | 5 | 0.0553 | 0.0599 |
+| 1 | 10 | 0.0428 | 0.0441 |
+| 1 | 20 | 0.0342 | 0.0362 |
+| 1 | 50 | 0.0298 | 0.0314 |
+| 1 | 100 | 0.0291 | 0.0298 |
+| 2 | 1 | 0.1867 | 0.1875 |
+| 2 | 2 | 0.1071 | 0.1112 |
+| 2 | 3 | 0.0851 | 0.0858 |
+| 2 | 5 | 0.0675 | 0.0655 |
+| 2 | 10 | 0.0522 | 0.0503 |
+| 2 | 20 | 0.0424 | 0.0426 |
+| 2 | 50 | 0.0391 | 0.0381 |
+| 2 | 100 | 0.0377 | 0.0365 |
+
+
+\image(figures/rf_variance.svg)
+// result_end
+
+\caption(Variance over 1000 training sets of the vote share for class 1 at \((0.5,0.5)\) of the first \(B\) trees (dots), and the law \(\rho\sigma^2+(1-\rho)\sigma^2/B\) with \(\sigma^2\) and \(\rho\) estimated from single trees and pairs of trees (lines), for \(m=1\) (blue) and bagging, \(m=2\) (red). The axis for \(B\) is logarithmic.)
+\alttext(Variance against number of trees on a logarithmic axis from 1 to 100. Both sets of dots start near 0.19 at one tree and fall quickly, levelling off by 50 trees. The red dots and line for m equals 2 level off at about 0.037, the blue ones for m equals 1 slightly lower at about 0.029. The dots lie on or just below their lines.)
+
+One tree's vote is a 0/1 variable with mean 0.75, so its variance is \(\sigma^2=0.75\cdot0.25\approx0.19\). (A deep tree votes for class
+1 at \(x_0\) only 75% of the time, against a true probability of 0.85, because its small leaf at \(x_0\)
+often holds a flipped label or a point from beyond the nearby boundary.) Two trees of the same
+forest are correlated, with \(\rho=0.187\) for bagging and 0.152 for the random forest. The variance of
+the vote share follows \(\rho\sigma^2+(1-\rho)\sigma^2/B\) at every \(B\). The largest gap is 8% (at \(B=5\) for \(m=1\)); the
+sampling error of a variance estimated from 1000 training sets is about 4.5%. Most of the gain comes
+from the first 20 trees, and then the variance levels off at \(\rho\sigma^2\): 0.035 for bagging and 0.028 for the
+random forest. A random predictor per split lowers that floor by a fifth, but even 100 trees leave
+a standard deviation of 0.17 in the vote at \(x_0\) across training sets: the variance that remains
+comes from the data, which every tree shares.
+
+>> Out-of-bag error against test error
+
+For 200 training sets of 200 points on the noisy disc, a forest of 200 trees, its out-of-bag error
+after each tree (`oob_accuracy_path()`) and the error of its first \(t\) trees on 5000 fresh points.
+If the out-of-bag vote of \(t\) trees behaves like a forest of \(q_nt\approx0.37t\) trees, its curve should
+follow the test error curve evaluated at \(0.37t\).
+
+```{cpp, results="markdown", file="figures/rf_oob_path.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const int reps = 200, B = 200, n_test = 5000;
+  const auto test = dm::datasets::circle(n_test, 2, 0.15, 7);
+  std::vector<std::vector<double>> x(n_test);
+  std::vector<std::size_t> truth(n_test);
+  for (int i = 0; i < n_test; ++i) x[i] = {test.double_at("x1", i), test.double_at("x2", i)}, truth[i] = test.string_at("class", i) == "2";
+  std::vector<double> oob_path(B, 0.0), test_path(B, 0.0), oob_final, test_final;
+  for (int r = 0; r < reps; ++r) {
+    const auto train = dm::datasets::circle(200, 2, 0.15, 5000 + r);
+    const dm::stats::RandomForestClassifier forest(train, "class ~ x1 + x2", {.n_trees = B, .seed = std::uint64_t(r + 1)});
+    const auto path = forest.oob_accuracy_path();
+    std::vector<std::array<int, 2>> count(n_test, {0, 0});
+    std::vector<std::vector<std::size_t>> votes(n_test);
+    for (int i = 0; i < n_test; ++i) votes[i] = forest.tree_votes(x[i]);
+    for (int t = 0; t < B; ++t) {
+      int wrong = 0;
+      for (int i = 0; i < n_test; ++i) {
+        ++count[i][votes[i][t]];
+        wrong += std::size_t(count[i][1] > count[i][0]) != truth[i];  // ties go to the first class, "1"
+      }
+      test_path[t] += double(wrong) / n_test / reps;
+      oob_path[t] += (1.0 - path[t]) / reps;
+      if (t == B - 1) test_final.push_back(double(wrong) / n_test), oob_final.push_back(1.0 - path[t]);
+    }
+  }
+  auto test_at = [&](double t) {  // test error curve at a fractional number of trees
+    const double c = std::clamp(t, 1.0, double(B)) - 1.0;
+    const std::size_t k = std::size_t(c);
+    return k + 1 < test_path.size() ? test_path[k] + (c - k) * (test_path[k + 1] - test_path[k]) : test_path.back();
+  };
+  const double q = std::exp(-1.0);
+  std::vector<double> ts, a, b;
+  std::vector<std::optional<double>> c;  // 0.37 t is below one tree for t < 3
+  for (const int t : {1, 2, 3, 5, 10, 20, 50, 100, 200})
+    ts.push_back(t), a.push_back(oob_path[t - 1]), b.push_back(test_path[t - 1]), c.push_back(t * q >= 1.0 ? std::optional(test_at(t * q)) : std::nullopt);
+  dm::dstruct::DataFrame table;
+  table.add_column("trees t", ts);
+  table.add_column("out-of-bag error", a);
+  table.add_column("test error, t trees", b);
+  table.add_column("test error, 0.37 t trees", c);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"trees t", 0}};
+  std::print("{}\n\n", table.to_md(md));
+  double mo = 0, mt = 0, md_ = 0, sd = 0, so = 0, st = 0;
+  for (int r = 0; r < reps; ++r) mo += oob_final[r] / reps, mt += test_final[r] / reps;
+  for (int r = 0; r < reps; ++r) {
+    const double diff = oob_final[r] - test_final[r] - (mo - mt);
+    sd += diff * diff / (reps - 1), so += std::pow(oob_final[r] - mo, 2) / (reps - 1), st += std::pow(test_final[r] - mt, 2) / (reps - 1);
+  }
+  md_ = mo - mt;
+  std::print("With 200 trees: mean out-of-bag error {:.4f}, mean test error {:.4f}, difference {:.4f} (standard error {:.4f}); "
+             "standard deviation over training sets {:.4f} (out of bag) and {:.4f} (test).\n\n",
+             mo, mt, md_, std::sqrt(sd / reps), std::sqrt(so), std::sqrt(st));
+
+  std::vector<double> lt, po, pt, ps;
+  for (int t = 1; t <= B; ++t) {
+    lt.push_back(std::log10(t)), po.push_back(oob_path[t - 1]), pt.push_back(test_path[t - 1]);
+    ps.push_back(t * q >= 1.0 ? test_at(t * q) : test_path[0]);
+  }
+  auto p = dm::graphics::RPlot::create();
+  p.lines(lt, pt, "test, t trees", dm::RGB{17, 24, 39}, 2.0)
+      .lines(lt, ps, "test, 0.37 t trees", dm::RGB{220, 38, 38}, 1.5)
+      .lines(lt, po, "out of bag, t trees", dm::RGB{37, 99, 235}, 2.0)
+      .lines({0.0, std::log10(200.0)}, {0.15, 0.15}, "Bayes error", dm::RGB{148, 163, 184}, 1.5);
+  p.x_ticks({0.0, std::log10(2.0), std::log10(5.0), 1.0, std::log10(20.0), std::log10(50.0), 2.0, std::log10(200.0)},
+            {"1", "2", "5", "10", "20", "50", "100", "200"})
+      .x_limits(0.0, std::log10(200.0)).y_limits(0.1, 0.42).title("Error against number of trees")
+      .x_label("trees t").y_label("error, mean of 200 training sets");
+  p.size(800, 500);
+  p.save_svg("build/rf_oob_path.svg");
+}
+```
+// result_begin: markdown
+| trees t | out-of-bag error | test error, t trees | test error, 0.37 t trees |
+| ---: | ---: | ---: | ---: |
+| 1 | 0.2933 | 0.3022 | NA |
+| 2 | 0.2946 | 0.3081 | NA |
+| 3 | 0.2924 | 0.2694 | 0.3028 |
+| 5 | 0.2853 | 0.2577 | 0.3071 |
+| 10 | 0.2642 | 0.2485 | 0.2719 |
+| 20 | 0.2466 | 0.2388 | 0.2517 |
+| 50 | 0.2336 | 0.2325 | 0.2388 |
+| 100 | 0.2284 | 0.2304 | 0.2333 |
+| 200 | 0.2254 | 0.2294 | 0.2312 |
+
+
+With 200 trees: mean out-of-bag error 0.2254, mean test error 0.2294, difference -0.0039 (standard error 0.0022); standard deviation over training sets 0.0336 (out of bag) and 0.0167 (test).
+
+\image(figures/rf_oob_path.svg)
+// result_end
+
+\caption(Mean over 200 training sets of the test error of the first \(t\) trees (black), of the out-of-bag error after \(t\) trees (blue), and of the test error at \(0.37t\) trees (red, from \(t\ge3\)); the grey line is the Bayes error 0.15. The axis for \(t\) is logarithmic.)
+\alttext(Error against number of trees on a logarithmic axis from 1 to 200, with a grey line at 0.15. The black test-error curve starts at 0.30, rises to 0.31 at two trees, drops to 0.27 at three and falls smoothly to 0.23. The red curve, test error at 0.37 t trees, stays near 0.30 until five trees, then falls, above the black curve. The blue out-of-bag curve starts at 0.29, lies above the black curve and below the red one for small t, and meets the black curve near 50 trees, ending slightly below it at 0.225.)
+
+With 200 trees the out-of-bag error is unbiased in practice: 0.2254 on average, against a test
+error of 0.2294. The difference, \(-0.0039\), is less than two standard errors (0.0022). The
+out-of-bag error of one training set varies twice as much as its test error (standard deviations
+0.034 and 0.017), because it is measured on 200 noisy training labels rather than 5000 test
+points. This is the spread seen in the disc example above.
+
+With few trees the out-of-bag error is too high: 0.285 at \(t=5\) against a test error of 0.258. It
+then follows the test error of a forest of \(0.37t\) trees, as predicted, to within 0.008 from \(t=10\)
+on (0.264 against 0.272 at \(t=10\), 0.247 against 0.252 at 20). As the forest grows, a forest of
+\(0.37t\) trees is as good as one of \(t\), and the three curves meet near the limit 0.23. The
+out-of-bag error is reliable once each row has a few dozen out-of-bag votes, roughly \(B\ge50\). (The
+test error of two trees is worse than that of one, 0.308 against 0.302: two trees tie whenever
+they disagree, and ties go to class 1.) The limit, 0.23, is far above the Bayes error 0.15. Trees
+grown to purity on 200 points with 15% flipped labels fit much of the noise, and averaging them
+removes only part of it.
+
+>> Strength and correlation against \(m\)
+
+Breiman's twonorm benchmark (`dm::datasets::twonorm`) has 20 predictors and two Gaussian classes
+whose means \(\pm(2/\sqrt{20})\mathbf 1\) are 4 apart, so the Bayes error is \(\Phi(-2)=0.0228\). Every predictor
+carries the same weak signal: a tree has to combine many of them, which it does badly. For each \(m\),
+five training sets of 300 rows, a forest of 300 trees each, and a test set of 3000 rows.
+
+```{cpp, results="markdown", file="figures/rf_strength.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto test = dm::datasets::twonorm(3000, 20, 99);
+  const auto truth = test.get_column<std::string>("class").values();
+  const int reps = 5;
+  std::vector<double> ms, test_err, oob_err, tree_err, strength, corr, bound;
+  for (const std::size_t m : {1, 2, 3, 4, 6, 10, 15, 20}) {
+    double te = 0, oe = 0, tr = 0, s = 0, rho = 0, b = 0;
+    for (int r = 0; r < reps; ++r) {
+      const auto train = dm::datasets::twonorm(300, 20, 100 + r);
+      const dm::stats::RandomForestClassifier forest(train, "class ~ .", {.n_trees = 300, .max_features = m, .seed = std::uint64_t(r + 1)});
+      const auto predicted = forest.predict(test);
+      double wrong = 0;
+      for (std::size_t i = 0; i < truth.size(); ++i) wrong += predicted[i] != truth[i];
+      const auto sc = forest.strength_correlation();
+      double tree_acc = 0;
+      for (const double a : forest.oob_tree_accuracies()) tree_acc += a / forest.n_trees();
+      te += wrong / truth.size() / reps, oe += (1 - forest.oob_accuracy()) / reps, tr += (1 - tree_acc) / reps;
+      s += sc.strength / reps, rho += sc.correlation / reps, b += sc.error_bound / reps;
+    }
+    ms.push_back(m), test_err.push_back(te), oob_err.push_back(oe), tree_err.push_back(tr);
+    strength.push_back(s), corr.push_back(rho), bound.push_back(b);
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("m", ms);
+  table.add_column("test error", test_err);
+  table.add_column("out-of-bag error", oob_err);
+  table.add_column("one tree (OOB)", tree_err);
+  table.add_column("strength s", strength);
+  table.add_column("correlation", corr);
+  table.add_column("bound", bound);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"m", 0}};
+  std::print("{}\n\n", table.to_md(md));
+
+  const dm::RGB ink{17, 24, 39}, blue{37, 99, 235}, red{220, 38, 38}, grey{148, 163, 184};
+  auto left = dm::graphics::RPlot::create();
+  left.lines(ms, test_err, "test", ink, 2.0).points(ms, test_err, ink, 7.0)
+      .lines(ms, oob_err, "out of bag", blue, 2.0).points(ms, oob_err, blue, 7.0)
+      .lines({1.0, 20.0}, {0.02275, 0.02275}, "Bayes error", grey, 1.5);
+  left.x_limits(0.0, 21.0).y_limits(0.0, 0.1).title("Forest error").x_label("predictors per split, m").y_label("error");
+  auto right = dm::graphics::RPlot::create();
+  right.lines(ms, strength, "strength s", blue, 2.0).points(ms, strength, blue, 7.0)
+      .lines(ms, corr, "correlation", red, 2.0).points(ms, corr, red, 7.0);
+  right.x_limits(0.0, 21.0).y_limits(0.0, 0.75).title("Strength and correlation").x_label("predictors per split, m").y_label("out-of-bag estimate");
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(left);
+  fig.add(right);
+  fig.size(1100, 460).fit_panels();
+  fig.save_svg("build/rf_strength.svg");
+}
+```
+// result_begin: markdown
+| m | test error | out-of-bag error | one tree (OOB) | strength s | correlation | bound |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.0347 | 0.0287 | 0.2387 | 0.5223 | 0.0875 | 0.2337 |
+| 2 | 0.0373 | 0.0313 | 0.2279 | 0.5439 | 0.0983 | 0.2350 |
+| 3 | 0.0401 | 0.0333 | 0.2251 | 0.5494 | 0.1042 | 0.2415 |
+| 4 | 0.0430 | 0.0473 | 0.2262 | 0.5475 | 0.1114 | 0.2614 |
+| 6 | 0.0493 | 0.0453 | 0.2260 | 0.5477 | 0.1171 | 0.2734 |
+| 10 | 0.0579 | 0.0487 | 0.2251 | 0.5494 | 0.1269 | 0.2939 |
+| 15 | 0.0673 | 0.0580 | 0.2248 | 0.5502 | 0.1426 | 0.3272 |
+| 20 | 0.0753 | 0.0667 | 0.2254 | 0.5491 | 0.1491 | 0.3442 |
+
+
+\image(figures/rf_strength.svg)
+// result_end
+
+\caption(Twonorm with 20 predictors, 300 training rows, 300 trees, mean of five training sets. Left: test error (black) and out-of-bag error (blue) against the number \(m\) of predictors tried at each split; the grey line is the Bayes error. Right: the out-of-bag estimates of Breiman's strength \(s\) (blue) and mean correlation \(\bar\rho\) (red).)
+\alttext(Left: error against m from 1 to 20. The black test-error curve rises steadily from 0.035 at m equals 1 to 0.075 at m equals 20; the blue out-of-bag curve runs a little below it, from 0.029 to 0.067, crossing it once at m equals 4. A grey line marks the Bayes error at 0.023. Right: the strength stays flat near 0.55 for all m, a little lower at m equals 1 (0.52); the correlation rises slowly from 0.09 to 0.15.)
+
+A single tree is weak on twonorm, with out-of-bag error 0.22 to 0.24 whatever \(m\) is, ten times the
+Bayes error. The forest of 300 such trees errs on 3.5% of test points with \(m=1\), within 1.2 points
+of the Bayes error, because weak but nearly independent trees average well. The bagged forest
+(\(m=20\)) errs on 7.5%, twice as often. The out-of-bag estimates show why. The strength hardly
+changes (0.52 at \(m=1\), 0.54 to 0.55 for every larger \(m\)), while the correlation between trees rises
+steadily from 0.088 to 0.149. With every predictor equally useful, letting a split choose among
+more of them makes the trees more alike without making them stronger. Breiman's bound, 0.23 to
+0.34, is five to seven times the test error, so it is far from tight. But it moves with the error
+and for the same reason: \(\bar\rho\) grows while \(s\) does not. The out-of-bag errors track the test errors
+to within 0.01.
+
+> Fisher's iris data
+
+`dm::datasets::iris()` holds Fisher's (1936) 150 flowers, 50 of each of the species *setosa*,
+*versicolor* and *virginica*, measured on sepal length and width and petal length and width (cm).
+*Setosa* is separated from the others by either petal measurement; *versicolor* and *virginica*
+overlap slightly.
+
+>> The forest and its out-of-bag error
+
+A forest of 500 trees with the defaults: \(m=\lfloor\sqrt4\rfloor=2\), Gini splits, depth at most 10.
+
+```{cpp, results="markdown", file="figures/rf_iris_oob.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto iris = dm::datasets::iris();
+  const dm::stats::RandomForestClassifier forest(iris, "Species ~ .", {.n_trees = 500});
+  std::print("```\n{}```\n\n", forest.summary());
+  const auto sc = forest.strength_correlation();
+  std::print("Strength {:.4f}, correlation {:.4f}, bound {:.4f}.\n\n", sc.strength, sc.correlation, sc.error_bound);
+
+  const auto margins = forest.oob_margins();
+  const auto share = forest.oob_vote_share();
+  const auto oob = forest.oob_predictions();
+  std::vector<double> row, mg, s0, s1, s2;
+  std::vector<std::string> species, predicted;
+  for (std::size_t i = 0; i < margins.size(); ++i) {
+    if (margins[i] >= 0.2) continue;
+    row.push_back(i + 1), species.push_back(iris.string_at("Species", i)), predicted.push_back(oob[i]);
+    s0.push_back(share[i][0]), s1.push_back(share[i][1]), s2.push_back(share[i][2]), mg.push_back(margins[i]);
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("row", row);
+  table.add_column("species", species);
+  table.add_column("OOB prediction", predicted);
+  table.add_column("votes setosa", s0);
+  table.add_column("votes versicolor", s1);
+  table.add_column("votes virginica", s2);
+  table.add_column("margin", mg);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 3;
+  md.column_digits = {{"row", 0}};
+  std::print("{}\n\n", table.to_md(md));
+
+  const auto path = forest.oob_accuracy_path();
+  std::vector<double> t(path.size());
+  std::iota(t.begin(), t.end(), 1.0);
+  auto left = dm::graphics::RPlot::create();
+  left.lines(t, path, "out-of-bag accuracy", dm::RGB{37, 99, 235}, 2.0);
+  left.x_limits(0.0, 500.0).y_limits(0.9, 1.0).title("Out-of-bag accuracy").x_label("trees").y_label("accuracy");
+  // Margins sorted within species.
+  auto right = dm::graphics::RPlot::create();
+  const dm::RGB colours[3] = {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+  double offset = 0.0;
+  for (std::size_t c = 0; c < 3; ++c) {
+    std::vector<double> ys;
+    for (std::size_t i = 0; i < margins.size(); ++i)
+      if (iris.string_at("Species", i) == forest.classes()[c]) ys.push_back(margins[i]);
+    std::sort(ys.begin(), ys.end());
+    std::vector<double> xs(ys.size());
+    std::iota(xs.begin(), xs.end(), offset + 1.0);
+    right.points(xs, ys, forest.classes()[c], colours[c], 5.0);
+    offset += ys.size();
+  }
+  right.lines({0.0, 151.0}, {0.0, 0.0}, dm::RGB{148, 163, 184}, 1.0);
+  right.x_limits(0.0, 151.0).y_limits(-1.05, 1.5).title("Out-of-bag margins").x_label("flower, sorted within species").y_label("margin");
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(left);
+  fig.add(right);
+  fig.size(1100, 460).fit_panels();
+  fig.save_svg("build/rf_iris_oob.svg");
+}
+```
+// result_begin: markdown
+```
+Call:
+randomForest(formula = Species ~ ., n_trees = 500, max_features = 2, criterion = gini, max_depth = 10)
+
+Number of Classes: 3
+Levels: setosa versicolor virginica 
+
+Trees: 500  (max_features per split: 2 of 4)
+
+Feature importance:
+  Sepal.Length: 0.0977
+  Sepal.Width: 0.0246
+  Petal.Length: 0.4563
+  Petal.Width: 0.4215
+
+Training accuracy: 100.00%
+Out-of-bag accuracy: 95.33%  (150 observations)
+```
+
+Strength 0.8710, correlation 0.5930, bound 0.1886.
+
+| row | species | OOB prediction | votes setosa | votes versicolor | votes virginica | margin |
+| ---: | :--- | :--- | ---: | ---: | ---: | ---: |
+| 71 | versicolor | virginica | 0 | 0.078 | 0.922 | -0.844 |
+| 73 | versicolor | versicolor | 0 | 0.580 | 0.420 | 0.160 |
+| 78 | versicolor | virginica | 0 | 0.195 | 0.805 | -0.609 |
+| 84 | versicolor | virginica | 0 | 0.133 | 0.867 | -0.734 |
+| 107 | virginica | versicolor | 0 | 0.984 | 0.016 | -0.968 |
+| 120 | virginica | versicolor | 0 | 0.797 | 0.203 | -0.593 |
+| 130 | virginica | virginica | 0 | 0.455 | 0.545 | 0.091 |
+| 134 | virginica | versicolor | 0 | 0.617 | 0.383 | -0.235 |
+| 135 | virginica | versicolor | 0 | 0.500 | 0.500 | 0.000 |
+| 139 | virginica | virginica | 0 | 0.460 | 0.540 | 0.080 |
+
+
+\image(figures/rf_iris_oob.svg)
+// result_end
+```
+Call:
+randomForest(formula = Species ~ ., n_trees = 500, max_features = 2, criterion = gini, max_depth = 10)
+
+Number of Classes: 3
+Levels: setosa versicolor virginica 
+
+Trees: 500  (max_features per split: 2 of 4)
+
+Feature importance:
+  Sepal.Length: 0.0977
+  Sepal.Width: 0.0246
+  Petal.Length: 0.4563
+  Petal.Width: 0.4215
+
+Training accuracy: 100.00%
+Out-of-bag accuracy: 95.33%  (150 observations)
+```
+
+Strength 0.8710, correlation 0.5930, bound 0.1886.
+
+| row | species | OOB prediction | votes setosa | votes versicolor | votes virginica | margin |
+| ---: | :--- | :--- | ---: | ---: | ---: | ---: |
+| 71 | versicolor | virginica | 0 | 0.078 | 0.922 | -0.844 |
+| 73 | versicolor | versicolor | 0 | 0.580 | 0.420 | 0.160 |
+| 78 | versicolor | virginica | 0 | 0.195 | 0.805 | -0.609 |
+| 84 | versicolor | virginica | 0 | 0.133 | 0.867 | -0.734 |
+| 107 | virginica | versicolor | 0 | 0.984 | 0.016 | -0.968 |
+| 120 | virginica | versicolor | 0 | 0.797 | 0.203 | -0.593 |
+| 130 | virginica | virginica | 0 | 0.455 | 0.545 | 0.091 |
+| 134 | virginica | versicolor | 0 | 0.617 | 0.383 | -0.235 |
+| 135 | virginica | versicolor | 0 | 0.500 | 0.500 | 0.000 |
+| 139 | virginica | virginica | 0 | 0.460 | 0.540 | 0.080 |
+
+
+\image(figures/rf_iris_oob.svg)
+// result_end
+```
+Call:
+randomForest(formula = Species ~ ., n_trees = 500, max_features = 2, criterion = gini, max_depth = 10)
+
+Number of Classes: 3
+Levels: setosa versicolor virginica 
+
+Trees: 500  (max_features per split: 2 of 4)
+
+Feature importance:
+  Sepal.Length: 0.0977
+  Sepal.Width: 0.0246
+  Petal.Length: 0.4563
+  Petal.Width: 0.4215
+
+Training accuracy: 100.00%
+Out-of-bag accuracy: 95.33%  (150 observations)
+```
+
+Strength 0.8710, correlation 0.5930, bound 0.1886.
+
+| row | species | OOB prediction | votes setosa | votes versicolor | votes virginica | margin |
+| ---: | :--- | :--- | ---: | ---: | ---: | ---: |
+| 71 | versicolor | virginica | 0 | 0.078 | 0.922 | -0.844 |
+| 73 | versicolor | versicolor | 0 | 0.580 | 0.420 | 0.160 |
+| 78 | versicolor | virginica | 0 | 0.195 | 0.805 | -0.609 |
+| 84 | versicolor | virginica | 0 | 0.133 | 0.867 | -0.734 |
+| 107 | virginica | versicolor | 0 | 0.984 | 0.016 | -0.968 |
+| 120 | virginica | versicolor | 0 | 0.797 | 0.203 | -0.593 |
+| 130 | virginica | virginica | 0 | 0.455 | 0.545 | 0.091 |
+| 134 | virginica | versicolor | 0 | 0.617 | 0.383 | -0.235 |
+| 135 | virginica | versicolor | 0 | 0.500 | 0.500 | 0.000 |
+| 139 | virginica | virginica | 0 | 0.460 | 0.540 | 0.080 |
+
+
+\image(figures/rf_iris_oob.svg)
+// result_end
+```
+Call:
+randomForest(formula = Species ~ ., n_trees = 500, max_features = 2, criterion = gini, max_depth = 10)
+
+Number of Classes: 3
+Levels: setosa versicolor virginica 
+
+Trees: 500  (max_features per split: 2 of 4)
+
+Feature importance:
+  Sepal.Length: 0.0977
+  Sepal.Width: 0.0246
+  Petal.Length: 0.4563
+  Petal.Width: 0.4215
+
+Training accuracy: 100.00%
+Out-of-bag accuracy: 95.33%  (150 observations)
+```
+
+Strength 0.8710, correlation 0.5930, bound 0.1886.
+
+| row | species | OOB prediction | votes setosa | votes versicolor | votes virginica | margin |
+| ---: | :--- | :--- | ---: | ---: | ---: | ---: |
+| 71 | versicolor | virginica | 0 | 0.078 | 0.922 | -0.844 |
+| 73 | versicolor | versicolor | 0 | 0.580 | 0.420 | 0.160 |
+| 78 | versicolor | virginica | 0 | 0.195 | 0.805 | -0.609 |
+| 84 | versicolor | virginica | 0 | 0.133 | 0.867 | -0.734 |
+| 107 | virginica | versicolor | 0 | 0.984 | 0.016 | -0.968 |
+| 120 | virginica | versicolor | 0 | 0.797 | 0.203 | -0.593 |
+| 130 | virginica | virginica | 0 | 0.455 | 0.545 | 0.091 |
+| 134 | virginica | versicolor | 0 | 0.617 | 0.383 | -0.235 |
+| 135 | virginica | versicolor | 0 | 0.500 | 0.500 | 0.000 |
+| 139 | virginica | virginica | 0 | 0.460 | 0.540 | 0.080 |
+\image(figures/rf_iris_oob.svg)
+// result_end
+
+\caption(Left: out-of-bag accuracy of the iris forest after each of its 500 trees. Right: the out-of-bag margin of every flower, sorted within species (*setosa* blue, *versicolor* green, *virginica* red); a flower below the grey line is misclassified out of bag.)
+\alttext(Left: out-of-bag accuracy against trees from 1 to 500, between 0.93 and 0.96 in the first 20 trees, then stepping between 0.947 and 0.96, ending at 0.953. Right: margins of 150 flowers sorted within species. The 50 setosa margins are all between 0.86 and 1. The versicolor margins rise from three values near minus 0.8 to minus 0.6, one at 0.16, then 0.56 up to 1. The virginica margins rise from minus 0.97 and minus 0.59, through minus 0.24, 0, 0.08 and 0.09, to 1.)
+
+The training accuracy is 100%, which says nothing: every deep tree fits its own sample, and each
+training flower was in the sample of about 63% of the trees. The out-of-bag accuracy, 95.33%, is
+143 of 150 flowers. It settles after about 25 trees and then moves by one flower (0.0067) at a
+time. Every *setosa* has a margin of at least 0.86. Seven flowers have a margin of zero or below.
+Three *versicolor* (rows 71, 78, 84) get 80% to 92% of their out-of-bag votes for *virginica*, and
+three *virginica* (107, 120, 134) are voted *versicolor*. Row 135 is an exact tie, 0.5 against 0.5,
+broken towards *versicolor*. The strength is 0.871 and the correlation 0.593. With four predictors
+and \(m=2\), the trees often get both petal measurements and are much alike. Breiman's bound, 0.189,
+is four times the out-of-bag error 0.047.
+
+*Against scikit-learn.* Over 50 seeds, this forest's out-of-bag accuracy is \(0.9543\pm0.0052\) (mean and
+standard deviation). scikit-learn's `RandomForestClassifier` with the same settings (500 trees,
+\(\sqrt p\) predictors per split, depth 10) gives \(0.9553\pm0.0047\). Both misclassify rows 71, 78, 84, 107,
+120 and 134 for every seed and differ only in how often they miss the borderline rows 130, 135 and
+139. For single trees the agreement is exact. The full-depth tree on iris and on the wine data has
+the same importances to \(10^{-12}\) as scikit-learn's `DecisionTreeClassifier` for some of its random
+orders of trying the predictors (which break ties between equally good splits). It also has the
+same number of nodes on iris, wine and breast cancer (17, 23 and 43).
+
+>> Which measurements matter
+
+To see the difference between the two importances, two predictors unrelated to the species are
+added: `noise`, drawn from \(N(0,1)\), and `coin`, a fair 0/1 coin.
+
+```{cpp, results="markdown", file="figures/rf_iris_importance.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  auto iris = dm::datasets::iris();
+  dm::random::Xoshiro256StarStar rng(4);
+  std::vector<double> noise(150), coin(150);
+  for (int i = 0; i < 150; ++i) noise[i] = rng.normal(0.0, 1.0), coin[i] = rng.uniform(0.0, 1.0) < 0.5;
+  iris.add_column("noise", noise);
+  iris.add_column("coin", coin);
+  const dm::stats::RandomForestClassifier forest(iris, "Species ~ .", {.n_trees = 500});
+  const auto mdi = forest.feature_importance();
+  const auto perm = forest.permutation_importance();
+  dm::dstruct::DataFrame table;
+  table.add_column("predictor", perm.predictor_names);
+  table.add_column("mean decrease in impurity", mdi);
+  table.add_column("permutation importance", perm.importance);
+  table.add_column("standard error", perm.standard_error);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 4;
+  std::print("{}\n\nOut-of-bag accuracy with the two extra predictors: {:.4f}.\n\n", table.to_md(md), forest.oob_accuracy());
+
+  std::vector<double> at{1, 2, 3, 4, 5, 6};
+  const std::vector<std::string> labels{"S.Len", "S.Wid", "P.Len", "P.Wid", "noise", "coin"};
+  auto left = dm::graphics::RPlot::create();
+  left.bars(at, mdi, "", dm::RGB{147, 197, 253}, 0.7);
+  left.x_ticks(at, labels).x_limits(0.4, 6.6).y_limits(0.0, 0.5).title("Mean decrease in impurity").x_label("predictor").y_label("share");
+  auto right = dm::graphics::RPlot::create();
+  right.bars(at, perm.importance, "", dm::RGB{253, 186, 116}, 0.7);
+  for (std::size_t j = 0; j < 6; ++j)
+    right.segments({at[j]}, {perm.importance[j] - 2 * perm.standard_error[j]}, {at[j]},
+                   {perm.importance[j] + 2 * perm.standard_error[j]}, dm::RGB{17, 24, 39}, 1.5);
+  right.lines({0.4, 6.6}, {0.0, 0.0}, dm::RGB{148, 163, 184}, 1.0);
+  right.x_ticks(at, labels).x_limits(0.4, 6.6).y_limits(-0.02, 0.4).title("Permutation importance").x_label("predictor").y_label("drop in accuracy");
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(left);
+  fig.add(right);
+  fig.size(1100, 460).fit_panels();
+  fig.save_svg("build/rf_iris_importance.svg");
+}
+```
+// result_begin: markdown
+| predictor | mean decrease in impurity | permutation importance | standard error |
+| :--- | ---: | ---: | ---: |
+| Sepal.Length | 0.1271 | 0.0592 | 0.0042 |
+| Sepal.Width | 0.0648 | 0.0208 | 0.0021 |
+| Petal.Length | 0.3973 | 0.2896 | 0.0086 |
+| Petal.Width | 0.3759 | 0.2744 | 0.0085 |
+| noise | 0.0308 | 0.0001 | 0.0009 |
+| coin | 0.0041 | 0.0000 | 0.0005 |
+
+
+Out-of-bag accuracy with the two extra predictors: 0.9533.
+
+\image(figures/rf_iris_importance.svg)
+// result_end
+
+\caption(Importance of the four iris measurements and two pure-noise predictors in a forest of 500 trees. Left: mean decrease in Gini impurity, normalised to sum to 1. Right: out-of-bag permutation importance, the mean drop in a tree's out-of-bag accuracy when the predictor is shuffled, with \(\pm2\) standard errors (black).)
+\alttext(Two bar charts over six predictors. Left, mean decrease in impurity: petal length 0.40 and petal width 0.38, sepal length 0.13, sepal width 0.06, noise 0.03 and coin almost 0. Right, permutation importance: petal length 0.29 and petal width 0.27 with short error bars, sepal length 0.06, sepal width 0.02, and no visible bar for noise or coin.)
+
+Both importances rank the petal measurements first and sepal length third, but they disagree on
+the noise. The impurity importance gives `noise` 3.1% of the credit, about half of what it gives
+sepal width. That is the bias derived above: deep in a tree, a continuous predictor always offers
+some threshold that separates a few remaining rows. `coin` offers a single threshold and gets
+only 0.4%. The permutation importance of both is zero within its standard error (\(0.0001\pm0.0009\) and
+\(0.0000\pm0.0005\)), while all four measurements are many standard errors above zero. Shuffling petal
+length costs a tree 29 points of out-of-bag accuracy.
+
+The extra predictors also change the impurity shares of the real ones. Sepal length goes from
+0.098 without them to 0.127 with them. With six predictors and \(m=2\), a node is offered neither
+petal measurement with probability \(\binom42/\binom62=0.4\), against \(1/\binom42=0.17\) with four, so the trees
+split on sepal measurements and noise more often. The out-of-bag accuracy is unchanged at 95.33%.
+
+>> A forest against a single tree
+
+Out-of-bag accuracy is one estimate; held-out data give another. Over 200 random stratified splits
+into 100 training and 50 test flowers, the forest and a single fully grown tree are fit to the
+training flowers and scored on the test flowers. The figure compares the two in the plane of the
+petal measurements.
+
+```{cpp, results="markdown", file="figures/rf_iris_regions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto iris = dm::datasets::iris();
+  const int reps = 200;
+  std::vector<double> forest_acc, tree_acc, oob_acc;
+  for (int r = 0; r < reps; ++r) {
+    const auto [train, test] = dm::stats::train_test_split(iris, 1.0 / 3.0, r + 1, "Species");
+    const dm::stats::RandomForestClassifier forest(train, "Species ~ .", {.n_trees = 500, .seed = std::uint64_t(r + 1)});
+    const dm::stats::DecisionTreeClassifier tree(train, "Species ~ .", {.max_depth = 10});
+    const auto y = test.get_column<std::string>("Species").values();
+    const auto pf = forest.predict(test), pt = tree.predict(test);
+    double a = 0, b = 0;
+    for (std::size_t i = 0; i < y.size(); ++i) a += pf[i] == y[i], b += pt[i] == y[i];
+    forest_acc.push_back(a / y.size()), tree_acc.push_back(b / y.size()), oob_acc.push_back(forest.oob_accuracy());
+  }
+  auto mean = [](const std::vector<double>& v) { return std::accumulate(v.begin(), v.end(), 0.0) / v.size(); };
+  auto sd = [&](const std::vector<double>& v) {
+    double m = mean(v), s = 0;
+    for (const double x : v) s += (x - m) * (x - m) / (v.size() - 1);
+    return std::sqrt(s);
+  };
+  std::vector<double> diff(reps);
+  for (int r = 0; r < reps; ++r) diff[r] = forest_acc[r] - tree_acc[r];
+  dm::dstruct::DataFrame table;
+  table.add_column("estimate", std::vector<std::string>{"forest, test flowers", "forest, out of bag (training flowers)",
+                                                        "single tree, test flowers", "forest minus tree, test flowers"});
+  table.add_column("mean accuracy", std::vector<double>{mean(forest_acc), mean(oob_acc), mean(tree_acc), mean(diff)});
+  table.add_column("SD over splits", std::vector<double>{sd(forest_acc), sd(oob_acc), sd(tree_acc), sd(diff)});
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 4;
+  std::print("{}\n\nForest better on {} splits, tree better on {}, tied on {}.\n\n", table.to_md(md),
+             std::count_if(diff.begin(), diff.end(), [](double d) { return d > 0; }),
+             std::count_if(diff.begin(), diff.end(), [](double d) { return d < 0; }),
+             std::count_if(diff.begin(), diff.end(), [](double d) { return d == 0; }));
+
+  const std::string f = "Species ~ Petal.Length + Petal.Width";
+  const dm::stats::RandomForestClassifier one(iris, f, {.n_trees = 1, .max_depth = 10, .max_features = 2, .bootstrap = false});
+  const dm::stats::RandomForestClassifier many(iris, f, {.n_trees = 500});
+  std::print("Petal measurements only: forest out-of-bag accuracy {:.4f}.\n", many.oob_accuracy());
+  const std::array<double, 4> box{0.7, 7.2, 0.0, 3.2};
+  auto a = one.plot_decision_regions("Petal.Length", "Petal.Width", 200, box);
+  auto b = many.plot_decision_regions("Petal.Length", "Petal.Width", 200, box);
+  a.title("One tree");
+  b.title("Random forest, 500 trees");
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(a);
+  fig.add(b);
+  fig.size(1100, 480).fit_panels();
+  fig.save_svg("build/rf_iris_regions.svg");
+}
+```
+// result_begin: markdown
+| estimate | mean accuracy | SD over splits |
+| :--- | ---: | ---: |
+| forest, test flowers | 0.9504 | 0.0232 |
+| forest, out of bag (training flowers) | 0.9512 | 0.0154 |
+| single tree, test flowers | 0.9425 | 0.0246 |
+| forest minus tree, test flowers | 0.0078 | 0.0188 |
+
+
+Forest better on 75 splits, tree better on 23, tied on 102.
+
+Petal measurements only: forest out-of-bag accuracy 0.9467.
+\image(figures/rf_iris_regions.svg)
+// result_end
+
+\caption(The species predicted from the petal measurements by one tree grown on all 150 flowers (left) and by a forest of 500 trees (right): *setosa* blue, *versicolor* red, *virginica* green. The forest's shading is darkest where at least 90% of the trees agree, paler for 60% to 90%, palest below 60%.)
+\alttext(Two maps of petal width against petal length. Left, one tree: solid rectangles, blue for petal length below 2.45, red for length 2.45 to 4.95 with width below 1.65, green elsewhere, with a small red notch just right of length 4.95 near width 1.6. Right, the forest: the same three regions with dark cores around the flowers of each species, a pale band along the boundary between red and green near length 4.8 to 5.2 and width 1.5 to 1.8, and pale regions far from any flowers, such as long petals with small widths and short petals with large widths.)
+
+On held-out flowers the forest is right 95.0% of the time, the single tree 94.3%. The forest
+wins on 75 splits, loses on 23 and ties on 102. Its advantage, 0.78 points, is small but about
+six standard errors (0.0188 over \(\sqrt{200}\)). The out-of-bag accuracy computed on the 100 training
+flowers of each split averages 95.1%, within 0.1 point of the forest's held-out accuracy. It
+also varies less across splits (standard deviation 0.015 against 0.023) because it uses 100
+flowers rather than 50. On iris, then, the out-of-bag estimate does the job of a test set.
+
+With the petal measurements alone, the single tree draws three rectangles and a notch, each
+boundary placed by one cut. The forest keeps the same layout but shows where the trees
+disagree. The band between *versicolor* and *virginica* near petal length 5 is pale. So are
+regions far from any flower, where the trees' cuts fall anywhere between the clusters. Its
+out-of-bag accuracy with the two petal measurements is 94.7%.
+
+> Conclusion
+
+A random forest reduces the variance of deep trees by averaging them, and the averaging is only as
+good as the trees are different. The variance of the vote falls as \(\rho\sigma^2+(1-\rho)\sigma^2/B\). Trees beyond a
+few dozen change little, and the floor \(\rho\sigma^2\) is set by the correlation between trees. Random
+predictor subsets lower that correlation: by a fifth on the noisy disc, and enough on twonorm to
+halve the error relative to bagging, while the trees' strength hardly changed. The bootstrap
+gives a test set for free. About \(e^{-1}\) of the rows are out of bag for each tree, and the
+out-of-bag error matched the test error once the forest had about 50 trees, both on simulated data
+and on iris (95.1% against 95.0%).
+
+The method has limits that the examples showed. Deep trees fit label noise, and averaging removes
+only part of it: on the noisy disc the forest's error stayed at 0.21, against a Bayes error of
+0.15. A forest also gives up the readability of a single tree. Its importances need care: the
+impurity importance credited a pure-noise predictor with 3% of the splits, and only the
+permutation importance, measured out of bag, put it at zero. On a problem as easy as iris, the
+forest beats a single tree by less than one point.
+
+> References
+
+- L. Breiman (1996). "Bagging predictors". *Machine Learning* 24(2), 123–140. doi:10.1007/BF00058655
+- L. Breiman (1996). "Bias, variance and arcing classifiers". Technical report 460, Statistics Department, University of California, Berkeley.
+- L. Breiman (2001). "Random forests". *Machine Learning* 45(1), 5–32. doi:10.1023/A:1010933404324
+- L. Breiman, J. H. Friedman, R. A. Olshen and C. J. Stone (1984). *Classification and Regression Trees*. Wadsworth.
+- C. Strobl, A.-L. Boulesteix, A. Zeileis and T. Hothorn (2007). "Bias in random forest variable importance measures: illustrations, sources and a solution". *BMC Bioinformatics* 8, 25. doi:10.1186/1471-2105-8-25
+- T. Hastie, R. Tibshirani and J. Friedman (2009). *The Elements of Statistical Learning*, 2nd ed., chapter 15. Springer. doi:10.1007/978-0-387-84858-7
+- A. Liaw and M. Wiener (2002). "Classification and regression by randomForest". *R News* 2(3), 18–22.
+- R. A. Fisher (1936). "The use of multiple measurements in taxonomic problems". *Annals of Eugenics* 7(2), 179–188. doi:10.1111/j.1469-1809.1936.tb02137.x

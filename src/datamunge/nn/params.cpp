@@ -1,3 +1,6 @@
+/// @file params.cpp
+/// @brief Weight initializer factories and name-indexed parameter ownership, updates, and persistence.
+
 #include "datamunge/nn/params.hpp"
 
 #include <algorithm>
@@ -43,6 +46,7 @@ Initializer truncated_normal(double stddev, double mean) {
   return [stddev, mean](const Shape& s, DType d, Generator& g) { return nn::truncated_normal(s, mean, stddev, g, d); };
 }
 
+/// @brief Fan-dependent random scale adapters shared by standard initializer families.
 namespace {
 /// An initializer whose scale depends on the fans.
 template <typename Scale>
@@ -53,6 +57,7 @@ Initializer scaled_uniform(Scale scale) {
     return nn::uniform(s, -limit, limit, g, d);
   };
 }
+/// @brief Builds a zero-mean normal initializer whose deviation is computed from input/output fans.
 template <typename Scale>
 Initializer scaled_normal(Scale scale) {
   return [scale](const Shape& s, DType d, Generator& g) {

@@ -1,9 +1,9 @@
 # Native R NN example. MNIST and Fashion-MNIST: strict IDX loading and nn preprocessing.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/idx_loader.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example idx_loader
 # Port of tflow's idx_loader. Create a tiny on-disk IDX pair with known
 # bytes, load uint8 NHWC images and integer labels, shuffle matched
 # image/label rows, then cast and divide by 255 with nn ops. Check malformed
@@ -110,7 +110,8 @@ idx_loader_fixtures <- function() {
 idx_loader_inspect <- function(directory, split) {
     images <- file.path(directory, paste0(split, "-images-idx3-ubyte"))
     labels <- file.path(directory, paste0(split, "-labels-idx1-ubyte"))
-    dataset <- idx_loader_load_pair(images, labels)
+    dataset <- idx_loader_load_pair(if (file.exists(images)) images else paste0(images, ".gz"),
+        if (file.exists(labels)) labels else paste0(labels, ".gz"))
     n <- dataset$labels$size(0L)
     counts <- tabulate(dataset$labels$values() + 1L, nbins = 10L)
     pixels <- nn$cast(dataset$images, nn$DType$Float64)
@@ -119,7 +120,7 @@ idx_loader_inspect <- function(directory, split) {
     cat(sprintf("  %s/%s: %d images, shape=%s, normalized mean=%g, byte range=[%d,%d]\n", basename(directory), split,
         as.integer(n), nn$shape_str(dataset$images$shape()), nn$mean(pixels)$item() / 255, low, high))
     cat("    class counts:", paste0(" ", counts, collapse = ""), "\n", sep = "")
-    if (file.exists(paste0(images, ".gz")) && file.exists(paste0(labels, ".gz"))) {
+    if (file.exists(images) && file.exists(labels) && file.exists(paste0(images, ".gz")) && file.exists(paste0(labels, ".gz"))) {
         gz <- idx_loader_load_pair(paste0(images, ".gz"), paste0(labels, ".gz"))
         nn_require(nn$all(nn$equal(gz$images, dataset$images))$item() == 1 &&
             nn$all(nn$equal(gz$labels, dataset$labels))$item() == 1, "gzip IDX matches the decompressed file")
@@ -155,9 +156,8 @@ main <- function(arguments = commandArgs(TRUE)) {
             idx_loader_inspect(required, split)
         } else {
             for (name in c("mnist", "fashion_mnist")) {
-                if (file.exists(file.path(root, name, paste0(split, "-images-idx3-ubyte"))))
-                    idx_loader_inspect(file.path(root, name), split)
-                else cat(sprintf("  %s not cached; fetch with scripts/fetch_datasets.py %s\n", name, name))
+                nn_components$dataset_assets$EnsureMnist(file.path(root, name), name == "fashion_mnist", if (split == "train") "train" else "test")
+                idx_loader_inspect(file.path(root, name), split)
             }
         }
         cat("All IDX loader checks passed.\n")

@@ -7392,9 +7392,9 @@ SWIG_AsVal_bool (VALUE obj, bool *val)
   return SWIG_TypeError;
 }
 
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::plot::RGB(); }
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::plot::RGB{r, g, b, alpha};
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
+    return new datamunge::graphics::RGB{r, g, b, alpha};
   }
 /* ---------------------------------------------------
  * C++ director class helpers
@@ -27620,8 +27620,8 @@ fail:
 SWIGINTERN VALUE
 _wrap_ShapeLayer_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
   std::size_t arg5 ;
   void *argp1 = 0 ;
@@ -27634,7 +27634,7 @@ _wrap_ShapeLayer_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode4 = 0 ;
   size_t val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -27648,23 +27648,23 @@ _wrap_ShapeLayer_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","plot", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","plot", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","plot", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","plot", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","plot", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","plot", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
   ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
@@ -27678,7 +27678,7 @@ _wrap_ShapeLayer_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg5 = static_cast< std::size_t >(val5);
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27688,8 +27688,8 @@ fail:
 SWIGINTERN VALUE
 _wrap_ShapeLayer_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -27699,7 +27699,7 @@ _wrap_ShapeLayer_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -27713,23 +27713,23 @@ _wrap_ShapeLayer_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","plot", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","plot", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","plot", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","plot", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","plot", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","plot", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
   ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
@@ -27738,7 +27738,7 @@ _wrap_ShapeLayer_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27748,15 +27748,15 @@ fail:
 SWIGINTERN VALUE
 _wrap_ShapeLayer_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -27770,27 +27770,27 @@ _wrap_ShapeLayer_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","plot", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","plot", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","plot", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","plot", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","plot", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","plot", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27800,12 +27800,12 @@ fail:
 SWIGINTERN VALUE
 _wrap_ShapeLayer_plot__SWIG_3(int argc, VALUE *argv, VALUE self) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -27819,16 +27819,16 @@ _wrap_ShapeLayer_plot__SWIG_3(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","plot", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","plot", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","plot", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27840,7 +27840,7 @@ _wrap_ShapeLayer_plot__SWIG_4(int argc, VALUE *argv, VALUE self) {
   datamunge::ShapeLayer *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -27852,7 +27852,7 @@ _wrap_ShapeLayer_plot__SWIG_4(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
   result = ((datamunge::ShapeLayer const *)arg1)->plot();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27971,11 +27971,11 @@ SWIGINTERN VALUE _wrap_ShapeLayer_plot(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 6, "ShapeLayer.plot", 
-    "    datamunge::plot::RPlot ShapeLayer.plot(datamunge::plot::RGB fill_color, datamunge::plot::RGB border_color, std::size_t width, std::size_t height)\n"
-    "    datamunge::plot::RPlot ShapeLayer.plot(datamunge::plot::RGB fill_color, datamunge::plot::RGB border_color, std::size_t width)\n"
-    "    datamunge::plot::RPlot ShapeLayer.plot(datamunge::plot::RGB fill_color, datamunge::plot::RGB border_color)\n"
-    "    datamunge::plot::RPlot ShapeLayer.plot(datamunge::plot::RGB fill_color)\n"
-    "    datamunge::plot::RPlot ShapeLayer.plot()\n");
+    "    datamunge::graphics::RPlot ShapeLayer.plot(datamunge::graphics::RGB fill_color, datamunge::graphics::RGB border_color, std::size_t width, std::size_t height)\n"
+    "    datamunge::graphics::RPlot ShapeLayer.plot(datamunge::graphics::RGB fill_color, datamunge::graphics::RGB border_color, std::size_t width)\n"
+    "    datamunge::graphics::RPlot ShapeLayer.plot(datamunge::graphics::RGB fill_color, datamunge::graphics::RGB border_color)\n"
+    "    datamunge::graphics::RPlot ShapeLayer.plot(datamunge::graphics::RGB fill_color)\n"
+    "    datamunge::graphics::RPlot ShapeLayer.plot()\n");
   
   return Qnil;
 }
@@ -28495,7 +28495,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_point__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -28517,12 +28517,12 @@ _wrap_GGPlot_geom_point__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_point", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_point", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_point", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_point", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   ecode3 = SWIG_AsVal_double(argv[1], &val3);
@@ -28541,7 +28541,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_point__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -28560,12 +28560,12 @@ _wrap_GGPlot_geom_point__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_point", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_point", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_point", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_point", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(*(&arg2)));
@@ -28657,8 +28657,8 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_point(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "GGPlot.geom_point", 
-    "    datamunge::GGPlot GGPlot.geom_point(datamunge::plot::RGB color, double size)\n"
-    "    datamunge::GGPlot GGPlot.geom_point(datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_point(datamunge::graphics::RGB color, double size)\n"
+    "    datamunge::GGPlot GGPlot.geom_point(datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot & GGPlot.geom_point()\n");
   
   return Qnil;
@@ -28668,7 +28668,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -28690,12 +28690,12 @@ _wrap_GGPlot_geom_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_line", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_line", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_line", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_line", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   ecode3 = SWIG_AsVal_double(argv[1], &val3);
@@ -28714,7 +28714,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -28733,12 +28733,12 @@ _wrap_GGPlot_geom_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_line", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_line", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_line", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_line", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(*(&arg2)));
@@ -28830,8 +28830,8 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_line(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "GGPlot.geom_line", 
-    "    datamunge::GGPlot GGPlot.geom_line(datamunge::plot::RGB color, double width)\n"
-    "    datamunge::GGPlot GGPlot.geom_line(datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_line(datamunge::graphics::RGB color, double width)\n"
+    "    datamunge::GGPlot GGPlot.geom_line(datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot & GGPlot.geom_line()\n");
   
   return Qnil;
@@ -28841,7 +28841,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_bar__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -28860,12 +28860,12 @@ _wrap_GGPlot_geom_bar__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_bar", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_bar", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_bar", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_bar", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_bar(SWIG_STD_MOVE(*(&arg2)));
@@ -28937,7 +28937,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_bar(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "GGPlot.geom_bar", 
-    "    datamunge::GGPlot GGPlot.geom_bar(datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_bar(datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot & GGPlot.geom_bar()\n");
   
   return Qnil;
@@ -28947,7 +28947,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_col__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -28966,12 +28966,12 @@ _wrap_GGPlot_geom_col__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_col", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_col", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_col", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_col", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_col(SWIG_STD_MOVE(*(&arg2)));
@@ -29043,7 +29043,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_col(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "GGPlot.geom_col", 
-    "    datamunge::GGPlot GGPlot.geom_col(datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_col(datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot & GGPlot.geom_col()\n");
   
   return Qnil;
@@ -29054,7 +29054,7 @@ SWIGINTERN VALUE
 _wrap_GGPlot_geom_histogram__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
   std::size_t arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   size_t val2 ;
@@ -29080,12 +29080,12 @@ _wrap_GGPlot_geom_histogram__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_histogram", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_histogram", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_histogram", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_histogram", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
@@ -29210,7 +29210,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_histogram(int nargs, VALUE *args, VALUE self)
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "GGPlot.geom_histogram", 
-    "    datamunge::GGPlot GGPlot.geom_histogram(std::size_t bins, datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_histogram(std::size_t bins, datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot GGPlot.geom_histogram(std::size_t bins)\n"
     "    datamunge::GGPlot & GGPlot.geom_histogram()\n");
   
@@ -29221,7 +29221,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -29240,12 +29240,12 @@ _wrap_GGPlot_geom_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_boxplot", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_boxplot", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_boxplot", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_boxplot", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_boxplot(SWIG_STD_MOVE(*(&arg2)));
@@ -29317,7 +29317,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_boxplot(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "GGPlot.geom_boxplot", 
-    "    datamunge::GGPlot GGPlot.geom_boxplot(datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_boxplot(datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot & GGPlot.geom_boxplot()\n");
   
   return Qnil;
@@ -29327,7 +29327,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_smooth__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -29346,12 +29346,12 @@ _wrap_GGPlot_geom_smooth__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_smooth", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_smooth", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_smooth", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_smooth", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_smooth(SWIG_STD_MOVE(*(&arg2)));
@@ -29423,7 +29423,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_smooth(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "GGPlot.geom_smooth", 
-    "    datamunge::GGPlot GGPlot.geom_smooth(datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_smooth(datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot & GGPlot.geom_smooth()\n");
   
   return Qnil;
@@ -29433,7 +29433,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_area__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -29452,12 +29452,12 @@ _wrap_GGPlot_geom_area__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_area", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_area", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_area", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_area", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_area(SWIG_STD_MOVE(*(&arg2)));
@@ -29529,7 +29529,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_area(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "GGPlot.geom_area", 
-    "    datamunge::GGPlot GGPlot.geom_area(datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_area(datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot & GGPlot.geom_area()\n");
   
   return Qnil;
@@ -29541,7 +29541,7 @@ _wrap_GGPlot_geom_ribbon__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
@@ -29584,12 +29584,12 @@ _wrap_GGPlot_geom_ribbon__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_ribbon", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_ribbon", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_ribbon", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_ribbon", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
@@ -29711,7 +29711,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_ribbon(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "GGPlot.geom_ribbon", 
-    "    datamunge::GGPlot GGPlot.geom_ribbon(std::string const &ymin_column, std::string const &ymax_column, datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_ribbon(std::string const &ymin_column, std::string const &ymax_column, datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot & GGPlot.geom_ribbon(std::string const &ymin_column, std::string const &ymax_column)\n");
   
   return Qnil;
@@ -29721,7 +29721,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_density__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -29740,12 +29740,12 @@ _wrap_GGPlot_geom_density__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","geom_density", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_density", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","geom_density", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","geom_density", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_density(SWIG_STD_MOVE(*(&arg2)));
@@ -29817,7 +29817,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_density(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "GGPlot.geom_density", 
-    "    datamunge::GGPlot GGPlot.geom_density(datamunge::plot::RGB color)\n"
+    "    datamunge::GGPlot GGPlot.geom_density(datamunge::graphics::RGB color)\n"
     "    datamunge::GGPlot & GGPlot.geom_density()\n");
   
   return Qnil;
@@ -30038,7 +30038,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_scale_color_manual(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > *arg2 = 0 ;
+  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -30056,13 +30056,13 @@ _wrap_GGPlot_scale_color_manual(int argc, VALUE *argv, VALUE self) {
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > const &","scale_color_manual", 2, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &","scale_color_manual", 2, argv[0] )); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > const &","scale_color_manual", 2, argv[0])); 
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &","scale_color_manual", 2, argv[0])); 
   }
-  arg2 = reinterpret_cast< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > * >(argp2);
-  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > const &)*arg2);
+  arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > * >(argp2);
+  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &)*arg2);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
   return vresult;
 fail:
@@ -31743,7 +31743,7 @@ _wrap_LM_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   datamunge::LM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -31755,7 +31755,7 @@ _wrap_LM_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -31767,7 +31767,7 @@ _wrap_LM_plot_normal_qq(int argc, VALUE *argv, VALUE self) {
   datamunge::LM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -31779,7 +31779,7 @@ _wrap_LM_plot_normal_qq(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);
   result = ((datamunge::LM const *)arg1)->plot_normal_qq();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -31791,7 +31791,7 @@ _wrap_LM_plot_scale_location(int argc, VALUE *argv, VALUE self) {
   datamunge::LM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -31803,7 +31803,7 @@ _wrap_LM_plot_scale_location(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);
   result = ((datamunge::LM const *)arg1)->plot_scale_location();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -31815,7 +31815,7 @@ _wrap_LM_plot_residuals_vs_leverage(int argc, VALUE *argv, VALUE self) {
   datamunge::LM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -31827,7 +31827,7 @@ _wrap_LM_plot_residuals_vs_leverage(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -36821,7 +36821,7 @@ _wrap_LDA_plot_discriminants(int argc, VALUE *argv, VALUE self) {
   datamunge::LDA *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -36833,7 +36833,7 @@ _wrap_LDA_plot_discriminants(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
   result = ((datamunge::LDA const *)arg1)->plot_discriminants();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -38701,7 +38701,7 @@ _wrap_DecisionTreeClassifier_plot_classification(int argc, VALUE *argv, VALUE se
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -38743,7 +38743,7 @@ _wrap_DecisionTreeClassifier_plot_classification(int argc, VALUE *argv, VALUE se
     arg4 = ptr;
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -38766,7 +38766,7 @@ _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -38805,7 +38805,7 @@ _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -38825,7 +38825,7 @@ _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -38859,7 +38859,7 @@ _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv
     arg3 = ptr;
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -38924,8 +38924,8 @@ SWIGINTERN VALUE _wrap_DecisionTreeClassifier_plot_decision_regions(int nargs, V
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "DecisionTreeClassifier.plot_decision_regions", 
-    "    datamunge::plot::RPlot DecisionTreeClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
-    "    datamunge::plot::RPlot DecisionTreeClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
+    "    datamunge::graphics::RPlot DecisionTreeClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
+    "    datamunge::graphics::RPlot DecisionTreeClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
   
   return Qnil;
 }
@@ -39581,7 +39581,7 @@ _wrap_DecisionTreeRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALU
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -39593,7 +39593,7 @@ _wrap_DecisionTreeRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALU
   }
   arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -39605,7 +39605,7 @@ _wrap_DecisionTreeRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALU
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -39617,7 +39617,7 @@ _wrap_DecisionTreeRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALU
   }
   arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -41218,7 +41218,7 @@ _wrap_RandomForestClassifier_plot_classification(int argc, VALUE *argv, VALUE se
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -41260,7 +41260,7 @@ _wrap_RandomForestClassifier_plot_classification(int argc, VALUE *argv, VALUE se
     arg4 = ptr;
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -41283,7 +41283,7 @@ _wrap_RandomForestClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -41322,7 +41322,7 @@ _wrap_RandomForestClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -41342,7 +41342,7 @@ _wrap_RandomForestClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -41376,7 +41376,7 @@ _wrap_RandomForestClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv
     arg3 = ptr;
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -41441,8 +41441,8 @@ SWIGINTERN VALUE _wrap_RandomForestClassifier_plot_decision_regions(int nargs, V
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "RandomForestClassifier.plot_decision_regions", 
-    "    datamunge::plot::RPlot RandomForestClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
-    "    datamunge::plot::RPlot RandomForestClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
+    "    datamunge::graphics::RPlot RandomForestClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
+    "    datamunge::graphics::RPlot RandomForestClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
   
   return Qnil;
 }
@@ -42822,7 +42822,7 @@ _wrap_RandomForestRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALU
   datamunge::RandomForestRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -42834,7 +42834,7 @@ _wrap_RandomForestRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALU
   }
   arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -42846,7 +42846,7 @@ _wrap_RandomForestRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALU
   datamunge::RandomForestRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -42858,7 +42858,7 @@ _wrap_RandomForestRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALU
   }
   arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -44061,7 +44061,7 @@ _wrap_ElasticNet_plot_coefficient_path(int argc, VALUE *argv, VALUE self) {
   datamunge::ElasticNet *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -44073,7 +44073,7 @@ _wrap_ElasticNet_plot_coefficient_path(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
   result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -44085,7 +44085,7 @@ _wrap_ElasticNet_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   datamunge::ElasticNet *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -44097,7 +44097,7 @@ _wrap_ElasticNet_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
   result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -44109,7 +44109,7 @@ _wrap_ElasticNet_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   datamunge::ElasticNet *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -44121,7 +44121,7 @@ _wrap_ElasticNet_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
   result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -44133,7 +44133,7 @@ _wrap_ElasticNet_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   datamunge::ElasticNet *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -44145,7 +44145,7 @@ _wrap_ElasticNet_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
   result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -45160,7 +45160,7 @@ _wrap_Ridge_plot_coefficient_path(int argc, VALUE *argv, VALUE self) {
   datamunge::Ridge *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -45172,7 +45172,7 @@ _wrap_Ridge_plot_coefficient_path(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
   result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -45184,7 +45184,7 @@ _wrap_Ridge_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   datamunge::Ridge *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -45196,7 +45196,7 @@ _wrap_Ridge_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
   result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -45208,7 +45208,7 @@ _wrap_Ridge_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   datamunge::Ridge *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -45220,7 +45220,7 @@ _wrap_Ridge_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
   result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -45232,7 +45232,7 @@ _wrap_Ridge_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   datamunge::Ridge *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -45244,7 +45244,7 @@ _wrap_Ridge_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
   result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -46283,7 +46283,7 @@ _wrap_Lasso_plot_coefficient_path(int argc, VALUE *argv, VALUE self) {
   datamunge::Lasso *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -46295,7 +46295,7 @@ _wrap_Lasso_plot_coefficient_path(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
   result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -46307,7 +46307,7 @@ _wrap_Lasso_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   datamunge::Lasso *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -46319,7 +46319,7 @@ _wrap_Lasso_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
   result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -46331,7 +46331,7 @@ _wrap_Lasso_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   datamunge::Lasso *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -46343,7 +46343,7 @@ _wrap_Lasso_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
   result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -46355,7 +46355,7 @@ _wrap_Lasso_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   datamunge::Lasso *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -46367,7 +46367,7 @@ _wrap_Lasso_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
   result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -47121,7 +47121,7 @@ _wrap_KNNClassifier_plot_classification(int argc, VALUE *argv, VALUE self) {
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -47163,7 +47163,7 @@ _wrap_KNNClassifier_plot_classification(int argc, VALUE *argv, VALUE self) {
     arg4 = ptr;
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -47186,7 +47186,7 @@ _wrap_KNNClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, VALUE s
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -47225,7 +47225,7 @@ _wrap_KNNClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, VALUE s
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -47245,7 +47245,7 @@ _wrap_KNNClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, VALUE s
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -47279,7 +47279,7 @@ _wrap_KNNClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, VALUE s
     arg3 = ptr;
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -47344,8 +47344,8 @@ SWIGINTERN VALUE _wrap_KNNClassifier_plot_decision_regions(int nargs, VALUE *arg
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "KNNClassifier.plot_decision_regions", 
-    "    datamunge::plot::RPlot KNNClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
-    "    datamunge::plot::RPlot KNNClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
+    "    datamunge::graphics::RPlot KNNClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
+    "    datamunge::graphics::RPlot KNNClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
   
   return Qnil;
 }
@@ -48056,7 +48056,7 @@ _wrap_KNNRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   datamunge::KNNRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -48068,7 +48068,7 @@ _wrap_KNNRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
   result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -48080,7 +48080,7 @@ _wrap_KNNRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   datamunge::KNNRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -48092,7 +48092,7 @@ _wrap_KNNRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
   result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -50296,7 +50296,7 @@ _wrap_PCA_plot_scores__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -50318,7 +50318,7 @@ _wrap_PCA_plot_scores__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -50333,7 +50333,7 @@ _wrap_PCA_plot_scores__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -50350,7 +50350,7 @@ _wrap_PCA_plot_scores__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -50362,7 +50362,7 @@ _wrap_PCA_plot_scores__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::PCA *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -50374,7 +50374,7 @@ _wrap_PCA_plot_scores__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::PCA * >(argp1);
   result = ((datamunge::PCA const *)arg1)->plot_scores();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -50440,9 +50440,9 @@ SWIGINTERN VALUE _wrap_PCA_plot_scores(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "PCA.plot_scores", 
-    "    datamunge::plot::RPlot PCA.plot_scores(std::size_t component_x, std::size_t component_y)\n"
-    "    datamunge::plot::RPlot PCA.plot_scores(std::size_t component_x)\n"
-    "    datamunge::plot::RPlot PCA.plot_scores()\n");
+    "    datamunge::graphics::RPlot PCA.plot_scores(std::size_t component_x, std::size_t component_y)\n"
+    "    datamunge::graphics::RPlot PCA.plot_scores(std::size_t component_x)\n"
+    "    datamunge::graphics::RPlot PCA.plot_scores()\n");
   
   return Qnil;
 }
@@ -50461,7 +50461,7 @@ _wrap_PCA_plot_scores_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -50494,7 +50494,7 @@ _wrap_PCA_plot_scores_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -50513,7 +50513,7 @@ _wrap_PCA_plot_scores_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -50541,7 +50541,7 @@ _wrap_PCA_plot_scores_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -50557,7 +50557,7 @@ _wrap_PCA_plot_scores_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -50580,7 +50580,7 @@ _wrap_PCA_plot_scores_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -50660,9 +50660,9 @@ SWIGINTERN VALUE _wrap_PCA_plot_scores_grouped(int nargs, VALUE *args, VALUE sel
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "PCA.plot_scores_grouped", 
-    "    datamunge::plot::RPlot PCA.plot_scores_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t component_x, std::size_t component_y)\n"
-    "    datamunge::plot::RPlot PCA.plot_scores_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t component_x)\n"
-    "    datamunge::plot::RPlot PCA.plot_scores_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot PCA.plot_scores_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t component_x, std::size_t component_y)\n"
+    "    datamunge::graphics::RPlot PCA.plot_scores_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t component_x)\n"
+    "    datamunge::graphics::RPlot PCA.plot_scores_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -50673,7 +50673,7 @@ _wrap_PCA_plot_scree(int argc, VALUE *argv, VALUE self) {
   datamunge::PCA *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -50685,7 +50685,7 @@ _wrap_PCA_plot_scree(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::PCA * >(argp1);
   result = ((datamunge::PCA const *)arg1)->plot_scree();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -51419,7 +51419,7 @@ _wrap_MDS_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -51441,7 +51441,7 @@ _wrap_MDS_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -51456,7 +51456,7 @@ _wrap_MDS_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -51473,7 +51473,7 @@ _wrap_MDS_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -51485,7 +51485,7 @@ _wrap_MDS_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::MDS *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -51497,7 +51497,7 @@ _wrap_MDS_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::MDS * >(argp1);
   result = ((datamunge::MDS const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -51563,9 +51563,9 @@ SWIGINTERN VALUE _wrap_MDS_plot_embedding(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "MDS.plot_embedding", 
-    "    datamunge::plot::RPlot MDS.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot MDS.plot_embedding(std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot MDS.plot_embedding()\n");
+    "    datamunge::graphics::RPlot MDS.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot MDS.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot MDS.plot_embedding()\n");
   
   return Qnil;
 }
@@ -51584,7 +51584,7 @@ _wrap_MDS_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -51617,7 +51617,7 @@ _wrap_MDS_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -51636,7 +51636,7 @@ _wrap_MDS_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -51664,7 +51664,7 @@ _wrap_MDS_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -51680,7 +51680,7 @@ _wrap_MDS_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -51703,7 +51703,7 @@ _wrap_MDS_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -51783,9 +51783,9 @@ SWIGINTERN VALUE _wrap_MDS_plot_embedding_grouped(int nargs, VALUE *args, VALUE 
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "MDS.plot_embedding_grouped", 
-    "    datamunge::plot::RPlot MDS.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot MDS.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot MDS.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot MDS.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot MDS.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot MDS.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -52714,7 +52714,7 @@ _wrap_Isomap_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -52736,7 +52736,7 @@ _wrap_Isomap_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -52751,7 +52751,7 @@ _wrap_Isomap_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -52768,7 +52768,7 @@ _wrap_Isomap_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -52780,7 +52780,7 @@ _wrap_Isomap_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::Isomap *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -52792,7 +52792,7 @@ _wrap_Isomap_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -52858,9 +52858,9 @@ SWIGINTERN VALUE _wrap_Isomap_plot_embedding(int nargs, VALUE *args, VALUE self)
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "Isomap.plot_embedding", 
-    "    datamunge::plot::RPlot Isomap.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot Isomap.plot_embedding(std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot Isomap.plot_embedding()\n");
+    "    datamunge::graphics::RPlot Isomap.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot Isomap.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot Isomap.plot_embedding()\n");
   
   return Qnil;
 }
@@ -52879,7 +52879,7 @@ _wrap_Isomap_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -52912,7 +52912,7 @@ _wrap_Isomap_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -52931,7 +52931,7 @@ _wrap_Isomap_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -52959,7 +52959,7 @@ _wrap_Isomap_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -52975,7 +52975,7 @@ _wrap_Isomap_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -52998,7 +52998,7 @@ _wrap_Isomap_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -53078,9 +53078,9 @@ SWIGINTERN VALUE _wrap_Isomap_plot_embedding_grouped(int nargs, VALUE *args, VAL
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "Isomap.plot_embedding_grouped", 
-    "    datamunge::plot::RPlot Isomap.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot Isomap.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot Isomap.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot Isomap.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot Isomap.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot Isomap.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -54209,7 +54209,7 @@ _wrap_LLE_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -54231,7 +54231,7 @@ _wrap_LLE_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -54246,7 +54246,7 @@ _wrap_LLE_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -54263,7 +54263,7 @@ _wrap_LLE_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -54275,7 +54275,7 @@ _wrap_LLE_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::LLE *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -54287,7 +54287,7 @@ _wrap_LLE_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
   result = ((datamunge::LLE const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -54353,9 +54353,9 @@ SWIGINTERN VALUE _wrap_LLE_plot_embedding(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "LLE.plot_embedding", 
-    "    datamunge::plot::RPlot LLE.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot LLE.plot_embedding(std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot LLE.plot_embedding()\n");
+    "    datamunge::graphics::RPlot LLE.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot LLE.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot LLE.plot_embedding()\n");
   
   return Qnil;
 }
@@ -54374,7 +54374,7 @@ _wrap_LLE_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -54407,7 +54407,7 @@ _wrap_LLE_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -54426,7 +54426,7 @@ _wrap_LLE_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -54454,7 +54454,7 @@ _wrap_LLE_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -54470,7 +54470,7 @@ _wrap_LLE_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -54493,7 +54493,7 @@ _wrap_LLE_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -54573,9 +54573,9 @@ SWIGINTERN VALUE _wrap_LLE_plot_embedding_grouped(int nargs, VALUE *args, VALUE 
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "LLE.plot_embedding_grouped", 
-    "    datamunge::plot::RPlot LLE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot LLE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot LLE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot LLE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot LLE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot LLE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -58066,7 +58066,7 @@ _wrap_TSNE_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -58088,7 +58088,7 @@ _wrap_TSNE_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -58103,7 +58103,7 @@ _wrap_TSNE_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -58120,7 +58120,7 @@ _wrap_TSNE_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -58132,7 +58132,7 @@ _wrap_TSNE_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::TSNE *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -58144,7 +58144,7 @@ _wrap_TSNE_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -58210,9 +58210,9 @@ SWIGINTERN VALUE _wrap_TSNE_plot_embedding(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "TSNE.plot_embedding", 
-    "    datamunge::plot::RPlot TSNE.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot TSNE.plot_embedding(std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot TSNE.plot_embedding()\n");
+    "    datamunge::graphics::RPlot TSNE.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot TSNE.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot TSNE.plot_embedding()\n");
   
   return Qnil;
 }
@@ -58231,7 +58231,7 @@ _wrap_TSNE_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -58264,7 +58264,7 @@ _wrap_TSNE_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -58283,7 +58283,7 @@ _wrap_TSNE_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -58311,7 +58311,7 @@ _wrap_TSNE_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -58327,7 +58327,7 @@ _wrap_TSNE_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -58350,7 +58350,7 @@ _wrap_TSNE_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -58430,9 +58430,9 @@ SWIGINTERN VALUE _wrap_TSNE_plot_embedding_grouped(int nargs, VALUE *args, VALUE
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "TSNE.plot_embedding_grouped", 
-    "    datamunge::plot::RPlot TSNE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot TSNE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot TSNE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot TSNE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot TSNE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot TSNE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -59327,7 +59327,7 @@ _wrap_LaplacianEigenmaps_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE sel
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -59349,7 +59349,7 @@ _wrap_LaplacianEigenmaps_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE sel
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -59364,7 +59364,7 @@ _wrap_LaplacianEigenmaps_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE sel
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -59381,7 +59381,7 @@ _wrap_LaplacianEigenmaps_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE sel
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -59393,7 +59393,7 @@ _wrap_LaplacianEigenmaps_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE sel
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -59405,7 +59405,7 @@ _wrap_LaplacianEigenmaps_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -59471,9 +59471,9 @@ SWIGINTERN VALUE _wrap_LaplacianEigenmaps_plot_embedding(int nargs, VALUE *args,
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "LaplacianEigenmaps.plot_embedding", 
-    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding(std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding()\n");
+    "    datamunge::graphics::RPlot LaplacianEigenmaps.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot LaplacianEigenmaps.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot LaplacianEigenmaps.plot_embedding()\n");
   
   return Qnil;
 }
@@ -59492,7 +59492,7 @@ _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, V
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -59525,7 +59525,7 @@ _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, V
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -59544,7 +59544,7 @@ _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, V
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -59572,7 +59572,7 @@ _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, V
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -59588,7 +59588,7 @@ _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, V
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -59611,7 +59611,7 @@ _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, V
     arg2 = ptr;
   }
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -59691,9 +59691,9 @@ SWIGINTERN VALUE _wrap_LaplacianEigenmaps_plot_embedding_grouped(int nargs, VALU
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "LaplacianEigenmaps.plot_embedding_grouped", 
-    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot LaplacianEigenmaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot LaplacianEigenmaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot LaplacianEigenmaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -60812,7 +60812,7 @@ _wrap_DiffusionMaps_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -60834,7 +60834,7 @@ _wrap_DiffusionMaps_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -60849,7 +60849,7 @@ _wrap_DiffusionMaps_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -60866,7 +60866,7 @@ _wrap_DiffusionMaps_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -60878,7 +60878,7 @@ _wrap_DiffusionMaps_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::DiffusionMaps *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -60890,7 +60890,7 @@ _wrap_DiffusionMaps_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -60956,9 +60956,9 @@ SWIGINTERN VALUE _wrap_DiffusionMaps_plot_embedding(int nargs, VALUE *args, VALU
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "DiffusionMaps.plot_embedding", 
-    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding(std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding()\n");
+    "    datamunge::graphics::RPlot DiffusionMaps.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot DiffusionMaps.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot DiffusionMaps.plot_embedding()\n");
   
   return Qnil;
 }
@@ -60977,7 +60977,7 @@ _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE 
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -61010,7 +61010,7 @@ _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE 
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -61029,7 +61029,7 @@ _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE 
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -61057,7 +61057,7 @@ _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE 
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -61073,7 +61073,7 @@ _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE 
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -61096,7 +61096,7 @@ _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE 
     arg2 = ptr;
   }
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -61176,9 +61176,9 @@ SWIGINTERN VALUE _wrap_DiffusionMaps_plot_embedding_grouped(int nargs, VALUE *ar
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "DiffusionMaps.plot_embedding_grouped", 
-    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot DiffusionMaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot DiffusionMaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot DiffusionMaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -62589,7 +62589,7 @@ _wrap_KernelPCA_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -62611,7 +62611,7 @@ _wrap_KernelPCA_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -62626,7 +62626,7 @@ _wrap_KernelPCA_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -62643,7 +62643,7 @@ _wrap_KernelPCA_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -62655,7 +62655,7 @@ _wrap_KernelPCA_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::KernelPCA *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -62667,7 +62667,7 @@ _wrap_KernelPCA_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -62733,9 +62733,9 @@ SWIGINTERN VALUE _wrap_KernelPCA_plot_embedding(int nargs, VALUE *args, VALUE se
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "KernelPCA.plot_embedding", 
-    "    datamunge::plot::RPlot KernelPCA.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot KernelPCA.plot_embedding(std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot KernelPCA.plot_embedding()\n");
+    "    datamunge::graphics::RPlot KernelPCA.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot KernelPCA.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot KernelPCA.plot_embedding()\n");
   
   return Qnil;
 }
@@ -62754,7 +62754,7 @@ _wrap_KernelPCA_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -62787,7 +62787,7 @@ _wrap_KernelPCA_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -62806,7 +62806,7 @@ _wrap_KernelPCA_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -62834,7 +62834,7 @@ _wrap_KernelPCA_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -62850,7 +62850,7 @@ _wrap_KernelPCA_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -62873,7 +62873,7 @@ _wrap_KernelPCA_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self
     arg2 = ptr;
   }
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -62953,9 +62953,9 @@ SWIGINTERN VALUE _wrap_KernelPCA_plot_embedding_grouped(int nargs, VALUE *args, 
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "KernelPCA.plot_embedding_grouped", 
-    "    datamunge::plot::RPlot KernelPCA.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot KernelPCA.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot KernelPCA.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot KernelPCA.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot KernelPCA.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot KernelPCA.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -64650,7 +64650,7 @@ _wrap_SammonMapping_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -64672,7 +64672,7 @@ _wrap_SammonMapping_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -64687,7 +64687,7 @@ _wrap_SammonMapping_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -64704,7 +64704,7 @@ _wrap_SammonMapping_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -64716,7 +64716,7 @@ _wrap_SammonMapping_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::SammonMapping *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -64728,7 +64728,7 @@ _wrap_SammonMapping_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -64794,9 +64794,9 @@ SWIGINTERN VALUE _wrap_SammonMapping_plot_embedding(int nargs, VALUE *args, VALU
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "SammonMapping.plot_embedding", 
-    "    datamunge::plot::RPlot SammonMapping.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot SammonMapping.plot_embedding(std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot SammonMapping.plot_embedding()\n");
+    "    datamunge::graphics::RPlot SammonMapping.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot SammonMapping.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot SammonMapping.plot_embedding()\n");
   
   return Qnil;
 }
@@ -64815,7 +64815,7 @@ _wrap_SammonMapping_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE 
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -64848,7 +64848,7 @@ _wrap_SammonMapping_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE 
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -64867,7 +64867,7 @@ _wrap_SammonMapping_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE 
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -64895,7 +64895,7 @@ _wrap_SammonMapping_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE 
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -64911,7 +64911,7 @@ _wrap_SammonMapping_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE 
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -64934,7 +64934,7 @@ _wrap_SammonMapping_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE 
     arg2 = ptr;
   }
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -65014,9 +65014,9 @@ SWIGINTERN VALUE _wrap_SammonMapping_plot_embedding_grouped(int nargs, VALUE *ar
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "SammonMapping.plot_embedding_grouped", 
-    "    datamunge::plot::RPlot SammonMapping.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot SammonMapping.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot SammonMapping.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot SammonMapping.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot SammonMapping.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot SammonMapping.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -67355,7 +67355,7 @@ _wrap_UMAP_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -67377,7 +67377,7 @@ _wrap_UMAP_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -67392,7 +67392,7 @@ _wrap_UMAP_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -67409,7 +67409,7 @@ _wrap_UMAP_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -67421,7 +67421,7 @@ _wrap_UMAP_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::UMAP *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -67433,7 +67433,7 @@ _wrap_UMAP_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -67499,9 +67499,9 @@ SWIGINTERN VALUE _wrap_UMAP_plot_embedding(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "UMAP.plot_embedding", 
-    "    datamunge::plot::RPlot UMAP.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot UMAP.plot_embedding(std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot UMAP.plot_embedding()\n");
+    "    datamunge::graphics::RPlot UMAP.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot UMAP.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot UMAP.plot_embedding()\n");
   
   return Qnil;
 }
@@ -67520,7 +67520,7 @@ _wrap_UMAP_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -67553,7 +67553,7 @@ _wrap_UMAP_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -67572,7 +67572,7 @@ _wrap_UMAP_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res2 = SWIG_OLDOBJ ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -67600,7 +67600,7 @@ _wrap_UMAP_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -67616,7 +67616,7 @@ _wrap_UMAP_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -67639,7 +67639,7 @@ _wrap_UMAP_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -67719,9 +67719,9 @@ SWIGINTERN VALUE _wrap_UMAP_plot_embedding_grouped(int nargs, VALUE *args, VALUE
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "UMAP.plot_embedding_grouped", 
-    "    datamunge::plot::RPlot UMAP.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
-    "    datamunge::plot::RPlot UMAP.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
-    "    datamunge::plot::RPlot UMAP.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+    "    datamunge::graphics::RPlot UMAP.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::graphics::RPlot UMAP.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::graphics::RPlot UMAP.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
   
   return Qnil;
 }
@@ -70747,7 +70747,7 @@ _wrap_GBMClassifier_plot_classification(int argc, VALUE *argv, VALUE self) {
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -70789,7 +70789,7 @@ _wrap_GBMClassifier_plot_classification(int argc, VALUE *argv, VALUE self) {
     arg4 = ptr;
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -70812,7 +70812,7 @@ _wrap_GBMClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, VALUE s
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -70851,7 +70851,7 @@ _wrap_GBMClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, VALUE s
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -70871,7 +70871,7 @@ _wrap_GBMClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, VALUE s
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -70905,7 +70905,7 @@ _wrap_GBMClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, VALUE s
     arg3 = ptr;
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -70970,8 +70970,8 @@ SWIGINTERN VALUE _wrap_GBMClassifier_plot_decision_regions(int nargs, VALUE *arg
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "GBMClassifier.plot_decision_regions", 
-    "    datamunge::plot::RPlot GBMClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
-    "    datamunge::plot::RPlot GBMClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
+    "    datamunge::graphics::RPlot GBMClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
+    "    datamunge::graphics::RPlot GBMClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
   
   return Qnil;
 }
@@ -70982,7 +70982,7 @@ _wrap_GBMClassifier_plot_training_deviance(int argc, VALUE *argv, VALUE self) {
   datamunge::GBMClassifier *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -70994,7 +70994,7 @@ _wrap_GBMClassifier_plot_training_deviance(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GBMClassifier * >(argp1);
   result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -72159,7 +72159,7 @@ _wrap_GBMRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   datamunge::GBMRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -72171,7 +72171,7 @@ _wrap_GBMRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
   result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -72183,7 +72183,7 @@ _wrap_GBMRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   datamunge::GBMRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -72195,7 +72195,7 @@ _wrap_GBMRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
   result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -72207,7 +72207,7 @@ _wrap_GBMRegressor_plot_training_deviance(int argc, VALUE *argv, VALUE self) {
   datamunge::GBMRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -72219,7 +72219,7 @@ _wrap_GBMRegressor_plot_training_deviance(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
   result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -74182,7 +74182,7 @@ _wrap_XGBoostClassifier_plot_classification(int argc, VALUE *argv, VALUE self) {
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -74224,7 +74224,7 @@ _wrap_XGBoostClassifier_plot_classification(int argc, VALUE *argv, VALUE self) {
     arg4 = ptr;
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -74247,7 +74247,7 @@ _wrap_XGBoostClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, VAL
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -74286,7 +74286,7 @@ _wrap_XGBoostClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, VAL
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -74306,7 +74306,7 @@ _wrap_XGBoostClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, VAL
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -74340,7 +74340,7 @@ _wrap_XGBoostClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, VAL
     arg3 = ptr;
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -74405,8 +74405,8 @@ SWIGINTERN VALUE _wrap_XGBoostClassifier_plot_decision_regions(int nargs, VALUE 
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "XGBoostClassifier.plot_decision_regions", 
-    "    datamunge::plot::RPlot XGBoostClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
-    "    datamunge::plot::RPlot XGBoostClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
+    "    datamunge::graphics::RPlot XGBoostClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
+    "    datamunge::graphics::RPlot XGBoostClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
   
   return Qnil;
 }
@@ -74417,7 +74417,7 @@ _wrap_XGBoostClassifier_plot_training_deviance(int argc, VALUE *argv, VALUE self
   datamunge::XGBoostClassifier *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -74429,7 +74429,7 @@ _wrap_XGBoostClassifier_plot_training_deviance(int argc, VALUE *argv, VALUE self
   }
   arg1 = reinterpret_cast< datamunge::XGBoostClassifier * >(argp1);
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -76350,7 +76350,7 @@ _wrap_XGBoostRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE sel
   datamunge::XGBoostRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -76362,7 +76362,7 @@ _wrap_XGBoostRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -76374,7 +76374,7 @@ _wrap_XGBoostRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE sel
   datamunge::XGBoostRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -76386,7 +76386,7 @@ _wrap_XGBoostRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -76398,7 +76398,7 @@ _wrap_XGBoostRegressor_plot_training_deviance(int argc, VALUE *argv, VALUE self)
   datamunge::XGBoostRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -76410,7 +76410,7 @@ _wrap_XGBoostRegressor_plot_training_deviance(int argc, VALUE *argv, VALUE self)
   }
   arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77205,7 +77205,7 @@ _wrap_KernelRegression_plot_fit__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -77230,7 +77230,7 @@ _wrap_KernelRegression_plot_fit__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77245,7 +77245,7 @@ _wrap_KernelRegression_plot_fit__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -77265,7 +77265,7 @@ _wrap_KernelRegression_plot_fit__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77320,8 +77320,8 @@ SWIGINTERN VALUE _wrap_KernelRegression_plot_fit(int nargs, VALUE *args, VALUE s
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "KernelRegression.plot_fit", 
-    "    datamunge::plot::RPlot KernelRegression.plot_fit(datamunge::DataFrame const &data, std::size_t grid_resolution)\n"
-    "    datamunge::plot::RPlot KernelRegression.plot_fit(datamunge::DataFrame const &data)\n");
+    "    datamunge::graphics::RPlot KernelRegression.plot_fit(datamunge::DataFrame const &data, std::size_t grid_resolution)\n"
+    "    datamunge::graphics::RPlot KernelRegression.plot_fit(datamunge::DataFrame const &data)\n");
   
   return Qnil;
 }
@@ -77332,7 +77332,7 @@ _wrap_KernelRegression_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE sel
   datamunge::KernelRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -77344,7 +77344,7 @@ _wrap_KernelRegression_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
   result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77356,7 +77356,7 @@ _wrap_KernelRegression_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE sel
   datamunge::KernelRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -77368,7 +77368,7 @@ _wrap_KernelRegression_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
   result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77380,7 +77380,7 @@ _wrap_KernelRegression_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   datamunge::KernelRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -77392,7 +77392,7 @@ _wrap_KernelRegression_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
   result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78613,7 +78613,7 @@ _wrap_GaussianProcessRegression_plot_fit__SWIG_0(int argc, VALUE *argv, VALUE se
   int ecode3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -78643,7 +78643,7 @@ _wrap_GaussianProcessRegression_plot_fit__SWIG_0(int argc, VALUE *argv, VALUE se
   } 
   arg4 = static_cast< double >(val4);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78661,7 +78661,7 @@ _wrap_GaussianProcessRegression_plot_fit__SWIG_1(int argc, VALUE *argv, VALUE se
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -78686,7 +78686,7 @@ _wrap_GaussianProcessRegression_plot_fit__SWIG_1(int argc, VALUE *argv, VALUE se
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78701,7 +78701,7 @@ _wrap_GaussianProcessRegression_plot_fit__SWIG_2(int argc, VALUE *argv, VALUE se
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -78721,7 +78721,7 @@ _wrap_GaussianProcessRegression_plot_fit__SWIG_2(int argc, VALUE *argv, VALUE se
   }
   arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78802,9 +78802,9 @@ SWIGINTERN VALUE _wrap_GaussianProcessRegression_plot_fit(int nargs, VALUE *args
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "GaussianProcessRegression.plot_fit", 
-    "    datamunge::plot::RPlot GaussianProcessRegression.plot_fit(datamunge::DataFrame const &data, std::size_t grid_resolution, double level)\n"
-    "    datamunge::plot::RPlot GaussianProcessRegression.plot_fit(datamunge::DataFrame const &data, std::size_t grid_resolution)\n"
-    "    datamunge::plot::RPlot GaussianProcessRegression.plot_fit(datamunge::DataFrame const &data)\n");
+    "    datamunge::graphics::RPlot GaussianProcessRegression.plot_fit(datamunge::DataFrame const &data, std::size_t grid_resolution, double level)\n"
+    "    datamunge::graphics::RPlot GaussianProcessRegression.plot_fit(datamunge::DataFrame const &data, std::size_t grid_resolution)\n"
+    "    datamunge::graphics::RPlot GaussianProcessRegression.plot_fit(datamunge::DataFrame const &data)\n");
   
   return Qnil;
 }
@@ -78815,7 +78815,7 @@ _wrap_GaussianProcessRegression_plot_predicted_vs_actual(int argc, VALUE *argv, 
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -78827,7 +78827,7 @@ _wrap_GaussianProcessRegression_plot_predicted_vs_actual(int argc, VALUE *argv, 
   }
   arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78839,7 +78839,7 @@ _wrap_GaussianProcessRegression_plot_residuals_vs_fitted(int argc, VALUE *argv, 
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -78851,7 +78851,7 @@ _wrap_GaussianProcessRegression_plot_residuals_vs_fitted(int argc, VALUE *argv, 
   }
   arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78863,7 +78863,7 @@ _wrap_GaussianProcessRegression_plot_length_scale_profile(int argc, VALUE *argv,
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -78875,7 +78875,7 @@ _wrap_GaussianProcessRegression_plot_length_scale_profile(int argc, VALUE *argv,
   }
   arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -79404,7 +79404,7 @@ _wrap_NaiveBayesClassifier_plot_classification(int argc, VALUE *argv, VALUE self
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -79446,7 +79446,7 @@ _wrap_NaiveBayesClassifier_plot_classification(int argc, VALUE *argv, VALUE self
     arg4 = ptr;
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -79469,7 +79469,7 @@ _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, 
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -79508,7 +79508,7 @@ _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, 
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -79528,7 +79528,7 @@ _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, 
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -79562,7 +79562,7 @@ _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, 
     arg3 = ptr;
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -79627,8 +79627,8 @@ SWIGINTERN VALUE _wrap_NaiveBayesClassifier_plot_decision_regions(int nargs, VAL
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "NaiveBayesClassifier.plot_decision_regions", 
-    "    datamunge::plot::RPlot NaiveBayesClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
-    "    datamunge::plot::RPlot NaiveBayesClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
+    "    datamunge::graphics::RPlot NaiveBayesClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature, std::size_t grid_resolution)\n"
+    "    datamunge::graphics::RPlot NaiveBayesClassifier.plot_decision_regions(std::string const &x_feature, std::string const &y_feature)\n");
   
   return Qnil;
 }
@@ -81142,7 +81142,7 @@ _wrap_GLM_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   datamunge::GLM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -81154,7 +81154,7 @@ _wrap_GLM_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -81166,7 +81166,7 @@ _wrap_GLM_plot_normal_qq(int argc, VALUE *argv, VALUE self) {
   datamunge::GLM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -81178,7 +81178,7 @@ _wrap_GLM_plot_normal_qq(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
   result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -81190,7 +81190,7 @@ _wrap_GLM_plot_scale_location(int argc, VALUE *argv, VALUE self) {
   datamunge::GLM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -81202,7 +81202,7 @@ _wrap_GLM_plot_scale_location(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
   result = ((datamunge::GLM const *)arg1)->plot_scale_location();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -81214,7 +81214,7 @@ _wrap_GLM_plot_residuals_vs_leverage(int argc, VALUE *argv, VALUE self) {
   datamunge::GLM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -81226,7 +81226,7 @@ _wrap_GLM_plot_residuals_vs_leverage(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -87780,7 +87780,7 @@ static swig_class SwigClassRGB;
 
 SWIGINTERN VALUE
 _wrap_RGB_r_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -87792,9 +87792,9 @@ _wrap_RGB_r_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","r", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","r", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);
   ecode2 = SWIG_AsVal_int(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","r", 2, argv[0] ));
@@ -87809,7 +87809,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RGB_r_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int result;
@@ -87820,9 +87820,9 @@ _wrap_RGB_r_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","r", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","r", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);
   result = (int) ((arg1)->r);
   vresult = SWIG_From_int(static_cast< int >(result));
   return vresult;
@@ -87833,7 +87833,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RGB_g_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -87845,9 +87845,9 @@ _wrap_RGB_g_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","g", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","g", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);
   ecode2 = SWIG_AsVal_int(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","g", 2, argv[0] ));
@@ -87862,7 +87862,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RGB_g_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int result;
@@ -87873,9 +87873,9 @@ _wrap_RGB_g_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","g", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","g", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);
   result = (int) ((arg1)->g);
   vresult = SWIG_From_int(static_cast< int >(result));
   return vresult;
@@ -87886,7 +87886,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RGB_b_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -87898,9 +87898,9 @@ _wrap_RGB_b_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","b", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","b", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);
   ecode2 = SWIG_AsVal_int(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","b", 2, argv[0] ));
@@ -87915,7 +87915,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RGB_b_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int result;
@@ -87926,9 +87926,9 @@ _wrap_RGB_b_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","b", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","b", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);
   result = (int) ((arg1)->b);
   vresult = SWIG_From_int(static_cast< int >(result));
   return vresult;
@@ -87939,7 +87939,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RGB_alpha_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -87951,9 +87951,9 @@ _wrap_RGB_alpha_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","alpha", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","alpha", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","alpha", 2, argv[0] ));
@@ -87968,7 +87968,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RGB_alpha_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -87979,9 +87979,9 @@ _wrap_RGB_alpha_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","alpha", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","alpha", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);
   result = (double) ((arg1)->alpha);
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
@@ -87993,12 +87993,12 @@ fail:
 SWIGINTERN VALUE
 _wrap_new_RGB__SWIG_0(int argc, VALUE *argv, VALUE self) {
   const char *classname SWIGUNUSED = "Octruby::RGB";
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_0();
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_0();
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -88021,7 +88021,7 @@ _wrap_new_RGB__SWIG_1(int argc, VALUE *argv, VALUE self) {
   double val4 ;
   int ecode4 = 0 ;
   const char *classname SWIGUNUSED = "Octruby::RGB";
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
@@ -88046,7 +88046,7 @@ _wrap_new_RGB__SWIG_1(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","RGB", 4, argv[3] ));
   } 
   arg4 = static_cast< double >(val4);
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -88081,7 +88081,7 @@ _wrap_new_RGB__SWIG_2(int argc, VALUE *argv, VALUE self) {
   int val3 ;
   int ecode3 = 0 ;
   const char *classname SWIGUNUSED = "Octruby::RGB";
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
@@ -88101,7 +88101,7 @@ _wrap_new_RGB__SWIG_2(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "int","RGB", 3, argv[2] ));
   } 
   arg3 = static_cast< int >(val3);
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -88185,7 +88185,7 @@ fail:
 
 SWIGINTERN void
 free_datamunge_plot_RGB(void *self) {
-    datamunge::plot::RGB *arg1 = (datamunge::plot::RGB *)self;
+    datamunge::graphics::RGB *arg1 = (datamunge::graphics::RGB *)self;
     delete arg1;
 }
 
@@ -88193,8 +88193,8 @@ static swig_class SwigClassDataSeries;
 
 SWIGINTERN VALUE
 _wrap_DataSeries_kind_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind arg2 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int val2 ;
@@ -88205,14 +88205,14 @@ _wrap_DataSeries_kind_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","kind", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","kind", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   ecode2 = SWIG_AsVal_int(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries::Kind","kind", 2, argv[0] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries::Kind","kind", 2, argv[0] ));
   } 
-  arg2 = static_cast< datamunge::plot::DataSeries::Kind >(val2);
+  arg2 = static_cast< datamunge::graphics::DataSeries::Kind >(val2);
   if (arg1) (arg1)->kind = arg2;
   return Qnil;
 fail:
@@ -88222,10 +88222,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_kind_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries::Kind result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -88233,10 +88233,10 @@ _wrap_DataSeries_kind_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","kind", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","kind", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
-  result = (datamunge::plot::DataSeries::Kind) ((arg1)->kind);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
+  result = (datamunge::graphics::DataSeries::Kind) ((arg1)->kind);
   vresult = SWIG_From_int(static_cast< int >(result));
   return vresult;
 fail:
@@ -88246,7 +88246,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_x_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double,std::allocator< double > > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88258,9 +88258,9 @@ _wrap_DataSeries_x_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","x", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","x", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > *","x", 2, argv[0] )); 
@@ -88275,7 +88275,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_x_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::vector< double,std::allocator< double > > *result = 0 ;
@@ -88286,9 +88286,9 @@ _wrap_DataSeries_x_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","x", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","x", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   result = (std::vector< double,std::allocator< double > > *)& ((arg1)->x);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
   return vresult;
@@ -88299,7 +88299,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_y_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double,std::allocator< double > > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88311,9 +88311,9 @@ _wrap_DataSeries_y_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","y", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","y", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > *","y", 2, argv[0] )); 
@@ -88328,7 +88328,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_y_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::vector< double,std::allocator< double > > *result = 0 ;
@@ -88339,9 +88339,9 @@ _wrap_DataSeries_y_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","y", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","y", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   result = (std::vector< double,std::allocator< double > > *)& ((arg1)->y);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
   return vresult;
@@ -88352,7 +88352,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_label_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88363,9 +88363,9 @@ _wrap_DataSeries_label_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","label", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","label", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -88388,7 +88388,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_label_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
@@ -88399,9 +88399,9 @@ _wrap_DataSeries_label_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","label", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","label", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   result = (std::string *) & ((arg1)->label);
   vresult = SWIG_From_std_string(static_cast< std::string >(*result));
   return vresult;
@@ -88412,8 +88412,8 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_color_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -88424,14 +88424,14 @@ _wrap_DataSeries_color_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","color", 2, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","color", 2, argv[0] )); 
   }
-  arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
   if (arg1) (arg1)->color = *arg2;
   return Qnil;
 fail:
@@ -88441,10 +88441,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_color_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -88452,10 +88452,10 @@ _wrap_DataSeries_color_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   return vresult;
 fail:
@@ -88465,7 +88465,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_stroke_width_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88477,9 +88477,9 @@ _wrap_DataSeries_stroke_width_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","stroke_width", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","stroke_width", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","stroke_width", 2, argv[0] ));
@@ -88494,7 +88494,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_stroke_width_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -88505,9 +88505,9 @@ _wrap_DataSeries_stroke_width_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","stroke_width", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","stroke_width", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   result = (double) ((arg1)->stroke_width);
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
@@ -88518,7 +88518,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_marker_size_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88530,9 +88530,9 @@ _wrap_DataSeries_marker_size_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","marker_size", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","marker_size", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","marker_size", 2, argv[0] ));
@@ -88547,7 +88547,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_marker_size_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -88558,9 +88558,9 @@ _wrap_DataSeries_marker_size_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","marker_size", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","marker_size", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   result = (double) ((arg1)->marker_size);
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
@@ -88571,7 +88571,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_bar_width_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88583,9 +88583,9 @@ _wrap_DataSeries_bar_width_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","bar_width", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","bar_width", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","bar_width", 2, argv[0] ));
@@ -88600,7 +88600,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_bar_width_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -88611,9 +88611,9 @@ _wrap_DataSeries_bar_width_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","bar_width", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","bar_width", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   result = (double) ((arg1)->bar_width);
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
@@ -88624,7 +88624,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_filled_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88636,9 +88636,9 @@ _wrap_DataSeries_filled_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","filled", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","filled", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   ecode2 = SWIG_AsVal_bool(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","filled", 2, argv[0] ));
@@ -88653,7 +88653,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_DataSeries_filled_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -88664,9 +88664,9 @@ _wrap_DataSeries_filled_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::DataSeries *","filled", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","filled", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   result = (bool) ((arg1)->filled);
   vresult = SWIG_From_bool(static_cast< bool >(result));
   return vresult;
@@ -88693,12 +88693,12 @@ _wrap_DataSeries_allocate(int argc, VALUE *argv, VALUE self)
 SWIGINTERN VALUE
 _wrap_new_DataSeries(int argc, VALUE *argv, VALUE self) {
   const char *classname SWIGUNUSED = "Octruby::DataSeries";
-  datamunge::plot::DataSeries *result = 0 ;
+  datamunge::graphics::DataSeries *result = 0 ;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  result = (datamunge::plot::DataSeries *)new datamunge::plot::DataSeries();
+  result = (datamunge::graphics::DataSeries *)new datamunge::graphics::DataSeries();
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -88708,7 +88708,7 @@ fail:
 
 SWIGINTERN void
 free_datamunge_plot_DataSeries(void *self) {
-    datamunge::plot::DataSeries *arg1 = (datamunge::plot::DataSeries *)self;
+    datamunge::graphics::DataSeries *arg1 = (datamunge::graphics::DataSeries *)self;
     delete arg1;
 }
 
@@ -88716,7 +88716,7 @@ static swig_class SwigClassABLine;
 
 SWIGINTERN VALUE
 _wrap_ABLine_vertical_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88728,9 +88728,9 @@ _wrap_ABLine_vertical_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","vertical", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","vertical", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   ecode2 = SWIG_AsVal_bool(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","vertical", 2, argv[0] ));
@@ -88745,7 +88745,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_ABLine_vertical_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -88756,9 +88756,9 @@ _wrap_ABLine_vertical_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","vertical", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","vertical", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   result = (bool) ((arg1)->vertical);
   vresult = SWIG_From_bool(static_cast< bool >(result));
   return vresult;
@@ -88769,7 +88769,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_ABLine_value_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88781,9 +88781,9 @@ _wrap_ABLine_value_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","value", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","value", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","value", 2, argv[0] ));
@@ -88798,7 +88798,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_ABLine_value_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -88809,9 +88809,9 @@ _wrap_ABLine_value_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","value", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","value", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   result = (double) ((arg1)->value);
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
@@ -88822,7 +88822,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_ABLine_slope_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88834,9 +88834,9 @@ _wrap_ABLine_slope_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","slope", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","slope", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","slope", 2, argv[0] ));
@@ -88851,7 +88851,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_ABLine_slope_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -88862,9 +88862,9 @@ _wrap_ABLine_slope_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","slope", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","slope", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   result = (double) ((arg1)->slope);
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
@@ -88875,8 +88875,8 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_ABLine_color_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -88887,14 +88887,14 @@ _wrap_ABLine_color_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","color", 2, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","color", 2, argv[0] )); 
   }
-  arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
   if (arg1) (arg1)->color = *arg2;
   return Qnil;
 fail:
@@ -88904,10 +88904,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_ABLine_color_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -88915,10 +88915,10 @@ _wrap_ABLine_color_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   return vresult;
 fail:
@@ -88928,7 +88928,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_ABLine_stroke_width_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -88940,9 +88940,9 @@ _wrap_ABLine_stroke_width_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","stroke_width", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","stroke_width", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","stroke_width", 2, argv[0] ));
@@ -88957,7 +88957,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_ABLine_stroke_width_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -88968,9 +88968,9 @@ _wrap_ABLine_stroke_width_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::ABLine *","stroke_width", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","stroke_width", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   result = (double) ((arg1)->stroke_width);
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
@@ -88997,12 +88997,12 @@ _wrap_ABLine_allocate(int argc, VALUE *argv, VALUE self)
 SWIGINTERN VALUE
 _wrap_new_ABLine(int argc, VALUE *argv, VALUE self) {
   const char *classname SWIGUNUSED = "Octruby::ABLine";
-  datamunge::plot::ABLine *result = 0 ;
+  datamunge::graphics::ABLine *result = 0 ;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
+  result = (datamunge::graphics::ABLine *)new datamunge::graphics::ABLine();
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -89012,7 +89012,7 @@ fail:
 
 SWIGINTERN void
 free_datamunge_plot_ABLine(void *self) {
-    datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *)self;
+    datamunge::graphics::ABLine *arg1 = (datamunge::graphics::ABLine *)self;
     delete arg1;
 }
 
@@ -89020,7 +89020,7 @@ static swig_class SwigClassLegendEntry;
 
 SWIGINTERN VALUE
 _wrap_LegendEntry_label_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -89031,9 +89031,9 @@ _wrap_LegendEntry_label_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::LegendEntry *","label", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::LegendEntry *","label", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -89056,7 +89056,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_LegendEntry_label_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
@@ -89067,9 +89067,9 @@ _wrap_LegendEntry_label_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::LegendEntry *","label", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::LegendEntry *","label", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
   result = (std::string *) & ((arg1)->label);
   vresult = SWIG_From_std_string(static_cast< std::string >(*result));
   return vresult;
@@ -89080,8 +89080,8 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_LegendEntry_color_set(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -89092,14 +89092,14 @@ _wrap_LegendEntry_color_set(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::LegendEntry *","color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::LegendEntry *","color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
   res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB *","color", 2, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","color", 2, argv[0] )); 
   }
-  arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
   if (arg1) (arg1)->color = *arg2;
   return Qnil;
 fail:
@@ -89109,10 +89109,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_LegendEntry_color_get(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -89120,10 +89120,10 @@ _wrap_LegendEntry_color_get(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::LegendEntry *","color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::LegendEntry *","color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   return vresult;
 fail:
@@ -89149,12 +89149,12 @@ _wrap_LegendEntry_allocate(int argc, VALUE *argv, VALUE self)
 SWIGINTERN VALUE
 _wrap_new_LegendEntry(int argc, VALUE *argv, VALUE self) {
   const char *classname SWIGUNUSED = "Octruby::LegendEntry";
-  datamunge::plot::LegendEntry *result = 0 ;
+  datamunge::graphics::LegendEntry *result = 0 ;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
+  result = (datamunge::graphics::LegendEntry *)new datamunge::graphics::LegendEntry();
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -89164,7 +89164,7 @@ fail:
 
 SWIGINTERN void
 free_datamunge_plot_LegendEntry(void *self) {
-    datamunge::plot::LegendEntry *arg1 = (datamunge::plot::LegendEntry *)self;
+    datamunge::graphics::LegendEntry *arg1 = (datamunge::graphics::LegendEntry *)self;
     delete arg1;
 }
 
@@ -89172,7 +89172,7 @@ static swig_class SwigClassPlot;
 
 SWIGINTERN void
 free_datamunge_plot_Plot(void *self) {
-    datamunge::plot::Plot *arg1 = (datamunge::plot::Plot *)self;
+    datamunge::graphics::Plot *arg1 = (datamunge::graphics::Plot *)self;
     delete arg1;
 }
 
@@ -89186,7 +89186,7 @@ Size or Length of the Plot.
 */
 SWIGINTERN VALUE
 _wrap_Plot_size(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   void *argp1 = 0 ;
@@ -89195,7 +89195,7 @@ _wrap_Plot_size(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -89203,9 +89203,9 @@ _wrap_Plot_size(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","size", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","size", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","size", 2, argv[0] ));
@@ -89216,7 +89216,7 @@ _wrap_Plot_size(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","size", 3, argv[1] ));
   } 
   arg3 = static_cast< std::size_t >(val3);
-  result = (datamunge::plot::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89226,11 +89226,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_title(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -89238,9 +89238,9 @@ _wrap_Plot_title(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","title", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","title", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -89250,7 +89250,7 @@ _wrap_Plot_title(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89260,11 +89260,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_x_label(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -89272,9 +89272,9 @@ _wrap_Plot_x_label(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","x_label", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","x_label", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -89284,7 +89284,7 @@ _wrap_Plot_x_label(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89294,11 +89294,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_y_label(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -89306,9 +89306,9 @@ _wrap_Plot_y_label(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","y_label", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","y_label", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -89318,7 +89318,7 @@ _wrap_Plot_y_label(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89328,13 +89328,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_background(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -89342,21 +89342,21 @@ _wrap_Plot_background(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","background", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","background", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","background", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","background", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","background", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","background", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89366,13 +89366,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_axis_color(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -89380,21 +89380,21 @@ _wrap_Plot_axis_color(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","axis_color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","axis_color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","axis_color", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","axis_color", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","axis_color", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","axis_color", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89404,13 +89404,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_grid_color(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -89418,21 +89418,21 @@ _wrap_Plot_grid_color(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","grid_color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","grid_color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","grid_color", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","grid_color", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","grid_color", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","grid_color", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89442,13 +89442,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_show_grid__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -89456,15 +89456,15 @@ _wrap_Plot_show_grid__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","show_grid", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","show_grid", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   ecode2 = SWIG_AsVal_bool(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","show_grid", 2, argv[0] ));
   } 
   arg2 = static_cast< bool >(val2);
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid(arg2);
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid(arg2);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89474,10 +89474,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_show_grid__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -89485,10 +89485,10 @@ _wrap_Plot_show_grid__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","show_grid", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","show_grid", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid();
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89534,8 +89534,8 @@ SWIGINTERN VALUE _wrap_Plot_show_grid(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "Plot.show_grid", 
-    "    datamunge::plot::Plot Plot.show_grid(bool enabled)\n"
-    "    datamunge::plot::Plot & Plot.show_grid()\n");
+    "    datamunge::graphics::Plot Plot.show_grid(bool enabled)\n"
+    "    datamunge::graphics::Plot & Plot.show_grid()\n");
   
   return Qnil;
 }
@@ -89543,7 +89543,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_x_limits(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -89552,7 +89552,7 @@ _wrap_Plot_x_limits(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -89560,9 +89560,9 @@ _wrap_Plot_x_limits(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","x_limits", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","x_limits", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","x_limits", 2, argv[0] ));
@@ -89573,7 +89573,7 @@ _wrap_Plot_x_limits(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","x_limits", 3, argv[1] ));
   } 
   arg3 = static_cast< double >(val3);
-  result = (datamunge::plot::Plot *) &(arg1)->x_limits(arg2,arg3);
+  result = (datamunge::graphics::Plot *) &(arg1)->x_limits(arg2,arg3);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89583,7 +89583,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_y_limits(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -89592,7 +89592,7 @@ _wrap_Plot_y_limits(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -89600,9 +89600,9 @@ _wrap_Plot_y_limits(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","y_limits", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","y_limits", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","y_limits", 2, argv[0] ));
@@ -89613,7 +89613,7 @@ _wrap_Plot_y_limits(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","y_limits", 3, argv[1] ));
   } 
   arg3 = static_cast< double >(val3);
-  result = (datamunge::plot::Plot *) &(arg1)->y_limits(arg2,arg3);
+  result = (datamunge::graphics::Plot *) &(arg1)->y_limits(arg2,arg3);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89623,13 +89623,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_hide_axes__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -89637,15 +89637,15 @@ _wrap_Plot_hide_axes__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","hide_axes", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","hide_axes", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   ecode2 = SWIG_AsVal_bool(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","hide_axes", 2, argv[0] ));
   } 
   arg2 = static_cast< bool >(val2);
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes(arg2);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89655,10 +89655,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_hide_axes__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -89666,10 +89666,10 @@ _wrap_Plot_hide_axes__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","hide_axes", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","hide_axes", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes();
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89715,8 +89715,8 @@ SWIGINTERN VALUE _wrap_Plot_hide_axes(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "Plot.hide_axes", 
-    "    datamunge::plot::Plot Plot.hide_axes(bool enabled)\n"
-    "    datamunge::plot::Plot & Plot.hide_axes()\n");
+    "    datamunge::graphics::Plot Plot.hide_axes(bool enabled)\n"
+    "    datamunge::graphics::Plot & Plot.hide_axes()\n");
   
   return Qnil;
 }
@@ -89724,11 +89724,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -89736,9 +89736,9 @@ _wrap_Plot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot *","x_tick_labels", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","x_tick_labels", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -89748,7 +89748,7 @@ _wrap_Plot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   return vresult;
 fail:
@@ -89758,7 +89758,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_width(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::size_t result;
@@ -89769,10 +89769,10 @@ _wrap_Plot_width(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","width", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","width", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = ((datamunge::plot::Plot const *)arg1)->width();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = ((datamunge::graphics::Plot const *)arg1)->width();
   vresult = SWIG_From_size_t(static_cast< size_t >(result));
   return vresult;
 fail:
@@ -89782,7 +89782,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_height(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::size_t result;
@@ -89793,10 +89793,10 @@ _wrap_Plot_height(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","height", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","height", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = ((datamunge::plot::Plot const *)arg1)->height();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = ((datamunge::graphics::Plot const *)arg1)->height();
   vresult = SWIG_From_size_t(static_cast< size_t >(result));
   return vresult;
 fail:
@@ -89806,7 +89806,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_title_text(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
@@ -89817,10 +89817,10 @@ _wrap_Plot_title_text(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","title_text", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","title_text", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->title_text();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->title_text();
   vresult = SWIG_From_std_string(static_cast< std::string >(*result));
   return vresult;
 fail:
@@ -89830,7 +89830,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_x_label_text(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
@@ -89841,10 +89841,10 @@ _wrap_Plot_x_label_text(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","x_label_text", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","x_label_text", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->x_label_text();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->x_label_text();
   vresult = SWIG_From_std_string(static_cast< std::string >(*result));
   return vresult;
 fail:
@@ -89854,7 +89854,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_y_label_text(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
@@ -89865,10 +89865,10 @@ _wrap_Plot_y_label_text(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","y_label_text", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","y_label_text", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->y_label_text();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->y_label_text();
   vresult = SWIG_From_std_string(static_cast< std::string >(*result));
   return vresult;
 fail:
@@ -89878,10 +89878,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_series(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  std::vector< datamunge::plot::DataSeries,std::allocator< datamunge::plot::DataSeries > > *result = 0 ;
+  std::vector< datamunge::graphics::DataSeries,std::allocator< datamunge::graphics::DataSeries > > *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -89889,10 +89889,10 @@ _wrap_Plot_series(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","series", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","series", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (std::vector< datamunge::plot::DataSeries,std::allocator< datamunge::plot::DataSeries > > *) &((datamunge::plot::Plot const *)arg1)->series();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::vector< datamunge::graphics::DataSeries,std::allocator< datamunge::graphics::DataSeries > > *) &((datamunge::graphics::Plot const *)arg1)->series();
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t, 0 |  0 );
   return vresult;
 fail:
@@ -89902,10 +89902,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_background_color(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -89913,11 +89913,11 @@ _wrap_Plot_background_color(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","background_color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","background_color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = ((datamunge::plot::Plot const *)arg1)->background_color();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = ((datamunge::graphics::Plot const *)arg1)->background_color();
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89926,10 +89926,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_axes_color(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -89937,11 +89937,11 @@ _wrap_Plot_axes_color(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","axes_color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","axes_color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = ((datamunge::plot::Plot const *)arg1)->axes_color();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89950,10 +89950,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_major_grid_color(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -89961,11 +89961,11 @@ _wrap_Plot_major_grid_color(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","major_grid_color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","major_grid_color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = ((datamunge::plot::Plot const *)arg1)->major_grid_color();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89974,7 +89974,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_grid_visible(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -89985,10 +89985,10 @@ _wrap_Plot_grid_visible(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","grid_visible", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","grid_visible", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (bool)((datamunge::plot::Plot const *)arg1)->grid_visible();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->grid_visible();
   vresult = SWIG_From_bool(static_cast< bool >(result));
   return vresult;
 fail:
@@ -89998,7 +89998,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_has_x_limits(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -90009,10 +90009,10 @@ _wrap_Plot_has_x_limits(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","has_x_limits", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","has_x_limits", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_x_limits();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_x_limits();
   vresult = SWIG_From_bool(static_cast< bool >(result));
   return vresult;
 fail:
@@ -90022,7 +90022,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_has_y_limits(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -90033,10 +90033,10 @@ _wrap_Plot_has_y_limits(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","has_y_limits", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","has_y_limits", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_y_limits();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_y_limits();
   vresult = SWIG_From_bool(static_cast< bool >(result));
   return vresult;
 fail:
@@ -90046,7 +90046,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_x_min(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -90057,10 +90057,10 @@ _wrap_Plot_x_min(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","x_min", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","x_min", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_min();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_min();
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
 fail:
@@ -90070,7 +90070,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_x_max(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -90081,10 +90081,10 @@ _wrap_Plot_x_max(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","x_max", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","x_max", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_max();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_max();
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
 fail:
@@ -90094,7 +90094,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_y_min(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -90105,10 +90105,10 @@ _wrap_Plot_y_min(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","y_min", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","y_min", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_min();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_min();
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
 fail:
@@ -90118,7 +90118,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_y_max(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -90129,10 +90129,10 @@ _wrap_Plot_y_max(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","y_max", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","y_max", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_max();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_max();
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
 fail:
@@ -90142,7 +90142,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_axes_hidden(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -90153,10 +90153,10 @@ _wrap_Plot_axes_hidden(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","axes_hidden", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","axes_hidden", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->axes_hidden();
   vresult = SWIG_From_bool(static_cast< bool >(result));
   return vresult;
 fail:
@@ -90166,7 +90166,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_x_tick_label_list(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *result = 0 ;
@@ -90177,10 +90177,10 @@ _wrap_Plot_x_tick_label_list(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","x_tick_label_list", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","x_tick_label_list", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (std::vector< std::string,std::allocator< std::string > > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::vector< std::string,std::allocator< std::string > > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_label_list();
   vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(*result));
   return vresult;
 fail:
@@ -90190,10 +90190,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_reference_lines(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  std::vector< datamunge::plot::ABLine,std::allocator< datamunge::plot::ABLine > > *result = 0 ;
+  std::vector< datamunge::graphics::ABLine,std::allocator< datamunge::graphics::ABLine > > *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -90201,10 +90201,10 @@ _wrap_Plot_reference_lines(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","reference_lines", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","reference_lines", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (std::vector< datamunge::plot::ABLine,std::allocator< datamunge::plot::ABLine > > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::vector< datamunge::graphics::ABLine,std::allocator< datamunge::graphics::ABLine > > *) &((datamunge::graphics::Plot const *)arg1)->reference_lines();
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t, 0 |  0 );
   return vresult;
 fail:
@@ -90214,10 +90214,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_legend_entries(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  std::vector< datamunge::plot::LegendEntry,std::allocator< datamunge::plot::LegendEntry > > *result = 0 ;
+  std::vector< datamunge::graphics::LegendEntry,std::allocator< datamunge::graphics::LegendEntry > > *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -90225,10 +90225,10 @@ _wrap_Plot_legend_entries(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","legend_entries", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","legend_entries", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = (std::vector< datamunge::plot::LegendEntry,std::allocator< datamunge::plot::LegendEntry > > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::vector< datamunge::graphics::LegendEntry,std::allocator< datamunge::graphics::LegendEntry > > *) &((datamunge::graphics::Plot const *)arg1)->legend_entries();
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t, 0 |  0 );
   return vresult;
 fail:
@@ -90238,7 +90238,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_to_svg(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string result;
@@ -90249,10 +90249,10 @@ _wrap_Plot_to_svg(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","to_svg", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","to_svg", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  result = ((datamunge::plot::Plot const *)arg1)->to_svg();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = ((datamunge::graphics::Plot const *)arg1)->to_svg();
   vresult = SWIG_From_std_string(static_cast< std::string >(result));
   return vresult;
 fail:
@@ -90262,7 +90262,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_save(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -90273,9 +90273,9 @@ _wrap_Plot_save(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","save", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","save", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -90287,7 +90287,7 @@ _wrap_Plot_save(int argc, VALUE *argv, VALUE self) {
     }
     arg2 = ptr;
   }
-  ((datamunge::plot::Plot const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save((std::string const &)*arg2);
   if (SWIG_IsNewObj(res2)) delete arg2;
   return Qnil;
 fail:
@@ -90298,7 +90298,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_save_svg(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -90309,9 +90309,9 @@ _wrap_Plot_save_svg(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","save_svg", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","save_svg", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -90323,7 +90323,7 @@ _wrap_Plot_save_svg(int argc, VALUE *argv, VALUE self) {
     }
     arg2 = ptr;
   }
-  ((datamunge::plot::Plot const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save_svg((std::string const &)*arg2);
   if (SWIG_IsNewObj(res2)) delete arg2;
   return Qnil;
 fail:
@@ -90334,7 +90334,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_view__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -90345,9 +90345,9 @@ _wrap_Plot_view__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","view", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","view", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -90359,7 +90359,7 @@ _wrap_Plot_view__SWIG_0(int argc, VALUE *argv, VALUE self) {
     }
     arg2 = ptr;
   }
-  ((datamunge::plot::Plot const *)arg1)->view((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->view((std::string const &)*arg2);
   if (SWIG_IsNewObj(res2)) delete arg2;
   return Qnil;
 fail:
@@ -90370,7 +90370,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_view__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   
@@ -90379,10 +90379,10 @@ _wrap_Plot_view__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","view", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","view", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  ((datamunge::plot::Plot const *)arg1)->view();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  ((datamunge::graphics::Plot const *)arg1)->view();
   return Qnil;
 fail:
   return Qnil;
@@ -90434,7 +90434,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_show__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -90445,9 +90445,9 @@ _wrap_Plot_show__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","show", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","show", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -90459,7 +90459,7 @@ _wrap_Plot_show__SWIG_0(int argc, VALUE *argv, VALUE self) {
     }
     arg2 = ptr;
   }
-  ((datamunge::plot::Plot const *)arg1)->show((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->show((std::string const &)*arg2);
   if (SWIG_IsNewObj(res2)) delete arg2;
   return Qnil;
 fail:
@@ -90470,7 +90470,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_Plot_show__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   
@@ -90479,10 +90479,10 @@ _wrap_Plot_show__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::Plot const *","show", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","show", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
-  ((datamunge::plot::Plot const *)arg1)->show();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  ((datamunge::graphics::Plot const *)arg1)->show();
   return Qnil;
 fail:
   return Qnil;
@@ -90550,12 +90550,12 @@ _wrap_Plot_allocate(int argc, VALUE *argv, VALUE self)
 SWIGINTERN VALUE
 _wrap_new_Plot(int argc, VALUE *argv, VALUE self) {
   const char *classname SWIGUNUSED = "Octruby::Plot";
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  result = (datamunge::plot::Plot *)new datamunge::plot::Plot();
+  result = (datamunge::graphics::Plot *)new datamunge::graphics::Plot();
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -90567,14 +90567,14 @@ static swig_class SwigClassRPlot;
 
 SWIGINTERN VALUE
 _wrap_RPlot_create(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  result = datamunge::plot::RPlot::create();
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::create();
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90591,7 +90591,7 @@ Size or Length of the RPlot.
 */
 SWIGINTERN VALUE
 _wrap_RPlot_size(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   void *argp1 = 0 ;
@@ -90600,7 +90600,7 @@ _wrap_RPlot_size(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -90608,9 +90608,9 @@ _wrap_RPlot_size(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","size", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","size", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","size", 2, argv[0] ));
@@ -90621,7 +90621,7 @@ _wrap_RPlot_size(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","size", 3, argv[1] ));
   } 
   arg3 = static_cast< std::size_t >(val3);
-  result = (datamunge::plot::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90631,11 +90631,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_title(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -90643,9 +90643,9 @@ _wrap_RPlot_title(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","title", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","title", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -90655,7 +90655,7 @@ _wrap_RPlot_title(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90665,11 +90665,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_x_label(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -90677,9 +90677,9 @@ _wrap_RPlot_x_label(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","x_label", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","x_label", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -90689,7 +90689,7 @@ _wrap_RPlot_x_label(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90699,11 +90699,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_y_label(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -90711,9 +90711,9 @@ _wrap_RPlot_y_label(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","y_label", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","y_label", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -90723,7 +90723,7 @@ _wrap_RPlot_y_label(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90733,11 +90733,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_xlab(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -90745,9 +90745,9 @@ _wrap_RPlot_xlab(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","xlab", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","xlab", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -90757,7 +90757,7 @@ _wrap_RPlot_xlab(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90767,11 +90767,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_ylab(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -90779,9 +90779,9 @@ _wrap_RPlot_ylab(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","ylab", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","ylab", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -90791,7 +90791,7 @@ _wrap_RPlot_ylab(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90801,13 +90801,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_background(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -90815,21 +90815,21 @@ _wrap_RPlot_background(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","background", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","background", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","background", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","background", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","background", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","background", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90839,13 +90839,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_axis_color(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -90853,21 +90853,21 @@ _wrap_RPlot_axis_color(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","axis_color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","axis_color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","axis_color", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","axis_color", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","axis_color", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","axis_color", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90877,13 +90877,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_grid_color(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -90891,21 +90891,21 @@ _wrap_RPlot_grid_color(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","grid_color", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","grid_color", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::RGB","grid_color", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","grid_color", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","grid_color", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","grid_color", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90915,13 +90915,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_show_grid__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -90929,15 +90929,15 @@ _wrap_RPlot_show_grid__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","show_grid", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","show_grid", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_bool(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","show_grid", 2, argv[0] ));
   } 
   arg2 = static_cast< bool >(val2);
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid(arg2);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -90947,10 +90947,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_show_grid__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -90958,10 +90958,10 @@ _wrap_RPlot_show_grid__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","show_grid", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","show_grid", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid();
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid();
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -91007,8 +91007,8 @@ SWIGINTERN VALUE _wrap_RPlot_show_grid(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "RPlot.show_grid", 
-    "    datamunge::plot::RPlot RPlot.show_grid(bool enabled)\n"
-    "    datamunge::plot::RPlot & RPlot.show_grid()\n");
+    "    datamunge::graphics::RPlot RPlot.show_grid(bool enabled)\n"
+    "    datamunge::graphics::RPlot & RPlot.show_grid()\n");
   
   return Qnil;
 }
@@ -91016,7 +91016,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_x_limits(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -91025,7 +91025,7 @@ _wrap_RPlot_x_limits(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -91033,9 +91033,9 @@ _wrap_RPlot_x_limits(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","x_limits", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","x_limits", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","x_limits", 2, argv[0] ));
@@ -91046,7 +91046,7 @@ _wrap_RPlot_x_limits(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","x_limits", 3, argv[1] ));
   } 
   arg3 = static_cast< double >(val3);
-  result = (datamunge::plot::RPlot *) &(arg1)->x_limits(arg2,arg3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_limits(arg2,arg3);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -91056,7 +91056,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_y_limits(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -91065,7 +91065,7 @@ _wrap_RPlot_y_limits(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -91073,9 +91073,9 @@ _wrap_RPlot_y_limits(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","y_limits", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","y_limits", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","y_limits", 2, argv[0] ));
@@ -91086,7 +91086,7 @@ _wrap_RPlot_y_limits(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","y_limits", 3, argv[1] ));
   } 
   arg3 = static_cast< double >(val3);
-  result = (datamunge::plot::RPlot *) &(arg1)->y_limits(arg2,arg3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_limits(arg2,arg3);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -91096,13 +91096,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_hide_axes__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -91110,15 +91110,15 @@ _wrap_RPlot_hide_axes__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","hide_axes", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","hide_axes", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_bool(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","hide_axes", 2, argv[0] ));
   } 
   arg2 = static_cast< bool >(val2);
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes(arg2);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -91128,10 +91128,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_hide_axes__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
@@ -91139,10 +91139,10 @@ _wrap_RPlot_hide_axes__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","hide_axes", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","hide_axes", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes();
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes();
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -91188,8 +91188,8 @@ SWIGINTERN VALUE _wrap_RPlot_hide_axes(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "RPlot.hide_axes", 
-    "    datamunge::plot::RPlot RPlot.hide_axes(bool enabled)\n"
-    "    datamunge::plot::RPlot & RPlot.hide_axes()\n");
+    "    datamunge::graphics::RPlot RPlot.hide_axes(bool enabled)\n"
+    "    datamunge::graphics::RPlot & RPlot.hide_axes()\n");
   
   return Qnil;
 }
@@ -91197,11 +91197,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -91209,9 +91209,9 @@ _wrap_RPlot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","x_tick_labels", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","x_tick_labels", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -91221,7 +91221,7 @@ _wrap_RPlot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -91235,10 +91235,10 @@ _wrap_RPlot_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 5) || (argc > 5)) {
@@ -91248,7 +91248,7 @@ _wrap_RPlot_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::plot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::plot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91257,7 +91257,7 @@ _wrap_RPlot_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::plot", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::plot", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91266,7 +91266,7 @@ _wrap_RPlot_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::plot", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::plot", 3, argv[2] )); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91275,7 +91275,7 @@ _wrap_RPlot_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[3], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::plot", 4, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::plot", 4, argv[3] )); 
     }
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91283,16 +91283,16 @@ _wrap_RPlot_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[4], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","datamunge::plot::RPlot::plot", 5, argv[4] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::plot", 5, argv[4] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","datamunge::plot::RPlot::plot", 5, argv[4]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::plot", 5, argv[4]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91305,7 +91305,7 @@ _wrap_RPlot_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -91315,7 +91315,7 @@ _wrap_RPlot_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::plot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::plot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91324,7 +91324,7 @@ _wrap_RPlot_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::plot", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::plot", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91333,7 +91333,7 @@ _wrap_RPlot_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::plot", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::plot", 3, argv[2] )); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91342,13 +91342,13 @@ _wrap_RPlot_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[3], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::plot", 4, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::plot", 4, argv[3] )); 
     }
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91360,7 +91360,7 @@ _wrap_RPlot_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::string arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -91370,7 +91370,7 @@ _wrap_RPlot_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::plot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::plot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91379,7 +91379,7 @@ _wrap_RPlot_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::plot", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::plot", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91388,13 +91388,13 @@ _wrap_RPlot_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::plot", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::plot", 3, argv[2] )); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91405,7 +91405,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_plot__SWIG_3(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< double,std::allocator< double > > arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -91415,7 +91415,7 @@ _wrap_RPlot_plot__SWIG_3(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::plot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::plot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91424,13 +91424,13 @@ _wrap_RPlot_plot__SWIG_3(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::plot", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::plot", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91523,10 +91523,10 @@ SWIGINTERN VALUE _wrap_RPlot_plot(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "RPlot.plot", 
-    "    datamunge::plot::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type, std::string label)\n"
-    "    datamunge::plot::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type)\n"
-    "    datamunge::plot::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
+    "    datamunge::graphics::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type, std::string label)\n"
+    "    datamunge::graphics::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type)\n"
+    "    datamunge::graphics::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
   
   return Qnil;
 }
@@ -91537,12 +91537,12 @@ _wrap_RPlot_hist__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   size_t val2 ;
   int ecode2 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -91552,21 +91552,21 @@ _wrap_RPlot_hist__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::hist", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::hist", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   ecode2 = SWIG_AsVal_size_t(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::plot::RPlot::hist", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::RPlot::hist", 2, argv[1] ));
   } 
   arg2 = static_cast< std::size_t >(val2);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::hist", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::hist", 3, argv[2] )); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91574,16 +91574,16 @@ _wrap_RPlot_hist__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[3], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","datamunge::plot::RPlot::hist", 4, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::hist", 4, argv[3] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","datamunge::plot::RPlot::hist", 4, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::hist", 4, argv[3]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91597,7 +91597,7 @@ _wrap_RPlot_hist__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::string arg3 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -91607,27 +91607,27 @@ _wrap_RPlot_hist__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::hist", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::hist", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   ecode2 = SWIG_AsVal_size_t(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::plot::RPlot::hist", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::RPlot::hist", 2, argv[1] ));
   } 
   arg2 = static_cast< std::size_t >(val2);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::hist", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::hist", 3, argv[2] )); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91640,7 +91640,7 @@ _wrap_RPlot_hist__SWIG_2(int argc, VALUE *argv, VALUE self) {
   std::size_t arg2 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -91650,18 +91650,18 @@ _wrap_RPlot_hist__SWIG_2(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::hist", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::hist", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   ecode2 = SWIG_AsVal_size_t(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::plot::RPlot::hist", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::RPlot::hist", 2, argv[1] ));
   } 
   arg2 = static_cast< std::size_t >(val2);
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91671,7 +91671,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_RPlot_hist__SWIG_3(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -91681,13 +91681,13 @@ _wrap_RPlot_hist__SWIG_3(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::hist", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::hist", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91770,10 +91770,10 @@ SWIGINTERN VALUE _wrap_RPlot_hist(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "RPlot.hist", 
-    "    datamunge::plot::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins, std::string label)\n"
-    "    datamunge::plot::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins)\n"
-    "    datamunge::plot::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data)\n");
+    "    datamunge::graphics::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins, std::string label)\n"
+    "    datamunge::graphics::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins)\n"
+    "    datamunge::graphics::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data)\n");
   
   return Qnil;
 }
@@ -91784,10 +91784,10 @@ _wrap_RPlot_barplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -91797,7 +91797,7 @@ _wrap_RPlot_barplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::barplot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::barplot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91806,7 +91806,7 @@ _wrap_RPlot_barplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::plot::RPlot::barplot", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::graphics::RPlot::barplot", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91815,7 +91815,7 @@ _wrap_RPlot_barplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::barplot", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::barplot", 3, argv[2] )); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91823,16 +91823,16 @@ _wrap_RPlot_barplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[3], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","datamunge::plot::RPlot::barplot", 4, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::barplot", 4, argv[3] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","datamunge::plot::RPlot::barplot", 4, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::barplot", 4, argv[3]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91844,7 +91844,7 @@ _wrap_RPlot_barplot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
   std::string arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -91854,7 +91854,7 @@ _wrap_RPlot_barplot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::barplot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::barplot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91863,7 +91863,7 @@ _wrap_RPlot_barplot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::plot::RPlot::barplot", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::graphics::RPlot::barplot", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91872,13 +91872,13 @@ _wrap_RPlot_barplot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::barplot", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::barplot", 3, argv[2] )); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91889,7 +91889,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_barplot__SWIG_2(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -91899,7 +91899,7 @@ _wrap_RPlot_barplot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::barplot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::barplot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -91908,13 +91908,13 @@ _wrap_RPlot_barplot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::plot::RPlot::barplot", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::graphics::RPlot::barplot", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91924,7 +91924,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_RPlot_barplot__SWIG_3(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -91934,13 +91934,13 @@ _wrap_RPlot_barplot__SWIG_3(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::barplot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::barplot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92017,10 +92017,10 @@ SWIGINTERN VALUE _wrap_RPlot_barplot(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "RPlot.barplot", 
-    "    datamunge::plot::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names, std::string label)\n"
-    "    datamunge::plot::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names)\n"
-    "    datamunge::plot::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights)\n");
+    "    datamunge::graphics::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names, std::string label)\n"
+    "    datamunge::graphics::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names)\n"
+    "    datamunge::graphics::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights)\n");
   
   return Qnil;
 }
@@ -92030,10 +92030,10 @@ SWIGINTERN VALUE
 _wrap_RPlot_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -92043,7 +92043,7 @@ _wrap_RPlot_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >","datamunge::plot::RPlot::boxplot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >","datamunge::graphics::RPlot::boxplot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92052,7 +92052,7 @@ _wrap_RPlot_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::plot::RPlot::boxplot", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::graphics::RPlot::boxplot", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92060,16 +92060,16 @@ _wrap_RPlot_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","datamunge::plot::RPlot::boxplot", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::boxplot", 3, argv[2] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","datamunge::plot::RPlot::boxplot", 3, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::boxplot", 3, argv[2]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92080,7 +92080,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_boxplot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -92090,7 +92090,7 @@ _wrap_RPlot_boxplot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >","datamunge::plot::RPlot::boxplot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >","datamunge::graphics::RPlot::boxplot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92099,13 +92099,13 @@ _wrap_RPlot_boxplot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::plot::RPlot::boxplot", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::graphics::RPlot::boxplot", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92115,7 +92115,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_RPlot_boxplot__SWIG_2(int argc, VALUE *argv, VALUE self) {
   std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -92125,13 +92125,13 @@ _wrap_RPlot_boxplot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >","datamunge::plot::RPlot::boxplot", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >","datamunge::graphics::RPlot::boxplot", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92188,9 +92188,9 @@ SWIGINTERN VALUE _wrap_RPlot_boxplot(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "RPlot.boxplot", 
-    "    datamunge::plot::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups, std::vector< std::string,std::allocator< std::string > > names, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups, std::vector< std::string,std::allocator< std::string > > names)\n"
-    "    datamunge::plot::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups)\n");
+    "    datamunge::graphics::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups, std::vector< std::string,std::allocator< std::string > > names, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups, std::vector< std::string,std::allocator< std::string > > names)\n"
+    "    datamunge::graphics::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups)\n");
   
   return Qnil;
 }
@@ -92200,10 +92200,10 @@ SWIGINTERN VALUE
 _wrap_RPlot_pie__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg3 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -92213,7 +92213,7 @@ _wrap_RPlot_pie__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::pie", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::pie", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92222,7 +92222,7 @@ _wrap_RPlot_pie__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::plot::RPlot::pie", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::graphics::RPlot::pie", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92230,16 +92230,16 @@ _wrap_RPlot_pie__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > >","datamunge::plot::RPlot::pie", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >","datamunge::graphics::RPlot::pie", 3, argv[2] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > >","datamunge::plot::RPlot::pie", 3, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >","datamunge::graphics::RPlot::pie", 3, argv[2]));
     } else {
-      arg3 = *(reinterpret_cast< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > * >(argp3));
+      arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > * >(argp3));
     }
   }
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92250,7 +92250,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_pie__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -92260,7 +92260,7 @@ _wrap_RPlot_pie__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::pie", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::pie", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92269,13 +92269,13 @@ _wrap_RPlot_pie__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::plot::RPlot::pie", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::graphics::RPlot::pie", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92285,7 +92285,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_RPlot_pie__SWIG_2(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -92295,13 +92295,13 @@ _wrap_RPlot_pie__SWIG_2(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::pie", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::pie", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92358,9 +92358,9 @@ SWIGINTERN VALUE _wrap_RPlot_pie(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "RPlot.pie", 
-    "    datamunge::plot::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values, std::vector< std::string,std::allocator< std::string > > names, std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > colors)\n"
-    "    datamunge::plot::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values, std::vector< std::string,std::allocator< std::string > > names)\n"
-    "    datamunge::plot::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values)\n");
+    "    datamunge::graphics::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values, std::vector< std::string,std::allocator< std::string > > names, std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > colors)\n"
+    "    datamunge::graphics::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values, std::vector< std::string,std::allocator< std::string > > names)\n"
+    "    datamunge::graphics::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values)\n");
   
   return Qnil;
 }
@@ -92373,7 +92373,7 @@ _wrap_RPlot_curve__SWIG_0(int argc, VALUE *argv, VALUE self) {
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -92384,7 +92384,7 @@ _wrap_RPlot_curve__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int ecode4 = 0 ;
   void *argp6 = 0 ;
   int res6 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 6) || (argc > 6)) {
@@ -92392,32 +92392,32 @@ _wrap_RPlot_curve__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback &","datamunge::plot::RPlot::curve", 1, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback &","datamunge::graphics::RPlot::curve", 1, argv[0] )); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::Callback &","datamunge::plot::RPlot::curve", 1, argv[0])); 
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::Callback &","datamunge::graphics::RPlot::curve", 1, argv[0])); 
   }
   arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::plot::RPlot::curve", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::graphics::RPlot::curve", 2, argv[1] ));
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_double(argv[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::plot::RPlot::curve", 3, argv[2] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::graphics::RPlot::curve", 3, argv[2] ));
   } 
   arg3 = static_cast< double >(val3);
   ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","datamunge::plot::RPlot::curve", 4, argv[3] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::RPlot::curve", 4, argv[3] ));
   } 
   arg4 = static_cast< std::size_t >(val4);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[4], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::curve", 5, argv[4] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::curve", 5, argv[4] )); 
     }
     arg5 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92425,16 +92425,16 @@ _wrap_RPlot_curve__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res6 = SWIG_ConvertPtr(argv[5], &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res6)) {
-      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::plot::RGB","datamunge::plot::RPlot::curve", 6, argv[5] )); 
+      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::curve", 6, argv[5] )); 
     }  
     if (!argp6) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","datamunge::plot::RPlot::curve", 6, argv[5]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::curve", 6, argv[5]));
     } else {
-      arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+      arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
     }
   }
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92456,7 +92456,7 @@ _wrap_RPlot_curve__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 5) || (argc > 5)) {
@@ -92464,38 +92464,38 @@ _wrap_RPlot_curve__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback &","datamunge::plot::RPlot::curve", 1, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback &","datamunge::graphics::RPlot::curve", 1, argv[0] )); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::Callback &","datamunge::plot::RPlot::curve", 1, argv[0])); 
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::Callback &","datamunge::graphics::RPlot::curve", 1, argv[0])); 
   }
   arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::plot::RPlot::curve", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::graphics::RPlot::curve", 2, argv[1] ));
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_double(argv[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::plot::RPlot::curve", 3, argv[2] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::graphics::RPlot::curve", 3, argv[2] ));
   } 
   arg3 = static_cast< double >(val3);
   ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","datamunge::plot::RPlot::curve", 4, argv[3] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::RPlot::curve", 4, argv[3] ));
   } 
   arg4 = static_cast< std::size_t >(val4);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[4], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::curve", 5, argv[4] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::curve", 5, argv[4] )); 
     }
     arg5 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92516,7 +92516,7 @@ _wrap_RPlot_curve__SWIG_2(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -92524,29 +92524,29 @@ _wrap_RPlot_curve__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback &","datamunge::plot::RPlot::curve", 1, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback &","datamunge::graphics::RPlot::curve", 1, argv[0] )); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::Callback &","datamunge::plot::RPlot::curve", 1, argv[0])); 
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::Callback &","datamunge::graphics::RPlot::curve", 1, argv[0])); 
   }
   arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::plot::RPlot::curve", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::graphics::RPlot::curve", 2, argv[1] ));
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_double(argv[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::plot::RPlot::curve", 3, argv[2] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::graphics::RPlot::curve", 3, argv[2] ));
   } 
   arg3 = static_cast< double >(val3);
   ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","datamunge::plot::RPlot::curve", 4, argv[3] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::RPlot::curve", 4, argv[3] ));
   } 
   arg4 = static_cast< std::size_t >(val4);
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92564,7 +92564,7 @@ _wrap_RPlot_curve__SWIG_3(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -92572,24 +92572,24 @@ _wrap_RPlot_curve__SWIG_3(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback &","datamunge::plot::RPlot::curve", 1, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback &","datamunge::graphics::RPlot::curve", 1, argv[0] )); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::Callback &","datamunge::plot::RPlot::curve", 1, argv[0])); 
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::Callback &","datamunge::graphics::RPlot::curve", 1, argv[0])); 
   }
   arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::plot::RPlot::curve", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::graphics::RPlot::curve", 2, argv[1] ));
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_double(argv[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::plot::RPlot::curve", 3, argv[2] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::graphics::RPlot::curve", 3, argv[2] ));
   } 
   arg3 = static_cast< double >(val3);
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3);
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92724,10 +92724,10 @@ SWIGINTERN VALUE _wrap_RPlot_curve(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 6, "RPlot.curve", 
-    "    datamunge::plot::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n, std::string label)\n"
-    "    datamunge::plot::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n)\n"
-    "    datamunge::plot::RPlot RPlot.curve(datamunge::Callback &f, double from, double to)\n");
+    "    datamunge::graphics::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n, std::string label)\n"
+    "    datamunge::graphics::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n)\n"
+    "    datamunge::graphics::RPlot RPlot.curve(datamunge::Callback &f, double from, double to)\n");
   
   return Qnil;
 }
@@ -92737,10 +92737,10 @@ SWIGINTERN VALUE
 _wrap_RPlot_qqnorm__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::string arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -92750,7 +92750,7 @@ _wrap_RPlot_qqnorm__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::qqnorm", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::qqnorm", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92759,7 +92759,7 @@ _wrap_RPlot_qqnorm__SWIG_0(int argc, VALUE *argv, VALUE self) {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::qqnorm", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::qqnorm", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92767,16 +92767,16 @@ _wrap_RPlot_qqnorm__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","datamunge::plot::RPlot::qqnorm", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::qqnorm", 3, argv[2] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","datamunge::plot::RPlot::qqnorm", 3, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::qqnorm", 3, argv[2]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92787,7 +92787,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_qqnorm__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::string arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -92797,7 +92797,7 @@ _wrap_RPlot_qqnorm__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::qqnorm", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::qqnorm", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -92806,13 +92806,13 @@ _wrap_RPlot_qqnorm__SWIG_1(int argc, VALUE *argv, VALUE self) {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(argv[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::plot::RPlot::qqnorm", 2, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","datamunge::graphics::RPlot::qqnorm", 2, argv[1] )); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92822,7 +92822,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_RPlot_qqnorm__SWIG_2(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -92832,13 +92832,13 @@ _wrap_RPlot_qqnorm__SWIG_2(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::plot::RPlot::qqnorm", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","datamunge::graphics::RPlot::qqnorm", 1, argv[0] )); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92895,9 +92895,9 @@ SWIGINTERN VALUE _wrap_RPlot_qqnorm(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "RPlot.qqnorm", 
-    "    datamunge::plot::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data, std::string label)\n"
-    "    datamunge::plot::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data)\n");
+    "    datamunge::graphics::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data, std::string label)\n"
+    "    datamunge::graphics::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data)\n");
   
   return Qnil;
 }
@@ -92905,11 +92905,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_points__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -92917,7 +92917,7 @@ _wrap_RPlot_points__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 5) || (argc > 5)) {
@@ -92925,9 +92925,9 @@ _wrap_RPlot_points__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","points", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -92958,12 +92958,12 @@ _wrap_RPlot_points__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","points", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","points", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","points", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","points", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -92971,7 +92971,7 @@ _wrap_RPlot_points__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","points", 6, argv[4] ));
   } 
   arg6 = static_cast< double >(val6);
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -92981,16 +92981,16 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_points__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -92998,9 +92998,9 @@ _wrap_RPlot_points__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","points", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93031,15 +93031,15 @@ _wrap_RPlot_points__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","points", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","points", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","points", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","points", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93049,13 +93049,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_points__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -93063,9 +93063,9 @@ _wrap_RPlot_points__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","points", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93093,7 +93093,7 @@ _wrap_RPlot_points__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93103,12 +93103,12 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_points__SWIG_3(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -93116,9 +93116,9 @@ _wrap_RPlot_points__SWIG_3(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","points", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93137,7 +93137,7 @@ _wrap_RPlot_points__SWIG_3(int argc, VALUE *argv, VALUE self) {
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93147,11 +93147,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -93159,7 +93159,7 @@ _wrap_RPlot_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 5) || (argc > 5)) {
@@ -93167,9 +93167,9 @@ _wrap_RPlot_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","line", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","line", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93200,12 +93200,12 @@ _wrap_RPlot_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","line", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","line", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","line", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","line", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -93213,7 +93213,7 @@ _wrap_RPlot_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","line", 6, argv[4] ));
   } 
   arg6 = static_cast< double >(val6);
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93223,16 +93223,16 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -93240,9 +93240,9 @@ _wrap_RPlot_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","line", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","line", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93273,15 +93273,15 @@ _wrap_RPlot_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","line", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","line", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","line", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","line", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93291,13 +93291,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_line__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -93305,9 +93305,9 @@ _wrap_RPlot_line__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","line", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","line", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93335,7 +93335,7 @@ _wrap_RPlot_line__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93345,12 +93345,12 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_line__SWIG_3(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -93358,9 +93358,9 @@ _wrap_RPlot_line__SWIG_3(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","line", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","line", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93379,7 +93379,7 @@ _wrap_RPlot_line__SWIG_3(int argc, VALUE *argv, VALUE self) {
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93497,10 +93497,10 @@ SWIGINTERN VALUE _wrap_RPlot_line(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.line", 
-    "    datamunge::plot::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::plot::RGB color, double stroke_width)\n"
-    "    datamunge::plot::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
-    "    datamunge::plot::RPlot & RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
+    "    datamunge::graphics::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
+    "    datamunge::graphics::RPlot & RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
   
   return Qnil;
 }
@@ -93508,11 +93508,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_lines__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -93520,7 +93520,7 @@ _wrap_RPlot_lines__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 5) || (argc > 5)) {
@@ -93528,9 +93528,9 @@ _wrap_RPlot_lines__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","lines", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93561,12 +93561,12 @@ _wrap_RPlot_lines__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","lines", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","lines", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","lines", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","lines", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -93574,7 +93574,7 @@ _wrap_RPlot_lines__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","lines", 6, argv[4] ));
   } 
   arg6 = static_cast< double >(val6);
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93584,16 +93584,16 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_lines__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -93601,9 +93601,9 @@ _wrap_RPlot_lines__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","lines", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93634,15 +93634,15 @@ _wrap_RPlot_lines__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","lines", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","lines", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","lines", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","lines", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93652,13 +93652,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_lines__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -93666,9 +93666,9 @@ _wrap_RPlot_lines__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","lines", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93696,7 +93696,7 @@ _wrap_RPlot_lines__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93706,12 +93706,12 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_lines__SWIG_3(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -93719,9 +93719,9 @@ _wrap_RPlot_lines__SWIG_3(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","lines", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93740,7 +93740,7 @@ _wrap_RPlot_lines__SWIG_3(int argc, VALUE *argv, VALUE self) {
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93750,10 +93750,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_points__SWIG_4(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -93761,7 +93761,7 @@ _wrap_RPlot_points__SWIG_4(int argc, VALUE *argv, VALUE self) {
   int res4 = 0 ;
   double val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -93769,9 +93769,9 @@ _wrap_RPlot_points__SWIG_4(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","points", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93793,12 +93793,12 @@ _wrap_RPlot_points__SWIG_4(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","points", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","points", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","points", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","points", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
   ecode5 = SWIG_AsVal_double(argv[3], &val5);
@@ -93806,7 +93806,7 @@ _wrap_RPlot_points__SWIG_4(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","points", 5, argv[3] ));
   } 
   arg5 = static_cast< double >(val5);
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -93816,15 +93816,15 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_points__SWIG_5(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -93832,9 +93832,9 @@ _wrap_RPlot_points__SWIG_5(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","points", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -93856,15 +93856,15 @@ _wrap_RPlot_points__SWIG_5(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","points", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","points", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","points", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","points", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94032,12 +94032,12 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.points", 
-    "    datamunge::plot::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::plot::RGB color, double marker_size)\n"
-    "    datamunge::plot::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
-    "    datamunge::plot::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n"
-    "    datamunge::plot::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::plot::RGB color, double marker_size)\n"
-    "    datamunge::plot::RPlot & RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::plot::RGB color)\n");
+    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color, double marker_size)\n"
+    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
+    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n"
+    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color, double marker_size)\n"
+    "    datamunge::graphics::RPlot & RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color)\n");
   
   return Qnil;
 }
@@ -94045,10 +94045,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_lines__SWIG_4(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -94056,7 +94056,7 @@ _wrap_RPlot_lines__SWIG_4(int argc, VALUE *argv, VALUE self) {
   int res4 = 0 ;
   double val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -94064,9 +94064,9 @@ _wrap_RPlot_lines__SWIG_4(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","lines", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -94088,12 +94088,12 @@ _wrap_RPlot_lines__SWIG_4(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","lines", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","lines", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","lines", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","lines", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
   ecode5 = SWIG_AsVal_double(argv[3], &val5);
@@ -94101,7 +94101,7 @@ _wrap_RPlot_lines__SWIG_4(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","lines", 5, argv[3] ));
   } 
   arg5 = static_cast< double >(val5);
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94111,15 +94111,15 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_lines__SWIG_5(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -94127,9 +94127,9 @@ _wrap_RPlot_lines__SWIG_5(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","lines", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -94151,15 +94151,15 @@ _wrap_RPlot_lines__SWIG_5(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","lines", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","lines", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","lines", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","lines", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94327,12 +94327,12 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.lines", 
-    "    datamunge::plot::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::plot::RGB color, double stroke_width)\n"
-    "    datamunge::plot::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
-    "    datamunge::plot::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n"
-    "    datamunge::plot::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::plot::RGB color, double stroke_width)\n"
-    "    datamunge::plot::RPlot & RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::plot::RGB color)\n");
+    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
+    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n"
+    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot & RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color)\n");
   
   return Qnil;
 }
@@ -94340,11 +94340,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_bars__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -94352,7 +94352,7 @@ _wrap_RPlot_bars__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 5) || (argc > 5)) {
@@ -94360,9 +94360,9 @@ _wrap_RPlot_bars__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","bars", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","bars", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -94393,12 +94393,12 @@ _wrap_RPlot_bars__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","bars", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","bars", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","bars", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","bars", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -94406,7 +94406,7 @@ _wrap_RPlot_bars__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","bars", 6, argv[4] ));
   } 
   arg6 = static_cast< double >(val6);
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94416,16 +94416,16 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_bars__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -94433,9 +94433,9 @@ _wrap_RPlot_bars__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","bars", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","bars", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -94466,15 +94466,15 @@ _wrap_RPlot_bars__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","bars", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","bars", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","bars", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","bars", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94484,13 +94484,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_bars__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -94498,9 +94498,9 @@ _wrap_RPlot_bars__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","bars", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","bars", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -94528,7 +94528,7 @@ _wrap_RPlot_bars__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94538,12 +94538,12 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_bars__SWIG_3(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -94551,9 +94551,9 @@ _wrap_RPlot_bars__SWIG_3(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","bars", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","bars", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -94572,7 +94572,7 @@ _wrap_RPlot_bars__SWIG_3(int argc, VALUE *argv, VALUE self) {
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94690,10 +94690,10 @@ SWIGINTERN VALUE _wrap_RPlot_bars(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.bars", 
-    "    datamunge::plot::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::plot::RGB color, double bar_width)\n"
-    "    datamunge::plot::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
-    "    datamunge::plot::RPlot & RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
+    "    datamunge::graphics::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color, double bar_width)\n"
+    "    datamunge::graphics::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
+    "    datamunge::graphics::RPlot & RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
   
   return Qnil;
 }
@@ -94701,7 +94701,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -94709,7 +94709,7 @@ _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
   double arg6 ;
   double arg7 ;
   std::vector< double,std::allocator< double > > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   double arg10 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -94729,7 +94729,7 @@ _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res9 = 0 ;
   double val10 ;
   int ecode10 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 9) || (argc > 9)) {
@@ -94737,9 +94737,9 @@ _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","box", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","box", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","box", 2, argv[0] ));
@@ -94782,12 +94782,12 @@ _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res9 = SWIG_ConvertPtr(argv[7], &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res9)) {
-      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "datamunge::plot::RGB","box", 9, argv[7] )); 
+      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","box", 9, argv[7] )); 
     }  
     if (!argp9) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","box", 9, argv[7]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","box", 9, argv[7]));
     } else {
-      arg9 = *(reinterpret_cast< datamunge::plot::RGB * >(argp9));
+      arg9 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp9));
     }
   }
   ecode10 = SWIG_AsVal_double(argv[8], &val10);
@@ -94795,7 +94795,7 @@ _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "double","box", 10, argv[8] ));
   } 
   arg10 = static_cast< double >(val10);
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94805,7 +94805,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_box__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -94813,7 +94813,7 @@ _wrap_RPlot_box__SWIG_1(int argc, VALUE *argv, VALUE self) {
   double arg6 ;
   double arg7 ;
   std::vector< double,std::allocator< double > > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -94830,7 +94830,7 @@ _wrap_RPlot_box__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int ecode7 = 0 ;
   void *argp9 = 0 ;
   int res9 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 8) || (argc > 8)) {
@@ -94838,9 +94838,9 @@ _wrap_RPlot_box__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","box", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","box", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","box", 2, argv[0] ));
@@ -94883,15 +94883,15 @@ _wrap_RPlot_box__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res9 = SWIG_ConvertPtr(argv[7], &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res9)) {
-      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "datamunge::plot::RGB","box", 9, argv[7] )); 
+      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","box", 9, argv[7] )); 
     }  
     if (!argp9) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","box", 9, argv[7]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","box", 9, argv[7]));
     } else {
-      arg9 = *(reinterpret_cast< datamunge::plot::RGB * >(argp9));
+      arg9 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp9));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94901,7 +94901,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_box__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -94923,7 +94923,7 @@ _wrap_RPlot_box__SWIG_2(int argc, VALUE *argv, VALUE self) {
   int ecode6 = 0 ;
   double val7 ;
   int ecode7 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 7) || (argc > 7)) {
@@ -94931,9 +94931,9 @@ _wrap_RPlot_box__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","box", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","box", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","box", 2, argv[0] ));
@@ -94973,7 +94973,7 @@ _wrap_RPlot_box__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg8 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -94983,7 +94983,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_box__SWIG_3(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -95004,7 +95004,7 @@ _wrap_RPlot_box__SWIG_3(int argc, VALUE *argv, VALUE self) {
   int ecode6 = 0 ;
   double val7 ;
   int ecode7 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 6) || (argc > 6)) {
@@ -95012,9 +95012,9 @@ _wrap_RPlot_box__SWIG_3(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","box", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","box", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","box", 2, argv[0] ));
@@ -95045,7 +95045,7 @@ _wrap_RPlot_box__SWIG_3(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","box", 7, argv[5] ));
   } 
   arg7 = static_cast< double >(val7);
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95275,10 +95275,10 @@ SWIGINTERN VALUE _wrap_RPlot_box(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 11, "RPlot.box", 
-    "    datamunge::plot::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers, datamunge::plot::RGB color, double width)\n"
-    "    datamunge::plot::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers)\n"
-    "    datamunge::plot::RPlot & RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi)\n");
+    "    datamunge::graphics::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers, datamunge::graphics::RGB color, double width)\n"
+    "    datamunge::graphics::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers)\n"
+    "    datamunge::graphics::RPlot & RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi)\n");
   
   return Qnil;
 }
@@ -95286,10 +95286,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_abline__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -95301,7 +95301,7 @@ _wrap_RPlot_abline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res4 = 0 ;
   double val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -95309,9 +95309,9 @@ _wrap_RPlot_abline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","abline", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","abline", 2, argv[0] ));
@@ -95325,12 +95325,12 @@ _wrap_RPlot_abline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","abline", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","abline", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
   ecode5 = SWIG_AsVal_double(argv[3], &val5);
@@ -95338,7 +95338,7 @@ _wrap_RPlot_abline__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","abline", 5, argv[3] ));
   } 
   arg5 = static_cast< double >(val5);
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95348,10 +95348,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_abline__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -95360,7 +95360,7 @@ _wrap_RPlot_abline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -95368,9 +95368,9 @@ _wrap_RPlot_abline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","abline", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","abline", 2, argv[0] ));
@@ -95384,15 +95384,15 @@ _wrap_RPlot_abline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","abline", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","abline", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95402,7 +95402,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_abline__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -95411,7 +95411,7 @@ _wrap_RPlot_abline__SWIG_2(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -95419,9 +95419,9 @@ _wrap_RPlot_abline__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","abline", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","abline", 2, argv[0] ));
@@ -95432,7 +95432,7 @@ _wrap_RPlot_abline__SWIG_2(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","abline", 3, argv[1] ));
   } 
   arg3 = static_cast< double >(val3);
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95533,9 +95533,9 @@ SWIGINTERN VALUE _wrap_RPlot_abline(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 6, "RPlot.abline", 
-    "    datamunge::plot::RPlot RPlot.abline(double intercept, double slope, datamunge::plot::RGB color, double stroke_width)\n"
-    "    datamunge::plot::RPlot RPlot.abline(double intercept, double slope, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot & RPlot.abline(double intercept, double slope)\n");
+    "    datamunge::graphics::RPlot RPlot.abline(double intercept, double slope, datamunge::graphics::RGB color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.abline(double intercept, double slope, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot & RPlot.abline(double intercept, double slope)\n");
   
   return Qnil;
 }
@@ -95543,9 +95543,9 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_abline_h__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -95555,7 +95555,7 @@ _wrap_RPlot_abline_h__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -95563,9 +95563,9 @@ _wrap_RPlot_abline_h__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","abline_h", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_h", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","abline_h", 2, argv[0] ));
@@ -95574,12 +95574,12 @@ _wrap_RPlot_abline_h__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","abline_h", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline_h", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","abline_h", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline_h", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
   ecode4 = SWIG_AsVal_double(argv[2], &val4);
@@ -95587,7 +95587,7 @@ _wrap_RPlot_abline_h__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","abline_h", 4, argv[2] ));
   } 
   arg4 = static_cast< double >(val4);
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95597,16 +95597,16 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_abline_h__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -95614,9 +95614,9 @@ _wrap_RPlot_abline_h__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","abline_h", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_h", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","abline_h", 2, argv[0] ));
@@ -95625,15 +95625,15 @@ _wrap_RPlot_abline_h__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","abline_h", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline_h", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","abline_h", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline_h", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95643,13 +95643,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_abline_h__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -95657,15 +95657,15 @@ _wrap_RPlot_abline_h__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","abline_h", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_h", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","abline_h", 2, argv[0] ));
   } 
   arg2 = static_cast< double >(val2);
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95748,9 +95748,9 @@ SWIGINTERN VALUE _wrap_RPlot_abline_h(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "RPlot.abline_h", 
-    "    datamunge::plot::RPlot RPlot.abline_h(double y_value, datamunge::plot::RGB color, double stroke_width)\n"
-    "    datamunge::plot::RPlot RPlot.abline_h(double y_value, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot & RPlot.abline_h(double y_value)\n");
+    "    datamunge::graphics::RPlot RPlot.abline_h(double y_value, datamunge::graphics::RGB color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.abline_h(double y_value, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot & RPlot.abline_h(double y_value)\n");
   
   return Qnil;
 }
@@ -95758,9 +95758,9 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_abline_v__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -95770,7 +95770,7 @@ _wrap_RPlot_abline_v__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -95778,9 +95778,9 @@ _wrap_RPlot_abline_v__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","abline_v", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_v", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","abline_v", 2, argv[0] ));
@@ -95789,12 +95789,12 @@ _wrap_RPlot_abline_v__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","abline_v", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline_v", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","abline_v", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline_v", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
   ecode4 = SWIG_AsVal_double(argv[2], &val4);
@@ -95802,7 +95802,7 @@ _wrap_RPlot_abline_v__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","abline_v", 4, argv[2] ));
   } 
   arg4 = static_cast< double >(val4);
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95812,16 +95812,16 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_abline_v__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -95829,9 +95829,9 @@ _wrap_RPlot_abline_v__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","abline_v", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_v", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","abline_v", 2, argv[0] ));
@@ -95840,15 +95840,15 @@ _wrap_RPlot_abline_v__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","abline_v", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline_v", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","abline_v", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline_v", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95858,13 +95858,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_abline_v__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -95872,15 +95872,15 @@ _wrap_RPlot_abline_v__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","abline_v", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_v", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","abline_v", 2, argv[0] ));
   } 
   arg2 = static_cast< double >(val2);
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -95963,9 +95963,9 @@ SWIGINTERN VALUE _wrap_RPlot_abline_v(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "RPlot.abline_v", 
-    "    datamunge::plot::RPlot RPlot.abline_v(double x_value, datamunge::plot::RGB color, double stroke_width)\n"
-    "    datamunge::plot::RPlot RPlot.abline_v(double x_value, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot & RPlot.abline_v(double x_value)\n");
+    "    datamunge::graphics::RPlot RPlot.abline_v(double x_value, datamunge::graphics::RGB color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.abline_v(double x_value, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot & RPlot.abline_v(double x_value)\n");
   
   return Qnil;
 }
@@ -95973,9 +95973,9 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_qqline__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -95983,7 +95983,7 @@ _wrap_RPlot_qqline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -95991,9 +95991,9 @@ _wrap_RPlot_qqline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","qqline", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","qqline", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -96006,12 +96006,12 @@ _wrap_RPlot_qqline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","qqline", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","qqline", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","qqline", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","qqline", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
   ecode4 = SWIG_AsVal_double(argv[2], &val4);
@@ -96019,7 +96019,7 @@ _wrap_RPlot_qqline__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","qqline", 4, argv[2] ));
   } 
   arg4 = static_cast< double >(val4);
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96029,14 +96029,14 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_qqline__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -96044,9 +96044,9 @@ _wrap_RPlot_qqline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","qqline", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","qqline", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -96059,15 +96059,15 @@ _wrap_RPlot_qqline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::plot::RGB","qqline", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","qqline", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","qqline", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","qqline", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96077,11 +96077,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_qqline__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -96089,9 +96089,9 @@ _wrap_RPlot_qqline__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","qqline", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","qqline", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -96101,7 +96101,7 @@ _wrap_RPlot_qqline__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96178,9 +96178,9 @@ SWIGINTERN VALUE _wrap_RPlot_qqline(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "RPlot.qqline", 
-    "    datamunge::plot::RPlot RPlot.qqline(std::vector< double,std::allocator< double > > data, datamunge::plot::RGB color, double stroke_width)\n"
-    "    datamunge::plot::RPlot RPlot.qqline(std::vector< double,std::allocator< double > > data, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot & RPlot.qqline(std::vector< double,std::allocator< double > > data)\n");
+    "    datamunge::graphics::RPlot RPlot.qqline(std::vector< double,std::allocator< double > > data, datamunge::graphics::RGB color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.qqline(std::vector< double,std::allocator< double > > data, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot & RPlot.qqline(std::vector< double,std::allocator< double > > data)\n");
   
   return Qnil;
 }
@@ -96188,14 +96188,14 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_legend(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -96203,9 +96203,9 @@ _wrap_RPlot_legend(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","legend", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","legend", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -96218,15 +96218,15 @@ _wrap_RPlot_legend(int argc, VALUE *argv, VALUE self) {
   {
     res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > >","legend", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >","legend", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > >","legend", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >","legend", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > * >(argp3));
+      arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > * >(argp3));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96236,11 +96236,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_text__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -96252,7 +96252,7 @@ _wrap_RPlot_text__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 5) || (argc > 5)) {
@@ -96260,9 +96260,9 @@ _wrap_RPlot_text__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","text", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","text", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","text", 2, argv[0] ));
@@ -96285,12 +96285,12 @@ _wrap_RPlot_text__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","text", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","text", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","text", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","text", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -96298,7 +96298,7 @@ _wrap_RPlot_text__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","text", 6, argv[4] ));
   } 
   arg6 = static_cast< double >(val6);
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96308,11 +96308,11 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_text__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -96321,7 +96321,7 @@ _wrap_RPlot_text__SWIG_1(int argc, VALUE *argv, VALUE self) {
   int ecode3 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -96329,9 +96329,9 @@ _wrap_RPlot_text__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","text", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","text", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","text", 2, argv[0] ));
@@ -96354,15 +96354,15 @@ _wrap_RPlot_text__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::plot::RGB","text", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","text", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","text", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","text", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96372,7 +96372,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_text__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
@@ -96382,7 +96382,7 @@ _wrap_RPlot_text__SWIG_2(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -96390,9 +96390,9 @@ _wrap_RPlot_text__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","text", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","text", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","text", 2, argv[0] ));
@@ -96412,7 +96412,7 @@ _wrap_RPlot_text__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96525,9 +96525,9 @@ SWIGINTERN VALUE _wrap_RPlot_text(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.text", 
-    "    datamunge::plot::RPlot RPlot.text(double x, double y, std::string label, datamunge::plot::RGB color, double font_size)\n"
-    "    datamunge::plot::RPlot RPlot.text(double x, double y, std::string label, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot & RPlot.text(double x, double y, std::string label)\n");
+    "    datamunge::graphics::RPlot RPlot.text(double x, double y, std::string label, datamunge::graphics::RGB color, double font_size)\n"
+    "    datamunge::graphics::RPlot RPlot.text(double x, double y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot & RPlot.text(double x, double y, std::string label)\n");
   
   return Qnil;
 }
@@ -96535,10 +96535,10 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_polygon__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   bool arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -96546,7 +96546,7 @@ _wrap_RPlot_polygon__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res4 = 0 ;
   bool val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -96554,9 +96554,9 @@ _wrap_RPlot_polygon__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","polygon", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","polygon", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -96578,12 +96578,12 @@ _wrap_RPlot_polygon__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","polygon", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","polygon", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","polygon", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","polygon", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
   ecode5 = SWIG_AsVal_bool(argv[3], &val5);
@@ -96591,7 +96591,7 @@ _wrap_RPlot_polygon__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "bool","polygon", 5, argv[3] ));
   } 
   arg5 = static_cast< bool >(val5);
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96601,15 +96601,15 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_polygon__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 3) || (argc > 3)) {
@@ -96617,9 +96617,9 @@ _wrap_RPlot_polygon__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","polygon", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","polygon", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -96641,15 +96641,15 @@ _wrap_RPlot_polygon__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::plot::RGB","polygon", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","polygon", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","polygon", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","polygon", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96659,12 +96659,12 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_polygon__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -96672,9 +96672,9 @@ _wrap_RPlot_polygon__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","polygon", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","polygon", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -96693,7 +96693,7 @@ _wrap_RPlot_polygon__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96782,9 +96782,9 @@ SWIGINTERN VALUE _wrap_RPlot_polygon(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 6, "RPlot.polygon", 
-    "    datamunge::plot::RPlot RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::plot::RGB color, bool filled)\n"
-    "    datamunge::plot::RPlot RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot & RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
+    "    datamunge::graphics::RPlot RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color, bool filled)\n"
+    "    datamunge::graphics::RPlot RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot & RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
   
   return Qnil;
 }
@@ -96792,12 +96792,12 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_segments__SWIG_0(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::vector< double,std::allocator< double > > arg4 ;
   std::vector< double,std::allocator< double > > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   double arg7 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -96805,7 +96805,7 @@ _wrap_RPlot_segments__SWIG_0(int argc, VALUE *argv, VALUE self) {
   int res6 = 0 ;
   double val7 ;
   int ecode7 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 6) || (argc > 6)) {
@@ -96813,9 +96813,9 @@ _wrap_RPlot_segments__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","segments", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","segments", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -96855,12 +96855,12 @@ _wrap_RPlot_segments__SWIG_0(int argc, VALUE *argv, VALUE self) {
   {
     res6 = SWIG_ConvertPtr(argv[4], &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res6)) {
-      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::plot::RGB","segments", 6, argv[4] )); 
+      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","segments", 6, argv[4] )); 
     }  
     if (!argp6) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","segments", 6, argv[4]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","segments", 6, argv[4]));
     } else {
-      arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+      arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
     }
   }
   ecode7 = SWIG_AsVal_double(argv[5], &val7);
@@ -96868,7 +96868,7 @@ _wrap_RPlot_segments__SWIG_0(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","segments", 7, argv[5] ));
   } 
   arg7 = static_cast< double >(val7);
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96878,17 +96878,17 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_segments__SWIG_1(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::vector< double,std::allocator< double > > arg4 ;
   std::vector< double,std::allocator< double > > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp6 = 0 ;
   int res6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 5) || (argc > 5)) {
@@ -96896,9 +96896,9 @@ _wrap_RPlot_segments__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","segments", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","segments", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -96938,15 +96938,15 @@ _wrap_RPlot_segments__SWIG_1(int argc, VALUE *argv, VALUE self) {
   {
     res6 = SWIG_ConvertPtr(argv[4], &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
     if (!SWIG_IsOK(res6)) {
-      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::plot::RGB","segments", 6, argv[4] )); 
+      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","segments", 6, argv[4] )); 
     }  
     if (!argp6) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::RGB","segments", 6, argv[4]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","segments", 6, argv[4]));
     } else {
-      arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+      arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -96956,14 +96956,14 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RPlot_segments__SWIG_2(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::vector< double,std::allocator< double > > arg4 ;
   std::vector< double,std::allocator< double > > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 4) || (argc > 4)) {
@@ -96971,9 +96971,9 @@ _wrap_RPlot_segments__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RPlot *","segments", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","segments", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     int res = swig::asptr(argv[0], &ptr);
@@ -97010,7 +97010,7 @@ _wrap_RPlot_segments__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg5 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   return vresult;
 fail:
@@ -97123,9 +97123,9 @@ SWIGINTERN VALUE _wrap_RPlot_segments(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 8, "RPlot.segments", 
-    "    datamunge::plot::RPlot RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1, datamunge::plot::RGB color, double stroke_width)\n"
-    "    datamunge::plot::RPlot RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1, datamunge::plot::RGB color)\n"
-    "    datamunge::plot::RPlot & RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1)\n");
+    "    datamunge::graphics::RPlot RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1, datamunge::graphics::RGB color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot & RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1)\n");
   
   return Qnil;
 }
@@ -97149,12 +97149,12 @@ _wrap_RPlot_allocate(int argc, VALUE *argv, VALUE self)
 SWIGINTERN VALUE
 _wrap_new_RPlot(int argc, VALUE *argv, VALUE self) {
   const char *classname SWIGUNUSED = "Octruby::RPlot";
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -97164,7 +97164,7 @@ fail:
 
 SWIGINTERN void
 free_datamunge_plot_RPlot(void *self) {
-    datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *)self;
+    datamunge::graphics::RPlot *arg1 = (datamunge::graphics::RPlot *)self;
     delete arg1;
 }
 
@@ -97178,7 +97178,7 @@ _wrap_RLayout_create(int argc, VALUE *argv, VALUE self) {
   int ecode1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RLayout result;
+  datamunge::graphics::RLayout result;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -97186,16 +97186,16 @@ _wrap_RLayout_create(int argc, VALUE *argv, VALUE self) {
   }
   ecode1 = SWIG_AsVal_size_t(argv[0], &val1);
   if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "std::size_t","datamunge::plot::RLayout::create", 1, argv[0] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::RLayout::create", 1, argv[0] ));
   } 
   arg1 = static_cast< std::size_t >(val1);
   ecode2 = SWIG_AsVal_size_t(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::plot::RLayout::create", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::RLayout::create", 2, argv[1] ));
   } 
   arg2 = static_cast< std::size_t >(val2);
-  result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::plot::RLayout(result)), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RLayout(result)), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -97204,13 +97204,13 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RLayout_add(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RLayout *arg1 = 0 ;
-  datamunge::plot::Plot *arg2 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  datamunge::graphics::Plot *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 1) || (argc > 1)) {
@@ -97218,18 +97218,18 @@ _wrap_RLayout_add(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RLayout *","add", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout *","add", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
   res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__Plot,  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::plot::Plot const &","add", 2, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const &","add", 2, argv[0] )); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::plot::Plot const &","add", 2, argv[0])); 
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::Plot const &","add", 2, argv[0])); 
   }
-  arg2 = reinterpret_cast< datamunge::plot::Plot * >(argp2);
-  result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
+  arg2 = reinterpret_cast< datamunge::graphics::Plot * >(argp2);
+  result = (datamunge::graphics::RLayout *) &(arg1)->add((datamunge::graphics::Plot const &)*arg2);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   return vresult;
 fail:
@@ -97247,7 +97247,7 @@ Size or Length of the RLayout.
 */
 SWIGINTERN VALUE
 _wrap_RLayout_size(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   void *argp1 = 0 ;
@@ -97256,7 +97256,7 @@ _wrap_RLayout_size(int argc, VALUE *argv, VALUE self) {
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 2) || (argc > 2)) {
@@ -97264,9 +97264,9 @@ _wrap_RLayout_size(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RLayout *","size", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout *","size", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
   ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","size", 2, argv[0] ));
@@ -97277,7 +97277,7 @@ _wrap_RLayout_size(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","size", 3, argv[1] ));
   } 
   arg3 = static_cast< std::size_t >(val3);
-  result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   return vresult;
 fail:
@@ -97287,7 +97287,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RLayout_to_svg(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string result;
@@ -97298,10 +97298,10 @@ _wrap_RLayout_to_svg(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RLayout const *","to_svg", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","to_svg", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
-  result = ((datamunge::plot::RLayout const *)arg1)->to_svg();
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = ((datamunge::graphics::RLayout const *)arg1)->to_svg();
   vresult = SWIG_From_std_string(static_cast< std::string >(result));
   return vresult;
 fail:
@@ -97311,7 +97311,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RLayout_save(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -97322,9 +97322,9 @@ _wrap_RLayout_save(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RLayout const *","save", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","save", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -97336,7 +97336,7 @@ _wrap_RLayout_save(int argc, VALUE *argv, VALUE self) {
     }
     arg2 = ptr;
   }
-  ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save((std::string const &)*arg2);
   if (SWIG_IsNewObj(res2)) delete arg2;
   return Qnil;
 fail:
@@ -97347,7 +97347,7 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_RLayout_save_svg(int argc, VALUE *argv, VALUE self) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -97358,9 +97358,9 @@ _wrap_RLayout_save_svg(int argc, VALUE *argv, VALUE self) {
   }
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::plot::RLayout const *","save_svg", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","save_svg", 1, self )); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
@@ -97372,7 +97372,7 @@ _wrap_RLayout_save_svg(int argc, VALUE *argv, VALUE self) {
     }
     arg2 = ptr;
   }
-  ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
   if (SWIG_IsNewObj(res2)) delete arg2;
   return Qnil;
 fail:
@@ -97399,12 +97399,12 @@ _wrap_RLayout_allocate(int argc, VALUE *argv, VALUE self)
 SWIGINTERN VALUE
 _wrap_new_RLayout(int argc, VALUE *argv, VALUE self) {
   const char *classname SWIGUNUSED = "Octruby::RLayout";
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
+  result = (datamunge::graphics::RLayout *)new datamunge::graphics::RLayout();
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -97414,7 +97414,7 @@ fail:
 
 SWIGINTERN void
 free_datamunge_plot_RLayout(void *self) {
-    datamunge::plot::RLayout *arg1 = (datamunge::plot::RLayout *)self;
+    datamunge::graphics::RLayout *arg1 = (datamunge::graphics::RLayout *)self;
     delete arg1;
 }
 
@@ -133378,7 +133378,7 @@ static void *_p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__Differe
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::ProximalFunction *) x));
 }
 static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::RPlot *) x));
+    return (void *)((datamunge::graphics::Plot *)  ((datamunge::graphics::RPlot *) x));
 }
 static void *_p_swig__IteratorTo_p_swig__ConstIterator(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((swig::ConstIterator *)  ((swig::Iterator *) x));
@@ -133547,13 +133547,13 @@ static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewton = {"_p_datam
 static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewtonOptions = {"_p_datamunge__optim__TrustRegionNewtonOptions", "datamunge::optim::TrustRegionNewtonOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimization = {"_p_datamunge__optim__WhaleOptimization", "datamunge::optim::WhaleOptimization *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimizationOptions = {"_p_datamunge__optim__WhaleOptimizationOptions", "datamunge::optim::WhaleOptimizationOptions *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::plot::ABLine *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::plot::DataSeries *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::plot::LegendEntry *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::plot::Plot *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::plot::RGBA *|datamunge::plot::RGB *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::plot::RLayout *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::plot::RPlot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::graphics::ABLine *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::graphics::DataSeries *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::graphics::LegendEntry *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::graphics::Plot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::graphics::RGBA *|datamunge::graphics::RGB *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::graphics::RLayout *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::graphics::RPlot *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "datamunge::stats::ARIMA *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "datamunge::stats::ARIMAOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)0, 0};
@@ -133577,10 +133577,10 @@ static swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT_dou
 static swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t", "std::pair< int,int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_std__string_std__string_t = {"_p_std__pairT_std__string_std__string_t", "std::pair< std::string,std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > > > *|std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t = {"_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t", "std::vector< datamunge::plot::ABLine,std::allocator< datamunge::plot::ABLine > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t = {"_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t", "std::vector< datamunge::plot::DataSeries,std::allocator< datamunge::plot::DataSeries > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t", "std::vector< datamunge::plot::LegendEntry,std::allocator< datamunge::plot::LegendEntry > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t = {"_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t", "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t = {"_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t", "std::vector< datamunge::graphics::ABLine,std::allocator< datamunge::graphics::ABLine > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t = {"_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t", "std::vector< datamunge::graphics::DataSeries,std::allocator< datamunge::graphics::DataSeries > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t", "std::vector< datamunge::graphics::LegendEntry,std::allocator< datamunge::graphics::LegendEntry > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t = {"_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double,std::allocator< double > > *|std::vector< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int,std::allocator< int > > *|std::vector< int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t,std::allocator< size_t > > *|std::vector< size_t > *", 0, 0, (void*)0, 0};
@@ -136526,7 +136526,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassRGB.klass, "b", VALUEFUNC(_wrap_RGB_b_get), -1);
   rb_define_method(SwigClassRGB.klass, "alpha=", VALUEFUNC(_wrap_RGB_alpha_set), -1);
   rb_define_method(SwigClassRGB.klass, "alpha", VALUEFUNC(_wrap_RGB_alpha_get), -1);
-  SwigClassRGB.cext_type.wrap_struct_name = "C++ class datamunge::plot::RGB";
+  SwigClassRGB.cext_type.wrap_struct_name = "C++ class datamunge::graphics::RGB";
   SwigClassRGB.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRGB.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
 #ifdef RUBY_TYPED_FREE_IMMEDIATELY
@@ -136540,13 +136540,13 @@ SWIGEXPORT void Init_octruby(void) {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__DataSeries, (void *) &SwigClassDataSeries);
   rb_define_alloc_func(SwigClassDataSeries.klass, _wrap_DataSeries_allocate);
   rb_define_method(SwigClassDataSeries.klass, "initialize", VALUEFUNC(_wrap_new_DataSeries), -1);
-  rb_define_const(SwigClassDataSeries.klass, "Kind_Scatter", SWIG_From_int(static_cast< int >(datamunge::plot::DataSeries::Kind::Scatter)));
-  rb_define_const(SwigClassDataSeries.klass, "Kind_Line", SWIG_From_int(static_cast< int >(datamunge::plot::DataSeries::Kind::Line)));
-  rb_define_const(SwigClassDataSeries.klass, "Kind_Bar", SWIG_From_int(static_cast< int >(datamunge::plot::DataSeries::Kind::Bar)));
-  rb_define_const(SwigClassDataSeries.klass, "Kind_Box", SWIG_From_int(static_cast< int >(datamunge::plot::DataSeries::Kind::Box)));
-  rb_define_const(SwigClassDataSeries.klass, "Kind_Polygon", SWIG_From_int(static_cast< int >(datamunge::plot::DataSeries::Kind::Polygon)));
-  rb_define_const(SwigClassDataSeries.klass, "Kind_Text", SWIG_From_int(static_cast< int >(datamunge::plot::DataSeries::Kind::Text)));
-  rb_define_const(SwigClassDataSeries.klass, "Kind_Segment", SWIG_From_int(static_cast< int >(datamunge::plot::DataSeries::Kind::Segment)));
+  rb_define_const(SwigClassDataSeries.klass, "Kind_Scatter", SWIG_From_int(static_cast< int >(datamunge::graphics::DataSeries::Kind::Scatter)));
+  rb_define_const(SwigClassDataSeries.klass, "Kind_Line", SWIG_From_int(static_cast< int >(datamunge::graphics::DataSeries::Kind::Line)));
+  rb_define_const(SwigClassDataSeries.klass, "Kind_Bar", SWIG_From_int(static_cast< int >(datamunge::graphics::DataSeries::Kind::Bar)));
+  rb_define_const(SwigClassDataSeries.klass, "Kind_Box", SWIG_From_int(static_cast< int >(datamunge::graphics::DataSeries::Kind::Box)));
+  rb_define_const(SwigClassDataSeries.klass, "Kind_Polygon", SWIG_From_int(static_cast< int >(datamunge::graphics::DataSeries::Kind::Polygon)));
+  rb_define_const(SwigClassDataSeries.klass, "Kind_Text", SWIG_From_int(static_cast< int >(datamunge::graphics::DataSeries::Kind::Text)));
+  rb_define_const(SwigClassDataSeries.klass, "Kind_Segment", SWIG_From_int(static_cast< int >(datamunge::graphics::DataSeries::Kind::Segment)));
   rb_define_method(SwigClassDataSeries.klass, "kind=", VALUEFUNC(_wrap_DataSeries_kind_set), -1);
   rb_define_method(SwigClassDataSeries.klass, "kind", VALUEFUNC(_wrap_DataSeries_kind_get), -1);
   rb_define_method(SwigClassDataSeries.klass, "x=", VALUEFUNC(_wrap_DataSeries_x_set), -1);
@@ -136565,7 +136565,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassDataSeries.klass, "bar_width", VALUEFUNC(_wrap_DataSeries_bar_width_get), -1);
   rb_define_method(SwigClassDataSeries.klass, "filled=", VALUEFUNC(_wrap_DataSeries_filled_set), -1);
   rb_define_method(SwigClassDataSeries.klass, "filled", VALUEFUNC(_wrap_DataSeries_filled_get), -1);
-  SwigClassDataSeries.cext_type.wrap_struct_name = "C++ class datamunge::plot::DataSeries";
+  SwigClassDataSeries.cext_type.wrap_struct_name = "C++ class datamunge::graphics::DataSeries";
   SwigClassDataSeries.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassDataSeries.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
 #ifdef RUBY_TYPED_FREE_IMMEDIATELY
@@ -136589,7 +136589,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassABLine.klass, "color", VALUEFUNC(_wrap_ABLine_color_get), -1);
   rb_define_method(SwigClassABLine.klass, "stroke_width=", VALUEFUNC(_wrap_ABLine_stroke_width_set), -1);
   rb_define_method(SwigClassABLine.klass, "stroke_width", VALUEFUNC(_wrap_ABLine_stroke_width_get), -1);
-  SwigClassABLine.cext_type.wrap_struct_name = "C++ class datamunge::plot::ABLine";
+  SwigClassABLine.cext_type.wrap_struct_name = "C++ class datamunge::graphics::ABLine";
   SwigClassABLine.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassABLine.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
 #ifdef RUBY_TYPED_FREE_IMMEDIATELY
@@ -136607,7 +136607,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassLegendEntry.klass, "label", VALUEFUNC(_wrap_LegendEntry_label_get), -1);
   rb_define_method(SwigClassLegendEntry.klass, "color=", VALUEFUNC(_wrap_LegendEntry_color_set), -1);
   rb_define_method(SwigClassLegendEntry.klass, "color", VALUEFUNC(_wrap_LegendEntry_color_get), -1);
-  SwigClassLegendEntry.cext_type.wrap_struct_name = "C++ class datamunge::plot::LegendEntry";
+  SwigClassLegendEntry.cext_type.wrap_struct_name = "C++ class datamunge::graphics::LegendEntry";
   SwigClassLegendEntry.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassLegendEntry.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
 #ifdef RUBY_TYPED_FREE_IMMEDIATELY
@@ -136658,7 +136658,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassPlot.klass, "save_svg", VALUEFUNC(_wrap_Plot_save_svg), -1);
   rb_define_method(SwigClassPlot.klass, "view", VALUEFUNC(_wrap_Plot_view), -1);
   rb_define_method(SwigClassPlot.klass, "show", VALUEFUNC(_wrap_Plot_show), -1);
-  SwigClassPlot.cext_type.wrap_struct_name = "C++ class datamunge::plot::Plot";
+  SwigClassPlot.cext_type.wrap_struct_name = "C++ class datamunge::graphics::Plot";
   SwigClassPlot.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassPlot.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
 #ifdef RUBY_TYPED_FREE_IMMEDIATELY
@@ -136707,7 +136707,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassRPlot.klass, "text", VALUEFUNC(_wrap_RPlot_text), -1);
   rb_define_method(SwigClassRPlot.klass, "polygon", VALUEFUNC(_wrap_RPlot_polygon), -1);
   rb_define_method(SwigClassRPlot.klass, "segments", VALUEFUNC(_wrap_RPlot_segments), -1);
-  SwigClassRPlot.cext_type.wrap_struct_name = "C++ class datamunge::plot::RPlot";
+  SwigClassRPlot.cext_type.wrap_struct_name = "C++ class datamunge::graphics::RPlot";
   SwigClassRPlot.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRPlot.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
 #ifdef RUBY_TYPED_FREE_IMMEDIATELY
@@ -136727,7 +136727,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassRLayout.klass, "to_svg", VALUEFUNC(_wrap_RLayout_to_svg), -1);
   rb_define_method(SwigClassRLayout.klass, "save", VALUEFUNC(_wrap_RLayout_save), -1);
   rb_define_method(SwigClassRLayout.klass, "save_svg", VALUEFUNC(_wrap_RLayout_save_svg), -1);
-  SwigClassRLayout.cext_type.wrap_struct_name = "C++ class datamunge::plot::RLayout";
+  SwigClassRLayout.cext_type.wrap_struct_name = "C++ class datamunge::graphics::RLayout";
   SwigClassRLayout.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRLayout.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
 #ifdef RUBY_TYPED_FREE_IMMEDIATELY

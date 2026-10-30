@@ -1,4 +1,5 @@
 # Native Python NN example. Gradient clipping and unequal microbatch accumulation.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/gradient_clipping_accumulation.py
 """Compare all Adam moments and weights against a true batch of seven."""
 from pydatamunge import nn
 from pydatamunge.nn_workflows import options

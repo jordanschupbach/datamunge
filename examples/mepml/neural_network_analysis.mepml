@@ -258,7 +258,7 @@ decision regions can be drawn), again on a 70/30 train/test split.
 
 The entire analysis is one C\+\+ program against `datamunge`:
 `dstruct::DataFrame` for the data, `stats::MLPClassifier` for the model,
-and `plot::RPlot` for every figure. No external machine-learning package is
+and `graphics::RPlot` for every figure. No external machine-learning package is
 used.
 
 >> Program, presented as a literate whole
@@ -286,7 +286,7 @@ DataFrame, the other shuffles and splits rows into training and test sets.
 using datamunge::dstruct::DataFrame;
 using datamunge::stats::MLPClassifier;
 using datamunge::stats::MLPClassifierOptions;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Build a two-column-plus-label DataFrame.
 static DataFrame make_df(const std::vector<double>& x, const std::vector<double>& y,
@@ -518,7 +518,7 @@ shown here, not the (redundant) expanded source itself.
 using datamunge::dstruct::DataFrame;
 using datamunge::stats::MLPClassifier;
 using datamunge::stats::MLPClassifierOptions;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Build a two-column-plus-label DataFrame.
 static DataFrame make_df(const std::vector<double>& x, const std::vector<double>& y,

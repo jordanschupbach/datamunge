@@ -1,10 +1,10 @@
 # Native R NN example. Visible-only transformer masked autoencoder (75 percent patch masking).
+# CMD: nix develop .#r --command Rscript examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/masked_autoencoder.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example masked_autoencoder
 # Visible-only transformer MAE with 75 percent masking and a smaller mask-token decoder.
 #
 # Port of tflow's masked_autoencoder. Preparation (in ~/projects/tflow_examples):

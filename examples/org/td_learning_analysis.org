@@ -47,7 +47,7 @@ run on never-ending tasks.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Bootstrapping: the TD(0) update

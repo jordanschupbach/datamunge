@@ -1,3 +1,6 @@
+/// @file gradcheck.cpp
+/// @brief Numerical and automatic Jacobian comparisons for first and second derivatives.
+
 #include "datamunge/nn/gradcheck.hpp"
 
 #include <cmath>
@@ -9,6 +12,7 @@
 
 namespace datamunge::nn {
 
+/// @brief Independent input copies and flat double-valued evaluations for derivative comparisons.
 namespace {
 
 /// Fresh leaves with the same values and requires_grad flags.
@@ -26,6 +30,7 @@ std::vector<Tensor> fresh_leaves(const std::vector<Tensor>& inputs) {
   return out;
 }
 
+/// @brief Evaluates f, detaches its result, and copies its logical values to a flat double vector.
 std::vector<double> evaluate_flat(const TensorFunction& f, const std::vector<Tensor>& inputs) {
   return cast(f(inputs).detach(), DType::Float64).to_vector<double>();
 }
@@ -43,6 +48,7 @@ Tensor numerical_jacobian(const TensorFunction& f, const std::vector<Tensor>& in
   Tensor              jac    = zeros({rows, cols}, DType::Float64);
   double*             J      = jac.data_ptr<double>();
   for (std::int64_t j = 0; j < cols; ++j) {
+    // Evaluate one displacement of input element j while preserving all other inputs.
     auto perturbed = [&](double delta) {
       std::vector<double> v = values;
       v[static_cast<std::size_t>(j)] += delta;
@@ -120,6 +126,7 @@ GradcheckResult gradgradcheck(const TensorFunction& f, const std::vector<Tensor>
   for (std::size_t i = 0; i < inputs.size(); ++i)
     if (inputs[i].defined() && inputs[i].requires_grad()) checked.push_back(i);
 
+  // Flatten the selected input gradients of the fixed output projection into a new map.
   TensorFunction first_order = [f, v, checked](const std::vector<Tensor>& ins) {
     const Tensor        out = f(ins);
     std::vector<Tensor> wrt;

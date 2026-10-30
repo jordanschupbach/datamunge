@@ -33,7 +33,7 @@ class ShapeLayer {
   ///        part, and Point/MultiPoint shapes via RPlot::points(). The data's x/y range is
   ///        padded so the map's aspect ratio matches the canvas's (`width`/`height`), which
   ///        Plot's default independent x/y autoscaling would otherwise distort.
-  [[nodiscard]] plot::RPlot plot(plot::RGB fill_color = {148, 163, 184}, plot::RGB border_color = {51, 65, 85},
+  [[nodiscard]] graphics::RPlot plot(graphics::RGB fill_color = {148, 163, 184}, graphics::RGB border_color = {51, 65, 85},
                                  std::size_t width = 800, std::size_t height = 800) const;
 
  private:

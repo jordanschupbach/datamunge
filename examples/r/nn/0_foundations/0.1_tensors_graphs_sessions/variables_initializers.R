@@ -1,4 +1,5 @@
 # Native R NN example. Variable lifecycle and initializer algorithms.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.1_tensors_graphs_sessions/variables_initializers.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)

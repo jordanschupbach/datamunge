@@ -8,6 +8,9 @@
 /// name, x, ...)` without the scope). Input widths are read from the input,
 /// so they are not passed in. Calling a layer again with the same name reuses
 /// its weights.
+///
+/// plot_model() and Module::plot() group named dense, convolution and batch-normalization
+/// calls into architecture nodes. This optional tracing does not change numerical results.
 
 #include <cstdint>
 #include <string>
@@ -21,8 +24,14 @@
 namespace datamunge::nn {
 
 enum class Activation {
-  None, Relu, Relu6, LeakyRelu, Elu, Selu, Gelu, GeluTanh, Silu, Mish, Softplus, Softsign, Sigmoid, Tanh
+  None, Relu, Relu6, LeakyRelu, Elu, Selu, Gelu, GeluTanh, Silu, Mish, Softplus, Softsign, Sigmoid, Tanh,
+  HardSigmoid,  ///< relu6(x + 3) / 6, PyTorch's and Keras 3's piecewise-linear sigmoid.
+  HardSwish,    ///< x relu6(x + 3) / 6 (MobileNetV3).
+  HardTanh,     ///< clip(x, -1, 1).
+  LogSigmoid    ///< log sigmoid(x) = -softplus(-x).
 };
+/// The last enumerator, for loops over every activation.
+inline constexpr Activation kLastActivation = Activation::LogSigmoid;
 
 /// "relu", "gelu_tanh", ... ("identity" for None).
 std::string activation_name(Activation activation);

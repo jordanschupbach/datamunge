@@ -1,0 +1,540 @@
+//? Title: MobileNet v3: Hard-Swish, Channel Gates and Searched Blocks
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+MobileNet v3 combines searched bottleneck tables with hard-swish and squeeze/excitation.
+We plot the activation replacements, check channel-gate values and derivatives, verify both
+released sizes, then explicitly fit Large and Small CIFAR models with tensor Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v3.cpp`.
+
+> The method
+
+Hard sigmoid and hard-swish replace smooth functions with simple piecewise polynomials:
+
+$$h(x)=\operatorname{ReLU6}(x+3)/6,\qquad \operatorname{hswish}(x)=x h(x).$$
+\alttext(The gate is clipped linear; multiplying by x produces a piecewise quadratic activation.)
+
+Hard-swish is zero at x<=-3, identity at x>=3 and x(x+3)/6 inside; its interior derivative
+x/3+.5 can be negative. Hinges use the core ReLU6 derivative convention, so the independent
+slope check excludes exactly ±3. The plots compare both replacements with sigmoid/swish.
+Squeeze/excitation pools each image spatially, reduces channels with biased 1×1/ReLU, expands
+with biased 1×1/hard-sigmoid, then broadcasts gates across the original feature map. A controlled
+zero expansion kernel isolates exact gate values/input derivatives; general gates also depend on x.
+
+Large/Small retain the exact 15/11 released searched blocks, with 3×3/5×5 depthwise filters,
+ReLU or hard-swish, optional SE and linear projections. Equal-width stride-one sums remain ungated.
+The efficient final spatial 1×1 expands to six times the last bottleneck width; pooling precedes
+a biased 1280/1024-unit hard-swish head, dropout .2 and classifier. Full learned counts are
+5483032/2542856, with 24400/12112 moving scalars and 216589760/56510400 counted MACs at 224.
+These counts include pooled SE filters and both dense matrices but omit elementwise channel scaling.
+Full-model gradient probes shift BN betas/SE biases and separately check 15/11 redundant projection
+BN shifts. Both probes retain complete widths/tables at 64-pixel synthetic resolution, without dropout.
+
+CIFAR Large/Small retain 4214842/1528106 learned scalars; only the class count and initial stride change.
+All model computations and fitting use the tensor library. BN learns scale/shift with epsilon .001;
+training uses batch moments and eager moving updates use unbiased variance. He-uniform fan-in
+initialization is an adaptation of the original release. Images stay at original 32×32 resolution;
+only the first stride changes to one, retaining every later block/downsampling. Fits use 128 fitting,
+64 validation and 64 official-test images, 10 batch-eight epochs of Adam(.001), explicit kernel
+L2=.0001/2 and independent padded crops/flips. Validation selects paired weights/moving moments
+before test evaluation. These tiny CPU fits differ from both the larger source runs and published
+ImageNet schedules. MAC counts are arithmetic budgets from measured output shapes, not latency.
+
+The editable concept diagram is `diagrams/mobilenet_v3_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/mobilenet_v3_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/mobilenet_v3_concept.tikz > build/mobilenet_v3_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/mobilenet_v3_concept.svg build/mobilenet_v3_concept.dvi > build/mobilenet_v3_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/mobilenet_v3_concept.svg)
+// result_end
+\caption(MobileNet v3: Hard-Swish, Channel Gates and Searched Blocks)
+\alttext(Hard-swish activations; hard-sigmoid SE gates; then Searched Large or Small; efficient pooled head; then Complete CIFAR models; explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/mobilenet_v3_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  const bool                   large = true;
+  n::models::MobileNetV3Config cfg;
+  cfg.small_stem = true;
+  cfg.classes    = 10;
+  cfg.large      = large;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::MobileNetV3(p, state, image, cfg, false).logits;
+      },
+      "MobileNet v3: Hard-Swish, Channel Gates and Searched Blocks");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/mobilenet_v3_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+275 displayed nodes; 4214842 reachable learned values.
+\image(figures/mobilenet_v3_architecture.svg)
+// result_end
+\caption(Executed mobilenet v3 tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right mobilenet v3 architecture with rotated names and exact output shapes.)
+
+> Simple activation example
+
+Piecewise formulas and derivatives are visible before the full network.
+
+```{cpp, results="markdown", file="figures/mobilenet_v3_activations.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  const auto x = n::linspace(-6, 6, 1201, type).detach().requires_grad_();
+  const auto hs = n::models::HardSwish(x), gate = n::models::HardSigmoid(x),
+             smooth = n::sigmoid(x);
+  const auto derivative = n::grad(n::sum(hs), {x})[0];
+  double error = 0;
+  for (size_t i = 0; i < 1201; ++i) {
+    const double value = x.at({int64_t(i)});
+    if (std::abs(std::abs(value) - 3) < 1e-8)
+      continue;
+    const double expected = value < -3 ? 0 : value > 3 ? 1 : value / 3 + .5;
+    error = std::max(error, std::abs(derivative.at({int64_t(i)}) - expected));
+  }
+  if (error > 1e-12 || n::models::HardSwish(n::scalar(-4, type)).item() != 0 ||
+      n::models::HardSwish(n::scalar(4, type)).item() != 4)
+    return 1;
+  auto sigmoid = dm::graphics::RPlot::create(), swish = dm::graphics::RPlot::create();
+  const auto xv = x.to_vector<double>();
+  sigmoid.lines(xv, gate.to_vector<double>(), "hard sigmoid", {37, 99, 235})
+      .lines(xv, smooth.to_vector<double>(), "sigmoid", {234, 88, 12})
+      .title("Piecewise-linear channel gate")
+      .x_label("x")
+      .y_label("gate")
+      .y_limits(0, 1.4);
+  swish.lines(xv, hs.to_vector<double>(), "hard-swish", {37, 99, 235})
+      .lines(xv, (x * smooth).to_vector<double>(), "swish", {234, 88, 12})
+      .title("Hard-swish and smooth swish")
+      .x_label("x")
+      .y_label("activation")
+      .y_limits(-1, 9);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(sigmoid)
+      .add(swish)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/mobilenet_v3_activations.svg");
+  std::print("Hard-swish derivatives away from hinges match the piecewise formula to {:.12f}; "
+             "exact zero below -3 and identity above 3.\n",
+             error);
+}
+```
+// result_begin: markdown
+Hard-swish derivatives away from hinges match the piecewise formula to 0.000000000000; exact zero below -3 and identity above 3.
+\image(figures/mobilenet_v3_activations.svg)
+// result_end
+\caption(Hard sigmoid is relu6(x+3)/6; hard-swish multiplies that gate by x. Derivatives are checked away from the ±3 hinges. Distinct colours show the smooth functions these replace; negative interior slopes remain possible.)
+\alttext(Hard sigmoid is relu6(x+3)/6; hard-swish multiplies that gate by x. Derivatives are checked away from the ±3 hinges. Distinct colours show the smooth functions these replace; negative interior slopes remain possible.)
+
+> Controlled channel gating
+
+The fixture isolates the gate range and its spatial broadcasting.
+
+```{cpp, results="markdown", file="figures/mobilenet_v3_gates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type);
+  const auto x = n::linspace(-1, 1, 400, type).reshape({2, 5, 5, 8}).detach().requires_grad_();
+  {
+    n::NoGradGuard guard;
+    n::models::SqueezeExcite(p, "se", x, 8);
+  }
+  p.set("se/expand/W", n::zeros_like(p.at("se/expand/W")));
+  const auto bias = n::arange(-4, 4).to(type);
+  p.set("se/expand/b", bias);
+  const auto out = n::models::SqueezeExcite(p, "se", x, 8);
+  const auto expected =
+      n::minimum(n::maximum((bias + 3) / 6, n::zeros_like(bias)), n::ones_like(bias));
+  const auto dx = n::grad(n::sum(out.output), {x})[0];
+  if (n::max(n::abs(out.output - x * expected)).item() > 1e-12 ||
+      n::max(n::abs(dx - n::ones_like(x) * expected)).item() > 1e-12)
+    return 1;
+  auto gates = dm::graphics::RPlot::create();
+  gates
+      .lines(n::arange(0, 8).to_vector<double>(), expected.to_vector<double>(),
+             "controlled gate", {147, 51, 234})
+      .title("SE gate with zero expansion kernel")
+      .x_label("channel index")
+      .y_label("hard sigmoid(bias)")
+      .y_limits(0, 1.4);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 1).add(gates).size(850, 460).fit_panels().save_svg(
+      "build/mobilenet_v3_gates.svg");
+  std::print("SE biases -4..3 give exact channelwise hard-sigmoid scaling and input "
+             "derivatives. Gates broadcast over both spatial axes.\n");
+}
+```
+// result_begin: markdown
+SE biases -4..3 give exact channelwise hard-sigmoid scaling and input derivatives. Gates broadcast over both spatial axes.
+\image(figures/mobilenet_v3_gates.svg)
+// result_end
+\caption(Zeroing the expansion kernel makes gates independent of the input, isolating channelwise value/derivative scaling. The general module retains the gate’s input derivative as well.)
+\alttext(Zeroing the expansion kernel makes gates independent of the input, isolating channelwise value/derivative scaling. The general module retains the gate’s input derivative as well.)
+
+> Complete searched models
+
+Both released tables, counts and every parameter gradient are checked.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  for (auto [large, count, moving, macs] :
+       std::vector<std::tuple<bool, int64_t, int64_t, int64_t>>{
+           {true, 5483032, 24400, 216589760}, {false, 2542856, 12112, 56510400}}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    n::models::MobileNetV3Config cfg;
+    cfg.large = large;
+    const auto out = n::models::MobileNetV3(p, state, n::zeros({1, 224, 224, 3}), cfg);
+    if (p.count() != count || state.count() != moving || out.Macs() != macs ||
+        n::models::MobileNetV3Blocks(large).size() != (large ? 15 : 11))
+      return 1;
+    std::print("MobileNet-v3 {}: {} learned / {} moving scalars, {} convolution/SE/dense "
+               "MACs/image. Complete {}-block table retained.\n",
+               large ? "Large" : "Small", count, moving, macs, large ? 15 : 11);
+  }
+}
+```
+// result_begin: markdown
+MobileNet-v3 Large: 5483032 learned / 24400 moving scalars, 216589760 convolution/SE/dense MACs/image. Complete 15-block table retained.
+MobileNet-v3 Small: 2542856 learned / 12112 moving scalars, 56510400 convolution/SE/dense MACs/image. Complete 11-block table retained.
+// result_end
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  for (bool large : {true, false}) {
+    n::ParameterStore p(17), state(17);
+    n::models::MobileNetV3Config cfg;
+    cfg.update_stats = false;
+    cfg.keep_probability = 1;
+    cfg.large = large;
+    const auto x = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                       .reshape({2, 64, 64, 3});
+    {
+      n::NoGradGuard guard;
+      n::models::MobileNetV3(p, state, x, cfg, true);
+      for (const auto &name : p.names())
+        if (name.ends_with("/beta") ||
+            (name.find("/se/") != std::string::npos && name.ends_with("/b"))) {
+          const auto shape = p.at(name).shape();
+          p.set(name,
+                (.5 * n::sin(.37 * n::arange(0, p.at(name).numel()).to(n::DType::Float32) +
+                             double(name.size())))
+                    .reshape(shape));
+        }
+    }
+    const auto out = n::models::MobileNetV3(p, state, x, cfg, true);
+    const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+    double maximum = 0, minimum = std::numeric_limits<double>::infinity(), removed = 0;
+    int redundant = 0;
+    for (size_t i = 0; i < gradients.size(); ++i) {
+      const double norm = n::sqrt(n::sum(n::square(gradients[i]))).item();
+      if (!std::isfinite(norm))
+        return 1;
+      maximum = std::max(maximum, norm);
+      if (p.names()[i].ends_with("/project/bn/beta")) {
+        ++redundant;
+        removed = std::max(removed, norm);
+      } else
+        minimum = std::min(minimum, norm);
+    }
+    if (redundant != (large ? 15 : 11) || removed > 1e-5 * maximum || minimum <= 0)
+      return 1;
+    std::print(
+        "MobileNet-v3: {} finite parameter-tensor gradients; nonredundant minimum {:.9f}, "
+        "maximum {:.9f}; {} projection BN shifts removed downstream, max {:.9f}.\n",
+        gradients.size(), minimum, maximum, redundant, removed);
+  }
+}
+```
+// result_begin: markdown
+MobileNet-v3: 174 finite parameter-tensor gradients; nonredundant minimum 0.000356697, maximum 0.356567681; 15 projection BN shifts removed downstream, max 0.000000015.
+MobileNet-v3: 142 finite parameter-tensor gradients; nonredundant minimum 0.000308981, maximum 0.116251223; 11 projection BN shifts removed downstream, max 0.000000005.
+// result_end
+
+> Dataset and paired fitting
+
+Original pixels precede both explicit optimizer runs.
+
+```{cpp, results="markdown", file="figures/mobilenet_v3_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/mobilenet_v3_inputs.png", 5, 0., 1., 4,
+                     1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/mobilenet_v3_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/mobilenet_v3_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  auto training_plot      = dm::graphics::RPlot::create(),
+       validation_plot    = dm::graphics::RPlot::create();
+  int setting             = 0;
+  for (bool large : {true, false}) {
+    n::set_num_threads(2);
+
+    std::filesystem::path cache;
+    if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+      cache = p;
+    else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+      cache = std::filesystem::path(p) / "datamunge/datasets";
+    else
+      cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+    const auto raw = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+    const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+               labels = n::cast(raw.labels, n::DType::Int64);
+    const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+    const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+               vy       = n::slice_axis(labels, 0, 128, 192);
+    const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+    const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+               qy       = n::slice_axis(official.labels, 0, 0, 64);
+    n::models::MobileNetV3Config cfg;
+    cfg.small_stem = true;
+    cfg.classes    = 10;
+    cfg.large      = large;
+    n::ParameterStore p(17), state(17);
+    auto              output = [&](const n::Tensor& image, bool training) {
+      return n::models::MobileNetV3(p, state, image, cfg, training).logits;
+    };
+    {
+      n::NoGradGuard guard;
+      output(n::zeros({1, 32, 32, 3}), false);
+    }
+    if (p.count() != (large ? 4214842 : 1528106) || state.count() != (large ? 24400 : 12112))
+      return 1;
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer  optimizer(p, .001, config);
+    n::BatchOrder batches(128, 8, 2026);
+    n::Generator  augmentation(151);
+    std::filesystem::create_directories("build");
+    const std::string   checkpoint = "build/mobilenet_v3_best";
+    double              best       = std::numeric_limits<double>::infinity();
+    int                 best_epoch = 0;
+    std::vector<double> epochs, train, validation;
+    for (int epoch = 1; epoch <= 10; ++epoch) {
+      batches.begin_epoch();
+      n::WeightedMean average;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+        std::vector<n::Tensor> transformed;
+        for (int64_t row = 0; row < batch.size(0); ++row) {
+          auto image =
+              n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+          image = n::augment::random_crop(image, 32, 32, augmentation);
+          transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+        }
+        const auto nll = n::sparse_softmax_cross_entropy(
+            output(2 * n::concat(transformed, 0) - 1, true), target);
+        auto objective = nll;
+        for (const auto& w : p.parameters())
+          if (w.dim() >= 2)
+            objective = objective + .00005 * n::sum(n::square(w));
+        optimizer.minimize(objective);
+        average.add(nll.item(), rows.size());
+      }
+      n::NoGradGuard guard;
+      const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+      if (!std::isfinite(val))
+        return 1;
+      epochs.push_back(epoch);
+      train.push_back(average.value());
+      validation.push_back(val);
+      if (val < best) {
+        best       = val;
+        best_epoch = epoch;
+        p.save(checkpoint + "_params.npz");
+        state.save(checkpoint + "_state.npz");
+      }
+    }
+    p.load(checkpoint + "_params.npz");
+    state.load(checkpoint + "_state.npz");
+    n::NoGradGuard guard;
+    const auto     prediction = output(qx, false);
+    const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+    const double   training_nll =
+        n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+    if (!std::isfinite(test_nll))
+      return 1;
+    const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+    const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+    n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+        .save_svg(
+            "build/mobilenet_v3_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+            {.title = "mobilenet v3 / selected-checkpoint test counts"});
+
+    if (n::sum(confusion).item() != 64)
+      return 1;
+    const std::string                    label   = large ? "Large" : "Small";
+    const std::vector<dm::graphics::RGB> colours = {{37, 99, 235}, {234, 88, 12}, {22, 163, 74}};
+    training_plot.lines(epochs, train, label, colours[setting]);
+    validation_plot.lines(epochs, validation, label, colours[setting]);
+    ++setting;
+    std::print("MobileNet-v3 {}: ", large ? "Large" : "Small");
+    std::print(
+        "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+        "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+        "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+        p.count(),
+        state.count(),
+        optimizer.iterations(),
+        best_epoch,
+        best,
+        training_nll,
+        test_nll,
+        n::accuracy(prediction, qy));
+  }
+  training_plot.title("MobileNet-v3: training").x_label("epoch").y_label("mean NLL");
+  validation_plot.title("MobileNet-v3: validation").x_label("epoch").y_label("mean NLL");
+  dm::graphics::RLayout::create(1, 2)
+      .add(training_plot)
+      .add(validation_plot)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/mobilenet_v3_training.svg");
+}
+```
+// result_begin: markdown
+MobileNet-v3 Large: 128 fit / 64 validation / 64 official-test rows; 4214842 learned scalars, 24400 moving scalars; 160 explicit Adam updates.
+Selected epoch 9; validation NLL 2.452944; inference training NLL 2.095585; test NLL 2.468178; test accuracy 0.125000.
+MobileNet-v3 Small: 128 fit / 64 validation / 64 official-test rows; 1528106 learned scalars, 12112 moving scalars; 160 explicit Adam updates.
+Selected epoch 1; validation NLL 2.333709; inference training NLL 2.312958; test NLL 2.367160; test accuracy 0.093750.
+\image(figures/mobilenet_v3_training.svg)
+// result_end
+\caption(The two searched sizes share fixed CIFAR subsets, 10 epochs, batch size and checkpoint rules. Moving BN state is restored alongside weights before scoring.)
+\alttext(The two searched sizes share fixed CIFAR subsets, 10 epochs, batch size and checkpoint rules. Moving BN state is restored alongside weights before scoring.)
+
+
+Large selects epoch 9 (validation NLL 2.452944, test NLL 2.468178, accuracy
+0.125000); Small selects epoch 1 (validation NLL 2.333709, test NLL 2.367160,
+accuracy 0.093750). Both test accuracies are close to the chance level of 0.1, and validation variability makes these
+small-data runs unsuitable for establishing a Large/Small ranking. All training
+traces use augmentation and batch BN moments; restored inference losses use the
+saved moving moments and need not match the plotted training losses.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/mobilenet_v3_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/mobilenet_v3_confusion_api_1.svg)
+\caption(Held-out classification confusion counts, evaluation 2. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Hard-swish, learned channel gates and searched block choices change several parts of the mobile
+classifier. Formula/gradient checks and full measured budgets isolate their behavior; paired
+visible fits connect the released Large/Small topology to a reproducible tensor workflow.
+
+> References
+
+- [Howard et al. (2019), Searching for MobileNetV3](https://arxiv.org/abs/1905.02244).
+- [Torchvision v3 implementation](https://github.com/pytorch/vision/blob/main/torchvision/models/mobilenetv3.py).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

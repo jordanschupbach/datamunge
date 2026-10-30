@@ -1,3 +1,5 @@
+/// @file gradient_descent.cpp
+/// @brief GradientDescent native update, trial and stopping implementation.
 #include <datamunge/optim/gradient_descent.hpp>
 
 #include <cmath>

@@ -1,0 +1,929 @@
+//? Title: Linear Mixed Models: Partial Pooling for Grouped Data
+//? Subtitle: Random intercepts and slopes, profiled ML and REML, and BLUP shrinkage derived, checked by hand on a balanced one-way design, tested by simulation, and applied to children's orthodontic growth, using datamunge's stats::LMM
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Grouped data, such as pupils in schools or repeated measurements on the same child, break the
+independence that ordinary regression assumes. Pooling every row into one least-squares fit
+gets the standard errors wrong, and fitting each group separately gives noisy estimates for
+small groups. A linear mixed model treats the group effects as random draws with an estimated
+variance, which decides how far each group's estimate is pulled towards the population: partial
+pooling. We derive the model's marginal covariance, generalised least squares, the profiled ML
+and REML criteria that datamunge's `stats::LMM` minimises, and the best linear unbiased
+predictors (BLUPs). On a balanced one-way design of twelve numbers, the library reproduces the
+ANOVA closed forms for both ML and REML to six decimals, and the BLUPs equal the group means
+shrunk by the reliability \(n\tau^2/(n\tau^2+\sigma^2)\), exactly, for unequal group sizes too.
+Simulations confirm the theory: REML removes ML's downward bias in the group variance; the
+estimates that land on zero are exactly the data sets the \(F\) statistic predicts; OLS reports a
+standard error 2.4 times too small for a group-level covariate (95% intervals cover 59% of the
+time); BLUPs beat group means for every group size; and the likelihood-ratio test for a zero
+variance is far more conservative than \(\chi^2_1\) or even the 50:50 boundary mixture suggest. On
+children's orthodontic growth the fit agrees with R's nlme to seven digits; boys grow
+0.30 mm/year faster than girls (\(p=0.024\)), and OLS misstates every standard error, by up to a
+factor of 1.7.
+)
+
+\toc
+
+> The problem
+
+Many data sets come in groups: pupils in schools, repeated measurements on the same patient,
+plots in the same field. Observations in one group share influences that the covariates do not
+record, so they are more alike than observations from different groups. Two simple analyses
+both go wrong. Ordinary least squares on all the rows (*complete pooling*) treats the
+observations as independent. Its estimates are still unbiased, but its standard errors are too
+small for anything that varies between groups, because \(n\) correlated rows carry less
+information than \(n\) independent ones. Fitting each group separately (*no pooling*) respects the
+grouping, but a group with two observations gets an estimate as noisy as two observations allow,
+and nothing can be said about a group that was not sampled.
+
+A linear mixed model treats the group effects as draws from a population with a variance that
+is estimated from the data. The variance decides how far each group's estimate is pulled
+towards the overall mean: a lot when groups barely differ or the group is small, hardly at all
+when groups differ a lot or the group is large. This is *partial pooling*.
+
+> The method
+
+>> The model
+
+Observations \(y_{gi}\), \(i=1,\dots,n_g\), in groups \(g=1,\dots,G\), with \(n=\sum_gn_g\). Each row has
+fixed-effect covariates \(x_{gi}\in\mathbb R^p\) and random-effect covariates \(z_{gi}\in\mathbb R^q\) (for a
+random intercept \(z_{gi}=1\); for a random intercept and slope in age, \(z_{gi}=(1,\text{age}_{gi})\)):
+
+$$
+y_g=X_g\beta+Z_gb_g+\varepsilon_g,\qquad b_g\sim N(0,\Sigma),\qquad \varepsilon_g\sim N(0,\sigma^2I_{n_g}),
+$$
+\alttext(The response vector of group g equals X g times beta plus Z g times b g plus epsilon g, where the random effect b g is normal with mean 0 and covariance Sigma, and the error epsilon g is normal with mean 0 and covariance sigma squared times the identity.)
+
+independently across groups. \(\beta\) is the population (fixed) effect, the same for everyone;
+\(b_g\) is group \(g\)'s deviation from it. In the formula language this is
+`y ~ x + (1 + age | subject)`: the terms left of `|` are the columns of \(Z\), and the
+variable on the right defines the groups.
+
+Integrating out \(b_g\) gives the *marginal* model. The rows of one group are jointly normal
+with
+
+$$
+y_g\sim N\big(X_g\beta,\ V_g\big),\qquad V_g=\sigma^2I+Z_g\Sigma Z_g^\top .
+$$
+\alttext(y g is normal with mean X g beta and covariance V g, where V g equals sigma squared times the identity plus Z g Sigma Z g transpose.)
+
+For a random intercept alone, \(\Sigma=\tau^2\) and \(V_g=\sigma^2I+\tau^2\mathbf 1\mathbf 1^\top\): every pair of rows in a
+group has correlation \(\rho=\tau^2/(\tau^2+\sigma^2)\), the *intraclass correlation*, and rows in different
+groups are independent.
+
+>> Generalised least squares, given the variances
+
+If \(V\) (block diagonal, blocks \(V_g\)) were known, the best linear unbiased estimator of \(\beta\)
+would be generalised least squares,
+
+$$
+\hat\beta=(X^\top V^{-1}X)^{-1}X^\top V^{-1}y,\qquad \operatorname{Var}(\hat\beta)=(X^\top V^{-1}X)^{-1}.
+$$
+\alttext(beta hat equals the inverse of X transpose V inverse X, times X transpose V inverse y. Its variance is the inverse of X transpose V inverse X.)
+
+OLS is the special case \(V=\sigma^2I\). With correlated rows, OLS is still unbiased but no longer
+efficient, and its usual variance formula is wrong. For a covariate \(w\) that is constant within
+groups, with \(m\) rows per group and a random intercept, the OLS formula understates the variance
+of \(\hat\beta_w\) by the *design effect* \(1+(m-1)\rho\): the \(m\) rows of one group carry roughly one
+group's worth of information about \(w\).
+
+>> Estimating the variances: profiled maximum likelihood
+
+Write \(\Sigma=\sigma^2\Lambda\Lambda^\top\) with \(\Lambda\) lower triangular, and collect its \(q(q+1)/2\) entries into
+\(\theta\) (row by row). \(\theta\) is the random-effect covariance relative to the residual variance; for
+a random intercept, \(\theta=\tau/\sigma\). Then \(V_g=\sigma^2M_g\) with \(M_g=I+Z_g\Lambda\Lambda^\top Z_g^\top\), which depends
+on \(\theta\) only. The log-likelihood of the marginal model is
+
+$$
+-2\ell(\beta,\sigma^2,\theta)=n\log(2\pi\sigma^2)+\sum_g\log|M_g|+\frac{1}{\sigma^2}\sum_g(y_g-X_g\beta)^\top M_g^{-1}(y_g-X_g\beta).
+$$
+\alttext(Minus 2 times the log-likelihood equals n log of 2 pi sigma squared, plus the sum over groups of log determinant M g, plus one over sigma squared times the sum over groups of the quadratic form of the residual y g minus X g beta in M g inverse.)
+
+For fixed \(\theta\), the minimiser over \(\beta\) is GLS with \(M\) in place of \(V\) (the factor
+\(\sigma^2\) cancels), and the minimiser over \(\sigma^2\) is \(\hat\sigma^2_\theta=r^\top M^{-1}r/n\) with
+\(r=y-X\hat\beta_\theta\). Substituting both leaves a function of \(\theta\) alone, the *profiled deviance*
+
+$$
+d_{\mathrm{ML}}(\theta)=n\log(2\pi\hat\sigma^2_\theta)+n+\sum_g\log|M_g(\theta)|,
+$$
+\alttext(The profiled ML deviance of theta equals n log of 2 pi sigma hat squared of theta, plus n, plus the sum over groups of log determinant M g of theta.)
+
+which has only \(q(q+1)/2\) arguments: one for a random intercept, three for an intercept and
+slope. `LMM::deviance_at(theta)` evaluates it.
+
+>> REML
+
+The ML estimate of \(\sigma^2\) divides by \(n\), ignoring that \(p\) degrees of freedom were spent on
+\(\hat\beta\), just as \(\frac1n\sum(y_i-\bar y)^2\) underestimates a variance. The variance components inherit
+the same bias, and with few groups it is large. *Restricted* maximum likelihood (REML) maximises
+the likelihood of \(n-p\) error contrasts \(K^\top y\) with \(K^\top X=0\), which do not depend on \(\beta\).
+Up to a constant, its profiled criterion is
+
+$$
+d_{\mathrm{REML}}(\theta)=(n-p)\log(2\pi\hat\sigma^2_\theta)+(n-p)+\sum_g\log|M_g|+\log|X^\top M^{-1}X|,
+\qquad \hat\sigma^2_\theta=\frac{r^\top M^{-1}r}{n-p}.
+$$
+\alttext(The profiled REML criterion equals n minus p times log of 2 pi sigma hat squared, plus n minus p, plus the sum of log determinants of M g, plus the log determinant of X transpose M inverse X, where sigma hat squared equals r transpose M inverse r divided by n minus p.)
+
+The extra term \(\log|X^\top M^{-1}X|\) is the penalty for estimating \(\beta\). REML is the default
+(`LMMOptions::reml`, as in lme4 and nlme). Two REML fits can be compared by their criteria only
+when they have the same fixed effects; to compare fixed effects, fit by ML.
+
+>> The balanced one-way model in closed form
+
+With a random intercept only, \(G\) groups of equal size \(m\) and no covariates, everything is
+explicit in terms of the one-way ANOVA mean squares
+
+$$
+\text{MSB}=\frac{m\sum_g(\bar y_g-\bar y)^2}{G-1},\qquad \text{MSW}=\frac{\sum_g\sum_i(y_{gi}-\bar y_g)^2}{G(m-1)} .
+$$
+\alttext(The between-group mean square MSB equals m times the sum over groups of the squared difference between the group mean and the grand mean, divided by G minus 1. The within-group mean square MSW equals the sum of squared deviations from the group means, divided by G times m minus 1.)
+
+Since \(E[\text{MSW}]=\sigma^2\) and \(E[\text{MSB}]=\sigma^2+m\tau^2\), the estimates are (Searle, Casella and McCulloch,
+1992, chapter 3)
+
+$$
+\hat\beta_0=\bar y,\qquad \hat\sigma^2=\text{MSW},\qquad
+\hat\tau^2_{\mathrm{REML}}=\frac{\text{MSB}-\text{MSW}}{m},\qquad
+\hat\tau^2_{\mathrm{ML}}=\frac{\tfrac{G-1}{G}\text{MSB}-\text{MSW}}{m},
+$$
+\alttext(beta 0 hat equals the grand mean, sigma hat squared equals MSW, the REML estimate of tau squared equals MSB minus MSW over m, and the ML estimate of tau squared equals G minus 1 over G times MSB, minus MSW, all over m.)
+
+when these are positive, and \(\hat\tau^2=0\) otherwise. The REML estimate is the unbiased ANOVA
+estimator. ML shrinks MSB by \((G-1)/G\), which is a large bias with few groups. The standard error
+of the intercept is \(\sqrt{\text{MSB}/(mG)}\) under REML: the variance of a mean of \(G\) independent group
+means, each with variance \(\tau^2+\sigma^2/m\).
+
+Under \(\tau^2=0\), \(F=\text{MSB}/\text{MSW}\) has an \(F_{G-1,\,G(m-1)}\) distribution, and in general
+\(F/(1+m\tau^2/\sigma^2)\) does. So the probability that the estimate lands on the boundary is known exactly:
+
+$$
+P(\hat\tau^2_{\mathrm{REML}}=0)=F_{G-1,G(m-1)}\Big(\frac{1}{1+m\tau^2/\sigma^2}\Big),\qquad
+P(\hat\tau^2_{\mathrm{ML}}=0)=F_{G-1,G(m-1)}\Big(\frac{G/(G-1)}{1+m\tau^2/\sigma^2}\Big).
+$$
+\alttext(The probability that the REML estimate of tau squared is 0 equals the F cumulative distribution function with G minus 1 and G times m minus 1 degrees of freedom, evaluated at 1 over 1 plus m tau squared over sigma squared. For ML the argument is G over G minus 1, divided by the same quantity.)
+
+>> Predicting the group effects: BLUPs
+
+The random effects are not parameters, but given the data they have a conditional
+distribution. Its mean, with the estimates plugged in, is the *best linear unbiased predictor*
+(Robinson, 1991)
+
+$$
+\hat b_g=\Sigma Z_g^\top V_g^{-1}(y_g-X_g\hat\beta)=\Lambda\Lambda^\top Z_g^\top M_g^{-1}r_g .
+$$
+\alttext(b g hat equals Sigma Z g transpose V g inverse times the residual y g minus X g beta hat, which equals Lambda Lambda transpose Z g transpose M g inverse r g.)
+
+For a random intercept, \(\mathbf 1^\top V_g^{-1}=\mathbf 1^\top/(\sigma^2+n_g\tau^2)\), so
+
+$$
+\hat b_g=\frac{n_g\tau^2}{n_g\tau^2+\sigma^2}\,\big(\bar y_g-\bar x_g^\top\hat\beta\big).
+$$
+\alttext(b g hat equals n g tau squared over n g tau squared plus sigma squared, times the group's mean residual.)
+
+The group's own mean residual is multiplied by a *shrinkage factor* between 0 and 1: the
+reliability of a mean of \(n_g\) observations. A large or very distinct group keeps nearly all of
+its own estimate; a small group in a population of similar groups is pulled to the overall
+line. With known variances, this weighted average of no pooling (factor 1) and complete pooling
+(factor 0) has the smallest mean squared prediction error of any linear predictor. With the
+variances estimated from the data it is an empirical Bayes estimator, in the same family as
+the James–Stein estimator.
+
+>> Computation
+
+`stats::LMM` parses the formula, builds \(X\) (dummy columns for factors, products for
+interactions) and \(Z\), and minimises the profiled criterion over \(\theta\). A global search
+(differential evolution, seeded, `de_population_size` × `de_max_generations`) covers a box
+with the diagonal entries of \(\Lambda\) in \([0,b]\) and the others in \([-b,b]\), where \(b\) is
+`theta_bound` (default 5; raise it if a group SD may exceed five residual SDs). Nelder–Mead
+then polishes the best point, and the signs of \(\Lambda\)'s columns are fixed so that its diagonal is
+non-negative. Each evaluation needs one Cholesky factorisation of each
+\(n_g\times n_g\) block \(M_g\), so the cost is linear in the number of groups. At the optimum,
+\(\hat\beta\), its covariance \(\hat\sigma^2(X^\top M^{-1}X)^{-1}\), Wald \(z\)-statistics and the BLUPs are computed
+once. `coefficient_frame()` and `random_effects_frame()` return them as data frames.
+
+> Simple examples
+
+>> A balanced one-way design by hand
+
+Four groups of three:
+
+| group | values | mean |
+| :--- | :--- | ---: |
+| A | 3, 3, 6 | 4 |
+| B | 3, 6, 6 | 5 |
+| C | 6, 7, 8 | 7 |
+| D | 9, 9, 6 | 8 |
+
+The grand mean is 6. The deviations of the group means are \((-2,-1,1,2)\), so
+\(\text{MSB}=3\cdot10/3=10\). The within-group sums of squares are \(6,6,2,6\), so \(\text{MSW}=20/8=2.5\) and
+\(F=4\). REML gives \(\hat\sigma^2=2.5\), \(\hat\tau^2=(10-2.5)/3=2.5\), so \(\hat\theta=\hat\tau/\hat\sigma=1\) and \(\rho=0.5\). The
+shrinkage factor is \(3\cdot2.5/(3\cdot2.5+2.5)=0.75\), so the BLUPs are \(0.75\cdot(-2,-1,1,2)=(-1.5,-0.75,0.75,1.5)\),
+and the intercept has standard error \(\sqrt{10/12}=0.913\). ML gives
+\(\hat\tau^2=(\tfrac34\cdot10-2.5)/3=\tfrac53\), \(\hat\theta=\sqrt{2/3}=0.816\), shrinkage factor
+\(5/7.5=\tfrac23\) and BLUPs \((-\tfrac43,-\tfrac23,\tfrac23,\tfrac43)\).
+
+```{cpp, results="markdown", file="figures/lmm_oneway.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::string> names{"A", "B", "C", "D"};
+  const std::vector<std::vector<double>> values{{3, 3, 6}, {3, 6, 6}, {6, 7, 8}, {9, 9, 6}};
+  std::vector<std::string> group;
+  std::vector<double> y;
+  for (std::size_t g = 0; g < 4; ++g)
+    for (const double v : values[g]) group.push_back(names[g]), y.push_back(v);
+  DF data;
+  data.add_column("group", group);
+  data.add_column("y", y);
+
+  const dm::stats::LMM reml(data, "y ~ 1 + (1 | group)");
+  const dm::stats::LMM ml(data, "y ~ 1 + (1 | group)", {.reml = false});
+  DF table;
+  table.add_column("quantity", std::vector<std::string>{"beta0", "se(beta0)", "sigma^2", "tau^2", "theta",
+                                                        "BLUP A", "BLUP B", "BLUP C", "BLUP D"});
+  auto column = [](const dm::stats::LMM& fit) {
+    const double tau2 = fit.random_effect_covariance()(0, 0);
+    std::vector<double> c{fit.coefficients()[0], fit.standard_errors()[0], fit.residual_variance(), tau2,
+                          fit.theta()[0]};
+    for (const auto& b : fit.random_effects()) c.push_back(b[0]);
+    return c;
+  };
+  table.add_column("REML", column(reml));
+  table.add_column("REML by hand", std::vector<double>{6, std::sqrt(10.0 / 12), 2.5, 2.5, 1, -1.5, -0.75, 0.75, 1.5});
+  table.add_column("ML", column(ml));
+  table.add_column("ML by hand", std::vector<double>{6, std::sqrt(7.5 / 12), 2.5, 5.0 / 3, std::sqrt(2.0 / 3),
+                                                     -4.0 / 3, -2.0 / 3, 2.0 / 3, 4.0 / 3});
+  DF::MarkdownOptions md;
+  md.digits = 6;
+  std::print("{}\n\n", table.to_md(md));
+  std::print("REML criterion {:.4f}, ML deviance {:.4f}\n\n", reml.deviance(), ml.deviance());
+
+  // Left: the data and the three kinds of pooling.
+  auto pool = dm::graphics::RPlot::create();
+  pool.abline_h(6.0, dm::RGB{148, 163, 184}, 2.0);
+  for (std::size_t g = 0; g < 4; ++g) {
+    const double x = g + 1.0, mean = (values[g][0] + values[g][1] + values[g][2]) / 3.0;
+    pool.points({x - 0.08, x, x + 0.08}, values[g], dm::RGB{17, 24, 39}, 6.0);
+    pool.segments({x - 0.3}, {mean}, {x + 0.3}, {mean}, dm::RGB{37, 99, 235}, 3.0);
+    pool.segments({x - 0.3}, {6.0 + reml.random_effects()[g][0]}, {x + 0.3}, {6.0 + reml.random_effects()[g][0]},
+                  dm::RGB{220, 38, 38}, 3.0);
+    pool.text(x, 2.2, names[g], dm::RGB{17, 24, 39}, 14.0);
+  }
+  pool.legend({"complete pooling", "no pooling", "partial (REML)"},
+              {dm::RGB{148, 163, 184}, dm::RGB{37, 99, 235}, dm::RGB{220, 38, 38}});
+  pool.x_limits(0.4, 4.6).y_limits(1.5, 12.5).title("Group means and BLUPs").x_label("group").y_label("y");
+
+  // Right: the profiled criteria against theta = tau / sigma.
+  auto prof = dm::graphics::RPlot::create();
+  std::vector<double> th, dr, dml;
+  for (int i = 0; i <= 200; ++i) {
+    const double t = 2.5 * i / 200.0;
+    th.push_back(t);
+    dr.push_back(reml.deviance_at({t}) - reml.deviance());
+    dml.push_back(ml.deviance_at({t}) - ml.deviance());
+  }
+  prof.lines(th, dr, dm::RGB{220, 38, 38}).lines(th, dml, dm::RGB{37, 99, 235});
+  prof.text(2.2, 1.5, "REML", dm::RGB{220, 38, 38}, 14.0).text(1.75, 3.0, "ML", dm::RGB{37, 99, 235}, 14.0);
+  prof.abline_v(reml.theta()[0], dm::RGB{220, 38, 38}, 1.0).abline_v(ml.theta()[0], dm::RGB{37, 99, 235}, 1.0);
+  std::print("Criterion at theta = 0 above its minimum: REML {:.3f}, ML {:.3f}\n", dr[0], dml[0]);
+  std::print("Largest plotted value: {:.3f}\n\n", std::max(std::ranges::max(dr), std::ranges::max(dml)));
+  prof.x_limits(0.0, 2.5).y_limits(0.0, 4.0).title("Profiled criteria").x_label("theta = tau / sigma")
+      .y_label("criterion - minimum");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(pool).add(prof).size(1100, 480).fit_panels();
+  fig.save_svg("build/lmm_oneway.svg");
+}
+```
+// result_begin: markdown
+| quantity | REML | REML by hand | ML | ML by hand |
+| :--- | ---: | ---: | ---: | ---: |
+| beta0 | 6.000000 | 6.000000 | 6.000000 | 6.000000 |
+| se(beta0) | 0.912871 | 0.912871 | 0.790569 | 0.790569 |
+| sigma^2 | 2.500000 | 2.500000 | 2.500000 | 2.500000 |
+| tau^2 | 2.500000 | 2.500000 | 1.666667 | 1.666667 |
+| theta | 1.000000 | 1.000000 | 0.816497 | 0.816497 |
+| BLUP A | -1.500000 | -1.500000 | -1.333333 | -1.333333 |
+| BLUP B | -0.750000 | -0.750000 | -0.666667 | -0.666667 |
+| BLUP C | 0.750000 | 0.750000 | 0.666667 | 0.666667 |
+| BLUP D | 1.500000 | 1.500000 | 1.333333 | 1.333333 |
+
+
+REML criterion 47.9396, ML deviance 49.4445
+
+Criterion at theta = 0 above its minimum: REML 2.417, ML 1.735
+Largest plotted value: 3.551
+
+\image(figures/lmm_oneway.svg)
+// result_end
+
+\caption(Left: the twelve observations (black), the complete-pooling estimate \(\bar y=6\) (grey), the group means (blue) and the REML partial-pooling estimates \(\hat\beta_0+\hat b_g\) (red), pulled a quarter of the way to 6. Right: the profiled REML and ML criteria against \(\theta=\tau/\sigma\), minus their minima; vertical lines mark the estimates. Table: the library's estimates against the closed forms.)
+\alttext(Left: four groups A to D on the x axis with three black points each. A grey horizontal line at 6. Short blue bars at the group means 4, 5, 7 and 8, and short red bars at 4.5, 5.25, 6.75 and 7.5, each closer to 6. Right: two U-shaped curves of criterion minus minimum against theta from 0 to 3, the red REML curve with its minimum at theta equals 1 and the blue ML curve with its minimum at about 0.82.)
+
+Both fits reproduce every closed form to six decimals. In the left panel, the partial-pooling
+estimates (red) sit a quarter of the way from the group means (blue) to the grand mean (grey);
+under ML they would sit a third of the way, because ML's smaller \(\hat\tau^2\) gives a smaller
+reliability. The right panel shows the two profiled criteria. Each has a single minimum, at
+\(\theta=1\) for REML and \(\theta=0.816\) for ML; ML's minimum is to the left because it ignores the
+degree of freedom spent on \(\hat\beta_0\). At \(\theta=0\) (no group effect) the criteria are 2.42 and
+1.73 above their minima: the data favour a group effect, but with four groups not decisively.
+
+>> Unequal group sizes: shrinkage depends on n
+
+With unequal group sizes there is no closed form for the variances, but given them the BLUP
+is still the group's mean residual times \(n_g\hat\tau^2/(n_g\hat\tau^2+\hat\sigma^2)\). Six groups of sizes 1 to 32
+are simulated with \(\tau=1\), \(\sigma=2\) and mean 5.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  dm::random::Xoshiro256StarStar rng(3);
+  const std::vector<int> sizes{1, 2, 4, 8, 16, 32};
+  std::vector<std::string> group;
+  std::vector<double> y;
+  for (std::size_t g = 0; g < sizes.size(); ++g) {
+    const double b = rng.normal(0.0, 1.0);
+    for (int i = 0; i < sizes[g]; ++i) group.push_back(std::format("g{}", g + 1)), y.push_back(5.0 + b + rng.normal(0.0, 2.0));
+  }
+  DF data;
+  data.add_column("group", group);
+  data.add_column("y", y);
+  const dm::stats::LMM fit(data, "y ~ 1 + (1 | group)");
+  const double tau2 = fit.random_effect_covariance()(0, 0), sigma2 = fit.residual_variance();
+  std::print("beta0 = {:.4f}, tau^2 = {:.4f}, sigma^2 = {:.4f}\n\n", fit.coefficients()[0], tau2, sigma2);
+
+  auto frame = fit.random_effects_frame();
+  std::vector<double> mean_resid, factor, ratio;
+  for (std::size_t g = 0; g < sizes.size(); ++g) {
+    double s = 0.0;
+    for (std::size_t i = 0; i < y.size(); ++i) if (group[i] == fit.group_labels()[g]) s += y[i];
+    const double n = frame.get_column<double>("n").values()[g];
+    mean_resid.push_back(s / n - fit.coefficients()[0]);
+    factor.push_back(n * tau2 / (n * tau2 + sigma2));
+    ratio.push_back(fit.random_effects()[g][0] / mean_resid.back());
+  }
+  frame.add_column("mean - beta0", mean_resid);
+  frame.add_column("BLUP / (mean - beta0)", ratio);
+  frame.add_column("n tau^2 / (n tau^2 + sigma^2)", factor);
+  DF::MarkdownOptions md;
+  md.digits = 4;
+  std::print("{}\n", frame.to_md(md));
+}
+```
+// result_begin: markdown
+beta0 = 4.1037, tau^2 = 0.8622, sigma^2 = 3.7283
+
+| group | n | (Intercept) | mean - beta0 | BLUP / (mean - beta0) | n tau^2 / (n tau^2 + sigma^2) |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| g1 | 1 | -0.1840 | -0.9796 | 0.1878 | 0.1878 |
+| g2 | 2 | -0.7068 | -2.2349 | 0.3163 | 0.3163 |
+| g3 | 4 | 0.4024 | 0.8374 | 0.4805 | 0.4805 |
+| g4 | 8 | 0.9200 | 1.4173 | 0.6491 | 0.6491 |
+| g5 | 16 | 0.3507 | 0.4455 | 0.7872 | 0.7872 |
+| g6 | 32 | -0.7824 | -0.8881 | 0.8810 | 0.8810 |
+// result_end
+
+The ratio of each BLUP to its group's mean residual equals the reliability
+\(n_g\hat\tau^2/(n_g\hat\tau^2+\hat\sigma^2)\) to every printed digit. The single observation in group g1 keeps 19%
+of its deviation, the 32 observations in g6 keep 88%. Here \(\sigma^2\) is four times \(\tau^2\), so a group
+needs about \(\hat\sigma^2/\hat\tau^2=4.3\) observations before its own mean gets more weight than the population.
+
+> Checking the theory
+
+>> Bias of ML and REML, and estimates on the boundary
+
+Three hundred data sets from the balanced one-way model with \(G=8\) groups of \(m=5\),
+\(\tau=\sigma=1\), are each fitted by REML and by ML. Without the constraint \(\tau^2\ge0\), the REML estimator
+would be unbiased and the ML estimator would have mean
+\(\big(\tfrac{G-1}{G}(\sigma^2+m\tau^2)-\sigma^2\big)/m=0.85\). The exact probabilities of a zero estimate come from
+the \(F\) distribution as above.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+// One-way ANOVA F = MSB / MSW for G consecutive groups of m values.
+double f_statistic(const std::vector<double>& y, int G, int m) {
+  std::vector<double> means(G, 0.0);
+  for (int k = 0; k < G; ++k)
+    for (int i = 0; i < m; ++i) means[k] += y[k * m + i] / m;
+  const double grand = dm::mean(means);
+  double ssb = 0.0, ssw = 0.0;
+  for (int k = 0; k < G; ++k) {
+    ssb += m * (means[k] - grand) * (means[k] - grand);
+    for (int i = 0; i < m; ++i) ssw += (y[k * m + i] - means[k]) * (y[k * m + i] - means[k]);
+  }
+  return (ssb / (G - 1)) / (ssw / (G * (m - 1)));
+}
+
+int main() {
+  dm::random::Xoshiro256StarStar rng(7);
+  const int G = 8, m = 5, reps = 300;
+  double tau2[2] = {0, 0}, sigma2[2] = {0, 0}, theta_mean[2] = {0, 0};
+  int zeros[2] = {0, 0}, below[2] = {0, 0};
+  for (int r = 0; r < reps; ++r) {
+    std::vector<double> g, y;
+    for (int k = 0; k < G; ++k) {
+      const double b = rng.normal(0.0, 1.0);
+      for (int i = 0; i < m; ++i) g.push_back(k), y.push_back(b + rng.normal(0.0, 1.0));
+    }
+    DF data;
+    data.add_column("g", g);
+    data.add_column("y", y);
+    const double F = f_statistic(y, G, m);
+    below[0] += F <= 1.0, below[1] += F <= G / (G - 1.0);
+    for (int method = 0; method < 2; ++method) {
+      const dm::stats::LMM fit(data, "y ~ 1 + (1 | g)", {.reml = method == 0});
+      const double t2 = fit.random_effect_covariance()(0, 0);
+      tau2[method] += t2 / reps, sigma2[method] += fit.residual_variance() / reps;
+      theta_mean[method] += fit.theta()[0] / reps;
+      zeros[method] += t2 < 1e-8;
+    }
+  }
+  const double ratio = 1.0 + m * 1.0 / 1.0;
+  DF table;
+  table.add_column("method", std::vector<std::string>{"REML", "ML"});
+  table.add_column("mean tau^2 hat", std::vector<double>{tau2[0], tau2[1]});
+  table.add_column("unconstrained theory", std::vector<double>{1.0, ((G - 1.0) / G * ratio - 1.0) / m});
+  table.add_column("mean sigma^2 hat", std::vector<double>{sigma2[0], sigma2[1]});
+  table.add_column("zero estimates", std::vector<double>{double(zeros[0]), double(zeros[1])});
+  table.add_column("F below cut-off", std::vector<double>{double(below[0]), double(below[1])});
+  table.add_column("expected, exact", std::vector<double>{reps * dm::random::f_cdf(1.0 / ratio, G - 1, G * (m - 1)),
+                                                          reps * dm::random::f_cdf(G / (G - 1.0) / ratio, G - 1, G * (m - 1))});
+  DF::MarkdownOptions md;
+  md.digits = 3;
+  md.column_digits = {{"zero estimates", 0}, {"F below cut-off", 0}, {"expected, exact", 1}};
+  std::print("{}\n", table.to_md(md));
+}
+```
+// result_begin: markdown
+| method | mean tau^2 hat | unconstrained theory | mean sigma^2 hat | zero estimates | F below cut-off | expected, exact |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| REML | 1.035 | 1.00 | 1.007 | 6 | 6 | 3.0 |
+| ML | 0.881 | 0.85 | 1.007 | 9 | 9 | 4.4 |
+// result_end
+
+ML underestimates \(\tau^2\) as predicted: the mean of 0.881 is close to the unconstrained value 0.85,
+pushed up a little by the estimates truncated at zero. REML's mean of 1.035 is close to the true
+1; truncation at zero lifts it slightly above. Both estimate \(\sigma^2\) without bias, because
+\(\hat\sigma^2=\text{MSW}\) for both. The estimates that are exactly zero are the data sets whose \(F\) statistic
+is below the cut-off (1 for REML, \(8/7\) for ML), one for one, so the optimiser finds the boundary
+whenever it should. There happen to be twice as many as expected (6 against 3.0, 9 against
+4.4). The probability of 6 or more when 3 are expected is about 8%.
+
+>> Standard errors: mixed model against OLS
+
+Data with \(G=12\) groups of \(m=6\), \(\tau=2\), \(\sigma=1\) (so \(\rho=0.8\)), and two covariates with true slopes 0.5:
+\(w\) is constant within each group (a school's funding), \(x\) varies within groups (a pupil's prior
+score). Over 1000 data sets, the table compares the spread of the estimates with the average
+reported standard error, and the coverage of nominal 95% intervals. The design-effect argument
+predicts that OLS's standard error for \(w\) is too small by a factor \(\sqrt{1+(m-1)\rho}=\sqrt5=2.24\).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  dm::random::Xoshiro256StarStar rng(12);
+  const int reps = 1000;
+  // est[model][coef] collects the estimates, se[model][coef] the reported standard errors.
+  std::vector<double> est[2][2], se[2][2];
+  int covered[2][2] = {{0, 0}, {0, 0}};
+  for (int r = 0; r < reps; ++r) {
+    std::vector<double> g, w, x, y;
+    for (int k = 0; k < 12; ++k) {
+      const double b = rng.normal(0.0, 2.0), wk = rng.normal(0.0, 1.0);
+      for (int i = 0; i < 6; ++i) {
+        const double xi = rng.normal(0.0, 1.0);
+        g.push_back(k), w.push_back(wk), x.push_back(xi), y.push_back(1.0 + 0.5 * wk + 0.5 * xi + b + rng.normal(0.0, 1.0));
+      }
+    }
+    DF data;
+    data.add_column("g", g);
+    data.add_column("w", w);
+    data.add_column("x", x);
+    data.add_column("y", y);
+    const dm::stats::LMM mixed(data, "y ~ w + x + (1 | g)");
+    const dm::stats::LM ols(data, "y ~ w + x");
+    const auto ci = ols.confidence_intervals();
+    for (int c = 0; c < 2; ++c) {
+      est[0][c].push_back(mixed.coefficients()[c + 1]), se[0][c].push_back(mixed.standard_errors()[c + 1]);
+      est[1][c].push_back(ols.coefficients()[c + 1]), se[1][c].push_back(ols.standard_errors()[c + 1]);
+      covered[0][c] += std::abs(mixed.coefficients()[c + 1] - 0.5) < 1.959964 * mixed.standard_errors()[c + 1];
+      covered[1][c] += ci[c + 1].lower < 0.5 && 0.5 < ci[c + 1].upper;
+    }
+  }
+  std::vector<std::string> model, coef;
+  std::vector<double> mean_est, sd_est, mean_se, coverage;
+  for (int mdl = 0; mdl < 2; ++mdl)
+    for (int c = 0; c < 2; ++c) {
+      model.push_back(mdl == 0 ? "LMM" : "OLS"), coef.push_back(c == 0 ? "w (between)" : "x (within)");
+      mean_est.push_back(dm::mean(est[mdl][c])), sd_est.push_back(dm::sd(est[mdl][c]));
+      mean_se.push_back(dm::mean(se[mdl][c])), coverage.push_back(covered[mdl][c] / double(reps));
+    }
+  DF table;
+  table.add_column("model", model);
+  table.add_column("coefficient", coef);
+  table.add_column("mean estimate", mean_est);
+  table.add_column("SD of estimates", sd_est);
+  table.add_column("mean reported SE", mean_se);
+  table.add_column("95% coverage", coverage);
+  DF::MarkdownOptions md;
+  md.digits = 3;
+  std::print("{}\n", table.to_md(md));
+}
+```
+// result_begin: markdown
+| model | coefficient | mean estimate | SD of estimates | mean reported SE | 95% coverage |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| LMM | w (between) | 0.515 | 0.667 | 0.642 | 0.914 |
+| LMM | x (within) | 0.503 | 0.129 | 0.129 | 0.955 |
+| OLS | w (between) | 0.517 | 0.668 | 0.274 | 0.588 |
+| OLS | x (within) | 0.514 | 0.244 | 0.250 | 0.955 |
+// result_end
+
+Both methods estimate both slopes without bias, but they differ in how well they know it.
+
+For \(w\), the group-level covariate, the two estimators have the same spread (0.667 and 0.668):
+with \(w\) constant within groups, each estimator effectively regresses group means on \(w\). But
+OLS reports a standard error of 0.274, 0.41 of the actual spread, close to the \(1/\sqrt5=0.45\) the
+design effect predicts, and its intervals cover 0.5 only 59% of the time. The mixed model's
+standard error is nearly right (0.642), and its coverage, 0.914, is close to the 0.922 that a
+normal interval achieves when the true reference distribution is \(t\) with \(G-2=10\) degrees of
+freedom: with 12 groups there is little information about \(\tau^2\), which Wald intervals ignore.
+
+For \(x\), which varies within groups, the mixed model is nearly twice as precise as OLS (0.129
+against 0.244): it compares observations within the same group, where the group effect cancels,
+while OLS treats the group effects (variance 4) as noise. Both report their own spread
+correctly, and both cover at 95.5%.
+
+In a separate check, the 400 data sets of an earlier run of this simulation were also fitted
+with R's `nlme::lme`. The slopes, standard errors and \(\theta\) agreed to \(10^{-9}\), \(10^{-9}\) and \(5\times10^{-7}\)
+on every one.
+
+>> BLUPs against group means, and the likelihood-ratio test on the boundary
+
+Two more checks, both shown in the figure below.
+
+*Prediction error.* Twenty-four groups, three each of sizes 1, 2, 3, 5, 8, 13, 20 and 30, with
+\(\tau=1\), \(\sigma=2\), are simulated 300 times. For each group the true effect \(b_g\) is compared with
+the BLUP and with the no-pooling estimate \(\bar y_g-\hat\beta_0\). With known variances and \(\beta_0\), the mean
+squared errors would be \(\sigma^2/n\) for the group mean and \(\tau^2\sigma^2/(n\tau^2+\sigma^2)\) for the BLUP, always smaller.
+
+*Testing \(\tau^2=0\).* The likelihood-ratio statistic \(\Lambda=d_{\mathrm{ML}}(0)-d_{\mathrm{ML}}(\hat\theta)\) is zero whenever
+\(\hat\tau^2_{\mathrm{ML}}=0\). Because \(\tau^2=0\) is on the boundary of the parameter space, \(\Lambda\) does not have the
+usual \(\chi^2_1\) null distribution. Asymptotically it is the 50:50 mixture of a point mass at 0 and
+\(\chi^2_1\) (Self and Liang, 1987), but in finite samples the point mass is larger (Crainiceanu and
+Ruppert, 2004): for a balanced design it is exactly \(P(\hat\tau^2_{\mathrm{ML}}=0)=F_{G-1,G(m-1)}(G/(G-1))\). One
+thousand null data sets with \(G=10\), \(m=5\) are fitted by ML with a smaller search
+(population 15, 30 generations), which is ample for one parameter.
+
+```{cpp, results="markdown", file="figures/lmm_theory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+// One-way ANOVA F = MSB / MSW for G consecutive groups of m values.
+double f_statistic(const std::vector<double>& y, int G, int m) {
+  std::vector<double> means(G, 0.0);
+  for (int k = 0; k < G; ++k)
+    for (int i = 0; i < m; ++i) means[k] += y[k * m + i] / m;
+  const double grand = dm::mean(means);
+  double ssb = 0.0, ssw = 0.0;
+  for (int k = 0; k < G; ++k) {
+    ssb += m * (means[k] - grand) * (means[k] - grand);
+    for (int i = 0; i < m; ++i) ssw += (y[k * m + i] - means[k]) * (y[k * m + i] - means[k]);
+  }
+  return (ssb / (G - 1)) / (ssw / (G * (m - 1)));
+}
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::random::Xoshiro256StarStar rng(13);
+  // Prediction error of BLUPs and group means.
+  const std::vector<int> sizes{1, 2, 3, 5, 8, 13, 20, 30};
+  const std::size_t S = sizes.size(), groups = 3 * S;
+  const int reps = 300;
+  std::vector<double> mse_blup(S), mse_mean(S);
+  double mse_beta0 = 0.0;
+  for (int r = 0; r < reps; ++r) {
+    std::vector<double> g, y, truth, sum(groups);
+    for (std::size_t k = 0; k < groups; ++k) {
+      truth.push_back(rng.normal(0.0, 1.0));
+      for (int i = 0; i < sizes[k % S]; ++i) {
+        g.push_back(k), y.push_back(5.0 + truth[k] + rng.normal(0.0, 2.0));
+        sum[k] += y.back();
+      }
+    }
+    DF data;
+    data.add_column("g", g);
+    data.add_column("y", y);
+    const dm::stats::LMM fit(data, "y ~ 1 + (1 | g)", {.de_population_size = 15, .de_max_generations = 30});
+    const double b0 = fit.coefficients()[0];
+    mse_beta0 += (b0 - 5.0) * (b0 - 5.0) / reps;
+    for (std::size_t k = 0; k < groups; ++k) {  // groups are labelled in order of appearance, so label k is group k
+      mse_blup[k % S] += std::pow(fit.random_effects()[k][0] - truth[k], 2) / (3 * reps);
+      mse_mean[k % S] += std::pow(sum[k] / sizes[k % S] - b0 - truth[k], 2) / (3 * reps);
+    }
+  }
+  std::vector<double> log_n, th_mean, th_blup, grid, grid_mean, grid_blup;
+  for (std::size_t j = 0; j < S; ++j) {
+    log_n.push_back(std::log2(sizes[j]));
+    th_mean.push_back(4.0 / sizes[j]), th_blup.push_back(4.0 / (sizes[j] + 4.0));
+  }
+  for (int i = 0; i <= 100; ++i) {
+    const double ln = std::log2(30.0) * i / 100.0, n = std::exp2(ln);
+    grid.push_back(ln), grid_mean.push_back(4.0 / n), grid_blup.push_back(4.0 / (n + 4.0));
+  }
+  DF table;
+  table.add_column("n", std::vector<double>(sizes.begin(), sizes.end()));
+  table.add_column("MSE group mean", mse_mean);
+  table.add_column("sigma^2/n", th_mean);
+  table.add_column("MSE BLUP", mse_blup);
+  table.add_column("tau^2 sigma^2/(n tau^2 + sigma^2)", th_blup);
+  DF::MarkdownOptions md;
+  md.digits = 3;
+  md.column_digits = {{"n", 0}};
+  std::print("{}\n\nMSE of beta0 hat: {:.3f}\n\n", table.to_md(md), mse_beta0);
+
+  auto pred = dm::graphics::RPlot::create();
+  pred.lines(grid, grid_mean, "group mean", dm::RGB{37, 99, 235}, 1.5)
+      .lines(grid, grid_blup, "BLUP", dm::RGB{220, 38, 38}, 1.5)
+      .lines({-0.2, 5.1}, {1.0, 1.0}, "grand mean", dm::RGB{148, 163, 184}, 1.5);
+  pred.points(log_n, mse_mean, dm::RGB{37, 99, 235}, 6.0).points(log_n, mse_blup, dm::RGB{220, 38, 38}, 6.0);
+  pred.x_limits(-0.2, 5.1).y_limits(0.0, 4.4).title("Mean squared error of b_g")
+      .x_label("log2 group size").y_label("MSE");
+
+  // Likelihood-ratio test of tau^2 = 0 under the null.
+  const int G = 10, m = 5, null_reps = 1000;
+  std::vector<double> lrt;
+  int below_cutoff = 0;
+  for (int r = 0; r < null_reps; ++r) {
+    std::vector<double> g, y;
+    for (int k = 0; k < G; ++k)
+      for (int i = 0; i < m; ++i) g.push_back(k), y.push_back(rng.normal(0.0, 1.0));
+    below_cutoff += f_statistic(y, G, m) <= G / (G - 1.0);
+    DF data;
+    data.add_column("g", g);
+    data.add_column("y", y);
+    const dm::stats::LMM fit(data, "y ~ 1 + (1 | g)",
+                             {.reml = false, .de_population_size = 15, .de_max_generations = 30});
+    lrt.push_back(std::max(0.0, fit.deviance_at({0.0}) - fit.deviance()));
+  }
+  const double p0 = dm::random::f_cdf(G / (G - 1.0), G - 1, G * (m - 1));
+  auto share = [&](double c) { return std::count_if(lrt.begin(), lrt.end(), [&](double v) { return v > c; }) / double(null_reps); };
+  DF tests;
+  tests.add_column("quantity", std::vector<std::string>{"P(LRT = 0)", "P(LRT > 2.71)", "P(LRT > 3.84)"});
+  tests.add_column("simulated", std::vector<double>{1.0 - share(1e-8), share(2.706), share(3.841)});
+  tests.add_column("chi^2_1", std::vector<double>{0.0, 0.10, 0.05});
+  tests.add_column("50:50 mixture", std::vector<double>{0.5, 0.05, 0.025});
+  tests.add_column("exact point mass + chi^2_1",
+                   std::vector<double>{p0, (1 - p0) * 0.10, (1 - p0) * 0.05});
+  std::print("{}\n\nData sets with F <= G/(G-1): {:.3f}\n", tests.to_md(md), below_cutoff / double(null_reps));
+
+  // Tail probabilities P(LRT > x): the simulated ones at each positive statistic, and three references.
+  std::ranges::sort(lrt);
+  std::vector<double> sx, sy, cx, c_half, c_exact, c_chi;
+  for (int i = 0; i < null_reps; ++i)
+    if (lrt[i] > 1e-8 && lrt[i] <= 6.0) sx.push_back(lrt[i]), sy.push_back((null_reps - i - 1.0) / null_reps);
+  for (int i = 1; i <= 200; ++i) {
+    const double x = 6.0 * i / 200.0, tail = 1.0 - dm::random::chi_squared_cdf(x, 1.0);
+    cx.push_back(x), c_chi.push_back(tail), c_half.push_back(0.5 * tail), c_exact.push_back((1 - p0) * tail);
+  }
+  auto surv = dm::graphics::RPlot::create();
+  surv.lines(cx, c_chi, "chi^2_1", dm::RGB{148, 163, 184}, 1.5)
+      .lines(cx, c_half, "50:50 mixture", dm::RGB{37, 99, 235}, 1.5)
+      .lines(cx, c_exact, "exact point mass", dm::RGB{22, 163, 74}, 1.5);
+  surv.points(sx, sy, "simulated", dm::RGB{17, 24, 39}, 2.5);
+  surv.x_limits(0.0, 6.0).y_limits(0.0, 1.0).title("LRT for tau^2 = 0, no group effect")
+      .x_label("x").y_label("P(LRT > x)");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(pred).add(surv).size(1100, 480).fit_panels();
+  fig.save_svg("build/lmm_theory.svg");
+}
+```
+// result_begin: markdown
+| n | MSE group mean | sigma^2/n | MSE BLUP | tau^2 sigma^2/(n tau^2 + sigma^2) |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 3.997 | 4.000 | 0.830 | 0.800 |
+| 2 | 1.895 | 2.000 | 0.691 | 0.667 |
+| 3 | 1.322 | 1.333 | 0.625 | 0.571 |
+| 5 | 0.828 | 0.800 | 0.509 | 0.444 |
+| 8 | 0.569 | 0.500 | 0.387 | 0.333 |
+| 13 | 0.309 | 0.308 | 0.280 | 0.235 |
+| 20 | 0.250 | 0.200 | 0.233 | 0.167 |
+| 30 | 0.182 | 0.133 | 0.172 | 0.118 |
+
+
+MSE of beta0 hat: 0.066
+
+| quantity | simulated | chi^2_1 | 50:50 mixture | exact point mass + chi^2_1 |
+| :--- | ---: | ---: | ---: | ---: |
+| P(LRT = 0) | 0.654 | 0.00 | 0.500 | 0.623 |
+| P(LRT > 2.71) | 0.021 | 0.10 | 0.050 | 0.038 |
+| P(LRT > 3.84) | 0.006 | 0.05 | 0.025 | 0.019 |
+
+
+Data sets with F <= G/(G-1): 0.653
+\image(figures/lmm_theory.svg)
+// result_end
+
+\caption(Left: simulated mean squared error of the no-pooling estimate \(\bar y_g-\hat\beta_0\) (blue points) and the BLUP (red points) against group size, with the known-parameter values \(\sigma^2/n\) and \(\tau^2\sigma^2/(n\tau^2+\sigma^2)\) (lines) and the complete-pooling error \(\tau^2=1\) (grey). Right: the empirical distribution function of the likelihood-ratio statistic under \(\tau^2=0\) (black points) against \(\chi^2_1\) (grey), the asymptotic 50:50 mixture (blue) and the mixture with the exact finite-sample point mass (green). Tables: the same numbers, and the tail probabilities at the usual critical values.)
+\alttext(Left: mean squared error against log2 group size from 0 to 5. Blue points follow the falling curve sigma squared over n, from 4 at size 1 to about 0.18 at size 30. Red points start at 0.83 and fall to 0.17, slightly above the red theory curve, and always below the blue points and below the grey line at 1. Right: the probability that the LRT exceeds x, for x from 0 to 6. The grey chi-squared curve starts near 0.9, the blue 50:50 mixture curve near 0.43 and the green exact-point-mass curve near 0.33. The black simulated points start at 0.35, lie below the green curve throughout, and reach about 0.02 at x equals 2.7.)
+
+*Prediction error.* The BLUP's error is below the group mean's at every size, and much below for
+small groups: 0.83 against 4.0 for a single observation, where the group mean is four times
+worse than ignoring the data and predicting zero (the grand mean, error \(\tau^2=1\)). As groups grow
+the two converge, because the shrinkage factor tends to 1. Both errors are a little above the
+known-parameter curves, mainly because \(\hat\beta_0\) is estimated (its own mean squared error is
+0.066, which enters both).
+
+*Testing \(\tau^2=0\).* With no group effect, 65.4% of the statistics are exactly zero, against 50% for
+the asymptotic mixture and 62.3% from the exact \(F\) probability; the 65.3% of data sets with \(F\)
+below the cut-off agree with the fits to within one data set. The positive part is also
+smaller than \(\chi^2_1\): at the usual 5% critical value 3.84, only 0.6% of the statistics exceed it,
+against 2.5% for the 50:50 mixture and 1.9% for the exact point mass with a \(\chi^2_1\) tail. So the
+naive \(\chi^2_1\) test has a size of about 0.6% instead of 5%, and even the mixture, the usual
+recommendation, is conservative with ten groups. Crainiceanu and Ruppert (2004) give the exact
+finite-sample null distribution; a parametric bootstrap from the null fit is the general
+alternative.
+
+> Children's orthodontic growth
+
+The `orthodont` data set (Potthoff and Roy, 1964; Pinheiro and Bates, 2000) has the distance in
+millimetres from the pituitary to the pterygomaxillary fissure, measured on 27 children
+(16 boys, 11 girls) at ages 8, 10, 12 and 14. Each child has their own growth curve: the
+question is how the average curve differs between boys and girls, and how much children vary
+around it. Age is centred at 11, so that the intercept is the distance at the middle of the
+study rather than at birth.
+
+```{cpp, results="markdown", file="figures/lmm_orthodont.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  auto data = dm::datasets::load("orthodont");
+  std::vector<double> age11;
+  for (const double a : data.get_column<double>("age").values()) age11.push_back(a - 11.0);
+  data.add_column("age11", age11);
+
+  const dm::stats::LMM slopes(data, "distance ~ age11 * sex + (1 + age11 | subject)");
+  const dm::stats::LMM intercepts(data, "distance ~ age11 * sex + (1 | subject)");
+  const dm::stats::LMM raw_age(data, "distance ~ age * sex + (1 + age | subject)");
+  const dm::stats::LM ols(data, "distance ~ age11 * sex");
+
+  DF::MarkdownOptions md;
+  md.digits = 4;
+  auto coefs = slopes.coefficient_frame();
+  coefs.add_column("OLS estimate", ols.coefficients());
+  coefs.add_column("OLS std_error", ols.standard_errors());
+  std::print("{}\n\n", coefs.to_md(md));
+
+  DF var;
+  var.add_column("model", std::vector<std::string>{"intercept + slope", "intercept only", "intercept + slope, raw age"});
+  auto sd = [](const dm::stats::LMM& f, std::size_t k) { return k < f.random_effect_std_devs().size() ? f.random_effect_std_devs()[k] : 0.0; };
+  var.add_column("sd intercept", std::vector<double>{sd(slopes, 0), sd(intercepts, 0), sd(raw_age, 0)});
+  var.add_column("sd slope", std::vector<double>{sd(slopes, 1), sd(intercepts, 1), sd(raw_age, 1)});
+  var.add_column("correlation", std::vector<double>{slopes.random_effect_correlation(0, 1), 0.0,
+                                                     raw_age.random_effect_correlation(0, 1)});
+  var.add_column("sigma", std::vector<double>{slopes.residual_std_dev(), intercepts.residual_std_dev(), raw_age.residual_std_dev()});
+  var.add_column("REML logLik", std::vector<double>{slopes.log_likelihood(), intercepts.log_likelihood(), raw_age.log_likelihood()});
+  std::print("{}\n\n", var.to_md(md));
+
+  const double lrt = 2.0 * (slopes.log_likelihood() - intercepts.log_likelihood());
+  std::print("REML LRT for the random slope: {:.3f}; p = {:.3f} (50:50 mixture of chi^2_1 and chi^2_2), {:.3f} (chi^2_2)\n\n", lrt,
+             0.5 * (1 - dm::random::chi_squared_cdf(lrt, 1)) + 0.5 * (1 - dm::random::chi_squared_cdf(lrt, 2)),
+             1 - dm::random::chi_squared_cdf(lrt, 2));
+  std::print("{}\n\n", slopes.random_effects_frame().head(4).to_md(md));
+
+  // One panel per sex: each child's data and BLUP line, and the population line.
+  
+  const auto sex = data.get_column<std::string>("sex").values();
+  const auto age = data.get_column<double>("age").values();
+  const auto dist = data.get_column<double>("distance").values();
+  const auto& b = slopes.coefficients();
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  for (const std::string s : {"Female", "Male"}) {
+    const double male = s == "Male" ? 1.0 : 0.0;
+    auto panel = dm::graphics::RPlot::create();
+    std::vector<double> px, py;
+    for (std::size_t i = 0; i < age.size(); ++i)
+      if (sex[i] == s) px.push_back(age[i]), py.push_back(dist[i]);
+    panel.points(px, py, dm::RGB{100, 116, 139}, 4.0);
+    for (std::size_t g = 0; g < slopes.num_groups(); ++g) {
+      const auto& label = slopes.group_labels()[g];
+      if ((label[0] == 'M') != (male == 1.0)) continue;
+      const double a = b[0] + b[2] * male + slopes.random_effects()[g][0];
+      const double c = b[1] + b[3] * male + slopes.random_effects()[g][1];
+      panel.segments({8.0}, {a - 3.0 * c}, {14.0}, {a + 3.0 * c}, dm::RGB{148, 163, 184}, 1.2);
+    }
+    const double a = b[0] + b[2] * male, c = b[1] + b[3] * male;
+    panel.segments({8.0}, {a - 3.0 * c}, {14.0}, {a + 3.0 * c}, male == 1.0 ? dm::RGB{37, 99, 235} : dm::RGB{220, 38, 38}, 3.0);
+    panel.x_limits(7.5, 14.5).y_limits(15.0, 32.5).title(s == "Male" ? "Boys (16)" : "Girls (11)")
+        .x_label("age (years)").y_label("distance (mm)");
+    fig.add(panel);
+  }
+  fig.size(1100, 480).fit_panels();
+  fig.save_svg("build/lmm_orthodont.svg");
+}
+```
+// result_begin: markdown
+| term | estimate | std_error | z_value | p_value | OLS estimate | OLS std_error |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| (Intercept) | 22.6477 | 0.5861 | 38.6388 | 0.0000 | 22.6477 | 0.3402 |
+| age11 | 0.4795 | 0.1037 | 4.6235 | 0.0000 | 0.4795 | 0.1522 |
+| sexMale | 2.3210 | 0.7614 | 3.0483 | 0.0023 | 2.3210 | 0.4420 |
+| age11:sexMale | 0.3048 | 0.1347 | 2.2624 | 0.0237 | 0.3048 | 0.1977 |
+
+
+| model | sd intercept | sd slope | correlation | sigma | REML logLik |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| intercept + slope | 1.8303 | 0.1803 | 0.2064 | 1.3100 | -216.2908 |
+| intercept only | 1.8162 | 0.0000 | 0.0000 | 1.3864 | -216.8786 |
+| intercept + slope, raw age | 2.4055 | 0.1803 | -0.6676 | 1.3100 | -216.2908 |
+
+
+REML LRT for the random slope: 1.176; p = 0.417 (50:50 mixture of chi^2_1 and chi^2_2), 0.556 (chi^2_2)
+
+| subject | n | (Intercept) | age11 |
+| :--- | ---: | ---: | ---: |
+| F01 | 4 | -1.1336 | -0.0448 |
+| F02 | 4 | 0.3330 | 0.0903 |
+| F03 | 4 | 1.0003 | 0.1136 |
+| F04 | 4 | 1.9715 | 0.0282 |
+
+
+\image(figures/lmm_orthodont.svg)
+// result_end
+
+\caption(Distance against age for the girls (left) and boys (right). Grey points are the measurements, thin grey lines each child's fitted line \(\hat\beta+\hat b_g\) from the random intercept and slope model, and the thick line the population line for that sex. Tables: the fixed effects with their mixed-model and OLS standard errors; the variance components of three models; the first four rows of the BLUPs.)
+\alttext(Two panels of distance in millimetres against age from 8 to 14. Left, girls: grey points between 16.5 and 28, eleven thin grey nearly parallel lines rising gently, and a thick red line from about 21.2 at age 8 to 24.1 at age 14. Right, boys: grey points between 17 and 31.5, sixteen thin grey lines rising more steeply, and a thick blue line from about 22.6 at age 8 to 27.3 at age 14.)
+
+The random intercept and slope model matches nlme's fit of the same model (the regression test
+`RandomSlopeMatchesNlmeOnOrthodont` checks it to \(10^{-7}\)). The population lines are
+\(22.65+0.480(\text{age}-11)\) mm for girls and \(24.97+0.784(\text{age}-11)\) mm for boys. At age 11 the
+boys are 2.32 mm larger (SE 0.76), and they grow 0.30 mm/year faster (SE 0.135, \(p=0.024\)).
+
+*Centring changes the parametrisation, not the model.* With age centred at 11, the intercept SD
+is 1.83 mm and the intercept and slope are almost uncorrelated (0.21). With raw age the
+intercept is the extrapolated distance at birth, which varies more (SD 2.41) and correlates
+\(-0.67\) with the slope, since a steeper line extrapolates to a lower start. The slope SD, the
+residual SD and the restricted log-likelihood are identical: \(\Lambda\) has only been re-expressed in
+another basis.
+
+*Is a random slope needed?* The children's growth rates vary with SD 0.18 mm/year, but the
+REML likelihood-ratio statistic against the intercept-only model is 1.18. Adding a random slope
+puts its variance on the boundary and adds a free covariance, so the reference distribution is
+the 50:50 mixture of \(\chi^2_1\) and \(\chi^2_2\) (Stram and Lee, 1994): \(p=0.42\). The thin lines in the figure are
+indeed close to parallel. Comparing the two REML fits is valid because their fixed effects are
+the same.
+
+*OLS gets the estimates right and the uncertainty wrong.* Every child is measured at the same
+four ages, so GLS and OLS give identical fixed effects. Their standard errors differ in both
+directions. For the between-child contrasts (the intercept and the sex difference), OLS
+treats 108 rows as independent when there are only 27 children, and its standard errors are
+too small by a factor of 1.7. For the within-child effects (age and the age-by-sex
+interaction), OLS leaves the children's level differences in the residual, and its standard
+errors are 1.5 times too large.
+
+> Conclusion
+
+A linear mixed model accounts for grouping by giving the group effects a distribution and
+estimating its covariance from the data. Profiling out \(\beta\) and \(\sigma^2\) reduces the fit to a
+minimisation over the relative covariance factor \(\theta\), one number for a random intercept and
+three for an intercept and slope. REML corrects ML's downward bias in the variances, which is
+large with few groups. Both were checked here against the closed forms of the balanced one-way
+design, and the random-slope model against nlme on the Orthodont data, to machine or optimiser
+precision. The BLUPs shrink each group's own estimate by its reliability \(n\tau^2/(n\tau^2+\sigma^2)\), and
+in simulation they beat both no pooling and complete pooling for every group size. The
+simulations also show where the method's standard inference is weak. Wald intervals for
+group-level covariates are a little too narrow with a dozen groups, and likelihood-ratio tests
+of a variance component are conservative even against the boundary mixture. Ignoring the
+grouping is worse: OLS's intervals for a group-level covariate covered 59% of the time, and on
+the Orthodont data its standard errors were off by a factor of 1.5 to 1.7 in both directions.
+
+> References
+
+- D. Bates, M. Mächler, B. Bolker and S. Walker (2015). "Fitting linear mixed-effects models using lme4". *Journal of Statistical Software* 67(1), 1–48. doi:10.18637/jss.v067.i01
+- J. C. Pinheiro and D. M. Bates (2000). *Mixed-Effects Models in S and S-PLUS*. Springer. doi:10.1007/b98882
+- G. K. Robinson (1991). "That BLUP is a good thing: the estimation of random effects". *Statistical Science* 6(1), 15–32. doi:10.1214/ss/1177011926
+- S. R. Searle, G. Casella and C. E. McCulloch (1992). *Variance Components*. Wiley. doi:10.1002/9780470316856
+- H. D. Patterson and R. Thompson (1971). "Recovery of inter-block information when block sizes are unequal". *Biometrika* 58(3), 545–554. doi:10.1093/biomet/58.3.545
+- S. G. Self and K.-Y. Liang (1987). "Asymptotic properties of maximum likelihood estimators and likelihood ratio tests under nonstandard conditions". *Journal of the American Statistical Association* 82(398), 605–610. doi:10.1080/01621459.1987.10478472
+- C. M. Crainiceanu and D. Ruppert (2004). "Likelihood ratio tests in linear mixed models with one variance component". *Journal of the Royal Statistical Society B* 66(1), 165–185. doi:10.1111/j.1467-9868.2004.00438.x
+- D. O. Stram and J. W. Lee (1994). "Variance components testing in the longitudinal mixed effects model". *Biometrics* 50(4), 1171–1177. doi:10.2307/2533455
+- R. F. Potthoff and S. N. Roy (1964). "A generalized multivariate analysis of variance model useful especially for growth curve problems". *Biometrika* 51(3–4), 313–326. doi:10.1093/biomet/51.3-4.313

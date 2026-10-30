@@ -1,0 +1,504 @@
+//? Title: ECA-Net: Local Channel Filtering and Explicit Tensor Optimization
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Tensor attention modules expose how global context changes channel or branch weights.
+We check the small module, complete network counts and gradients, then show every update
+of the source-shaped compact CIFAR classifier with tensor Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/eca_net.cpp`.
+
+> The method
+
+ECA avoids the channel bottleneck: global means become a length-C sequence, filtered by one
+bias-free odd 1-D kernel with zero padding. Sigmoid produces C channel weights, then scales
+the original feature map. Exactly k parameters are learned per module; filtering is local in
+channel order, not a spatial image convolution. Adaptive k uses t=floor(abs(log2(C)/2+.5)),
+then k=t if odd, otherwise t+1. This is discrete architecture metadata, not an optimized
+continuous variable. The independent host oracle below only checks the tensor channel filter.
+
+Fixed-k=3 ECA-ResNet-50 adds 48 scalars to 25557032. The report's adaptive full model adds
+86, giving 25557118; its stage kernels are 5/5/5/7. The compact adaptive CIFAR form uses
+stage kernels 3/5/5/5 and has 1484260 learned scalars. The earlier source also checks the
+fixed-k count; a separate count fixture below verifies that alternative explicitly.
+
+The backbone retains all sixteen ResNet-50 bottlenecks (3/4/6/3). Each unit ends with a linear
+1×1/BN, its attention gate, shortcut addition and ReLU. He-uniform bias-free convolution
+filters use symmetric padding, and BN learns scale/shift with epsilon 1e-5. A global mean
+and biased classifier finish the model. In grouped variants, the width is
+floor(planes*base_width/64)*cardinality. Stage stride belongs either to the first 1×1 or to
+the spatial filter; grouped layers and replacement hooks receive the actual spatial stride,
+preventing double downsampling when it belongs to the first filter.
+
+Full-width count/forward and backward probes below use 64-pixel inputs to bound computation;
+they retain every block and channel but are not full-resolution ImageNet accuracy evaluations.
+The backward probe freezes moving updates, shifts BN betas away from inactive ReLUs, and checks
+every parameter gradient is finite. Its printed norm range does not guarantee every derivative
+is nonzero for arbitrary data or gates. All numerical model/gradient computations use tensors.
+
+The explicit fit uses the source's quarter-width CIFAR backbone: a 3×3 stride-one stem without
+pooling, all sixteen blocks, stage stride on the first 1×1 and original 32×32 images. It shows
+eight batch-eight epochs (128 updates, kept short so the report runs in seconds) on 128 fit/64
+validation/64 official-test rows, tensor Adam(.001), explicit
+kernel L2=.0001/2, padded crops/flips and paired learned/BN checkpoint selection by validation NLL.
+All attention parameters participate in the optimizer. This bounded single-seed run differs
+from the paper's ImageNet schedule and cannot establish attention accuracy superiority.
+
+The editable concept diagram is `diagrams/eca_net_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/eca_net_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/eca_net_concept.tikz > build/eca_net_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/eca_net_concept.svg build/eca_net_concept.dvi > build/eca_net_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/eca_net_concept.svg)
+// result_end
+\caption(ECA-Net: Local Channel Filtering and Explicit Tensor Optimization)
+\alttext(Global channel means; Local 1D filter; then No width reduction; Adaptive odd kernel; then All sixteen blocks; Explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/eca_net_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::AttentionResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.stride_on_3x3 = false;
+  cfg.attention     = n::models::ChannelAttention::kEca;
+  cfg.adaptive_eca  = true;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out      = n::models::AttentionResNet(p, state, image, cfg, false);
+        auto       previous = image;
+        for (std::size_t i = 0; i < out.blocks.size(); ++i) {
+          n::model_stage("Residual block " + std::to_string(i + 1), previous, out.blocks[i]);
+          previous = out.blocks[i];
+        }
+        return out.logits;
+      },
+      "ECA-Net: Local Channel Filtering and Explicit Tensor Optimization");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/eca_net_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+21 displayed nodes; 1484260 reachable learned values.
+\image(figures/eca_net_architecture.svg)
+// result_end
+\caption(Executed eca net tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right eca net architecture with rotated names and exact output shapes.)
+
+> Small module and visible gates
+
+```{cpp, results="markdown", file="figures/eca_net_gates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type);
+  const auto x =
+      n::sin(.37 * n::arange(0, 2 * 4 * 4 * 24).to(type) + .2).reshape({2, 4, 4, 24}) +
+      .5 * n::linspace(-1, 1, 24, type).reshape({1, 1, 1, 24});
+  const auto out = n::models::Eca(p, "eca", x, 5);
+  const auto pooled = n::mean(x, {1, 2}).to_vector<double>(),
+             w = p.at("eca/W").to_vector<double>();
+  double error = 0;
+  for (int batch = 0; batch < 2; ++batch)
+    for (int ch = 0; ch < 24; ++ch) {
+      double logit = 0;
+      for (int j = 0; j < 5; ++j) {
+        const int source = ch + j - 2;
+        if (source >= 0 && source < 24)
+          logit += pooled[batch * 24 + source] * w[j];
+      }
+      error = std::max(error,
+                       std::abs(out.gate.at({batch, 0, 0, ch}) - 1 / (1 + std::exp(-logit))));
+    }
+  if (error > 1e-12 || p.count() != 5)
+    return 1;
+  std::vector<double> channels, kernels;
+  for (int c : {64, 128, 256, 512, 1024, 2048}) {
+    channels.push_back(c);
+    kernels.push_back(n::models::EcaKernel(c));
+  }
+  if (kernels != std::vector<double>{3, 5, 5, 5, 5, 7})
+    return 1;
+  auto weights = dm::graphics::RPlot::create(), sizes = dm::graphics::RPlot::create();
+  weights
+      .lines(n::arange(0, 24).to_vector<double>(),
+             n::slice_axis(out.gate, 0, 0, 1).reshape({24}).to_vector<double>(),
+             "channel gate", {37, 99, 235})
+      .title("Five learned local channel weights")
+      .x_label("channel")
+      .y_label("logistic gate")
+      .y_limits(0, 1.2);
+  sizes.lines(channels, kernels, "adaptive kernel", {234, 88, 12})
+      .title("Adaptive odd kernel metadata")
+      .x_label("channel count C")
+      .y_label("k")
+      .y_limits(0, 9);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(weights)
+      .add(sizes)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/eca_net_gates.svg");
+  std::print("24-channel ECA has exactly five weights; independent host channel-convolution "
+             "oracle error {:.12f}. Adaptive k for 64/128/256/512/1024/2048 is 3/5/5/5/5/7.\n",
+             error);
+}
+```
+// result_begin: markdown
+24-channel ECA has exactly five weights; independent host channel-convolution oracle error 0.000000000000. Adaptive k for 64/128/256/512/1024/2048 is 3/5/5/5/5/7.
+\image(figures/eca_net_gates.svg)
+// result_end
+\caption(ECA treats the pooled channels as a length-C sequence and applies a shared bias-free odd kernel with zero padding. The host convolution is an independent oracle only. Production pooling, filtering, logistic gates and rescaling use tensors without channel reduction.)
+\alttext(ECA treats the pooled channels as a length-C sequence and applies a shared bias-free odd kernel with zero padding. The host convolution is an independent oracle only. Production pooling, filtering, logistic gates and rescaling use tensors without channel reduction.)
+
+> Complete network counts and backward
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  struct Case {
+    int cardinality, base;
+    int64_t count;
+  };
+  for (const auto &c : std::vector<Case>{{1, 64, 25557118}}) {
+    n::ParameterStore p(17), state(17);
+    n::models::AttentionResNetConfig cfg;
+    cfg.attention = n::models::ChannelAttention::kEca;
+    cfg.adaptive_eca = true;
+    cfg.cardinality = c.cardinality;
+    cfg.base_width = c.base;
+    cfg.update_stats = false;
+    {
+      n::NoGradGuard guard;
+      const auto out = n::models::AttentionResNet(p, state, n::zeros({1, 64, 64, 3}), cfg);
+      if (p.count() != c.count || out.blocks.size() != 16 ||
+          out.features.shape() != n::Shape{1, 2, 2, 2048})
+        return 1;
+      std::print("Full-width eca_net groups {}: {} learned / {} moving scalars; sixteen "
+                 "blocks, 64-pixel forward.\n",
+                 c.cardinality, p.count(), state.count());
+      for (const auto &name : p.names())
+        if (name.ends_with("/beta"))
+          p.set(name,
+                (.5 * n::sin(.37 * n::arange(0, p.at(name).numel()).to(n::DType::Float32) +
+                             double(name.size())))
+                    .reshape(p.at(name).shape()));
+    }
+    const auto x = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                       .reshape({2, 64, 64, 3});
+    const auto before = state.flatten();
+    const auto out = n::models::AttentionResNet(p, state, x, cfg, true);
+    const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+    double low = std::numeric_limits<double>::infinity(), high = 0;
+    for (const auto &g : gradients) {
+      const double norm = n::sqrt(n::sum(n::square(g))).item();
+      if (!std::isfinite(norm))
+        return 1;
+      low = std::min(low, norm);
+      high = std::max(high, norm);
+    }
+    if (high == 0 || before != state.flatten())
+      return 1;
+    std::print("Every {} parameter-tensor gradient finite; norm range [{:.12f},{:.9f}], "
+               "moving state frozen.\n",
+               gradients.size(), low, high);
+  }
+}
+```
+// result_begin: markdown
+Full-width eca_net groups 1: 25557118 learned / 53120 moving scalars; sixteen blocks, 64-pixel forward.
+Every 177 parameter-tensor gradient finite; norm range [0.006478741299,18.076606750], moving state frozen.
+// result_end
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::ParameterStore p(17), state(17);
+  n::models::AttentionResNetConfig cfg;
+  cfg.attention = n::models::ChannelAttention::kEca;
+  n::NoGradGuard guard;
+  n::models::AttentionResNet(p, state, n::zeros({1, 64, 64, 3}), cfg);
+  if (p.count() != 25557080)
+    return 1;
+  std::print("Fixed k=3: {} learned scalars, 48 above plain ResNet-50.\n", p.count());
+}
+```
+// result_begin: markdown
+Fixed k=3: 25557080 learned scalars, 48 above plain ResNet-50.
+// result_end
+
+> Original pixels and explicit optimization
+
+```{cpp, results="markdown", file="figures/eca_net_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/eca_net_inputs.png", 5, 0., 1., 4, 1.,
+                     4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/eca_net_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/eca_net_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx       = 2 * n::slice_axis(images, 0, 128, 128 + 64) - 1,
+             vy       = n::slice_axis(labels, 0, 128, 128 + 64);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  n::models::AttentionResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.stride_on_3x3 = false;
+  cfg.attention     = n::models::ChannelAttention::kEca;
+  cfg.adaptive_eca  = true;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::AttentionResNet(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 1484260)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/eca_net_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 8; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/eca_net_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "eca net / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("eca_net quarter-width ResNet-50")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/eca_net_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 1484260 learned scalars, 13280 moving scalars; 128 explicit Adam updates.
+Selected epoch 7; validation NLL 2.268924; inference training NLL 1.569579; test NLL 2.261681; test accuracy 0.265625.
+\image(figures/eca_net_training.svg)
+// result_end
+\caption(Explicit eight-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit eight-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+
+
+> Observed subset result
+
+Validation selects epoch 7, with validation NLL 2.268924, inference training NLL
+1.569579, test NLL 2.261681 and 26.5625% test accuracy on 64 images, against 10% for
+guessing. The training NLL is far below the validation NLL, so with 128 fit images the
+network mostly memorises; the held-out NLL is only slightly below chance (ln 10 ≈ 2.303).
+
+These fixed-seed subset results do not establish a ranking of attention mechanisms or
+deformable variants. Validation selection and training/inference BN differences matter;
+the small test split is not a published benchmark.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/eca_net_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+The gate definition, complete topology and visible optimizer loop connect attention to executable
+tensor computation. The subset fit and diagnostic gate maps do not establish published accuracy
+or make the gates causal explanations of image content.
+
+> References
+
+- [Wang et al., ECA-Net: Efficient Channel Attention for Deep Convolutional Neural Networks](https://arxiv.org/abs/1910.03151).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

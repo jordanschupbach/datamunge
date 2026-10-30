@@ -1,0 +1,459 @@
+//? Title: Stochastic Gradients: Make the Estimator Match the Loss
+//? Subtitle: SGD, SVRG and SAGA with exact component checks and Iris least squares
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A dataset loss is a sum of observation losses, but sampling one observation
+usually estimates the gradient of their mean. Mixing those conventions changes
+the update. We derive the estimators implemented by SGD, SVRG and SAGA, check a
+two-row problem exactly, and compare their callback costs on generated regression
+and Iris. The examples include the corrected mean-snapshot scaling in SVRG and
+report finite-budget error rather than treating every normal return as convergence.
+)
+\toc
+
+> The problem
+
+A full gradient visits every row. With n observations and p coefficients, a dense
+least-squares gradient costs O(n*p), whereas one row gradient costs O(p). Cheap
+updates introduce sampling noise: even at the best fit, an individual row can
+still have a nonzero residual. Variance reduction uses previously computed
+information to cancel that noise near a solution.
+
+> The method
+
+Our fixture exposes the *sum* \(f(w)=\sum_i\ell_i(w)\), with
+\(\ell_i(w)=\tfrac12(a_i^\top w-y_i)^2\) and \(g_i(w)=a_i(a_i^\top w-y_i)\).
+The three native solvers update at the *mean* loss scale \(F=f/n\). Their returned
+objective is still f. A learning rate for sum-gradient descent would be n times
+smaller for the same displacement. Replicating rows changes the full-sum value
+but leaves its unpenalised minimizer and the mean gradient unchanged.
+
+SGD averages the gradients in each mini-batch and optionally reshuffles every
+row once per epoch. It is sampling without replacement within an epoch, so its
+conditional estimator is not the independent uniform draw assumed in the simplest
+SGD proof. Here SVRG and SAGA sample a uniform row with replacement.
+
+For SVRG, freeze a snapshot \(s\) for an epoch and compute \(G=\nabla f(s)/n\):
+
+$$
+ v_i(w,s)=g_i(w)-g_i(s)+G,\qquad
+ \mathbb E_i[v_i(w,s)]=\nabla F(w),\qquad w^+=w-\eta v_i(w,s).
+$$
+\alttext(SVRG subtracts the sampled snapshot gradient and adds the mean full snapshot gradient. Its expected direction is the gradient of the mean component loss.)
+
+The division by n is essential. Earlier native code added the full *sum* gradient
+without dividing; that mixes scales and is biased away from the snapshot. This
+conversion corrects that implementation. The estimator is deterministic when
+w=s, but can fluctuate inside the epoch. This implementation retains the last
+inner iterate as its next snapshot, not a randomly selected inner iterate.
+
+The retained TikZ diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Normal documentation exports use its saved local SVG.
+
+```{bash, file="figures/opt_variance_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/opt_variance_mechanism.tikz > build/opt_variance_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/opt_variance_mechanism.svg build/opt_variance_mechanism.dvi > build/opt_variance_mechanism.render.log 2>&1
+printf 'Rendered the optimization mechanism diagram.\n'
+```
+// result_begin:
+// Rendered the optimization mechanism diagram.
+// \image(figures/opt_variance_mechanism.svg)
+// result_end
+\caption(A snapshot control variate changes variance without changing the mean-loss direction.)
+\alttext(Subtract the same row gradient at the snapshot, then add the mean snapshot gradient. The result has the correct mean direction while retaining explicit callback costs.)
+
+SAGA stores one gradient t_i for every row and their mean tbar. Its direction is
+g_i(w)-t_i+tbar; afterwards it replaces t_i by g_i(w) and updates tbar. Native
+storage is O(n*p), compared with O(p) for SGD and SVRG, excluding the dataset.
+The optional trace adds O(number of callbacks*p) storage for all three.
+The native SAGA implementation here is smooth and has no composite proximal step.
+
+SGD and SVRG stop on an absolute full-sum loss change at an epoch boundary.
+SAGA also tests the last sampled estimator norm there. A small change or one
+small estimator need not imply a small full gradient, especially with noisy,
+constant-rate SGD. All stop tests should be read with the final diagnostic.
+
+> Small worked example
+
+Take \(a=(1,2)\), \(y=(1,3)\) and one coefficient \(w\). Then \(g_0=w-1\),
+\(g_1=4w-6\), \(\nabla F(w)=2.5w-3.5\), the optimum is \(w=1.4\) and \(f=0.1\).
+At snapshot zero and current w=one, the two corrected SVRG directions are
+-2.5 and .5. Their mean -one agrees with gradient(F)(one). Omitting the
+normalisation produces mean -4.5 instead. At the snapshot both directions
+are -3.5. With eta=.1 the first step is therefore .35 regardless of the row;
+the second is .665 if row zero is selected and .56 if row one is selected.
+The table records the actual sampled component indices, including the paired
+current/snapshot requests, instead of assuming a cross-library random transcript.
+
+```{cpp, results="markdown", file="figures/opt_variance_two_rows.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::LeastSquaresObjective f({{1}, {2}}, {1, 3});
+  o::SVRGOptions           c;
+  c.step_size           = .1;
+  c.max_epochs          = 1;
+  c.inner_iterations    = 2;
+  c.tolerance           = 0;
+  const auto run        = o::trace_optimize<o::DifferentiableSeparableFunction>(f, o::SVRG(c), {0});
+  std::vector<double> w = dm::seql(-.1, 1.7, 201).values(), loss;
+  for (double x : w)
+    loss.push_back(f.evaluate({x}));
+  const auto req = run.trace.sample(f, "term_gradient");
+  auto       p   = dm::graphics::RPlot::create()
+               .line(w, loss, "sum loss", {130, 130, 130})
+               .points(
+                   req.numeric_column("x0").values(),
+                   req.numeric_column("value").values(),
+                   "row-gradient requests",
+                   {40, 100, 190},
+                   4)
+               .title("SVRG: inspect the paired requests")
+               .x_label("coefficient w")
+               .y_label("full sum loss")
+               .x_limits(-.1, 1.7)
+               .y_limits(0, 9)
+               .legend({"sum loss", "row-gradient requests"}, {{130, 130, 130}, {40, 100, 190}});
+  p.size(850, 490).save_svg("build/opt_variance_two_rows.svg");
+  std::print(
+      "{}\n\n{}\n\nMean-loss L={:.1f}; f(1.4)={:.1f}.\n",
+      req.to_md(8),
+      run.summary().to_md(8),
+      f.mean_loss_lipschitz(),
+      f.evaluate({1.4}));
+}
+```
+// result_begin: markdown
+| event | value | gradient_norm | term_gradients | component | x0 |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 3 | 5.00000 | 6.0 | 3 | 1 | 0.00 |
+| 4 | 5.00000 | 6.0 | 4 | 1 | 0.00 |
+| 5 | 2.85625 | 4.6 | 5 | 1 | 0.35 |
+| 6 | 5.00000 | 6.0 | 6 | 1 | 0.00 |
+
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 1.864 | 1.864 | 4.2 | 7 |  | 0.56 |
+
+
+Mean-loss L=2.5; f(1.4)=0.1.
+\image(figures/opt_variance_two_rows.svg)
+// result_end
+\caption(The first SVRG step is deterministic; the second depends on a recorded component draw.)
+\alttext(The full-sum quadratic is shown behind paired component-gradient requests. The accompanying table gives their coordinates, indices and cumulative term-gradient work.)
+
+> Checking the theory
+
+>> An exactly fitted generated regression
+
+Use four design rows (1,0), (0,1), (1,1), (2,-1), response (2,-3,-1,7),
+start (0,0) and true coefficient (2,-3). Every row gradient is zero at this
+solution, so ordinary SGD can also lose its sampling noise here. All methods
+use eta=.02 and seed 42, with tolerance zero: SGD has 300 epochs, SVRG 100
+epochs of four inner steps, and SAGA 1200 updates. These are different costs.
+The horizontal axis counts one for a row gradient and n for a full gradient;
+SVRG uses two row gradients per inner step. Objective calls and trace replay
+are additional work, so this axis is not wall time or an overall speed ranking.
+
+```{cpp, results="markdown", file="figures/opt_variance_exact_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::LeastSquaresObjective f({{1, 0}, {0, 1}, {1, 1}, {2, -1}}, {2, -3, -1, 7});
+  o::SGDOptions            a;
+  a.step_size  = .02;
+  a.max_epochs = 300;
+  a.tolerance  = 0;
+  o::SVRGOptions b;
+  b.step_size  = .02;
+  b.max_epochs = 100;
+  b.tolerance  = 0;
+  o::SAGAOptions c;
+  c.step_size      = .02;
+  c.max_iterations = 1200;
+  c.tolerance      = 0;
+  std::vector<o::OptimizationRun> runs{
+      o::trace_optimize<o::DifferentiableSeparableFunction>(f, o::SGD(a), {0, 0}),
+      o::trace_optimize<o::DifferentiableSeparableFunction>(f, o::SVRG(b), {0, 0}),
+      o::trace_optimize<o::DifferentiableSeparableFunction>(f, o::SAGA(c), {0, 0})};
+  const std::vector<std::string> names{"SGD", "SVRG", "SAGA"};
+  o::optimization_comparison(f, runs, names, "value", 0, false, true)
+      .title("Exact-fit control: different declared budgets")
+      .size(850, 490)
+      .save_svg("build/opt_variance_exact_fit.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print(
+        "{}\n\n{}\n\n{}\n\n",
+        names[i],
+        runs[i].summary().to_md(8),
+        runs[i].trace.counts().to_md(0));
+}
+```
+// result_begin: markdown
+SGD
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 3.37311e-14 | 3.37311e-14 | 4.26601e-07 | 1501 |  | 2 | -3 |
+
+
+| kind | calls |
+| :--- | ---: |
+| term_gradient | 1200 |
+| value | 301 |
+| term_gradient_equivalents | 1200 |
+
+
+SVRG
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.000134712 | 0.000134712 | 0.0269573 | 1001 |  | 2.00289 | -2.99043 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 100 |
+| term_gradient | 800 |
+| value | 101 |
+| term_gradient_equivalents | 1200 |
+
+
+SAGA
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 4.96936e-14 | 4.96936e-14 | 5.17763e-07 | 1506 |  | 2 | -3 |
+
+
+| kind | calls |
+| :--- | ---: |
+| term_gradient | 1204 |
+| value | 302 |
+| term_gradient_equivalents | 1204 |
+
+
+\image(figures/opt_variance_exact_fit.svg)
+// result_end
+\caption(Zero residuals remove component noise even for SGD; declared budgets and gradient costs remain visible.)
+\alttext(Three full-objective traces approach the exactly known zero minimum against nominal component-gradient work. Tables retain returned coefficients, full gradient norms and all callback counts.)
+
+> Iris: residual noise at the least-squares solution
+
+Predict Petal.Length from Sepal.Length, Sepal.Width and Petal.Width, including
+an intercept, on the 150 Iris flowers. Measurements stay in centimetres without
+standardisation. Formula freezes the complete numeric design, and the direct
+linear-model fit supplies an independent algebraic least-squares control.
+The Species summary describes these observations; Species is not a predictor.
+This is training-loss minimisation, not a claim about held-out predictive accuracy.
+
+Use eta=.01, seed 42 and zero tolerance. SGD uses 300 epochs, SVRG 100 epochs
+of n inner steps, and SAGA 45000 updates. Count the initial SAGA table, all SVRG
+snapshots and both of its inner gradient requests. The plotted reference is the
+linear-model RSS/2 at full-sum scale. Compare coefficient error and full gradient
+norm as well as the loss gap: an ill-conditioned direction can remain inaccurate
+while changing the loss little. No winner is claimed across tuned rates or budgets.
+
+```{cpp, results="markdown", file="figures/opt_variance_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o                 = dm::optim;
+  const auto          iris    = dm::datasets::iris();
+  const std::string   formula = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width";
+  auto                f       = o::LeastSquaresObjective::from_data(iris, formula);
+  const dm::stats::LM ref(iris, formula);
+  const double        minimum = ref.rss() / 2;
+  o::SGDOptions       a;
+  a.step_size  = .01;
+  a.max_epochs = 300;
+  a.tolerance  = 0;
+  o::SVRGOptions b;
+  b.step_size  = .01;
+  b.max_epochs = 100;
+  b.tolerance  = 0;
+  o::SAGAOptions c;
+  c.step_size      = .01;
+  c.max_iterations = 45000;
+  c.tolerance      = 0;
+  const std::vector<double>       start(4, 0);
+  std::vector<o::OptimizationRun> runs{
+      o::trace_optimize<o::DifferentiableSeparableFunction>(f, o::SGD(a), start),
+      o::trace_optimize<o::DifferentiableSeparableFunction>(f, o::SVRG(b), start),
+      o::trace_optimize<o::DifferentiableSeparableFunction>(f, o::SAGA(c), start)};
+  const std::vector<std::string> names{"SGD", "SVRG", "SAGA"};
+  o::optimization_comparison(f, runs, names, "value", minimum, false, true)
+      .title("Iris: residual noise and nominal gradient work")
+      .size(850, 490)
+      .save_svg("build/opt_variance_iris.svg");
+  std::print(
+      "{}\n\nDirect least squares f={:.10g}, mean-loss L={:.8g}.\n",
+      (iris | dm::group_by("Species") |
+       dm::summarise(dm::agg::n("n"), dm::agg::mean("Petal.Length", "mean_length_cm")))
+          .to_md(4),
+      minimum,
+      f.mean_loss_lipschitz());
+  for (std::size_t i = 0; i < runs.size(); ++i) {
+    double e = 0;
+    for (std::size_t j = 0; j < 4; ++j)
+      e = std::max(e, std::abs(runs[i].coordinates[j] - ref.coefficients()[j]));
+    std::print(
+        "{}: max coefficient error={:.8g}\n\n{}\n\n{}\n\n",
+        names[i],
+        e,
+        runs[i].summary().to_md(8),
+        runs[i].trace.counts().to_md(0));
+  }
+}
+```
+// result_begin: markdown
+| Species | n | mean_length_cm |
+| :--- | ---: | ---: |
+| setosa | 50 | 1.462 |
+| versicolor | 50 | 4.260 |
+| virginica | 50 | 5.552 |
+
+
+Direct least squares f=7.426473986, mean-loss L=46.602474.
+SGD: max coefficient error=0.032827644
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 10.8875 | 10.8875 | 219.174 | 45301 |  | -0.263136 | 0.752298 | -0.63404 | 1.47962 |
+
+
+| kind | calls |
+| :--- | ---: |
+| term_gradient | 45000 |
+| value | 301 |
+| term_gradient_equivalents | 45000 |
+
+
+SVRG: max coefficient error=0.053554144
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 7.42812 | 7.42812 | 0.0649054 | 30201 |  | -0.209157 | 0.721901 | -0.651356 | 1.45134 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 100 |
+| term_gradient | 30000 |
+| value | 101 |
+| term_gradient_equivalents | 45000 |
+
+
+SAGA: max coefficient error=0.0077686253
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 7.42651 | 7.42651 | 0.0233773 | 45452 |  | -0.254943 | 0.728086 | -0.646789 | 1.44745 |
+
+
+| kind | calls |
+| :--- | ---: |
+| term_gradient | 45150 |
+| value | 302 |
+| term_gradient_equivalents | 45150 |
+
+
+\image(figures/opt_variance_iris.svg)
+// result_end
+\caption(The direct least-squares solution anchors the loss reference, while full gradient norms expose finite-budget error.)
+\alttext(SGD, SVRG and SAGA curves use the same raw-unit Iris design and learning rate but different declared budgets. Callback counts include the gradient-table and snapshot costs.)
+
+>> Learning-rate sensitivity is still present
+
+Repeat the same raw Iris design with rates .001, .01 and .03. Each run is SVRG
+with 100 epochs and 150 inner steps, zero tolerance and seed 42. A control variate
+does not make an arbitrary step stable. Recorded nonfinite requests and native
+exceptions are retained with partial coordinates; a finite returned value also
+needs a full-gradient check. A stable rate can still be too slow in small-curvature
+directions. These three rates illustrate sensitivity, without estimating a
+sampling distribution or claiming universal convergence guarantees.
+
+```{cpp, results="markdown", file="figures/opt_variance_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o                 = dm::optim;
+  const auto          iris    = dm::datasets::iris();
+  const std::string   formula = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width";
+  auto                f       = o::LeastSquaresObjective::from_data(iris, formula);
+  const dm::stats::LM ref(iris, formula);
+  std::vector<o::OptimizationRun> runs;
+  std::vector<std::string>        names;
+  for (double eta : {.001, .01, .03}) {
+    o::SVRGOptions c;
+    c.step_size  = eta;
+    c.max_epochs = 100;
+    c.tolerance  = 0;
+    runs.push_back(
+        o::trace_optimize<o::DifferentiableSeparableFunction>(
+            f, o::SVRG(c), std::vector<double>(4, 0)));
+    names.push_back(std::format("eta={}", eta));
+    std::print("{}\n\n{}\n\n", names.back(), runs.back().summary().to_md(8));
+  }
+  o::optimization_comparison(f, runs, names, "value", ref.rss() / 2, false, true)
+      .title("SVRG still depends on its learning rate")
+      .size(850, 490)
+      .save_svg("build/opt_variance_rates.svg");
+}
+```
+// result_begin: markdown
+eta=0.001
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 7.45423 | 7.45423 | 0.617725 | 30201 |  | -0.110327 | 0.73147 | -0.692522 | 1.42805 |
+
+
+eta=0.01
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 7.42812 | 7.42812 | 0.0649054 | 30201 |  | -0.209157 | 0.721901 | -0.651356 | 1.45134 |
+
+
+eta=0.03
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 7.42648 | 7.42648 | 0.0245022 | 30201 |  | -0.260188 | 0.728794 | -0.646265 | 1.44701 |
+
+
+\image(figures/opt_variance_rates.svg)
+// result_end
+\caption(Correct normalisation gives the right expected direction; it does not remove learning-rate sensitivity.)
+\alttext(Three declared SVRG rates are plotted against nominal component-gradient work on Iris. Returned state and any failure text accompany every curve.)
+
+> References and scope
+
+The snapshot estimator follows Johnson and Zhang (2013),
+[Accelerating Stochastic Gradient Descent using Predictive Variance Reduction](https://proceedings.neurips.cc/paper/2013/hash/ac1dd209cbcc5e5d1c6e28598e8cbbe8-Abstract.html).
+The gradient table follows Defazio, Bach and Lacoste-Julien (2014),
+[SAGA: A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives](https://arxiv.org/abs/1407.0202).
+The native smooth, fixed-rate variants and their actual stop tests are described
+above; published convergence results require their own assumptions and parameter
+choices. The exact controls isolate estimator scaling; Iris adds nonzero residuals,
+unequal curvature and meaningful coefficient units.
+
+> Reading the numerical evidence
+
+`trace_optimize` calls the configured native optimizer through its stated abstract
+interface. It records callback requests without inserting fitting evaluations.
+Value calls can be rejected trials; gradient calls can be look-ahead points.
+`optimization_comparison` explicitly re-evaluates selected points afterwards on
+these pure objectives. Those diagnostic calls are excluded from fitting counts.
+Callback indices are neither accepted iterations nor wall time. The plotted gap
+uses the declared reference (minimum or stated lower bound) and a display floor of 1e-14; that floor does
+not modify any optimizer update. Returned coordinates, checked objective and
+appropriate stationarity/feasibility checks carry more information than a return
+from a finite iteration budget. Native APIs do not expose a uniform stop-status flag.
+The recorder retains exceptions and rejects nonfinite requested values/gradients;
+this makes failures visible rather than letting an instrumented run continue on NaN.
+

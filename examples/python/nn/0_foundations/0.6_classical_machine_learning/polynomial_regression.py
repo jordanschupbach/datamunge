@@ -1,4 +1,5 @@
 # Native Python NN example. Legendre features, QR fits and diagnostics run here.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.6_classical_machine_learning/polynomial_regression.py
 """Polynomial regression and the finite-ensemble bias/variance identity."""
 import math
 from pydatamunge import nn

@@ -38,21 +38,68 @@ enable_testing()
 # ---- Create binary ----
 
 file(GLOB cpp_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cpp/*.cpp)
+list(REMOVE_ITEM cpp_sources ${CMAKE_CURRENT_SOURCE_DIR}/cpp/cpp23_format_tests.cpp)
 file(GLOB c_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cpp/*.c)
 message(STATUS "c_sources: ${c_sources}")
 message(STATUS "cpp_sources: ${cpp_sources}")
 add_executable(run_tests ${c_sources} ${cpp_sources})
 target_link_libraries(run_tests datamunge::datamunge GTest::gtest_main)
+target_include_directories(run_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../examples/nn)
 set_target_properties(run_tests PROPERTIES CXX_STANDARD 17)
 
 include(GoogleTest)
 gtest_discover_tests(run_tests)
 
+# Focused engine runner keeps simulation iteration independent of the large NN test suite.
+add_executable(run_simulation_tests
+  cpp/compute_context_tests.cpp cpp/compute_gpu_tests.cpp cpp/sim_world_tests.cpp
+  cpp/sim_batch_tests.cpp cpp/sim_tasks_tests.cpp cpp/game_simulation_tests.cpp cpp/game_io_tests.cpp
+  cpp/game_courier_tests.cpp cpp/game_render_tests.cpp cpp/sim_rl_adapter_tests.cpp)
+target_link_libraries(run_simulation_tests datamunge::datamunge GTest::gtest_main)
+target_include_directories(run_simulation_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../examples/nn)
+set_target_properties(run_simulation_tests PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_simulation_tests TEST_PREFIX "simulation.")
+add_executable(check_simulation_allocations simulation_allocations.cpp)
+target_link_libraries(check_simulation_allocations datamunge::datamunge)
+set_target_properties(check_simulation_allocations PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+add_test(NAME simulation.allocations COMMAND check_simulation_allocations)
+
+# Device-storage changes also exercise the existing tensor/gradient/memory/I/O contract.
+add_executable(run_nn_device_tests
+  cpp/nn_device_tests.cpp cpp/nn_tensor_tests.cpp cpp/nn_views_tests.cpp
+  cpp/nn_autograd_tests.cpp cpp/nn_ops_tests.cpp cpp/nn_memory_tests.cpp cpp/nn_io_tests.cpp)
+target_link_libraries(run_nn_device_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_device_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_device_tests TEST_PREFIX "nn-device.")
+
+# Model diagrams also exercise the existing layer, parameter, derivative and tape contracts.
+add_executable(run_nn_model_plot_tests
+  cpp/nn_model_plot_tests.cpp cpp/nn_layers_tests.cpp cpp/nn_derivatives_tape_tests.cpp)
+target_link_libraries(run_nn_model_plot_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_model_plot_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_model_plot_tests TEST_PREFIX "nn-model-plot.")
+
+# Confusion SVG rendering shares the native training/metric contract.
+add_executable(run_nn_metrics_plot_tests cpp/nn_metrics_plot_tests.cpp cpp/nn_training_tests.cpp)
+target_link_libraries(run_nn_metrics_plot_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_nn_metrics_plot_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_nn_metrics_plot_tests TEST_PREFIX "nn-metrics-plot.")
+
+# Formatting/printing is a C++20/23 feature; keep the other binding-contract tests on C++17.
+# One file per module under cpp/format/ (each module's std::formatter specializations).
+file(GLOB cpp23_format_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cpp/format/*.cpp)
+add_executable(run_cpp23_tests cpp/cpp23_format_tests.cpp ${cpp23_format_sources})
+target_link_libraries(run_cpp23_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_cpp23_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_cpp23_tests)
+
 # ---- code coverage ----
 if(ENABLE_TEST_COVERAGE)
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-    target_compile_options(run_tests PRIVATE -O0 -g --coverage)
-    target_link_options(run_tests PRIVATE --coverage)
+    foreach(test_target IN ITEMS run_tests run_cpp23_tests)
+      target_compile_options(${test_target} PRIVATE -O0 -g --coverage)
+      target_link_options(${test_target} PRIVATE --coverage)
+    endforeach()
 
     # Ensure the datamunge library (built via CPM in this build) is also instrumented.
     if(TARGET datamunge)
@@ -83,3 +130,11 @@ endif()
 #
 # if(ENABLE_TEST_COVERAGE) target_compile_options(datamunge PUBLIC -O0 -g -fprofile-arcs
 # -ftest-coverage) target_link_options(datamunge PUBLIC -fprofile-arcs -ftest-coverage) endif()
+
+if(DATAMUNGE_ENABLE_DATA_ASSETS)
+  find_package(nlohmann_json 3.10 REQUIRED)
+  add_executable(run_dataset_assets_tests dataset_assets.cpp array_io.cpp cpp/nn_io_tests.cpp)
+  target_link_libraries(run_dataset_assets_tests PRIVATE datamunge GTest::gtest_main nlohmann_json::nlohmann_json)
+  set_target_properties(run_dataset_assets_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+  gtest_discover_tests(run_dataset_assets_tests)
+endif()

@@ -22,50 +22,58 @@
 
 namespace datamunge::nn {
 
+/// @brief First-order parameter update rule selected by OptimizerConfig.
 enum class OptimizerKind {
-  Sgd,        // w -= lr g
-  Momentum,   // v = m v + g;           w -= lr v
-  Nesterov,   // v = m v + g;           w -= lr (g + m v)
-  Adagrad,    // a += g^2;              w -= lr g / (sqrt(a) + eps)
-  RMSProp,    // v = rho v + (1-rho) g^2; w -= lr g / sqrt(v + eps)
-  Adam,       // bias-corrected moments; w -= lr m_hat / (sqrt(v_hat) + eps)
-  AdamW,      // Adam + decoupled weight decay (lr * wd * w)
-  Nadam,      // Adam with Nesterov momentum (Dozat 2016, TF schedule)
-  AMSGrad,    // Adam with the running max of v
-  Adamax,     // infinity-norm Adam
-  Lamb,       // AdamW direction scaled by the trust ratio ||w|| / ||d||
-  Lars,       // layer-wise trust ratio with momentum
-  Lion,       // sign of an interpolated momentum (Chen et al. 2023)
-  Adafactor,  // factored second moments (Shazeer & Stern 2018)
-  Adadelta,   // a = rho a + (1-rho) g^2; d = sqrt(u + eps) / sqrt(a + eps) g;
-              // u = rho u + (1-rho) d^2; w -= lr d   (TF ApplyAdadelta; TF uses
-              // rho 0.95, eps 1e-7 (Keras) / 1e-8 (tf.train), lr 1.0 (tf.train) - set them in the config)
+  Sgd,        ///< Subtract learning_rate times the gradient, without momentum state.
+  Momentum,   ///< Accumulate velocity as momentum times old velocity plus gradient.
+  Nesterov,   ///< Use gradient plus momentum times the newly updated velocity.
+  Adagrad,    ///< Divide by the square root of accumulated squared gradients plus epsilon.
+  RMSProp,    ///< Divide by the square root of exponentially averaged squared gradients plus epsilon.
+  Adam,       ///< Bias-correct first/second moments and divide by sqrt(second moment) plus epsilon.
+  AdamW,      ///< Adam direction with decoupled weight decay.
+  Nadam,      ///< Adam with scheduled Nesterov momentum, following the TensorFlow-style schedule.
+  AMSGrad,    ///< Adam with a nondecreasing maximum second-moment estimate.
+  Adamax,     ///< Adam variant with an exponentially decayed infinity-norm denominator.
+  Lamb,       ///< Scale an AdamW direction by the weight-to-direction L2 norm ratio.
+  Lars,       ///< Layer-wise norm-based learning-rate scaling with momentum and weight decay.
+  Lion,       ///< Sign of interpolated momentum with a separate momentum-history decay.
+  Adafactor,  ///< Factored second moments for matrices, with optional relative rate/parameter scaling.
+  Adadelta,   ///< Scale gradients by RMS update history divided by RMS gradient history.
 };
 
+/// @brief Returns the display name of an optimizer rule.
+/// @throws std::invalid_argument If kind is not a recognized enum value.
 std::string optimizer_name(OptimizerKind kind);
 
+/// @brief Validated update-rule settings; unused fields retain their defaults for other rules.
 struct OptimizerConfig {
-  OptimizerKind kind{OptimizerKind::Sgd};
-  double        momentum{0.9};
-  double        beta1{0.9};
-  double        beta2{0.999};
-  double        rho{0.9};
-  double        epsilon{1e-8};
-  double        initial_accumulator{0.1};
-  double        weight_decay{0.0};
-  double        trust_coefficient{0.001};                    // LARS
-  double        factor_epsilon{1e-30};
-  double        parameter_epsilon{1e-3};  // Adafactor
-  double        update_clip{1.0};
-  double        decay_exponent{0.8};           // Adafactor
-  bool          relative_step{true};
-  bool          scale_parameter{true};      // Adafactor
+  OptimizerKind kind{OptimizerKind::Sgd}; ///< Rule used for every parameter in this optimizer.
+  double        momentum{0.9}; ///< Velocity decay for Momentum, Nesterov, and LARS; in [0, 1).
+  double        beta1{0.9}; ///< First-moment decay for Adam-family methods and Lion; in [0, 1).
+  double        beta2{0.999}; ///< Second-moment decay, or Lion's history decay; in [0, 1).
+  double        rho{0.9}; ///< RMSProp/Adadelta squared-history decay; in [0, 1).
+  double        epsilon{1e-8}; ///< Positive numerical stabilizer; placement depends on the update rule.
+  double        initial_accumulator{0.1}; ///< Nonnegative starting squared-gradient sum for Adagrad.
+  double        weight_decay{0.0}; ///< Nonnegative decay used only by AdamW, LAMB, LARS, and Lion.
+  double        trust_coefficient{0.001}; ///< Positive multiplier for the LARS local trust ratio.
+  double        factor_epsilon{1e-30}; ///< Positive Adafactor squared-gradient regularizer/variance floor.
+  double        parameter_epsilon{1e-3}; ///< Positive RMS weight floor for Adafactor parameter scaling.
+  double        update_clip{1.0}; ///< Positive maximum RMS of the normalized Adafactor direction.
+  double        decay_exponent{0.8}; ///< Adafactor second-moment decay exponent, in (0, 1].
+  bool          relative_step{true}; ///< Cap Adafactor's rate at 1/sqrt(step) when enabled.
+  bool          scale_parameter{true}; ///< Multiply Adafactor's rate by max(RMS(weight), parameter_epsilon).
+
   /// Throws std::invalid_argument for out-of-range settings.
   void validate() const;
 };
 
+/// @brief In-place parameter updater retaining per-parameter state across calls.
+/// Parameter handles alias the caller's leaves. Construction captures the current
+/// parameter list; later additions to a ParameterStore are not included automatically.
 class Optimizer {
  public:
+  /// @brief Retains nonempty learnable leaf handles and validates the rate/configuration.
+  /// @throws std::invalid_argument For invalid settings or undefined/non-leaf/untracked parameters.
   Optimizer(std::vector<Tensor> parameters, double learning_rate, OptimizerConfig config = {});
   /// Optimizes every parameter currently in `store`.
   Optimizer(const ParameterStore& store, double learning_rate, OptimizerConfig config = {});
@@ -80,31 +88,58 @@ class Optimizer {
   /// Drops every parameter's accumulated grad().
   void zero_grad();
 
+  /// @brief Returns the current nonnegative base learning rate.
   [[nodiscard]] double                     learning_rate() const noexcept { return lr_; }
+  /// @brief Replaces the base learning rate; zero is allowed.
+  /// @throws std::invalid_argument If learning_rate is negative or non-finite.
   void                                     set_learning_rate(double learning_rate);
+  /// @brief Returns completed step() calls, including calls where all gradients were undefined.
   [[nodiscard]] std::int64_t               iterations() const noexcept { return step_; }
+  /// @brief Borrows retained parameter handles in their gradient-alignment order.
   [[nodiscard]] const std::vector<Tensor>& parameters() const noexcept { return params_; }
+  /// @brief Borrows the validated update settings supplied at construction.
   [[nodiscard]] const OptimizerConfig&     config() const noexcept { return config_; }
 
-  /// Slot tensors and the step count, named "<slot>/<index>" (for checkpoints).
+  /// Independent copies of slot tensors named "<slot>/<index>", plus step and Nadam schedule state.
+  /// Parameter values, optimizer kind, and learning rate are not included.
   [[nodiscard]] std::vector<std::pair<std::string, Tensor>> state() const;
   /// Restores what state() returned.
   void load_state(const std::vector<std::pair<std::string, Tensor>>& state);
 
  private:
-  enum class SlotKind { Velocity, Accumulator, Variance, Accum, AccumUpdate, M, U, V, VMax, Row, Col, Count };
+  /// @brief Stable categories used to address lazily allocated optimizer history tensors.
+  enum class SlotKind {
+    Velocity, ///< Momentum/Nesterov/LARS velocity history.
+    Accumulator, ///< Adagrad cumulative squared gradients.
+    Variance, ///< RMSProp exponentially averaged squared gradients.
+    Accum, ///< Adadelta squared-gradient history.
+    AccumUpdate, ///< Adadelta squared-update history.
+    M, ///< Adam-family first moment, or Lion momentum history.
+    U, ///< Adamax decayed infinity-norm estimate.
+    V, ///< Adam-family second moment or unfactored Adafactor variance.
+    VMax, ///< AMSGrad maximum second moment.
+    Row, ///< Adafactor per-row second moment after flattening leading axes.
+    Col, ///< Adafactor per-column second moment along the last axis.
+    Count ///< Number of real slot categories; not a valid slot to allocate.
+  };
+  /// @brief Returns the serialized name for a real SlotKind; Count must not be supplied.
   static const char* slot_name(SlotKind kind);
+  /// @brief Borrows an existing slot or creates it with the parameter dtype and requested shape/fill.
   Tensor& slot(SlotKind kind, std::size_t index, const Shape& shape, double initial = 0.0);
 
+  /// @brief Learnable leaf handles shared with the caller, in gradient input order.
   std::vector<Tensor>                                  params_;
+  /// @brief Nonnegative finite base learning rate, possibly further scaled by the chosen rule.
   double                                               lr_;
+  /// @brief Immutable update-rule settings validated at construction.
   OptimizerConfig                                      config_;
+  /// @brief Count of completed optimization steps, used for moment bias correction.
   std::int64_t                                         step_{0};
+  /// @brief Cumulative scheduled momentum product used by Nadam bias correction.
   double                                               nadam_product_{1.0};
-  // step() reserves room for all three possible slots before taking references.
+  /// @brief Named history tensors; step() reserves capacity before borrowing up to three slots.
   std::vector<std::pair<std::string, Tensor>>          slots_;
-  // Direct [parameter][slot kind] offsets; zero means absent, otherwise index+1.
-  // Allocated lazily so SGD pays no slot-index cost.
+  /// @brief Lazily allocated [parameter][slot kind] indices into slots_, with zero for absent and index+1 otherwise.
   std::vector<std::array<std::size_t, 11>>             slot_index_;
 };
 
@@ -134,18 +169,24 @@ class GradientAccumulator {
   /// micro-batches. A nonpositive or non-finite weight throws and leaves the
   /// accumulator unchanged.
   void add(const std::vector<Tensor>& gradients, double weight = 1.0);
-  /// Weighted sum of the added gradients.
+  /// Weighted sum of the added gradients, returned as handles aliasing internal sums.
   [[nodiscard]] std::vector<Tensor> sum() const;
   /// Weighted sum divided by the total weight (the number of add() calls
   /// when every weight is 1). Throws std::logic_error when empty.
   [[nodiscard]] std::vector<Tensor> mean() const;
+  /// @brief Returns the number of successful add() calls since construction or reset().
   [[nodiscard]] int                 count() const noexcept { return count_; }
+  /// @brief Returns the sum of weights supplied to add(), including all-undefined batches.
   [[nodiscard]] double              total_weight() const noexcept { return weight_; }
+  /// @brief Drops accumulated tensor handles and clears the call count and total weight.
   void                              reset();
 
  private:
+  /// @brief Per-position weighted gradient sums; undefined handles represent no contribution yet.
   std::vector<Tensor> sums_;
+  /// @brief Number of accumulated micro-batches.
   int                 count_{0};
+  /// @brief Sum of positive weights, used as mean()'s denominator.
   double              weight_{0.0};
 };
 

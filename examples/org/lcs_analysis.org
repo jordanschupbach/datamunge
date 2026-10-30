@@ -51,7 +51,7 @@ coin: with only insertions and deletions allowed, the edit distance is
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<int> to_seq(const std::string& s) { return {s.begin(), s.end()}; }
 static std::string      to_str(const std::vector<int>& v) { return {v.begin(), v.end()}; }

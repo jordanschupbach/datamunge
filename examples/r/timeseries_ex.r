@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/timeseries_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # Enum-valued options fields (TrendType, SeasonalType) are set by passing the plain string
 # name, e.g. ExponentialSmoothingOptions_trend_set(options, "Additive") -- see

@@ -44,7 +44,7 @@ triangle inequality \(d(a,c)\le d(a,b)+d(b,c)\). It is bounded:
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The dynamic program
@@ -192,7 +192,7 @@ machine agree cell for cell.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

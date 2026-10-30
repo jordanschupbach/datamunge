@@ -54,7 +54,7 @@ weight, and whether the tree reached every vertex.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Growing one tree: Prim's algorithm

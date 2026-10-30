@@ -34,7 +34,7 @@ the minimal DFA \-\- the same partition Moore's algorithm finds, computed faster
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // The six-state example DFA (alphabet {0,1}), accepting states {2,3,4}.
 inline DFA example_dfa() {
@@ -112,7 +112,7 @@ of Hopcroft's \(O(n\log n)\) work against Moore's \(O(n^2)\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // The six-state example DFA (alphabet {0,1}), accepting states {2,3,4}.
 inline DFA example_dfa() {

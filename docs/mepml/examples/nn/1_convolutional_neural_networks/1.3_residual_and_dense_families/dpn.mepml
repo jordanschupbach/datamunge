@@ -1,0 +1,595 @@
+//? Title: Dual Path Networks: Shared Filters, Residual Sums and Dense Growth
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A network can both reuse a fixed representation and retain newly discovered features.
+Dual Path Networks split one shared bottleneck output between residual addition and dense
+concatenation. We verify their direct derivatives and ordered stage algebra, check all released
+preset counts, and train the complete compact DPN-92 with explicit tensor Adam updates.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/dpn.cpp`.
+
+> The method
+
+A unit joins residual R and dense D channels before a preactivated 1×1 / grouped 3×3 / 1×1
+bottleneck. Its final filter emits r+i channels, split into updates uR and uD. An ordinary unit is
+
+$$
+R_{t+1}=R_t+u^R_t,\qquad D_{t+1}=\operatorname{concat}(D_t,u^D_t).
+$$
+\alttext(The residual width stays fixed while new dense features append in order.)
+
+Both updates depend on the joined input, so the learned paths are coupled through shared
+filters. Setting the final filter to zero isolates exact signed direct paths: R and old D
+remain unchanged, i zeros append, and the derivative of the summed output is one for every
+incoming scalar. The toy tests both input paths rather than assuming a residual-only shortcut.
+
+Each stage begins with a separate preactivated projection P(join(R,D)) to r+2i channels,
+which initializes R0 (r channels) and D0 (2i channels). The first unit then applies its learned
+updates too. After L units, residual width is r and dense width is (L+2)i. Residual values are
+R0 plus the ordered fold of all uR; dense values are concat(D0,uD1,...,uDL). The float32
+reference uses the same addition order, because reassociation can change rounding.
+A controlled stride-two projection independently checks BN/ReLU, channel redistribution and
+input derivatives. Stage projections are not raw identities and can clip negative inputs.
+
+For joined width C, inner bottleneck b, groups G, residual width r and increment i, branch
+kernel weights are Cb+9b²/G+b(r+i); a stage projection adds C(r+2i). These also count MACs
+per spatial position at unchanged resolution. Different input/output grids matter at reductions.
+The grouped filter uses one HWIO tensor [3,3,b/G,b], with contiguous channel groups. Convolutions
+are bias-free with He-uniform initialization; learned-scale BN uses epsilon .001, eager
+moving-mean updates and unbiased moving variance. Final BN/ReLU, global mean and linear scores
+follow. There is no dropout or pretrained state.
+
+Released unit counts give depths 68/92/98/107/131 (three convolutions per unit plus stem and
+classifier, excluding stage projections). All five learned/moving scalar counts are checked
+on 64-pixel inputs because counts do not depend on image size. A separate full-width DPN-92
+check at 224 pixels verifies joined widths 336/704/1552/2688 at 56/28/14/7 pixels. Backward
+and stage-algebra checks use a complete compact DPN-92, keeping all 3/4/20/3 units.
+
+The compact model uses quarter widths/increments, groups eight, a 3×3 stride-one stem and ten
+classes: 2474330 learned and 31304 moving scalars. Cardinality is explicit: the first inner
+width is 24, so retaining the full model's 32 groups would be invalid; eight preserves three
+channels per group. End-stage residual widths are 64/128/256/512 and dense widths 20/48/132/160.
+
+The CIFAR-10 fit shows all 8 epochs, batch-eight ordering, independent tensor crops/flips,
+Adam(.001), mean cross entropy and kernel L2=.0001/2. It uses 64 fitting, 32 validation and
+32 official-test images, kept small so the fit runs in seconds. Validation selects paired parameter/moving-state checkpoints before
+the test pass. Pixels map to [-1,1]. Cached CIFAR-10 is required; this is a bounded CPU experiment.
+
+The editable concept diagram is `diagrams/dpn_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/dpn_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/dpn_concept.tikz > build/dpn_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/dpn_concept.svg build/dpn_concept.dvi > build/dpn_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/dpn_concept.svg)
+// result_end
+\caption(Dual Path Networks: Shared Filters, Residual Sums and Dense Growth)
+\alttext(Join both paths; shared bottleneck; then Split learned updates; add R; append D; then Explicit tensor Adam; DPN-92 on CIFAR.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/dpn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::DPNConfig cfg;
+  cfg.width_divisor = 4;
+  cfg.groups        = 8;
+  cfg.small_stem    = true;
+  cfg.depth         = 92;
+  cfg.momentum      = .9;
+  cfg.classes       = 10;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) { return n::models::DPN(p, state, image, cfg, false).logits; },
+      "Dual Path Networks: Shared Filters, Residual Sums and Dense Growth");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/dpn_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+545 displayed nodes; 2474330 reachable learned values.
+\image(figures/dpn_architecture.svg)
+// result_end
+\caption(Executed dpn tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right dpn architecture with rotated names and exact output shapes.)
+
+> Simple dual-path units
+
+Zero updates expose the signed direct paths. A separate controlled projection changes both resolution and channel allocation.
+
+```{cpp, results="markdown", file="figures/dpn_units.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), state(17, type);
+  const auto r = n::linspace(-1, 1, 100, type).reshape({1, 5, 5, 4}).detach().requires_grad_();
+  const auto d =
+      n::linspace(-.7, .8, 50, type).reshape({1, 5, 5, 2}).detach().requires_grad_();
+  const n::models::DPNPaths x{r, d, 4, 2};
+  {
+    n::NoGradGuard guard;
+    n::models::DPNBlock(p, state, "normal", x, 4, 4, 1, 2, false);
+    n::models::DPNBlock(p, state, "down", x, 6, 4, 1, 2, true, 2);
+  }
+  for (const auto *name : {"normal/conv3/W", "down/conv3/W"})
+    p.set(name, n::zeros_like(p.at(name)));
+  const auto identity = n::eye(6, type);
+  p.set("down/projection/W",
+        n::concat({identity, n::slice_axis(identity, 1, 0, 2)}, 1).reshape({1, 1, 6, 8}));
+  p.set("down/projection/bn/gamma", n::full({6}, std::sqrt(1.001), type));
+  const auto normal = n::models::DPNBlock(p, state, "normal", x, 4, 4, 1, 2, false);
+  if (n::max(n::abs(normal.output.residual - r)).item() != 0 ||
+      n::max(n::abs(n::slice_axis(normal.output.dense, 3, 0, 2) - d)).item() != 0 ||
+      n::max(n::abs(n::slice_axis(normal.output.dense, 3, 2, 3))).item() != 0)
+    return 1;
+  for (const auto &g : n::grad(n::sum(n::models::DPNJoin(normal.output)), {r, d}))
+    if (n::max(n::abs(g - 1)).item() != 0)
+      return 1;
+  const auto down = n::models::DPNBlock(p, state, "down", x, 6, 4, 1, 2, true, 2);
+  const auto sampled =
+      n::slice_axis(n::slice_axis(n::relu(n::models::DPNJoin(x)), 1, 0, 5, 2), 2, 0, 5, 2);
+  const auto expected =
+      n::concat({sampled, n::slice_axis(sampled, 3, 0, 2), n::zeros({1, 3, 3, 1}, type)}, 3);
+  const auto actual_gradient = n::grad(n::sum(n::models::DPNJoin(down.output)), {r, d});
+  const auto reference_gradient = n::grad(n::sum(expected), {r, d});
+  double error = n::max(n::abs(n::models::DPNJoin(down.output) - expected)).item();
+  for (size_t i = 0; i < 2; ++i)
+    error = std::max(error, n::max(n::abs(actual_gradient[i] - reference_gradient[i])).item());
+  if (error > 1e-12 || down.input.residual_channels != 6 || down.input.dense_channels != 2 ||
+      down.output.dense_channels != 3)
+    return 1;
+  auto first = [](const n::Tensor &t) {
+    return n::slice_axis(t, 3, 0, 1).reshape({t.size(1), t.size(2)});
+  };
+  auto layout = dm::graphics::RLayout::create(2, 2);
+  layout.add(n::plot_tensor_map(first(r), -1, 1).title("Signed incoming residual channel"))
+      .add(n::plot_tensor_map(first(normal.output.residual), -1, 1)
+               .title("Zero update preserves the residual"))
+      .add(n::plot_tensor_map(first(down.output.residual), 0, 1)
+               .title("Stage projection consumes BN/ReLU"))
+      .add(n::plot_tensor_map(first(actual_gradient[0]), 0, 2)
+               .title("Projected first-channel derivative"));
+  std::filesystem::create_directories("build");
+  layout.size(1100, 920).fit_panels().save_svg("build/dpn_units.svg");
+  std::print(
+      "Ordinary unit: signed residual and old dense channels exact; summed-output derivatives "
+      "one.\nControlled projection: 5x5x6 joined inputs -> 3x3x8 projected channels -> "
+      "residual 6, dense 2+1.\nProjection/reference value and input-gradient error {:.12f}.\n",
+      error);
+}
+```
+// result_begin: markdown
+Ordinary unit: signed residual and old dense channels exact; summed-output derivatives one.
+Controlled projection: 5x5x6 joined inputs -> 3x3x8 projected channels -> residual 6, dense 2+1.
+Projection/reference value and input-gradient error 0.000000000000.
+\image(figures/dpn_units.svg)
+// result_end
+\caption(Zero final bottleneck filters isolate direct paths. The projection selects the six joined channels, then copies the first two into its initial dense path; BN gamma cancels epsilon .001. ReLU and stride-two sampling therefore gate projected input derivatives.)
+\alttext(Zero final bottleneck filters isolate direct paths. The projection selects the six joined channels, then copies the first two into its initial dense path; BN gamma cancels epsilon .001. ReLU and stride-two sampling therefore gate projected input derivatives.)
+
+> Checking full preset counts
+
+The full-width count checks and the 224-pixel geometry check use inference without backward storage.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  const std::vector<std::tuple<int, int64_t, int64_t>> settings{{68, 12611602, 65116},
+                                                                {92, 37668392, 125216},
+                                                                {98, 61570728, 164896},
+                                                                {107, 86917800, 213824},
+                                                                {131, 79254504, 223360}};
+  for (auto [depth, count, moving] : settings) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    n::models::DPNConfig cfg;
+    cfg.depth = depth;
+    const auto out = n::models::DPN(p, state, n::zeros({1, 64, 64, 3}), cfg);
+    int blocks = 0;
+    for (const auto &stage : out.blocks)
+      blocks += stage.size();
+    if (p.count() != count || state.count() != moving || 3 * blocks + 2 != depth ||
+        out.logits.shape() != n::Shape{1, 1000})
+      return 1;
+    std::print("DPN-{} on 64-pixel count-only inputs: {} learned scalars, {} moving scalars, "
+               "{} complete units.\n",
+               depth, count, moving, blocks);
+  }
+  {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    const auto out = n::models::DPN(p, state, n::zeros({1, 224, 224, 3}));
+    if (out.stem.shape() != n::Shape{1, 56, 56, 64})
+      return 1;
+    const std::array<int64_t, 4> spatial{56, 28, 14, 7}, channels{336, 704, 1552, 2688};
+    for (size_t i = 0; i < 4; ++i)
+      if (n::models::DPNJoin(out.stages[i]).shape() !=
+          n::Shape{1, spatial[i], spatial[i], channels[i]})
+        return 1;
+    std::print(
+        "Full-width DPN-92 at 224 pixels: stem and all four joined stage shapes verified.\n");
+  }
+}
+```
+// result_begin: markdown
+DPN-68 on 64-pixel count-only inputs: 12611602 learned scalars, 65116 moving scalars, 22 complete units.
+DPN-92 on 64-pixel count-only inputs: 37668392 learned scalars, 125216 moving scalars, 30 complete units.
+DPN-98 on 64-pixel count-only inputs: 61570728 learned scalars, 164896 moving scalars, 32 complete units.
+DPN-107 on 64-pixel count-only inputs: 86917800 learned scalars, 213824 moving scalars, 35 complete units.
+DPN-131 on 64-pixel count-only inputs: 79254504 learned scalars, 223360 moving scalars, 43 complete units.
+Full-width DPN-92 at 224 pixels: stem and all four joined stage shapes verified.
+// result_end
+
+> Checking stage algebra and gradients
+
+The compact graph retains all 92 learned-depth layers. Its exact ordered path values, actual tensor channel widths and every parameter-tensor derivative are checked before fitting.
+
+```{cpp, results="markdown", file="figures/dpn_paths.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17), state(17);
+  n::Generator rng(29);
+  n::models::DPNConfig cfg;
+  cfg.classes = 10;
+  cfg.width_divisor = 4;
+  cfg.groups = 8;
+  cfg.small_stem = true;
+  cfg.update_stats = false;
+  const auto x = n::normal({2, 32, 32, 3}, 0, .2, rng);
+  const auto out = n::models::DPN(p, state, x, cfg, true);
+  if (p.count() != 2474330 || state.count() != 31304)
+    return 1;
+  std::vector<double> stage_ids, residual_widths, dense_widths, joined_widths, unit_ids{0},
+      unit_r, unit_d, unit_joined;
+  {
+    n::NoGradGuard guard;
+    for (size_t stage = 0; stage < 4; ++stage) {
+      const auto &blocks = out.blocks[stage];
+      auto residual = blocks[0].input.residual;
+      std::vector<n::Tensor> dense{blocks[0].input.dense};
+      if (stage == 0) {
+        unit_r.push_back(residual.size(3));
+        unit_d.push_back(dense[0].size(3));
+        unit_joined.push_back(unit_r.back() + unit_d.back());
+      }
+      for (size_t i = 0; i < blocks.size(); ++i) {
+        residual = residual + blocks[i].residual_update;
+        dense.push_back(blocks[i].dense_update);
+        if (stage == 0) {
+          unit_ids.push_back(i + 1);
+          unit_r.push_back(blocks[i].output.residual.size(3));
+          unit_d.push_back(blocks[i].output.dense.size(3));
+          unit_joined.push_back(unit_r.back() + unit_d.back());
+        }
+      }
+      if (n::max(n::abs(out.stages[stage].residual - residual)).item() != 0 ||
+          n::max(n::abs(out.stages[stage].dense - n::concat(dense, 3))).item() != 0)
+        return 1;
+      stage_ids.push_back(stage + 1);
+      residual_widths.push_back(out.stages[stage].residual.size(3));
+      dense_widths.push_back(out.stages[stage].dense.size(3));
+      joined_widths.push_back(n::models::DPNJoin(out.stages[stage]).size(3));
+    }
+  }
+  if (residual_widths != std::vector<double>{64, 128, 256, 512} ||
+      dense_widths != std::vector<double>{20, 48, 132, 160} ||
+      joined_widths != std::vector<double>{84, 176, 388, 672})
+    return 1;
+  const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+  for (const auto &g : gradients)
+    if (!std::isfinite(n::sum(n::abs(g)).item()))
+      return 1;
+  const auto saved = state.flatten();
+  n::NoGradGuard guard;
+  n::models::DPN(p, state, x, cfg, false);
+  if (state.flatten() != saved)
+    return 1;
+  auto first = dm::graphics::RPlot::create(), last = dm::graphics::RPlot::create();
+  first.lines(unit_ids, unit_r, "residual", {37, 99, 235})
+      .lines(unit_ids, unit_d, "dense", {234, 88, 12})
+      .lines(unit_ids, unit_joined, "joined", {22, 163, 74})
+      .title("Stage 1: fixed and growing widths")
+      .x_label("units after projection")
+      .y_label("channels")
+      .y_limits(0, 120);
+  last.lines(stage_ids, residual_widths, "residual", {37, 99, 235})
+      .lines(stage_ids, dense_widths, "dense", {234, 88, 12})
+      .lines(stage_ids, joined_widths, "joined", {22, 163, 74})
+      .title("End of each compact stage")
+      .x_label("stage")
+      .y_label("channels")
+      .y_limits(0, 1000);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(first)
+      .add(last)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/dpn_paths.svg");
+  std::print(
+      "All four stages: exact ordered residual folds and dense concatenations.\nCompact count "
+      "{} learned / {} moving scalars; {} finite parameter-tensor gradients.\nFinal path "
+      "widths R={}, D={}, joined={}. Inference state remains unchanged.\n",
+      p.count(), state.count(), gradients.size(), residual_widths, dense_widths,
+      joined_widths);
+}
+```
+// result_begin: markdown
+All four stages: exact ordered residual folds and dense concatenations.
+Compact count 2474330 learned / 31304 moving scalars; 289 finite parameter-tensor gradients.
+Final path widths R=[64, 128, 256, 512], D=[20, 48, 132, 160], joined=[84, 176, 388, 672]. Inference state remains unchanged.
+\image(figures/dpn_paths.svg)
+// result_end
+\caption(Stage-one projection starts eight dense channels; three units append four each while residual width stays 64. The right panel shows all four final path widths. The value checks fold residual updates in network order to make float32 equality meaningful.)
+\alttext(Stage-one projection starts eight dense channels; three units append four each while residual width stays 64. The right panel shows all four final path widths. The value checks fold residual updates in network order to make float32 equality meaningful.)
+
+> Dataset example
+
+The original class-ordered contact sheet shows aeroplane, automobile, bird, cat, deer, dog, frog, horse, ship and truck, before augmentation.
+
+```{cpp, results="markdown", file="figures/dpn_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/dpn_inputs.png", 5, 0., 1., 4, 1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/dpn_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/dpn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 64), ty = n::slice_axis(labels, 0, 0, 64);
+  const auto vx = 2 * n::slice_axis(images, 0, 64, 96) - 1, vy = n::slice_axis(labels, 0, 64, 96);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 32) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 32);
+  n::models::DPNConfig cfg;
+  cfg.width_divisor = 4;
+  cfg.groups        = 8;
+  cfg.small_stem    = true;
+  cfg.depth         = 92;
+  cfg.momentum      = .9;
+  cfg.classes       = 10;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::DPN(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 2474330 || state.count() != 31304)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(64, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/dpn_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 8; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/dpn_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "dpn / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 32)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("Quarter-width DPN-92")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/dpn_training.svg");
+  std::print(
+      "64 fit / 32 validation / 32 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+64 fit / 32 validation / 32 official-test rows; 2474330 learned scalars, 31304 moving scalars; 64 explicit Adam updates.
+Selected epoch 8; validation NLL 2.349833; inference training NLL 1.939971; test NLL 2.435348; test accuracy 0.218750.
+\image(figures/dpn_training.svg)
+// result_end
+\caption(Explicit 8-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 8-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)
+
+
+The selected epoch is 8: validation NLL 2.349833, inference training NLL 1.939971,
+and official-test NLL 2.435348 with accuracy 0.218750 (7 of 32), above the 0.1 of chance.
+Sixty-four updates on 64 images barely move a 2.5-million-parameter model: validation NLL
+stays near \(\ln 10=2.30\) throughout, so this fit mainly demonstrates the training and
+checkpoint mechanics; it does not reproduce published DPN performance. The training trace uses augmented
+inputs and batch moments, so it need not equal the restored inference training NLL.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/dpn_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+A shared bottleneck supplies two different updates: a fixed-width residual sum and a growing,
+ordered dense representation. Stage projections initialize both paths and must be checked
+separately from ordinary direct-path identities. Exact fixtures, full counts, complete compact
+gradients and the visible Adam fit make the model's mathematics and state transitions reviewable.
+
+> References
+
+- [Chen et al. (2017), Dual Path Networks](https://arxiv.org/abs/1707.01629).
+- [Authors' release](https://github.com/cypw/DPNs).
+- [PyTorch reference implementation](https://github.com/rwightman/pytorch-dpn-pretrained/blob/master/dpn.py).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

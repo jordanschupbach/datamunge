@@ -1,3 +1,7 @@
+/// @file arima.cpp
+/// @brief Implementation of the seasonal ARIMA model: differencing, polynomial
+///        expansion, conditional-sum-of-squares fitting, forecasting and psi-weights.
+
 #include <datamunge/stats/arima.hpp>
 
 #include <datamunge/optim/differential_evolution.hpp>
@@ -8,8 +12,14 @@
 
 namespace datamunge::stats {
 
+/// @brief Internal helpers for ARIMA: differencing, lag-polynomial algebra, the CSS
+///        residual recursion and the optimizer objective.
 namespace {
 
+/// @brief Lag-@p lag difference of a series, \f$x_{i+lag}-x_i\f$.
+/// @param x Input series.
+/// @param lag Lag of the difference.
+/// @return A series of length x.size() - lag, or empty if x has at most @p lag values.
 std::vector<double> lag_difference(const std::vector<double>& x, std::size_t lag) {
     if (x.size() <= lag) return {};
     std::vector<double> out(x.size() - lag);
@@ -17,6 +27,10 @@ std::vector<double> lag_difference(const std::vector<double>& x, std::size_t lag
     return out;
 }
 
+/// @brief Multiply two polynomials given by their coefficient vectors (lowest power first).
+/// @param a First polynomial; must be non-empty.
+/// @param b Second polynomial; must be non-empty.
+/// @return The product, of length a.size() + b.size() - 1.
 std::vector<double> convolve(const std::vector<double>& a, const std::vector<double>& b) {
     std::vector<double> out(a.size() + b.size() - 1, 0.0);
     for (std::size_t i = 0; i < a.size(); ++i)
@@ -24,6 +38,9 @@ std::vector<double> convolve(const std::vector<double>& a, const std::vector<dou
     return out;
 }
 
+/// @brief Build the regular AR polynomial \f$1-\phi_1B-\dots-\phi_pB^p\f$.
+/// @param phi AR coefficients \f$\phi_1,\dots,\phi_p\f$.
+/// @return Coefficients of length p + 1, lowest power first.
 std::vector<double> build_ar_poly(const std::vector<double>& phi) {
     std::vector<double> poly(phi.size() + 1, 0.0);
     poly[0] = 1.0;
@@ -31,6 +48,9 @@ std::vector<double> build_ar_poly(const std::vector<double>& phi) {
     return poly;
 }
 
+/// @brief Build the regular MA polynomial \f$1+\theta_1B+\dots+\theta_qB^q\f$.
+/// @param theta MA coefficients \f$\theta_1,\dots,\theta_q\f$.
+/// @return Coefficients of length q + 1, lowest power first.
 std::vector<double> build_ma_poly(const std::vector<double>& theta) {
     std::vector<double> poly(theta.size() + 1, 0.0);
     poly[0] = 1.0;
@@ -38,6 +58,10 @@ std::vector<double> build_ma_poly(const std::vector<double>& theta) {
     return poly;
 }
 
+/// @brief Build the seasonal AR polynomial \f$1-\Phi_1B^s-\dots-\Phi_PB^{Ps}\f$.
+/// @param seasonal_phi Seasonal AR coefficients \f$\Phi_1,\dots,\Phi_P\f$.
+/// @param s Seasonal period.
+/// @return Coefficients of length P*s + 1, lowest power first (zero off the seasonal lags).
 std::vector<double> build_seasonal_ar_poly(const std::vector<double>& seasonal_phi, std::size_t s) {
     std::vector<double> poly(seasonal_phi.size() * s + 1, 0.0);
     poly[0] = 1.0;
@@ -45,6 +69,10 @@ std::vector<double> build_seasonal_ar_poly(const std::vector<double>& seasonal_p
     return poly;
 }
 
+/// @brief Build the seasonal MA polynomial \f$1+\Theta_1B^s+\dots+\Theta_QB^{Qs}\f$.
+/// @param seasonal_theta Seasonal MA coefficients \f$\Theta_1,\dots,\Theta_Q\f$.
+/// @param s Seasonal period.
+/// @return Coefficients of length Q*s + 1, lowest power first (zero off the seasonal lags).
 std::vector<double> build_seasonal_ma_poly(const std::vector<double>& seasonal_theta, std::size_t s) {
     std::vector<double> poly(seasonal_theta.size() * s + 1, 0.0);
     poly[0] = 1.0;
@@ -52,7 +80,11 @@ std::vector<double> build_seasonal_ma_poly(const std::vector<double>& seasonal_t
     return poly;
 }
 
-// (1 - B^lag)^order, expanded via the binomial theorem with alternating sign.
+/// @brief Expand the differencing operator \f$(1-B^{lag})^{order}\f$ by the binomial
+///        theorem (alternating signs).
+/// @param order Number of times the difference is applied.
+/// @param lag Lag of each difference.
+/// @return Coefficients of length order*lag + 1, lowest power first; just {1} when order is 0.
 std::vector<double> build_diff_poly(std::size_t order, std::size_t lag) {
     std::vector<double> poly(order * lag + 1, 0.0);
     poly[0] = 1.0;
@@ -64,26 +96,41 @@ std::vector<double> build_diff_poly(std::size_t order, std::size_t lag) {
     return poly;
 }
 
-// Regression-style coefficients c_i such that, for a polynomial poly with poly[0] == 1,
-// the equation poly(B) x_t = 0 rearranges to x_t = sum_i c_i * x_{t-i-1}. That is, c_i = -poly[i+1].
+/// @brief Turn an AR polynomial into regression coefficients.
+///
+/// For poly with poly[0] == 1, poly(B) x_t = 0 rearranges to
+/// \f$x_t=\sum_i c_i x_{t-i-1}\f$, so \f$c_i=-\mathrm{poly}[i+1]\f$.
+/// @param poly AR polynomial, lowest power first, with leading 1.
+/// @return The \f$c_i\f$, of length poly.size() - 1 (empty for an empty poly).
 std::vector<double> ar_regression_coefficients(const std::vector<double>& poly) {
     std::vector<double> out(poly.empty() ? 0 : poly.size() - 1);
     for (std::size_t i = 0; i < out.size(); ++i) out[i] = -poly[i + 1];
     return out;
 }
 
-// Regression-style coefficients b_j such that an MA polynomial poly with poly[0] == 1
-// contributes sum_j b_j * e_{t-j-1} to the prediction; b_j = poly[j+1].
+/// @brief Turn an MA polynomial into regression coefficients.
+///
+/// An MA polynomial with poly[0] == 1 adds \f$\sum_j b_j e_{t-j-1}\f$ to the prediction,
+/// with \f$b_j=\mathrm{poly}[j+1]\f$ (same sign, unlike the AR case).
+/// @param poly MA polynomial, lowest power first, with leading 1.
+/// @return The \f$b_j\f$, of length poly.size() - 1 (empty for an empty poly).
 std::vector<double> ma_regression_coefficients(const std::vector<double>& poly) {
     std::vector<double> out(poly.empty() ? 0 : poly.size() - 1);
     for (std::size_t i = 0; i < out.size(); ++i) out[i] = poly[i + 1];
     return out;
 }
 
-// Conditional sum-of-squares fit: conditions on the first ar.size() observations of w
-// (skipping them from the sum), treats residuals before that point as exactly zero, and
-// recursively computes one-step-ahead residuals for the rest. Always fills `residuals` to
-// the same length as `w` (zero for the conditioned-on prefix).
+/// @brief Conditional sum of squares for given AR/MA regression coefficients.
+///
+/// Conditions on the first ar.size() values of @p w (they are left out of the sum), treats
+/// residuals before that point as exactly zero, and computes one-step-ahead residuals
+/// \f$e_t=(w_t-\mu)-\sum_i a_i(w_{t-1-i}-\mu)-\sum_j b_j e_{t-1-j}\f$ for the rest.
+/// @param w Differenced series.
+/// @param ar AR regression coefficients \f$a_i\f$ (see ar_regression_coefficients()).
+/// @param ma MA regression coefficients \f$b_j\f$ (see ma_regression_coefficients()).
+/// @param mean Mean \f$\mu\f$ subtracted from @p w.
+/// @param residuals Output; resized to w.size(), zero for the conditioned-on prefix.
+/// @return The sum of squared residuals.
 double css_fit(const std::vector<double>& w, const std::vector<double>& ar, const std::vector<double>& ma,
                double mean, std::vector<double>& residuals) {
     const std::size_t m = w.size();
@@ -105,12 +152,26 @@ double css_fit(const std::vector<double>& w, const std::vector<double>& ar, cons
     return sse;
 }
 
+/// @brief CSS objective minimized by differential evolution.
+///
+/// The parameter vector is laid out as (phi, seasonal_phi, theta, seasonal_theta[, mean]).
 class ARIMAObjective : public optim::ArbitraryFunction {
  public:
+    /// @brief Bind the objective to a differenced series and model orders.
+    /// @param w Differenced series; must outlive this object (held by reference).
+    /// @param p Regular AR order.
+    /// @param seasonal_p Seasonal AR order.
+    /// @param q Regular MA order.
+    /// @param seasonal_q Seasonal MA order.
+    /// @param s Seasonal period.
+    /// @param mean_free True if the last parameter is a free (estimated) mean; otherwise the mean is 0.
     ARIMAObjective(const std::vector<double>& w, std::size_t p, std::size_t seasonal_p, std::size_t q,
                     std::size_t seasonal_q, std::size_t s, bool mean_free)
         : w_(w), p_(p), seasonal_p_(seasonal_p), q_(q), seasonal_q_(seasonal_q), s_(s), mean_free_(mean_free) {}
 
+    /// @brief Conditional sum of squares at a parameter vector.
+    /// @param params Coefficients (and mean, if fit) in the layout described on the class.
+    /// @return The CSS value, or a large finite penalty if it is not finite.
     double evaluate(const std::vector<double>& params) override {
         std::size_t offset = 0;
         const std::vector<double> phi(params.begin() + static_cast<long>(offset), params.begin() + static_cast<long>(offset + p_));
@@ -137,11 +198,23 @@ class ARIMAObjective : public optim::ArbitraryFunction {
     }
 
  private:
-    const std::vector<double>& w_;
-    std::size_t p_, seasonal_p_, q_, seasonal_q_, s_;
-    bool mean_free_;
+    const std::vector<double>& w_; ///< Differenced series (not owned).
+    std::size_t p_;                ///< Regular AR order.
+    std::size_t seasonal_p_;       ///< Seasonal AR order.
+    std::size_t q_;                ///< Regular MA order.
+    std::size_t seasonal_q_;       ///< Seasonal MA order.
+    std::size_t s_;                ///< Seasonal period.
+    bool mean_free_;               ///< True if the last parameter is an estimated mean.
 };
 
+/// @brief Undo one lag difference for a run of future values.
+///
+/// Computes \f$x_i=\Delta_i+x_{i-lag}\f$, taking \f$x_{i-lag}\f$ from @p tail while it
+/// lies before the forecast window.
+/// @param future_diffs Forecast differences \f$\Delta_i\f$.
+/// @param tail The last values (at least @p lag of them) of the series before differencing.
+/// @param lag Lag of the difference being undone.
+/// @return The integrated values, same length as @p future_diffs.
 std::vector<double> integrate_lag(const std::vector<double>& future_diffs, const std::vector<double>& tail,
                                    std::size_t lag) {
     std::vector<double> result(future_diffs.size());
@@ -154,8 +227,16 @@ std::vector<double> integrate_lag(const std::vector<double>& future_diffs, const
 
 } // namespace
 
+/// @brief Store the options and fit the model to @p y (see fit()).
+/// @param y The observed series.
+/// @param options Model orders and optimizer settings.
 ARIMA::ARIMA(const std::vector<double>& y, ARIMAOptions options) : options_(options) { fit(y); }
 
+/// @brief Difference @p y, fit the coefficients by CSS with differential evolution, and
+///        store residuals, fit statistics and the state needed for forecasting.
+/// @param y The observed series.
+/// @throws std::invalid_argument On a missing seasonal period or a series too short for
+///         the requested differencing or AR order.
 void ARIMA::fit(const std::vector<double>& y) {
     n_ = y.size();
     const auto& o = options_;
@@ -265,6 +346,10 @@ void ARIMA::fit(const std::vector<double>& y) {
     }
 }
 
+/// @brief Recurse the fitted w-space equation forward (future innovations set to zero),
+///        then undo the seasonal and regular differences in reverse order.
+/// @param horizon Number of steps ahead.
+/// @return Point forecasts on the original scale.
 std::vector<double> ARIMA::forecast(std::size_t horizon) const {
     if (horizon == 0) return {};
     const std::size_t m = w_.size();
@@ -301,18 +386,27 @@ std::vector<double> ARIMA::forecast(std::size_t horizon) const {
     return current;
 }
 
-std::pair<std::vector<double>, std::vector<double>> ARIMA::forecast_with_intervals(std::size_t horizon) const {
-    const auto point = forecast(horizon);
-
-    std::vector<double> psi(horizon, 0.0);
-    if (horizon > 0) psi[0] = 1.0;
-    for (std::size_t j = 1; j < horizon; ++j) {
+/// @brief Psi-weights from the y-space recursion \f$\psi_j=\sum_i c_i\psi_{j-1-i}+b_{j-1}\f$.
+/// @param count Number of weights.
+/// @return \f$\psi_0=1,\psi_1,\dots,\psi_{count-1}\f$.
+std::vector<double> ARIMA::psi_weights(std::size_t count) const {
+    std::vector<double> psi(count, 0.0);
+    if (count > 0) psi[0] = 1.0;
+    for (std::size_t j = 1; j < count; ++j) {
         double val = 0.0;
         for (std::size_t i = 0; i < full_ar_regression_.size() && i < j; ++i) val += full_ar_regression_[i] * psi[j - 1 - i];
         if (j - 1 < full_ma_regression_.size()) val += full_ma_regression_[j - 1];
         psi[j] = val;
     }
+    return psi;
+}
 
+/// @brief Point forecasts plus standard errors \f$\sqrt{\sigma^2\sum_{j\le h}\psi_j^2}\f$.
+/// @param horizon Number of steps ahead.
+/// @return A pair (point forecasts, standard errors).
+std::pair<std::vector<double>, std::vector<double>> ARIMA::forecast_with_intervals(std::size_t horizon) const {
+    const auto point = forecast(horizon);
+    const auto psi   = psi_weights(horizon);
     std::vector<double> se(horizon);
     double cumulative = 0.0;
     for (std::size_t h = 0; h < horizon; ++h) {

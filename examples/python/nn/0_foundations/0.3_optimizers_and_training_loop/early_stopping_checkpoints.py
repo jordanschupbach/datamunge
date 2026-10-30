@@ -1,4 +1,5 @@
 # Native Python NN example. Validation monitoring and complete model/optimizer checkpoints.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/early_stopping_checkpoints.py
 """Best-checkpoint selection and exact resumed Adam trajectories."""
 import math
 from pydatamunge import nn

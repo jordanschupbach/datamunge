@@ -1,4 +1,5 @@
 # Native Python NN example. Adaptive optimizer formulas, state invariants and fitting.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/adaptive_optimizers.py
 """Adagrad, RMSProp, Adam, AdamW, Nadam, AMSGrad and Adamax checks."""
 import math
 from pydatamunge import nn

@@ -1,10 +1,10 @@
 # Native R NN example. LeNet-5 architecture checks and MNIST fitting run in R.
+# CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/lenet5.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example lenet5
 # LeNet-5: sparse convolutions, learned subsampling and a fixed RBF head.
 #
 # Port of tflow's lenet5. Preparation (in ~/projects/tflow_examples):
@@ -102,12 +102,8 @@ main <- function(arguments = commandArgs(TRUE)) {
     if (!explicit_epochs) epochs <- nn_limit(epochs, 1L)  # an explicit budget is honored
     batch <- nn_limit(batch, 16L)
     nn_describe()
-    nn_require(file.exists(file.path(args$data, "train-images-idx3-ubyte")) ||
-                   file.exists(file.path(args$data, "train-images-idx3-ubyte.gz")),
-               paste0("MNIST missing in ", args$data, "; run python3 scripts/fetch_datasets.py mnist --split both ",
-                      "in tflow_examples, or set data="))
-    train <- nn$load_mnist(args$data, "train")
-    test <- nn$load_mnist(args$data, "test")
+    train <- nn_components$dataset_assets$LoadMnist(args$data, "train")
+    test <- nn_components$dataset_assets$LoadMnist(args$data, "test")
     nn_require(identical(as.numeric(train$images$shape()), c(60000, 28, 28, 1)) &&
                    identical(as.numeric(test$images$shape()), c(10000, 28, 28, 1)),
                "official MNIST dimensions required")

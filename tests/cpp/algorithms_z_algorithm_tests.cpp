@@ -122,3 +122,75 @@ TEST(ZAlgorithm, ZArrayMatchesNaiveOverManyRandomTrials) {
         EXPECT_EQ(z_array(s), naive_z(s)) << "trial " << trial << " s=\"" << s << "\"";
     }
 }
+
+TEST(ZAlgorithm, InstrumentationAndTraceObeyTheLinearBound) {
+    for (const std::string s : {"", "a", "aaaa", "aabaabaab", "abacaba", "abcdefgh"}) {
+        const auto work = datamunge::algorithms::z_array_stats(s);
+        EXPECT_EQ(work.values, naive_z(s));
+        const std::size_t limit = s.empty() ? 0 : s.size() - 1;
+        EXPECT_LE(work.successful_comparisons, limit);
+        EXPECT_LE(work.comparisons - work.successful_comparisons, limit);
+        const auto trace = datamunge::algorithms::z_array_trace(s);
+        ASSERT_EQ(trace.nrows(), s.size());
+        double count = 0, previous_right = 0;
+        for (std::size_t i = 0; i < trace.nrows(); ++i) {
+            EXPECT_EQ(trace.double_at("z", i), work.values[i]);
+            EXPECT_GE(trace.double_at("right_after", i), previous_right);
+            EXPECT_LE(trace.double_at("right_after", i), s.size());
+            EXPECT_LE(trace.double_at("seed", i), trace.double_at("z", i));
+            count += trace.double_at("comparisons", i);
+            previous_right = trace.double_at("right_after", i);
+        }
+        EXPECT_EQ(count, work.comparisons);
+    }
+    const auto repeated = datamunge::algorithms::z_array_stats("aaaa");
+    EXPECT_EQ(repeated.comparisons, 3);
+    EXPECT_EQ(repeated.box_reuses, 2);
+    EXPECT_EQ(datamunge::algorithms::z_array_trace("aaaa").double_at("seed", 2), 2);
+}
+
+TEST(ZAlgorithm, VirtualSeparatorWorksWithEveryByteValue) {
+    std::string bytes;
+    for (int i = 0; i < 256; ++i) bytes.push_back(static_cast<char>(i));
+    const auto text = bytes + bytes + bytes;
+    for (int start : {0, 1, 127, 128, 248}) {
+        const auto pattern = bytes.substr(start, 8);
+        const auto work = datamunge::algorithms::z_search_stats(text, pattern);
+        EXPECT_EQ(work.positions, naive_search(text, pattern));
+        EXPECT_EQ(work.processed_symbols, text.size() + pattern.size() + 1);
+        EXPECT_LE(work.comparisons, 2 * (work.processed_symbols - 1));
+    }
+    EXPECT_EQ(datamunge::algorithms::z_search_stats("ab", "").processed_symbols, 0);
+    EXPECT_EQ(datamunge::algorithms::z_search_stats("ab", "abc").processed_symbols, 0);
+    EXPECT_EQ(datamunge::algorithms::z_search_stats("abababa", "aba").positions,
+              (std::vector<std::size_t>{0, 2, 4}));
+}
+
+TEST(ZAlgorithm, FullByteRandomStatsAgreeWithNaive) {
+    std::mt19937_64 rng(445);
+    for (int trial = 0; trial < 500; ++trial) {
+        std::string s;
+        for (int i = 0, n = int(rng() % 256); i < n; ++i) s.push_back(static_cast<char>(rng() % 256));
+        const auto work = datamunge::algorithms::z_array_stats(s);
+        EXPECT_EQ(work.values, naive_z(s));
+        EXPECT_LE(work.comparisons, s.empty() ? 0 : 2 * (s.size() - 1));
+    }
+}
+
+TEST(ZAlgorithm, CorpusSummaryPreservesBoundariesAndEmptyPatternSemantics) {
+    datamunge::dstruct::DataFrame frame;
+    frame.add_column("text", std::vector<std::string>{"aa", "a"});
+    const auto summary = datamunge::algorithms::z_search_summary(frame, "text", {"aa", "", "aaa"});
+    ASSERT_EQ(summary.nrows(), 3);
+    EXPECT_EQ(summary.double_at("matches", 0), 1);
+    EXPECT_EQ(summary.double_at("matched_records", 0), 1);
+    EXPECT_EQ(summary.double_at("processed_symbols", 0), 5);
+    EXPECT_EQ(summary.double_at("comparison_bound", 0), 8);
+    EXPECT_EQ(summary.double_at("matches", 1), 5);
+    EXPECT_EQ(summary.double_at("comparisons", 1), 0);
+    EXPECT_EQ(summary.double_at("matched_records", 1), 2);
+    EXPECT_EQ(summary.double_at("matches", 2), 0);
+    EXPECT_THROW(datamunge::algorithms::z_search_summary(frame, "missing", {"a"}), std::out_of_range);
+    frame.set_null("text", 0);
+    EXPECT_THROW(datamunge::algorithms::z_search_summary(frame, "text", {"a"}), std::invalid_argument);
+}

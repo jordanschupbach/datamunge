@@ -41,6 +41,10 @@ public:
     double optimize(ArbitraryFunction& function, std::vector<double>& coordinates,
                      const std::vector<double>& lower_bound, const std::vector<double>& upper_bound) const;
 
+    /// @brief The options this EvolutionStrategy was configured with.
+    /// @return The stored options.
+    [[nodiscard]] const EvolutionStrategyOptions& options() const noexcept { return options_; }
+
 private:
     EvolutionStrategyOptions options_;
 };

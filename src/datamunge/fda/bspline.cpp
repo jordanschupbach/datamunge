@@ -19,6 +19,8 @@ void validate_knots(std::size_t degree, const std::vector<double>& knots) {
 
 } // namespace
 
+BSplineBasis::BSplineBasis() : BSplineBasis(0, {0.0, 1.0}) {}
+
 BSplineBasis::BSplineBasis(std::size_t degree, std::vector<double> knots)
     : degree_(degree), basis_size_(0), knots_(std::move(knots)) {
     validate_knots(degree_, knots_);

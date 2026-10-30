@@ -1,0 +1,786 @@
+//? Title: k-Nearest Neighbours: Classification and Regression by Proximity
+//? Subtitle: The k-NN rule, distances, standardisation, voting and exact leave-one-out evaluation, checked by hand, against the Cover–Hart asymptotics and the bias–variance decomposition, and applied to iris and wine, using datamunge's stats::KNNClassifier and stats::KNNRegressor
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given labelled training points, we want to predict the label of a new point without assuming
+any form for the relation between predictors and label. The \(k\)-nearest-neighbour rule lets the
+\(k\) closest training points vote (classification) or averages them (regression). Its behaviour is
+decided by the distance, the scaling of the predictors, the voting scheme and \(k\). We derive the
+rule, exact leave-one-out (LOO) evaluation with the standardisation recomputed for every left-out
+row, the Cover–Hart large-sample risk and the bias–variance decomposition of k-NN regression, and
+check each against datamunge's `stats::KNNClassifier` and `stats::KNNRegressor`. On six points the
+predictions for every metric, \(k\) and weighting match the hand calculation, including the tie
+rules. On two Gaussian classes the test error of 1-, 5- and 25-NN settles near the predicted
+limits 0.225, 0.180 and 0.163 (Bayes risk 0.159), and LOO error tracks test error. Adding 128
+noise predictors raises the 15-NN error from 0.165 to 0.381. The simulated mean squared error of
+k-NN regression matches the exact bias-plus-variance prediction at every \(k\), with its minimum
+at \(k=18\). On iris, LOO accuracy reaches 96.7% from the petal measurements alone; on wine,
+standardising the 13 predictors raises LOO accuracy from 70–77% to 95–98%. The LOO accuracy paths
+agree exactly with scikit-learn refitted with each row left out (checked for \(k\le25\) on all four measurements).
+)
+
+\toc
+
+> The problem
+
+We have \(n\) training points \(x_1,\dots,x_n\in\mathbb R^p\) with labels \(y_1,\dots,y_n\): a class out of a
+finite set, or a number. We want to predict the label of a new point \(x\) without assuming any
+form for the relation between \(x\) and \(y\): no linear boundary, no Gaussian classes, no
+polynomial trend. The only assumption is smoothness: points that are close in \(\mathbb R^p\) tend to
+have similar labels. The \(k\)-nearest-neighbour (k-NN) rule turns that assumption directly into
+a prediction. It finds the \(k\) training points closest to \(x\) and lets them vote (for a class)
+or averages them (for a number).
+
+The difficulty is that everything rests on "close". Distance depends on the units of each
+predictor, on predictors that carry no information, and on the dimension \(p\). The number of
+neighbours \(k\) trades a jagged, high-variance rule (\(k=1\)) against an over-smoothed, biased one
+(\(k\) large). There is also no training error to report, since with \(k=1\) every training point
+predicts itself perfectly.
+
+> The method
+
+>> The rule
+
+Let \(d\) be a distance on \(\mathbb R^p\) and let \(N_k(x)\) be the indices of the \(k\) training points
+nearest to \(x\). For a class label, the *vote share* of class \(c\) is
+
+$$
+\hat p_c(x)=\frac{\sum_{i\in N_k(x)}w_i\,[y_i=c]}{\sum_{i\in N_k(x)}w_i},\qquad \hat y(x)=\arg\max_c\hat p_c(x),
+$$
+\alttext(The vote share p hat c of x is the sum over the k nearest neighbours of w i times the indicator that y i equals c, divided by the sum of the weights. The predicted class is the class with the largest share.)
+
+and for a numeric label the prediction is the weighted mean
+\(\hat f(x)=\sum_{i\in N_k(x)}w_iy_i\big/\sum_{i\in N_k(x)}w_i\). With *uniform* weights \(w_i=1\) every
+neighbour counts equally; with *inverse-distance* weights \(w_i=1/d(x,x_i)\) closer neighbours count
+more, and a training point at distance zero outvotes all others.
+
+Two kinds of tie need a rule. Neighbours at equal distance are ordered by their training-row
+position, and a tied vote goes to the first class in sorted order. Both conventions are
+scikit-learn's, so datamunge's predictions can be compared with it one for one.
+
+>> Distances
+
+`DistanceMetric::Euclidean` is \(\lVert a-b\rVert_2=\sqrt{\sum_j(a_j-b_j)^2}\) and
+`DistanceMetric::Manhattan` is \(\lVert a-b\rVert_1=\sum_j|a_j-b_j|\). Their unit balls are a disc and a
+diamond. Euclidean distance lets one large difference dominate, while Manhattan distance adds the
+coordinates' differences as they are, so the two can rank neighbours differently: from the
+origin, \((2,0)\) and \((1.2,1.2)\) are at Euclidean distances 2 and 1.70, but at Manhattan distances 2
+and 2.4.
+
+>> Standardisation
+
+A distance adds up differences in different units. If one predictor is measured in grams and
+another in kilograms, the first one decides the ranking almost alone. The usual remedy is to
+rescale each predictor to mean 0 and standard deviation 1,
+\(z_{ij}=(x_{ij}-\bar x_j)/s_j\), with \(s_j\) the standard deviation of predictor \(j\) (divisor \(n\),
+as scikit-learn's `StandardScaler`). Then each predictor has the same spread. This is the
+default (`standardize = true`). datamunge computes each standardised difference as the raw
+difference times \(1/s_j\), so points that are exactly tied in the raw data stay exactly tied. It is a modelling choice, not a law: it gives a noise predictor
+the same weight as an informative one.
+
+>> Leave-one-out evaluation
+
+The training error of k-NN is meaningless: with \(k=1\) each training point is its own nearest
+neighbour and is classified correctly. `KNNClassifier` therefore reports *leave-one-out* (LOO)
+results: row \(i\) is classified by the other \(n-1\) rows. The standardisation is also recomputed
+without row \(i\), so the result equals refitting the model \(n\) times. Removing \(x_i\) changes only the
+scales (the means cancel in differences), and the centred sum of squares downdates as
+
+$$
+SS_{-i,j}=SS_j-\frac{n}{n-1}\,(x_{ij}-\bar x_j)^2,\qquad s_{-i,j}=\sqrt{SS_{-i,j}/(n-1)},
+$$
+\alttext(The sum of squares without row i equals the full sum of squares minus n over n minus 1 times the squared deviation of x i j from the mean. The standard deviation without row i is the square root of that divided by n minus 1.)
+
+so each standardised difference is multiplied by \(s_j/s_{-i,j}\) and no refit is needed.
+Because sorting the other rows by distance is the expensive part, `loo_accuracy_path(K)`
+sorts once per row and returns the LOO accuracy for every \(k\le K\) at the cost of a single
+evaluation (`loo_rmse_path` for the regressor).
+
+>> What k-NN estimates: the Cover–Hart limit
+
+For two classes write \(\eta(x)=P(Y=1\mid X=x)\). The best possible rule predicts class 1 when
+\(\eta(x)>\tfrac12\) and has the *Bayes risk* \(R^*=E[\min(\eta,1-\eta)]\). As \(n\to\infty\) with \(k\) fixed, the
+\(k\) neighbours of \(x\) crowd in on \(x\), so their labels become independent Bernoulli(\(\eta(x)\)) draws.
+With \(B\sim\text{Bin}(k,\eta)\) votes for class 1, the rule errs with conditional probability
+
+$$
+r_k(\eta)=\eta\,P(B<k/2)+(1-\eta)\,P(B>k/2)+\tfrac12P(B=k/2),\qquad R_k=E\big[r_k(\eta(X))\big],
+$$
+\alttext(r k of eta equals eta times the probability that B is less than k over 2, plus 1 minus eta times the probability that B is more than k over 2, plus one half times the probability of a tie. The asymptotic risk R k is the expectation of r k of eta of X.)
+
+which `stats::knn_asymptotic_risk(eta, k)` evaluates. For \(k=1\), \(r_1=2\eta(1-\eta)\). Since
+\(\min(\eta,1-\eta)\le2\eta(1-\eta)\le2\min(\eta,1-\eta)\), the 1-NN rule is never worse than twice Bayes; the
+sharper bound of Cover and Hart (1967) is \(R^*\le R_1\le2R^*(1-R^*)\). As \(k\) grows, \(r_k(\eta)\to\min(\eta,1-\eta)\)
+and \(R_k\to R^*\). In practice \(k\) must grow more slowly than \(n\) so the neighbours stay local
+(\(k\to\infty\), \(k/n\to0\)); then k-NN is *universally consistent* (Stone, 1977).
+
+>> Regression: bias and variance
+
+For \(y_i=f(x_i)+\varepsilon_i\) with independent noise of variance \(\sigma^2\), and with the design points held
+fixed, the uniform k-NN estimate at \(x_0\) has
+
+$$
+E\,\hat f(x_0)=\frac1k\sum_{i\in N_k(x_0)}f(x_i),\qquad \operatorname{Var}\hat f(x_0)=\frac{\sigma^2}{k},
+$$
+\alttext(The expected k-NN estimate at x 0 is the mean of f over the k neighbours. Its variance is sigma squared over k.)
+
+because the neighbour set depends on the \(x\)'s only. The variance falls as \(1/k\) while the bias
+\(E\hat f(x_0)-f(x_0)\) grows as the neighbours spread out, so the mean squared error is U-shaped
+in \(k\) (Hastie, Tibshirani and Friedman, 2009, section 7.3).
+
+>> The curse of dimensionality
+
+In \(p\) dimensions a neighbourhood holding a fixed fraction \(r\) of uniformly spread data must
+span a fraction \(r^{1/p}\) of each axis: 10% of the data in 10 dimensions needs 79% of each
+range. Neighbours stop being local. Distances also concentrate: for independent coordinates
+the distances from a query to all training points have mean of order \(\sqrt p\) and a spread
+of order 1, so the nearest and farthest points differ by a vanishing fraction. Every
+uninformative predictor adds noise to every distance.
+
+> Simple examples
+
+>> Six points by hand
+
+Six training points in the plane, three of class *a* and three of class *b*, and a query at the
+origin. The predictors are not standardised, so the distances can be checked by hand.
+
+| row | class | \(x_1\) | \(x_2\) | Euclidean | Manhattan |
+| ---: | :--- | ---: | ---: | ---: | ---: |
+| 0 | b | 1.0 | 0.5 | \(\sqrt{1.25}=1.118\) | 1.5 |
+| 1 | a | −1.5 | 0.0 | 1.5 | 1.5 |
+| 2 | a | 0.0 | −1.6 | 1.6 | 1.6 |
+| 3 | b | 1.2 | 1.2 | \(\sqrt{2.88}=1.697\) | 2.4 |
+| 4 | a | −1.3 | −1.3 | \(\sqrt{3.38}=1.838\) | 2.6 |
+| 5 | b | 2.0 | 0.2 | \(\sqrt{4.04}=2.010\) | 2.2 |
+
+In Euclidean distance the order is rows 0, 1, 2, 3, 4, 5 (classes b, a, a, b, a, b). So \(k=1\)
+predicts *b*, \(k=3\) predicts *a* (2 votes to 1), and \(k=5\) predicts *a* (3 to 2). In Manhattan
+distance rows 0 and 1 tie at 1.5, and row order puts row 0 first. The order is rows 0, 1, 2, 5,
+3, 4 (b, a, a, b, b, a), so \(k=1\) predicts *b* (through the tie rule), \(k=3\) predicts *a*, and
+\(k=5\) predicts *b* (3 to 2). With inverse-distance weights and \(k=5\), Euclidean class *a* gets
+\(1/1.5+1/1.6+1/1.838=1.836\) against *b*'s \(1/1.118+1/1.697=1.484\): a share of 0.553 for *a*. In
+Manhattan distance *b* gets \(1/1.5+1/2.2+1/2.4=1.538\) against *a*'s \(1/1.5+1/1.6=1.292\): a share
+of 0.456 for *a*.
+
+```{cpp, results="markdown", file="figures/knn_hand.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+using dm::stats::DistanceMetric;
+
+int main() {
+  std::filesystem::create_directories("build");
+  DF train;
+  train.add_column("x1", std::vector<double>{1.0, -1.5, 0.0, 1.2, -1.3, 2.0});
+  train.add_column("x2", std::vector<double>{0.5, 0.0, -1.6, 1.2, -1.3, 0.2});
+  train.add_column("class", std::vector<std::string>{"b", "a", "a", "b", "a", "b"});
+  DF query;
+  query.add_column("x1", std::vector<double>{0.0});
+  query.add_column("x2", std::vector<double>{0.0});
+
+  std::vector<std::string> metric, voting, order;
+  std::vector<double> ks, share_a;
+  std::vector<std::string> predicted;
+  for (const auto m : {DistanceMetric::Euclidean, DistanceMetric::Manhattan})
+    for (const bool weighted : {false, true})
+      for (const std::size_t k : {1u, 3u, 5u}) {
+        const dm::stats::KNNClassifier knn(train, "class ~ x1 + x2",
+                                           {.k = k, .metric = m, .weighted = weighted, .standardize = false});
+        const auto detail = knn.predict_detail(query);
+        metric.push_back(m == DistanceMetric::Euclidean ? "Euclidean" : "Manhattan");
+        voting.push_back(weighted ? "1/d" : "uniform");
+        ks.push_back(double(k));
+        order.push_back(std::format("{}", knn.kneighbors(query).index[0]));
+        share_a.push_back(detail.vote_share[0][0]);
+        predicted.push_back(detail.class_label[0]);
+      }
+  DF table;
+  table.add_column("metric", metric);
+  table.add_column("weights", voting);
+  table.add_column("k", ks);
+  table.add_column("neighbours", order);
+  table.add_column("share of a", share_a);
+  table.add_column("prediction", predicted);
+  DF::MarkdownOptions md;
+  md.digits = 3;
+  md.column_digits = {{"k", 0}};
+  std::print("{}\n", table.to_md(md));
+
+  // Left: the points, the query and the k = 3 neighbourhoods in both metrics.
+  const auto blue = dm::RGB{37, 99, 235}, red = dm::RGB{220, 38, 38}, grey = dm::RGB{100, 116, 139};
+  auto geo = dm::graphics::RPlot::create();
+  std::vector<double> cx, cy, mx, my;
+  for (int i = 0; i <= 200; ++i) {
+    const double t = 2.0 * std::numbers::pi * i / 200.0;
+    cx.push_back(1.6 * std::cos(t)), cy.push_back(1.6 * std::sin(t));
+  }
+  geo.lines(cx, cy, "Euclidean, r = 1.6", grey, 1.5);
+  geo.lines({1.6, 0.0, -1.6, 0.0, 1.6}, {0.0, 1.6, 0.0, -1.6, 0.0}, "Manhattan, r = 1.6", dm::RGB{217, 119, 6}, 1.5);
+  const auto& x1 = train.get_column<double>("x1").values();
+  const auto& x2 = train.get_column<double>("x2").values();
+  for (std::size_t i = 0; i < 6; ++i) {
+    const bool is_b = i == 0 || i == 3 || i == 5;
+    geo.points({x1[i]}, {x2[i]}, is_b ? red : blue, 7.0);
+    geo.text(x1[i] + 0.22, x2[i] + 0.22, std::format("{}", i), dm::RGB{17, 24, 39}, 13.0);
+  }
+  geo.points({0.0}, {0.0}, dm::RGB{17, 24, 39}, 7.0).text(0.0, -0.3, "query", dm::RGB{17, 24, 39}, 13.0);
+  geo.x_limits(-2.3, 2.7).y_limits(-2.2, 2.6).title("Neighbourhoods holding k = 3").x_label("x1").y_label("x2");
+
+  // Right: the 1-NN decision regions (Euclidean), the Voronoi cells of the training points.
+  const dm::stats::KNNClassifier one(train, "class ~ x1 + x2", {.k = 1, .standardize = false});
+  auto regions = one.plot_decision_regions("x1", "x2", 200, std::array{-1.8, 2.3, -1.9, 2.3});
+  regions.points({0.0}, {0.0}, dm::RGB{17, 24, 39}, 7.0);
+  regions.title("1-NN regions (Euclidean)");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(geo).add(regions).size(1100, 480).fit_panels();
+  fig.save_svg("build/knn_hand.svg");
+}
+```
+// result_begin: markdown
+| metric | weights | k | neighbours | share of a | prediction |
+| :--- | :--- | ---: | :--- | ---: | :--- |
+| Euclidean | uniform | 1 | [0] | 0.000 | b |
+| Euclidean | uniform | 3 | [0, 1, 2] | 0.667 | a |
+| Euclidean | uniform | 5 | [0, 1, 2, 3, 4] | 0.600 | a |
+| Euclidean | 1/d | 1 | [0] | 0.000 | b |
+| Euclidean | 1/d | 3 | [0, 1, 2] | 0.591 | a |
+| Euclidean | 1/d | 5 | [0, 1, 2, 3, 4] | 0.553 | a |
+| Manhattan | uniform | 1 | [0] | 0.000 | b |
+| Manhattan | uniform | 3 | [0, 1, 2] | 0.667 | a |
+| Manhattan | uniform | 5 | [0, 1, 2, 5, 3] | 0.400 | b |
+| Manhattan | 1/d | 1 | [0] | 0.000 | b |
+| Manhattan | 1/d | 3 | [0, 1, 2] | 0.660 | a |
+| Manhattan | 1/d | 5 | [0, 1, 2, 5, 3] | 0.456 | b |
+
+\image(figures/knn_hand.svg)
+// result_end
+
+\caption(Left: the six training points (blue *a*, red *b*, labelled by row), the query at the origin, and the Euclidean disc and Manhattan diamond of radius 1.6, each just reaching the third neighbour, row 2 at \((0,-1.6)\). Right: the 1-NN regions in Euclidean distance; each training point owns the cell of the plane closer to it than to any other point, and the query (black) lies in row 0's cell. Table: the neighbours (nearest first) and the share of the votes for *a*.)
+\alttext(Left: six points labelled 0 to 5, red for class b at (1, 0.5), (1.2, 1.2) and (2, 0.2), blue for class a at (-1.5, 0), (0, -1.6) and (-1.3, -1.3), and a black query point at the origin. A grey circle and an orange diamond of radius 1.6 centred on the query both pass through point 2 and enclose points 0 and 1. Right: the plane split into a blue region on the left and lower left and a pink region on the upper right, with a boundary made of straight segments; the query point lies just inside the pink region.)
+
+The table reproduces the hand calculation, including both tie rules. Manhattan's \(k=1\)
+prediction is *b* only because row 0 comes before row 1. The disc and the diamond of radius 1.6
+both hold exactly rows 0, 1 and 2, but they differ beyond: the fourth Euclidean neighbour is row 3,
+the fourth Manhattan neighbour row 5, which is why the two metrics disagree at \(k=5\). The
+1-NN regions are unions of Voronoi cells, so their boundaries are pieces of the perpendicular
+bisectors between an *a* point and a *b* point. The query sits just on the *b* side of the bisector
+of rows 0 and 1, consistent with \(1.118<1.5\).
+
+>> Regression on a line, and leave-one-out by hand
+
+Six points \(x=1,\dots,6\) with \(y=(2,4,3,7,6,9)\). With \(k=1\) the prediction is the \(y\) of the nearest
+\(x\), a step function that jumps halfway between neighbouring \(x\)'s. With \(k=3\) it is the mean of
+three. The leave-one-out prediction of each point uses only the other five. For \(k=1\), \(x=1\)'s
+nearest other point is \(x=2\), so it is predicted as 4. \(x=2\) is equidistant from \(x=1\) and \(x=3\),
+and row order picks \(x=1\), predicting 2. Continuing, the \(k=1\) leave-one-out predictions are
+\((4,2,4,3,7,6)\), with errors \((-2,2,-1,4,-1,3)\), so the leave-one-out RMSE is
+\(\sqrt{35/6}=2.415\).
+
+```{cpp, results="markdown", file="figures/knn_line.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  DF data;
+  data.add_column("x", std::vector<double>{1, 2, 3, 4, 5, 6});
+  data.add_column("y", std::vector<double>{2, 4, 3, 7, 6, 9});
+  const dm::stats::KNNRegressor k1(data, "y ~ x", {.k = 1});
+  const dm::stats::KNNRegressor k3(data, "y ~ x", {.k = 3});
+  DF table = data;
+  table.add_column("LOO k = 1", k1.fitted_values());
+  table.add_column("LOO k = 3", k3.fitted_values());
+  std::print("{}\n\n", table.to_md(3));
+  const auto path = k1.loo_rmse_path(5);
+  std::print("Leave-one-out RMSE for k = 1, ..., 5: {::.3f}\n\n", path);
+
+  auto fits = dm::graphics::RPlot::create();
+  std::vector<double> grid;
+  for (int i = 0; i <= 600; ++i) grid.push_back(0.5 + 6.0 * i / 600.0);
+  DF g;
+  g.add_column("x", grid);
+  fits.lines(grid, k1.predict(g), "k = 1", dm::RGB{37, 99, 235}, 2.0)
+      .lines(grid, k3.predict(g), "k = 3", dm::RGB{220, 38, 38}, 2.0);
+  fits.points(data.get_column<double>("x").values(), data.get_column<double>("y").values(), dm::RGB{17, 24, 39}, 7.0);
+  fits.x_limits(0.5, 6.5).y_limits(0.0, 12.0).title("k-NN regression fits").x_label("x").y_label("y");
+
+  auto loo = dm::graphics::RPlot::create();
+  loo.lines({1, 2, 3, 4, 5}, path, dm::RGB{37, 99, 235}, 2.0).points({1, 2, 3, 4, 5}, path, dm::RGB{37, 99, 235}, 7.0);
+  loo.x_limits(0.5, 5.5).y_limits(0.0, 3.0).title("Leave-one-out RMSE").x_label("k").y_label("RMSE");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(fits).add(loo).size(1100, 440).fit_panels();
+  fig.save_svg("build/knn_line.svg");
+}
+```
+// result_begin: markdown
+| x | y | LOO k = 1 | LOO k = 3 |
+| ---: | ---: | ---: | ---: |
+| 1 | 2 | 4 | 4.667 |
+| 2 | 4 | 2 | 4.000 |
+| 3 | 3 | 4 | 4.333 |
+| 4 | 7 | 3 | 4.333 |
+| 5 | 6 | 7 | 6.333 |
+| 6 | 9 | 6 | 5.333 |
+
+
+Leave-one-out RMSE for k = 1, ..., 5: [2.415, 2.131, 2.219, 2.259, 2.891]
+
+\image(figures/knn_line.svg)
+// result_end
+
+\caption(Left: the six points and the \(k=1\) (blue) and \(k=3\) (red) fits, both step functions. Right: the leave-one-out RMSE for \(k=1,\dots,5\). Table: the leave-one-out predictions.)
+\alttext(Left: six black points at x from 1 to 6 with y 2, 4, 3, 7, 6, 9. A blue step function for k equals 1 takes each point's y value between the midpoints. A red step function for k equals 3 is smoother, rising from 3 to about 7.3. Right: leave-one-out RMSE against k from 1 to 5: 2.42, 2.13, 2.22, 2.26 and 2.89, lowest at k equals 2.)
+
+The \(k=1\) column is the hand calculation \((4,2,4,3,7,6)\), and its RMSE is \(\sqrt{35/6}=2.415\). The
+\(k=1\) fit is the data's own staircase. The \(k=3\) fit flattens at both ends, because a point near
+an end has all its neighbours on one side: at \(x\le2.5\) the three neighbours are \(x=1,2,3\), and the
+fit is their mean 3 although \(y\) is rising. This boundary bias is a general weakness of
+local averaging. On these six points the leave-one-out RMSE is lowest at \(k=2\).
+
+> Checking the theory
+
+>> Approaching the Cover–Hart limit
+
+Two classes with equal priors, \(X\mid Y=0\sim N((0,0),I)\) and \(X\mid Y=1\sim N((2,0),I)\). Then
+\(\eta(x)=1/(1+e^{-(2x_1-2)})\) depends on \(x_1\) only, the Bayes rule is \(x_1>1\), and
+\(R^*=\Phi(-1)=0.1587\). The asymptotic risks \(R_k=E[r_k(\eta(X))]\) are one-dimensional integrals over the
+mixture density of \(x_1\), evaluated with `knn_asymptotic_risk` on a fine grid. Training sets of
+\(n=50\) to 6400 points are drawn (5 replicates each) and classified on 4000 fresh test points with
+\(k=1\), 5 and 25, from one fit per training set: `kneighbors` returns the 25 nearest training rows
+of every test point, and the votes of the first \(k\) give each rule. The leave-one-out accuracy
+of each training set is recorded alongside.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+DF draw(dm::random::Xoshiro256StarStar& rng, std::size_t n) {
+  std::vector<double> a, b;
+  std::vector<std::string> c;
+  for (std::size_t i = 0; i < n; ++i) {
+    const bool one = rng.uniform(0.0, 1.0) < 0.5;
+    a.push_back(rng.normal(one ? 2.0 : 0.0, 1.0)), b.push_back(rng.normal(0.0, 1.0)), c.push_back(one ? "1" : "0");
+  }
+  DF d;
+  d.add_column("x1", a);
+  d.add_column("x2", b);
+  d.add_column("y", c);
+  return d;
+}
+
+int main() {
+  // Asymptotic risks: integrate r_k(eta(x1)) against the mixture density of x1.
+  auto phi = [](double z) { return std::exp(-0.5 * z * z) / std::sqrt(2.0 * std::numbers::pi); };
+  auto asymptotic = [&](std::size_t k) {
+    double s = 0.0;
+    const double h = 0.001;
+    for (double x = -9.0; x <= 11.0; x += h)
+      s += dm::stats::knn_asymptotic_risk(1.0 / (1.0 + std::exp(-(2.0 * x - 2.0))), k) * 0.5 * (phi(x) + phi(x - 2.0)) * h;
+    return s;
+  };
+  const double bayes = dm::random::normal_cdf(-1.0);
+  const std::vector<std::size_t> ks{1, 5, 25};
+  std::print("Bayes risk {:.4f}; Cover-Hart bound 2R*(1-R*) = {:.4f}; asymptotic R_1 = {:.4f}, R_5 = {:.4f}, R_25 = {:.4f}\n\n",
+             bayes, 2 * bayes * (1 - bayes), asymptotic(1), asymptotic(5), asymptotic(25));
+
+  dm::random::Xoshiro256StarStar rng(21);
+  const DF test = draw(rng, 4000);
+  const auto& truth = test.get_column<std::string>("y").values();
+  DF table;
+  std::vector<double> ns, err[3], loo[3];
+  for (const std::size_t n : {50u, 100u, 400u, 1600u, 6400u}) {
+    double e[3] = {0, 0, 0}, l[3] = {0, 0, 0};
+    const int reps = 5;
+    for (int r = 0; r < reps; ++r) {
+      const DF train = draw(rng, n);
+      const dm::stats::KNNClassifier knn(train, "y ~ x1 + x2", {.k = 25, .standardize = false});
+      const auto labels = train.get_column<std::string>("y").values();
+      const auto nb = knn.kneighbors(test);
+      for (std::size_t t = 0; t < truth.size(); ++t) {
+        int ones = 0;
+        for (std::size_t j = 0; j < 25; ++j) {
+          ones += labels[nb.index[t][j]] == "1";
+          for (int m = 0; m < 3; ++m)
+            if (j + 1 == ks[m]) e[m] += ((2 * ones > int(ks[m])) != (truth[t] == "1")) / double(truth.size() * reps);
+        }
+      }
+      const auto path = knn.loo_accuracy_path(25);
+      for (int m = 0; m < 3; ++m) l[m] += (1.0 - path[ks[m] - 1]) / reps;
+    }
+    ns.push_back(double(n));
+    for (int m = 0; m < 3; ++m) err[m].push_back(e[m]), loo[m].push_back(l[m]);
+  }
+  table.add_column("n", ns);
+  for (int m = 0; m < 3; ++m) {
+    table.add_column(std::format("test k={}", ks[m]), err[m]);
+    table.add_column(std::format("LOO k={}", ks[m]), loo[m]);
+  }
+  DF::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"n", 0}};
+  std::print("{}\n", table.to_md(md));
+}
+```
+// result_begin: markdown
+Bayes risk 0.1587; Cover-Hart bound 2R*(1-R*) = 0.2670; asymptotic R_1 = 0.2248, R_5 = 0.1802, R_25 = 0.1634
+
+| n | test k=1 | LOO k=1 | test k=5 | LOO k=5 | test k=25 | LOO k=25 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 50 | 0.2375 | 0.2400 | 0.1817 | 0.2000 | 0.1868 | 0.1800 |
+| 100 | 0.2304 | 0.2100 | 0.1923 | 0.1820 | 0.1670 | 0.1600 |
+| 400 | 0.2339 | 0.2170 | 0.1918 | 0.1745 | 0.1709 | 0.1630 |
+| 1600 | 0.2213 | 0.2225 | 0.1806 | 0.1772 | 0.1667 | 0.1589 |
+| 6400 | 0.2273 | 0.2300 | 0.1875 | 0.1877 | 0.1689 | 0.1682 |
+// result_end
+
+The asymptotic risks lie between the Bayes risk 0.159 and the Cover–Hart bound 0.267:
+\(R_1=0.225\), \(R_5=0.180\), \(R_{25}=0.163\). The simulated test errors settle near them. The
+test set's own sampling error is about 0.006, so the 1-NN and 5-NN errors (0.227 and 0.188 at
+\(n=6400\)) are within about one standard error of their limits. The 25-NN error stays about
+0.005 above its limit, because at these sample sizes 25 neighbours still reach some way from the
+query, where \(\eta\) differs. For this smooth problem the 1-NN error is already at its limit at
+\(n=50\). More data does not make 1-NN better; only a larger \(k\) moves the error towards the Bayes
+risk. The leave-one-out error of each training set tracks the test error. Its largest
+deviations, up to 0.02, are at \(n\le400\), where a training set of a few hundred points is itself
+noisy.
+
+>> Irrelevant predictors and the concentration of distances
+
+The same two-class problem with \(p_0=0,2,8,32,128\) extra predictors of pure \(N(0,1)\) noise,
+\(n=400\) training points and \(k=15\), all standardised. For each \(p_0\) the test error on 2000
+points is averaged over 5 training sets. The relative contrast \((d_{\max}-d_{\min})/d_{\min}\) of the
+distances from a test point to the training points measures how distinct the nearest neighbour
+is.
+
+```{cpp, results="markdown", file="figures/knn_theory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+DF draw(dm::random::Xoshiro256StarStar& rng, std::size_t n, std::size_t noise) {
+  std::vector<std::vector<double>> cols(2 + noise);
+  std::vector<std::string> c;
+  for (std::size_t i = 0; i < n; ++i) {
+    const bool one = rng.uniform(0.0, 1.0) < 0.5;
+    cols[0].push_back(rng.normal(one ? 2.0 : 0.0, 1.0));
+    for (std::size_t j = 1; j < cols.size(); ++j) cols[j].push_back(rng.normal(0.0, 1.0));
+    c.push_back(one ? "1" : "0");
+  }
+  DF d;
+  for (std::size_t j = 0; j < cols.size(); ++j) d.add_column(std::format("x{}", j + 1), cols[j]);
+  d.add_column("y", c);
+  return d;
+}
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::random::Xoshiro256StarStar rng(22);
+  std::vector<double> noise_dims, errors, contrast;
+  for (const std::size_t p0 : {0u, 2u, 8u, 32u, 128u}) {
+    double e = 0.0, rc = 0.0;
+    const int reps = 5;
+    for (int r = 0; r < reps; ++r) {
+      const DF train = draw(rng, 400, p0), test = draw(rng, 2000, p0);
+      const dm::stats::KNNClassifier knn(train, "y ~ .", {.k = 15});
+      const auto pred = knn.predict(test);
+      const auto& truth = test.get_column<std::string>("y").values();
+      for (std::size_t t = 0; t < truth.size(); ++t) e += (pred[t] != truth[t]) / (2000.0 * reps);
+      // Relative contrast from 200 test points, using all 400 training distances.
+      dm::stats::KNNClassifierOptions all{.k = 400};
+      const dm::stats::KNNClassifier everyone(train, "y ~ .", all);
+      const auto nb = everyone.kneighbors(test.head(200));
+      for (const auto& d : nb.distance) rc += (d.back() - d.front()) / d.front() / (200.0 * reps);
+    }
+    noise_dims.push_back(double(p0)), errors.push_back(e), contrast.push_back(rc);
+  }
+  DF table;
+  table.add_column("noise predictors", noise_dims);
+  table.add_column("test error (k = 15)", errors);
+  table.add_column("(d_max - d_min) / d_min", contrast);
+  DF::MarkdownOptions md;
+  md.digits = 3;
+  md.column_digits = {{"noise predictors", 0}};
+  std::print("{}\n\n", table.to_md(md));
+
+  // Regression bias and variance on a fixed design: x_i = i / 100, f(x) = sin(2 pi x), sigma = 0.3.
+  const std::size_t n = 100;
+  const double sigma = 0.3;
+  auto f = [](double x) { return std::sin(2.0 * std::numbers::pi * x); };
+  std::vector<double> x(n);
+  for (std::size_t i = 0; i < n; ++i) x[i] = (i + 1.0) / n;
+  std::vector<double> x0;
+  for (int j = 0; j < 40; ++j) x0.push_back(0.1 + 0.8 * (j + 0.37) / 40.0);
+  DF grid;
+  grid.add_column("x", x0);
+  const std::vector<std::size_t> ks{1, 2, 3, 5, 8, 12, 18, 27, 40};
+  const int reps = 400;
+  std::vector<double> sim_mse(ks.size()), bias2(ks.size()), variance(ks.size());
+  std::vector<std::vector<double>> example_fit(3);
+  for (std::size_t m = 0; m < ks.size(); ++m) {
+    // Theory: the neighbour sets depend on x only.
+    DF design;
+    design.add_column("x", x);
+    design.add_column("y", std::vector<double>(n, 0.0));
+    const auto nb = dm::stats::KNNRegressor(design, "y ~ x", {.k = ks[m]}).kneighbors(grid);
+    for (std::size_t j = 0; j < x0.size(); ++j) {
+      double mean_f = 0.0;
+      for (const auto i : nb.index[j]) mean_f += f(x[i]) / ks[m];
+      bias2[m] += std::pow(mean_f - f(x0[j]), 2) / x0.size();
+    }
+    variance[m] = sigma * sigma / ks[m];
+  }
+  for (int r = 0; r < reps; ++r) {
+    std::vector<double> y(n);
+    for (std::size_t i = 0; i < n; ++i) y[i] = f(x[i]) + rng.normal(0.0, sigma);
+    DF data;
+    data.add_column("x", x);
+    data.add_column("y", y);
+    for (std::size_t m = 0; m < ks.size(); ++m) {
+      const auto pred = dm::stats::KNNRegressor(data, "y ~ x", {.k = ks[m]}).predict(grid);
+      for (std::size_t j = 0; j < x0.size(); ++j) sim_mse[m] += std::pow(pred[j] - f(x0[j]), 2) / (x0.size() * reps);
+    }
+  }
+  std::vector<double> theory;
+  for (std::size_t m = 0; m < ks.size(); ++m) theory.push_back(bias2[m] + variance[m]);
+  DF reg;
+  reg.add_column("k", std::vector<double>(ks.begin(), ks.end()));
+  reg.add_column("bias^2", bias2);
+  reg.add_column("sigma^2 / k", variance);
+  reg.add_column("theory MSE", theory);
+  reg.add_column("simulated MSE", sim_mse);
+  md.column_digits = {{"k", 0}};
+  md.digits = 4;
+  std::print("{}\n", reg.to_md(md));
+
+  auto dims = dm::graphics::RPlot::create();
+  std::vector<double> lp;
+  for (const double p0 : noise_dims) lp.push_back(std::log2(p0 + 1.0));
+  dims.lines(lp, errors, dm::RGB{37, 99, 235}, 2.0).points(lp, errors, dm::RGB{37, 99, 235}, 7.0);
+  dims.lines({-0.2, 7.3}, {dm::random::normal_cdf(-1.0), dm::random::normal_cdf(-1.0)}, dm::RGB{148, 163, 184}, 1.5);
+  dims.text(5.8, 0.135, "Bayes risk", dm::RGB{100, 116, 139}, 13.0);
+  dims.x_limits(-0.2, 7.3).y_limits(0.0, 0.5).title("Test error with noise predictors")
+      .x_label("log2(1 + noise predictors)").y_label("test error");
+
+  auto bv = dm::graphics::RPlot::create();
+  std::vector<double> lk;
+  for (const auto k : ks) lk.push_back(std::log2(double(k)));
+  bv.lines(lk, theory, "theory MSE", dm::RGB{17, 24, 39}, 2.0)
+      .lines(lk, bias2, "bias^2", dm::RGB{220, 38, 38}, 1.5)
+      .lines(lk, variance, "variance", dm::RGB{37, 99, 235}, 1.5);
+  bv.points(lk, sim_mse, "simulated MSE", dm::RGB{22, 163, 74}, 7.0);
+  bv.x_limits(-0.2, 5.5).y_limits(0.0, 0.12).title("Regression MSE against k")
+      .x_label("log2 k").y_label("mean squared error");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(dims).add(bv).size(1100, 460).fit_panels();
+  fig.save_svg("build/knn_theory.svg");
+}
+```
+// result_begin: markdown
+| noise predictors | test error (k = 15) | (d_max - d_min) / d_min |
+| ---: | ---: | ---: |
+| 0 | 0.165 | 63.914 |
+| 2 | 0.179 | 9.781 |
+| 8 | 0.207 | 2.598 |
+| 32 | 0.284 | 0.901 |
+| 128 | 0.381 | 0.381 |
+
+
+| k | bias^2 | sigma^2 / k | theory MSE | simulated MSE |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.0001 | 0.0900 | 0.0901 | 0.0878 |
+| 2 | 0.0001 | 0.0450 | 0.0451 | 0.0439 |
+| 3 | 0.0001 | 0.0300 | 0.0301 | 0.0297 |
+| 5 | 0.0001 | 0.0180 | 0.0181 | 0.0180 |
+| 8 | 0.0002 | 0.0112 | 0.0114 | 0.0114 |
+| 12 | 0.0004 | 0.0075 | 0.0079 | 0.0079 |
+| 18 | 0.0017 | 0.0050 | 0.0067 | 0.0067 |
+| 27 | 0.0077 | 0.0033 | 0.0111 | 0.0108 |
+| 40 | 0.0299 | 0.0022 | 0.0322 | 0.0318 |
+
+\image(figures/knn_theory.svg)
+// result_end
+
+\caption(Left: test error of 15-NN on the two-Gaussian problem against the number of added noise predictors, with the Bayes risk 0.159 (grey). Right: integrated squared error of uniform k-NN regression of \(\sin(2\pi x)\) on 100 equally spaced points with \(\sigma=0.3\), against \(k\): squared bias (red) and variance \(\sigma^2/k\) (blue) computed exactly from the neighbour sets, their sum (black) and the average over 400 simulated data sets (green). Tables: the same numbers, with the relative contrast of the distances.)
+\alttext(Left: test error of 15-NN against log2 of 1 plus the number of noise predictors: 0.165, 0.179, 0.207, 0.284 and 0.381 at 0, 2, 8, 32 and 128 noise predictors, rising away from a grey line at the Bayes risk 0.159. Right: mean squared error against log2 k from 0 to about 5.3. The blue variance curve falls from 0.09 at k equals 1. The red squared-bias curve is near zero until about k equals 12, then rises to 0.03 at k equals 40. The black total has its minimum near log2 k equals 4.2. Green simulated points lie on the black curve.)
+
+*Noise predictors.* With standardisation, each noise predictor has the same weight as the
+informative one, so its random differences are added to every distance. With 8 noise
+predictors the error has risen from 0.165 to 0.207, with 128 to 0.381, not far from guessing.
+The relative contrast shows why: with the two informative predictors alone the farthest
+training point is 65 times as far as the nearest, with 128 noise predictors only 1.38 times.
+The nearest neighbour is then hardly nearer than any other point.
+
+*Bias and variance.* The exact prediction (squared bias computed from the neighbour sets, plus
+\(\sigma^2/k\)) and the average over 400 simulated data sets agree at every \(k\), within 3% at \(k=1\)
+and better elsewhere. The squared bias is negligible until the neighbourhood, \(k/100\) of the
+interval, reaches a noticeable part of a period of the sine. Beyond that it grows quickly:
+from 0.0004 at \(k=12\) to 0.030 at \(k=40\). The best \(k\) is 18, with error 0.0067, against 0.090
+for \(k=1\).
+
+> Iris and wine
+
+Fisher's iris data have 150 flowers of three species with four measurements in centimetres.
+The wine data have 178 wines from three cultivars with 13 chemical measurements in very
+different units. Proline, for example, runs from 278 to 1680, while hue runs from 0.48 to 1.71.
+
+```{cpp, results="markdown", file="figures/knn_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto iris = dm::datasets::iris();
+  const std::size_t K = 50;
+  const dm::stats::KNNClassifier petals(iris, "Species ~ Petal.Length + Petal.Width", {.k = 1});
+  const dm::stats::KNNClassifier all4(iris, "Species ~ .", {.k = 1});
+  const auto path_petals = petals.loo_accuracy_path(K), path_all = all4.loo_accuracy_path(K);
+  auto best = [](const std::vector<double>& p) {
+    const auto it = std::max_element(p.begin(), p.end());
+    return std::pair{static_cast<std::size_t>(it - p.begin()) + 1, *it};
+  };
+  const auto [kp, ap] = best(path_petals);
+  const auto [ka, aa] = best(path_all);
+  std::print("Best leave-one-out accuracy: petals {:.4f} at k = {}, all four {:.4f} at k = {}\n\n", ap, kp, aa, ka);
+  DF iris_table;
+  iris_table.add_column("k", std::vector<double>{1, 5, 10, 15, 25, 50});
+  std::vector<double> col_p, col_a;
+  for (const std::size_t k : {1u, 5u, 10u, 15u, 25u, 50u}) col_p.push_back(path_petals[k - 1]), col_a.push_back(path_all[k - 1]);
+  iris_table.add_column("LOO accuracy, petals", col_p);
+  iris_table.add_column("LOO accuracy, all four", col_a);
+  DF::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"k", 0}};
+  std::print("{}\n\n", iris_table.to_md(md));
+
+  const dm::stats::KNNClassifier chosen(iris, "Species ~ Petal.Length + Petal.Width", {.k = 15});
+  const auto cm = chosen.confusion_matrix();
+  DF confusion;
+  confusion.add_column("observed", chosen.classes());
+  for (std::size_t c = 0; c < 3; ++c) confusion.add_column(chosen.classes()[c], std::vector<double>{cm(0, c), cm(1, c), cm(2, c)});
+  std::print("Leave-one-out confusion matrix, petals, k = 15 (columns: predicted):\n\n{}\n\n", confusion.to_md(0));
+
+  // Wine: standardised against raw predictors.
+  const auto wine = dm::datasets::load("wine");
+  const dm::stats::KNNClassifier std_wine(wine, "cultivar ~ .", {.k = 1});
+  const dm::stats::KNNClassifier raw_wine(wine, "cultivar ~ .", {.k = 1, .standardize = false});
+  const dm::stats::KNNClassifier proline(wine, "cultivar ~ proline", {.k = 1});
+  const auto ps = std_wine.loo_accuracy_path(25), pr = raw_wine.loo_accuracy_path(25), pp = proline.loo_accuracy_path(25);
+  DF wine_table;
+  wine_table.add_column("k", std::vector<double>{1, 5, 15, 25});
+  std::vector<double> s, r, o;
+  for (const std::size_t k : {1u, 5u, 15u, 25u}) s.push_back(ps[k - 1]), r.push_back(pr[k - 1]), o.push_back(pp[k - 1]);
+  wine_table.add_column("standardised, 13 predictors", s);
+  wine_table.add_column("raw, 13 predictors", r);
+  wine_table.add_column("proline alone", o);
+  std::print("Wine, leave-one-out accuracy:\n\n{}\n", wine_table.to_md(md));
+
+  auto paths = dm::graphics::RPlot::create();
+  std::vector<double> kk;
+  for (std::size_t k = 1; k <= K; ++k) kk.push_back(double(k));
+  paths.lines(kk, path_petals, "petals", dm::RGB{37, 99, 235}, 2.0).lines(kk, path_all, "all four", dm::RGB{220, 38, 38}, 2.0);
+  std::print("Lowest accuracy on the path: {:.4f}\n\n", std::min(std::ranges::min(path_petals), std::ranges::min(path_all)));
+  paths.x_limits(0.0, 51.0).y_limits(0.84, 1.0).title("Iris: leave-one-out accuracy").x_label("k").y_label("accuracy");
+
+  auto regions = chosen.plot_decision_regions("Petal.Length", "Petal.Width", 200, std::array{0.7, 7.2, -0.15, 3.3});
+  std::vector<double> mx, my;
+  const auto& pl = iris.get_column<double>("Petal.Length").values();
+  const auto& pw = iris.get_column<double>("Petal.Width").values();
+  for (std::size_t i = 0; i < pl.size(); ++i)
+    if (chosen.fitted_classes()[i] != chosen.training_labels()[i]) mx.push_back(pl[i]), my.push_back(pw[i]);
+  regions.points(mx, my, "LOO error", dm::RGB{17, 24, 39}, 3.0);
+  regions.title("Petal regions, k = 15");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(paths).add(regions).size(1100, 480).fit_panels();
+  fig.save_svg("build/knn_iris.svg");
+}
+```
+// result_begin: markdown
+Best leave-one-out accuracy: petals 0.9667 at k = 4, all four 0.9667 at k = 13
+
+| k | LOO accuracy, petals | LOO accuracy, all four |
+| ---: | ---: | ---: |
+| 1 | 0.9600 | 0.9467 |
+| 5 | 0.9667 | 0.9467 |
+| 10 | 0.9600 | 0.9533 |
+| 15 | 0.9600 | 0.9667 |
+| 25 | 0.9600 | 0.9533 |
+| 50 | 0.9600 | 0.8733 |
+
+
+Leave-one-out confusion matrix, petals, k = 15 (columns: predicted):
+
+| observed | setosa | versicolor | virginica |
+| :--- | ---: | ---: | ---: |
+| setosa | 50 | 0 | 0 |
+| versicolor | 0 | 48 | 2 |
+| virginica | 0 | 4 | 46 |
+
+
+Wine, leave-one-out accuracy:
+
+| k | standardised, 13 predictors | raw, 13 predictors | proline alone |
+| ---: | ---: | ---: | ---: |
+| 1 | 0.9551 | 0.7697 | 0.6685 |
+| 5 | 0.9719 | 0.6966 | 0.6742 |
+| 15 | 0.9663 | 0.7022 | 0.6966 |
+| 25 | 0.9775 | 0.7191 | 0.6910 |
+
+Lowest accuracy on the path: 0.8733
+
+\image(figures/knn_iris.svg)
+// result_end
+
+\caption(Left: leave-one-out accuracy on iris against \(k\), using the two petal measurements (blue) or all four (red). Right: the 15-NN decision regions in the petal plane, with the training points coloured by species and the leave-one-out errors marked by a black centre. Tables: accuracies at selected \(k\); the leave-one-out confusion matrix of the petal model with \(k=15\); and leave-one-out accuracy on wine with and without standardisation.)
+\alttext(Left: leave-one-out accuracy against k from 1 to 50. The blue petal curve is flat at 0.96 for most k, with 0.967 at k equals 4, 5 and 7 and brief dips to 0.947. The red curve for all four measurements is between 0.94 and 0.967 up to about k equals 35, then falls to 0.873 at k equals 46 and 48 to 50. Right: the petal plane shaded blue at the lower left, pink in a diagonal band and green at the upper right, with blue setosa points in a tight cluster, red versicolor points in the middle, green virginica points at the upper right, and black centres on six points near the versicolor–virginica border.)
+
+*Iris.* Setosa is separated from the other species by a wide margin, so the whole difficulty
+is the versicolor–virginica border, and the petal measurements carry nearly all the
+information. With the petals alone the LOO accuracy is 96–96.7% for almost every \(k\) up to 50.
+With all four measurements the sepals add noise to the distances: the accuracy is lower for
+small \(k\) and falls to 87.3% by \(k=46\), where the neighbourhoods are almost a third of a class. The
+best \(k\) for all four (96.7% at \(k=13\) to 18) only matches the petals. Choosing \(k\) by maximising
+the LOO accuracy is itself optimistic, since the maximum of 50 noisy estimates is biased
+upwards; a gap of one flower (0.67%) is noise. With \(k=15\) on the petals, all six LOO errors are
+on the versicolor–virginica border (two versicolor called virginica, four the other way round),
+as the region plot shows. The four-measurement path for \(k=1,\dots,25\) was checked against scikit-learn's
+`KNeighborsClassifier` refitted with each row left out (and its `StandardScaler` refitted too):
+all 25 values agree exactly.
+
+*Wine.* Without standardisation the distances are dominated by proline, whose standard deviation
+(314) is 22 times that of magnesium, the next largest, and over 90 times that of any other
+predictor. The 13-predictor accuracy (70–77%) is
+then close to that of proline alone (66–70%). Standardised, the same 13 predictors reach
+95–98%. Here the fix is free because every predictor carries some information. With noise
+predictors, as above, standardisation would give the noise full weight.
+
+> Conclusion
+
+The \(k\)-nearest-neighbour rule needs no model, only a distance, and the theory says what that
+buys. With \(k\) fixed, the large-sample error is a known function of \(P(Y=1\mid x)\): at most twice the
+Bayes risk for \(k=1\), and close to it for large \(k\). In regression the error is exactly the
+squared bias of averaging \(f\) over the neighbourhood plus \(\sigma^2/k\). Both were reproduced here by
+simulation. The cost is that "near" must mean something. Predictors must be on comparable
+scales: on wine, standardising lifted the accuracy from about 72% to 97%. Uninformative
+predictors must be left out: 128 noise predictors pushed the error from 0.165 to 0.381 as distances
+concentrated. Leave-one-out evaluation is the honest error estimate for k-NN, and datamunge
+computes it exactly, rescaling for every left-out row, and for all \(k\) at once from one sort per
+row. On iris it agrees with scikit-learn to the last flower.
+
+> References
+
+- T. M. Cover and P. E. Hart (1967). "Nearest neighbor pattern classification". *IEEE Transactions on Information Theory* 13(1), 21–27. doi:10.1109/TIT.1967.1053964
+- E. Fix and J. L. Hodges (1951). *Discriminatory analysis. Nonparametric discrimination: consistency properties*. Report 4, USAF School of Aviation Medicine, Randolph Field, Texas.
+- C. J. Stone (1977). "Consistent nonparametric regression". *The Annals of Statistics* 5(4), 595–620. doi:10.1214/aos/1176343886
+- K. Beyer, J. Goldstein, R. Ramakrishnan and U. Shaft (1999). "When is 'nearest neighbor' meaningful?". *ICDT 1999*, LNCS 1540, 217–235. doi:10.1007/3-540-49257-7_15
+- T. Hastie, R. Tibshirani and J. Friedman (2009). *The Elements of Statistical Learning*, 2nd ed., sections 2.3, 2.5, 7.3 and 13.3. Springer. doi:10.1007/978-0-387-84858-7
+- R. A. Fisher (1936). "The use of multiple measurements in taxonomic problems". *Annals of Eugenics* 7(2), 179–188. doi:10.1111/j.1469-1809.1936.tb02137.x
+- scikit-learn, `KNeighborsClassifier`: https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html

@@ -1,7 +1,11 @@
+/// @file svm.cpp
+/// @brief Formula SVM fitting with simplified SMO, pairwise decisions and optimality diagnostics.
+
 #include <datamunge/stats/svm.hpp>
 
 #include <datamunge/linalg/dense_matrix.hpp>
 #include <datamunge/random/random.hpp>
+#include <datamunge/plot/class_regions.hpp>
 
 #include <algorithm>
 #include <cmath>
@@ -13,8 +17,13 @@
 
 namespace datamunge::stats {
 
+/// @brief Formatting and deterministic binary optimisation internal to SVM.
 namespace {
 
+/// @brief Formats a finite or special statistic for summary().
+/// @param v Value.
+/// @param precision Fixed decimal places (default four).
+/// @return Formatted number.
 std::string format_stat(double v, int precision = 4) {
     if (std::isnan(v)) return "NaN";
     if (std::isinf(v)) return v > 0 ? "Inf" : "-Inf";
@@ -28,6 +37,9 @@ std::string format_stat(double v, int precision = 4) {
     return oss.str();
 }
 
+/// @brief Display spelling for a kernel.
+/// @param kernel Kernel enum.
+/// @return Static string, or unknown for an invalid enum.
 const char* kernel_name(SVMKernel kernel) {
     switch (kernel) {
         case SVMKernel::Linear: return "linear";
@@ -38,9 +50,11 @@ const char* kernel_name(SVMKernel kernel) {
     return "unknown";
 }
 
+/// @brief Returned coordinate iterate and actual work count.
 struct SMOResult {
-    std::vector<double> alpha;
-    double               bias{0.0};
+    std::vector<double> alpha; ///< Dense dual coefficients in pair row order.
+    double               bias{0.0}; ///< Binary intercept.
+    std::size_t sweeps{0}; ///< Total coordinate sweeps, including no-change sweeps.
 };
 
 // Simplified Sequential Minimal Optimization (Platt's algorithm, the
@@ -48,6 +62,13 @@ struct SMOResult {
 //   maximize   sum(alpha_i) - 0.5 * sum_ij alpha_i alpha_j y_i y_j K(i,j)
 //   subject to 0 <= alpha_i <= C,  sum(alpha_i y_i) = 0
 // Random pair selection uses a fixed seed so fits are deterministic.
+/// @brief Solves binary box-constrained SVM dual by simplified two-coordinate updates.
+/// @param K Symmetric pair Gram matrix.
+/// @param y Signs (+1 first class, -1 second).
+/// @param C Positive finite coefficient upper bound.
+/// @param tol Positive KKT threshold for choosing a coordinate.
+/// @param max_passes Unchanged-sweep budget; total sweeps limited to max(200,20*max_passes).
+/// @return Final feasible iterate, bias and sweep count; no convergence guarantee.
 SMOResult train_binary_smo(const linalg::DenseMatrix<double>& K, const std::vector<double>& y, double C,
                            double tol, std::size_t max_passes) {
     const std::size_t m = y.size();
@@ -56,6 +77,9 @@ SMOResult train_binary_smo(const linalg::DenseMatrix<double>& K, const std::vect
 
     random::SplitMix64 rng(0x5A17ULL + m);
 
+    /// @brief Training decision at a row under the current dense iterate.
+    /// @param i Pair-local row.
+    /// @return Functional decision including bias.
     auto decision = [&](std::size_t i) {
         double s = b;
         for (std::size_t k = 0; k < m; ++k) s += alpha[k] * y[k] * K(i, k);
@@ -119,7 +143,7 @@ SMOResult train_binary_smo(const linalg::DenseMatrix<double>& K, const std::vect
         passes = (num_changed == 0) ? passes + 1 : 0;
     }
 
-    return SMOResult{std::move(alpha), b};
+    return SMOResult{std::move(alpha), b, total_sweeps};
 }
 
 } // namespace
@@ -164,6 +188,12 @@ std::vector<double> SVM::scale_row(const std::vector<double>& raw) const {
 }
 
 void SVM::fit(const dstruct::DataFrame& data, SVMOptions options) {
+    if (!std::isfinite(options.cost) || options.cost <= 0 ||
+        !std::isfinite(options.gamma) || !std::isfinite(options.coef0) ||
+        !std::isfinite(options.tolerance) || options.tolerance <= 0 ||
+        options.max_passes == 0 || options.max_passes > std::numeric_limits<std::size_t>::max()/20 ||
+        options.degree < 1)
+        throw std::invalid_argument("SVM: finite positive cost/tolerance, finite gamma/coef0, positive degree and valid max_passes required");
     options_ = options;
     design_  = formula_.resolve(data, ResponseKind::Categorical);
 
@@ -174,6 +204,11 @@ void SVM::fit(const dstruct::DataFrame& data, SVMOptions options) {
     predictor_names_ = design_.coefficient_names;
     observations_    = n;
     training_labels_ = cd.labels;
+    training_rows_ = cd.used_row_indices;
+    if (p == 0) throw std::invalid_argument("SVM: at least one predictor is required");
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j < p; ++j)
+            if (!std::isfinite(cd.X(i,j))) throw std::invalid_argument("SVM: predictors must be finite");
 
     classes_.clear();
     for (const auto& label : cd.labels)
@@ -223,6 +258,7 @@ void SVM::fit(const dstruct::DataFrame& data, SVMOptions options) {
             for (std::size_t a = 0; a < m; ++a) {
                 for (std::size_t bIdx = a; bIdx < m; ++bIdx) {
                     const double value = kernel(scaled_training_X_.row(members[a]), scaled_training_X_.row(members[bIdx]));
+                    if (!std::isfinite(value)) throw std::invalid_argument("SVM: non-finite kernel value");
                     K(a, bIdx) = value;
                     K(bIdx, a) = value;
                 }
@@ -234,6 +270,30 @@ void SVM::fit(const dstruct::DataFrame& data, SVMOptions options) {
             pair.class_i = ci;
             pair.class_j = cj;
             pair.bias    = smo.bias;
+            pair.members = members;
+            pair.alpha = smo.alpha;
+            pair.sweeps = smo.sweeps;
+            double alpha_sum = 0.0, equality = 0.0;
+            // Ignore rounding-sized distances from a box face in KKT classification.
+            const double box_tolerance = std::min(1e-8, options_.cost*1e-6);
+            for (std::size_t a = 0; a < m; ++a) {
+                double unbiassed = 0.0;
+                for (std::size_t b = 0; b < m; ++b)
+                    unbiassed += smo.alpha[b] * y[b] * K(a,b);
+                const double decision = unbiassed + smo.bias;
+                const double margin = y[a] * decision;
+                pair.decisions.push_back(decision);
+                pair.norm_squared += smo.alpha[a] * y[a] * unbiassed;
+                pair.hinge_loss += std::max(0.0, 1.0-margin);
+                alpha_sum += smo.alpha[a];
+                equality += smo.alpha[a] * y[a];
+                if (smo.alpha[a] < options_.cost-box_tolerance)
+                    pair.max_kkt_violation = std::max(pair.max_kkt_violation, 1.0-margin);
+                if (smo.alpha[a] > box_tolerance)
+                    pair.max_kkt_violation = std::max(pair.max_kkt_violation, margin-1.0);
+            }
+            pair.dual = alpha_sum - 0.5*pair.norm_squared;
+            pair.equality_residual = std::abs(equality);
             for (std::size_t idx = 0; idx < m; ++idx) {
                 if (smo.alpha[idx] > 1e-8) {
                     pair.support_indices.push_back(members[idx]);
@@ -259,9 +319,7 @@ SVMPrediction SVM::classify(const linalg::DenseMatrix<double>& X) const {
         const auto x = X.row(row);
 
         for (const auto& pair : pair_models_) {
-            double decision = pair.bias;
-            for (std::size_t sv = 0; sv < pair.support_indices.size(); ++sv)
-                decision += pair.support_alpha_y[sv] * kernel(scaled_training_X_.row(pair.support_indices[sv]), x);
+            const double decision = pair_decision(pair, x);
 
             if (decision >= 0.0) result.votes[row][pair.class_i] += 1.0;
             else result.votes[row][pair.class_j] += 1.0;
@@ -371,6 +429,126 @@ SVMPrediction SVM::predict_detail(const dstruct::DataFrame& newdata) const {
         result.votes[row]       = compact.votes[i];
     }
     return result;
+}
+
+double SVM::pair_decision(const PairModel& pair, const std::vector<double>& x) const {
+    double value = pair.bias;
+    for (std::size_t sv = 0; sv < pair.support_indices.size(); ++sv)
+        value += pair.support_alpha_y[sv] * kernel(scaled_training_X_.row(pair.support_indices[sv]), x);
+    return value;
+}
+
+linalg::DenseMatrix<double> SVM::decision_function(const dstruct::DataFrame& newdata) const {
+    design_.validate_categorical_levels(newdata, "SVM::decision_function");
+    const auto matrix = design_.build_matrix(newdata, false);
+    linalg::DenseMatrix<double> values(newdata.nrows(), pair_models_.size(),
+                                      std::numeric_limits<double>::quiet_NaN());
+    for (std::size_t i = 0; i < matrix.X.rows(); ++i) {
+        const auto x = scale_row(matrix.X.row(i));
+        for (std::size_t p = 0; p < pair_models_.size(); ++p)
+            values(matrix.used_row_indices[i], p) = pair_decision(pair_models_[p], x);
+    }
+    return values;
+}
+
+dstruct::DataFrame SVM::diagnostics() const {
+    std::vector<std::string> positive, negative;
+    std::vector<double> observations, support, bias, norm, hinge, primal, dual, gap, equality, kkt, sweeps;
+    for (const auto& p : pair_models_) {
+        positive.push_back(classes_[p.class_i]); negative.push_back(classes_[p.class_j]);
+        observations.push_back(p.members.size()); support.push_back(p.support_indices.size());
+        bias.push_back(p.bias); norm.push_back(p.norm_squared); hinge.push_back(p.hinge_loss);
+        primal.push_back(0.5*p.norm_squared + options_.cost*p.hinge_loss);
+        dual.push_back(p.dual); gap.push_back(primal.back()-p.dual);
+        equality.push_back(p.equality_residual); kkt.push_back(p.max_kkt_violation); sweeps.push_back(p.sweeps);
+    }
+    dstruct::DataFrame out;
+    out.add_column("positive_class", positive); out.add_column("negative_class", negative);
+    out.add_column("observations", observations); out.add_column("support_vectors", support);
+    out.add_column("bias", bias); out.add_column("norm_squared", norm); out.add_column("hinge_loss", hinge);
+    out.add_column("primal", primal); out.add_column("dual", dual); out.add_column("gap", gap);
+    out.add_column("equality_residual", equality); out.add_column("max_kkt_violation", kkt);
+    out.add_column("sweeps", sweeps);
+    return out;
+}
+
+dstruct::DataFrame SVM::training_details() const {
+    std::vector<std::string> positive, negative, labels;
+    std::vector<double> rows, signs, alpha, decision, margin, slack;
+    for (const auto& p : pair_models_) {
+        for (std::size_t i = 0; i < p.members.size(); ++i) {
+            const auto row = p.members[i];
+            const double y = training_labels_[row] == classes_[p.class_i] ? 1.0 : -1.0;
+            positive.push_back(classes_[p.class_i]); negative.push_back(classes_[p.class_j]);
+            labels.push_back(training_labels_[row]); rows.push_back(training_rows_[row]); signs.push_back(y);
+            alpha.push_back(p.alpha[i]); decision.push_back(p.decisions[i]);
+            margin.push_back(y*p.decisions[i]); slack.push_back(std::max(0.0, 1.0-margin.back()));
+        }
+    }
+    dstruct::DataFrame out;
+    out.add_column("positive_class", positive); out.add_column("negative_class", negative);
+    out.add_column("row", rows); out.add_column("label", labels); out.add_column("y", signs);
+    out.add_column("alpha", alpha); out.add_column("decision", decision);
+    out.add_column("margin", margin); out.add_column("slack", slack);
+    return out;
+}
+
+double SVM::error(const dstruct::DataFrame& data) const {
+    if (!data.has_column(design_.response_name)) throw std::invalid_argument("SVM::error: missing response");
+    const auto predicted = predict_detail(data);
+    std::size_t n = 0, wrong = 0;
+    for (std::size_t i = 0; i < data.nrows(); ++i) {
+        const auto actual = data.optional_string_at(design_.response_name, i);
+        if (!actual || predicted.votes[i].empty()) continue;
+        ++n; wrong += predicted.class_label[i] != *actual;
+    }
+    if (!n) throw std::invalid_argument("SVM::error: no evaluable rows");
+    return static_cast<double>(wrong)/n;
+}
+
+graphics::RPlot SVM::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
+    std::size_t grid_resolution, std::optional<std::array<double,4>> limits) const {
+    if (predictor_names_.size() != 2 || x_feature == y_feature)
+        throw std::invalid_argument("SVM::plot_decision_regions: two distinct numeric predictors required");
+    const auto xi_it = std::find(predictor_names_.begin(), predictor_names_.end(), x_feature);
+    const auto yi_it = std::find(predictor_names_.begin(), predictor_names_.end(), y_feature);
+    if (xi_it == predictor_names_.end() || yi_it == predictor_names_.end() ||
+        !design_.categorical_levels.empty())
+        throw std::invalid_argument("SVM::plot_decision_regions: names must match the two numeric predictors");
+    const auto xi = static_cast<std::size_t>(xi_it-predictor_names_.begin());
+    const auto yi = static_cast<std::size_t>(yi_it-predictor_names_.begin());
+    std::vector<double> xs, ys;
+    for (std::size_t i = 0; i < observations_; ++i) {
+        xs.push_back(scaled_training_X_(i,xi)*feature_scale_[xi]+feature_mean_[xi]);
+        ys.push_back(scaled_training_X_(i,yi)*feature_scale_[yi]+feature_mean_[yi]);
+    }
+    const auto [xmin,xmax] = std::minmax_element(xs.begin(),xs.end());
+    const auto [ymin,ymax] = std::minmax_element(ys.begin(),ys.end());
+    const double xp = std::max(1e-6,0.05*(*xmax-*xmin)), yp = std::max(1e-6,0.10*(*ymax-*ymin));
+    const auto box = limits.value_or(std::array<double,4>{*xmin-xp,*xmax+xp,*ymin-yp,*ymax+yp});
+    for (double v : box) if (!std::isfinite(v))
+        throw std::invalid_argument("SVM::plot_decision_regions: finite limits required");
+    const std::vector<graphics::RGB> colors{{37,99,235},{220,38,38},{22,163,74},{147,51,234}};
+    std::vector<graphics::RGB> fills;
+    for (std::size_t c = 0; c < classes_.size(); ++c) fills.push_back(graphics::tint(colors[c%colors.size()],0.85));
+    auto plot = graphics::RPlot::create();
+    // Query is in scaled design order, independent of which axis was requested first.
+    graphics::add_class_regions(plot, [&](double x, double y) {
+        std::vector<double> z(2);
+        z[xi]=(x-feature_mean_[xi])/feature_scale_[xi];
+        z[yi]=(y-feature_mean_[yi])/feature_scale_[yi];
+        std::vector<std::size_t> votes(classes_.size(),0);
+        for (const auto& p : pair_models_) ++votes[pair_decision(p,z)>=0 ? p.class_i : p.class_j];
+        return static_cast<std::size_t>(std::max_element(votes.begin(),votes.end())-votes.begin());
+    }, box, grid_resolution, fills);
+    for (std::size_t c = 0; c < classes_.size(); ++c) {
+        std::vector<double> cx,cy;
+        for (std::size_t i = 0; i < observations_; ++i) if (training_labels_[i] == classes_[c]) {
+            cx.push_back(xs[i]); cy.push_back(ys[i]);
+        }
+        plot.points(cx,cy,classes_[c],colors[c%colors.size()],4);
+    }
+    return plot.x_label(x_feature).y_label(y_feature).title("SVM decision regions");
 }
 
 } // namespace datamunge::stats

@@ -52,7 +52,7 @@ road is modeled by adding the edge in both directions.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Settling the frontier, and the relaxation step

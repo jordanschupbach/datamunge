@@ -1,0 +1,121 @@
+//? Title: Data Augmentation: Transform Images and Targets Together
+//? Subtitle: CutMix labels follow clipped area; mixup labels follow the same interpolation
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A training transformation can silently assign the wrong target to an altered image.
+We inspect flips, crops and two image-mixing schemes on small NHWC arrays. Exact pixel checks
+and a sweep of mixing weights distinguish spatial changes from target interpolation;
+no improvement in classification accuracy is inferred.
+)
+\toc
+
+> The method
+
+A horizontal flip maps x[n,y,z,c] to x[n,y,W-1-z,c], so applying it twice is the identity.
+A crop selects an explicit spatial window. These transformations change the input while
+preserving a class label only when the task's semantics justify that invariance.
+Mixup and CutMix instead construct soft targets:
+
+$$
+\widetilde x=\lambda x+(1-\lambda)x_\pi,\quad
+\widetilde y=\lambda y+(1-\lambda)y_\pi,\qquad
+\lambda_{\rm CutMix}=1-\frac{|R\cap[0,H)\times[0,W)|}{HW}.
+$$
+\alttext(Mixup interpolates both images and labels with one coefficient. CutMix uses the fraction of image area retained after clipping its rectangle.)
+
+For CutMix the pixels inside R come from the partner; it is the clipped, realised area
+that sets the target coefficient. Valid label rows retain unit mass because the coefficients
+are nonnegative and sum to one. Explicit Generator objects make random calls repeatable;
+evaluation bypasses augmentation. These preprocessing functions return new values without
+recording an autograd graph. Each transform takes O(NHWC) work.
+
+The concept diagram has a retained TikZ source in `diagrams/data_augmentation_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/data_augmentation_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/data_augmentation_concept.tikz > build/data_augmentation_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/data_augmentation_concept.svg build/data_augmentation_concept.dvi > build/data_augmentation_concept.render.log 2>&1
+printf 'Rendered build/data_augmentation_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/data_augmentation_concept.svg from local TikZ source.
+// \image(figures/data_augmentation_concept.svg)
+// result_end
+\caption(CutMix labels follow clipped area; mixup labels follow the same interpolation)
+\alttext(Image + target; (x,y) and (x_\pi,y_\pi) Then Blend or paste; measure actual area Then Same target weight; \lambda y+(1-\lambda)y_\pi.)
+
+> Simple examples
+
+Images with constant values .2 and .8 make every mixture visible. At lambda=.25, mixup gives .65 and target (.25,.75). A rectangle (-1,2,3,4) on a 4 by 4 image replaces only four pixels, so CutMix retains .75.
+
+```{cpp, results="markdown", file="figures/data_augmentation_mixing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+ namespace n=dm::nn;namespace a=n::augment;
+ const auto x=n::concat({n::full({1,4,4,1},.2),n::full({1,4,4,1},.8)},0), y=n::tensor({{1,0},{0,1}});
+ const auto mix=a::mixup(x,y,{1,0},.25),cut=a::cutmix(x,y,{1,0},{-1,2,3,4});
+ dm::dstruct::DataFrame t;t.add_column("operation",std::vector<std::string>{"mixup","CutMix"});
+ t.add_column("retained_weight",std::vector<double>{mix.weight,cut.weight});
+ t.add_column("image_mean",std::vector<double>{n::mean(n::take_rows(mix.images,{0})).item(),n::mean(n::take_rows(cut.images,{0})).item()});
+ t.add_column("target_class_0",std::vector<double>{mix.labels.at({0,0}),cut.labels.at({0,0})});
+ auto p=dm::graphics::RPlot::create();std::vector<double> index(16);std::iota(index.begin(),index.end(),0);
+ p.lines(index,n::take_rows(mix.images,{0}).to_vector<double>(),"mixup",{37,99,235})
+  .lines(index,n::take_rows(cut.images,{0}).to_vector<double>(),"CutMix",{234,88,12})
+  .title("Interpolation versus a clipped spatial paste").x_label("row-major pixel index").y_label("pixel value").y_limits(0,1);
+ std::filesystem::create_directories("build");p.size(850,420).save_svg("build/data_augmentation_mixing.svg");
+ if(std::abs(mix.images.at({0,0,0,0})-.65)>1e-6 || cut.weight!=.75)return 1;
+ std::print("{}\n",t.to_md(6));
+}
+```
+// result_begin: markdown
+| operation | retained_weight | image_mean | target_class_0 |
+| :--- | ---: | ---: | ---: |
+| mixup | 0.25 | 0.650000 | 0.25 |
+| CutMix | 0.75 | 0.350000 | 0.75 |
+
+\image(figures/data_augmentation_mixing.svg)
+// result_end
+\caption(Mixup changes every pixel; CutMix changes a clipped rectangle and uses its area for the target.)
+\alttext(Mixup changes every pixel; CutMix changes a clipped rectangle and uses its area for the target.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+ namespace n=dm::nn;namespace a=n::augment;
+ const auto x=n::reshape(n::arange(0,32),{2,4,4,1})/32., y=n::tensor({{1,0},{0,1}});
+ double worst=0;
+ for(int i=0;i<=20;++i){const auto m=a::mixup(x,y,{1,0},i/20.);worst=std::max(worst,n::max(n::abs(n::sum(m.labels,{1})-1)).item());}
+ const double flip=n::max(n::abs(a::flip_left_right(a::flip_left_right(x))-x)).item();
+ const auto crop=a::crop(x,1,1,2,2);
+ n::Generator g(7),repeat(7);double rng_error=0;
+ for(int i=0;i<20;++i)rng_error=std::max(rng_error,std::abs(a::beta_mix_weight(g,.4)-a::beta_mix_weight(repeat,.4)));
+ int rejected=0;try{a::mixup(x,y,{1,1},.5);}catch(const std::invalid_argument&){++rejected;}
+ try{a::mixup(x,y,{1,0},1.5);}catch(const std::invalid_argument&){++rejected;}
+ if(worst>1e-6||flip!=0||rng_error!=0||rejected!=2||crop.at({0,0,0,0})!=5/32.)return 1;
+ std::print("21 mixing weights: maximum label-mass error {:.9f}.\n\nDouble-flip error: {}; crop first value: {}; seeded Beta replay error: {}; invalid inputs rejected: {}.\n",worst,flip,crop.at({0,0,0,0}),rng_error,rejected);
+}
+```
+// result_begin: markdown
+21 mixing weights: maximum label-mass error 0.000000000.
+
+Double-flip error: 0; crop first value: 0.15625; seeded Beta replay error: 0; invalid inputs rejected: 2.
+// result_end
+
+
+> Conclusion
+
+The spatial and label checks agree with the construction at boundaries and across mixing weights.
+Area clipping is essential to CutMix's target. Reproducibility of transformations is useful for
+validation, but task-specific invariance and a separate held-out evaluation determine whether
+augmentation helps a model.
+
+> References
+
+- [Zhang et al. (2018), mixup: Beyond Empirical Risk Minimization](https://arxiv.org/abs/1710.09412).
+- [Yun et al. (2019), CutMix](https://arxiv.org/abs/1905.04899).

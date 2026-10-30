@@ -1,0 +1,911 @@
+//? Title: Naive Bayes: Classifying with Independent Evidence
+//? Subtitle: Bayes' theorem with conditionally independent Gaussian and smoothed categorical predictors, derived, checked by hand, tested where its assumption holds and where it fails, and applied to the Palmer penguins, using datamunge's stats::NaiveBayesClassifier
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+How should one classify an object from several measurements, some numeric and some categorical,
+when there are too few data to model how they vary together? Naive Bayes assumes that the
+measurements are independent within each class. Each class is then described by one Gaussian per
+numeric predictor and one smoothed frequency table per categorical predictor, and Bayes' theorem
+combines them. This report derives the model, its decision boundaries and an exact leave-one-out
+estimate of its accuracy. It works a five-row example by hand, including the zero-frequency
+problem that Laplace smoothing solves, and a one-dimensional example whose boundary is quadratic
+with two roots. Simulations confirm that naive Bayes approaches the Bayes error when its assumption
+holds. They also show the two ways it fails: copied predictors make its probabilities overconfident
+and move its threshold, and correlated predictors leave its error at the level of a single
+predictor while linear discriminant analysis follows the Bayes error. On the Palmer penguins, six
+predictors give 97.9% leave-one-out accuracy against 99.4% for linear discriminant analysis, which
+models the within-species correlation of the bill measurements. Every accuracy agrees exactly with
+scikit-learn.
+)
+
+\toc
+
+> The problem
+
+We want to assign an object to one of \(K\) classes from a mixture of measurements: some numeric
+(a penguin's bill length, its body mass), some categorical (the island where it was seen, its
+sex). The optimal rule is known: predict the class with the largest posterior probability
+\(P(c\mid x)\propto\pi_c\,p(x\mid c)\). But it needs the joint density of all the measurements within each
+class. With \(p\) numeric predictors a full Gaussian needs \(p(p+3)/2\) parameters per class; a table
+over \(p\) categorical predictors with \(L\) levels each needs \(L^p-1\) probabilities per class.
+Few data sets can estimate those, and mixing the two kinds needs a joint model of both.
+
+Naive Bayes makes one strong assumption: given the class, the predictors are independent. Then
+the joint density is a product of one-dimensional pieces, each estimated on its own: \(2p\)
+parameters for Gaussian predictors and \(p(L-1)\) probabilities for categorical ones, per class. The
+questions are what this costs when the assumption is false, and why the method often classifies
+well even then.
+
+> The method
+
+>> Bayes' theorem with independent predictors
+
+Let \(x=(x_1,\dots,x_p)\) and let \(\pi_c\) be the prior probability of class \(c\). Under conditional
+independence,
+
+$$
+P(c\mid x)=\frac{\pi_c\prod_{j=1}^pp_j(x_j\mid c)}{\sum_{c'}\pi_{c'}\prod_{j=1}^pp_j(x_j\mid c')},\qquad
+\hat c(x)=\arg\max_c\Big[\log\pi_c+\sum_{j=1}^p\log p_j(x_j\mid c)\Big].
+$$
+\alttext(The posterior probability of class c given x is pi c times the product over predictors j of p j of x j given c, divided by the same expression summed over all classes. The predicted class maximises log pi c plus the sum over j of log p j of x j given c.)
+
+Each predictor adds its own log-likelihood term, so the evidence from different predictors
+simply adds up. `posterior_terms(newdata, row)` lists these terms for one row. The priors are
+the class frequencies unless `NaiveBayesClassifierOptions::priors` sets them.
+
+>> Numeric predictors: one Gaussian per class
+
+A numeric predictor gets the density \(N(\mu_{cj},\sigma^2_{cj})\) in class \(c\), with the
+maximum-likelihood estimates
+
+$$
+\hat\mu_{cj}=\frac1{n_c}\sum_{i:y_i=c}x_{ij},\qquad
+\hat\sigma^2_{cj}=\frac1{n_c}\sum_{i:y_i=c}(x_{ij}-\hat\mu_{cj})^2+\epsilon,
+$$
+\alttext(mu hat c j is the mean of predictor j over the n c rows of class c. sigma hat squared c j is the mean squared deviation from it, plus a small epsilon.)
+
+where \(\epsilon\) is `var_smoothing` (\(10^{-9}\)) times the largest overall predictor variance, a floor that
+keeps a constant predictor from giving zero variance. Both conventions are scikit-learn's
+`GaussianNB`. `gaussian_frame()` returns the estimates.
+
+>> Categorical predictors: smoothed frequency tables
+
+A categorical predictor with levels \(1,\dots,L_j\) gets a probability table per class,
+
+$$
+\hat P(x_j=\ell\mid c)=\frac{n_{c\ell}+\alpha}{n_c+\alpha L_j},
+$$
+\alttext(The estimated probability that predictor j takes level l in class c is the count n c l plus alpha, divided by n c plus alpha times the number of levels L j.)
+
+where \(n_{c\ell}\) counts the class-\(c\) rows at level \(\ell\) and \(\alpha\) is `laplace_smoothing`. With \(\alpha=0\)
+these are raw frequencies. A level never seen in a class then has probability zero, and a single
+such observation vetoes the class whatever the other predictors say. \(\alpha=1\) (Laplace's rule
+of succession) adds one imaginary observation per level. The predictor is one variable with
+\(L_j\) levels, not \(L_j\) separate 0/1 dummy columns, which would not be independent of each other.
+These are the conventions of scikit-learn's `CategoricalNB`. `categorical_frame()` returns the
+tables.
+
+>> The shape of the decision boundary
+
+For two classes and Gaussian predictors the log posterior odds are
+
+$$
+\log\frac{P(1\mid x)}{P(0\mid x)}=\log\frac{\pi_1}{\pi_0}+\sum_j\Big[\log\frac{\sigma_{0j}}{\sigma_{1j}}
+-\frac{(x_j-\mu_{1j})^2}{2\sigma^2_{1j}}+\frac{(x_j-\mu_{0j})^2}{2\sigma^2_{0j}}\Big],
+$$
+\alttext(The log posterior odds equal the log prior odds plus, for each predictor, the log ratio of the standard deviations minus the squared standardised distance to the class 1 mean over 2 plus the squared standardised distance to the class 0 mean over 2.)
+
+a sum of one quadratic per predictor, with no cross terms \(x_jx_k\). The boundary is a quadric
+whose axes are aligned with the predictors. If the two classes have equal variances for every
+predictor, the squares cancel and the log odds are linear in \(x\). The model is then the same
+as linear discriminant analysis with a diagonal covariance matrix. Linear discriminant analysis
+estimates the full covariance and can tilt its boundary to follow correlations between
+predictors; naive Bayes cannot.
+
+>> What independence costs
+
+Suppose predictor \(x_1\) is copied \(m\) times. The copies are perfectly dependent, but naive Bayes
+counts each as new evidence, so the log-likelihood ratio of \(x_1\) is multiplied by \(m\) while the
+prior term is not. The posterior probabilities become overconfident, and with unequal priors
+the decision threshold moves too. Correlated, non-identical predictors give a weaker version
+of the same double counting. The ranking of the classes can still be right when the
+probabilities are badly wrong: classification only needs the sign of the log odds, not its
+size. This is the explanation Domingos and Pazzani (1997) gave for naive Bayes' good accuracy
+under violated assumptions.
+
+>> Computation and exact leave-one-out
+
+Products of many densities underflow, so everything is computed in logs. The posterior is
+normalised with the log-sum-exp shift: subtract the largest log joint before exponentiating.
+
+`training_accuracy()` is the resubstitution accuracy. For an honest estimate,
+`loo_accuracy()` classifies every row by the model fitted without it. No refitting is needed:
+removing row \(i\) of class \(c\) changes only \(n_c\), the class-\(c\) means, sums of squares and counts,
+and the overall variances that set \(\epsilon\). Each is downdated in closed form, for example
+
+$$
+\hat\mu_{cj}^{(-i)}=\frac{n_c\hat\mu_{cj}-x_{ij}}{n_c-1},\qquad
+SS_{cj}^{(-i)}=SS_{cj}-\frac{n_c}{n_c-1}\big(x_{ij}-\hat\mu_{cj}\big)^2,
+$$
+\alttext(The class mean without row i equals n c times the mean minus x i j, over n c minus 1. The sum of squares without row i equals the sum of squares minus n c over n c minus 1 times the squared deviation of x i j from the mean.)
+
+so leave-one-out costs no more than resubstitution. The levels of a categorical predictor stay
+those of the full data.
+
+> Simple examples
+
+>> Five rows by hand
+
+One numeric predictor \(x\) and one categorical predictor \(g\), with classes *a* and *b*:
+
+| \(x\) | \(g\) | class |
+| ---: | :--- | :--- |
+| 1 | u | a |
+| 2 | u | a |
+| 3 | v | a |
+| 6 | v | b |
+| 8 | v | b |
+
+The priors are \(3/5\) and \(2/5\). Class *a* has \(\hat\mu=2\) and \(\hat\sigma^2=(1+0+1)/3=2/3\); class *b* has \(\hat\mu=7\) and
+\(\hat\sigma^2=1\) (variance floor switched off). With \(\alpha=1\) and two levels, class *a* has
+\(P(u)=(2+1)/(3+2)=0.6\) and \(P(v)=0.4\); class *b* has \(P(u)=(0+1)/(2+2)=0.25\) and \(P(v)=0.75\). For the query
+\(x=4\), \(g=v\), the model adds one log term per predictor to the log prior.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  DF train;
+  train.add_column("x", std::vector<double>{1, 2, 3, 6, 8});
+  train.add_column("g", std::vector<std::string>{"u", "u", "v", "v", "v"});
+  train.add_column("class", std::vector<std::string>{"a", "a", "a", "b", "b"});
+  const dm::stats::NaiveBayesClassifier nb(train, "class ~ x + g", {.var_smoothing = 0.0});
+  DF::MarkdownOptions md;
+  md.digits = 4;
+  std::print("{}\n\n{}\n\n", nb.gaussian_frame().to_md(md), nb.categorical_frame().to_md(md));
+
+  DF query;
+  query.add_column("x", std::vector<double>{4.0});
+  query.add_column("g", std::vector<std::string>{"v"});
+  std::print("Query x = 4, g = v:\n\n{}\n\n", nb.posterior_terms(query, 0).to_md(md));
+
+  // The zero-frequency problem: class b never has g = u.
+  DF strong_b;
+  strong_b.add_column("x", std::vector<double>{4.5});
+  strong_b.add_column("g", std::vector<std::string>{"u"});
+  std::vector<double> alphas{0.0, 0.01, 0.1, 1.0, 10.0, 100.0}, p_b, p_u_b;
+  for (const double a : alphas) {
+    const dm::stats::NaiveBayesClassifier m(train, "class ~ x + g", {.laplace_smoothing = a, .var_smoothing = 0.0});
+    p_b.push_back(m.predict_detail(strong_b).probability[0][1]);
+    p_u_b.push_back(m.categorical_frame().double_at("probability", 2));
+  }
+  DF smoothing;
+  smoothing.add_column("alpha", alphas);
+  smoothing.add_column("P(g = u | b)", p_u_b);
+  smoothing.add_column("P(b | x = 4.5, g = u)", p_b);
+  std::print("Query x = 4.5, g = u:\n\n{}\n", smoothing.to_md(md));
+}
+```
+// result_begin: markdown
+| predictor | class | n | mean | sd |
+| :--- | :--- | ---: | ---: | ---: |
+| x | a | 3 | 2 | 0.8165 |
+| x | b | 2 | 7 | 1.0000 |
+
+
+| predictor | class | level | count | probability |
+| :--- | :--- | :--- | ---: | ---: |
+| g | a | u | 2 | 0.60 |
+| g | a | v | 1 | 0.40 |
+| g | b | u | 0 | 0.25 |
+| g | b | v | 2 | 0.75 |
+
+
+Query x = 4, g = v:
+
+| term | a | b |
+| :--- | ---: | ---: |
+| log prior | -0.5108 | -0.9163 |
+| log p(x \| class) | -3.7162 | -5.4189 |
+| log p(g \| class) | -0.9163 | -0.2877 |
+| log joint | -5.1433 | -6.6229 |
+| posterior | 0.8145 | 0.1855 |
+
+
+Query x = 4.5, g = u:
+
+| alpha | P(g = u \| b) | P(b \| x = 4.5, g = u) |
+| ---: | ---: | ---: |
+| 0.00 | 0.0000 | 0.0000 |
+| 0.01 | 0.0050 | 0.0189 |
+| 0.10 | 0.0455 | 0.1524 |
+| 1.00 | 0.2500 | 0.5197 |
+| 10.00 | 0.4545 | 0.6935 |
+| 100.00 | 0.4950 | 0.7190 |
+// result_end
+
+The first two tables reproduce the hand calculation: the standard deviations are
+\(\sqrt{2/3}=0.8165\) and 1, and the smoothed probabilities are 0.6, 0.4, 0.25 and 0.75. In the
+posterior terms, \(\log p(x\mid a)=-\tfrac12\log(2\pi\cdot\tfrac23)-\tfrac{(4-2)^2}{2\cdot2/3}=-3.7162\) and
+\(\log p(x\mid b)=-\tfrac12\log2\pi-\tfrac{(4-7)^2}2=-5.4189\). The numeric predictor favours *a* by 1.70 and
+the prior by 0.41; level *v* favours *b* by 0.63. That leaves *a* ahead by 1.48 in the log joint, a
+posterior of \(1/(1+e^{-1.48})=0.8145\).
+
+The last table shows the zero-frequency problem. The query \(x=4.5\) lies nearer class *b* in
+standardised distance, and on \(x\) alone the posterior of *b* is 0.72. But class *b* never had
+\(g=u\). With \(\alpha=0\) its probability is 0, and the posterior of *b* is exactly 0 however strongly \(x\)
+points to it. Any \(\alpha>0\) removes the veto. How much weight \(g\) keeps depends on \(\alpha\): at \(\alpha=0.01\) it
+still all but decides the answer (0.019), at \(\alpha=1\) the two predictors almost balance (0.52), and at
+\(\alpha=100\) both tables are close to \(\tfrac12\). Then \(g\) carries no information, and the posterior
+returns to 0.72 from \(x\) alone.
+
+>> A quadratic boundary in one dimension
+
+Two classes with equal priors, class *a* with \(\mu=0\), \(\sigma^2=1\) and class *b* with \(\mu=2\), \(\sigma^2=4\). They are
+fitted from the four points \(\{-1,1\}\) and \(\{0,4\}\), which have exactly these means and variances.
+The log odds of *b* against *a* are \(\log\tfrac12+\tfrac{x^2}2-\tfrac{(x-2)^2}8\). Setting them to zero and
+multiplying by 8 gives \(3x^2+4x-4-8\log2=0\), with roots
+
+$$
+x=\frac{-4\pm\sqrt{16+12(4+8\log2)}}{6}=-2.5710\ \text{ and }\ 1.2377 .
+$$
+\alttext(x equals minus 4 plus or minus the square root of 16 plus 12 times 4 plus 8 log 2, all over 6, which gives minus 2.5710 and 1.2377.)
+
+The wider class *b* wins on both sides: to the right, where its mean is, and far to the left, where
+the narrow class *a*'s density falls off faster.
+
+```{cpp, results="markdown", file="figures/nb_boundary.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  DF train;
+  train.add_column("x", std::vector<double>{-1, 1, 0, 4});
+  train.add_column("class", std::vector<std::string>{"a", "a", "b", "b"});
+  const dm::stats::NaiveBayesClassifier nb(train, "class ~ x", {.var_smoothing = 0.0});
+
+  auto p_b = [&](double x) {
+    DF q;
+    q.add_column("x", std::vector<double>{x});
+    return nb.predict_detail(q).probability[0][1];
+  };
+  auto bisect = [&](double lo, double hi) {
+    for (int it = 0; it < 100; ++it) {
+      const double mid = 0.5 * (lo + hi);
+      ((p_b(lo) > 0.5) == (p_b(mid) > 0.5) ? lo : hi) = mid;
+    }
+    return 0.5 * (lo + hi);
+  };
+  const double r1 = (-4.0 - std::sqrt(16.0 + 12.0 * (4.0 + 8.0 * std::log(2.0)))) / 6.0;
+  const double r2 = (-4.0 + std::sqrt(16.0 + 12.0 * (4.0 + 8.0 * std::log(2.0)))) / 6.0;
+  const double b1 = bisect(-4.0, -1.0), b2 = bisect(0.0, 3.0);
+  std::print("Boundaries from the fitted model: {:.6f} and {:.6f}; closed form: {:.6f} and {:.6f}\n\n", b1, b2, r1, r2);
+
+  std::vector<double> xs, da, db, pb;
+  for (int i = 0; i <= 400; ++i) {
+    const double x = -6.0 + 14.0 * i / 400.0;
+    xs.push_back(x);
+    da.push_back(0.5 * dm::random::normal_pdf(x, 0.0, 1.0));
+    db.push_back(0.5 * dm::random::normal_pdf(x, 2.0, 2.0));
+    pb.push_back(p_b(x));
+  }
+  const auto blue = dm::RGB{37, 99, 235}, red = dm::RGB{220, 38, 38}, grey = dm::RGB{148, 163, 184};
+  auto dens = dm::graphics::RPlot::create();
+  dens.lines(xs, da, "pi_a N(0, 1)", blue, 2.0).lines(xs, db, "pi_b N(2, 4)", red, 2.0);
+  dens.segments({b1, b2}, {0.0, 0.0}, {b1, b2}, {0.25, 0.25}, grey, 1.5);
+  dens.points({-1.0, 1.0}, {0.0, 0.0}, blue, 7.0).points({0.0, 4.0}, {0.0, 0.0}, red, 7.0);
+  dens.x_limits(-6.0, 8.0).y_limits(0.0, 0.25).title("Prior times class density").x_label("x").y_label("density");
+
+  auto post = dm::graphics::RPlot::create();
+  post.lines(xs, pb, red, 2.0).lines({-6.0, 8.0}, {0.5, 0.5}, grey, 1.0);
+  post.segments({b1, b2}, {0.0, 0.0}, {b1, b2}, {1.0, 1.0}, grey, 1.5);
+  post.x_limits(-6.0, 8.0).y_limits(0.0, 1.0).title("P(b | x)").x_label("x").y_label("posterior probability of b");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(dens).add(post).size(1100, 440).fit_panels();
+  fig.save_svg("build/nb_boundary.svg");
+}
+```
+// result_begin: markdown
+Boundaries from the fitted model: -2.570917 and 1.237584; closed form: -2.570917 and 1.237584
+
+\image(figures/nb_boundary.svg)
+// result_end
+
+\caption(Left: the prior-weighted class densities \(\tfrac12N(0,1)\) (blue) and \(\tfrac12N(2,4)\) (red), the four training points on the axis, and the two decision boundaries (grey). Right: the posterior probability of class *b*, which crosses \(\tfrac12\) at both boundaries.)
+\alttext(Two panels. Left: a tall narrow blue curve centred at 0 and a lower wide red curve centred at 2. They cross at about minus 2.6 and 1.2, marked by grey vertical lines, and the red curve is higher outside that interval. Right: the posterior probability of b falls from 1 on the left to a minimum of about 0.2 near x equals minus 0.7 and rises back to 1 on the right, crossing one half at the same two grey lines.)
+
+Bisection on the fitted model's posterior finds the boundaries at \(-2.570917\) and \(1.237584\). These
+agree with the closed form to all six printed digits, so the fitted variances and the posterior
+are exactly those of the derivation. The boundary is not a single threshold, as it would be with
+equal variances: on \((-2.57,1.24)\) the narrow class wins, and the wide class wins on both sides.
+The minimum of the posterior of *b* is about 0.2, so even at \(x=-0.7\), where *a* is most favoured,
+the model is not certain. Any Gaussian-based classifier with unequal variances has this
+behaviour; it is not caused by the independence assumption, which plays no part with one
+predictor.
+
+> Checking the theory
+
+>> When the assumption holds, naive Bayes is the Bayes rule
+
+Two classes with priors 0.6 and 0.4 and two predictors that are independent within each class:
+\(x\mid a\sim N((0,0),\operatorname{diag}(1,1))\) and \(x\mid b\sim N((1.5,1),\operatorname{diag}(2.25,0.25))\). This is exactly the naive
+Bayes model, so as \(n\) grows the fitted rule should approach the Bayes rule. The Bayes rule's
+error is estimated on the same 20000 test points by classifying them with the true parameters.
+Training sets of \(n=10\) to 5000 are drawn (20 replicates each).
+
+*Double counting.* A second experiment copies one predictor. Classes \(N(0,1)\) and \(N(1.5,1)\), priors
+0.7 and 0.3, and the predictor repeated \(m=1,2,4,8\) times. From the derivation above, the
+decision threshold moves from the Bayes value \(0.75+\log(7/3)/1.5=1.315\) to \(0.75+\log(7/3)/(1.5m)\).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+struct Sample {
+  std::vector<double> x1, x2;
+  std::vector<std::string> y;
+};
+
+Sample draw(dm::random::Xoshiro256StarStar& rng, std::size_t n) {
+  Sample s;
+  for (std::size_t i = 0; i < n; ++i) {
+    const bool b = rng.uniform(0.0, 1.0) < 0.4;
+    s.x1.push_back(b ? rng.normal(1.5, 1.5) : rng.normal(0.0, 1.0));
+    s.x2.push_back(b ? rng.normal(1.0, 0.5) : rng.normal(0.0, 1.0));
+    s.y.push_back(b ? "b" : "a");
+  }
+  return s;
+}
+
+double mean(const std::vector<double>& v) {
+  double s = 0.0;
+  for (const double x : v) s += x;
+  return s / double(v.size());
+}
+
+double sd(const std::vector<double>& v) {
+  const double m = mean(v);
+  double s = 0.0;
+  for (const double x : v) s += (x - m) * (x - m);
+  return std::sqrt(s / double(v.size() - 1));
+}
+
+DF frame(const Sample& s) {
+  DF d;
+  d.add_column("x1", s.x1);
+  d.add_column("x2", s.x2);
+  d.add_column("y", s.y);
+  return d;
+}
+
+int main() {
+  dm::random::Xoshiro256StarStar rng(31);
+  const auto test = draw(rng, 20000);
+  const DF test_frame = frame(test);
+  double bayes = 0.0;
+  for (std::size_t i = 0; i < test.y.size(); ++i) {
+    const double la = std::log(0.6) + std::log(dm::random::normal_pdf(test.x1[i], 0.0, 1.0)) +
+                      std::log(dm::random::normal_pdf(test.x2[i], 0.0, 1.0));
+    const double lb = std::log(0.4) + std::log(dm::random::normal_pdf(test.x1[i], 1.5, 1.5)) +
+                      std::log(dm::random::normal_pdf(test.x2[i], 1.0, 0.5));
+    bayes += ((lb > la) != (test.y[i] == "b")) / double(test.y.size());
+  }
+  std::vector<double> ns, test_err, loo_err, sd_err;
+  for (const std::size_t n : {10u, 30u, 100u, 300u, 1000u, 5000u}) {
+    std::vector<double> errs;
+    double loo = 0.0;
+    const int reps = 20;
+    for (int r = 0; r < reps; ++r) {
+      const DF train = frame(draw(rng, n));
+      const dm::stats::NaiveBayesClassifier nb(train, "y ~ x1 + x2");
+      const auto pred = nb.predict(test_frame);
+      double e = 0.0;
+      for (std::size_t i = 0; i < pred.size(); ++i) e += (pred[i] != test.y[i]) / double(pred.size());
+      errs.push_back(e);
+      loo += (1.0 - nb.loo_accuracy()) / reps;
+    }
+    ns.push_back(double(n)), test_err.push_back(mean(errs)), sd_err.push_back(sd(errs)), loo_err.push_back(loo);
+  }
+  DF table;
+  table.add_column("n", ns);
+  table.add_column("mean test error", test_err);
+  table.add_column("SD over training sets", sd_err);
+  table.add_column("mean LOO error", loo_err);
+  DF::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"n", 0}};
+  std::print("Bayes error on the test set: {:.4f}\n\n{}\n\n", bayes, table.to_md(md));
+
+  // Double counting: one informative predictor copied m times.
+  auto draw_copies = [&](std::size_t n, std::size_t m, std::vector<double>& x, std::vector<std::string>& y) {
+    for (std::size_t i = 0; i < n; ++i) {
+      const bool b = rng.uniform(0.0, 1.0) < 0.3;
+      x.push_back(rng.normal(b ? 1.5 : 0.0, 1.0)), y.push_back(b ? "b" : "a");
+    }
+    DF d;
+    for (std::size_t c = 0; c < m; ++c) d.add_column(std::format("x{}", c + 1), x);
+    d.add_column("y", y);
+    return d;
+  };
+  std::vector<double> ms, acc, logloss, conf, thr, thr_theory;
+  for (const std::size_t m : {1u, 2u, 4u, 8u}) {
+    std::vector<double> xtr, xte;
+    std::vector<std::string> ytr, yte;
+    const DF train = draw_copies(5000, m, xtr, ytr), test_m = draw_copies(20000, m, xte, yte);
+    std::string formula = "y ~ x1";
+    for (std::size_t c = 1; c < m; ++c) formula += std::format(" + x{}", c + 1);
+    const dm::stats::NaiveBayesClassifier nb(train, formula);
+    const auto detail = nb.predict_detail(test_m);
+    double a = 0.0, ll = 0.0, cf = 0.0;
+    for (std::size_t i = 0; i < yte.size(); ++i) {
+      a += (detail.class_label[i] == yte[i]) / double(yte.size());
+      ll -= std::log(std::max(1e-300, detail.probability[i][yte[i] == "b" ? 1 : 0])) / double(yte.size());
+      cf += std::max(detail.probability[i][0], detail.probability[i][1]) / double(yte.size());
+    }
+    // Threshold: where the fitted model switches to b, by bisection on x.
+    auto predicts_b = [&](double x) {
+      DF q;
+      for (std::size_t c = 0; c < m; ++c) q.add_column(std::format("x{}", c + 1), std::vector<double>{x});
+      return nb.predict(q)[0] == "b";
+    };
+    double lo = -1.0, hi = 4.0;
+    for (int it = 0; it < 60; ++it) (predicts_b(0.5 * (lo + hi)) ? hi : lo) = 0.5 * (lo + hi);
+    ms.push_back(double(m)), acc.push_back(a), logloss.push_back(ll), conf.push_back(cf);
+    thr.push_back(0.5 * (lo + hi)), thr_theory.push_back(0.75 + std::log(7.0 / 3.0) / (1.5 * m));
+  }
+  DF copies;
+  copies.add_column("copies m", ms);
+  copies.add_column("test accuracy", acc);
+  copies.add_column("mean confidence", conf);
+  copies.add_column("log loss", logloss);
+  copies.add_column("fitted threshold", thr);
+  copies.add_column("0.75 + log(7/3)/(1.5 m)", thr_theory);
+  md.column_digits = {{"copies m", 0}};
+  std::print("{}\n", copies.to_md(md));
+}
+```
+// result_begin: markdown
+Bayes error on the test set: 0.1773
+
+| n | mean test error | SD over training sets | mean LOO error |
+| ---: | ---: | ---: | ---: |
+| 10 | 0.2585 | 0.0514 | 0.3150 |
+| 30 | 0.1972 | 0.0153 | 0.1917 |
+| 100 | 0.1879 | 0.0082 | 0.1960 |
+| 300 | 0.1806 | 0.0024 | 0.1750 |
+| 1000 | 0.1778 | 0.0008 | 0.1808 |
+| 5000 | 0.1771 | 0.0005 | 0.1791 |
+
+
+| copies m | test accuracy | mean confidence | log loss | fitted threshold | 0.75 + log(7/3)/(1.5 m) |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.8070 | 0.8020 | 0.4204 | 1.2924 | 1.3149 |
+| 2 | 0.7942 | 0.8780 | 0.4978 | 1.0278 | 1.0324 |
+| 4 | 0.7901 | 0.9367 | 0.8123 | 0.9081 | 0.8912 |
+| 8 | 0.7894 | 0.9677 | 1.4995 | 0.8517 | 0.8206 |
+// result_end
+
+The Bayes rule, using the true parameters, misclassifies 17.73% of the test points. Naive Bayes
+trained on 10 points has a mean test error of 25.9%, with a standard deviation of 5.1 points
+between training sets. By \(n=1000\) it is 17.78%, and at \(n=5000\) it is 17.71%, slightly below the
+Bayes rule's error on the same finite test set. The spread between training sets shrinks roughly as
+\(1/n\), from 0.0082 at \(n=100\) to 0.0008 at \(n=1000\): near the optimum the excess error is quadratic in
+the estimation error. The leave-one-out error, computed from each
+training set alone, tracks the test error to within about a point from \(n=30\) on. At \(n=10\) it is
+pessimistic (31.5% against 25.9%), because removing one of ten rows changes the fit a good deal.
+
+The second table shows double counting. Accuracy barely moves as the copies are added (80.7% to
+78.9%): the copies leave the order of the test points along \(x\) unchanged, and only the threshold
+moves. The probabilities change a lot. The mean confidence of the predicted class rises from 0.80
+(close to the accuracy of 0.81, so well calibrated) to 0.97 with eight copies, while the accuracy
+stays near 0.79. The log loss more than triples, from 0.42 to 1.50. The fitted thresholds follow
+\(0.75+\log(7/3)/(1.5m)\) towards the midpoint of the means. Each \(m\) has its own training set, and the
+gaps of \(-0.022\) to \(+0.031\) are estimation error in the fitted means and variances. The thresholds
+move towards the minority class *b*: copying the evidence shrinks the share of the decision the
+prior controls.
+
+>> Correlated predictors: naive Bayes against LDA
+
+Two classes with equal priors and a shared covariance with correlation \(\rho\):
+\(x\mid a\sim N((0,0),\Sigma)\), \(x\mid b\sim N((1,0),\Sigma)\), \(\Sigma=\begin{pmatrix}1&\rho\\\rho&1\end{pmatrix}\). Only \(x_1\) differs between the
+classes, but \(x_2\) is informative through the correlation: it tells how much of \(x_1\) is noise. The
+Bayes rule is linear with Mahalanobis separation \(\Delta^2=(1,0)\Sigma^{-1}(1,0)^\top=1/(1-\rho^2)\) and error
+\(\Phi(-\Delta/2)\). Naive Bayes sees two predictors whose class-conditional variances are equal and
+whose second mean does not differ, so asymptotically it uses \(x_1\) alone, with error
+\(\Phi(-\tfrac12)=0.3085\) whatever \(\rho\). LDA estimates \(\Sigma\) and should follow the Bayes error.
+
+```{cpp, results="markdown", file="figures/nb_theory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+DF draw(dm::random::Xoshiro256StarStar& rng, std::size_t n, double rho) {
+  std::vector<double> x1, x2;
+  std::vector<std::string> y;
+  for (std::size_t i = 0; i < n; ++i) {
+    const bool b = rng.uniform(0.0, 1.0) < 0.5;
+    const double z1 = rng.normal(0.0, 1.0), z2 = rng.normal(0.0, 1.0);
+    x1.push_back((b ? 1.0 : 0.0) + z1), x2.push_back(rho * z1 + std::sqrt(1.0 - rho * rho) * z2);
+    y.push_back(b ? "b" : "a");
+  }
+  DF d;
+  d.add_column("x1", x1);
+  d.add_column("x2", x2);
+  d.add_column("y", y);
+  return d;
+}
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::random::Xoshiro256StarStar rng(32);
+  std::vector<double> rhos{0.0, 0.3, 0.5, 0.7, 0.8, 0.9, 0.95}, nb_err, lda_err, bayes;
+  const int reps = 10;
+  for (const double rho : rhos) {
+    const DF test = draw(rng, 20000, rho);
+    const auto truth = test.get_column<std::string>("y").values();
+    double e1 = 0.0, e2 = 0.0;
+    for (int r = 0; r < reps; ++r) {
+      const DF train = draw(rng, 1000, rho);
+      const auto nb = dm::stats::NaiveBayesClassifier(train, "y ~ x1 + x2").predict(test);
+      const auto lda = dm::stats::LDA(train, "y ~ x1 + x2").predict(test);
+      for (std::size_t i = 0; i < truth.size(); ++i) {
+        e1 += (nb[i] != truth[i]) / double(truth.size() * reps);
+        e2 += (lda[i] != truth[i]) / double(truth.size() * reps);
+      }
+    }
+    nb_err.push_back(e1), lda_err.push_back(e2);
+    bayes.push_back(dm::random::normal_cdf(-0.5 / std::sqrt(1.0 - rho * rho)));
+  }
+  DF table;
+  table.add_column("rho", rhos);
+  table.add_column("naive Bayes", nb_err);
+  table.add_column("LDA", lda_err);
+  table.add_column("Bayes Phi(-Delta/2)", bayes);
+  table.add_column("NB limit Phi(-1/2)", std::vector<double>(rhos.size(), dm::random::normal_cdf(-0.5)));
+  DF::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"rho", 2}};
+  std::print("{}\n\n", table.to_md(md));
+
+  // Left panel: both rules on the rho = 0.8 sample.
+  const DF train = draw(rng, 400, 0.8);
+  const dm::stats::NaiveBayesClassifier nb(train, "y ~ x1 + x2");
+  auto regions = nb.plot_decision_regions("x1", "x2", 200, std::array{-3.5, 4.5, -3.5, 4.2});
+  // The Bayes boundary x1 - rho x2 = 0.5 (from Sigma^{-1} (1, 0)), inside the box.
+  regions.lines({-3.5 * 0.8 + 0.5, 3.5 * 0.8 + 0.5}, {-3.5, 3.5}, dm::RGB{17, 24, 39}, 2.0);
+  regions.title("rho = 0.8: NB regions, Bayes boundary");
+
+  auto curves = dm::graphics::RPlot::create();
+  std::vector<double> grid, bayes_curve;
+  for (int i = 0; i <= 100; ++i) {
+    const double r = 0.95 * i / 100.0;
+    grid.push_back(r), bayes_curve.push_back(dm::random::normal_cdf(-0.5 / std::sqrt(1.0 - r * r)));
+  }
+  curves.lines(grid, bayes_curve, "Bayes", dm::RGB{17, 24, 39}, 1.5)
+      .lines({0.0, 0.95}, {0.3085, 0.3085}, "NB limit", dm::RGB{148, 163, 184}, 1.5);
+  curves.points(rhos, nb_err, "naive Bayes", dm::RGB{37, 99, 235}, 7.0).points(rhos, lda_err, "LDA", dm::RGB{220, 38, 38}, 7.0);
+  curves.x_limits(-0.02, 1.0).y_limits(0.0, 0.45).title("Test error against within-class correlation")
+      .x_label("rho").y_label("test error");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(regions).add(curves).size(1100, 480).fit_panels();
+  fig.save_svg("build/nb_theory.svg");
+}
+```
+// result_begin: markdown
+| rho | naive Bayes | LDA | Bayes Phi(-Delta/2) | NB limit Phi(-1/2) |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.00 | 0.3079 | 0.3073 | 0.3085 | 0.3085 |
+| 0.30 | 0.3025 | 0.2945 | 0.3001 | 0.3085 |
+| 0.50 | 0.3113 | 0.2820 | 0.2819 | 0.3085 |
+| 0.70 | 0.3179 | 0.2473 | 0.2419 | 0.3085 |
+| 0.80 | 0.3105 | 0.2046 | 0.2023 | 0.3085 |
+| 0.90 | 0.3137 | 0.1300 | 0.1257 | 0.3085 |
+| 0.95 | 0.3090 | 0.0543 | 0.0547 | 0.3085 |
+
+
+\image(figures/nb_theory.svg)
+// result_end
+
+\caption(Left: 400 training points with \(\rho=0.8\), the naive Bayes regions (blue for *a*, red for *b*), and the Bayes boundary \(x_1-\rho x_2=\tfrac12\) (black). Right: test error against \(\rho\) for naive Bayes (blue) and LDA (red), each averaged over 10 training sets of 1000 points and tested on 20000, with the Bayes error \(\Phi(-\Delta/2)\) (black) and naive Bayes' limit \(\Phi(-\tfrac12)\) (grey).)
+\alttext(Two panels. Left: a scatter of blue and red points elongated along a rising diagonal, over a pale blue region on the left and a pale red region on the right, split by a nearly vertical boundary near x1 equals 0.4. A black line, the Bayes boundary, rises steeply along the diagonal and separates the two point clouds better. Right: test error against rho. The blue naive Bayes points stay near 0.31 along a flat grey line, while the red LDA points follow a black curve that falls from 0.31 at rho 0 to about 0.05 at rho 0.95.)
+
+Naive Bayes' error stays between 0.302 and 0.318 for every \(\rho\), around its limit of 0.3085. LDA's
+error follows the Bayes error to within 0.006 and falls to 0.054 at \(\rho=0.95\), a sixth of naive
+Bayes' error. In the left panel the naive Bayes boundary is close to the vertical line \(x_1=\tfrac12\),
+curved slightly by the small differences between the fitted class variances. The Bayes boundary
+\(x_1-0.8x_2=\tfrac12\) runs along the diagonal of the point clouds. Here the information is in a
+direction neither predictor measures alone: \(x_1-\rho x_2\) removes the part of \(x_1\)'s noise that \(x_2\)
+predicts. Naive Bayes cannot use this, because within each class it treats \(x_2\) as unrelated to \(x_1\).
+This failure costs accuracy, not only calibration, unlike double counting. It is also where
+naive Bayes differs most from LDA, which has exactly the right model here.
+
+> The Palmer penguins
+
+The `penguins` data (Horst, Hill and Gorman, 2020) record 344 penguins of three species from
+three islands of the Palmer Archipelago. They have four numeric measurements, sex and island;
+the 333 complete rows are used. Island is a strong but imperfect clue. Gentoo penguins were
+seen only on Biscoe and Chinstraps only on Dream, while Adélies were seen on all three islands.
+
+```{cpp, results="markdown", file="figures/nb_penguins.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto penguins = dm::datasets::penguins();
+  const std::vector<std::pair<std::string, std::string>> models{
+      {"bills", "species ~ bill_length_mm + bill_depth_mm"},
+      {"four numeric", "species ~ bill_length_mm + bill_depth_mm + flipper_length_mm + body_mass_g"},
+      {"island + sex", "species ~ island + sex"},
+      {"all six", "species ~ bill_length_mm + bill_depth_mm + flipper_length_mm + body_mass_g + island + sex"},
+  };
+  // Rows with every predictor of the numeric models present (sex is the only other gap).
+  auto complete = [&](bool need_sex) {
+    std::vector<std::size_t> keep;
+    for (std::size_t i = 0; i < penguins.nrows(); ++i)
+      if (penguins.optional_double_at("bill_length_mm", i) && (!need_sex || penguins.optional_string_at("sex", i)))
+        keep.push_back(i);
+    return penguins.take_rows(keep);
+  };
+  // LDA has no closed-form leave-one-out here, so refit without each row.
+  auto lda_loo = [](const DF& data, const std::string& formula) {
+    double hits = 0.0;
+    for (std::size_t i = 0; i < data.nrows(); ++i) {
+      std::vector<std::size_t> rest;
+      for (std::size_t r = 0; r < data.nrows(); ++r)
+        if (r != i) rest.push_back(r);
+      hits += dm::stats::LDA(data.take_rows(rest), formula).predict(data.take_rows({i}))[0] == data.string_at("species", i);
+    }
+    return hits / double(data.nrows());
+  };
+  std::vector<std::string> names, lda_text;
+  std::vector<double> rows, resub, loo;
+  for (const auto& [name, formula] : models) {
+    const dm::stats::NaiveBayesClassifier nb(penguins, formula);
+    names.push_back(name), rows.push_back(double(nb.observations()));
+    resub.push_back(nb.training_accuracy()), loo.push_back(nb.loo_accuracy());
+    lda_text.push_back(name == "island + sex" ? "(numeric only)" : std::format("{:.4f}", lda_loo(complete(name == "all six"), formula)));
+  }
+  DF table;
+  table.add_column("predictors", names);
+  table.add_column("rows", rows);
+  table.add_column("NB resubstitution", resub);
+  table.add_column("NB leave-one-out", loo);
+  table.add_column("LDA leave-one-out", lda_text);
+  DF::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"rows", 0}};
+  std::print("{}\n\n", table.to_md(md));
+
+  const dm::stats::NaiveBayesClassifier full(penguins, models[3].second);
+  std::print("{}\n\n", full.gaussian_frame().to_md(md));
+  auto island = full.categorical_frame();
+  std::print("{}\n\n", island.filter([](const auto& r) { return r.get_string("predictor") == "island"; }).to_md(md));
+
+  // Leave-one-out confusion matrix of the full model.
+  std::vector<std::vector<double>> cm(3, std::vector<double>(3, 0.0));
+  const auto& cls = full.classes();
+  auto index = [&](const std::string& c) { return std::size_t(std::find(cls.begin(), cls.end(), c) - cls.begin()); };
+  std::size_t first_error = SIZE_MAX;
+  for (std::size_t i = 0; i < full.observations(); ++i) {
+    cm[index(full.training_labels()[i])][index(full.loo_fitted_classes()[i])] += 1.0;
+    if (first_error == SIZE_MAX && full.loo_fitted_classes()[i] != full.training_labels()[i]) first_error = i;
+  }
+  DF confusion;
+  confusion.add_column("observed", cls);
+  for (std::size_t c = 0; c < 3; ++c) confusion.add_column(cls[c], std::vector<double>{cm[0][c], cm[1][c], cm[2][c]});
+  std::print("Leave-one-out confusion matrix, all six predictors (columns: predicted):\n\n{}\n\n", confusion.to_md(0));
+
+  // Within-species correlation of bill length and depth.
+  std::vector<std::string> sp;
+  std::vector<double> corr;
+  std::vector<double> bl, bd;
+  std::vector<std::string> species;
+  for (std::size_t i = 0; i < penguins.nrows(); ++i) {
+    const auto a = penguins.optional_double_at("bill_length_mm", i), b = penguins.optional_double_at("bill_depth_mm", i);
+    if (!a || !b) continue;
+    bl.push_back(*a), bd.push_back(*b), species.push_back(penguins.string_at("species", i));
+  }
+  for (const auto& c : cls) {
+    std::vector<double> u, v;
+    for (std::size_t i = 0; i < bl.size(); ++i)
+      if (species[i] == c) u.push_back(bl[i]), v.push_back(bd[i]);
+    double mu = 0.0, mv = 0.0;
+    for (std::size_t i = 0; i < u.size(); ++i) mu += u[i] / u.size(), mv += v[i] / v.size();
+    double suv = 0.0, suu = 0.0, svv = 0.0;
+    for (std::size_t i = 0; i < u.size(); ++i)
+      suv += (u[i] - mu) * (v[i] - mv), suu += (u[i] - mu) * (u[i] - mu), svv += (v[i] - mv) * (v[i] - mv);
+    sp.push_back(c), corr.push_back(suv / std::sqrt(suu * svv));
+  }
+  DF correlations;
+  correlations.add_column("species", sp);
+  correlations.add_column("cor(bill length, bill depth)", corr);
+  std::print("{}\n\n", correlations.to_md(3));
+
+  // The evidence behind one leave-one-out error, from the full-data model.
+  const auto one = complete(true).take_rows({first_error});
+  std::print("Row {} ({}, {}, {}): leave-one-out prediction {}\n\n{}\n\n", first_error, full.training_labels()[first_error],
+             one.string_at("island", 0), one.string_at("sex", 0), full.loo_fitted_classes()[first_error],
+             full.posterior_terms(one, 0).to_md(md));
+
+  // Figure: class densities of bill length, and the two-bill decision regions.
+  const dm::RGB colors[3] = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  const auto gauss = full.gaussian_frame();
+  auto dens = dm::graphics::RPlot::create();
+  for (std::size_t c = 0; c < 3; ++c) {
+    const double mean = gauss.double_at("mean", c), sd = gauss.double_at("sd", c), prior = full.class_priors()[c];
+    std::vector<double> xs, ys, px, py;
+    for (int i = 0; i <= 300; ++i) {
+      const double x = 30.0 + 32.0 * i / 300.0;
+      xs.push_back(x), ys.push_back(prior * dm::random::normal_pdf(x, mean, sd));
+    }
+    dens.lines(xs, ys, cls[c], colors[c], 2.0);
+    for (std::size_t i = 0; i < bl.size(); ++i)
+      if (species[i] == cls[c]) px.push_back(bl[i]), py.push_back(-0.004 - 0.004 * c);
+    dens.points(px, py, colors[c], 3.0);
+  }
+  dens.x_limits(30.0, 62.0).y_limits(-0.016, 0.09).title("Bill length: prior x Gaussian per species")
+      .x_label("bill length (mm)").y_label("density");
+
+  const dm::stats::NaiveBayesClassifier bills(penguins, models[0].second);
+  auto regions = bills.plot_decision_regions("bill_length_mm", "bill_depth_mm", 200, std::array{31.0, 61.0, 12.5, 23.5});
+  std::vector<double> ex, ey;
+  for (std::size_t i = 0; i < bills.observations(); ++i)
+    if (bills.loo_fitted_classes()[i] != bills.training_labels()[i]) ex.push_back(bl[i]), ey.push_back(bd[i]);
+  regions.points(ex, ey, "LOO error", dm::RGB{17, 24, 39}, 3.0);
+  regions.title("Bill length and depth only").x_label("bill length (mm)").y_label("bill depth (mm)");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(dens).add(regions).size(1100, 480).fit_panels();
+  fig.save_svg("build/nb_penguins.svg");
+}
+```
+// result_begin: markdown
+| predictors | rows | NB resubstitution | NB leave-one-out | LDA leave-one-out |
+| :--- | ---: | ---: | ---: | :--- |
+| bills | 342 | 0.9327 | 0.9327 | 0.9591 |
+| four numeric | 342 | 0.9708 | 0.9708 | 0.9854 |
+| island + sex | 333 | 0.7027 | 0.7027 | (numeric only) |
+| all six | 333 | 0.9820 | 0.9790 | 0.9940 |
+
+
+| predictor | class | n | mean | sd |
+| :--- | :--- | ---: | ---: | ---: |
+| bill_length_mm | Adelie | 146 | 38.8240 | 2.6536 |
+| bill_length_mm | Chinstrap | 68 | 48.8338 | 3.3147 |
+| bill_length_mm | Gentoo | 119 | 47.5681 | 3.0931 |
+| bill_depth_mm | Adelie | 146 | 18.3473 | 1.2154 |
+| bill_depth_mm | Chinstrap | 68 | 18.4206 | 1.1273 |
+| bill_depth_mm | Gentoo | 119 | 14.9966 | 0.9822 |
+| flipper_length_mm | Adelie | 146 | 190.1027 | 6.4995 |
+| flipper_length_mm | Chinstrap | 68 | 195.8235 | 7.0793 |
+| flipper_length_mm | Gentoo | 119 | 217.2353 | 6.5578 |
+| body_mass_g | Adelie | 146 | 3706.1644 | 457.0468 |
+| body_mass_g | Chinstrap | 68 | 3733.0882 | 381.4986 |
+| body_mass_g | Gentoo | 119 | 5092.4370 | 499.3647 |
+
+
+| predictor | class | level | count | probability |
+| :--- | :--- | :--- | ---: | ---: |
+| island | Adelie | Biscoe | 44 | 0.3020 |
+| island | Adelie | Dream | 55 | 0.3758 |
+| island | Adelie | Torgersen | 47 | 0.3221 |
+| island | Chinstrap | Biscoe | 0 | 0.0141 |
+| island | Chinstrap | Dream | 68 | 0.9718 |
+| island | Chinstrap | Torgersen | 0 | 0.0141 |
+| island | Gentoo | Biscoe | 119 | 0.9836 |
+| island | Gentoo | Dream | 0 | 0.0082 |
+| island | Gentoo | Torgersen | 0 | 0.0082 |
+
+
+Leave-one-out confusion matrix, all six predictors (columns: predicted):
+
+| observed | Adelie | Chinstrap | Gentoo |
+| :--- | ---: | ---: | ---: |
+| Adelie | 144 | 2 | 0 |
+| Chinstrap | 5 | 63 | 0 |
+| Gentoo | 0 | 0 | 119 |
+
+
+| species | cor(bill length, bill depth) |
+| :--- | ---: |
+| Adelie | 0.391 |
+| Chinstrap | 0.654 |
+| Gentoo | 0.643 |
+
+
+Row 38 (Adelie, Dream, male): leave-one-out prediction Chinstrap
+
+| term | Adelie | Chinstrap | Gentoo |
+| :--- | ---: | ---: | ---: |
+| log prior | -0.8245 | -1.5886 | -1.0290 |
+| log p(bill_length_mm \| class) | -3.8714 | -3.1371 | -2.6767 |
+| log p(bill_depth_mm \| class) | -1.7334 | -1.6828 | -12.3669 |
+| log p(flipper_length_mm \| class) | -3.2023 | -2.8764 | -8.0425 |
+| log p(body_mass_g \| class) | -8.1960 | -8.3910 | -8.0937 |
+| log p(island \| class) | -0.9786 | -0.0286 | -4.8040 |
+| log p(sex \| class) | -0.6931 | -0.6931 | -0.6687 |
+| log joint | -19.4994 | -18.3977 | -37.6814 |
+| posterior | 0.2494 | 0.7506 | 0.0000 |
+
+
+\image(figures/nb_penguins.svg)
+// result_end
+
+\caption(Left: the fitted class densities of bill length times the priors (Adélie blue, Chinstrap red, Gentoo green), with each species' bill lengths as a strip below the axis. Right: the naive Bayes regions using bill length and depth only, with the training points and the leave-one-out errors (black centres). Tables: accuracies of four predictor sets; the Gaussian parameters and the island table of the full model; its leave-one-out confusion matrix; the within-species correlations of the bill measurements; and the log-posterior terms of one misclassified penguin.)
+\alttext(Two panels. Left: three bell curves of bill length weighted by prior: a tall blue Adelie curve peaking near 39 mm, a green Gentoo curve near 47.5 mm and a lower red Chinstrap curve near 49 mm, overlapping heavily. Below the axis are three strips of points, one per species. Right: the bill length and depth plane split into three pale regions, Adelie on the left, Chinstrap upper right and Gentoo lower right, with the penguins drawn in their species' colours and about twenty misclassified ones marked with black centres along the region borders.)
+
+*Accuracy.* The two bill measurements alone classify 93.3% of the penguins, with leave-one-out
+accuracy equal to resubstitution. The four numeric measurements give 97.1%. Island and sex alone
+give only 70.3%: island identifies Gentoo (Biscoe) and Chinstrap (Dream) penguins but cannot
+separate Adélies on Biscoe or Dream from them. All six predictors give 98.2% resubstitution and
+97.9% leave-one-out accuracy. For every model, LDA's leave-one-out accuracy is higher: 95.9%,
+98.5% and 99.4%. scikit-learn (`GaussianNB` plus `CategoricalNB` with \(\alpha=1\) for the mixed model,
+and `LinearDiscriminantAnalysis` with dummy-coded island and sex) agrees with every accuracy
+here, including the leave-one-out ones, to the last digit.
+
+*Parameters.* The Gaussian table shows which measurement separates which species. Bill length
+separates Adélie (mean 38.8 mm) from the other two (47.6 and 48.8 mm). Bill depth, flipper length
+and body mass separate Gentoo (15.0 mm, 217 mm, 5092 g) from the other two, which are close on
+all three. Chinstrap and Adélie are therefore told apart mainly by bill length and island. The
+island table shows Laplace smoothing at work. No Chinstrap was seen on Biscoe, but the estimated
+probability is \((0+1)/(68+3)=0.0141\), not zero. A Chinstrap later seen on Biscoe can still be
+classified correctly if its measurements are clear enough.
+
+*Errors.* The leave-one-out confusion matrix has seven errors, all between Adélie and Chinstrap;
+every Gentoo is classified correctly. The posterior terms show why row 38, a male Adélie from
+Dream, is called a Chinstrap. The prior favours Adélie by 0.76 and body mass by 0.20. Island
+favours Chinstrap by 0.95, because all 68 Chinstraps but only 55 of the 146 Adélies were on
+Dream. Bill length favours Chinstrap by 0.73, flipper length by 0.33 and bill depth by 0.05. The sum puts Chinstrap ahead by
+1.10, a posterior of 0.75. With independent terms the evidence is easy to read: here a long-billed
+Adélie on the Chinstraps' island.
+
+*Correlation.* Within each species, bill length and depth are positively correlated (0.39 for
+Adélie, about 0.65 for the others): bigger penguins have bigger bills. Naive Bayes ignores this,
+so its boundaries in the right panel are curves with no tilt along the correlation. LDA's pooled
+covariance uses it. This is the situation of the correlated-predictor simulation, and the likely
+source of LDA's advantage: with bills only, LDA misclassifies 14 penguins and naive Bayes 23.
+
+> Conclusion
+
+Naive Bayes replaces one joint model per class by a product of one-dimensional ones. It fits
+any mix of numeric and categorical predictors in one pass, and its posterior splits into one
+readable term per predictor. Its leave-one-out accuracy costs no more than its fit. When the
+predictors are independent within each class it is the Bayes rule with estimated parameters, and
+it converges to the Bayes error. Laplace smoothing is not optional for categorical predictors:
+without it a single unseen level vetoes a class.
+
+Its assumption fails in two ways. Redundant predictors are counted as independent evidence,
+which leaves accuracy nearly intact but makes the probabilities overconfident: with eight copies
+the log loss more than tripled. This is why naive Bayes often classifies well even when its
+probabilities are poor (Domingos and Pazzani, 1997; Hand and Yu, 2001). Correlation that carries
+information is a harder failure: naive Bayes cannot use the direction \(x_1-\rho x_2\), and its error
+stays at that of \(x_1\) alone while LDA's falls to the Bayes error. On the penguins the cost is
+small but visible, 97.9% against 99.4%, because bill length and depth are correlated within
+species.
+
+Use naive Bayes when there are many predictors relative to the data, when predictors are of
+mixed types, or when per-predictor evidence is wanted. Ng and Jordan (2002) showed that it then
+approaches its asymptotic error with far fewer samples than logistic regression. When the
+numeric predictors are correlated and the data are enough to estimate a covariance matrix, LDA or
+logistic regression will usually be more accurate. In either case, use the leave-one-out
+accuracy, not the resubstitution accuracy, and treat the probabilities with caution.
+
+> References
+
+- P. Domingos and M. Pazzani (1997). "On the optimality of the simple Bayesian classifier under zero-one loss". *Machine Learning* 29, 103–130. doi:10.1023/A:1007413511361
+- D. J. Hand and K. Yu (2001). "Idiot's Bayes — not so stupid after all?". *International Statistical Review* 69(3), 385–398. doi:10.1111/j.1751-5823.2001.tb00465.x
+- A. Y. Ng and M. I. Jordan (2002). "On discriminative vs. generative classifiers: a comparison of logistic regression and naive Bayes". *NIPS 14*, 841–848.
+- T. Hastie, R. Tibshirani and J. Friedman (2009). *The Elements of Statistical Learning*, 2nd ed., sections 4.3 and 6.6.3. Springer. doi:10.1007/978-0-387-84858-7
+- A. M. Horst, A. P. Hill and K. B. Gorman (2020). *palmerpenguins: Palmer Archipelago (Antarctica) penguin data*. R package. doi:10.5281/zenodo.3960218
+- scikit-learn, naive Bayes (`GaussianNB`, `CategoricalNB`): https://scikit-learn.org/stable/modules/naive_bayes.html

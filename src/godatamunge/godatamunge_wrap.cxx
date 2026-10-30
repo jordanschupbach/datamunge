@@ -470,9 +470,9 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__set(std::vector< std::string > *sel
 
    #include "datamunge/datamunge.hpp"
 
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::plot::RGB(); }
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::plot::RGB{r, g, b, alpha};
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
+    return new datamunge::graphics::RGB{r, g, b, alpha};
   }
 
 // C++ director class methods.
@@ -4038,136 +4038,136 @@ std::vector< double > *_wrap_ShapeLayer_point_y_datamunge_f3b579fcb4322d74(datam
 }
 
 
-datamunge::plot::RPlot *_wrap_ShapeLayer_plot__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0, datamunge::plot::RGB *_swig_go_1, datamunge::plot::RGB *_swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::graphics::RPlot *_wrap_ShapeLayer_plot__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0, datamunge::graphics::RGB *_swig_go_1, datamunge::graphics::RGB *_swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
   std::size_t arg5 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ShapeLayer **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   arg4 = (size_t)_swig_go_3; 
   arg5 = (size_t)_swig_go_4; 
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_ShapeLayer_plot__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0, datamunge::plot::RGB *_swig_go_1, datamunge::plot::RGB *_swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_ShapeLayer_plot__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0, datamunge::graphics::RGB *_swig_go_1, datamunge::graphics::RGB *_swig_go_2, long long _swig_go_3) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ShapeLayer **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_ShapeLayer_plot__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0, datamunge::plot::RGB *_swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+datamunge::graphics::RPlot *_wrap_ShapeLayer_plot__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0, datamunge::graphics::RGB *_swig_go_1, datamunge::graphics::RGB *_swig_go_2) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ShapeLayer **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_ShapeLayer_plot__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_ShapeLayer_plot__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ShapeLayer **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_ShapeLayer_plot__SWIG_4_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_ShapeLayer_plot__SWIG_4_datamunge_f3b579fcb4322d74(datamunge::ShapeLayer *_swig_go_0) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ShapeLayer **)&_swig_go_0; 
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -4322,21 +4322,21 @@ datamunge::GGPlot *_wrap_new_GGPlot__SWIG_4_datamunge_f3b579fcb4322d74(datamunge
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_point__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1, double _swig_go_2) {
+datamunge::GGPlot *_wrap_GGPlot_geom_point__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1, double _swig_go_2) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
-  datamunge::plot::RGB *argp2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   arg3 = (double)_swig_go_2; 
   
@@ -4346,20 +4346,20 @@ datamunge::GGPlot *_wrap_GGPlot_geom_point__SWIG_0_datamunge_f3b579fcb4322d74(da
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_point__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::GGPlot *_wrap_GGPlot_geom_point__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(*(&arg2)));
@@ -4381,21 +4381,21 @@ datamunge::GGPlot *_wrap_GGPlot_geom_point__SWIG_2_datamunge_f3b579fcb4322d74(da
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_line__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1, double _swig_go_2) {
+datamunge::GGPlot *_wrap_GGPlot_geom_line__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1, double _swig_go_2) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
-  datamunge::plot::RGB *argp2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   arg3 = (double)_swig_go_2; 
   
@@ -4405,20 +4405,20 @@ datamunge::GGPlot *_wrap_GGPlot_geom_line__SWIG_0_datamunge_f3b579fcb4322d74(dat
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_line__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::GGPlot *_wrap_GGPlot_geom_line__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(*(&arg2)));
@@ -4440,20 +4440,20 @@ datamunge::GGPlot *_wrap_GGPlot_geom_line__SWIG_2_datamunge_f3b579fcb4322d74(dat
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_bar__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::GGPlot *_wrap_GGPlot_geom_bar__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_bar(SWIG_STD_MOVE(*(&arg2)));
@@ -4475,20 +4475,20 @@ datamunge::GGPlot *_wrap_GGPlot_geom_bar__SWIG_1_datamunge_f3b579fcb4322d74(data
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_col__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::GGPlot *_wrap_GGPlot_geom_col__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_col(SWIG_STD_MOVE(*(&arg2)));
@@ -4510,22 +4510,22 @@ datamunge::GGPlot *_wrap_GGPlot_geom_col__SWIG_1_datamunge_f3b579fcb4322d74(data
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_histogram__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, long long _swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+datamunge::GGPlot *_wrap_GGPlot_geom_histogram__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, long long _swig_go_1, datamunge::graphics::RGB *_swig_go_2) {
   datamunge::GGPlot *arg1 = 0 ;
   std::size_t arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *argp3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *argp3 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
@@ -4562,20 +4562,20 @@ datamunge::GGPlot *_wrap_GGPlot_geom_histogram__SWIG_2_datamunge_f3b579fcb4322d7
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_boxplot__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::GGPlot *_wrap_GGPlot_geom_boxplot__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_boxplot(SWIG_STD_MOVE(*(&arg2)));
@@ -4597,20 +4597,20 @@ datamunge::GGPlot *_wrap_GGPlot_geom_boxplot__SWIG_1_datamunge_f3b579fcb4322d74(
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_smooth__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::GGPlot *_wrap_GGPlot_geom_smooth__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_smooth(SWIG_STD_MOVE(*(&arg2)));
@@ -4632,20 +4632,20 @@ datamunge::GGPlot *_wrap_GGPlot_geom_smooth__SWIG_1_datamunge_f3b579fcb4322d74(d
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_area__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::GGPlot *_wrap_GGPlot_geom_area__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_area(SWIG_STD_MOVE(*(&arg2)));
@@ -4667,12 +4667,12 @@ datamunge::GGPlot *_wrap_GGPlot_geom_area__SWIG_1_datamunge_f3b579fcb4322d74(dat
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_ribbon__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, datamunge::plot::RGB *_swig_go_3) {
+datamunge::GGPlot *_wrap_GGPlot_geom_ribbon__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, datamunge::graphics::RGB *_swig_go_3) {
   datamunge::GGPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RGB *argp4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGB *argp4 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
@@ -4686,11 +4686,11 @@ datamunge::GGPlot *_wrap_GGPlot_geom_ribbon__SWIG_0_datamunge_f3b579fcb4322d74(d
   arg3 = &arg3_str;
   
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
@@ -4722,20 +4722,20 @@ datamunge::GGPlot *_wrap_GGPlot_geom_ribbon__SWIG_1_datamunge_f3b579fcb4322d74(d
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_geom_density__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::GGPlot *_wrap_GGPlot_geom_density__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
   result = (datamunge::GGPlot *) &(arg1)->geom_density(SWIG_STD_MOVE(*(&arg2)));
@@ -4834,16 +4834,16 @@ datamunge::GGPlot *_wrap_GGPlot_theme_classic_datamunge_f3b579fcb4322d74(datamun
 }
 
 
-datamunge::GGPlot *_wrap_GGPlot_scale_color_manual_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, std::vector< datamunge::plot::RGB > *_swig_go_1) {
+datamunge::GGPlot *_wrap_GGPlot_scale_color_manual_datamunge_f3b579fcb4322d74(datamunge::GGPlot *_swig_go_0, std::vector< datamunge::graphics::RGB > *_swig_go_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  std::vector< datamunge::plot::RGB > *arg2 = 0 ;
+  std::vector< datamunge::graphics::RGB > *arg2 = 0 ;
   datamunge::GGPlot *result = 0 ;
   datamunge::GGPlot *_swig_go_result;
   
   arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
-  arg2 = *(std::vector< datamunge::plot::RGB > **)&_swig_go_1; 
+  arg2 = *(std::vector< datamunge::graphics::RGB > **)&_swig_go_1; 
   
-  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB > const &)*arg2);
+  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::graphics::RGB > const &)*arg2);
   *(datamunge::GGPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
@@ -5487,54 +5487,54 @@ datamunge::DataFrame *_wrap_LM_anova_datamunge_f3b579fcb4322d74(datamunge::LM *_
 }
 
 
-datamunge::plot::RPlot *_wrap_LM_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::LM *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_LM_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
   
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LM_plot_normal_qq_datamunge_f3b579fcb4322d74(datamunge::LM *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_LM_plot_normal_qq_datamunge_f3b579fcb4322d74(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
   
   result = ((datamunge::LM const *)arg1)->plot_normal_qq();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LM_plot_scale_location_datamunge_f3b579fcb4322d74(datamunge::LM *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_LM_plot_scale_location_datamunge_f3b579fcb4322d74(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
   
   result = ((datamunge::LM const *)arg1)->plot_scale_location();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LM_plot_residuals_vs_leverage_datamunge_f3b579fcb4322d74(datamunge::LM *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_LM_plot_residuals_vs_leverage_datamunge_f3b579fcb4322d74(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
   
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -7389,15 +7389,15 @@ datamunge::DataFrame *_wrap_LDA_predict_frame_datamunge_f3b579fcb4322d74(datamun
 }
 
 
-datamunge::plot::RPlot *_wrap_LDA_plot_discriminants_datamunge_f3b579fcb4322d74(datamunge::LDA *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_LDA_plot_discriminants_datamunge_f3b579fcb4322d74(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LDA **)&_swig_go_0; 
   
   result = ((datamunge::LDA const *)arg1)->plot_discriminants();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -8037,13 +8037,13 @@ datamunge::DataFrame *_wrap_DecisionTreeClassifier_predict_frame_datamunge_f3b57
 }
 
 
-datamunge::plot::RPlot *_wrap_DecisionTreeClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_DecisionTreeClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -8057,18 +8057,18 @@ datamunge::plot::RPlot *_wrap_DecisionTreeClassifier_plot_classification_datamun
   
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeClassifier **)&_swig_go_0; 
   
@@ -8082,17 +8082,17 @@ datamunge::plot::RPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeClassifier **)&_swig_go_0; 
   
@@ -8105,7 +8105,7 @@ datamunge::plot::RPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG
   
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -8359,28 +8359,28 @@ std::vector< double > *_wrap_DecisionTreeRegressor_predict_datamunge_f3b579fcb43
 }
 
 
-datamunge::plot::RPlot *_wrap_DecisionTreeRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_DecisionTreeRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeRegressor **)&_swig_go_0; 
   
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_DecisionTreeRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_DecisionTreeRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeRegressor **)&_swig_go_0; 
   
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -8847,13 +8847,13 @@ datamunge::DataFrame *_wrap_RandomForestClassifier_predict_frame_datamunge_f3b57
 }
 
 
-datamunge::plot::RPlot *_wrap_RandomForestClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::RandomForestClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_RandomForestClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::RandomForestClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -8867,18 +8867,18 @@ datamunge::plot::RPlot *_wrap_RandomForestClassifier_plot_classification_datamun
   
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::RandomForestClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::RandomForestClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestClassifier **)&_swig_go_0; 
   
@@ -8892,17 +8892,17 @@ datamunge::plot::RPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::RandomForestClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::RandomForestClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestClassifier **)&_swig_go_0; 
   
@@ -8915,7 +8915,7 @@ datamunge::plot::RPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG
   
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -9332,28 +9332,28 @@ std::vector< double > *_wrap_RandomForestRegressor_predict_datamunge_f3b579fcb43
 }
 
 
-datamunge::plot::RPlot *_wrap_RandomForestRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::RandomForestRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_RandomForestRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestRegressor **)&_swig_go_0; 
   
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RandomForestRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::RandomForestRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_RandomForestRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestRegressor **)&_swig_go_0; 
   
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -9782,54 +9782,54 @@ std::vector< double > *_wrap_ElasticNet_predict_datamunge_f3b579fcb4322d74(datam
 }
 
 
-datamunge::plot::RPlot *_wrap_ElasticNet_plot_coefficient_path_datamunge_f3b579fcb4322d74(datamunge::ElasticNet *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_ElasticNet_plot_coefficient_path_datamunge_f3b579fcb4322d74(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_ElasticNet_plot_cv_curve_datamunge_f3b579fcb4322d74(datamunge::ElasticNet *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_ElasticNet_plot_cv_curve_datamunge_f3b579fcb4322d74(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_ElasticNet_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::ElasticNet *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_ElasticNet_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_ElasticNet_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::ElasticNet *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_ElasticNet_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -10202,54 +10202,54 @@ std::vector< double > *_wrap_Ridge_predict_datamunge_f3b579fcb4322d74(datamunge:
 }
 
 
-datamunge::plot::RPlot *_wrap_Ridge_plot_coefficient_path_datamunge_f3b579fcb4322d74(datamunge::Ridge *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_Ridge_plot_coefficient_path_datamunge_f3b579fcb4322d74(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
   
   result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Ridge_plot_cv_curve_datamunge_f3b579fcb4322d74(datamunge::Ridge *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_Ridge_plot_cv_curve_datamunge_f3b579fcb4322d74(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
   
   result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Ridge_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::Ridge *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_Ridge_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
   
   result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Ridge_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::Ridge *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_Ridge_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
   
   result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -10635,54 +10635,54 @@ std::vector< double > *_wrap_Lasso_predict_datamunge_f3b579fcb4322d74(datamunge:
 }
 
 
-datamunge::plot::RPlot *_wrap_Lasso_plot_coefficient_path_datamunge_f3b579fcb4322d74(datamunge::Lasso *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_Lasso_plot_coefficient_path_datamunge_f3b579fcb4322d74(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
   
   result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Lasso_plot_cv_curve_datamunge_f3b579fcb4322d74(datamunge::Lasso *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_Lasso_plot_cv_curve_datamunge_f3b579fcb4322d74(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
   
   result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Lasso_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::Lasso *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_Lasso_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
   
   result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Lasso_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::Lasso *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_Lasso_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
   
   result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -10947,13 +10947,13 @@ datamunge::DataFrame *_wrap_KNNClassifier_predict_frame_datamunge_f3b579fcb4322d
 }
 
 
-datamunge::plot::RPlot *_wrap_KNNClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::KNNClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_KNNClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::KNNClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::KNNClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -10967,18 +10967,18 @@ datamunge::plot::RPlot *_wrap_KNNClassifier_plot_classification_datamunge_f3b579
   
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::KNNClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::KNNClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::KNNClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNClassifier **)&_swig_go_0; 
   
@@ -10992,17 +10992,17 @@ datamunge::plot::RPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_0_datamu
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::KNNClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::KNNClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::KNNClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNClassifier **)&_swig_go_0; 
   
@@ -11015,7 +11015,7 @@ datamunge::plot::RPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_1_datamu
   
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -11265,28 +11265,28 @@ std::vector< double > *_wrap_KNNRegressor_predict_datamunge_f3b579fcb4322d74(dat
 }
 
 
-datamunge::plot::RPlot *_wrap_KNNRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::KNNRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_KNNRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNRegressor **)&_swig_go_0; 
   
   result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KNNRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::KNNRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_KNNRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNRegressor **)&_swig_go_0; 
   
   result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -11983,58 +11983,58 @@ void _wrap_PCA_print_summary_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go
 }
 
 
-datamunge::plot::RPlot *_wrap_PCA_plot_scores__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_PCA_plot_scores__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::PCA *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::PCA **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_PCA_plot_scores__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_PCA_plot_scores__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, long long _swig_go_1) {
   datamunge::PCA *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::PCA **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_PCA_plot_scores__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_PCA_plot_scores__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0) {
   datamunge::PCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::PCA **)&_swig_go_0; 
   
   result = ((datamunge::PCA const *)arg1)->plot_scores();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_PCA_plot_scores_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_PCA_plot_scores_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::PCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::PCA **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -12042,52 +12042,52 @@ datamunge::plot::RPlot *_wrap_PCA_plot_scores_grouped__SWIG_0_datamunge_f3b579fc
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_PCA_plot_scores_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_PCA_plot_scores_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::PCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::PCA **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_PCA_plot_scores_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_PCA_plot_scores_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::PCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::PCA **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_PCA_plot_scree_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_PCA_plot_scree_datamunge_f3b579fcb4322d74(datamunge::PCA *_swig_go_0) {
   datamunge::PCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::PCA **)&_swig_go_0; 
   
   result = ((datamunge::PCA const *)arg1)->plot_scree();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -12348,58 +12348,58 @@ void _wrap_MDS_print_summary_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go
 }
 
 
-datamunge::plot::RPlot *_wrap_MDS_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_MDS_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::MDS *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::MDS **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_MDS_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_MDS_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, long long _swig_go_1) {
   datamunge::MDS *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::MDS **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_MDS_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_MDS_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0) {
   datamunge::MDS *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::MDS **)&_swig_go_0; 
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_MDS_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_MDS_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::MDS *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::MDS **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -12407,39 +12407,39 @@ datamunge::plot::RPlot *_wrap_MDS_plot_embedding_grouped__SWIG_0_datamunge_f3b57
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_MDS_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_MDS_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::MDS *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::MDS **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_MDS_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_MDS_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::MDS *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::MDS *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::MDS **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -12745,58 +12745,58 @@ void _wrap_Isomap_print_summary_datamunge_f3b579fcb4322d74(datamunge::Isomap *_s
 }
 
 
-datamunge::plot::RPlot *_wrap_Isomap_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_Isomap_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::Isomap *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Isomap **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Isomap_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_Isomap_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, long long _swig_go_1) {
   datamunge::Isomap *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Isomap **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Isomap_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_Isomap_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0) {
   datamunge::Isomap *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Isomap **)&_swig_go_0; 
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Isomap_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_Isomap_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::Isomap *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Isomap **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -12804,39 +12804,39 @@ datamunge::plot::RPlot *_wrap_Isomap_plot_embedding_grouped__SWIG_0_datamunge_f3
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Isomap_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_Isomap_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::Isomap *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Isomap **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_Isomap_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_Isomap_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::Isomap *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::Isomap *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Isomap **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -13178,58 +13178,58 @@ void _wrap_LLE_print_summary_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go
 }
 
 
-datamunge::plot::RPlot *_wrap_LLE_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_LLE_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::LLE *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LLE **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LLE_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_LLE_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, long long _swig_go_1) {
   datamunge::LLE *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LLE **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LLE_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_LLE_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0) {
   datamunge::LLE *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LLE **)&_swig_go_0; 
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LLE_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_LLE_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::LLE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LLE **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -13237,39 +13237,39 @@ datamunge::plot::RPlot *_wrap_LLE_plot_embedding_grouped__SWIG_0_datamunge_f3b57
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LLE_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_LLE_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::LLE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LLE **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LLE_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_LLE_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::LLE *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::LLE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LLE **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -14072,58 +14072,58 @@ void _wrap_TSNE_print_summary_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_
 }
 
 
-datamunge::plot::RPlot *_wrap_TSNE_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_TSNE_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::TSNE *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::TSNE **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_TSNE_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_TSNE_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, long long _swig_go_1) {
   datamunge::TSNE *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::TSNE **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_TSNE_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_TSNE_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0) {
   datamunge::TSNE *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::TSNE **)&_swig_go_0; 
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_TSNE_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_TSNE_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::TSNE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::TSNE **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -14131,39 +14131,39 @@ datamunge::plot::RPlot *_wrap_TSNE_plot_embedding_grouped__SWIG_0_datamunge_f3b5
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_TSNE_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_TSNE_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::TSNE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::TSNE **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_TSNE_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_TSNE_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::TSNE *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::TSNE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::TSNE **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -14450,58 +14450,58 @@ void _wrap_LaplacianEigenmaps_print_summary_datamunge_f3b579fcb4322d74(datamunge
 }
 
 
-datamunge::plot::RPlot *_wrap_LaplacianEigenmaps_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_LaplacianEigenmaps_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LaplacianEigenmaps **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LaplacianEigenmaps_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_LaplacianEigenmaps_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, long long _swig_go_1) {
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LaplacianEigenmaps **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LaplacianEigenmaps_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_LaplacianEigenmaps_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0) {
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LaplacianEigenmaps **)&_swig_go_0; 
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LaplacianEigenmaps **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -14509,39 +14509,39 @@ datamunge::plot::RPlot *_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0_
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LaplacianEigenmaps **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::LaplacianEigenmaps *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LaplacianEigenmaps **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -14877,58 +14877,58 @@ void _wrap_DiffusionMaps_print_summary_datamunge_f3b579fcb4322d74(datamunge::Dif
 }
 
 
-datamunge::plot::RPlot *_wrap_DiffusionMaps_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_DiffusionMaps_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DiffusionMaps **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_DiffusionMaps_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_DiffusionMaps_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, long long _swig_go_1) {
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DiffusionMaps **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_DiffusionMaps_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_DiffusionMaps_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0) {
   datamunge::DiffusionMaps *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DiffusionMaps **)&_swig_go_0; 
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DiffusionMaps **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -14936,39 +14936,39 @@ datamunge::plot::RPlot *_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0_datam
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DiffusionMaps **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::DiffusionMaps *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DiffusionMaps **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -15381,58 +15381,58 @@ void _wrap_KernelPCA_print_summary_datamunge_f3b579fcb4322d74(datamunge::KernelP
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelPCA_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_KernelPCA_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::KernelPCA *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelPCA **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelPCA_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_KernelPCA_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, long long _swig_go_1) {
   datamunge::KernelPCA *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelPCA **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelPCA_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_KernelPCA_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0) {
   datamunge::KernelPCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelPCA **)&_swig_go_0; 
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelPCA_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_KernelPCA_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::KernelPCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelPCA **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -15440,39 +15440,39 @@ datamunge::plot::RPlot *_wrap_KernelPCA_plot_embedding_grouped__SWIG_0_datamunge
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelPCA_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_KernelPCA_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::KernelPCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelPCA **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelPCA_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_KernelPCA_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::KernelPCA *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::KernelPCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelPCA **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -15943,58 +15943,58 @@ void _wrap_SammonMapping_print_summary_datamunge_f3b579fcb4322d74(datamunge::Sam
 }
 
 
-datamunge::plot::RPlot *_wrap_SammonMapping_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_SammonMapping_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::SammonMapping *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::SammonMapping **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_SammonMapping_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_SammonMapping_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, long long _swig_go_1) {
   datamunge::SammonMapping *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::SammonMapping **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_SammonMapping_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_SammonMapping_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0) {
   datamunge::SammonMapping *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::SammonMapping **)&_swig_go_0; 
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_SammonMapping_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_SammonMapping_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::SammonMapping *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::SammonMapping **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -16002,39 +16002,39 @@ datamunge::plot::RPlot *_wrap_SammonMapping_plot_embedding_grouped__SWIG_0_datam
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_SammonMapping_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_SammonMapping_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::SammonMapping *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::SammonMapping **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_SammonMapping_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_SammonMapping_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::SammonMapping *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::SammonMapping *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::SammonMapping **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -16631,58 +16631,58 @@ void _wrap_UMAP_print_summary_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_
 }
 
 
-datamunge::plot::RPlot *_wrap_UMAP_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_UMAP_plot_embedding__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::UMAP *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::UMAP **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_UMAP_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_UMAP_plot_embedding__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, long long _swig_go_1) {
   datamunge::UMAP *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::UMAP **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_UMAP_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_UMAP_plot_embedding__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0) {
   datamunge::UMAP *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::UMAP **)&_swig_go_0; 
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_UMAP_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_UMAP_plot_embedding_grouped__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::UMAP *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::UMAP **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
@@ -16690,39 +16690,39 @@ datamunge::plot::RPlot *_wrap_UMAP_plot_embedding_grouped__SWIG_0_datamunge_f3b5
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_UMAP_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_UMAP_plot_embedding_grouped__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::UMAP *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::UMAP **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_UMAP_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_UMAP_plot_embedding_grouped__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::UMAP *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::UMAP *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::UMAP **)&_swig_go_0; 
   arg2 = *(std::vector< std::string > **)&_swig_go_1; 
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -17688,13 +17688,13 @@ datamunge::DataFrame *_wrap_GBMClassifier_predict_frame_datamunge_f3b579fcb4322d
 }
 
 
-datamunge::plot::RPlot *_wrap_GBMClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::GBMClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_GBMClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::GBMClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::GBMClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -17708,18 +17708,18 @@ datamunge::plot::RPlot *_wrap_GBMClassifier_plot_classification_datamunge_f3b579
   
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GBMClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GBMClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
   
@@ -17733,17 +17733,17 @@ datamunge::plot::RPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_0_datamu
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::GBMClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::GBMClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
   
@@ -17756,20 +17756,20 @@ datamunge::plot::RPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_1_datamu
   
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GBMClassifier_plot_training_deviance_datamunge_f3b579fcb4322d74(datamunge::GBMClassifier *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GBMClassifier_plot_training_deviance_datamunge_f3b579fcb4322d74(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -18126,41 +18126,41 @@ std::vector< double > *_wrap_GBMRegressor_predict_datamunge_f3b579fcb4322d74(dat
 }
 
 
-datamunge::plot::RPlot *_wrap_GBMRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::GBMRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GBMRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMRegressor **)&_swig_go_0; 
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GBMRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::GBMRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GBMRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMRegressor **)&_swig_go_0; 
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GBMRegressor_plot_training_deviance_datamunge_f3b579fcb4322d74(datamunge::GBMRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GBMRegressor_plot_training_deviance_datamunge_f3b579fcb4322d74(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMRegressor **)&_swig_go_0; 
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -18680,13 +18680,13 @@ datamunge::DataFrame *_wrap_XGBoostClassifier_predict_frame_datamunge_f3b579fcb4
 }
 
 
-datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::XGBoostClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_XGBoostClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::XGBoostClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -18700,18 +18700,18 @@ datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_classification_datamunge_f3
   
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::XGBoostClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::XGBoostClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
   
@@ -18725,17 +18725,17 @@ datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0_da
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::XGBoostClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::XGBoostClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
   
@@ -18748,20 +18748,20 @@ datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1_da
   
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_training_deviance_datamunge_f3b579fcb4322d74(datamunge::XGBoostClassifier *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_XGBoostClassifier_plot_training_deviance_datamunge_f3b579fcb4322d74(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -19266,41 +19266,41 @@ std::vector< double > *_wrap_XGBoostRegressor_predict_datamunge_f3b579fcb4322d74
 }
 
 
-datamunge::plot::RPlot *_wrap_XGBoostRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::XGBoostRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_XGBoostRegressor_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostRegressor **)&_swig_go_0; 
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_XGBoostRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::XGBoostRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_XGBoostRegressor_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostRegressor **)&_swig_go_0; 
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_XGBoostRegressor_plot_training_deviance_datamunge_f3b579fcb4322d74(datamunge::XGBoostRegressor *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_XGBoostRegressor_plot_training_deviance_datamunge_f3b579fcb4322d74(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostRegressor **)&_swig_go_0; 
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -19592,73 +19592,73 @@ std::vector< double > *_wrap_KernelRegression_predict_datamunge_f3b579fcb4322d74
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelRegression_plot_fit__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_KernelRegression_plot_fit__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2) {
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelRegression_plot_fit__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_KernelRegression_plot_fit__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelRegression_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_KernelRegression_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelRegression_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_KernelRegression_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_KernelRegression_plot_cv_curve_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_KernelRegression_plot_cv_curve_datamunge_f3b579fcb4322d74(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -20075,13 +20075,13 @@ datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_2_data
 }
 
 
-datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2, double _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2, double _swig_go_3) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
   double arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -20089,78 +20089,78 @@ datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_0_datamun
   arg4 = (double)_swig_go_3; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GaussianProcessRegression_plot_predicted_vs_actual_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GaussianProcessRegression_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_length_scale_profile_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GaussianProcessRegression_plot_length_scale_profile_datamunge_f3b579fcb4322d74(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -20366,13 +20366,13 @@ datamunge::DataFrame *_wrap_NaiveBayesClassifier_predict_frame_datamunge_f3b579f
 }
 
 
-datamunge::plot::RPlot *_wrap_NaiveBayesClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::NaiveBayesClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_NaiveBayesClassifier_plot_classification_datamunge_f3b579fcb4322d74(datamunge::NaiveBayesClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::NaiveBayesClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -20386,18 +20386,18 @@ datamunge::plot::RPlot *_wrap_NaiveBayesClassifier_plot_classification_datamunge
   
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::NaiveBayesClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::NaiveBayesClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::NaiveBayesClassifier **)&_swig_go_0; 
   
@@ -20411,17 +20411,17 @@ datamunge::plot::RPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::NaiveBayesClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::NaiveBayesClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::NaiveBayesClassifier **)&_swig_go_0; 
   
@@ -20434,7 +20434,7 @@ datamunge::plot::RPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1
   
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -21004,54 +21004,54 @@ datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_2_datamunge_f3b579fcb4322d74
 }
 
 
-datamunge::plot::RPlot *_wrap_GLM_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::GLM *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GLM_plot_residuals_vs_fitted_datamunge_f3b579fcb4322d74(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
   
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GLM_plot_normal_qq_datamunge_f3b579fcb4322d74(datamunge::GLM *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GLM_plot_normal_qq_datamunge_f3b579fcb4322d74(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
   
   result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GLM_plot_scale_location_datamunge_f3b579fcb4322d74(datamunge::GLM *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GLM_plot_scale_location_datamunge_f3b579fcb4322d74(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
   
   result = ((datamunge::GLM const *)arg1)->plot_scale_location();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_GLM_plot_residuals_vs_leverage_datamunge_f3b579fcb4322d74(datamunge::GLM *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_GLM_plot_residuals_vs_leverage_datamunge_f3b579fcb4322d74(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
   
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
@@ -23572,11 +23572,11 @@ void _wrap_delete_Var_datamunge_f3b579fcb4322d74(datamunge::Var *_swig_go_0) {
 }
 
 
-void _wrap_RGB_r_set_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0, intgo _swig_go_1) {
-  datamunge::plot::RGB *arg1 = 0 ;
+void _wrap_RGB_r_set_datamunge_f3b579fcb4322d74(datamunge::graphics::RGB *_swig_go_0, intgo _swig_go_1) {
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   
-  arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RGB **)&_swig_go_0; 
   arg2 = (int)_swig_go_1; 
   
   if (arg1) (arg1)->r = arg2;
@@ -23584,12 +23584,12 @@ void _wrap_RGB_r_set_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0
 }
 
 
-intgo _wrap_RGB_r_get_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0) {
-  datamunge::plot::RGB *arg1 = 0 ;
+intgo _wrap_RGB_r_get_datamunge_f3b579fcb4322d74(datamunge::graphics::RGB *_swig_go_0) {
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
   
-  arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RGB **)&_swig_go_0; 
   
   result = (int) ((arg1)->r);
   _swig_go_result = result; 
@@ -23597,11 +23597,11 @@ intgo _wrap_RGB_r_get_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_
 }
 
 
-void _wrap_RGB_g_set_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0, intgo _swig_go_1) {
-  datamunge::plot::RGB *arg1 = 0 ;
+void _wrap_RGB_g_set_datamunge_f3b579fcb4322d74(datamunge::graphics::RGB *_swig_go_0, intgo _swig_go_1) {
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   
-  arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RGB **)&_swig_go_0; 
   arg2 = (int)_swig_go_1; 
   
   if (arg1) (arg1)->g = arg2;
@@ -23609,12 +23609,12 @@ void _wrap_RGB_g_set_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0
 }
 
 
-intgo _wrap_RGB_g_get_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0) {
-  datamunge::plot::RGB *arg1 = 0 ;
+intgo _wrap_RGB_g_get_datamunge_f3b579fcb4322d74(datamunge::graphics::RGB *_swig_go_0) {
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
   
-  arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RGB **)&_swig_go_0; 
   
   result = (int) ((arg1)->g);
   _swig_go_result = result; 
@@ -23622,11 +23622,11 @@ intgo _wrap_RGB_g_get_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_
 }
 
 
-void _wrap_RGB_b_set_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0, intgo _swig_go_1) {
-  datamunge::plot::RGB *arg1 = 0 ;
+void _wrap_RGB_b_set_datamunge_f3b579fcb4322d74(datamunge::graphics::RGB *_swig_go_0, intgo _swig_go_1) {
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   
-  arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RGB **)&_swig_go_0; 
   arg2 = (int)_swig_go_1; 
   
   if (arg1) (arg1)->b = arg2;
@@ -23634,12 +23634,12 @@ void _wrap_RGB_b_set_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0
 }
 
 
-intgo _wrap_RGB_b_get_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0) {
-  datamunge::plot::RGB *arg1 = 0 ;
+intgo _wrap_RGB_b_get_datamunge_f3b579fcb4322d74(datamunge::graphics::RGB *_swig_go_0) {
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
   
-  arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RGB **)&_swig_go_0; 
   
   result = (int) ((arg1)->b);
   _swig_go_result = result; 
@@ -23647,11 +23647,11 @@ intgo _wrap_RGB_b_get_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_
 }
 
 
-void _wrap_RGB_alpha_set_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0, double _swig_go_1) {
-  datamunge::plot::RGB *arg1 = 0 ;
+void _wrap_RGB_alpha_set_datamunge_f3b579fcb4322d74(datamunge::graphics::RGB *_swig_go_0, double _swig_go_1) {
+  datamunge::graphics::RGB *arg1 = 0 ;
   double arg2 ;
   
-  arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RGB **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
   if (arg1) (arg1)->alpha = arg2;
@@ -23659,12 +23659,12 @@ void _wrap_RGB_alpha_set_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_
 }
 
 
-double _wrap_RGB_alpha_get_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0) {
-  datamunge::plot::RGB *arg1 = 0 ;
+double _wrap_RGB_alpha_get_datamunge_f3b579fcb4322d74(datamunge::graphics::RGB *_swig_go_0) {
+  datamunge::graphics::RGB *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RGB **)&_swig_go_0; 
   
   result = (double) ((arg1)->alpha);
   _swig_go_result = result; 
@@ -23672,57 +23672,57 @@ double _wrap_RGB_alpha_get_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swi
 }
 
 
-datamunge::plot::RGB *_wrap_new_RGB__SWIG_0_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::RGB *result = 0 ;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_new_RGB__SWIG_0_datamunge_f3b579fcb4322d74() {
+  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGB *_swig_go_result;
   
   
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_0();
-  *(datamunge::plot::RGB **)&_swig_go_result = (datamunge::plot::RGB *)result; 
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_0();
+  *(datamunge::graphics::RGB **)&_swig_go_result = (datamunge::graphics::RGB *)result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RGB *_wrap_new_RGB__SWIG_1_datamunge_f3b579fcb4322d74(intgo _swig_go_0, intgo _swig_go_1, intgo _swig_go_2, double _swig_go_3) {
+datamunge::graphics::RGB *_wrap_new_RGB__SWIG_1_datamunge_f3b579fcb4322d74(intgo _swig_go_0, intgo _swig_go_1, intgo _swig_go_2, double _swig_go_3) {
   int arg1 ;
   int arg2 ;
   int arg3 ;
   double arg4 ;
-  datamunge::plot::RGB *result = 0 ;
-  datamunge::plot::RGB *_swig_go_result;
+  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGB *_swig_go_result;
   
   arg1 = (int)_swig_go_0; 
   arg2 = (int)_swig_go_1; 
   arg3 = (int)_swig_go_2; 
   arg4 = (double)_swig_go_3; 
   
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
-  *(datamunge::plot::RGB **)&_swig_go_result = (datamunge::plot::RGB *)result; 
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
+  *(datamunge::graphics::RGB **)&_swig_go_result = (datamunge::graphics::RGB *)result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RGB *_wrap_new_RGB__SWIG_2_datamunge_f3b579fcb4322d74(intgo _swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
+datamunge::graphics::RGB *_wrap_new_RGB__SWIG_2_datamunge_f3b579fcb4322d74(intgo _swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
   int arg1 ;
   int arg2 ;
   int arg3 ;
-  datamunge::plot::RGB *result = 0 ;
-  datamunge::plot::RGB *_swig_go_result;
+  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGB *_swig_go_result;
   
   arg1 = (int)_swig_go_0; 
   arg2 = (int)_swig_go_1; 
   arg3 = (int)_swig_go_2; 
   
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
-  *(datamunge::plot::RGB **)&_swig_go_result = (datamunge::plot::RGB *)result; 
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
+  *(datamunge::graphics::RGB **)&_swig_go_result = (datamunge::graphics::RGB *)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_RGB_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_0) {
-  datamunge::plot::RGB *arg1 = 0 ;
+void _wrap_delete_RGB_datamunge_f3b579fcb4322d74(datamunge::graphics::RGB *_swig_go_0) {
+  datamunge::graphics::RGB *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RGB **)&_swig_go_0; 
   
   delete arg1;
   
@@ -23730,11 +23730,11 @@ void _wrap_delete_RGB_datamunge_f3b579fcb4322d74(datamunge::plot::RGB *_swig_go_
 
 
 intgo _wrap_Kind_Scatter_DataSeries_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries::Kind result;
   intgo _swig_go_result;
   
   
-  result = datamunge::plot::DataSeries::Kind::Scatter;
+  result = datamunge::graphics::DataSeries::Kind::Scatter;
   
   _swig_go_result = (intgo)result; 
   return _swig_go_result;
@@ -23742,11 +23742,11 @@ intgo _wrap_Kind_Scatter_DataSeries_datamunge_f3b579fcb4322d74() {
 
 
 intgo _wrap_Kind_Line_DataSeries_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries::Kind result;
   intgo _swig_go_result;
   
   
-  result = datamunge::plot::DataSeries::Kind::Line;
+  result = datamunge::graphics::DataSeries::Kind::Line;
   
   _swig_go_result = (intgo)result; 
   return _swig_go_result;
@@ -23754,11 +23754,11 @@ intgo _wrap_Kind_Line_DataSeries_datamunge_f3b579fcb4322d74() {
 
 
 intgo _wrap_Kind_Bar_DataSeries_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries::Kind result;
   intgo _swig_go_result;
   
   
-  result = datamunge::plot::DataSeries::Kind::Bar;
+  result = datamunge::graphics::DataSeries::Kind::Bar;
   
   _swig_go_result = (intgo)result; 
   return _swig_go_result;
@@ -23766,11 +23766,11 @@ intgo _wrap_Kind_Bar_DataSeries_datamunge_f3b579fcb4322d74() {
 
 
 intgo _wrap_Kind_Box_DataSeries_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries::Kind result;
   intgo _swig_go_result;
   
   
-  result = datamunge::plot::DataSeries::Kind::Box;
+  result = datamunge::graphics::DataSeries::Kind::Box;
   
   _swig_go_result = (intgo)result; 
   return _swig_go_result;
@@ -23778,11 +23778,11 @@ intgo _wrap_Kind_Box_DataSeries_datamunge_f3b579fcb4322d74() {
 
 
 intgo _wrap_Kind_Polygon_DataSeries_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries::Kind result;
   intgo _swig_go_result;
   
   
-  result = datamunge::plot::DataSeries::Kind::Polygon;
+  result = datamunge::graphics::DataSeries::Kind::Polygon;
   
   _swig_go_result = (intgo)result; 
   return _swig_go_result;
@@ -23790,11 +23790,11 @@ intgo _wrap_Kind_Polygon_DataSeries_datamunge_f3b579fcb4322d74() {
 
 
 intgo _wrap_Kind_Text_DataSeries_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries::Kind result;
   intgo _swig_go_result;
   
   
-  result = datamunge::plot::DataSeries::Kind::Text;
+  result = datamunge::graphics::DataSeries::Kind::Text;
   
   _swig_go_result = (intgo)result; 
   return _swig_go_result;
@@ -23802,47 +23802,47 @@ intgo _wrap_Kind_Text_DataSeries_datamunge_f3b579fcb4322d74() {
 
 
 intgo _wrap_Kind_Segment_DataSeries_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries::Kind result;
   intgo _swig_go_result;
   
   
-  result = datamunge::plot::DataSeries::Kind::Segment;
+  result = datamunge::graphics::DataSeries::Kind::Segment;
   
   _swig_go_result = (intgo)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_DataSeries_kind_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0, intgo _swig_go_1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind arg2 ;
+void _wrap_DataSeries_kind_set_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0, intgo _swig_go_1) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind arg2 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
-  arg2 = (datamunge::plot::DataSeries::Kind)_swig_go_1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
+  arg2 = (datamunge::graphics::DataSeries::Kind)_swig_go_1; 
   
   if (arg1) (arg1)->kind = arg2;
   
 }
 
 
-intgo _wrap_DataSeries_kind_get_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind result;
+intgo _wrap_DataSeries_kind_get_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind result;
   intgo _swig_go_result;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
-  result = (datamunge::plot::DataSeries::Kind) ((arg1)->kind);
+  result = (datamunge::graphics::DataSeries::Kind) ((arg1)->kind);
   _swig_go_result = (intgo)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_DataSeries_x_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0, std::vector< double > *_swig_go_1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+void _wrap_DataSeries_x_set_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0, std::vector< double > *_swig_go_1) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   arg2 = *(std::vector< double > **)&_swig_go_1; 
   
   if (arg1) (arg1)->x = *arg2;
@@ -23850,12 +23850,12 @@ void _wrap_DataSeries_x_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeri
 }
 
 
-std::vector< double > *_wrap_DataSeries_x_get_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+std::vector< double > *_wrap_DataSeries_x_get_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
   result = (std::vector< double > *)& ((arg1)->x);
   *(std::vector< double > **)&_swig_go_result = (std::vector< double > *)result; 
@@ -23863,11 +23863,11 @@ std::vector< double > *_wrap_DataSeries_x_get_datamunge_f3b579fcb4322d74(datamun
 }
 
 
-void _wrap_DataSeries_y_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0, std::vector< double > *_swig_go_1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+void _wrap_DataSeries_y_set_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0, std::vector< double > *_swig_go_1) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   arg2 = *(std::vector< double > **)&_swig_go_1; 
   
   if (arg1) (arg1)->y = *arg2;
@@ -23875,12 +23875,12 @@ void _wrap_DataSeries_y_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeri
 }
 
 
-std::vector< double > *_wrap_DataSeries_y_get_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+std::vector< double > *_wrap_DataSeries_y_get_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
   result = (std::vector< double > *)& ((arg1)->y);
   *(std::vector< double > **)&_swig_go_result = (std::vector< double > *)result; 
@@ -23888,11 +23888,11 @@ std::vector< double > *_wrap_DataSeries_y_get_datamunge_f3b579fcb4322d74(datamun
 }
 
 
-void _wrap_DataSeries_label_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+void _wrap_DataSeries_label_set_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
@@ -23903,12 +23903,12 @@ void _wrap_DataSeries_label_set_datamunge_f3b579fcb4322d74(datamunge::plot::Data
 }
 
 
-_gostring_ _wrap_DataSeries_label_get_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+_gostring_ _wrap_DataSeries_label_get_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
   result = (std::string *) & ((arg1)->label);
   _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
@@ -23916,36 +23916,36 @@ _gostring_ _wrap_DataSeries_label_get_datamunge_f3b579fcb4322d74(datamunge::plot
 }
 
 
-void _wrap_DataSeries_color_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+void _wrap_DataSeries_color_set_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
-  arg2 = *(datamunge::plot::RGB **)&_swig_go_1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
+  arg2 = *(datamunge::graphics::RGB **)&_swig_go_1; 
   
   if (arg1) (arg1)->color = *arg2;
   
 }
 
 
-datamunge::plot::RGB *_wrap_DataSeries_color_get_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_DataSeries_color_get_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
-  *(datamunge::plot::RGB **)&_swig_go_result = (datamunge::plot::RGB *)result; 
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  *(datamunge::graphics::RGB **)&_swig_go_result = (datamunge::graphics::RGB *)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_DataSeries_stroke_width_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0, double _swig_go_1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+void _wrap_DataSeries_stroke_width_set_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0, double _swig_go_1) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
   if (arg1) (arg1)->stroke_width = arg2;
@@ -23953,12 +23953,12 @@ void _wrap_DataSeries_stroke_width_set_datamunge_f3b579fcb4322d74(datamunge::plo
 }
 
 
-double _wrap_DataSeries_stroke_width_get_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+double _wrap_DataSeries_stroke_width_get_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
   result = (double) ((arg1)->stroke_width);
   _swig_go_result = result; 
@@ -23966,11 +23966,11 @@ double _wrap_DataSeries_stroke_width_get_datamunge_f3b579fcb4322d74(datamunge::p
 }
 
 
-void _wrap_DataSeries_marker_size_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0, double _swig_go_1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+void _wrap_DataSeries_marker_size_set_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0, double _swig_go_1) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
   if (arg1) (arg1)->marker_size = arg2;
@@ -23978,12 +23978,12 @@ void _wrap_DataSeries_marker_size_set_datamunge_f3b579fcb4322d74(datamunge::plot
 }
 
 
-double _wrap_DataSeries_marker_size_get_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+double _wrap_DataSeries_marker_size_get_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
   result = (double) ((arg1)->marker_size);
   _swig_go_result = result; 
@@ -23991,11 +23991,11 @@ double _wrap_DataSeries_marker_size_get_datamunge_f3b579fcb4322d74(datamunge::pl
 }
 
 
-void _wrap_DataSeries_bar_width_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0, double _swig_go_1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+void _wrap_DataSeries_bar_width_set_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0, double _swig_go_1) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
   if (arg1) (arg1)->bar_width = arg2;
@@ -24003,12 +24003,12 @@ void _wrap_DataSeries_bar_width_set_datamunge_f3b579fcb4322d74(datamunge::plot::
 }
 
 
-double _wrap_DataSeries_bar_width_get_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+double _wrap_DataSeries_bar_width_get_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
   result = (double) ((arg1)->bar_width);
   _swig_go_result = result; 
@@ -24016,11 +24016,11 @@ double _wrap_DataSeries_bar_width_get_datamunge_f3b579fcb4322d74(datamunge::plot
 }
 
 
-void _wrap_DataSeries_filled_set_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0, bool _swig_go_1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+void _wrap_DataSeries_filled_set_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0, bool _swig_go_1) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool arg2 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   arg2 = (bool)_swig_go_1; 
   
   if (arg1) (arg1)->filled = arg2;
@@ -24028,12 +24028,12 @@ void _wrap_DataSeries_filled_set_datamunge_f3b579fcb4322d74(datamunge::plot::Dat
 }
 
 
-bool _wrap_DataSeries_filled_get_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+bool _wrap_DataSeries_filled_get_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
   result = (bool) ((arg1)->filled);
   _swig_go_result = result; 
@@ -24041,32 +24041,32 @@ bool _wrap_DataSeries_filled_get_datamunge_f3b579fcb4322d74(datamunge::plot::Dat
 }
 
 
-datamunge::plot::DataSeries *_wrap_new_DataSeries_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::DataSeries *result = 0 ;
-  datamunge::plot::DataSeries *_swig_go_result;
+datamunge::graphics::DataSeries *_wrap_new_DataSeries_datamunge_f3b579fcb4322d74() {
+  datamunge::graphics::DataSeries *result = 0 ;
+  datamunge::graphics::DataSeries *_swig_go_result;
   
   
-  result = (datamunge::plot::DataSeries *)new datamunge::plot::DataSeries();
-  *(datamunge::plot::DataSeries **)&_swig_go_result = (datamunge::plot::DataSeries *)result; 
+  result = (datamunge::graphics::DataSeries *)new datamunge::graphics::DataSeries();
+  *(datamunge::graphics::DataSeries **)&_swig_go_result = (datamunge::graphics::DataSeries *)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_DataSeries_datamunge_f3b579fcb4322d74(datamunge::plot::DataSeries *_swig_go_0) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+void _wrap_delete_DataSeries_datamunge_f3b579fcb4322d74(datamunge::graphics::DataSeries *_swig_go_0) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::DataSeries **)&_swig_go_0; 
   
   delete arg1;
   
 }
 
 
-void _wrap_ABLine_vertical_set_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0, bool _swig_go_1) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+void _wrap_ABLine_vertical_set_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0, bool _swig_go_1) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool arg2 ;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   arg2 = (bool)_swig_go_1; 
   
   if (arg1) (arg1)->vertical = arg2;
@@ -24074,12 +24074,12 @@ void _wrap_ABLine_vertical_set_datamunge_f3b579fcb4322d74(datamunge::plot::ABLin
 }
 
 
-bool _wrap_ABLine_vertical_get_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+bool _wrap_ABLine_vertical_get_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   
   result = (bool) ((arg1)->vertical);
   _swig_go_result = result; 
@@ -24087,11 +24087,11 @@ bool _wrap_ABLine_vertical_get_datamunge_f3b579fcb4322d74(datamunge::plot::ABLin
 }
 
 
-void _wrap_ABLine_value_set_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0, double _swig_go_1) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+void _wrap_ABLine_value_set_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0, double _swig_go_1) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
   if (arg1) (arg1)->value = arg2;
@@ -24099,12 +24099,12 @@ void _wrap_ABLine_value_set_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *
 }
 
 
-double _wrap_ABLine_value_get_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+double _wrap_ABLine_value_get_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   
   result = (double) ((arg1)->value);
   _swig_go_result = result; 
@@ -24112,11 +24112,11 @@ double _wrap_ABLine_value_get_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine
 }
 
 
-void _wrap_ABLine_slope_set_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0, double _swig_go_1) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+void _wrap_ABLine_slope_set_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0, double _swig_go_1) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
   if (arg1) (arg1)->slope = arg2;
@@ -24124,12 +24124,12 @@ void _wrap_ABLine_slope_set_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *
 }
 
 
-double _wrap_ABLine_slope_get_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+double _wrap_ABLine_slope_get_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   
   result = (double) ((arg1)->slope);
   _swig_go_result = result; 
@@ -24137,36 +24137,36 @@ double _wrap_ABLine_slope_get_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine
 }
 
 
-void _wrap_ABLine_color_set_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+void _wrap_ABLine_color_set_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
-  arg2 = *(datamunge::plot::RGB **)&_swig_go_1; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
+  arg2 = *(datamunge::graphics::RGB **)&_swig_go_1; 
   
   if (arg1) (arg1)->color = *arg2;
   
 }
 
 
-datamunge::plot::RGB *_wrap_ABLine_color_get_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0) {
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_ABLine_color_get_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
-  *(datamunge::plot::RGB **)&_swig_go_result = (datamunge::plot::RGB *)result; 
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  *(datamunge::graphics::RGB **)&_swig_go_result = (datamunge::graphics::RGB *)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_ABLine_stroke_width_set_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0, double _swig_go_1) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+void _wrap_ABLine_stroke_width_set_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0, double _swig_go_1) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
   if (arg1) (arg1)->stroke_width = arg2;
@@ -24174,12 +24174,12 @@ void _wrap_ABLine_stroke_width_set_datamunge_f3b579fcb4322d74(datamunge::plot::A
 }
 
 
-double _wrap_ABLine_stroke_width_get_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+double _wrap_ABLine_stroke_width_get_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   
   result = (double) ((arg1)->stroke_width);
   _swig_go_result = result; 
@@ -24187,32 +24187,32 @@ double _wrap_ABLine_stroke_width_get_datamunge_f3b579fcb4322d74(datamunge::plot:
 }
 
 
-datamunge::plot::ABLine *_wrap_new_ABLine_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::ABLine *result = 0 ;
-  datamunge::plot::ABLine *_swig_go_result;
+datamunge::graphics::ABLine *_wrap_new_ABLine_datamunge_f3b579fcb4322d74() {
+  datamunge::graphics::ABLine *result = 0 ;
+  datamunge::graphics::ABLine *_swig_go_result;
   
   
-  result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
-  *(datamunge::plot::ABLine **)&_swig_go_result = (datamunge::plot::ABLine *)result; 
+  result = (datamunge::graphics::ABLine *)new datamunge::graphics::ABLine();
+  *(datamunge::graphics::ABLine **)&_swig_go_result = (datamunge::graphics::ABLine *)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_ABLine_datamunge_f3b579fcb4322d74(datamunge::plot::ABLine *_swig_go_0) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+void _wrap_delete_ABLine_datamunge_f3b579fcb4322d74(datamunge::graphics::ABLine *_swig_go_0) {
+  datamunge::graphics::ABLine *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::ABLine **)&_swig_go_0; 
   
   delete arg1;
   
 }
 
 
-void _wrap_LegendEntry_label_set_datamunge_f3b579fcb4322d74(datamunge::plot::LegendEntry *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+void _wrap_LegendEntry_label_set_datamunge_f3b579fcb4322d74(datamunge::graphics::LegendEntry *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
@@ -24223,12 +24223,12 @@ void _wrap_LegendEntry_label_set_datamunge_f3b579fcb4322d74(datamunge::plot::Leg
 }
 
 
-_gostring_ _wrap_LegendEntry_label_get_datamunge_f3b579fcb4322d74(datamunge::plot::LegendEntry *_swig_go_0) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+_gostring_ _wrap_LegendEntry_label_get_datamunge_f3b579fcb4322d74(datamunge::graphics::LegendEntry *_swig_go_0) {
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&_swig_go_0; 
   
   result = (std::string *) & ((arg1)->label);
   _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
@@ -24236,288 +24236,288 @@ _gostring_ _wrap_LegendEntry_label_get_datamunge_f3b579fcb4322d74(datamunge::plo
 }
 
 
-void _wrap_LegendEntry_color_set_datamunge_f3b579fcb4322d74(datamunge::plot::LegendEntry *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+void _wrap_LegendEntry_color_set_datamunge_f3b579fcb4322d74(datamunge::graphics::LegendEntry *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
-  arg2 = *(datamunge::plot::RGB **)&_swig_go_1; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&_swig_go_0; 
+  arg2 = *(datamunge::graphics::RGB **)&_swig_go_1; 
   
   if (arg1) (arg1)->color = *arg2;
   
 }
 
 
-datamunge::plot::RGB *_wrap_LegendEntry_color_get_datamunge_f3b579fcb4322d74(datamunge::plot::LegendEntry *_swig_go_0) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_LegendEntry_color_get_datamunge_f3b579fcb4322d74(datamunge::graphics::LegendEntry *_swig_go_0) {
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&_swig_go_0; 
   
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
-  *(datamunge::plot::RGB **)&_swig_go_result = (datamunge::plot::RGB *)result; 
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  *(datamunge::graphics::RGB **)&_swig_go_result = (datamunge::graphics::RGB *)result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::LegendEntry *_wrap_new_LegendEntry_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::LegendEntry *result = 0 ;
-  datamunge::plot::LegendEntry *_swig_go_result;
+datamunge::graphics::LegendEntry *_wrap_new_LegendEntry_datamunge_f3b579fcb4322d74() {
+  datamunge::graphics::LegendEntry *result = 0 ;
+  datamunge::graphics::LegendEntry *_swig_go_result;
   
   
-  result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
-  *(datamunge::plot::LegendEntry **)&_swig_go_result = (datamunge::plot::LegendEntry *)result; 
+  result = (datamunge::graphics::LegendEntry *)new datamunge::graphics::LegendEntry();
+  *(datamunge::graphics::LegendEntry **)&_swig_go_result = (datamunge::graphics::LegendEntry *)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_LegendEntry_datamunge_f3b579fcb4322d74(datamunge::plot::LegendEntry *_swig_go_0) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+void _wrap_delete_LegendEntry_datamunge_f3b579fcb4322d74(datamunge::graphics::LegendEntry *_swig_go_0) {
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&_swig_go_0; 
   
   delete arg1;
   
 }
 
 
-void _wrap_delete_Plot_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+void _wrap_delete_Plot_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
   delete arg1;
   
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_size_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
-  datamunge::plot::Plot *arg1 = 0 ;
+datamunge::graphics::Plot *_wrap_Plot_size_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
-  result = (datamunge::plot::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_title_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+datamunge::graphics::Plot *_wrap_Plot_title_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  result = (datamunge::plot::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_x_label_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+datamunge::graphics::Plot *_wrap_Plot_x_label_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  result = (datamunge::plot::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_y_label_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+datamunge::graphics::Plot *_wrap_Plot_y_label_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  result = (datamunge::plot::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_background_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+datamunge::graphics::Plot *_wrap_Plot_background_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
-  result = (datamunge::plot::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_axis_color_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+datamunge::graphics::Plot *_wrap_Plot_axis_color_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
-  result = (datamunge::plot::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_grid_color_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+datamunge::graphics::Plot *_wrap_Plot_grid_color_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
-  result = (datamunge::plot::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_show_grid__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, bool _swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+datamunge::graphics::Plot *_wrap_Plot_show_grid__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, bool _swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   arg2 = (bool)_swig_go_1; 
   
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid(arg2);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid(arg2);
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_show_grid__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+datamunge::graphics::Plot *_wrap_Plot_show_grid__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid();
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid();
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_x_limits_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::Plot *arg1 = 0 ;
+datamunge::graphics::Plot *_wrap_Plot_x_limits_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
-  result = (datamunge::plot::Plot *) &(arg1)->x_limits(arg2,arg3);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->x_limits(arg2,arg3);
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_y_limits_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::Plot *arg1 = 0 ;
+datamunge::graphics::Plot *_wrap_Plot_y_limits_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
-  result = (datamunge::plot::Plot *) &(arg1)->y_limits(arg2,arg3);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->y_limits(arg2,arg3);
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_hide_axes__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, bool _swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+datamunge::graphics::Plot *_wrap_Plot_hide_axes__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, bool _swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   arg2 = (bool)_swig_go_1; 
   
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes(arg2);
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_hide_axes__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+datamunge::graphics::Plot *_wrap_Plot_hide_axes__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes();
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_x_tick_labels_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, std::vector< std::string > *_swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+datamunge::graphics::Plot *_wrap_Plot_x_tick_labels_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
   argp2 = (std::vector< std::string > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -24526,643 +24526,643 @@ datamunge::plot::Plot *_wrap_Plot_x_tick_labels_datamunge_f3b579fcb4322d74(datam
   arg2 = (std::vector< std::string >)*argp2;
   
   
-  result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-long long _wrap_Plot_width_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+long long _wrap_Plot_width_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = ((datamunge::plot::Plot const *)arg1)->width();
+  result = ((datamunge::graphics::Plot const *)arg1)->width();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-long long _wrap_Plot_height_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+long long _wrap_Plot_height_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = ((datamunge::plot::Plot const *)arg1)->height();
+  result = ((datamunge::graphics::Plot const *)arg1)->height();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-_gostring_ _wrap_Plot_title_text_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+_gostring_ _wrap_Plot_title_text_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->title_text();
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->title_text();
   _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
   return _swig_go_result;
 }
 
 
-_gostring_ _wrap_Plot_x_label_text_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+_gostring_ _wrap_Plot_x_label_text_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->x_label_text();
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->x_label_text();
   _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
   return _swig_go_result;
 }
 
 
-_gostring_ _wrap_Plot_y_label_text_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+_gostring_ _wrap_Plot_y_label_text_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->y_label_text();
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->y_label_text();
   _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
   return _swig_go_result;
 }
 
 
-std::vector< datamunge::plot::DataSeries > *_wrap_Plot_series_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::DataSeries > *result = 0 ;
-  std::vector< datamunge::plot::DataSeries > *_swig_go_result;
+std::vector< datamunge::graphics::DataSeries > *_wrap_Plot_series_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::DataSeries > *result = 0 ;
+  std::vector< datamunge::graphics::DataSeries > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)arg1)->series();
-  *(std::vector< datamunge::plot::DataSeries > **)&_swig_go_result = result; 
+  result = (std::vector< datamunge::graphics::DataSeries > *) &((datamunge::graphics::Plot const *)arg1)->series();
+  *(std::vector< datamunge::graphics::DataSeries > **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RGB *_wrap_Plot_background_color_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_Plot_background_color_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = ((datamunge::plot::Plot const *)arg1)->background_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
+  result = ((datamunge::graphics::Plot const *)arg1)->background_color();
+  *(datamunge::graphics::RGB **)&_swig_go_result = new datamunge::graphics::RGB(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RGB *_wrap_Plot_axes_color_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_Plot_axes_color_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = ((datamunge::plot::Plot const *)arg1)->axes_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
+  result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
+  *(datamunge::graphics::RGB **)&_swig_go_result = new datamunge::graphics::RGB(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RGB *_wrap_Plot_major_grid_color_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_Plot_major_grid_color_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = ((datamunge::plot::Plot const *)arg1)->major_grid_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
+  result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
+  *(datamunge::graphics::RGB **)&_swig_go_result = new datamunge::graphics::RGB(result); 
   return _swig_go_result;
 }
 
 
-bool _wrap_Plot_grid_visible_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+bool _wrap_Plot_grid_visible_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (bool)((datamunge::plot::Plot const *)arg1)->grid_visible();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->grid_visible();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-bool _wrap_Plot_has_x_limits_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+bool _wrap_Plot_has_x_limits_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_x_limits();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_x_limits();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-bool _wrap_Plot_has_y_limits_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+bool _wrap_Plot_has_y_limits_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_y_limits();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_y_limits();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-double _wrap_Plot_x_min_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+double _wrap_Plot_x_min_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_min();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_min();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-double _wrap_Plot_x_max_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+double _wrap_Plot_x_max_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_max();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_max();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-double _wrap_Plot_y_min_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+double _wrap_Plot_y_min_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_min();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_min();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-double _wrap_Plot_y_max_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+double _wrap_Plot_y_max_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_max();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_max();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-bool _wrap_Plot_axes_hidden_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+bool _wrap_Plot_axes_hidden_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->axes_hidden();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-std::vector< std::string > *_wrap_Plot_x_tick_label_list_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+std::vector< std::string > *_wrap_Plot_x_tick_label_list_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+  result = (std::vector< std::string > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_label_list();
   *(std::vector< std::string > **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-std::vector< datamunge::plot::ABLine > *_wrap_Plot_reference_lines_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::ABLine > *result = 0 ;
-  std::vector< datamunge::plot::ABLine > *_swig_go_result;
+std::vector< datamunge::graphics::ABLine > *_wrap_Plot_reference_lines_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::ABLine > *result = 0 ;
+  std::vector< datamunge::graphics::ABLine > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
-  *(std::vector< datamunge::plot::ABLine > **)&_swig_go_result = result; 
+  result = (std::vector< datamunge::graphics::ABLine > *) &((datamunge::graphics::Plot const *)arg1)->reference_lines();
+  *(std::vector< datamunge::graphics::ABLine > **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-std::vector< datamunge::plot::LegendEntry > *_wrap_Plot_legend_entries_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
-  std::vector< datamunge::plot::LegendEntry > *_swig_go_result;
+std::vector< datamunge::graphics::LegendEntry > *_wrap_Plot_legend_entries_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::LegendEntry > *result = 0 ;
+  std::vector< datamunge::graphics::LegendEntry > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
-  *(std::vector< datamunge::plot::LegendEntry > **)&_swig_go_result = result; 
+  result = (std::vector< datamunge::graphics::LegendEntry > *) &((datamunge::graphics::Plot const *)arg1)->legend_entries();
+  *(std::vector< datamunge::graphics::LegendEntry > **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-_gostring_ _wrap_Plot_to_svg_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+_gostring_ _wrap_Plot_to_svg_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  result = ((datamunge::plot::Plot const *)arg1)->to_svg();
+  result = ((datamunge::graphics::Plot const *)arg1)->to_svg();
   _swig_go_result = Swig_AllocateString((&result)->data(), (&result)->length()); 
   return _swig_go_result;
 }
 
 
-void _wrap_Plot_save_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+void _wrap_Plot_save_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  ((datamunge::plot::Plot const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save((std::string const &)*arg2);
   
 }
 
 
-void _wrap_Plot_save_svg_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+void _wrap_Plot_save_svg_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  ((datamunge::plot::Plot const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save_svg((std::string const &)*arg2);
   
 }
 
 
-void _wrap_Plot_view__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+void _wrap_Plot_view__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  ((datamunge::plot::Plot const *)arg1)->view((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->view((std::string const &)*arg2);
   
 }
 
 
-void _wrap_Plot_view__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+void _wrap_Plot_view__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  ((datamunge::plot::Plot const *)arg1)->view();
+  ((datamunge::graphics::Plot const *)arg1)->view();
   
 }
 
 
-void _wrap_Plot_show__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+void _wrap_Plot_show__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  ((datamunge::plot::Plot const *)arg1)->show((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->show((std::string const &)*arg2);
   
 }
 
 
-void _wrap_Plot_show__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::Plot *_swig_go_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+void _wrap_Plot_show__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::Plot *_swig_go_0) {
+  datamunge::graphics::Plot *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::Plot **)&_swig_go_0; 
   
-  ((datamunge::plot::Plot const *)arg1)->show();
+  ((datamunge::graphics::Plot const *)arg1)->show();
   
 }
 
 
-datamunge::plot::Plot *_wrap_new_Plot_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
+datamunge::graphics::Plot *_wrap_new_Plot_datamunge_f3b579fcb4322d74() {
+  datamunge::graphics::Plot *result = 0 ;
+  datamunge::graphics::Plot *_swig_go_result;
   
   
-  result = (datamunge::plot::Plot *)new datamunge::plot::Plot();
-  *(datamunge::plot::Plot **)&_swig_go_result = (datamunge::plot::Plot *)result; 
+  result = (datamunge::graphics::Plot *)new datamunge::graphics::Plot();
+  *(datamunge::graphics::Plot **)&_swig_go_result = (datamunge::graphics::Plot *)result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_create_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+datamunge::graphics::RPlot *_wrap_RPlot_create_datamunge_f3b579fcb4322d74() {
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
-  result = datamunge::plot::RPlot::create();
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::create();
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_size_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_size_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_title_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_title_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_x_label_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_x_label_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_y_label_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_y_label_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_xlab_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_xlab_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_ylab_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_ylab_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_background_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+datamunge::graphics::RPlot *_wrap_RPlot_background_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_axis_color_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+datamunge::graphics::RPlot *_wrap_RPlot_axis_color_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_grid_color_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+datamunge::graphics::RPlot *_wrap_RPlot_grid_color_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, datamunge::graphics::RGB *_swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  argp2 = (datamunge::graphics::RGB *)_swig_go_1;
   if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg2 = (datamunge::plot::RGB)*argp2;
+  arg2 = (datamunge::graphics::RGB)*argp2;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_show_grid__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, bool _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_show_grid__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, bool _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (bool)_swig_go_1; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid(arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid(arg2);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_show_grid__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+datamunge::graphics::RPlot *_wrap_RPlot_show_grid__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid();
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid();
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_x_limits_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_x_limits_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->x_limits(arg2,arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_limits(arg2,arg3);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_y_limits_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_y_limits_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->y_limits(arg2,arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_limits(arg2,arg3);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_hide_axes__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, bool _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_hide_axes__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, bool _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (bool)_swig_go_1; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes(arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes(arg2);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_hide_axes__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+datamunge::graphics::RPlot *_wrap_RPlot_hide_axes__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes();
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes();
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_x_tick_labels_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< std::string > *_swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_x_tick_labels_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< std::string > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -25171,23 +25171,23 @@ datamunge::plot::RPlot *_wrap_RPlot_x_tick_labels_datamunge_f3b579fcb4322d74(dat
   arg2 = (std::vector< std::string >)*argp2;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
+datamunge::graphics::RPlot *_wrap_RPlot_plot__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4) {
   std::vector< double > arg1 ;
   std::vector< double > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp1 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25206,28 +25206,28 @@ datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_0_datamunge_f3b579fcb4322d74(std:
   (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_RPlot_plot__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   std::vector< double > arg1 ;
   std::vector< double > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
   std::vector< double > *argp1 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25246,20 +25246,20 @@ datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_1_datamunge_f3b579fcb4322d74(std:
   (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, _gostring_ _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_RPlot_plot__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, _gostring_ _swig_go_2) {
   std::vector< double > arg1 ;
   std::vector< double > arg2 ;
   std::string arg3 ;
   std::vector< double > *argp1 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25277,19 +25277,19 @@ datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_2_datamunge_f3b579fcb4322d74(std:
   
   (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
   
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_3_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_RPlot_plot__SWIG_3_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > arg1 ;
   std::vector< double > arg2 ;
   std::vector< double > *argp1 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25306,21 +25306,21 @@ datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_3_datamunge_f3b579fcb4322d74(std:
   arg2 = (std::vector< double >)*argp2;
   
   
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2, datamunge::plot::RGB *_swig_go_3) {
+datamunge::graphics::RPlot *_wrap_RPlot_hist__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2, datamunge::graphics::RGB *_swig_go_3) {
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25332,26 +25332,26 @@ datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_0_datamunge_f3b579fcb4322d74(std:
   arg2 = (size_t)_swig_go_1; 
   (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_RPlot_hist__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2) {
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25363,18 +25363,18 @@ datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_1_datamunge_f3b579fcb4322d74(std:
   arg2 = (size_t)_swig_go_1; 
   (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
   
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_RPlot_hist__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, long long _swig_go_1) {
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25385,17 +25385,17 @@ datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_2_datamunge_f3b579fcb4322d74(std:
   
   arg2 = (size_t)_swig_go_1; 
   
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_3_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_RPlot_hist__SWIG_3_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0) {
   std::vector< double > arg1 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25405,22 +25405,22 @@ datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_3_datamunge_f3b579fcb4322d74(std:
   arg1 = (std::vector< double >)*argp1;
   
   
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1, _gostring_ _swig_go_2, datamunge::plot::RGB *_swig_go_3) {
+datamunge::graphics::RPlot *_wrap_RPlot_barplot__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1, _gostring_ _swig_go_2, datamunge::graphics::RGB *_swig_go_3) {
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25438,27 +25438,27 @@ datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_0_datamunge_f3b579fcb4322d74(s
   
   (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1, _gostring_ _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_RPlot_barplot__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1, _gostring_ _swig_go_2) {
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::string arg3 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25476,19 +25476,19 @@ datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_1_datamunge_f3b579fcb4322d74(s
   
   (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
   
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_RPlot_barplot__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25505,17 +25505,17 @@ datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_2_datamunge_f3b579fcb4322d74(s
   arg2 = (std::vector< std::string >)*argp2;
   
   
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_3_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_RPlot_barplot__SWIG_3_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0) {
   std::vector< double > arg1 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25525,21 +25525,21 @@ datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_3_datamunge_f3b579fcb4322d74(s
   arg1 = (std::vector< double >)*argp1;
   
   
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_boxplot__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< std::vector< double > > *_swig_go_0, std::vector< std::string > *_swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+datamunge::graphics::RPlot *_wrap_RPlot_boxplot__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< std::vector< double > > *_swig_go_0, std::vector< std::string > *_swig_go_1, datamunge::graphics::RGB *_swig_go_2) {
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::vector< std::vector< double > > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< std::vector< double > > *)_swig_go_0;
@@ -25556,26 +25556,26 @@ datamunge::plot::RPlot *_wrap_RPlot_boxplot__SWIG_0_datamunge_f3b579fcb4322d74(s
   arg2 = (std::vector< std::string >)*argp2;
   
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_boxplot__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< std::vector< double > > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_RPlot_boxplot__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< std::vector< double > > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::string > arg2 ;
   std::vector< std::vector< double > > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< std::vector< double > > *)_swig_go_0;
@@ -25592,17 +25592,17 @@ datamunge::plot::RPlot *_wrap_RPlot_boxplot__SWIG_1_datamunge_f3b579fcb4322d74(s
   arg2 = (std::vector< std::string >)*argp2;
   
   
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_boxplot__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< std::vector< double > > *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_RPlot_boxplot__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< std::vector< double > > *_swig_go_0) {
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::vector< double > > *argp1 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< std::vector< double > > *)_swig_go_0;
@@ -25612,21 +25612,21 @@ datamunge::plot::RPlot *_wrap_RPlot_boxplot__SWIG_2_datamunge_f3b579fcb4322d74(s
   arg1 = (std::vector< std::vector< double > >)*argp1;
   
   
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_pie__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1, std::vector< datamunge::plot::RGB > *_swig_go_2) {
+datamunge::graphics::RPlot *_wrap_RPlot_pie__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1, std::vector< datamunge::graphics::RGB > *_swig_go_2) {
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  std::vector< datamunge::plot::RGB > *argp3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  std::vector< datamunge::graphics::RGB > *argp3 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25643,26 +25643,26 @@ datamunge::plot::RPlot *_wrap_RPlot_pie__SWIG_0_datamunge_f3b579fcb4322d74(std::
   arg2 = (std::vector< std::string >)*argp2;
   
   
-  argp3 = (std::vector< datamunge::plot::RGB > *)_swig_go_2;
+  argp3 = (std::vector< datamunge::graphics::RGB > *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< datamunge::plot::RGB >");
+    _swig_gopanic("Attempt to dereference null std::vector< datamunge::graphics::RGB >");
   }
-  arg3 = (std::vector< datamunge::plot::RGB >)*argp3;
+  arg3 = (std::vector< datamunge::graphics::RGB >)*argp3;
   
   
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_pie__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::graphics::RPlot *_wrap_RPlot_pie__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25679,17 +25679,17 @@ datamunge::plot::RPlot *_wrap_RPlot_pie__SWIG_1_datamunge_f3b579fcb4322d74(std::
   arg2 = (std::vector< std::string >)*argp2;
   
   
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_pie__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_RPlot_pie__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0) {
   std::vector< double > arg1 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25699,22 +25699,22 @@ datamunge::plot::RPlot *_wrap_RPlot_pie__SWIG_2_datamunge_f3b579fcb4322d74(std::
   arg1 = (std::vector< double >)*argp1;
   
   
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4, datamunge::plot::RGB *_swig_go_5) {
+datamunge::graphics::RPlot *_wrap_RPlot_curve__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4, datamunge::graphics::RGB *_swig_go_5) {
   datamunge::Callback *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
-  datamunge::plot::RGB *argp6 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGB *argp6 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Callback **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
@@ -25722,27 +25722,27 @@ datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_0_datamunge_f3b579fcb4322d74(dat
   arg4 = (size_t)_swig_go_3; 
   (&arg5)->assign(_swig_go_4.p, _swig_go_4.n); 
   
-  argp6 = (datamunge::plot::RGB *)_swig_go_5;
+  argp6 = (datamunge::graphics::RGB *)_swig_go_5;
   if (argp6 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg6 = (datamunge::plot::RGB)*argp6;
+  arg6 = (datamunge::graphics::RGB)*argp6;
   
   
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4) {
+datamunge::graphics::RPlot *_wrap_RPlot_curve__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4) {
   datamunge::Callback *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Callback **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
@@ -25750,56 +25750,56 @@ datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_1_datamunge_f3b579fcb4322d74(dat
   arg4 = (size_t)_swig_go_3; 
   (&arg5)->assign(_swig_go_4.p, _swig_go_4.n); 
   
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2, long long _swig_go_3) {
+datamunge::graphics::RPlot *_wrap_RPlot_curve__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2, long long _swig_go_3) {
   datamunge::Callback *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Callback **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   arg4 = (size_t)_swig_go_3; 
   
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+datamunge::graphics::RPlot *_wrap_RPlot_curve__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2) {
   datamunge::Callback *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Callback **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_qqnorm__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, _gostring_ _swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+datamunge::graphics::RPlot *_wrap_RPlot_qqnorm__SWIG_0_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, _gostring_ _swig_go_1, datamunge::graphics::RGB *_swig_go_2) {
   std::vector< double > arg1 ;
   std::string arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25810,25 +25810,25 @@ datamunge::plot::RPlot *_wrap_RPlot_qqnorm__SWIG_0_datamunge_f3b579fcb4322d74(st
   
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_qqnorm__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::graphics::RPlot *_wrap_RPlot_qqnorm__SWIG_1_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0, _gostring_ _swig_go_1) {
   std::vector< double > arg1 ;
   std::string arg2 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25839,17 +25839,17 @@ datamunge::plot::RPlot *_wrap_RPlot_qqnorm__SWIG_1_datamunge_f3b579fcb4322d74(st
   
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_qqnorm__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0) {
+datamunge::graphics::RPlot *_wrap_RPlot_qqnorm__SWIG_2_datamunge_f3b579fcb4322d74(std::vector< double > *_swig_go_0) {
   std::vector< double > arg1 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot result;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
   argp1 = (std::vector< double > *)_swig_go_0;
@@ -25859,26 +25859,26 @@ datamunge::plot::RPlot *_wrap_RPlot_qqnorm__SWIG_2_datamunge_f3b579fcb4322d74(st
   arg1 = (std::vector< double >)*argp1;
   
   
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = new datamunge::graphics::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_points__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -25895,33 +25895,33 @@ datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_0_datamunge_f3b579fcb4322d74(da
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   arg6 = (double)_swig_go_5; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_points__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -25938,30 +25938,30 @@ datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_1_datamunge_f3b579fcb4322d74(da
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_points__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -25978,22 +25978,22 @@ datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_2_datamunge_f3b579fcb4322d74(da
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_points__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26009,26 +26009,26 @@ datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_3_datamunge_f3b579fcb4322d74(da
   arg3 = (std::vector< double >)*argp3;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_line__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26045,33 +26045,33 @@ datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_0_datamunge_f3b579fcb4322d74(data
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   arg6 = (double)_swig_go_5; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_line__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26088,30 +26088,30 @@ datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_1_datamunge_f3b579fcb4322d74(data
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_line__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26128,22 +26128,22 @@ datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_2_datamunge_f3b579fcb4322d74(data
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_line__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26159,26 +26159,26 @@ datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_3_datamunge_f3b579fcb4322d74(data
   arg3 = (std::vector< double >)*argp3;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_lines__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26195,33 +26195,33 @@ datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_0_datamunge_f3b579fcb4322d74(dat
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   arg6 = (double)_swig_go_5; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_lines__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26238,30 +26238,30 @@ datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_1_datamunge_f3b579fcb4322d74(dat
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_lines__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26278,22 +26278,22 @@ datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_2_datamunge_f3b579fcb4322d74(dat
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_lines__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26309,25 +26309,25 @@ datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_3_datamunge_f3b579fcb4322d74(dat
   arg3 = (std::vector< double >)*argp3;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_4_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::plot::RGB *_swig_go_3, double _swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_points__SWIG_4_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::graphics::RGB *_swig_go_3, double _swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26343,32 +26343,32 @@ datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_4_datamunge_f3b579fcb4322d74(da
   arg3 = (std::vector< double >)*argp3;
   
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   arg5 = (double)_swig_go_4; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_5_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::plot::RGB *_swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_points__SWIG_5_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::graphics::RGB *_swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26384,32 +26384,32 @@ datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_5_datamunge_f3b579fcb4322d74(da
   arg3 = (std::vector< double >)*argp3;
   
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_4_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::plot::RGB *_swig_go_3, double _swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_lines__SWIG_4_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::graphics::RGB *_swig_go_3, double _swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26425,32 +26425,32 @@ datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_4_datamunge_f3b579fcb4322d74(dat
   arg3 = (std::vector< double >)*argp3;
   
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   arg5 = (double)_swig_go_4; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_5_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::plot::RGB *_swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_lines__SWIG_5_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::graphics::RGB *_swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26466,33 +26466,33 @@ datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_5_datamunge_f3b579fcb4322d74(dat
   arg3 = (std::vector< double >)*argp3;
   
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_bars__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26509,33 +26509,33 @@ datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_0_datamunge_f3b579fcb4322d74(data
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   arg6 = (double)_swig_go_5; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_bars__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26552,30 +26552,30 @@ datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_1_datamunge_f3b579fcb4322d74(data
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_bars__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26592,22 +26592,22 @@ datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_2_datamunge_f3b579fcb4322d74(data
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_bars__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26623,14 +26623,14 @@ datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_3_datamunge_f3b579fcb4322d74(data
   arg3 = (std::vector< double >)*argp3;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6, std::vector< double > *_swig_go_7, datamunge::plot::RGB *_swig_go_8, double _swig_go_9) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_box__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6, std::vector< double > *_swig_go_7, datamunge::graphics::RGB *_swig_go_8, double _swig_go_9) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -26638,14 +26638,14 @@ datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_0_datamunge_f3b579fcb4322d74(datam
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   double arg10 ;
   std::vector< double > *argp8 ;
-  datamunge::plot::RGB *argp9 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp9 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   arg4 = (double)_swig_go_3; 
@@ -26660,22 +26660,22 @@ datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_0_datamunge_f3b579fcb4322d74(datam
   arg8 = (std::vector< double >)*argp8;
   
   
-  argp9 = (datamunge::plot::RGB *)_swig_go_8;
+  argp9 = (datamunge::graphics::RGB *)_swig_go_8;
   if (argp9 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg9 = (datamunge::plot::RGB)*argp9;
+  arg9 = (datamunge::graphics::RGB)*argp9;
   
   arg10 = (double)_swig_go_9; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6, std::vector< double > *_swig_go_7, datamunge::plot::RGB *_swig_go_8) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_box__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6, std::vector< double > *_swig_go_7, datamunge::graphics::RGB *_swig_go_8) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -26683,13 +26683,13 @@ datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_1_datamunge_f3b579fcb4322d74(datam
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   std::vector< double > *argp8 ;
-  datamunge::plot::RGB *argp9 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp9 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   arg4 = (double)_swig_go_3; 
@@ -26704,21 +26704,21 @@ datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_1_datamunge_f3b579fcb4322d74(datam
   arg8 = (std::vector< double >)*argp8;
   
   
-  argp9 = (datamunge::plot::RGB *)_swig_go_8;
+  argp9 = (datamunge::graphics::RGB *)_swig_go_8;
   if (argp9 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg9 = (datamunge::plot::RGB)*argp9;
+  arg9 = (datamunge::graphics::RGB)*argp9;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6, std::vector< double > *_swig_go_7) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_box__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6, std::vector< double > *_swig_go_7) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -26727,10 +26727,10 @@ datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_2_datamunge_f3b579fcb4322d74(datam
   double arg7 ;
   std::vector< double > arg8 ;
   std::vector< double > *argp8 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   arg4 = (double)_swig_go_3; 
@@ -26745,24 +26745,24 @@ datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_2_datamunge_f3b579fcb4322d74(datam
   arg8 = (std::vector< double >)*argp8;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_box__SWIG_3_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
   double arg5 ;
   double arg6 ;
   double arg7 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   arg4 = (double)_swig_go_3; 
@@ -26770,224 +26770,224 @@ datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_3_datamunge_f3b579fcb4322d74(datam
   arg6 = (double)_swig_go_5; 
   arg7 = (double)_swig_go_6; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_abline__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, datamunge::plot::RGB *_swig_go_3, double _swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_abline__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, datamunge::graphics::RGB *_swig_go_3, double _swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   arg5 = (double)_swig_go_4; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_abline__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, datamunge::plot::RGB *_swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_abline__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, datamunge::graphics::RGB *_swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_abline__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_abline__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_abline_h__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, datamunge::plot::RGB *_swig_go_2, double _swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_abline_h__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, datamunge::graphics::RGB *_swig_go_2, double _swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   arg4 = (double)_swig_go_3; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_abline_h__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, datamunge::plot::RGB *_swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_abline_h__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, datamunge::graphics::RGB *_swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_abline_h__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_abline_h__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_abline_v__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, datamunge::plot::RGB *_swig_go_2, double _swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_abline_v__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, datamunge::graphics::RGB *_swig_go_2, double _swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   arg4 = (double)_swig_go_3; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_abline_v__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, datamunge::plot::RGB *_swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_abline_v__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, datamunge::graphics::RGB *_swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_abline_v__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_abline_v__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_qqline__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, datamunge::plot::RGB *_swig_go_2, double _swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_qqline__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, datamunge::graphics::RGB *_swig_go_2, double _swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -26996,30 +26996,30 @@ datamunge::plot::RPlot *_wrap_RPlot_qqline__SWIG_0_datamunge_f3b579fcb4322d74(da
   arg2 = (std::vector< double >)*argp2;
   
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   arg4 = (double)_swig_go_3; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_qqline__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, datamunge::plot::RGB *_swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_qqline__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, datamunge::graphics::RGB *_swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -27028,27 +27028,27 @@ datamunge::plot::RPlot *_wrap_RPlot_qqline__SWIG_1_datamunge_f3b579fcb4322d74(da
   arg2 = (std::vector< double >)*argp2;
   
   
-  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  argp3 = (datamunge::graphics::RGB *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg3 = (datamunge::plot::RGB)*argp3;
+  arg3 = (datamunge::graphics::RGB)*argp3;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_qqline__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_qqline__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -27057,22 +27057,22 @@ datamunge::plot::RPlot *_wrap_RPlot_qqline__SWIG_2_datamunge_f3b579fcb4322d74(da
   arg2 = (std::vector< double >)*argp2;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_legend_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< std::string > *_swig_go_1, std::vector< datamunge::plot::RGB > *_swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_legend_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< std::string > *_swig_go_1, std::vector< datamunge::graphics::RGB > *_swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   std::vector< std::string > *argp2 ;
-  std::vector< datamunge::plot::RGB > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  std::vector< datamunge::graphics::RGB > *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< std::string > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -27081,109 +27081,109 @@ datamunge::plot::RPlot *_wrap_RPlot_legend_datamunge_f3b579fcb4322d74(datamunge:
   arg2 = (std::vector< std::string >)*argp2;
   
   
-  argp3 = (std::vector< datamunge::plot::RGB > *)_swig_go_2;
+  argp3 = (std::vector< datamunge::graphics::RGB > *)_swig_go_2;
   if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< datamunge::plot::RGB >");
+    _swig_gopanic("Attempt to dereference null std::vector< datamunge::graphics::RGB >");
   }
-  arg3 = (std::vector< datamunge::plot::RGB >)*argp3;
+  arg3 = (std::vector< datamunge::graphics::RGB >)*argp3;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_text__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_text__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   arg6 = (double)_swig_go_5; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_text__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_text__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, _gostring_ _swig_go_3, datamunge::graphics::RGB *_swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  argp5 = (datamunge::graphics::RGB *)_swig_go_4;
   if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg5 = (datamunge::plot::RGB)*argp5;
+  arg5 = (datamunge::graphics::RGB)*argp5;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_text__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, _gostring_ _swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_text__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_polygon__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::plot::RGB *_swig_go_3, bool _swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_polygon__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::graphics::RGB *_swig_go_3, bool _swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   bool arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -27199,32 +27199,32 @@ datamunge::plot::RPlot *_wrap_RPlot_polygon__SWIG_0_datamunge_f3b579fcb4322d74(d
   arg3 = (std::vector< double >)*argp3;
   
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   arg5 = (bool)_swig_go_4; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_polygon__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::plot::RGB *_swig_go_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_polygon__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::graphics::RGB *_swig_go_3) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -27240,29 +27240,29 @@ datamunge::plot::RPlot *_wrap_RPlot_polygon__SWIG_1_datamunge_f3b579fcb4322d74(d
   arg3 = (std::vector< double >)*argp3;
   
   
-  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  argp4 = (datamunge::graphics::RGB *)_swig_go_3;
   if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg4 = (datamunge::plot::RGB)*argp4;
+  arg4 = (datamunge::graphics::RGB)*argp4;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_polygon__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_polygon__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -27278,29 +27278,29 @@ datamunge::plot::RPlot *_wrap_RPlot_polygon__SWIG_2_datamunge_f3b579fcb4322d74(d
   arg3 = (std::vector< double >)*argp3;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< double > *_swig_go_3, std::vector< double > *_swig_go_4, datamunge::plot::RGB *_swig_go_5, double _swig_go_6) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_segments__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< double > *_swig_go_3, std::vector< double > *_swig_go_4, datamunge::graphics::RGB *_swig_go_5, double _swig_go_6) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   double arg7 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   std::vector< double > *argp4 ;
   std::vector< double > *argp5 ;
-  datamunge::plot::RGB *argp6 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp6 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -27330,36 +27330,36 @@ datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_0_datamunge_f3b579fcb4322d74(
   arg5 = (std::vector< double >)*argp5;
   
   
-  argp6 = (datamunge::plot::RGB *)_swig_go_5;
+  argp6 = (datamunge::graphics::RGB *)_swig_go_5;
   if (argp6 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg6 = (datamunge::plot::RGB)*argp6;
+  arg6 = (datamunge::graphics::RGB)*argp6;
   
   arg7 = (double)_swig_go_6; 
   
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< double > *_swig_go_3, std::vector< double > *_swig_go_4, datamunge::plot::RGB *_swig_go_5) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_segments__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< double > *_swig_go_3, std::vector< double > *_swig_go_4, datamunge::graphics::RGB *_swig_go_5) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   std::vector< double > *argp4 ;
   std::vector< double > *argp5 ;
-  datamunge::plot::RGB *argp6 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RGB *argp6 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -27389,21 +27389,21 @@ datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_1_datamunge_f3b579fcb4322d74(
   arg5 = (std::vector< double >)*argp5;
   
   
-  argp6 = (datamunge::plot::RGB *)_swig_go_5;
+  argp6 = (datamunge::graphics::RGB *)_swig_go_5;
   if (argp6 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+    _swig_gopanic("Attempt to dereference null datamunge::graphics::RGB");
   }
-  arg6 = (datamunge::plot::RGB)*argp6;
+  arg6 = (datamunge::graphics::RGB)*argp6;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< double > *_swig_go_3, std::vector< double > *_swig_go_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+datamunge::graphics::RPlot *_wrap_RPlot_segments__SWIG_2_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< double > *_swig_go_3, std::vector< double > *_swig_go_4) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
@@ -27412,10 +27412,10 @@ datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_2_datamunge_f3b579fcb4322d74(
   std::vector< double > *argp3 ;
   std::vector< double > *argp4 ;
   std::vector< double > *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -27445,518 +27445,518 @@ datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_2_datamunge_f3b579fcb4322d74(
   arg5 = (std::vector< double >)*argp5;
   
   
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RPlot *_wrap_new_RPlot_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::RPlot *result = 0 ;
-  datamunge::plot::RPlot *_swig_go_result;
+datamunge::graphics::RPlot *_wrap_new_RPlot_datamunge_f3b579fcb4322d74() {
+  datamunge::graphics::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *_swig_go_result;
   
   
-  result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
-  *(datamunge::plot::RPlot **)&_swig_go_result = (datamunge::plot::RPlot *)result; 
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
+  *(datamunge::graphics::RPlot **)&_swig_go_result = (datamunge::graphics::RPlot *)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_RPlot_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+void _wrap_delete_RPlot_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   delete arg1;
   
 }
 
 
-long long _wrap_RPlot_width_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+long long _wrap_RPlot_width_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->width();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = ((datamunge::graphics::Plot const *)swig_b0)->width();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-long long _wrap_RPlot_height_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+long long _wrap_RPlot_height_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->height();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = ((datamunge::graphics::Plot const *)swig_b0)->height();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-_gostring_ _wrap_RPlot_title_text_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+_gostring_ _wrap_RPlot_title_text_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->title_text();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (std::string *) &((datamunge::graphics::Plot const *)swig_b0)->title_text();
   _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
   return _swig_go_result;
 }
 
 
-_gostring_ _wrap_RPlot_x_label_text_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+_gostring_ _wrap_RPlot_x_label_text_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->x_label_text();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (std::string *) &((datamunge::graphics::Plot const *)swig_b0)->x_label_text();
   _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
   return _swig_go_result;
 }
 
 
-_gostring_ _wrap_RPlot_y_label_text_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+_gostring_ _wrap_RPlot_y_label_text_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->y_label_text();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (std::string *) &((datamunge::graphics::Plot const *)swig_b0)->y_label_text();
   _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
   return _swig_go_result;
 }
 
 
-std::vector< datamunge::plot::DataSeries > *_wrap_RPlot_series_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  std::vector< datamunge::plot::DataSeries > *result = 0 ;
-  std::vector< datamunge::plot::DataSeries > *_swig_go_result;
+std::vector< datamunge::graphics::DataSeries > *_wrap_RPlot_series_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< datamunge::graphics::DataSeries > *result = 0 ;
+  std::vector< datamunge::graphics::DataSeries > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)swig_b0)->series();
-  *(std::vector< datamunge::plot::DataSeries > **)&_swig_go_result = result; 
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (std::vector< datamunge::graphics::DataSeries > *) &((datamunge::graphics::Plot const *)swig_b0)->series();
+  *(std::vector< datamunge::graphics::DataSeries > **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RGB *_wrap_RPlot_background_color_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_RPlot_background_color_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->background_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = ((datamunge::graphics::Plot const *)swig_b0)->background_color();
+  *(datamunge::graphics::RGB **)&_swig_go_result = new datamunge::graphics::RGB(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RGB *_wrap_RPlot_axes_color_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_RPlot_axes_color_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->axes_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = ((datamunge::graphics::Plot const *)swig_b0)->axes_color();
+  *(datamunge::graphics::RGB **)&_swig_go_result = new datamunge::graphics::RGB(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RGB *_wrap_RPlot_major_grid_color_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
-  datamunge::plot::RGB *_swig_go_result;
+datamunge::graphics::RGB *_wrap_RPlot_major_grid_color_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->major_grid_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = ((datamunge::graphics::Plot const *)swig_b0)->major_grid_color();
+  *(datamunge::graphics::RGB **)&_swig_go_result = new datamunge::graphics::RGB(result); 
   return _swig_go_result;
 }
 
 
-bool _wrap_RPlot_grid_visible_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+bool _wrap_RPlot_grid_visible_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->grid_visible();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (bool)((datamunge::graphics::Plot const *)swig_b0)->grid_visible();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-bool _wrap_RPlot_has_x_limits_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+bool _wrap_RPlot_has_x_limits_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->has_x_limits();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (bool)((datamunge::graphics::Plot const *)swig_b0)->has_x_limits();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-bool _wrap_RPlot_has_y_limits_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+bool _wrap_RPlot_has_y_limits_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->has_y_limits();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (bool)((datamunge::graphics::Plot const *)swig_b0)->has_y_limits();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-double _wrap_RPlot_x_min_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+double _wrap_RPlot_x_min_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->x_min();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (double)((datamunge::graphics::Plot const *)swig_b0)->x_min();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-double _wrap_RPlot_x_max_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+double _wrap_RPlot_x_max_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->x_max();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (double)((datamunge::graphics::Plot const *)swig_b0)->x_max();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-double _wrap_RPlot_y_min_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+double _wrap_RPlot_y_min_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->y_min();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (double)((datamunge::graphics::Plot const *)swig_b0)->y_min();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-double _wrap_RPlot_y_max_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+double _wrap_RPlot_y_max_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->y_max();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (double)((datamunge::graphics::Plot const *)swig_b0)->y_max();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-bool _wrap_RPlot_axes_hidden_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+bool _wrap_RPlot_axes_hidden_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->axes_hidden();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (bool)((datamunge::graphics::Plot const *)swig_b0)->axes_hidden();
   _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-std::vector< std::string > *_wrap_RPlot_x_tick_label_list_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+std::vector< std::string > *_wrap_RPlot_x_tick_label_list_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)swig_b0)->x_tick_label_list();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (std::vector< std::string > *) &((datamunge::graphics::Plot const *)swig_b0)->x_tick_label_list();
   *(std::vector< std::string > **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-std::vector< datamunge::plot::ABLine > *_wrap_RPlot_reference_lines_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  std::vector< datamunge::plot::ABLine > *result = 0 ;
-  std::vector< datamunge::plot::ABLine > *_swig_go_result;
+std::vector< datamunge::graphics::ABLine > *_wrap_RPlot_reference_lines_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< datamunge::graphics::ABLine > *result = 0 ;
+  std::vector< datamunge::graphics::ABLine > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)swig_b0)->reference_lines();
-  *(std::vector< datamunge::plot::ABLine > **)&_swig_go_result = result; 
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (std::vector< datamunge::graphics::ABLine > *) &((datamunge::graphics::Plot const *)swig_b0)->reference_lines();
+  *(std::vector< datamunge::graphics::ABLine > **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-std::vector< datamunge::plot::LegendEntry > *_wrap_RPlot_legend_entries_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
-  std::vector< datamunge::plot::LegendEntry > *_swig_go_result;
+std::vector< datamunge::graphics::LegendEntry > *_wrap_RPlot_legend_entries_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< datamunge::graphics::LegendEntry > *result = 0 ;
+  std::vector< datamunge::graphics::LegendEntry > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)swig_b0)->legend_entries();
-  *(std::vector< datamunge::plot::LegendEntry > **)&_swig_go_result = result; 
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = (std::vector< datamunge::graphics::LegendEntry > *) &((datamunge::graphics::Plot const *)swig_b0)->legend_entries();
+  *(std::vector< datamunge::graphics::LegendEntry > **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-_gostring_ _wrap_RPlot_to_svg_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+_gostring_ _wrap_RPlot_to_svg_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->to_svg();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  result = ((datamunge::graphics::Plot const *)swig_b0)->to_svg();
   _swig_go_result = Swig_AllocateString((&result)->data(), (&result)->length()); 
   return _swig_go_result;
 }
 
 
-void _wrap_RPlot_save_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+void _wrap_RPlot_save_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->save((std::string const &)*arg2);
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  ((datamunge::graphics::Plot const *)swig_b0)->save((std::string const &)*arg2);
   
 }
 
 
-void _wrap_RPlot_save_svg_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+void _wrap_RPlot_save_svg_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->save_svg((std::string const &)*arg2);
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  ((datamunge::graphics::Plot const *)swig_b0)->save_svg((std::string const &)*arg2);
   
 }
 
 
-void _wrap_RPlot_view__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+void _wrap_RPlot_view__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->view((std::string const &)*arg2);
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  ((datamunge::graphics::Plot const *)swig_b0)->view((std::string const &)*arg2);
   
 }
 
 
-void _wrap_RPlot_view__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+void _wrap_RPlot_view__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->view();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  ((datamunge::graphics::Plot const *)swig_b0)->view();
   
 }
 
 
-void _wrap_RPlot_show__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+void _wrap_RPlot_show__SWIG_0_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->show((std::string const &)*arg2);
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  ((datamunge::graphics::Plot const *)swig_b0)->show((std::string const &)*arg2);
   
 }
 
 
-void _wrap_RPlot_show__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::plot::RPlot *_swig_go_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+void _wrap_RPlot_show__SWIG_1_datamunge_f3b579fcb4322d74(datamunge::graphics::RPlot *_swig_go_0) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RPlot **)&_swig_go_0; 
   
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->show();
+  datamunge::graphics::Plot *swig_b0 = (datamunge::graphics::Plot *)arg1;
+  ((datamunge::graphics::Plot const *)swig_b0)->show();
   
 }
 
 
-datamunge::plot::RLayout *_wrap_RLayout_create_datamunge_f3b579fcb4322d74(long long _swig_go_0, long long _swig_go_1) {
+datamunge::graphics::RLayout *_wrap_RLayout_create_datamunge_f3b579fcb4322d74(long long _swig_go_0, long long _swig_go_1) {
   std::size_t arg1 ;
   std::size_t arg2 ;
-  datamunge::plot::RLayout result;
-  datamunge::plot::RLayout *_swig_go_result;
+  datamunge::graphics::RLayout result;
+  datamunge::graphics::RLayout *_swig_go_result;
   
   arg1 = (size_t)_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   
-  result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RLayout **)&_swig_go_result = new datamunge::plot::RLayout(result); 
+  result = datamunge::graphics::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RLayout **)&_swig_go_result = new datamunge::graphics::RLayout(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RLayout *_wrap_RLayout_add_datamunge_f3b579fcb4322d74(datamunge::plot::RLayout *_swig_go_0, datamunge::plot::Plot *_swig_go_1) {
-  datamunge::plot::RLayout *arg1 = 0 ;
-  datamunge::plot::Plot *arg2 = 0 ;
-  datamunge::plot::RLayout *result = 0 ;
-  datamunge::plot::RLayout *_swig_go_result;
+datamunge::graphics::RLayout *_wrap_RLayout_add_datamunge_f3b579fcb4322d74(datamunge::graphics::RLayout *_swig_go_0, datamunge::graphics::Plot *_swig_go_1) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  datamunge::graphics::Plot *arg2 = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
-  arg2 = *(datamunge::plot::Plot **)&_swig_go_1; 
+  arg1 = *(datamunge::graphics::RLayout **)&_swig_go_0; 
+  arg2 = *(datamunge::graphics::Plot **)&_swig_go_1; 
   
-  result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
-  *(datamunge::plot::RLayout **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RLayout *) &(arg1)->add((datamunge::graphics::Plot const &)*arg2);
+  *(datamunge::graphics::RLayout **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::RLayout *_wrap_RLayout_size_datamunge_f3b579fcb4322d74(datamunge::plot::RLayout *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+datamunge::graphics::RLayout *_wrap_RLayout_size_datamunge_f3b579fcb4322d74(datamunge::graphics::RLayout *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RLayout *result = 0 ;
-  datamunge::plot::RLayout *_swig_go_result;
+  datamunge::graphics::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *_swig_go_result;
   
-  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RLayout **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
-  result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RLayout **)&_swig_go_result = result; 
+  result = (datamunge::graphics::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RLayout **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-_gostring_ _wrap_RLayout_to_svg_datamunge_f3b579fcb4322d74(datamunge::plot::RLayout *_swig_go_0) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+_gostring_ _wrap_RLayout_to_svg_datamunge_f3b579fcb4322d74(datamunge::graphics::RLayout *_swig_go_0) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RLayout **)&_swig_go_0; 
   
-  result = ((datamunge::plot::RLayout const *)arg1)->to_svg();
+  result = ((datamunge::graphics::RLayout const *)arg1)->to_svg();
   _swig_go_result = Swig_AllocateString((&result)->data(), (&result)->length()); 
   return _swig_go_result;
 }
 
 
-void _wrap_RLayout_save_datamunge_f3b579fcb4322d74(datamunge::plot::RLayout *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+void _wrap_RLayout_save_datamunge_f3b579fcb4322d74(datamunge::graphics::RLayout *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RLayout **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save((std::string const &)*arg2);
   
 }
 
 
-void _wrap_RLayout_save_svg_datamunge_f3b579fcb4322d74(datamunge::plot::RLayout *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+void _wrap_RLayout_save_svg_datamunge_f3b579fcb4322d74(datamunge::graphics::RLayout *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RLayout **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
   
   
-  ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
   
 }
 
 
-datamunge::plot::RLayout *_wrap_new_RLayout_datamunge_f3b579fcb4322d74() {
-  datamunge::plot::RLayout *result = 0 ;
-  datamunge::plot::RLayout *_swig_go_result;
+datamunge::graphics::RLayout *_wrap_new_RLayout_datamunge_f3b579fcb4322d74() {
+  datamunge::graphics::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *_swig_go_result;
   
   
-  result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
-  *(datamunge::plot::RLayout **)&_swig_go_result = (datamunge::plot::RLayout *)result; 
+  result = (datamunge::graphics::RLayout *)new datamunge::graphics::RLayout();
+  *(datamunge::graphics::RLayout **)&_swig_go_result = (datamunge::graphics::RLayout *)result; 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_RLayout_datamunge_f3b579fcb4322d74(datamunge::plot::RLayout *_swig_go_0) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+void _wrap_delete_RLayout_datamunge_f3b579fcb4322d74(datamunge::graphics::RLayout *_swig_go_0) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
+  arg1 = *(datamunge::graphics::RLayout **)&_swig_go_0; 
   
   delete arg1;
   

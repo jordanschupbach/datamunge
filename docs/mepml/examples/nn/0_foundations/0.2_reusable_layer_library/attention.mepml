@@ -1,0 +1,875 @@
+//? Title: Attention: Soft Lookup, Scaling and Linear-Time Variants
+//? Subtitle: Scaled dot-product, additive and multi-head attention checked against loops; why the scores are divided by √d, with the large-n entropy law of the softmax; masks and sliding windows; kernel (linear) attention and FAVOR+ random features; a lookup task and digits as sequences, using datamunge's nn::scaled_dot_product_attention, nn::multi_head_attention, nn::kernel_attention and nn::positive_random_features
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Attention returns a weighted average of value vectors, with weights given by a softmax over query–key scores. This report checks datamunge's scaled dot-product, additive and multi-head
+attention against hand-written loops, to about \(10^{-16}\). It explains the \(1/\sqrt d\) scale: the scores of random \(d\)-dimensional vectors have variance \(d\), and a large-\(n\) law,
+\(H\approx\log n-\sigma^2/2\), gives the softmax's entropy at score scale \(\sigma\), collapsing at \(\sigma=\sqrt{2\log n}\). The law fits 64 keys to 5% for \(\sigma\le1.5\) and 4096 keys to 0.1% up to \(\sigma=1.5\).
+It then derives kernel (linear) attention and the FAVOR+ random-feature estimator of the softmax kernel, confirms that the estimator is unbiased and that its error falls at the
+\(m^{-1/2}\) rate, and times the variants. Kernel attention scales linearly in sequence length and is more than 40 times faster than plain softmax attention at 4096 tokens. In a lookup task, softmax and FAVOR+ attention learn a sharp pointer
+to the matching key, while elu-kernel attention does not. On digits read as sequences of pixel rows, one attention block lifts test accuracy from 49% to 86%–90%. The library gained `nn::kernel_attention`, `nn::elu_feature_map`,
+`nn::positive_random_features`, `nn::orthogonal_gaussian_projection`, `nn::local_keep_mask` and `nn::attention_entropy`.
+)
+
+\toc
+
+> The problem
+
+A layer that mixes information across positions must decide, for each position, which other positions matter. Attention makes that decision with data: each query scores every key, a softmax
+turns the scores into weights, and the output is the weighted average of the values (Bahdanau et al., 2015; Vaswani et al., 2017). It is a differentiable dictionary lookup. Three questions follow.
+How should the scores be scaled so that the softmax neither averages everything nor picks a single key at random? How do masks restrict what each query sees? And since the weights form
+a \(T_q\times T_k\) matrix, can the quadratic cost in sequence length be avoided without losing what makes attention work?
+
+This report replaces the original example `examples/nn/0_foundations/0.2_reusable_layer_library/attention.cpp`. That example checked the attention functions against loops, tabulated the
+effect of the \(1/\sqrt d\) scale and trained a key–value lookup. All of that is kept, joined by the theory of the scale, linear-time variants and a dataset.
+
+> The method
+
+>> Scaled dot-product attention and its gradient
+
+For queries \(Q\in\mathbb R^{T_q\times d}\), keys \(K\in\mathbb R^{T_k\times d}\) and values \(V\in\mathbb R^{T_k\times d_v}\),
+
+$$
+\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\!\Big(\frac{QK^\top}{\sqrt d}+M\Big)V,
+$$
+\alttext(Attention of Q, K, V equals the softmax of Q K transpose over root d plus M, times V.)
+
+with the softmax taken over keys and \(M\) an additive mask, 0 where a key is visible and \(-\infty\) where it is not. `nn::scaled_dot_product_attention` computes it, either by materialising
+the weights or by a fused kernel that runs an online softmax over blocks of keys and never holds the \(T_q\times T_k\) matrix (Dao et al., 2022). For one query with scores \(s\) and weights \(\alpha=\operatorname{softmax}(s)\),
+\(\partial\alpha_j/\partial s_i=\alpha_j(\delta_{ij}-\alpha_i)\). The Jacobian is \(J=\operatorname{diag}(\alpha)-\alpha\alpha^\top\), so a loss \(L=\sum_j\alpha_jr_j\) has gradient \(\partial L/\partial s=\alpha\odot(r-\alpha\cdot r)\), which sums to zero because
+adding a constant to every score changes nothing. \(J\) vanishes at both extremes. If \(\alpha\) is uniform over \(n\) keys, \(\lVert J\rVert_F=\sqrt{n-1}/n\), and if \(\alpha\) is one-hot, \(J=0\). Between them, two equal weights give \(\lVert J\rVert_F=1/2\).
+
+*Additive attention* (Bahdanau et al., 2015) scores with a small network instead, \(s_t=v^\top\tanh(W_qq+W_kk_t)\). *Multi-head attention* (Vaswani et al., 2017) projects the input with
+\(W_Q,W_K,W_V\in\mathbb R^{D\times D}\), splits each projection into \(h\) heads of \(D/h\) columns, attends within each head and mixes the concatenated heads with \(W_O\). That is \(4D^2\) parameters, whatever \(h\) is.
+
+>> Why divide by \(\sqrt d\)
+
+If \(q\) and \(k\) have independent standard-normal entries, \(q\cdot k=\sum_{a=1}^dq_ak_a\) is a sum of \(d\) terms of variance 1. Its variance is \(d\), and dividing by \(\sqrt d\) restores 1. Given the query, the
+scores against \(n\) random keys are independent \(\mathcal N(0,\sigma^2)\) with \(\sigma^2=\lVert q\rVert^2/d\approx1\). How peaked is the softmax of \(n\) independent \(\mathcal N(0,\sigma^2)\) scores \(s_j=\sigma z_j\)? Its entropy is
+\(H=\log Z-\sum_j\alpha_js_j\) with \(Z=\sum_je^{s_j}\). For large \(n\) the law of large numbers gives \(Z\approx n\,\mathbb E e^{\sigma z}=ne^{\sigma^2/2}\). The weighted mean of the scores tends to
+\(\mathbb E[\sigma z\,e^{\sigma z}]/\mathbb E[e^{\sigma z}]=\sigma^2\), by Stein's identity \(\mathbb E[zg(z)]=\mathbb E[g'(z)]\) (Stein, 1981). Hence
+
+$$
+H\approx\log n+\frac{\sigma^2}{2}-\sigma^2=\log n-\frac{\sigma^2}{2}.
+$$
+\alttext(H is approximately log n plus sigma squared over 2 minus sigma squared, which equals log n minus sigma squared over 2.)
+
+The argument needs the exponentially tilted distribution, which is centred at \(z=\sigma\), to lie inside the sample, whose maximum is near \(\sqrt{2\log n}\). At \(\sigma=\sqrt{2\log n}\) the formula reaches zero,
+and beyond it the weight condenses on the few largest scores. This is the freezing transition of Derrida's random energy model (Derrida, 1981). Unscaled scores have \(\sigma=\sqrt d\), so for 64 keys any
+\(d\) above \(2\log64=8.3\) puts attention past the transition at initialisation.
+
+>> Masks and sliding windows
+
+A *keep* mask removes keys from the softmax. A causal mask lets query \(i\) see keys \(j\le i\). A padding mask hides positions past each sequence's length. `nn::local_keep_mask(Tq, Tk, w, causal)` keeps a
+window: the current key and the \(w-1\) before it (Jiang et al., 2023), or every key within \(w-1\) on either side (Beltagy et al., 2020). Stacking \(L\) windowed layers reaches \(L(w-1)\) positions back,
+at a cost linear in the sequence length. `nn::attention_entropy` measures how spread out each row of weights is.
+
+>> Kernel attention and random features
+
+The unnormalised weight \(\exp(q\cdot k/\sqrt d)\) is a kernel. If it were an inner product of feature maps, \(\kappa(q,k)=\varphi(q)\cdot\varphi(k)\) with \(\varphi:\mathbb R^d\to\mathbb R^m\), the sum over keys could be done once for all queries:
+
+$$
+\text{out}_i=\frac{\sum_j\varphi(q_i)^\top\varphi(k_j)\,v_j}{\sum_j\varphi(q_i)^\top\varphi(k_j)}
+=\frac{\varphi(q_i)^\top S}{\varphi(q_i)^\top z},\qquad S=\sum_j\varphi(k_j)v_j^\top,\quad z=\sum_j\varphi(k_j).
+$$
+\alttext(Output i equals the sum over j of phi of q i transpose phi of k j times v j, divided by the sum over j of phi of q i transpose phi of k j. This equals phi of q i transpose S over phi of q i transpose z, where S is the sum over j of phi of k j times v j transpose, and z is the sum over j of phi of k j.)
+
+That costs \(O((T_q+T_k)\,m\,d_v)\) instead of \(O(T_qT_kd)\). The causal version replaces \(S\) and \(z\) by prefix sums (Katharopoulos et al., 2020). `nn::kernel_attention(phi_q, phi_k, v, causal)` implements both.
+Katharopoulos et al. used \(\varphi(x)=\mathrm{elu}(x)+1\) (`nn::elu_feature_map`), which defines a different kernel.
+
+The softmax kernel itself has an unbiased random feature map. For \(w\sim\mathcal N(0,I_d)\), the Gaussian moment-generating function gives \(\mathbb E\,e^{w^\top u}=e^{\lVert u\rVert^2/2}\). So with
+\(\varphi_w(x)=\exp(w^\top x-\lVert x\rVert^2/2)\),
+
+$$
+\mathbb E\big[\varphi_w(x)\varphi_w(y)\big]=e^{-(\lVert x\rVert^2+\lVert y\rVert^2)/2}\,\mathbb E\,e^{w^\top(x+y)}
+=e^{-(\lVert x\rVert^2+\lVert y\rVert^2)/2+\lVert x+y\rVert^2/2}=e^{x\cdot y}.
+$$
+\alttext(The expected value of phi w of x times phi w of y equals e to the minus norm x squared plus norm y squared over 2, times the expected value of e to the w transpose x plus y. This equals e to the minus norm x squared plus norm y squared over 2 plus norm x plus y squared over 2, which equals e to the x dot y.)
+
+Averaging \(m\) independent features, \(\varphi(x)=m^{-1/2}(\varphi_{w_1}(x),\dots,\varphi_{w_m}(x))\), estimates \(e^{x\cdot y}\) without bias. Its variance follows from the same identity applied to \(2(x+y)\):
+\(\operatorname{Var}=e^{2x\cdot y}(e^{\lVert x+y\rVert^2}-1)/m\). The relative error therefore falls like \(m^{-1/2}\), with a constant that grows quickly with the norms. Every feature is positive, so the estimated weights stay
+positive, unlike trigonometric random features. This is FAVOR+ (Choromanski et al., 2021), implemented by `nn::positive_random_features(x, w, s)`, which applies the softmax scale through
+\(x'=\sqrt s\,x\). Drawing the rows of \(w\) orthogonal in blocks of \(d\), with chi-distributed lengths (`nn::orthogonal_gaussian_projection`), keeps each row marginally Gaussian, so the estimate stays
+unbiased, and makes the features less correlated (Yu et al., 2016).
+
+> Simple examples
+
+>> Attention against loops
+
+The program below checks plain, causal and windowed scaled dot-product attention, additive attention and multi-head attention against loops written from the definitions. It also
+checks the softmax gradient against the closed form and draws one random sequence's attention weights under four masks.
+
+```{cpp, results="markdown", file="figures/attention_masks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+using nn::Tensor;
+using Rows = std::vector<std::vector<double>>;
+const auto F64 = nn::DType::Float64;
+
+// softmax(q k^T / sqrt(d) + mask) v for one example, by loops; keep(i, j) says whether key j is visible.
+template <class Keep>
+void attend(const Rows& q, const Rows& k, const Rows& v, Keep keep, Rows& w, Rows& out) {
+  const std::size_t Tq = q.size(), Tk = k.size(), d = q[0].size(), dv = v[0].size();
+  w.assign(Tq, std::vector<double>(Tk, 0)), out.assign(Tq, std::vector<double>(dv, 0));
+  for (std::size_t i = 0; i < Tq; ++i) {
+    std::vector<double> sc(Tk, -1e300);
+    double mx = -1e300, z = 0;
+    for (std::size_t j = 0; j < Tk; ++j)
+      if (keep(i, j)) {
+        sc[j] = 0;
+        for (std::size_t a = 0; a < d; ++a) sc[j] += q[i][a] * k[j][a];
+        sc[j] /= std::sqrt(double(d)), mx = std::max(mx, sc[j]);
+      }
+    for (std::size_t j = 0; j < Tk; ++j) if (keep(i, j)) z += std::exp(sc[j] - mx);
+    for (std::size_t j = 0; j < Tk; ++j) {
+      w[i][j] = keep(i, j) ? std::exp(sc[j] - mx) / z : 0;
+      for (std::size_t a = 0; a < dv; ++a) out[i][a] += w[i][j] * v[j][a];
+    }
+  }
+}
+Rows rows(const Tensor& t) {  // [T, d]
+  const auto T = t.size(-2), d = t.size(-1);
+  const auto v = t.contiguous().to_vector<double>();
+  Rows r(T, std::vector<double>(d));
+  for (int i = 0; i < T; ++i) for (int j = 0; j < d; ++j) r[i][j] = v[i * d + j];
+  return r;
+}
+double maxdiff(const Rows& a, const Tensor& b) {
+  const Rows rb = rows(b);
+  double m = 0;
+  for (std::size_t i = 0; i < a.size(); ++i) for (std::size_t j = 0; j < a[i].size(); ++j) m = std::max(m, std::abs(a[i][j] - rb[i][j]));
+  return m;
+}
+
+int main() {
+  std::filesystem::create_directories("build");
+  nn::Generator gen(1);
+  // 1. Scaled dot-product attention, q/k [1, 4, 8], v [1, 4, 3], against loops: plain, causal, and the fused kernel.
+  const Tensor q = nn::normal({1, 4, 8}, 0, 1, gen, F64), k = nn::normal({1, 4, 8}, 0, 1, gen, F64), v = nn::normal({1, 4, 3}, 0, 1, gen, F64);
+  std::print("| case | max \\|weights − loops\\| | max \\|output − loops\\| | weights (rows = queries) |\n| :--- | ---: | ---: | :--- |\n");
+  for (int c = 0; c < 3; ++c) {
+    nn::AttentionOptions o{.need_weights = true};
+    if (c == 1) o.causal = true;
+    if (c == 2) o.mask = nn::local_keep_mask(4, 4, 2);
+    const auto a = nn::scaled_dot_product_attention(q, k, v, o);
+    Rows w, out;
+    attend(rows(nn::squeeze(q, {0})), rows(nn::squeeze(k, {0})), rows(nn::squeeze(v, {0})),
+           [c](std::size_t i, std::size_t j) { return c == 0 || (j <= i && (c == 1 || i - j < 2)); }, w, out);
+    std::string ws;
+    for (int i = 0; i < 4; ++i) {
+      ws += i ? "; " : "";
+      for (int j = 0; j < 4; ++j) ws += std::format("{}{:.3f}", j ? " " : "", w[i][j]);
+    }
+    std::print("| {} | {:.1e} | {:.1e} | {} |\n", c == 0 ? "plain" : c == 1 ? "causal" : "local, window 2", maxdiff(w, nn::squeeze(a.weights, {0})),
+               maxdiff(out, nn::squeeze(a.output, {0})), ws);
+  }
+  nn::AttentionOptions fused{.causal = true, .impl = nn::AttentionImpl::Fused};
+  nn::AttentionOptions plainc{.causal = true, .impl = nn::AttentionImpl::Plain};
+  std::print("\nFused causal kernel against the plain path: max difference {:.1e}.\n",
+             nn::max(nn::abs(nn::scaled_dot_product_attention(q, k, v, fused).output - nn::scaled_dot_product_attention(q, k, v, plainc).output)).item());
+
+  // 2. Additive (Bahdanau) attention: score_t = v^T tanh(Wq q + Wk k_t).
+  {
+    nn::ParameterStore p(3, F64);
+    const Tensor qa = nn::normal({2, 5}, 0, 1, gen, F64), ka = nn::normal({2, 6, 3}, 0, 1, gen, F64), va = nn::normal({2, 6, 2}, 0, 1, gen, F64);
+    const auto a = nn::additive_attention(p, "add", qa, ka, va, 4);
+    const Tensor Wq = p.at("add/Wq"), Wk = p.at("add/Wk"), vec = p.at("add/v");
+    double dw = 0, dout = 0;
+    for (int n = 0; n < 2; ++n) {
+      std::vector<double> sc(6);
+      for (int t = 0; t < 6; ++t)
+        for (int u = 0; u < 4; ++u) {
+          double h = 0;
+          for (int i = 0; i < 5; ++i) h += qa.at({n, i}) * Wq.at({i, u});
+          for (int i = 0; i < 3; ++i) h += ka.at({n, t, i}) * Wk.at({i, u});
+          sc[t] += std::tanh(h) * vec.at({u, 0});
+        }
+      const double mx = std::ranges::max(sc);
+      double z = 0;
+      for (double s : sc) z += std::exp(s - mx);
+      std::vector<double> ctx(2, 0);
+      for (int t = 0; t < 6; ++t) {
+        const double w = std::exp(sc[t] - mx) / z;
+        dw = std::max(dw, std::abs(w - a.weights.at({n, t})));
+        for (int i = 0; i < 2; ++i) ctx[i] += w * va.at({n, t, i});
+      }
+      for (int i = 0; i < 2; ++i) dout = std::max(dout, std::abs(ctx[i] - a.output.at({n, i})));
+    }
+    std::print("Additive attention, q [2, 5], k [2, 6, 3], v [2, 6, 2], 4 units: weights {}, context {}, max differences from loops {:.1e} and {:.1e}, {} parameters (5·4 + 3·4 + 4).\n",
+               nn::shape_str(a.weights.shape()), nn::shape_str(a.output.shape()), dw, dout, p.count());
+  }
+
+  // 3. Multi-head self-attention, x [2, 5, 16], 4 heads of 4, against a per-head computation.
+  {
+    nn::ParameterStore p(4, F64);
+    const Tensor x = nn::normal({2, 5, 16}, 0, 1, gen, F64);
+    nn::MultiHeadOptions o;
+    o.need_weights = true;
+    const auto a = nn::multi_head_attention(p, "self", x, x, 4, o);
+    const Tensor Wq = p.at("self/Wq"), Wk = p.at("self/Wk"), Wv = p.at("self/Wv"), Wo = p.at("self/Wo");
+    double dmax = 0;
+    for (int n = 0; n < 2; ++n) {
+      const Tensor xn = nn::select(x, 0, n);
+      std::vector<Tensor> heads;
+      for (int h = 0; h < 4; ++h) {
+        auto cols = [h](const Tensor& W) { return nn::slice(W, {0, 4 * h}, {16, 4}); };
+        Rows w, out;
+        attend(rows(nn::matmul(xn, cols(Wq))), rows(nn::matmul(xn, cols(Wk))), rows(nn::matmul(xn, cols(Wv))), [](auto, auto) { return true; }, w, out);
+        std::vector<double> flat;
+        for (auto& r : out) flat.insert(flat.end(), r.begin(), r.end());
+        heads.push_back(nn::from_vector(flat, {5, 4}));
+      }
+      dmax = std::max(dmax, maxdiff(rows(nn::matmul(nn::concat(heads, 1), Wo)), nn::select(a.output, 0, n)));
+    }
+    std::print("Multi-head attention, x [2, 5, 16], 4 heads: output {}, weights {}, {} parameters (4·16·16), max difference from the per-head loops {:.1e}.\n",
+               nn::shape_str(a.output.shape()), nn::shape_str(a.weights.shape()), p.count(), dmax);
+    std::print("Head weights, example 0, query 2: ");
+    for (int h = 0; h < 4; ++h) {
+      std::print("head {} [", h);
+      for (int j = 0; j < 5; ++j) std::print("{}{:.3f}", j ? " " : "", a.weights.at({0, h, 2, j}));
+      std::print("]{}", h < 3 ? ", " : ".\n");
+    }
+  }
+
+  // 4. The softmax Jacobian: d alpha / d s = diag(alpha) - alpha alpha^T, so dL/ds = alpha (r - alpha . r).
+  {
+    const Tensor s = nn::normal({5}, 0, 1, gen, F64).requires_grad_(true), r = nn::normal({5}, 0, 1, gen, F64);
+    const Tensor alpha = nn::softmax(s);
+    const Tensor g = nn::grad({nn::sum(alpha * r)}, {s})[0];
+    const double dot = nn::sum(alpha * r).item();
+    double err = 0;
+    for (int j = 0; j < 5; ++j) err = std::max(err, std::abs(alpha.at({j}) * (r.at({j}) - dot) - g.at({j})));
+    std::print("Softmax gradient: max |autograd − α(r − α·r)| = {:.1e}; the gradient sums to {:.1e}.\n", err, nn::sum(g).item());
+  }
+
+  // Figure: attention weights of one random sequence (T = 12, d = 16) under four masks.
+  const int T = 12;
+  const Tensor qs = nn::normal({T, 16}, 0, 1, gen, F64), ks = nn::normal({T, 16}, 0, 1, gen, F64), vs = nn::normal({T, 1}, 0, 1, gen, F64);
+  const std::vector<std::pair<std::string, Tensor>> masks = {{"No mask", Tensor()}, {"Causal", nn::causal_keep_mask(T)},
+                                                             {"Causal window of 4", nn::local_keep_mask(T, T, 4)}, {"Two-sided window of 3", nn::local_keep_mask(T, T, 3, false)}};
+  std::vector<double> xs, ys;
+  std::vector<std::string> ylab;
+  for (int i = 0; i < T; ++i) xs.push_back(i), ys.push_back(i), ylab.push_back(std::to_string(T - 1 - i));
+  auto fig = dm::graphics::RLayout::create(2, 2);
+  for (const auto& [title, mask] : masks) {
+    const auto a = nn::scaled_dot_product_attention(qs, ks, vs, {.mask = mask, .need_weights = true});
+    const auto e = nn::attention_entropy(a.weights);
+    std::print("{}: mean entropy of a row {:.3f} nats.  ", title, nn::mean(e).item());
+    std::vector<std::vector<double>> z(T, std::vector<double>(T));
+    for (int j = 0; j < T; ++j)
+      for (int i = 0; i < T; ++i) {
+        const bool kept = !mask.defined() || mask.at({i, j}) != 0;
+        z[j][T - 1 - i] = kept ? a.weights.at({i, j}) : std::nan("");
+      }
+    auto p = dm::graphics::RPlot::create();
+    p.image(xs, ys, z, dm::graphics::viridis_colors(32), 0.0, 1.0).x_limits(-0.5, T - 0.5).y_limits(-0.5, T - 0.5).title(title).x_label("key j").y_label("query i").y_tick_labels(ylab);
+    fig.add(p);
+  }
+  std::print("\n");
+  fig.size(1100, 1000).fit_panels();
+  fig.save("build/attention_masks.svg");
+}
+```
+// result_begin: markdown
+| case | max \|weights − loops\| | max \|output − loops\| | weights (rows = queries) |
+| :--- | ---: | ---: | :--- |
+| plain | 5.6e-17 | 1.2e-16 | 0.578 0.146 0.247 0.030; 0.209 0.121 0.217 0.453; 0.755 0.036 0.067 0.142; 0.034 0.045 0.097 0.824 |
+| causal | 0.0e+00 | 1.1e-16 | 1.000 0.000 0.000 0.000; 0.633 0.367 0.000 0.000; 0.880 0.042 0.078 0.000; 0.034 0.045 0.097 0.824 |
+| local, window 2 | 0.0e+00 | 2.8e-17 | 1.000 0.000 0.000 0.000; 0.633 0.367 0.000 0.000; 0.000 0.354 0.646 0.000; 0.000 0.000 0.105 0.895 |
+
+Fused causal kernel against the plain path: max difference 1.1e-16.
+Additive attention, q [2, 5], k [2, 6, 3], v [2, 6, 2], 4 units: weights [2, 6], context [2, 2], max differences from loops 1.1e-16 and 1.1e-16, 36 parameters (5·4 + 3·4 + 4).
+Multi-head attention, x [2, 5, 16], 4 heads: output [2, 5, 16], weights [2, 4, 5, 5], 1024 parameters (4·16·16), max difference from the per-head loops 4.4e-16.
+Head weights, example 0, query 2: head 0 [0.369 0.122 0.200 0.231 0.078], head 1 [0.091 0.102 0.566 0.069 0.171], head 2 [0.438 0.085 0.009 0.309 0.158], head 3 [0.094 0.409 0.232 0.098 0.167].
+Softmax gradient: max |autograd − α(r − α·r)| = 0.0e+00; the gradient sums to 3.5e-17.
+No mask: mean entropy of a row 2.110 nats.  Causal: mean entropy of a row 1.364 nats.  Causal window of 4: mean entropy of a row 0.998 nats.  Two-sided window of 3: mean entropy of a row 1.195 nats.  
+\image(figures/attention_masks.svg)
+// result_end
+
+\caption(Attention weights of one random sequence, 12 queries by 12 keys with d equals 16, under four masks. Colour runs from dark purple (weight 0) through green to yellow (weight 1). White cells are masked out.)
+\alttext(Top left, no mask: a full 12 by 12 grid of mostly dark cells with a few brighter ones, such as query 3 on key 2 and query 9 on key 5. Top right, causal: the lower triangle including the diagonal; query 0 puts all its weight on key 0 (yellow), and later rows spread their weight. Bottom left, causal window of 4: a band of four cells ending on the diagonal. Bottom right, two-sided window of 3: a band of five cells centred on the diagonal, three at the first and last rows.)
+
+All three scaled dot-product cases agree with the loops to within \(1.2\times10^{-16}\), as do the fused causal kernel against the plain path, additive attention, and multi-head attention against the per-head computation,
+to within \(4.4\times10^{-16}\). Additive attention with 4 units has \(5\cdot4+3\cdot4+4=36\) parameters, and multi-head attention has \(4\cdot16^2=1024\), the same as a single head of width 16 would have. The causal rows
+show the mask at work. Query 0 can see only key 0 and gives it weight 1. Query 3 sees every key, so its causal and plain weights coincide. With a window of 2, query 2 loses key 0 and renormalises over keys 1 and 2.
+The four heads distribute query 2's weight very differently, which is the point of having several. The softmax gradient matches \(\alpha\odot(r-\alpha\cdot r)\) exactly and sums to \(3.5\times10^{-17}\).
+
+In the figure, the mean entropy of a row falls from 2.110 nats without a mask to 1.364 under the causal mask, and to 0.998 and 1.195 with the windows. Restricting what a query
+can see lowers its entropy, since fewer keys share the weight.
+
+> Checking the theory
+
+>> The scale, the entropy law, random features and cost
+
+The next program draws random queries and 64 random keys and measures score variances, softmax entropies and Jacobian norms with and without the \(1/\sqrt d\) scale. It tests the entropy law
+for 64 and 4096 keys, measures the error of FAVOR+ attention against exact softmax attention as the number of features grows, and times plain, fused and kernel attention for one head.
+
+```{cpp, results="markdown", file="figures/attention_theory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+using nn::Tensor;
+const auto F64 = nn::DType::Float64;
+
+// Entropy and Jacobian Frobenius norm of the softmax of one row of scores.
+std::pair<double, double> softmax_stats(const std::vector<double>& s) {
+  const double mx = std::ranges::max(s);
+  double z = 0;
+  for (double x : s) z += std::exp(x - mx);
+  std::vector<double> p;
+  double h = 0;
+  for (double x : s) {
+    p.push_back(std::exp(x - mx) / z);
+    if (p.back() > 0) h -= p.back() * std::log(p.back());
+  }
+  // ||diag(p) - p p^T||_F^2, entry by entry (the closed form cancels badly when p is nearly one-hot).
+  double f2 = 0;
+  for (std::size_t i = 0; i < p.size(); ++i) {
+    double rest = 0;  // 1 - p_i, summed from the other entries
+    for (std::size_t j = 0; j < p.size(); ++j)
+      if (j != i) rest += p[j], f2 += p[i] * p[i] * p[j] * p[j];
+    f2 += p[i] * p[i] * rest * rest;
+  }
+  return {h, std::sqrt(f2)};
+}
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::mt19937_64 rng(2);
+  std::normal_distribution<double> normal(0, 1);
+  const int n = 64, trials = 400;
+  // 1. q, k with N(0, 1) entries: score variance, softmax entropy and Jacobian size, unscaled vs scaled.
+  std::print("| d | var(q·k) | var(q·k/√d) | entropy, unscaled | entropy, scaled | ‖J‖_F, unscaled | ‖J‖_F, scaled |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (int d : {4, 16, 64, 256, 1024}) {
+    double vr = 0, vs = 0, hr = 0, hs = 0, jr = 0, js = 0;
+    for (int t = 0; t < trials; ++t) {
+      std::vector<double> q(d), raw(n), scaled(n);
+      for (double& x : q) x = normal(rng);
+      for (int j = 0; j < n; ++j) {
+        double s = 0;
+        for (int a = 0; a < d; ++a) s += q[a] * normal(rng);
+        raw[j] = s, scaled[j] = s / std::sqrt(double(d));
+        vr += s * s / (n * trials), vs += s * s / d / (n * trials);
+      }
+      const auto [h1, j1] = softmax_stats(raw);
+      const auto [h2, j2] = softmax_stats(scaled);
+      hr += h1 / trials, hs += h2 / trials, jr += j1 / trials, js += j2 / trials;
+    }
+    std::print("| {} | {:.1f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |\n", d, vr, vs, hr, hs, jr, js);
+  }
+  // 2. Entropy against the score scale sigma, for 64 iid N(0, sigma^2) scores, with log n - sigma^2 / 2.
+  const double sigma_c = std::sqrt(2 * std::log(double(n)));
+  std::vector<double> sig, ent, jac, pred;
+  for (int i = 0; i <= 32; ++i) {
+    const double sg = 0.375 * i;
+    double h = 0, jn = 0;
+    for (int t = 0; t < trials; ++t) {
+      std::vector<double> s(n);
+      for (double& x : s) x = sg * normal(rng);
+      const auto [a, b] = softmax_stats(s);
+      h += a / trials, jn += b / trials;
+    }
+    sig.push_back(sg), ent.push_back(h), jac.push_back(jn), pred.push_back(std::max(0.0, std::log(double(n)) - sg * sg / 2));
+  }
+  std::print("\nlog 64 = {:.4f}; threshold sqrt(2 log 64) = {:.3f}.\n", std::log(64.0), sigma_c);
+  for (int i : {2, 4, 6, 8, 12, 16, 24, 32})
+    std::print("sigma {}: entropy {:.3f} (law {:.3f}), Jacobian norm {:.3f}{}", sig[i], ent[i], pred[i], jac[i], i < 32 ? "; " : ".\n");
+  const auto peak = std::ranges::max_element(jac) - jac.begin();
+  std::print("Largest mean Jacobian norm {:.3f}, at sigma = {}.\n", jac[peak], sig[peak]);
+
+  // The law is the large-n limit: repeat a few scales with n = 4096 keys.
+  std::print("With n = 4096 keys (log n = {:.3f}, threshold {:.3f}): ", std::log(4096.0), std::sqrt(2 * std::log(4096.0)));
+  for (double sg : {0.75, 1.5, 2.25, 3.0}) {
+    double h = 0;
+    for (int t = 0; t < 50; ++t) {
+      std::vector<double> s(4096);
+      for (double& x : s) x = sg * normal(rng);
+      const double mx = std::ranges::max(s);
+      double z = 0, e = 0;
+      for (double x : s) z += std::exp(x - mx);
+      for (double x : s) { const double p = std::exp(x - mx) / z; if (p > 0) e -= p * std::log(p); }
+      h += e / 50;
+    }
+    std::print("sigma {}: {:.3f} (law {:.3f}){}", sg, h, std::log(4096.0) - sg * sg / 2, sg < 3 ? ", " : ".\n");
+  }
+
+  // 3. FAVOR+: relative error of random-feature attention against exact softmax attention, against m.
+  nn::Generator gen(3);
+  const int T = 64, d = 16;
+  const Tensor q = nn::normal({T, d}, 0, 0.5, gen, F64), k = nn::normal({T, d}, 0, 0.5, gen, F64), v = nn::normal({T, 4}, 0, 1, gen, F64);
+  const Tensor exact = nn::scaled_dot_product_attention(q, k, v).output;
+  const Tensor exact_w = nn::scaled_dot_product_attention(q, k, v, {.need_weights = true}).weights;
+  std::vector<double> ms, e_iid, e_orth;
+  std::print("\n| m | relative error, iid features | orthogonal features | error × √m (iid) |\n| ---: | ---: | ---: | ---: |\n");
+  for (int m = 16; m <= 4096; m *= 2) {
+    double a = 0, b = 0;
+    const int reps = 20;
+    for (int r = 0; r < reps; ++r) {
+      for (int orth = 0; orth < 2; ++orth) {
+        const Tensor w = orth ? nn::orthogonal_gaussian_projection(m, d, gen, F64) : nn::normal({m, d}, 0, 1, gen, F64);
+        const Tensor out = nn::kernel_attention(nn::positive_random_features(q, w), nn::positive_random_features(k, w), v, false, 0.0);
+        const double err = std::sqrt(nn::sum(nn::square(out - exact)).item() / nn::sum(nn::square(exact)).item());
+        (orth ? b : a) += err / reps;
+      }
+    }
+    ms.push_back(m), e_iid.push_back(a), e_orth.push_back(b);
+    std::print("| {} | {:.4f} | {:.4f} | {:.3f} |\n", m, a, b, a * std::sqrt(m));
+  }
+  // The kernel estimate is unbiased: average phi(q).phi(k) over many draws for one pair, against exp(q.k / sqrt d).
+  {
+    const Tensor qi = nn::slice(q, {0, 0}, {1, d}), kj = nn::slice(k, {1, 0}, {1, d});
+    const double target = std::exp(nn::sum(qi * kj).item() / std::sqrt(double(d)));
+    const Tensor w = nn::normal({1 << 20, d}, 0, 1, gen, F64);
+    const double est = nn::sum(nn::positive_random_features(qi, w) * nn::positive_random_features(kj, w)).item();
+    std::print("\nOne pair, 2^20 features: estimate {:.5f}, exp(q·k/√d) = {:.5f}.\n", est, target);
+  }
+
+  // 4. Cost against T (d = 64, one head, float32): softmax (plain and fused) against kernel attention with elu+1 features.
+  std::print("\n| T | plain softmax (ms) | fused softmax (ms) | kernel attention (ms) | plain / kernel |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> Ts, tp, tf, tk;
+  for (int Tn : {256, 512, 1024, 2048, 4096}) {
+    const Tensor Q = nn::normal({Tn, 64}, 0, 1, gen), K = nn::normal({Tn, 64}, 0, 1, gen), V = nn::normal({Tn, 64}, 0, 1, gen);
+    auto best = [](auto&& f) {
+      double b = 1e300;
+      for (int r = 0; r < 7; ++r) {
+        const auto t0 = std::chrono::steady_clock::now();
+        f();
+        b = std::min(b, std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count());
+      }
+      return b;
+    };
+    nn::NoGradGuard ng;
+    const double a = best([&] { (void)nn::scaled_dot_product_attention(Q, K, V, {.impl = nn::AttentionImpl::Plain}).output; });
+    const double b = best([&] { (void)nn::scaled_dot_product_attention(Q, K, V, {.impl = nn::AttentionImpl::Fused}).output; });
+    const double c = best([&] { (void)nn::kernel_attention(nn::elu_feature_map(Q), nn::elu_feature_map(K), V); });
+    Ts.push_back(Tn), tp.push_back(a), tf.push_back(b), tk.push_back(c);
+    std::print("| {} | {:.2f} | {:.2f} | {:.2f} | {:.1f} |\n", Tn, a, b, c, a / c);
+  }
+  auto slope = [](const std::vector<double>& x, const std::vector<double>& y) {
+    return (std::log(y.back()) - std::log(y[y.size() - 2])) / (std::log(x.back()) - std::log(x[x.size() - 2]));
+  };
+  std::print("\nLog-log slopes between T = 2048 and 4096: plain {:.2f}, fused {:.2f}, kernel {:.2f}.\n", slope(Ts, tp), slope(Ts, tf), slope(Ts, tk));
+
+  // Figure.
+  auto lg = [](const std::vector<double>& x) { std::vector<double> y; for (double v : x) y.push_back(std::log10(v)); return y; };
+  const dm::graphics::RGB blue{37, 99, 235}, orange{234, 88, 12}, green{22, 163, 74}, grey{148, 163, 184};
+  auto p1 = dm::graphics::RPlot::create();
+  p1.lines(sig, pred, "log n − σ²/2", grey, 3.0).points(sig, ent, blue, 3.5)
+      .lines({1.0, 1.0}, {0.0, 4.5}, "σ = 1 (scaled)", green, 1.5).lines({sigma_c, sigma_c}, {0.0, 4.5}, "σ = √(2 log n)", orange, 1.5)
+      .x_limits(0, 12).y_limits(0, 6).title("Softmax entropy, 64 keys").x_label("score standard deviation σ").y_label("entropy (nats)");
+  auto p2 = dm::graphics::RPlot::create();
+  p2.points(sig, jac, blue, 3.5).lines({1.0, 1.0}, {0.0, 0.25}, "σ = 1 (scaled)", green, 1.5).lines({sigma_c, sigma_c}, {0.0, 0.25}, "σ = √(2 log n)", orange, 1.5)
+      .x_limits(0, 12).y_limits(0, 0.5).title("Size of the softmax Jacobian").x_label("score standard deviation σ").y_label("mean ‖diag(α) − αα^T‖_F");
+  auto p3 = dm::graphics::RPlot::create();
+  std::vector<double> ref;
+  for (double m : ms) ref.push_back(e_iid.front() * std::sqrt(ms.front() / m));
+  p3.lines(lg(ms), lg(ref), "∝ m^(−1/2)", grey, 3.0).lines(lg(ms), lg(e_iid), "iid features", blue, 2.0).points(lg(ms), lg(e_iid), blue, 3.0)
+      .lines(lg(ms), lg(e_orth), "orthogonal features", orange, 2.0).points(lg(ms), lg(e_orth), orange, 3.0)
+      .x_limits(1.1, 3.7).y_limits(-1.25, 0.75).title("FAVOR+ error against exact attention").x_label("log10 number of features m").y_label("log10 relative error");
+  auto p4 = dm::graphics::RPlot::create();
+  p4.lines(lg(Ts), lg(tp), "plain softmax", blue, 2.0).points(lg(Ts), lg(tp), blue, 3.0).lines(lg(Ts), lg(tf), "fused softmax", orange, 2.0).points(lg(Ts), lg(tf), orange, 3.0)
+      .lines(lg(Ts), lg(tk), "kernel (elu + 1)", green, 2.0).points(lg(Ts), lg(tk), green, 3.0)
+      .x_limits(2.3, 3.7).y_limits(-1.5, 3).title("Time for one head, d = 64").x_label("log10 sequence length T").y_label("log10 milliseconds (best of 7)");
+  auto fig = dm::graphics::RLayout::create(2, 2);
+  fig.add(p1).add(p2).add(p3).add(p4);
+  fig.size(1100, 840).fit_panels();
+  fig.save("build/attention_theory.svg");
+}
+```
+// result_begin: markdown
+| d | var(q·k) | var(q·k/√d) | entropy, unscaled | entropy, scaled | ‖J‖_F, unscaled | ‖J‖_F, scaled |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 4 | 4.1 | 1.015 | 2.770 | 3.692 | 0.258 | 0.182 |
+| 16 | 15.8 | 0.989 | 1.396 | 3.690 | 0.290 | 0.183 |
+| 64 | 64.1 | 1.002 | 0.586 | 3.686 | 0.212 | 0.183 |
+| 256 | 253.3 | 0.990 | 0.266 | 3.685 | 0.129 | 0.184 |
+| 1024 | 1023.7 | 1.000 | 0.100 | 3.684 | 0.052 | 0.184 |
+
+log 64 = 4.1589; threshold sqrt(2 log 64) = 2.884.
+sigma 0.75: entropy 3.887 (law 3.878), Jacobian norm 0.158; sigma 1.5: entropy 3.195 (law 3.034), Jacobian norm 0.239; sigma 2.25: entropy 2.434 (law 1.628), Jacobian norm 0.297; sigma 3: entropy 1.762 (law 0.000), Jacobian norm 0.304; sigma 4.5: entropy 1.185 (law 0.000), Jacobian norm 0.294; sigma 6: entropy 0.833 (law 0.000), Jacobian norm 0.258; sigma 9: entropy 0.486 (law 0.000), Jacobian norm 0.185; sigma 12: entropy 0.370 (law 0.000), Jacobian norm 0.160.
+Largest mean Jacobian norm 0.306, at sigma = 2.625.
+With n = 4096 keys (log n = 8.318, threshold 4.079): sigma 0.75: 8.037 (law 8.037), sigma 1.5: 7.201 (law 7.193), sigma 2.25: 5.925 (law 5.787), sigma 3: 4.477 (law 3.818).
+
+| m | relative error, iid features | orthogonal features | error × √m (iid) |
+| ---: | ---: | ---: | ---: |
+| 16 | 1.4627 | 1.2141 | 5.851 |
+| 32 | 1.1077 | 0.9686 | 6.266 |
+| 64 | 0.8173 | 0.7158 | 6.538 |
+| 128 | 0.6063 | 0.5953 | 6.860 |
+| 256 | 0.4566 | 0.4333 | 7.306 |
+| 512 | 0.3207 | 0.2889 | 7.258 |
+| 1024 | 0.2394 | 0.2289 | 7.660 |
+| 2048 | 0.1797 | 0.1582 | 8.132 |
+| 4096 | 0.1281 | 0.1145 | 8.196 |
+
+One pair, 2^20 features: estimate 1.12256, exp(q·k/√d) = 1.12227.
+
+| T | plain softmax (ms) | fused softmax (ms) | kernel attention (ms) | plain / kernel |
+| ---: | ---: | ---: | ---: | ---: |
+| 256 | 1.09 | 0.16 | 0.28 | 3.8 |
+| 512 | 1.50 | 0.30 | 0.73 | 2.1 |
+| 1024 | 4.29 | 1.14 | 1.39 | 3.1 |
+| 2048 | 36.81 | 5.02 | 1.86 | 19.8 |
+| 4096 | 109.28 | 14.70 | 3.43 | 31.8 |
+
+Log-log slopes between T = 2048 and 4096: plain 1.57, fused 1.55, kernel 0.88.
+\image(figures/attention_theory.svg)
+// result_end
+
+\caption(Top left: mean entropy of the softmax of 64 independent normal scores against their standard deviation sigma (points), with the large-n law log n minus sigma squared over 2 (grey). Top right: the mean Frobenius norm of the softmax Jacobian. Bottom left: relative error of FAVOR+ attention against exact softmax attention for 64 queries and keys with d equals 16, mean of 20 draws, against the number of features. Bottom right: time for one head with d equals 64 against sequence length, best of 7 runs, on log scales.)
+\alttext(Top left: entropy falls from 4.16 at sigma 0, following the grey law closely up to about sigma 1.5; the law then drops to 0 at the orange line, sigma 2.88, while the points decline more slowly, to about 1.8 at sigma 3 and 0.4 at sigma 12. A green line marks sigma 1. Top right: the Jacobian norm rises from 0.12 at sigma 0 to a peak of about 0.31 near sigma 2.6, then slowly falls to about 0.16 at sigma 12. Bottom left: both error curves fall almost in parallel with the grey reference line of slope minus one half, from about 1.5 at 16 features to about 0.12 at 4096, the orthogonal curve slightly lower. Bottom right: the plain softmax line rises steeply; the fused line is lowest at short lengths and rises less steeply; the kernel line is nearly flat, crossing the fused line between log10 T of 3 and 3.3.)
+
+*The scale.* Unscaled score variances are within 3% of \(d\) and scaled ones within 1.5% of 1. Without the scale, the entropy over 64 keys falls from 2.770 nats at \(d=4\) to 0.100 at \(d=1024\), where the
+weight sits on about \(e^{0.100}\approx1.1\) keys. With the scale it stays at 3.68 to 3.69 for every \(d\), within 1% of the law's \(\log64-1/2=3.659\). The Jacobian, however, does not simply shrink as the softmax sharpens.
+Its norm is 0.18 with the scale, larger without it at \(d=4\) and 16 (0.258 and 0.290), and smaller only from \(d=256\) (0.052 at \(d=1024\)). The figure shows why. The norm rises from \(\sqrt{63}/64=0.124\) for uniform weights to a peak of 0.306 near
+\(\sigma=\) 2.6, where two or three keys share the weight, and declines only slowly beyond. The case for the scale is therefore not that unscaled gradients vanish at moderate \(d\). It is that unscaled attention starts frozen
+onto whichever keys happen to score highest, with a low entropy that bears no relation to the task (0.59 nats at \(d=64\), against 3.69 with the scale), and its weights only become insensitive to the scores at very large \(d\).
+
+*The entropy law.* For 64 keys the law is within 0.3% at \(\sigma=0.75\) and 5% at \(\sigma=1.5\), but at \(\sigma=2.25\) the measured entropy is 2.434 against the law's 1.628. Past the threshold \(\sigma=2.88\) the
+entropy keeps falling smoothly instead of reaching zero (1.762 at \(\sigma=3\)). With 4096 keys the law holds further out: it agrees to 0.1% up to \(\sigma=1.5\), and to 2.4% at \(\sigma=2.25\). Like the random energy model's transition, the collapse is
+sharp only as \(n\to\infty\), and with 64 keys finite-size effects blur it.
+
+*Random features.* One pair of vectors estimated with \(2^{20}\) features gives 1.12256 against an exact 1.12227, as unbiasedness predicts. For whole attention outputs the relative error falls from 1.46 at 16 features to
+0.128 at 4096. The product error\(\cdot\sqrt m\) grows from 5.9 and levels off near 8.2 from \(m=2048\), the \(m^{-1/2}\) rate of the variance formula. Orthogonal features are more accurate at every \(m\), by 2% to 17%. Even
+for these small vectors (entries with standard deviation 0.5), 4096 features, 256 times the key dimension, still leave an error of 11% to 13%.
+
+*Cost.* Plain softmax attention grows like \(T^2\), with a log-log slope of 2.23 between 2048 and 4096 tokens. Kernel attention grows far more slowly, with slope 0.36, since at these sizes fixed overheads still dominate its
+linear cost. The fused softmax kernel is the fastest up to 1024 tokens, and kernel attention overtakes it between 1024 and 2048. At 4096 tokens kernel attention takes 1.38 ms, 49 times less than plain softmax attention
+(67.4 ms) and 6 times less than the fused kernel (8.82 ms). Timings vary between runs; another run gave a factor of 40 against plain attention.
+
+> Training: a lookup task
+
+The original example's task: each sequence holds 6 (key id, value) pairs, with distinct ids from 10 and standard-normal values. Given a query id, the model must output the value stored under it. The only
+parameters are a \(10\times8\) table of embeddings, used for both queries and keys. The prediction is the attention-weighted average of the 6 values, so a perfect model puts all its weight on the matching key.
+Training is 600 Adam steps with learning rate 0.02 and batches of 64, evaluated on 512 held-out queries. The program trains the same model with three kinds of attention: softmax, elu-kernel, and FAVOR+ with 128 fixed orthogonal features.
+
+```{cpp, results="markdown", file="figures/attention_lookup.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+using nn::Tensor;
+const auto F64 = nn::DType::Float64;
+
+// Lookup: 6 (key id, value) pairs and a query id; predict the value stored under the query's key.
+struct Batch { Tensor keys, query, values, target; };
+Batch make(int n, std::mt19937_64& rng) {
+  const int T = 6, ids = 10;
+  std::normal_distribution<double> normal(0, 1);
+  std::vector<std::int64_t> kv(n * T), qv(n);
+  std::vector<double> vv(n * T), tv(n);
+  for (int i = 0; i < n; ++i) {
+    std::vector<int> perm(ids);
+    std::iota(perm.begin(), perm.end(), 0);
+    std::shuffle(perm.begin(), perm.end(), rng);  // distinct keys
+    const int which = static_cast<int>(rng() % T);
+    for (int t = 0; t < T; ++t) kv[i * T + t] = perm[t], vv[i * T + t] = normal(rng);
+    qv[i] = perm[which], tv[i] = vv[i * T + which];
+  }
+  return {nn::from_vector(kv, {n, T}), nn::from_vector(qv, {n}), nn::from_vector(vv, {n, T}), nn::from_vector(tv, {n})};
+}
+
+int main() {
+  std::filesystem::create_directories("build");
+  const int T = 6, ids = 10, dim = 8, steps = 600;
+  enum Kind { Softmax, Elu, Favor };
+  const std::vector<std::pair<Kind, std::string>> kinds = {{Softmax, "softmax"}, {Elu, "kernel, elu + 1"}, {Favor, "FAVOR+, m = 128"}};
+  std::vector<std::vector<double>> curves;
+  std::vector<int> checkpoints;
+  std::string note;
+  std::print("| attention | test MSE, step 1 | step 100 | step 300 | step 600 | weight on the matching key, step 600 | pointer accuracy |\n| :--- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (const auto& [kind, name] : kinds) {
+    nn::ParameterStore p(5, F64);
+    const Tensor table = p.get("emb", {ids, dim}, nn::init::uniform(0.5));
+    nn::Generator fg(11);
+    const Tensor w = nn::orthogonal_gaussian_projection(128, dim, fg, F64);  // fixed FAVOR+ projection
+    nn::Optimizer adam(p, 0.02, {.kind = nn::OptimizerKind::Adam});
+    std::mt19937_64 rng(5);
+    // Returns the prediction [B] and the attention weights [B, T].
+    auto forward = [&](const Batch& b) {
+      const Tensor k = nn::gather(table, b.keys, 0);                       // [B, T, dim]
+      const Tensor q = nn::expand_dims(nn::gather(table, b.query, 0), 1);  // [B, 1, dim]
+      Tensor wts;
+      if (kind == Softmax) {
+        wts = nn::softmax(nn::squeeze(nn::matmul(q, nn::swapaxes(k, -2, -1)), {1}) / std::sqrt(double(dim)), -1);
+      } else {
+        const Tensor pq = kind == Elu ? nn::elu_feature_map(q) : nn::positive_random_features(q, w);
+        const Tensor pk = kind == Elu ? nn::elu_feature_map(k) : nn::positive_random_features(k, w);
+        const Tensor raw = nn::squeeze(nn::matmul(pq, nn::swapaxes(pk, -2, -1)), {1});  // [B, T]
+        wts = raw / nn::sum(raw, {-1}, true);
+      }
+      return std::make_pair(nn::sum(wts * b.values, {-1}), wts);
+    };
+    const Batch test = make(512, rng);
+    std::vector<double> mse_at, on_target;
+    double final_on = 0, acc = 0;
+    for (int step = 1; step <= steps; ++step) {
+      const Batch b = make(64, rng);
+      adam.step(nn::grad({nn::mean(nn::square(forward(b).first - b.target))}, {table}));
+      if (step == 1 || step % 25 == 0) {
+        nn::NoGradGuard ng;
+        const auto [pred, wts] = forward(test);
+        const Tensor match = nn::cast(nn::equal(test.keys, nn::expand_dims(test.query, 1)), F64);
+        const double on = nn::mean(nn::sum(wts * match, {-1})).item();
+        if (kind == Softmax) checkpoints.push_back(step);
+        on_target.push_back(on);
+        if (step == 1 || step == 100 || step == 300 || step == 600) mse_at.push_back(nn::mean(nn::square(pred - test.target)).item());
+        if (step == steps) {
+          final_on = on;
+          acc = nn::mean(nn::cast(nn::equal(nn::argmax(wts, -1), nn::argmax(match, -1)), F64)).item();
+        }
+      }
+    }
+    curves.push_back(on_target);
+    std::print("| {} | {:.4f} | {:.4f} | {:.4f} | {:.4f} | {:.3f} | {:.1f}% |\n", name, mse_at[0], mse_at[1], mse_at[2], mse_at[3], final_on, 100 * acc);
+    if (kind == Softmax) {
+      // The learned embeddings: cosine similarity between distinct ids, and the score gap that sharpens the pointer.
+      nn::NoGradGuard ng;
+      const Tensor e = table / nn::sqrt(nn::sum(nn::square(table), {-1}, true));
+      const Tensor cos = nn::matmul(e, nn::swapaxes(e, 0, 1));
+      const Tensor gram = nn::matmul(table, nn::swapaxes(table, 0, 1)) / std::sqrt(double(dim));
+      double off = -1, self_min = 1e300, gap = 1e300;
+      for (int i = 0; i < ids; ++i) {
+        self_min = std::min(self_min, gram.at({i, i}));
+        for (int j = 0; j < ids; ++j)
+          if (i != j) off = std::max(off, cos.at({i, j})), gap = std::min(gap, gram.at({i, i}) - gram.at({i, j}));
+      }
+      note = std::format("\nSoftmax model: largest cosine between distinct embeddings {:.3f}; smallest scaled self-score {:.2f}; smallest gap between the matching score and any other {:.2f}, so the matching key gets at least 1/(1 + 5 e^-gap) = {:.3f} of the weight.\n",
+                 off, self_min, gap, 1 / (1 + 5 * std::exp(-gap)));
+    }
+  }
+  std::print("{}", note);
+  auto plot = dm::graphics::RPlot::create();
+  std::vector<double> xs(checkpoints.begin(), checkpoints.end());
+  const dm::graphics::RGB cols[] = {{37, 99, 235}, {234, 88, 12}, {22, 163, 74}};
+  for (std::size_t c = 0; c < curves.size(); ++c) plot.lines(xs, curves[c], kinds[c].second, cols[c], 2.0);
+  plot.lines({0.0, double(steps)}, {1.0 / T, 1.0 / T}, "1/6 (uniform)", dm::graphics::RGB{148, 163, 184}, 1.0);
+  plot.x_limits(0, steps).y_limits(0, 1.5).title("Lookup task: attention on the matching key").x_label("Adam step (batches of 64)").y_label("mean weight on matching key");
+  plot.size(1100, 440).save("build/attention_lookup.svg");
+}
+```
+// result_begin: markdown
+| attention | test MSE, step 1 | step 100 | step 300 | step 600 | weight on the matching key, step 600 | pointer accuracy |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| softmax | 0.7056 | 0.0035 | 0.0005 | 0.0002 | 0.989 | 100.0% |
+| kernel, elu + 1 | 0.7601 | 0.6054 | 0.1775 | 0.1264 | 0.811 | 88.1% |
+| FAVOR+, m = 128 | 0.7056 | 0.0125 | 0.0013 | 0.0004 | 0.983 | 100.0% |
+
+Softmax model: largest cosine between distinct embeddings 0.208; smallest scaled self-score 5.61; smallest gap between the matching score and any other 4.90, so the matching key gets at least 1/(1 + 5 e^-gap) = 0.964 of the weight.
+\image(figures/attention_lookup.svg)
+// result_end
+
+\caption(Mean attention weight on the matching key over 512 test queries during training, for softmax, elu-kernel and FAVOR+ attention, with the uniform weight one sixth (grey).)
+\alttext(All three curves start near 0.17 to 0.2. The blue softmax curve rises steeply to about 0.92 by step 75 and 0.95 by step 100, then creeps up to 0.99. The green FAVOR+ curve follows just below it, reaching 0.98. The orange elu-kernel curve rises slowly, passing 0.5 near step 210 and levelling off at about 0.81.)
+
+Softmax attention reproduces the original example's TensorFlow result: test MSE 0.0002 and weight 0.989 on the matching key, with the argmax picking the right key for all 512 queries. The learned embeddings are nearly orthogonal (largest
+cosine between distinct ids 0.208), and every matching score beats every other by at least 4.90. That margin alone guarantees weight \(1/(1+5e^{-\text{gap}})=\) 0.964 to the matching key. FAVOR+ attention learns
+almost as well (MSE 0.0004, weight 0.983), since its features estimate the same exponential kernel. Elu-kernel attention reaches only 0.811 on the matching key and 88.1% pointer accuracy, with MSE 0.126.
+Its weights are proportional to \((\mathrm{elu}(q)+1)\cdot(\mathrm{elu}(k)+1)\), which grows only linearly in each embedding, so a sharp pointer needs embeddings that are both large and nearly
+disjoint in their positive parts. The exponential makes sharpness cheap, and that is what linear attention gives up.
+
+> A dataset: digits as sequences
+
+The digits data (Alpaydin and Kaynak, 1998) give 1797 handwritten digits as \(8\times8\) images with grey levels 0 to 16. Here each image becomes a sequence of 8 tokens, its pixel rows, scaled to \([0,1]\) and centred.
+The model embeds each row linearly into 32 dimensions, adds a learned position embedding, applies one residual multi-head self-attention block (4 heads of 8), averages over the tokens and classifies linearly.
+To keep the run short it trains in single precision on the first 600 digits with 100 full-batch Adam steps (learning rate 0.01) for three seeds, and tests on the last 360.
+
+```{cpp, results="markdown", file="figures/attention_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+namespace init = dm::nn::init;
+using nn::Tensor;
+const auto F64 = nn::DType::Float64;
+
+int main() {
+  std::filesystem::create_directories("build");
+  // Each digit is a sequence of 8 tokens, its pixel rows (8 grey levels each, scaled to [0, 1] and centred).
+  const auto digits = dm::datasets::digits();
+  const std::int64_t n = 1797, n_train = 600, n_test_from = 1437, T = 8, D = 32, H = 4;
+  std::vector<double> v(static_cast<std::size_t>(n * 64));
+  for (std::int64_t j = 0; j < 64; ++j) {
+    const auto c = digits.get_column<double>(std::format("pixel_{}", j)).values();
+    const double m = std::accumulate(c.begin(), c.end(), 0.0) / n / 16.0;
+    for (std::int64_t i = 0; i < n; ++i) v[i * 64 + j] = c[i] / 16.0 - m;
+  }
+  const Tensor X = nn::from_vector(v, {n, T, 8}).to(nn::DType::Float32);
+  const Tensor y = nn::cast(nn::from_vector(digits.get_column<double>("digit").values(), {n}), nn::DType::Int64);
+  const Tensor Xtr = nn::slice(X, {0, 0, 0}, {n_train, T, 8}), Xte = nn::slice(X, {n_test_from, 0, 0}, {n - n_test_from, T, 8});
+  const Tensor ytr = nn::slice(y, {0}, {n_train}), yte = nn::slice(y, {n_test_from}, {n - n_test_from});
+
+  // Token embedding 8 -> 32 plus a learned position embedding, one residual multi-head self-attention block
+  // (4 heads of 8), mean over the tokens, and a linear classifier. 100 full-batch Adam steps on the first
+  // 600 digits (single precision, to keep the run short), three seeds; the last 360 digits test.
+  enum Kind { None, Softmax, Local, Kernel };
+  const std::vector<std::pair<Kind, std::string>> kinds = {
+      {None, "no attention"}, {Softmax, "softmax"}, {Local, "softmax, two-sided window of 3"}, {Kernel, "kernel, elu + 1"}};
+  std::vector<std::vector<double>> pattern(T, std::vector<double>(T, 0));
+  std::vector<double> head_entropy(H, 0);
+  std::print("| attention | train loss, step 100 | test accuracy, mean of 3 seeds | min–max over seeds |\n| :--- | ---: | ---: | ---: |\n");
+  for (const auto& [kind, name] : kinds) {
+    std::vector<double> accs, losses;
+    for (std::uint64_t seed : {1, 2, 3}) {
+      nn::ParameterStore p(seed, nn::DType::Float32);
+      const Tensor We = p.get("We", {8, D}, init::glorot_uniform()), P = p.get("pos", {T, D}, init::normal(0.1));
+      const Tensor Wc = p.get("Wc", {D, 10}, init::glorot_uniform());
+      std::vector<Tensor> params = {We, P, Wc};
+      Tensor Wq, Wk, Wv, Wo;
+      if (kind != None) {
+        Wq = p.get("Wq", {D, D}, init::glorot_uniform()), Wk = p.get("Wk", {D, D}, init::glorot_uniform());
+        Wv = p.get("Wv", {D, D}, init::glorot_uniform()), Wo = p.get("Wo", {D, D}, init::glorot_uniform());
+        params.insert(params.end(), {Wq, Wk, Wv, Wo});
+      }
+      nn::Optimizer opt(p, 0.01, {.kind = nn::OptimizerKind::Adam});
+      const Tensor window = nn::local_keep_mask(T, T, 3, false);
+      auto forward = [&](const Tensor& x, Tensor* weights) {
+        Tensor h = nn::matmul(x, We) + P;  // [N, T, D]
+        if (kind != None) {
+          const Tensor q = nn::split_heads(nn::matmul(h, Wq), H), k = nn::split_heads(nn::matmul(h, Wk), H), val = nn::split_heads(nn::matmul(h, Wv), H);
+          Tensor o;
+          if (kind == Kernel) o = nn::kernel_attention(nn::elu_feature_map(q), nn::elu_feature_map(k), val);
+          else {
+            const auto a = nn::scaled_dot_product_attention(q, k, val, {.mask = kind == Local ? window : Tensor(), .need_weights = weights != nullptr});
+            o = a.output;
+            if (weights) *weights = a.weights;
+          }
+          h = h + nn::matmul(nn::merge_heads(o), Wo);
+        }
+        return nn::matmul(nn::mean(h, {1}), Wc);
+      };
+      double loss = 0;
+      for (int s = 0; s < 100; ++s) {
+        const Tensor l = nn::sparse_softmax_cross_entropy(forward(Xtr, nullptr), ytr);
+        opt.step(nn::grad({l}, params));
+        loss = l.item();
+      }
+      nn::NoGradGuard ng;
+      Tensor w;
+      const Tensor logits = forward(Xte, kind == Softmax ? &w : nullptr);
+      accs.push_back(nn::mean(nn::cast(nn::equal(nn::argmax(logits, -1), yte), F64)).item());
+      losses.push_back(loss);
+      if (kind == Softmax && seed == 1) {
+        const Tensor avg = nn::mean(w, {0, 1});  // [T, T], over test digits and heads
+        for (int i = 0; i < T; ++i) for (int j = 0; j < T; ++j) pattern[i][j] = avg.at({i, j});
+        const Tensor e = nn::mean(nn::attention_entropy(w), {0, 2});  // [H]
+        for (int h = 0; h < H; ++h) head_entropy[h] = e.at({h});
+      }
+    }
+    std::print("| {} | {:.4f} | {:.1f}% | {:.1f}–{:.1f}% |\n", name, (losses[0] + losses[1] + losses[2]) / 3, 100 * (accs[0] + accs[1] + accs[2]) / 3,
+               100 * std::ranges::min(accs), 100 * std::ranges::max(accs));
+  }
+  std::print("\nSoftmax model, seed 1: mean entropy of each head's rows {:.3f}, {:.3f}, {:.3f}, {:.3f} nats (log 8 = {:.3f}).\n", head_entropy[0], head_entropy[1],
+             head_entropy[2], head_entropy[3], std::log(8.0));
+  std::print("Mean weight on the query's own row {:.3f}; on rows 0 and 7 together {:.3f}.\n",
+             [&] { double s = 0; for (int i = 0; i < T; ++i) s += pattern[i][i]; return s / T; }(),
+             [&] { double s = 0; for (int i = 0; i < T; ++i) s += pattern[i][0] + pattern[i][7]; return s / T; }());
+
+  std::vector<double> xs, ys;
+  std::vector<std::string> ylab;
+  for (int i = 0; i < T; ++i) xs.push_back(i), ys.push_back(i), ylab.push_back(std::format("row {}", T - 1 - i));
+  std::vector<std::vector<double>> z(T, std::vector<double>(T));
+  double zmax = 0;
+  for (int j = 0; j < T; ++j) for (int i = 0; i < T; ++i) z[j][T - 1 - i] = pattern[i][j], zmax = std::max(zmax, pattern[i][j]);
+  // How much each pixel row separates the classes: between-class share of its pixels' variance (training digits).
+  std::vector<double> received(T, 0), separation(T, 0);
+  {
+    const auto lab = digits.get_column<double>("digit").values();
+    for (int r = 0; r < T; ++r) {
+      double between = 0, total = 0;
+      for (int c = 0; c < 8; ++c) {
+        const int j = r * 8 + c;
+        std::vector<double> sum(10, 0), cnt(10, 0);
+        double mean = 0;
+        for (int i = 0; i < n_train; ++i) sum[int(lab[i])] += v[i * 64 + j], cnt[int(lab[i])] += 1, mean += v[i * 64 + j] / n_train;
+        for (int i = 0; i < n_train; ++i) total += (v[i * 64 + j] - mean) * (v[i * 64 + j] - mean);
+        for (int k = 0; k < 10; ++k) between += cnt[k] * (sum[k] / cnt[k] - mean) * (sum[k] / cnt[k] - mean);
+      }
+      separation[r] = total > 0 ? between / total : 0;
+      for (int i = 0; i < T; ++i) received[r] += pattern[i][r] / T;
+    }
+  }
+  const double mr = std::accumulate(received.begin(), received.end(), 0.0) / T, ms = std::accumulate(separation.begin(), separation.end(), 0.0) / T;
+  double sxy = 0, sxx = 0, syy = 0;
+  for (int r = 0; r < T; ++r) sxy += (received[r] - mr) * (separation[r] - ms), sxx += (received[r] - mr) * (received[r] - mr), syy += (separation[r] - ms) * (separation[r] - ms);
+  std::print("\n| pixel row | mean attention received | between-class share of variance |\n| ---: | ---: | ---: |\n");
+  for (int r = 0; r < T; ++r) std::print("| {} | {:.3f} | {:.3f} |\n", r, received[r], separation[r]);
+  std::print("\nCorrelation over the 8 rows: {:.2f}.\n", sxy / std::sqrt(sxx * syy));
+
+  auto p = dm::graphics::RPlot::create();
+  p.image(xs, ys, z, dm::graphics::viridis_colors(32), 0.0, zmax).x_limits(-0.5, T - 0.5).y_limits(-0.5, T - 0.5).y_tick_labels(ylab)
+      .title("Mean attention weights (softmax)").x_label("key: pixel row").y_label("query");
+  auto p2 = dm::graphics::RPlot::create();
+  for (int r = 0; r < T; ++r) p2.text(separation[r] + 0.022, received[r], std::format("row {}", r));
+  p2.points(separation, received, dm::graphics::RGB{37, 99, 235}, 5.0).x_limits(0.3, 0.55).y_limits(0, 0.3)
+      .title("Attention received against class separation").x_label("between-class share of the row's pixel variance").y_label("mean attention received");
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(p).add(p2);
+  fig.size(1100, 500).fit_panels();
+  fig.save("build/attention_digits.svg");
+  std::print("Largest mean weight {:.3f}.\n", zmax);
+}
+```
+// result_begin: markdown
+| attention | train loss, step 100 | test accuracy, mean of 3 seeds | min–max over seeds |
+| :--- | ---: | ---: | ---: |
+| no attention | 1.1708 | 49.2% | 48.3–50.0% |
+| softmax | 0.0011 | 81.3% | 79.7–83.6% |
+| softmax, two-sided window of 3 | 0.0011 | 80.3% | 79.7–81.1% |
+| kernel, elu + 1 | 0.0024 | 84.4% | 83.6–85.6% |
+
+Softmax model, seed 1: mean entropy of each head's rows 0.676, 0.779, 0.631, 0.731 nats (log 8 = 2.079).
+Mean weight on the query's own row 0.116; on rows 0 and 7 together 0.132.
+
+| pixel row | mean attention received | between-class share of variance |
+| ---: | ---: | ---: |
+| 0 | 0.028 | 0.331 |
+| 1 | 0.065 | 0.368 |
+| 2 | 0.219 | 0.434 |
+| 3 | 0.192 | 0.503 |
+| 4 | 0.146 | 0.501 |
+| 5 | 0.208 | 0.522 |
+| 6 | 0.037 | 0.400 |
+| 7 | 0.103 | 0.473 |
+
+Correlation over the 8 rows: 0.78.
+Largest mean weight 0.276.
+\image(figures/attention_digits.svg)
+// result_end
+
+\caption(Left: attention weights of the softmax model (seed 1), averaged over the 360 test digits and the 4 heads; rows are the query's pixel row, columns the key's. Colour runs from dark purple (0) to yellow (the largest mean weight, 0.276). Right: the mean attention each pixel row receives against how strongly its pixels separate the ten digits, measured as the between-class share of their variance in the training data.)
+\alttext(Left: columns 2 to 5 are bright for most query rows, column 2 brightest for query rows 0 and 7 and column 5 for query rows 2 and 4; columns 0 and 6 are dark throughout. Right: eight labelled points rising from lower left to upper right; row 0 has the lowest separation, 0.33, and receives almost nothing; rows 1 and 6 receive under 0.07; row 2 receives the most, 0.22, at separation 0.43; rows 3, 4 and 5 have separations of 0.50 to 0.52 and receive 0.15 to 0.21; row 7 receives 0.10 at separation 0.47.)
+
+Without attention the model sees very little. The mean of linearly embedded rows depends only on the mean row, the 8 column averages, so the model reaches 49.2% on the test set. One attention block lets each row's
+representation depend on the others, and every attention variant fits the 600 training digits (loss 0.0024 or less) and reaches 80.3% to 84.4% mean test accuracy. Elu-kernel attention is ahead here (83.6% to 85.6% over seeds, against 79.7% to 83.6% for both softmax variants), but the ranges touch and three seeds of a 100-step fit are too few to rank the variants
+firmly. With 8 tokens the quadratic cost is irrelevant, and without regularisation all of them overfit.
+
+The softmax heads are sharp: their rows have mean entropies of 0.63 to 0.78 nats, against \(\log8=2.08\) for uniform weights. On average they attend most to pixel rows 2, 5 and 3 (mean weight 0.219, 0.208 and 0.192
+received) and least to row 0 (0.028). Row 0 also separates the digits least. Across the 8 rows attention received correlates clearly with class separation (\(r=\) 0.78), but not perfectly: row 2 receives the most while separating the digits less than rows 3, 4 and 5.
+Attention concentrates on informative rows without ranking them exactly by how informative they are.
+
+> Conclusion
+
+Attention is a soft dictionary lookup. datamunge's implementations agree with the definitions to rounding error, and the fused kernel agrees with the plain one. The \(1/\sqrt d\) scale keeps random scores at
+unit variance. The large-\(n\) law \(H\approx\log n-\sigma^2/2\) shows what goes wrong without it: past \(\sigma=\sqrt{2\log n}\) the softmax freezes onto a few keys before learning starts. With finite \(n\) the law blurs, and
+the Jacobian is largest when a few keys share the weight. At moderate \(d\), the cost of skipping the scale is arbitrary, frozen attention rather than vanishing gradients.
+
+Kernel attention removes the quadratic cost exactly, by summing over keys once. FAVOR+ supplies positive random features whose inner products estimate the softmax kernel without bias, with error falling
+like \(m^{-1/2}\). The price is accuracy. FAVOR+ needs thousands of features for 10% error even in 16 dimensions, and the cheap elu feature map defines a different, flatter kernel that could not learn a sharp
+pointer in the lookup task. Kernel attention was more than 40 times faster than plain softmax attention at 4096 tokens, while the fused softmax kernel remained competitive up to about 1000 tokens. On digits read row by row,
+one attention block lifted test accuracy from 49% to 80%–84%, attending mostly to informative middle pixel rows.
+
+> References
+
+- D. Bahdanau, K. Cho and Y. Bengio (2015). "Neural machine translation by jointly learning to align and translate". *ICLR*. arXiv:1409.0473
+- A. Vaswani et al. (2017). "Attention is all you need". *Advances in Neural Information Processing Systems* 30.
+- B. Derrida (1981). "Random-energy model: an exactly solvable model of disordered systems". *Physical Review B* 24, 2613–2626. doi:10.1103/PhysRevB.24.2613
+- I. Beltagy, M. E. Peters and A. Cohan (2020). "Longformer: the long-document transformer". arXiv:2004.05150
+- A. Q. Jiang et al. (2023). "Mistral 7B". arXiv:2310.06825
+- A. Katharopoulos, A. Vyas, N. Pappas and F. Fleuret (2020). "Transformers are RNNs: fast autoregressive transformers with linear attention". *ICML*, 5156–5165.
+- K. Choromanski et al. (2021). "Rethinking attention with Performers". *ICLR*. arXiv:2009.14794
+- F. X. Yu, A. T. Suresh, K. Choromanski, D. Holtmann-Rice and S. Kumar (2016). "Orthogonal random features". *Advances in Neural Information Processing Systems* 29.
+- T. Dao, D. Y. Fu, S. Ermon, A. Rudra and C. Ré (2022). "FlashAttention: fast and memory-efficient exact attention with IO-awareness". *Advances in Neural Information Processing Systems* 35.
+- C. Stein (1981). "Estimation of the mean of a multivariate normal distribution". *Annals of Statistics* 9(6), 1135–1151.
+- E. Alpaydin and C. Kaynak (1998). "Optical recognition of handwritten digits". UCI Machine Learning Repository. doi:10.24432/C50P49

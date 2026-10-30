@@ -1,6 +1,7 @@
 #pragma once
 
-// Internal helpers shared by the nn kernels. Not installed.
+/// @file detail.hpp
+/// @brief Non-installed dtype dispatch, strided iteration, and raw tensor kernel helpers.
 
 #include <algorithm>
 #include <array>
@@ -18,8 +19,11 @@
 
 namespace datamunge::nn::detail {
 
+/// @brief Carries an element type as a value for compile-time dispatch inside a generic callback.
+/// @tparam T Concrete scalar storage type selected for a tensor dtype.
 template <typename T>
 struct Tag {
+  /// @brief Scalar type carried by this tag.
   using type = T;
 };
 
@@ -46,6 +50,8 @@ decltype(auto) dispatch_float(DType dtype, const char* what, F&& f) {
   }
 }
 
+/// @brief Converts a negative axis relative to rank and checks that the result is in [0, rank).
+/// @throws std::invalid_argument For an out-of-range axis; @p what identifies the operation.
 inline std::int64_t normalize_axis(std::int64_t axis, std::int64_t rank, const char* what) {
   const std::int64_t a = axis < 0 ? axis + rank : axis;
   if (a < 0 || a >= rank)
@@ -157,9 +163,13 @@ void parallel_elements(std::int64_t n, F&& f) {
   });
 }
 
+/// @brief Borrows the storage base as T*, without applying the tensor's logical offset.
+/// @tparam T Element type, which the caller must ensure matches the tensor dtype.
+/// @pre The tensor is defined and has valid storage. No dtype or bounds check is performed.
+/// @throws std::logic_error GPU storage cannot be accessed by a host numerical kernel.
 template <typename T>
 T* raw_data(const Tensor& t) {
-  return reinterpret_cast<T*>(t.impl()->storage->bytes.get());
+  return reinterpret_cast<T*>(t.impl()->storage->bytes.host_data());
 }
 
 /// Elementwise map into a new packed tensor of `out_dtype`. `x` must already
@@ -200,6 +210,7 @@ Tensor map_binary(const Tensor& a, const Tensor& b, DType out_dtype, F&& f) {
   // A broadcast scalar keeps its logical shape but every stride is zero.
   // Treat it like its scalar storage, avoiding the strided loop in VJPs (and
   // other uniform broadcasts) without expanding or copying the seed.
+  // Detect one physical value, including nonempty views broadcast entirely with zero strides.
   const auto scalar_storage = [](const Tensor& t) {
     return t.numel() == 1 ||
            (t.numel() > 0 &&
@@ -273,8 +284,19 @@ inline Tensor nograd(const Tensor& t) {
 /// Converts without recording (kernel use).
 Tensor cast_raw(const Tensor& x, DType dtype);
 
-/// Converts with recording if needed and returns `x` itself if already `dtype`.
+/// @brief Reject GPU input before entering a CPU-only numerical path, including empty inputs.
+/// @param tensor Defined input tensor.
+/// @param operation Name included in the unsupported-backend diagnostic.
+/// @throws std::logic_error The tensor is not backed by CPU memory.
+inline void require_cpu(const Tensor& tensor,const char* operation) {
+  if(tensor.device().backend!=compute::Backend::CPU)
+    throw std::logic_error(std::string(operation)+": native numerical GPU kernel is not implemented");
+}
+
+/// @brief Prepare a CPU numerical input, casting with history only when dtype changes.
+/// @throws std::logic_error GPU input needs a native numerical dispatch path.
 inline Tensor as_dtype(const Tensor& x, DType dtype) {
+  require_cpu(x,"as_dtype");
   return x.dtype() == dtype ? x : cast(x, dtype);
 }
 

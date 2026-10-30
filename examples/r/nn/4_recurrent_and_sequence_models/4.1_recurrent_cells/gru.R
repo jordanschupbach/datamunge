@@ -1,10 +1,10 @@
 # Native R NN example. Reset-before GRU with explicit masked unroll and full BPTT on the marked-token task.
+# CMD: nix develop .#r --command Rscript examples/r/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/gru.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example gru
 # Reset-before GRU with explicit masked unroll and full BPTT on the common
 # three-epoch task.
 #

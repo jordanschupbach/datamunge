@@ -63,8 +63,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("names", nargs="+")
     parser.add_argument("--classify", action="append", default=[], metavar="NAME=yes|no")
-    parser.add_argument("--timeout", type=int, default=900, help="per-language seconds (C++ uses min(180, this))")
+    parser.add_argument("--timeout", type=int, default=900, help="per-language seconds, including the C++ reference")
     parser.add_argument("--languages", default="cpp,python,r")
+    parser.add_argument("--threads", type=int, help="explicit thread budget for examples that accept threads=N")
     args = parser.parse_args()
     classify = {}
     for item in args.classify:
@@ -83,7 +84,10 @@ def main():
             print(f"{name}: unknown example")
             failures += 1
             continue
-        extra = ["epochs=5"] if wants_epochs(entry["cpp"]) else []
+        epoch_budget = 5 if wants_epochs(entry["cpp"]) else None
+        extra = ["epochs=5"] if epoch_budget else []
+        if args.threads is not None:
+            extra.append(f"threads={args.threads}")
         results = {}
         if "cpp" in languages:
             with locked("cpp-build"):
@@ -95,7 +99,7 @@ def main():
                 env = dict(os.environ, DATAMUNGE_OUTPUT_DIR=str(ROOT / "output/nn/language-migration/cpp/quick"),
                            DATAMUNGE_EXAMPLES_FULL="0")
                 command = [str(ROOT / "build/nn-examples/bin" / name)] + extra
-                results["cpp"] = execute(command, LOGS / f"{name}.cpp.log", min(180, args.timeout), env) + (command,)
+                results["cpp"] = execute(command, LOGS / f"{name}.cpp.log", args.timeout, env) + (command,)
         if "python" in languages:
             env = dict(os.environ, DATAMUNGE_OUTPUT_DIR=str(ROOT / "output/nn/language-migration/python/quick"))
             command = ["build/venv/pydatamunge-run/bin/python", "-I", "scripts/python_example.py", name] + extra + ["--quick"]
@@ -123,7 +127,7 @@ def main():
                 summary.append(f"{language}={'PASS' if ok else 'FAIL'}({status},{seconds}s)")
                 failures += not ok
                 evidence = dict(status="passed", command=command, log=log.relative_to(ROOT).as_posix(),
-                                seconds=seconds, epochs=5 if extra else None, confusion_matrix=confusion)
+                                seconds=seconds, epochs=epoch_budget, confusion_matrix=confusion)
                 if language == "cpp":
                     record["cpp_reference_validation"] = evidence if ok else None
                 else:

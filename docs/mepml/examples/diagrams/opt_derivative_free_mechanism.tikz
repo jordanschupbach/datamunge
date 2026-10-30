@@ -1,0 +1,12 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\large,box/.style={draw=blue!55!black,rounded corners,fill=blue!4,align=center,minimum width=4.2cm,minimum height=1.8cm},every edge/.style={draw,thick,->}]
+\node[box] (n0) at (0.0,0) {Trial geometry\\simplex or Gaussian};
+\node[box,fill=orange!8] (n1) at (5.6,0) {Objective comparisons\\rank evaluated points};
+\node[box] (n2) at (11.2,0) {Adapt the search\\replace vertices / covariance};
+\path (n0) edge (n1) (n1) edge (n2);
+\node[align=center,font=\normalsize] at (5.6,-2) {A finite best observed value is evidence from a search, not a global certificate.};
+\end{tikzpicture}
+\end{document}

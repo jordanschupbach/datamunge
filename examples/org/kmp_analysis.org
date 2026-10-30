@@ -62,7 +62,7 @@ empty pattern returns no matches by convention.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * The prefix function and the shift insight

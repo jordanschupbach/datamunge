@@ -2,7 +2,10 @@
 
 #include <datamunge/algorithms/elementary.hpp>
 
+#include <algorithm>
 #include <cmath>
+#include <numbers>
+#include <stdexcept>
 #include <random>
 #include <vector>
 
@@ -81,4 +84,59 @@ TEST(Elementary, AlphaMaxBetaMinWithinErrorBound) {
     EXPECT_GT(worst, 0.02); // it really is an approximation, not exact
     // On axes it is exact (min component is 0 -> alpha*|max|, alpha~0.96 gives ~4% low; still within bound)
     EXPECT_NEAR(alpha_max_beta_min(3.0, 4.0) / 5.0, 1.0, 0.041);
+}
+
+TEST(Elementary, AlphaMaxBetaMinClosedForms) {
+    using namespace datamunge::algorithms;
+    const auto m = alpha_max_beta_min_minimax();
+    EXPECT_NEAR(m.alpha, 0.960433870103, 1e-11);
+    EXPECT_NEAR(m.beta, 0.397824734759, 1e-11);
+    const auto e = alpha_max_beta_min_error(m);
+    const double eps = std::pow(std::tan(std::numbers::pi / 16), 2);
+    EXPECT_NEAR(e.peak_error, eps, 1e-12);
+    EXPECT_NEAR(e.min_ratio, 1 - eps, 1e-12);
+    EXPECT_NEAR(e.max_ratio, 1 + eps, 1e-12);
+    const auto n = alpha_max_beta_min_error(alpha_max_beta_min_no_underestimate());
+    EXPECT_NEAR(n.min_ratio, 1.0, 1e-12);
+    EXPECT_NEAR(n.peak_error, 1 / std::cos(std::numbers::pi / 8) - 1, 1e-12);
+    // (1, 1/2): low point 1 on the axis, high point sqrt(1.25) at atan(1/2).
+    const auto h = alpha_max_beta_min_error({1.0, 0.5});
+    EXPECT_NEAR(h.max_ratio, std::sqrt(1.25), 1e-12);
+    EXPECT_NEAR(h.min_ratio, 1.0, 1e-12);
+}
+
+TEST(Elementary, AlphaMaxBetaMinLeastSquaresMatchesQuadrature) {
+    using namespace datamunge::algorithms;
+    const auto ls = alpha_max_beta_min_least_squares();
+    auto loss = [](double a, double b) {
+        double s = 0;
+        const int n = 4000;
+        for (int i = 0; i < n; ++i) {
+            const double t = (i + 0.5) * std::numbers::pi / 4 / n;
+            s += std::pow(a * std::cos(t) + b * std::sin(t) - 1, 2);
+        }
+        return s;
+    };
+    const double best = loss(ls.alpha, ls.beta);
+    for (double da : {-1e-3, 1e-3}) {
+        EXPECT_GT(loss(ls.alpha + da, ls.beta), best);
+        EXPECT_GT(loss(ls.alpha, ls.beta + da), best);
+    }
+}
+
+TEST(Elementary, AlphaMaxBetaMinPolygonErrorBound) {
+    using namespace datamunge::algorithms;
+    EXPECT_THROW(alpha_max_beta_min_polygon(0), std::invalid_argument);
+    for (int k = 1; k <= 4; ++k) {
+        const auto lines = alpha_max_beta_min_polygon(k);
+        const double eps = std::pow(std::tan(std::numbers::pi / (16 * k)), 2);
+        double worst = 0;
+        for (int i = 0; i <= 20000; ++i) {
+            const double t = 2 * std::numbers::pi * i / 20000;
+            worst = std::max(worst, std::fabs(alpha_max_beta_min(std::cos(t), std::sin(t), lines) - 1));
+        }
+        EXPECT_LE(worst, eps + 1e-12);
+        EXPECT_GT(worst, 0.99 * eps);
+    }
+    EXPECT_DOUBLE_EQ(alpha_max_beta_min(3, -4, alpha_max_beta_min_polygon(1)), alpha_max_beta_min(3, -4));
 }

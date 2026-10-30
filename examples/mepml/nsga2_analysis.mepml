@@ -72,7 +72,7 @@ non-dominated subset of a set of evaluated points.
 #include <vector>
 
 using namespace datamunge::optim;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // ZDT1 (Zitzler-Deb-Thiele #1): a scalable two-objective benchmark whose Pareto front is the
 // convex curve f2 = 1 - sqrt(f1) over f1 in [0,1], reached only when every variable but the
@@ -242,7 +242,7 @@ then every other chunk in order inside `main`, compiled against the installed
 #include <vector>
 
 using namespace datamunge::optim;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // ZDT1 (Zitzler-Deb-Thiele #1): a scalable two-objective benchmark whose Pareto front is the
 // convex curve f2 = 1 - sqrt(f1) over f1 in [0,1], reached only when every variable but the

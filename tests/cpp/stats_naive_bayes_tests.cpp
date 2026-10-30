@@ -154,3 +154,88 @@ TEST(NaiveBayesClassifier, SummaryContainsKeyInformation) {
     EXPECT_NE(text.find("Petal.Length"), std::string::npos);
     EXPECT_NE(text.find("Training accuracy"), std::string::npos);
 }
+
+namespace {
+
+// Penguins with complete rows only, so that dropping one row by index is easy.
+DataFrame complete_penguins() {
+    const auto all = datamunge::datasets::penguins();
+    std::vector<std::size_t> keep;
+    for (std::size_t i = 0; i < all.nrows(); ++i)
+        if (all.optional_double_at("bill_length_mm", i) && all.optional_double_at("flipper_length_mm", i)
+            && all.optional_string_at("sex", i) && all.optional_string_at("island", i))
+            keep.push_back(i);
+    return all.take_rows(keep);
+}
+
+} // namespace
+
+TEST(NaiveBayesClassifier, LeaveOneOutEqualsRefittingWithoutTheRow) {
+    const auto data = complete_penguins();
+    const std::string formula = "species ~ bill_length_mm + flipper_length_mm + island + sex";
+    for (const double alpha : {1.0, 0.5}) {
+        const NaiveBayesClassifier full(data, formula, {.laplace_smoothing = alpha});
+        std::size_t checked = 0;
+        for (std::size_t i = 0; i < data.nrows(); i += 7) {
+            std::vector<std::size_t> rest;
+            for (std::size_t r = 0; r < data.nrows(); ++r)
+                if (r != i) rest.push_back(r);
+            const NaiveBayesClassifier refit(data.take_rows(rest), formula, {.laplace_smoothing = alpha});
+            const auto row = data.take_rows({i});
+            EXPECT_EQ(full.loo_fitted_classes()[i], refit.predict(row)[0]) << "row " << i;
+            ++checked;
+        }
+        EXPECT_GT(checked, 40u);
+    }
+}
+
+TEST(NaiveBayesClassifier, LooAccuracyIsAtMostResubstitutionHere) {
+    const auto data = complete_penguins();
+    const NaiveBayesClassifier nb(data, "species ~ bill_length_mm + bill_depth_mm");
+    EXPECT_LE(nb.loo_accuracy(), nb.training_accuracy());
+    EXPECT_GT(nb.loo_accuracy(), 0.9);
+}
+
+TEST(NaiveBayesClassifier, UserPriorsShiftThePosterior) {
+    const auto data = complete_penguins();
+    const NaiveBayesClassifier freq(data, "species ~ bill_length_mm");
+    const NaiveBayesClassifier flat(data, "species ~ bill_length_mm", {.priors = {1.0 / 3, 1.0 / 3, 1.0 / 3}});
+    DataFrame q;
+    q.add_column("bill_length_mm", std::vector<double>{44.0});
+    const auto a = freq.predict_detail(q).probability[0], b = flat.predict_detail(q).probability[0];
+    // Posterior odds = prior odds x likelihood ratio, so the ratio of odds is the ratio of prior odds.
+    for (std::size_t k = 1; k < 3; ++k)
+        EXPECT_NEAR((a[k] / a[0]) / (b[k] / b[0]), freq.class_priors()[k] / freq.class_priors()[0], 1e-9);
+    EXPECT_THROW(NaiveBayesClassifier(data, "species ~ bill_length_mm", {.priors = {0.5, 0.5}}), std::invalid_argument);
+    EXPECT_THROW(NaiveBayesClassifier(data, "species ~ bill_length_mm", {.priors = {0.5, 0.3, 0.3}}), std::invalid_argument);
+}
+
+TEST(NaiveBayesClassifier, ParameterFramesAndPosteriorTermsByHand) {
+    DataFrame d;
+    d.add_column("x", std::vector<double>{1.0, 2.0, 3.0, 6.0, 8.0});
+    d.add_column("g", std::vector<std::string>{"u", "u", "v", "v", "v"});
+    d.add_column("c", std::vector<std::string>{"a", "a", "a", "b", "b"});
+    const NaiveBayesClassifier nb(d, "c ~ x + g", {.var_smoothing = 0.0});
+    const auto gauss = nb.gaussian_frame();
+    EXPECT_DOUBLE_EQ(gauss.double_at("mean", 0), 2.0);
+    EXPECT_NEAR(gauss.double_at("sd", 0), std::sqrt(2.0 / 3.0), 1e-12);
+    EXPECT_DOUBLE_EQ(gauss.double_at("mean", 1), 7.0);
+    EXPECT_NEAR(gauss.double_at("sd", 1), 1.0, 1e-12);
+    const auto cat = nb.categorical_frame();
+    // class a: u twice, v once -> (2 + 1) / (3 + 2) and (1 + 1) / (3 + 2); class b: v twice -> 1/4 and 3/4.
+    EXPECT_NEAR(cat.double_at("probability", 0), 0.6, 1e-12);
+    EXPECT_NEAR(cat.double_at("probability", 1), 0.4, 1e-12);
+    EXPECT_NEAR(cat.double_at("probability", 2), 0.25, 1e-12);
+    EXPECT_NEAR(cat.double_at("probability", 3), 0.75, 1e-12);
+
+    DataFrame q;
+    q.add_column("x", std::vector<double>{4.0});
+    q.add_column("g", std::vector<std::string>{"v"});
+    const auto terms = nb.posterior_terms(q, 0);
+    const double la = std::log(0.6) + std::log(0.4) - 0.5 * std::log(2 * M_PI * 2.0 / 3.0) - 0.5 * 4.0 / (2.0 / 3.0);
+    const double lb = std::log(0.4) + std::log(0.75) - 0.5 * std::log(2 * M_PI) - 0.5 * 9.0;
+    EXPECT_NEAR(terms.double_at("a", 3), la, 1e-12);  // log joint
+    EXPECT_NEAR(terms.double_at("b", 3), lb, 1e-12);
+    EXPECT_NEAR(terms.double_at("a", 4), 1.0 / (1.0 + std::exp(lb - la)), 1e-12);
+    EXPECT_NEAR(terms.double_at("a", 4), nb.predict_detail(q).probability[0][0], 1e-12);
+}

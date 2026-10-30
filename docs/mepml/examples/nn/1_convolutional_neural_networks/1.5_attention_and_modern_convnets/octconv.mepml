@@ -1,0 +1,615 @@
+//? Title: Octave Convolution: Frequency Exchange, Exact Geometry and Explicit Fitting
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Octave layers keep some channels at half resolution and exchange information through four
+paths. We check those paths, quantify arithmetic and storage, fix a final-shortcut geometry
+bug and explicitly fit the complete compact Oct-ResNet-50 with tensor Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/octconv.cpp`.
+
+> The method
+
+For total C channels and low fraction alpha, low width is floor(alpha*C), high width is the
+remainder. The names indicate spatial resolution rather than a guarantee of strict Fourier
+band limitation. At stride one the four bias-free odd-kernel paths compute:
+
+$$Y_H=f(X_H,W_{HH})+\mathrm{up}_2(f(X_L,W_{LH})),\qquad
+Y_L=f(\mathrm{avgpool}_2(X_H),W_{HL})+f(X_L,W_{LL}).$$
+\alttext(The two frequencies filter within their own stream and exchange pooled or upsampled features.)
+
+Missing low inputs/outputs omit their paths. Pooling is 2×2 VALID average pooling, and
+upsampling repeats nearest neighbours. All paths use He-uniform fan-in of the FULL input
+width; BN/ReLU follow independently per stream, with learned scale/shift and epsilon 1e-5.
+With matched integer-exact splits at stride one, path kernels partition the ordinary kernel,
+MAC ratio is 1−.75*alpha*(2−alpha) and feature-scalar ratio is 1−.75*alpha. Entry/exit splits
+and channel rounding differ. Alpha zero at STRIDE ONE equals an ordinary convolution with the
+same weights. At stride two the source pre-pools before filtering, so equivalence to unpooled
+ordinary stride-two convolution is not claimed. Native finite differences check all four kernels.
+
+The source's continuing-low stride-two exchange pre-pools both input streams. The HIGH-ONLY
+stride-two merge needs a correction: LH uses the original low stream directly, since it already
+matches pooled high resolution. Pooling that low stream and upsampling it again cannot align
+an odd 7×7 map with the final high map. The corrected path preserves the final shortcut's
+spatial detail, changes that source operation, and counts LH work at the true output high side
+instead of floor(side/2). A controlled 14/7-to-7 fixture and a real 224-pixel forward verify it.
+Parameter names/shapes/counts stay unchanged; nonzero-alpha budgets below include the correction.
+
+The complete ResNet-50 body retains stages 3/4/6/3, making all three bottleneck filters and
+projection shortcuts octave layers. It enters high-only after the stem, uses alpha in the first
+three stages, then merges the main branch in the FIRST conv1 of stage four before its spatial
+stride. That stage's shortcut uses the corrected direct-LH merge. Final features are high-only,
+followed by global mean and a biased classifier. All five full-width splits keep 25557032
+learned scalars. Count forwards use 64 pixels; cfg.image_size=224 explicitly describes nominal
+TARGET MACs, not the actual count-forward image. Alpha .25 additionally executes at 224 pixels.
+Alpha-zero nominal work is 4089184256 MACs; counts exclude pooling/upsampling/BN/ReLU/addition
+and memory traffic, and are not latency measurements.
+
+The compact fit keeps all sixteen bottlenecks at quarter widths, alpha .25 and original 32×32
+CIFAR images. A 3×3 stride-one stem without pooling and three remaining stage downsamplings
+give a 4×4×512 final map and 1484186 learned scalars. Stage stride remains in the 3×3 octave
+filter. The visible loop uses 128 fit/64 validation/64 official-test images, ten batch-eight epochs (160 updates, kept short for build time),
+Adam(.001), explicit kernel L2=.0001/2, padded crops/flips and paired parameter/moving-state
+checkpoints selected only by validation NLL. Every path and both stream BN leaves enter the
+optimizer. All numerical preprocessing, paths, losses and updates use tensors; host images
+below serve only as independent oracles. This bounded run does not reproduce paper benchmarks.
+
+The editable concept diagram is `diagrams/octconv_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/octconv_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/octconv_concept.tikz > build/octconv_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/octconv_concept.svg build/octconv_concept.dvi > build/octconv_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/octconv_concept.svg)
+// result_end
+\caption(Octave Convolution: Frequency Exchange, Exact Geometry and Explicit Fitting)
+\alttext(High and low maps; Four tensor paths; then Merge to high stream; Keep odd geometry; then All sixteen blocks; Explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/octconv_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::OctResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.image_size    = 32;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::OctResNet(p, state, image, cfg, false).logits;
+      },
+      "Octave Convolution: Frequency Exchange, Exact Geometry and Explicit Fitting");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/octconv_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+951 displayed nodes; 1484186 reachable learned values.
+\image(figures/octconv_architecture.svg)
+// result_end
+\caption(Executed octconv tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right octconv architecture with rotated names and exact output shapes.)
+
+> Independent four-path values
+
+```{cpp, results="markdown", file="figures/octconv_paths.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+using Image = std::vector<std::vector<std::vector<double>>>;
+Image image(const n::Tensor &x) {
+  Image out(x.size(1),
+            std::vector<std::vector<double>>(x.size(2), std::vector<double>(x.size(3))));
+  for (int r = 0; r < x.size(1); ++r)
+    for (int c = 0; c < x.size(2); ++c)
+      for (int k = 0; k < x.size(3); ++k)
+        out[r][c][k] = x.at({0, r, c, k});
+  return out;
+}
+Image pool(const Image &x) {
+  const int side = int(x.size()) / 2, channels = int(x[0][0].size());
+  Image out(side, std::vector<std::vector<double>>(side, std::vector<double>(channels)));
+  for (int r = 0; r < side; ++r)
+    for (int c = 0; c < side; ++c)
+      for (int k = 0; k < channels; ++k)
+        for (int dy = 0; dy < 2; ++dy)
+          for (int dx = 0; dx < 2; ++dx)
+            out[r][c][k] += x[2 * r + dy][2 * c + dx][k] / 4;
+  return out;
+}
+Image conv(const Image &x, const n::Tensor &kernel) {
+  const int side = int(x.size()), in = int(kernel.size(2)), out = int(kernel.size(3));
+  const auto w = kernel.to_vector<double>();
+  Image result(side, std::vector<std::vector<double>>(side, std::vector<double>(out)));
+  for (int r = 0; r < side; ++r)
+    for (int c = 0; c < side; ++c)
+      for (int ky = 0; ky < 3; ++ky)
+        for (int kx = 0; kx < 3; ++kx) {
+          const int y = r + ky - 1, z = c + kx - 1;
+          if (y < 0 || z < 0 || y >= side || z >= side)
+            continue;
+          for (int i = 0; i < in; ++i)
+            for (int o = 0; o < out; ++o)
+              result[r][c][o] += x[y][z][i] * w[((ky * 3 + kx) * in + i) * out + o];
+        }
+  return result;
+}
+
+int main() {
+  const auto type = n::DType::Float64;
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  for (int stride : {1, 2}) {
+    n::ParameterStore p(17, type);
+    const auto high =
+                   n::sin(.37 * n::arange(0, 8 * 8 * 12).to(type) + .2).reshape({1, 8, 8, 12}),
+               low = n::sin(.37 * n::arange(0, 4 * 4 * 4).to(type) + .9).reshape({1, 4, 4, 4});
+    const n::models::OctaveMaps x{high, low, 12, 4};
+    n::models::OctaveCost cost;
+    const auto out = n::models::OctaveConv(p, "o", x, 16, .25, 3, stride, 8, &cost);
+    auto h = image(high), l = image(low);
+    if (stride == 2) {
+      h = pool(h);
+      l = pool(l);
+    }
+    const auto hh = conv(h, p.at("o/hh/W")), lh = conv(l, p.at("o/lh/W")),
+               hl = conv(pool(h), p.at("o/hl/W")), ll = conv(l, p.at("o/ll/W"));
+    double error = 0;
+    for (int r = 0; r < out.high.size(1); ++r)
+      for (int c = 0; c < out.high.size(2); ++c)
+        for (int o = 0; o < 12; ++o)
+          error = std::max(
+              error, std::abs(out.high.at({0, r, c, o}) - hh[r][c][o] - lh[r / 2][c / 2][o]));
+    for (int r = 0; r < out.low.size(1); ++r)
+      for (int c = 0; c < out.low.size(2); ++c)
+        for (int o = 0; o < 4; ++o)
+          error =
+              std::max(error, std::abs(out.low.at({0, r, c, o}) - hl[r][c][o] - ll[r][c][o]));
+    if (error > 1e-12 || p.count() != 2304 ||
+        double(cost.macs) / (int64_t(8 / stride) * (8 / stride) * 9 * 16 * 16) != .671875)
+      return 1;
+    std::print("Stride {} four-path host oracle: max absolute error {:.12f}; 2304 weights, {} "
+               "MACs, ratio .671875 versus full-resolution 16-to-16 convolution.\n",
+               stride, error, cost.macs);
+    if (stride == 1) {
+      const auto hm = n::slice_axis(out.high, 3, 0, 1).reshape({8, 8}),
+                 lm = n::slice_axis(out.low, 3, 0, 1).reshape({4, 4});
+      const double range = std::max(n::max(n::abs(hm)).item(), n::max(n::abs(lm)).item());
+      layout
+          .add(n::plot_tensor_map(hm, -range, range)
+                   .title("High output: 8 by 8, twelve channels"))
+          .add(n::plot_tensor_map(lm, -range, range)
+                   .title("Low output: 4 by 4, four channels"));
+    }
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1200, 500).fit_panels().save_svg("build/octconv_paths.svg");
+}
+```
+// result_begin: markdown
+Stride 1 four-path host oracle: max absolute error 0.000000000000; 2304 weights, 99072 MACs, ratio .671875 versus full-resolution 16-to-16 convolution.
+Stride 2 four-path host oracle: max absolute error 0.000000000000; 2304 weights, 24768 MACs, ratio .671875 versus full-resolution 16-to-16 convolution.
+\image(figures/octconv_paths.svg)
+// result_end
+\caption(Production exchange uses tensor convolutions, average pooling and nearest-neighbour upsampling. The host Image helpers are independent value oracles only. Both strides keep the low output at half the high resolution; the displayed stride-one channels share symmetric colour limits.)
+\alttext(Production exchange uses tensor convolutions, average pooling and nearest-neighbour upsampling. The host Image helpers are independent value oracles only. Both strides keep the low output at half the high resolution; the displayed stride-one channels share symmetric colour limits.)
+
+> Arithmetic and feature storage
+
+```{cpp, results="markdown", file="figures/octconv_ratios.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  std::vector<double> alpha, measured, theory, storage;
+  for (double a : {0., .125, .25, .5, .75}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17);
+    const int low = n::models::LowChannels(16, a), high = 16 - low;
+    n::models::OctaveMaps x{n::ones({1, 8, 8, high}),
+                            low ? n::ones({1, 4, 4, low}) : n::Tensor(), high, low};
+    n::models::OctaveCost cost;
+    const auto y = n::models::OctaveConv(p, "o", x, 16, a, 3, 1, 8, &cost);
+    const double fraction = double(cost.macs) / (8 * 8 * 9 * 16 * 16),
+                 bytes = double(y.high.numel() + (low ? y.low.numel() : 0)) / (8 * 8 * 16);
+    if (std::abs(fraction - (1 - .75 * a * (2 - a))) > 1e-12 ||
+        std::abs(bytes - (1 - .75 * a)) > 1e-12 || p.count() != 2304)
+      return 1;
+    alpha.push_back(a);
+    measured.push_back(fraction);
+    theory.push_back(1 - .75 * a * (2 - a));
+    storage.push_back(bytes);
+  }
+  auto work = dm::graphics::RPlot::create(), memory = dm::graphics::RPlot::create();
+  work.lines(alpha, measured, "logged path MACs", {37, 99, 235})
+      .lines(alpha, theory, "analytic ratio", {234, 88, 12})
+      .title("Equal input/output split: spatial work")
+      .x_label("low-channel fraction alpha")
+      .y_label("MAC ratio")
+      .y_limits(0, 1.35);
+  memory.lines(alpha, storage, "feature scalars", {147, 51, 234})
+      .title("High plus low feature storage")
+      .x_label("low-channel fraction alpha")
+      .y_label("scalar ratio")
+      .y_limits(0, 1.35);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(work)
+      .add(memory)
+      .size(1200, 500)
+      .fit_panels()
+      .save_svg("build/octconv_ratios.svg");
+  std::print("For integer-exact splits at stride one, logged MAC ratio = "
+             "1-.75*alpha*(2-alpha), feature-scalar ratio = 1-.75*alpha; kernel count stays "
+             "2304. These are arithmetic/storage counts, not measured runtime.\n");
+}
+```
+// result_begin: markdown
+For integer-exact splits at stride one, logged MAC ratio = 1-.75*alpha*(2-alpha), feature-scalar ratio = 1-.75*alpha; kernel count stays 2304. These are arithmetic/storage counts, not measured runtime.
+\image(figures/octconv_ratios.svg)
+// result_end
+\caption(For matched integer-exact splits, four paths retain the full ordinary kernel count while lower-resolution work and stored features decrease. Entry/exit layers or rounded channel splits have different formulas; the complete model budget is counted separately.)
+\alttext(For matched integer-exact splits, four paths retain the full ordinary kernel count while lower-resolution work and stored features decrease. Entry/exit layers or rounded channel splits have different formulas; the complete model budget is counted separately.)
+
+> Corrected merge and full-width budgets
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type);
+  const n::models::OctaveMaps x{
+      n::sin(.1 * n::arange(0, 14 * 14 * 6).to(type)).reshape({1, 14, 14, 6}),
+      n::sin(.2 * n::arange(0, 7 * 7 * 2).to(type)).reshape({1, 7, 7, 2}), 6, 2};
+  n::models::OctaveCost cost;
+  const auto out = n::models::OctaveConv(p, "merge", x, 8, 0, 1, 2, 14, &cost);
+  const auto ref =
+      n::conv2d(n::avg_pool2d(x.high, 2, 2, n::Padding::Valid), p.at("merge/hh/W")) +
+      n::conv2d(x.low, p.at("merge/lh/W"));
+  if (out.high.shape() != n::Shape{1, 7, 7, 8} || out.low.defined() ||
+      n::max(n::abs(out.high - ref)).item() > 1e-12 || cost.macs != 3136)
+    return 1;
+  std::print("Corrected high-only stride-two merge: 14x14 high and 7x7 low become one 7x7 "
+             "map. LH reads unpooled low features directly; no pooling/upsampling mismatch. "
+             "3136 MACs for this 1x1 eight-to-eight fixture.\n");
+  n::set_num_threads(2);
+  n::NoGradGuard guard;
+  for (double a : {0., .125, .25, .5, .75}) {
+    n::ParameterStore full(19), state(19);
+    n::models::OctResNetConfig cfg;
+    cfg.alpha = a;
+    const auto net = n::models::OctResNet(full, state, n::zeros({1, 64, 64, 3}), cfg);
+    if (full.count() != 25557032 || net.features.shape() != n::Shape{1, 2, 2, 2048} ||
+        (a == 0 && net.macs != 4089184256))
+      return 1;
+    std::print("Full Oct-ResNet-50 alpha {}: {} actual parameters at 64 pixels; corrected "
+               "nominal 224-pixel budget {} MACs.\n",
+               a, full.count(), net.macs);
+    if (a == .25) {
+      const auto actual = n::models::OctResNet(full, state, n::zeros({1, 224, 224, 3}), cfg);
+      if (actual.features.shape() != n::Shape{1, 7, 7, 2048})
+        return 1;
+      std::print("Alpha .25 also executes a real 224-pixel forward, including the corrected "
+                 "final shortcut.\n");
+    }
+  }
+}
+```
+// result_begin: markdown
+Corrected high-only stride-two merge: 14x14 high and 7x7 low become one 7x7 map. LH reads unpooled low features directly; no pooling/upsampling mismatch. 3136 MACs for this 1x1 eight-to-eight fixture.
+Full Oct-ResNet-50 alpha 0: 25557032 actual parameters at 64 pixels; corrected nominal 224-pixel budget 4089184256 MACs.
+Full Oct-ResNet-50 alpha 0.125: 25557032 actual parameters at 64 pixels; corrected nominal 224-pixel budget 3529370624 MACs.
+Full Oct-ResNet-50 alpha 0.25: 25557032 actual parameters at 64 pixels; corrected nominal 224-pixel budget 3042111488 MACs.
+Alpha .25 also executes a real 224-pixel forward, including the corrected final shortcut.
+Full Oct-ResNet-50 alpha 0.5: 25557032 actual parameters at 64 pixels; corrected nominal 224-pixel budget 2285256704 MACs.
+Full Oct-ResNet-50 alpha 0.75: 25557032 actual parameters at 64 pixels; corrected nominal 224-pixel budget 1818619904 MACs.
+// result_end
+
+> Complete compact backward
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17), state(17);
+  n::models::OctResNetConfig cfg;
+  cfg.classes = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem = true;
+  cfg.image_size = 32;
+  cfg.update_stats = false;
+  const auto x = n::sin(.37 * n::arange(0, 2 * 32 * 32 * 3).to(n::DType::Float32))
+                     .reshape({2, 32, 32, 3});
+  {
+    n::NoGradGuard guard;
+    n::models::OctResNet(p, state, x, cfg);
+  }
+  const auto before = state.flatten();
+  const auto out = n::models::OctResNet(p, state, x, cfg, true);
+  if (p.count() != 1484186 || out.features.shape() != n::Shape{2, 4, 4, 512})
+    return 1;
+  const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+  double low = std::numeric_limits<double>::infinity(), high = 0;
+  for (const auto &g : gradients) {
+    const double norm = n::sqrt(n::sum(n::square(g))).item();
+    if (!std::isfinite(norm))
+      return 1;
+    low = std::min(low, norm);
+    high = std::max(high, norm);
+  }
+  if (high == 0 || before != state.flatten())
+    return 1;
+  std::print("All sixteen compact Oct-ResNet-50 bottlenecks retained: {} finite "
+             "parameter-tensor gradients, norms [{:.12f},{:.9f}], both stream moving moments "
+             "frozen; nominal 32-pixel budget {} MACs.\n",
+             gradients.size(), low, high, out.macs);
+}
+```
+// result_begin: markdown
+All sixteen compact Oct-ResNet-50 bottlenecks retained: 369 finite parameter-tensor gradients, norms [0.043716400862,87.430145264], both stream moving moments frozen; nominal 32-pixel budget 60081152 MACs.
+// result_end
+
+> Original images and explicit fitting
+
+```{cpp, results="markdown", file="figures/octconv_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/octconv_inputs.png", 5, 0., 1., 4, 1.,
+                     4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/octconv_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/octconv_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+             vy       = n::slice_axis(labels, 0, 128, 192);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  n::models::OctResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.image_size    = 32;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::OctResNet(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 1484186)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/octconv_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 10; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/octconv_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "octconv / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("Oct-ResNet-50, alpha .25, quarter width")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/octconv_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 1484186 learned scalars, 13280 moving scalars; 160 explicit Adam updates.
+Selected epoch 9; validation NLL 2.255711; inference training NLL 1.650308; test NLL 2.585061; test accuracy 0.234375.
+\image(figures/octconv_training.svg)
+// result_end
+\caption(Explicit 10-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 10-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+
+
+> Observed subset result
+
+Validation selected epoch 9: validation NLL 2.255711, inference training NLL
+1.650308, official-test NLL 2.585061 and 15/64 correct predictions (23.4375%).
+Early validation transients and the fit/holdout gap limit conclusions about the
+architecture. Correct geometry and smaller nominal MACs do not guarantee better
+accuracy or measured execution speed.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/octconv_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Two spatial resolutions reduce path arithmetic while retaining kernel capacity. Independent
+path checks and a corrected odd-resolution merge make their geometry explicit. Complete
+budgets and a visible optimizer loop connect the full compact model to data, while separating
+nominal arithmetic, actual forwards and bounded-data performance.
+
+> References
+
+- [Chen et al. (2019), Drop an Octave: Reducing Spatial Redundancy in Convolutional Neural Networks](https://arxiv.org/abs/1904.05049).
+- [OctConv release](https://github.com/facebookresearch/OctConv).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

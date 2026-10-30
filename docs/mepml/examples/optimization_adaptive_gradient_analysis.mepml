@@ -1,0 +1,427 @@
+//? Title: Adaptive Gradient Methods: What the Accumulators Change
+//? Subtitle: Exact first steps, anisotropic bowls and learning-rate sensitivity
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A smooth objective can have very different curvature along different coordinates,
+so one global learning rate may either oscillate or make little progress.
+Adaptive gradient methods rescale coordinates using past gradients and updates.
+We derive this library's AdaGrad, RMSProp, AdaDelta, AMSGrad and Nadam variants,
+check their first steps on a scalar quadratic, and compare declared settings on
+isotropic and stiff bowls. A stability-boundary example shows why a returned
+value or a small objective change is not a stationarity certificate.
+)
+\toc
+
+> The method
+
+Let \(g_t=\nabla f(x_t)\) be the full gradient at the current point. These are deterministic full-batch
+implementations, even though their histories arose in stochastic/online learning.
+A diagonal rescaling is not a rotation-invariant curvature solve. On a positive
+definite quadratic, gradient descent contracts an eigencomponent by 1-eta*h;
+convergence with a constant positive rate requires eta*h below two on every axis.
+
+For coordinate j, this implementation uses
+
+$$
+ \begin{aligned}
+ G_{tj}=G_{t-1,j}+g_{tj}^2,\quad
+ x_{t+1,j}=x_{tj}-\eta g_{tj}/\sqrt{G_{tj}+\epsilon}\quad\text{(AdaGrad)},
+ \\V_{tj}=\rho V_{t-1,j}+(1-\rho)g_{tj}^2,\quad
+ x_{t+1,j}=x_{tj}-\eta g_{tj}/(\sqrt{V_{tj}}+\epsilon)\quad\text{(RMSProp)}.
+ \end{aligned}
+$$
+\alttext(AdaGrad sums squared gradients and places epsilon inside the square root. RMSProp exponentially averages squared gradients and places epsilon outside its square root.)
+
+G never decreases, so its coordinate multiplier decreases. This does not prove
+that every actual update decreases: the current gradient also changes. RMSProp
+forgets old gradients and can keep moving or oscillating near the solution under
+a fixed rate. Epsilon's position and value matter in exact small-gradient checks.
+
+The retained TikZ diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Normal documentation exports use its saved local SVG.
+
+```{bash, file="figures/opt_adaptive_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/opt_adaptive_mechanism.tikz > build/opt_adaptive_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/opt_adaptive_mechanism.svg build/opt_adaptive_mechanism.dvi > build/opt_adaptive_mechanism.render.log 2>&1
+printf 'Rendered the optimization mechanism diagram.\n'
+```
+// result_begin:
+// Rendered the optimization mechanism diagram.
+// \image(figures/opt_adaptive_mechanism.svg)
+// result_end
+\caption(An adaptive method stores coordinatewise history before choosing its next displacement.)
+\alttext(The full gradient enters a per-coordinate accumulator. Its reciprocal scale changes each coordinate step. A rotated valley can still require coupled curvature information.)
+
+AdaDelta also averages squared *updates*, starting both histories at zero:
+
+$$
+ \Delta x_{tj}=-\frac{\sqrt{D_{t-1,j}+\epsilon}}{\sqrt{V_{tj}+\epsilon}}g_{tj},
+ \qquad D_{tj}=\rho D_{t-1,j}+(1-\rho)(\Delta x_{tj})^2.
+$$
+\alttext(AdaDelta scales the gradient by the ratio of the previous RMS update to the current RMS gradient, with epsilon in both roots, then updates its squared-step average.)
+
+There is no separate global step-size field, but rho, epsilon, starting scale and
+the objective still matter. With constant curvature, epsilon supplies the initial
+update scale; removing a learning-rate field does not make tuning irrelevant.
+
+AMSGrad keeps m_t=beta1*m_previous+(1-beta1)*g_t and the analogous squared average
+v_t. This code takes the maximum of *uncorrected* second moments, then bias-corrects:
+
+$$
+ M_t=\max(M_{t-1},v_t),\quad
+ \widehat m_t=m_t/(1-\beta_1^t),\quad
+ x_{t+1}=x_t-\eta\widehat m_t/(\sqrt{M_t/(1-\beta_2^t)}+\epsilon).
+$$
+\alttext(The implementation takes a coordinatewise maximum of uncorrected second moments, divides that maximum by the current bias correction, and normalises the corrected first moment by its root plus epsilon.)
+
+M is nondecreasing, but M/(1-beta2^t) need not be. This bias-corrected variant
+must not inherit the original paper's convergence theorem without checking its
+assumptions. A successful quadratic run is not a test of the published Adam
+counterexample. Nadam here uses fixed beta values rather than Dozat's scheduled
+momentum products: replace the corrected first-moment direction by
+beta1*m_t/(1-beta1^t)+(1-beta1)*g_t/(1-beta1^t), with Adam's corrected second moment.
+All five methods test the gradient they just used after applying their update.
+Their supplied callbacks must have finite, matching coordinate dimensions.
+Work per step is O(p) beyond the gradient cost, with O(p) persistent local state;
+every optimize call starts that state from zero.
+
+> Small worked example
+
+>> Two AdaGrad steps are enough to check the accumulator
+
+Use \(f(x)=x^2\), initial \(x=2\), \(\eta=.5\) and \(\epsilon=.01\). The first gradient is
+four, G_1=16, and x_1=2-2/sqrt(16.01). The next gradient is 2*x_1 and its square
+is added to the same accumulator; a second optimize call would reset that history.
+The block runs one two-step solve and prints both its value points and its
+pre-update gradient requests. The latter are an explicit diagnostic replay.
+
+```{cpp, results="markdown", file="figures/opt_adaptive_two_steps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective f({2}, {0});
+  o::AdaGradOptions     a;
+  a.step_size                = .5;
+  a.epsilon                  = .01;
+  a.max_iterations           = 2;
+  a.tolerance                = 0;
+  const auto          run    = o::trace_optimize<o::DifferentiableFunction>(f, o::AdaGrad(a), {2});
+  const auto          values = run.trace.values();
+  std::vector<double> grid   = dm::seql(-.2, 2.2, 201).values(), loss;
+  for (double x : grid)
+    loss.push_back(f.evaluate({x}));
+  auto curve = dm::graphics::RPlot::create()
+                   .line(grid, loss, "quadratic", {130, 130, 130})
+                   .points(
+                       values.numeric_column("x0").values(),
+                       values.numeric_column("value").values(),
+                       "requested values",
+                       {40, 100, 190},
+                       4)
+                   .title("Two AdaGrad steps on x squared")
+                   .x_label("x")
+                   .y_label("objective")
+                   .x_limits(-.2, 2.2)
+                   .y_limits(0, 6)
+                   .legend({"quadratic", "requested values"}, {{130, 130, 130}, {40, 100, 190}});
+  curve.size(850, 490).save_svg("build/opt_adaptive_two_steps.svg");
+  std::print(
+      "Value requests\n\n{}\n\nPre-update gradients\n\n{}\n\n{}\n",
+      values.to_md(8),
+      run.trace.sample(f, "gradient").to_md(8),
+      run.summary().to_md(8));
+}
+```
+// result_begin: markdown
+Value requests
+
+| event | value | gradient_norm | term_gradients | x0 |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 4.00000000 | nan | 0 | 2.00000000 |
+| 3 | 2.25046855 | nan | 1 | 1.50015618 |
+| 5 | 1.44047084 | nan | 2 | 1.20019617 |
+
+
+Pre-update gradients
+
+| event | value | gradient_norm | term_gradients | component | x0 |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 4.00000000 | 4.00000000 | 1 | nan | 2.00000000 |
+| 4 | 2.25046855 | 3.00031235 | 2 | nan | 1.50015618 |
+
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 1.44047 | 1.44047 | 2.40039 | 5 |  | 1.2002 |
+
+\image(figures/opt_adaptive_two_steps.svg)
+// result_end
+\caption(The two updates use one accumulating history, with epsilon inside the AdaGrad root.)
+\alttext(Three value points move toward the minimum of x squared. The printed pre-update gradients explain the two displacements; callback order is retained.)
+
+> Checking the theory
+
+>> Five algorithms on the same isotropic bowl
+
+Use f=sum_j(x_j-centre_j)^2 with centre (4,-2,1) and start (10,10,10).
+Every run has a budget of 5000 updates. Rates are explicitly chosen per method:
+AdaGrad .5, RMSProp .03, AMSGrad .03 and Nadam .03; AdaDelta keeps rho=.95 and
+epsilon=1e-6. These are declared examples, not a rate-optimised ranking. The table
+includes final gradient norms, and the curves retain oscillations rather than
+turning every trial into a monotonically improving envelope.
+
+```{cpp, results="markdown", file="figures/opt_adaptive_isotropic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective f({2, 2, 2}, {4, -2, 1});
+  o::AdaGradOptions     a;
+  a.step_size      = .5;
+  a.max_iterations = 5000;
+  o::RMSPropOptions b;
+  b.step_size      = .03;
+  b.max_iterations = 5000;
+  o::AdaDeltaOptions c;
+  c.max_iterations = 5000;
+  o::AMSGradOptions d;
+  d.step_size      = .03;
+  d.max_iterations = 5000;
+  o::NadamOptions e;
+  e.step_size      = .03;
+  e.max_iterations = 5000;
+  std::vector<o::OptimizationRun> runs;
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::AdaGrad(a), {10, 10, 10}));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::RMSProp(b), {10, 10, 10}));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::AdaDelta(c), {10, 10, 10}));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::AMSGrad(d), {10, 10, 10}));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::Nadam(e), {10, 10, 10}));
+  const std::vector<std::string> labels{"AdaGrad", "RMSProp", "AdaDelta", "AMSGrad", "Nadam"};
+  o::optimization_comparison(f, runs, labels)
+      .title("Isotropic bowl: declared settings")
+      .size(850, 490)
+      .save_svg("build/opt_adaptive_isotropic.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print("{}\n\n{}\n\n", labels[i], runs[i].summary().to_md(7));
+}
+```
+// result_begin: markdown
+AdaGrad
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 2.44305e-17 | 2.44305e-17 | 9.88545e-09 | 6775 |  | 4 | -2 | 1 |
+
+
+RMSProp
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 5.70725e-20 | 5.70725e-20 | 4.77797e-10 | 933 |  | 4 | -2 | 1 |
+
+
+AdaDelta
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 4.44982e-18 | 4.44982e-18 | 4.21892e-09 | 5359 |  | 4 | -2 | 1 |
+
+
+AMSGrad
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 2.43032e-17 | 2.43032e-17 | 9.85966e-09 | 6743 |  | 4 | -2 | 1 |
+
+
+Nadam
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 2.32152e-17 | 2.32152e-17 | 9.63643e-09 | 4439 |  | 4 | -2 | 1 |
+
+
+\image(figures/opt_adaptive_isotropic.svg)
+// result_end
+\caption(Full-batch adaptive histories yield different finite-budget trajectories even on a spherical bowl.)
+\alttext(Five log-gap traces use each method declared rate and 5000-update budget. Final raw gradient norms identify residual error or oscillation at the returned point.)
+
+>> Change the curvature, then check the returned point
+
+Replace diagonal curvature (2,2,2) by (2,100,200), preserving centre, start, settings
+and budgets. The minimizer stays fixed. Coordinate normalisation addresses unequal
+gradient magnitudes but does not certify convergence or remove all dependence on
+scale. This generated objective is the experiment; no external dataset is needed.
+
+```{cpp, results="markdown", file="figures/opt_adaptive_stiff.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective f({2, 100, 200}, {4, -2, 1});
+  o::AdaGradOptions     a;
+  a.step_size      = .5;
+  a.max_iterations = 5000;
+  o::RMSPropOptions b;
+  b.step_size      = .03;
+  b.max_iterations = 5000;
+  o::AdaDeltaOptions c;
+  c.max_iterations = 5000;
+  o::AMSGradOptions d;
+  d.step_size      = .03;
+  d.max_iterations = 5000;
+  o::NadamOptions e;
+  e.step_size      = .03;
+  e.max_iterations = 5000;
+  std::vector<o::OptimizationRun> runs;
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::AdaGrad(a), {10, 10, 10}));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::RMSProp(b), {10, 10, 10}));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::AdaDelta(c), {10, 10, 10}));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::AMSGrad(d), {10, 10, 10}));
+  runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::Nadam(e), {10, 10, 10}));
+  const std::vector<std::string> labels{"AdaGrad", "RMSProp", "AdaDelta", "AMSGrad", "Nadam"};
+  o::optimization_comparison(f, runs, labels)
+      .title("Stiff bowl: same declared settings")
+      .size(850, 490)
+      .save_svg("build/opt_adaptive_stiff.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print("{}\n\n{}\n\n", labels[i], runs[i].summary().to_md(7));
+}
+```
+// result_begin: markdown
+AdaGrad
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 4.89252e-19 | 4.89252e-19 | 9.89193e-09 | 8027 |  | 4 | -2 | 1 |
+
+
+RMSProp
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 5.63802e-22 | 5.63802e-22 | 3.35798e-10 | 937 |  | 4 | -2 | 1 |
+
+
+AdaDelta
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 9.79933e-20 | 9.79933e-20 | 4.42704e-09 | 5373 |  | 4 | -2 | 1 |
+
+
+AMSGrad
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 4.85759e-19 | 4.85759e-19 | 9.85656e-09 | 7759 |  | 4 | -2 | 1 |
+
+
+Nadam
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 4.69621e-19 | 4.69621e-19 | 9.69145e-09 | 4799 |  | 4 | -2 | 1 |
+
+
+\image(figures/opt_adaptive_stiff.svg)
+// result_end
+\caption(The same settings are tested after a hundredfold increase in maximum curvature.)
+\alttext(The five callback traces describe a changed metric on the same minimizer. They retain actual sampled losses, including small fixed-rate oscillations.)
+
+>> An objective-change stopping rule can stop at an oscillation
+
+For f=100*x squared, one plain gradient step multiplies x by 1-200*eta.
+At eta=.01, x=one becomes minus one, with exactly the same loss and a gradient
+of magnitude 200. GradientDescent's small-objective-change test therefore returns
+after this first update. At eta=.011 the factor is -1.2, so repeated steps grow
+rather than converge. Smaller declared rates contract. The table makes the
+returned gradient norm visible instead of calling every normal return convergence.
+
+```{cpp, results="markdown", file="figures/opt_adaptive_stability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective           f({200}, {0});
+  std::vector<o::OptimizationRun> runs;
+  const std::vector<std::string>  labels{"eta .001", "eta .005", "eta .010", "eta .011"};
+  for (double rate : {.001, .005, .01, .011}) {
+    o::GradientDescentOptions s;
+    s.step_size      = rate;
+    s.max_iterations = 200;
+    s.tolerance      = 1e-10;
+    runs.push_back(o::trace_optimize<o::DifferentiableFunction>(f, o::GradientDescent(s), {1}));
+  }
+  o::optimization_comparison(f, runs, labels)
+      .title("Exact scalar stability boundary")
+      .size(850, 490)
+      .save_svg("build/opt_adaptive_stability.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print("{}\n\n{}\n\n", labels[i], runs[i].summary().to_md(7));
+}
+```
+// result_begin: markdown
+eta .001
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 1.50307e-10 | 1.50307e-10 | 0.000245199 | 123 |  | 1.226e-06 |
+
+
+eta .005
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 0 | 0 | 0 | 5 |  | 0 |
+
+
+eta .010
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 100 | 100 | 200 | 3 |  | -1 |
+
+
+eta .011
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 4.70434e+33 | 4.70434e+33 | 1.37176e+18 | 401 |  | 6.85882e+15 |
+
+
+\image(figures/opt_adaptive_stability.svg)
+// result_end
+\caption(Equal objective values do not imply a stationary point.)
+\alttext(Rates below 0.01 contract the scalar quadratic. At 0.01 the solver returns after a sign flip with unchanged loss; 0.011 produces growing oscillations over its finite budget.)
+
+> Conclusions and references
+
+The scalar example checks the accumulator and epsilon convention directly.
+The two bowls test specific settings, not general superiority, and the stability
+boundary supplies an exact counterexample to equating objective-change stopping
+with stationarity. The AMSGrad and Nadam formulas above name the implemented
+variants explicitly; no stochastic convergence theorem is inferred from these runs.
+
+- J. Duchi, E. Hazan and Y. Singer (2011), [Adaptive Subgradient Methods for Online Learning and Stochastic Optimization](https://jmlr.org/papers/v12/duchi11a.html), JMLR 12, 2121–2159.
+- G. Hinton (2012), [Neural Networks for Machine Learning, lecture 6e](https://www.cs.utoronto.ca/~hinton/coursera_lectures.html), RMSProp.
+- M. Zeiler (2012), [ADADELTA: An Adaptive Learning Rate Method](https://arxiv.org/abs/1212.5701).
+- S. Reddi, S. Kale and S. Kumar (2018), [On the Convergence of Adam and Beyond](https://openreview.net/forum?id=ryQu7f-RZ).
+- T. Dozat (2016), [Incorporating Nesterov Momentum into Adam](https://openreview.net/pdf?id=OM0jvwB8jIp57ZJjtNEZ).
+
+> Reading the numerical evidence
+
+`trace_optimize` calls the configured native optimizer through its stated abstract
+interface. It records callback requests without inserting fitting evaluations.
+Value calls can be rejected trials; gradient calls can be look-ahead points.
+`optimization_comparison` explicitly re-evaluates selected points afterwards on
+these pure objectives. Those diagnostic calls are excluded from fitting counts.
+Callback indices are neither accepted iterations nor wall time. The plotted gap
+uses the declared reference (minimum or stated lower bound) and a display floor of 1e-14; that floor does
+not modify any optimizer update. Returned coordinates, checked objective and
+appropriate stationarity/feasibility checks carry more information than a return
+from a finite iteration budget. Native APIs do not expose a uniform stop-status flag.
+The recorder retains exceptions and rejects nonfinite requested values/gradients;
+this makes failures visible rather than letting an instrumented run continue on NaN.
+

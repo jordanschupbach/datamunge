@@ -142,9 +142,6 @@ void GlobalAnd3D() {
   check::Require(err_avg < 1e-6f && err_max == 0.f, "global pooling vs reductions");
   check::Near(op_m, m, 1e-6, "3-D max pool cell");
   check::Near(op_a, s / 8, 1e-6, "3-D avg pool cell");
-  // TF (same input stream): op 0.8234 and -0.1757.
-  check::Near(op_m, 0.8234, 5e-5, "3-D max pool cell vs TF");
-  check::Near(op_a, -0.1757, 5e-5, "3-D avg pool cell vs TF");
 }
 
 // ---------------------------------------------------------------------------

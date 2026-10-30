@@ -1,43 +1,52 @@
-#include <datamunge/stats/fisher_exact_test.hpp>
-
-#include <datamunge/random/distributions.hpp>
-
+/// @file fisher_exact_test.cpp
+/// @brief Conditional hypergeometric Fisher tests with direct tail summation.
 #include <algorithm>
+#include <datamunge/stats/detail/test_common.hpp>
+#include <datamunge/stats/fisher_exact_test.hpp>
 #include <limits>
 
 namespace datamunge::stats {
-
-HypothesisTestResult fisher_exact_test_2x2(std::size_t a, std::size_t b, std::size_t c, std::size_t d,
-                                            Alternative alternative) {
-    const std::size_t row1 = a + b;
-    const std::size_t col1 = a + c;
-    const std::size_t n_total = a + b + c + d;
-    const std::size_t lo = (row1 > n_total - col1) ? row1 - (n_total - col1) : 0;
-    const std::size_t hi = std::min(row1, col1);
-
-    HypothesisTestResult result;
-    result.statistic = static_cast<double>(a);
-    result.alternative = alternative;
-    result.method = "Fisher's Exact Test for Count Data";
-    result.estimate1 = (b == 0 || c == 0) ? std::numeric_limits<double>::infinity()
-                                           : (static_cast<double>(a) * static_cast<double>(d)) /
-                                                 (static_cast<double>(b) * static_cast<double>(c));
-
-    if (alternative == Alternative::Less) {
-        result.p_value = random::hypergeometric_cdf(a, n_total, col1, row1);
-    } else if (alternative == Alternative::Greater) {
-        result.p_value = (a == 0) ? 1.0 : 1.0 - random::hypergeometric_cdf(a - 1, n_total, col1, row1);
-    } else {
-        const double observed_pmf = random::hypergeometric_pdf(a, n_total, col1, row1);
-        const double threshold = observed_pmf * (1.0 + 1e-7);
-        double sum = 0.0;
-        for (std::size_t k = lo; k <= hi; ++k) {
-            const double pmf = random::hypergeometric_pdf(k, n_total, col1, row1);
-            if (pmf <= threshold) sum += pmf;
-        }
-        result.p_value = std::min(1.0, sum);
-    }
-    return result;
+HypothesisTestResult fisher_exact_test_2x2(
+    std::size_t a,
+    std::size_t b,
+    std::size_t c,
+    std::size_t d,
+    Alternative alternative) {
+  detail::check_alternative(alternative);
+  std::size_t total = 0;
+  for (auto count : {a, b, c, d}) {
+    if (count > std::numeric_limits<std::size_t>::max() - total)
+      throw std::invalid_argument("fisher_exact_test_2x2: count total overflow");
+    total += count;
+  }
+  const std::size_t row1 = a + b, col1 = a + c,
+                    lo = row1 > total - col1 ? row1 - (total - col1) : 0, hi = std::min(row1, col1);
+  /// @brief Conditional log probability with fixed margins.
+  const auto log_pmf = [&](std::size_t k) {
+    return detail::test_log_choose(col1, k) + detail::test_log_choose(total - col1, row1 - k) -
+           detail::test_log_choose(total, row1);
+  };
+  const long double threshold = log_pmf(a) + std::log1p(1e-7L);
+  long double       sum       = 0;
+  for (std::size_t k = lo;; ++k) {
+    const auto lp = log_pmf(k);
+    if ((alternative == Alternative::Less && k <= a) ||
+        (alternative == Alternative::Greater && k >= a) ||
+        (alternative == Alternative::TwoSided && lp <= threshold))
+      sum += std::exp(lp);
+    if (k == hi)
+      break;
+  }
+  HypothesisTestResult result;
+  result.statistic              = a;
+  result.alternative            = alternative;
+  result.method                 = "Fisher's Exact Test for Count Data";
+  const long double numerator   = static_cast<long double>(a) * d,
+                    denominator = static_cast<long double>(b) * c;
+  result.estimate1              = denominator > 0 ? static_cast<double>(numerator / denominator)
+                                  : numerator > 0 ? std::numeric_limits<double>::infinity()
+                                                  : std::numeric_limits<double>::quiet_NaN();
+  result.p_value                = std::clamp(static_cast<double>(sum), 0.0, 1.0);
+  return result;
 }
-
 } // namespace datamunge::stats

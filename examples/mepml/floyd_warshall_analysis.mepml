@@ -59,7 +59,7 @@ path.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The dynamic-programming recurrence
@@ -239,7 +239,7 @@ cycle, reconstruct that path, and draw the graph with the path highlighted.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

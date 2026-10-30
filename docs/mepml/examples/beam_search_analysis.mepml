@@ -1,0 +1,344 @@
+//? Title: Beam Search
+//? Subtitle: Bounded-memory path planning on the Maunga Whau elevation map with datamunge's algorithms::terrain_beam_search, from greedy descent to an optimal label-correcting search as the beam widens
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Beam search keeps only the \(B\) most promising nodes of each layer of a search and forgets the
+rest, so its memory is bounded by the beam width rather than the size of the graph. We state the
+algorithm with a cost bound that makes it anytime. We then prove the two ends of its range:
+\(B=1\) is a greedy walk that can trap itself, and unlimited \(B\) is a label-correcting
+Bellman–Ford search that is optimal for any admissible heuristic. On the Maunga Whau elevation
+map, the same problem as the A* report, a beam of 16 cells finds the optimal route while
+holding only 16 cells per layer. Narrower beams return routes up to 26% dearer or none at all.
+Wide beams expand more cells than A*, because they re-expand cells whose cost improves.
+)
+
+\toc
+
+> The method
+
+>> Layers and a beam
+
+Beam search (Lowerre 1976) explores a graph in layers, like breadth-first search, but keeps
+only the \(B\) most promising nodes of each layer, the *beam*. Each beam node's neighbours are
+generated and ranked, and only the best \(B\) form the next layer. Everything else is forgotten.
+The memory held at any time is one layer, at most \(B\) nodes, whatever the size of the graph.
+
+`algorithms::terrain_beam_search()` runs this on the terrain grids used in the A* report. Each
+cell \(v\) carries the cheapest cost \(g(v)\) found so far and a parent pointer. Let \(h\) be an
+admissible heuristic (a lower bound on the remaining cost), and \(U\) the cost of the best path to
+the goal \(t\) found so far (initially \(\infty\)). One layer works as follows:
+
+```
+next <- {}
+for u in beam:
+    for each neighbour v of u:
+        g' <- g(u) + c(u, v)
+        if g' >= g(v) or g' + h(v) >= U: skip        # not better, or cannot beat U
+        g(v) <- g'; parent(v) <- u
+        if v == t: U <- g'                          # new best path, t is not expanded
+        else: add v to next
+drop from next every v with g(v) + h(v) >= U
+rank next by key(v) and keep the first B             # key = g + h, or h alone
+beam <- next
+```
+
+The search stops when the beam is empty, and the best path is read from the parent pointers.
+Classic beam search stops as soon as the goal is first reached (`stop_at_first`); continuing
+with the bound \(U\) turns it into an *anytime* search whose answer can only improve.
+
+Two rankings are available. With \(\text{key}=g+h\) the beam keeps the cells that look
+cheapest end to end, as A* would. With \(\text{key}=h\) it keeps the cells that look closest to
+the goal, ignoring what it cost to reach them: this is greedy best-first search with a
+bounded frontier.
+
+>> The two extremes
+
+**Width one.** With \(B=1\) the beam is a single cell, and each layer moves to its best-ranked
+neighbour that improves on any earlier visit. With \(\text{key}=h\) this is steepest descent on
+\(h\), and it can stop in a cell all of whose neighbours were reached more cheaply before, a
+dead end. The search uses \(O(1)\) memory beyond the cost table and follows one path.
+
+**Unlimited width.** If \(B\) is at least the number of cells, nothing is ever cut, and the
+search becomes a label-correcting shortest-path method: each layer relaxes the out-edges of
+exactly the cells whose \(g\) improved in the previous one. This is the queue form of the
+Bellman–Ford algorithm, with the extra rule that discards cells with \(g+h\ge U\). It is optimal.
+
+*Proof.* Let \(s=v_0,v_1,\dots,v_m=t\) be an optimal path of cost \(C^*\), and suppose the search
+ends with \(U>C^*\). Every prefix of the optimal path is optimal, so \(g^*(v_i)+h(v_i)\le
+g^*(v_i)+h^*(v_i)=C^*<U\) for every \(i\), using admissibility \(h\le h^*\). Hence no \(v_i\) with
+\(g(v_i)=g^*(v_i)\) is ever discarded by the bound. Take the largest \(i<m\) for which \(g(v_i)\) reaches
+\(g^*(v_i)\) at some point; \(i=0\) qualifies, since \(g(s)=0\). In the layer where that happens,
+\(v_i\) enters the next beam (no cell is cut when \(B\) is unlimited), and when it is expanded,
+
+$$
+g^*(v_i)+c(v_i,v_{i+1})=g^*(v_{i+1})<g(v_{i+1})\quad\text{and}\quad g^*(v_{i+1})+h(v_{i+1})\le C^*<U,
+$$
+\alttext(g star of v i plus c of v i, v i plus 1 equals g star of v i plus 1, which is less than g of v i plus 1; and g star of v i plus 1 plus h of v i plus 1 is at most C star, which is less than U.)
+
+so \(g(v_{i+1})\) is set to \(g^*(v_{i+1})\), contradicting the choice of \(i\). (If \(v_{i+1}=t\),
+\(U\) drops to \(C^*\).) So \(U=C^*\) at the end. \(\blacksquare\)
+
+The proof uses only one property of unlimited width: no cell on the optimal path is ever cut.
+With a finite beam, the optimal path survives only if each of its cells ranks among the best
+\(B\) of its layer. When one is cut, it may never be reached again, and the search returns a worse
+path or none at all. Beam search with finite \(B\) is therefore *incomplete* and *not optimal*,
+and the width trades memory and time against the quality of the answer. The bound \(U\) still
+gives a guarantee: the returned cost is the cost of a real path, so it is an upper bound on
+\(C^*\), while the A* lower bound \(h(s)\le C^*\) brackets it from below.
+
+> The terrain
+
+We use the same problem as the A* report. `dm::datasets::volcano()` is the topography of Maunga
+Whau, Auckland, on an \(87\times61\) grid with 10 m spacing. A step costs its horizontal length plus
+\(\lambda=5000/600\approx8.3\) for every metre climbed (Naismith's rule), and the walker crosses
+the map from the south-east foot to the north-west foot. The heuristic is the octile distance
+plus \(\lambda\) times the net height still to gain, which is consistent. Dijkstra's algorithm
+gives the optimum \(C^*\) for comparison.
+
+```{cpp, results="markdown", file="figures/beam_paths.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto grid = alg::terrain_from_frame(dm::datasets::volcano(), "x", "y", "elevation", 5000.0 / 600.0);
+  const std::size_t start = 80 * grid.cols + 5, goal = 5 * grid.cols + 55;
+  const auto kind = alg::TerrainHeuristic::OctileClimb;
+  const auto optimal = alg::terrain_a_star(grid, start, goal, kind);
+  std::print("Optimal cost C* = {:.1f} along {} cells; A* expanded {} cells.\n\n", optimal.cost, optimal.path.size(),
+             optimal.expansion_order.size());
+
+  const auto coords = [&](const std::vector<std::size_t>& cells) {
+    std::pair<std::vector<double>, std::vector<double>> xy;
+    for (const std::size_t c : cells) {
+      xy.first.push_back(grid.cell_size * (c / grid.cols));
+      xy.second.push_back(grid.cell_size * (c % grid.cols));
+    }
+    return xy;
+  };
+  std::vector<double> xs, ys;
+  for (std::size_t i = 0; i < grid.rows; ++i) xs.push_back(grid.cell_size * i);
+  for (std::size_t j = 0; j < grid.cols; ++j) ys.push_back(grid.cell_size * j);
+  std::vector<std::vector<double>> z(grid.rows, std::vector<double>(grid.cols));
+  for (std::size_t c = 0; c < grid.elevation.size(); ++c) z[c / grid.cols][c % grid.cols] = grid.elevation[c];
+  const auto [ox, oy] = coords(optimal.path);
+
+  std::print("| width \\(B\\) | first path cost | layers to first | final cost | final / \\(C^*\\) | cells expanded |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  auto layout = dm::graphics::RLayout::create(2, 2);
+  for (const std::size_t width : {1UL, 4UL, 16UL, 64UL}) {
+    const auto beam = alg::terrain_beam_search(grid, start, goal, kind, width);
+    const auto [ex, ey] = coords(beam.best.expansion_order);
+    auto plot = dm::graphics::RPlot::create()
+                    .image(xs, ys, z, dm::graphics::terrain_colors(20))
+                    .points(ex, ey, "", dm::RGB{30, 64, 175}, 2.0)
+                    .lines(ox, oy, "", dm::RGB{17, 24, 39}, 1.5)
+                    .x_label("x (m)")
+                    .y_label("y (m)");
+    if (!beam.best.found) {
+      std::print("| {} | no path | – | no path | – | {} |\n", width, beam.best.expansion_order.size());
+      plot.title(std::format("B = {}: no path ({} layers)", width, beam.layers));
+    } else {
+      std::print("| {} | {:.1f} | {} | {:.1f} | {:.3f} | {} |\n", width, beam.first_cost, beam.first_layer,
+                 beam.best.cost, beam.best.cost / optimal.cost, beam.best.expansion_order.size());
+      const auto [px, py] = coords(beam.best.path);
+      plot.lines(px, py, "", dm::RGB{220, 38, 38}, 2.5)
+          .title(std::format("B = {}: cost {:.1f} ({:+.1f}%)", width, beam.best.cost,
+                             100.0 * (beam.best.cost / optimal.cost - 1.0)));
+    }
+    layout.add(plot);
+  }
+  layout.size(1200, 900).save_svg("build/beam_paths.svg");
+}
+```
+// result_begin: markdown
+Optimal cost C* = 1291.5 along 99 cells; A* expanded 1732 cells.
+
+| width \(B\) | first path cost | layers to first | final cost | final / \(C^*\) | cells expanded |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | no path | – | no path | – | 54 |
+| 4 | 1627.2 | 117 | 1627.2 | 1.260 | 459 |
+| 16 | 1291.5 | 97 | 1291.5 | 1.000 | 1525 |
+| 64 | 1291.5 | 80 | 1291.5 | 1.000 | 4109 |
+\image(figures/beam_paths.svg)
+// result_end
+
+\caption(Cells expanded (blue dots) by beam searches of width 1, 4, 16 and 64, on the elevation map. The red line is the best path each found; the thin black line is the optimal path.)
+\alttext(Four panels of the coloured elevation map, 860 by 600 metres, each with the thin black optimal path running north from the start at the bottom right, then north-west along the top edge to the goal at the top left. B equals 1: a single row of blue dots runs west along the bottom edge from the start and stops near x equals 320 metres; no red path. B equals 4: a red path runs west along the southern foot, round the cone's west side and north to the goal, with blue dots hugging it. B equals 16: the red path coincides with the black optimal path; blue dots fill a band along the northern route and a second band along the south. B equals 64: same red path; blue dots cover most of the low ground and part of the cone.)
+
+The optimal route costs \(C^*=1291.5\) and runs north from the start, then west along the top of
+the map, skirting the cone. A* with the same heuristic expands 1,732 cells to prove it.
+
+With \(B=1\) the search fails. Ranked by \(g+h\), the single beam cell heads west along the low
+southern edge of the map, where moves cost no climbing. After 54 layers, at \(x=320\) m on the
+map edge, it reaches a cell whose four unexpanded neighbours had all been generated earlier at a
+lower cost and then cut from the beam. Since a cell is kept only when its cost improves, none
+of them can re-enter, and the beam empties. This is the incompleteness of the proof above: the
+search remembers the costs of the cells it discarded, but not the cells themselves.
+
+With \(B=4\) the beam follows the southern route round the cone and reaches the goal after 117
+layers, at a cost 26% above the optimum. The beam is wide enough to stay alive but not to
+explore the northern route at the same time. With \(B=16\) both routes survive side by side in
+the beam, and the northern one reaches the goal first, after 97 layers, at exactly \(C^*\). The
+bound \(U\) then cuts off the southern band, so the search expands 1,525 cells, fewer than A*'s
+1,732. With \(B=64\) the answer is the same but the beam spreads over most of the low ground and
+expands 4,109 cells.
+
+> Width against quality and work
+
+We now sweep the width over powers of two, from 1 to 8192 (more than the 5,307 cells), with
+both rankings, and record the first and final path costs, the cells expanded, the largest beam
+and the time taken.
+
+```{cpp, results="markdown", file="figures/beam_sweep.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <chrono>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto grid = alg::terrain_from_frame(dm::datasets::volcano(), "x", "y", "elevation", 5000.0 / 600.0);
+  const std::size_t start = 80 * grid.cols + 5, goal = 5 * grid.cols + 55;
+  const auto kind = alg::TerrainHeuristic::OctileClimb;
+  const auto optimal = alg::terrain_a_star(grid, start, goal, kind);
+  const double c_star = optimal.cost;
+
+  std::print("| ranking | \\(B\\) | first / \\(C^*\\) | final / \\(C^*\\) | expanded | largest beam | layers | time (ms) |\n"
+             "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  struct Series {
+    std::vector<double> log_b, first, final_cost, expanded;
+  };
+  std::map<std::string, Series> series;
+  for (const auto& [name, ranking] : {std::pair{"g + h", alg::BeamRanking::CostPlusHeuristic},
+                                      std::pair{"h only", alg::BeamRanking::Heuristic}}) {
+    auto& s = series[name];
+    for (std::size_t width = 1; width <= 8192; width *= 2) {
+      const auto t0 = std::chrono::steady_clock::now();
+      const auto beam = alg::terrain_beam_search(grid, start, goal, kind, width, ranking);
+      const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
+      if (!beam.best.found) {
+        std::print("| {} | {} | no path | no path | {} | {} | {} | {:.2f} |\n", name, width,
+                   beam.best.expansion_order.size(), beam.max_beam, beam.layers, ms);
+        continue;
+      }
+      s.log_b.push_back(std::log2(static_cast<double>(width)));
+      s.first.push_back(beam.first_cost / c_star);
+      s.final_cost.push_back(beam.best.cost / c_star);
+      s.expanded.push_back(std::log10(static_cast<double>(beam.best.expansion_order.size())));
+      if (std::has_single_bit(width) && (width <= 64 || width >= 1024 || width == 256))
+        std::print("| {} | {} | {:.3f} | {:.4f} | {} | {} | {} | {:.2f} |\n", name, width, beam.first_cost / c_star,
+                   beam.best.cost / c_star, beam.best.expansion_order.size(), beam.max_beam, beam.layers, ms);
+    }
+  }
+  std::print("\nA* with the same heuristic expands {} cells.\n", optimal.expansion_order.size());
+
+  const dm::RGB blue{37, 99, 235}, orange{217, 119, 6};
+  const auto& a = series["g + h"];
+  const auto& b = series["h only"];
+  auto quality = dm::graphics::RPlot::create()
+                     .lines(a.log_b, a.final_cost, "g + h, final", blue, 2.0)
+                     .points(a.log_b, a.first, "g + h, first path", blue, 5.0)
+                     .lines(b.log_b, b.final_cost, "h only, final", orange, 2.0)
+                     .points(b.log_b, b.first, "h only, first path", orange, 5.0)
+                     .abline_h(1.0, dm::RGB{17, 24, 39}, 1.0)
+                     .title("Path cost relative to the optimum")
+                     .x_label("log2 of beam width B")
+                     .y_label("cost / C*");
+  const double a_star_cells = std::log10(static_cast<double>(optimal.expansion_order.size()));
+  auto work = dm::graphics::RPlot::create()
+                  .lines(a.log_b, a.expanded, "g + h", blue, 2.0)
+                  .points(a.log_b, a.expanded, "", blue, 5.0)
+                  .lines(b.log_b, b.expanded, "h only", orange, 2.0)
+                  .points(b.log_b, b.expanded, "", orange, 5.0)
+                  .abline_h(a_star_cells, dm::RGB{17, 24, 39}, 1.0)
+                  .title("Cells expanded (line: A*)")
+                  .x_label("log2 of beam width B")
+                  .y_label("log10 cells expanded");
+  dm::graphics::RLayout::create(1, 2).add(quality).add(work).size(1200, 460).save_svg("build/beam_sweep.svg");
+}
+```
+// result_begin: markdown
+| ranking | \(B\) | first / \(C^*\) | final / \(C^*\) | expanded | largest beam | layers | time (ms) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| g + h | 1 | no path | no path | 54 | 1 | 54 | 0.04 |
+| g + h | 2 | no path | no path | 23 | 2 | 12 | 0.03 |
+| g + h | 4 | 1.260 | 1.2599 | 459 | 4 | 117 | 0.08 |
+| g + h | 8 | 1.243 | 1.2425 | 905 | 8 | 114 | 0.11 |
+| g + h | 16 | 1.000 | 1.0000 | 1525 | 16 | 97 | 0.16 |
+| g + h | 32 | 1.000 | 1.0000 | 2878 | 32 | 94 | 0.27 |
+| g + h | 64 | 1.000 | 1.0000 | 4109 | 64 | 80 | 0.38 |
+| g + h | 256 | 1.000 | 1.0000 | 5439 | 145 | 75 | 0.48 |
+| g + h | 1024 | 1.000 | 1.0000 | 5439 | 145 | 75 | 0.51 |
+| g + h | 2048 | 1.000 | 1.0000 | 5439 | 145 | 75 | 0.42 |
+| g + h | 4096 | 1.000 | 1.0000 | 5439 | 145 | 75 | 0.41 |
+| g + h | 8192 | 1.000 | 1.0000 | 5439 | 145 | 75 | 0.40 |
+| h only | 1 | 1.167 | 1.1669 | 75 | 1 | 75 | 0.04 |
+| h only | 2 | 1.154 | 1.1521 | 149 | 2 | 75 | 0.04 |
+| h only | 4 | 1.154 | 1.1398 | 297 | 4 | 75 | 0.05 |
+| h only | 8 | 1.154 | 1.1463 | 593 | 8 | 75 | 0.07 |
+| h only | 16 | 1.154 | 1.1353 | 1182 | 16 | 76 | 0.12 |
+| h only | 32 | 1.154 | 1.1147 | 2327 | 32 | 77 | 0.22 |
+| h only | 64 | 1.154 | 1.0767 | 4208 | 64 | 79 | 0.38 |
+| h only | 256 | 1.154 | 1.0000 | 11556 | 256 | 98 | 1.02 |
+| h only | 1024 | 1.154 | 1.0000 | 11885 | 310 | 98 | 0.99 |
+| h only | 2048 | 1.154 | 1.0000 | 11885 | 310 | 98 | 0.99 |
+| h only | 4096 | 1.154 | 1.0000 | 11885 | 310 | 98 | 1.06 |
+| h only | 8192 | 1.154 | 1.0000 | 11885 | 310 | 98 | 1.05 |
+
+A* with the same heuristic expands 1732 cells.
+\image(figures/beam_sweep.svg)
+// result_end
+
+\caption(Left: cost of the first and the final path found, relative to the optimum, against the beam width. Right: cells expanded, on a log scale, with A*'s count as a horizontal line.)
+\alttext(Two panels with log2 of the beam width from 0 to 13 on the x-axis. Left: cost relative to the optimum. The blue g plus h series starts at log2 B equals 2 at 1.26, falls to 1.24 at 3, and is exactly 1 from 4 onwards; its first-path dots lie on the line. The orange h-only final line starts at 1.167, wanders down between 1.14 and 1.15, drops to 1.08 at 6, and reaches 1 at 8 and beyond, while its first-path dots stay at 1.154 for every width from 1 up. Right: log10 cells expanded. Both lines rise roughly linearly with log2 B and level off: blue at about 3.74 (5,439 cells) from log2 B equals 7, orange at about 4.07 (11,885 cells) from 8. A horizontal line at 3.24 marks A*'s 1,732 cells; both curves cross it between log2 B equals 4 and 5.)
+
+Ranking by \(g+h\) fails for \(B\le2\), is 24–26% above the optimum for \(B=4\) and 8, and is
+optimal for every \(B\ge16\). For this ranking the first path found is already the final one:
+once the goal is reached, the bound removes everything else in the beam.
+
+Ranking by \(h\) alone never fails. The beam always moves toward the goal, so even \(B=1\)
+arrives, at 16.7% above the optimum, in 75 layers. But the first path it finds is 15.4% above
+the optimum for every width from 2 to 8192, because \(h\) ignores the climbing already done and
+the first beam cell to reach the goal is the one that came most directly. The anytime
+continuation is what improves it: after the first path, the bound \(U\) prunes the beam and later
+layers find cheaper routes, reaching \(C^*\) from \(B=256\).
+
+The work grows almost in proportion to \(B\) until the beam stops being cut. From \(B=256\) the
+largest beam actually held is 145 cells for \(g+h\) and 310 for \(h\), and every wider beam
+does the same search. That unlimited search expands 5,439 cells for \(g+h\), more than the 5,307
+cells in the grid, and 11,885 for \(h\). The reason is the Bellman–Ford structure of the
+proof: a layered search can reach a cell cheaply only after reaching it expensively, and every
+improvement re-expands the cell. A*'s priority queue avoids this by always expanding the
+cheapest \(f\) first, so with a consistent heuristic each cell is expanded once. The beam's
+advantage is memory. With \(B=16\) it holds 16 cells per layer and still finds the optimum,
+whereas A* pushes 3,571 entries onto its queue for the same answer. All searches take under a millisecond on this
+machine.
+
+> Summary
+
+- Beam search keeps the best \(B\) cells per layer, so memory is \(O(B)\) per layer, but it is
+  incomplete and not optimal for finite \(B\). `algorithms::terrain_beam_search()` adds the cost
+  bound \(U\), so after the first path it keeps searching for cheaper ones until the beam empties.
+- With \(B=1\) it is a greedy walk that can trap itself; with unlimited \(B\) it is a
+  label-correcting Bellman–Ford search, optimal for any admissible heuristic, as proved above.
+- On Maunga Whau, ranking by \(g+h\) fails for \(B\le2\), is about 25% off at \(B=4\) or 8, and is
+  optimal from \(B=16\), where it expands fewer cells than A*. Ranking by \(h\) never fails, but its
+  first path stays 15% off at every width; only the anytime bound brings it to the optimum.
+- Unlimited beams expand more cells than A*, up to 2.2 times the grid for the \(h\) ranking,
+  because layered search re-expands cells whose cost improves. Beam search trades that extra
+  work for bounded memory.
+
+> References
+
+- Lowerre, B. T. (1976). *The Harpy Speech Recognition System*. PhD thesis, Carnegie Mellon
+  University.
+- Zhou, R. and Hansen, E. A. (2005). Beam-stack search: integrating backtracking with beam
+  search. *Proceedings of ICAPS 2005*, 90–98.
+- Bellman, R. (1958). On a routing problem. *Quarterly of Applied Mathematics* 16, 87–90.
+- Ihaka, R. (1996). The `volcano` dataset in R: topographic information on Auckland's Maunga
+  Whau volcano.

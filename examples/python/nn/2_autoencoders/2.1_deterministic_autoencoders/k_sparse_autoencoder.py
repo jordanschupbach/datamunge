@@ -1,6 +1,6 @@
 # Native Python NN example. k-sparse autoencoder: linear encoder, top-8 signed activities per image, matched plain control.
-"""CMD: just python-example k_sparse_autoencoder
-k-sparse: autoencoder with LINEAR encoder and top8signed activities per image.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/k_sparse_autoencoder.py
+"""k-sparse: autoencoder with LINEAR encoder and top8signed activities per image.
 Three default epochs per model; matched plain control.
 
 Port of tflow's k_sparse_autoencoder (the model is examples/nn/common/competitive_autoencoder.hpp,

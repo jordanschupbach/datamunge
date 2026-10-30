@@ -1,4 +1,10 @@
+/// @file naive_bayes_classifier.cpp
+/// @brief NaiveBayesClassifier: fitting, exact leave-one-out downdates, prediction, parameter
+///        tables and plots.
+
 #include <datamunge/stats/naive_bayes_classifier.hpp>
+
+#include <datamunge/plot/class_regions.hpp>
 
 #include <algorithm>
 #include <cmath>
@@ -12,10 +18,16 @@
 
 namespace datamunge::stats {
 
+/// @brief Helpers private to this file.
 namespace {
 
+/// @brief \f$\log(2\pi)\f$.
 constexpr double kLog2Pi = 1.8378770664093453;
 
+/// @brief Formats @p v with fixed @p precision ("NaN" for NaN).
+/// @param v          Value.
+/// @param precision  Digits after the point.
+/// @return The text.
 std::string format_stat(double v, int precision = 4) {
     if (std::isnan(v)) return "NaN";
     std::ostringstream oss;
@@ -23,51 +35,75 @@ std::string format_stat(double v, int precision = 4) {
     return oss.str();
 }
 
-const plot::RGB kSeriesColors[] = {
+/// @brief Class colours, cycled.
+const graphics::RGB kSeriesColors[] = {
     {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}, {124, 58, 237}, {8, 145, 178},
 };
 
+/// @brief Colour of class @p c.
+/// @param c  Class index.
+/// @return Its colour.
+graphics::RGB class_color(std::size_t c) { return kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))]; }
+
+/// @brief Log density of \f$N(\text{mean},\text{variance})\f$ at @p x.
+/// @param x         Point.
+/// @param mean      Mean.
+/// @param variance  Variance (positive).
+/// @return \f$\log\varphi\f$.
 double log_gaussian_pdf(double x, double mean, double variance) {
     const double d = x - mean;
     return -0.5 * kLog2Pi - 0.5 * std::log(variance) - 0.5 * d * d / variance;
+}
+
+/// @brief Index of the largest entry (the first on ties).
+/// @param v  Values.
+/// @return Index.
+std::size_t argmax(const std::vector<double>& v) {
+    return static_cast<std::size_t>(std::max_element(v.begin(), v.end()) - v.begin());
 }
 
 } // namespace
 
 NaiveBayesClassifier::NaiveBayesClassifier(const dstruct::DataFrame& data, const std::string& formula,
                                            NaiveBayesClassifierOptions options)
-    : formula_(formula) {
-    options_ = options;
+    : formula_(formula), options_(std::move(options)) {
     fit(data);
 }
 
 std::vector<std::size_t> NaiveBayesClassifier::filter_complete_rows(const dstruct::DataFrame& frame,
-                                                                     bool require_response) const {
+                                                                    bool require_response) const {
     std::vector<std::size_t> kept;
     for (std::size_t row = 0; row < frame.nrows(); ++row) {
-        bool ok = true;
-        if (require_response && !frame.optional_string_at(design_.response_name, row)) ok = false;
-        if (ok) {
-            for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
-                if (predictor_is_categorical_[j]) {
-                    if (!frame.optional_string_at(predictor_names_[j], row)) {
-                        ok = false;
-                        break;
-                    }
-                } else {
-                    if (!frame.optional_double_at(predictor_names_[j], row)) {
-                        ok = false;
-                        break;
-                    }
-                }
-            }
-        }
+        bool ok = !require_response || frame.optional_string_at(design_.response_name, row).has_value();
+        for (std::size_t j = 0; ok && j < predictor_names_.size(); ++j)
+            ok = predictor_is_categorical_[j] ? frame.optional_string_at(predictor_names_[j], row).has_value()
+                                              : frame.optional_double_at(predictor_names_[j], row).has_value();
         if (ok) kept.push_back(row);
     }
     return kept;
 }
 
+std::vector<double> NaiveBayesClassifier::encode_row(const dstruct::DataFrame& frame, std::size_t row) const {
+    std::vector<double> x(predictor_names_.size());
+    for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
+        if (predictor_is_categorical_[j]) {
+            const auto  value  = *frame.optional_string_at(predictor_names_[j], row);
+            const auto& levels = categorical_levels_[categorical_slot_[j]];
+            const auto  it     = std::lower_bound(levels.begin(), levels.end(), value);
+            if (it == levels.end() || *it != value)
+                throw std::invalid_argument("NaiveBayesClassifier: level '" + value + "' of " + predictor_names_[j]
+                                            + " was not seen in training");
+            x[j] = static_cast<double>(it - levels.begin());
+        } else {
+            x[j] = *frame.optional_double_at(predictor_names_[j], row);
+        }
+    }
+    return x;
+}
+
 void NaiveBayesClassifier::fit(const dstruct::DataFrame& data) {
+    if (!(options_.laplace_smoothing >= 0.0))
+        throw std::invalid_argument("NaiveBayesClassifier: laplace_smoothing must be non-negative");
     design_ = formula_.resolve(data, ResponseKind::Categorical);
 
     predictor_names_.clear();
@@ -81,147 +117,184 @@ void NaiveBayesClassifier::fit(const dstruct::DataFrame& data) {
         predictor_names_.push_back(col.source_column);
         predictor_is_categorical_.push_back(col.kind == ResolvedColumnKind::CategoricalDummy);
     }
-    if (predictor_names_.empty())
-        throw std::invalid_argument("NaiveBayesClassifier: at least one predictor is required");
-
-    const auto kept_rows = filter_complete_rows(data, /*require_response=*/true);
-    const std::size_t n  = kept_rows.size();
-    if (n == 0)
-        throw std::runtime_error("NaiveBayesClassifier: no complete rows remain after dropping missing values");
-    observations_ = n;
-
-    training_labels_.resize(n);
-    for (std::size_t i = 0; i < n; ++i) training_labels_[i] = *data.optional_string_at(design_.response_name, kept_rows[i]);
-
-    classes_.clear();
-    for (const auto& label : training_labels_)
-        if (std::find(classes_.begin(), classes_.end(), label) == classes_.end()) classes_.push_back(label);
-    std::sort(classes_.begin(), classes_.end());
-    if (classes_.size() < 2)
-        throw std::invalid_argument("NaiveBayesClassifier: response must have at least 2 distinct classes, found "
-                                    + std::to_string(classes_.size()));
-    const std::size_t K = classes_.size();
-
-    std::vector<std::size_t> class_index(n);
-    std::vector<double>      class_count(K, 0.0);
-    for (std::size_t i = 0; i < n; ++i) {
-        class_index[i] = static_cast<std::size_t>(std::lower_bound(classes_.begin(), classes_.end(),
-                                                                    training_labels_[i])
-                                                  - classes_.begin());
-        class_count[class_index[i]] += 1.0;
-    }
-    class_priors_.resize(K);
-    for (std::size_t k = 0; k < K; ++k) class_priors_[k] = class_count[k] / static_cast<double>(n);
+    if (predictor_names_.empty()) throw std::invalid_argument("NaiveBayesClassifier: at least one predictor is required");
 
     const std::size_t p = predictor_names_.size();
     numeric_slot_.assign(p, -1);
     categorical_slot_.assign(p, -1);
-    numeric_mean_.clear();
-    numeric_variance_.clear();
-    numeric_min_.clear();
-    numeric_max_.clear();
     categorical_levels_.clear();
-    categorical_log_prob_.clear();
-
+    std::size_t n_numeric = 0;
     for (std::size_t j = 0; j < p; ++j) {
         if (predictor_is_categorical_[j]) {
             categorical_slot_[j] = static_cast<int>(categorical_levels_.size());
             categorical_levels_.push_back(design_.categorical_levels.at(predictor_names_[j]));
         } else {
-            numeric_slot_[j] = static_cast<int>(numeric_mean_.size());
-            numeric_mean_.emplace_back(K, 0.0);
-            numeric_variance_.emplace_back(K, 0.0);
-            numeric_min_.push_back(std::numeric_limits<double>::infinity());
-            numeric_max_.push_back(-std::numeric_limits<double>::infinity());
+            numeric_slot_[j] = static_cast<int>(n_numeric++);
         }
     }
 
-    double global_max_var = 0.0;
+    const auto kept_rows = filter_complete_rows(data, /*require_response=*/true);
+    const std::size_t n  = kept_rows.size();
+    if (n == 0) throw std::runtime_error("NaiveBayesClassifier: no complete rows remain after dropping missing values");
+    observations_ = n;
+
+    training_labels_.resize(n);
+    training_x_.resize(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        training_labels_[i] = *data.optional_string_at(design_.response_name, kept_rows[i]);
+        training_x_[i]      = encode_row(data, kept_rows[i]);
+    }
+    classes_ = training_labels_;
+    std::sort(classes_.begin(), classes_.end());
+    classes_.erase(std::unique(classes_.begin(), classes_.end()), classes_.end());
+    if (classes_.size() < 2)
+        throw std::invalid_argument("NaiveBayesClassifier: response must have at least 2 distinct classes, found "
+                                    + std::to_string(classes_.size()));
+    const std::size_t K = classes_.size();
+
+    training_class_.resize(n);
+    class_count_.assign(K, 0.0);
+    for (std::size_t i = 0; i < n; ++i) {
+        training_class_[i] = static_cast<std::size_t>(
+            std::lower_bound(classes_.begin(), classes_.end(), training_labels_[i]) - classes_.begin());
+        class_count_[training_class_[i]] += 1.0;
+    }
+    if (options_.priors.empty()) {
+        class_priors_.resize(K);
+        for (std::size_t k = 0; k < K; ++k) class_priors_[k] = class_count_[k] / static_cast<double>(n);
+    } else {
+        if (options_.priors.size() != K)
+            throw std::invalid_argument("NaiveBayesClassifier: priors must have one entry per class");
+        double total = 0.0;
+        for (const double v : options_.priors) {
+            if (!(v > 0.0)) throw std::invalid_argument("NaiveBayesClassifier: priors must be positive");
+            total += v;
+        }
+        if (std::abs(total - 1.0) > 1e-9) throw std::invalid_argument("NaiveBayesClassifier: priors must sum to 1");
+        class_priors_ = options_.priors;
+    }
+
+    // Numeric predictors: per-class and overall means and centred sums of squares.
+    numeric_mean_.assign(n_numeric, std::vector<double>(K, 0.0));
+    numeric_ss_.assign(n_numeric, std::vector<double>(K, 0.0));
+    numeric_all_mean_.assign(n_numeric, 0.0);
+    numeric_all_ss_.assign(n_numeric, 0.0);
+    numeric_min_.assign(n_numeric, std::numeric_limits<double>::infinity());
+    numeric_max_.assign(n_numeric, -std::numeric_limits<double>::infinity());
+    double max_var = 0.0;
     for (std::size_t j = 0; j < p; ++j) {
         if (predictor_is_categorical_[j]) continue;
-        const int slot = numeric_slot_[j];
-
-        std::vector<double> values(n);
+        const auto s = static_cast<std::size_t>(numeric_slot_[j]);
         for (std::size_t i = 0; i < n; ++i) {
-            values[i]           = *data.optional_double_at(predictor_names_[j], kept_rows[i]);
-            numeric_min_[slot]  = std::min(numeric_min_[slot], values[i]);
-            numeric_max_[slot]  = std::max(numeric_max_[slot], values[i]);
+            const double v = training_x_[i][j];
+            numeric_mean_[s][training_class_[i]] += v / class_count_[training_class_[i]];
+            numeric_all_mean_[s] += v / static_cast<double>(n);
+            numeric_min_[s] = std::min(numeric_min_[s], v);
+            numeric_max_[s] = std::max(numeric_max_[s], v);
         }
-        const double overall_mean = std::accumulate(values.begin(), values.end(), 0.0) / static_cast<double>(n);
-        double        overall_var  = 0.0;
-        for (const double v : values) overall_var += (v - overall_mean) * (v - overall_mean);
-        overall_var /= static_cast<double>(n);
-        global_max_var = std::max(global_max_var, overall_var);
-
-        for (std::size_t k = 0; k < K; ++k) {
-            double sum = 0.0;
-            for (std::size_t i = 0; i < n; ++i)
-                if (class_index[i] == k) sum += values[i];
-            const double mean_k = sum / class_count[k];
-            double        var_k  = 0.0;
-            for (std::size_t i = 0; i < n; ++i)
-                if (class_index[i] == k) var_k += (values[i] - mean_k) * (values[i] - mean_k);
-            var_k /= class_count[k];
-            numeric_mean_[slot][k]     = mean_k;
-            numeric_variance_[slot][k] = var_k;
+        for (std::size_t i = 0; i < n; ++i) {
+            const double v = training_x_[i][j];
+            numeric_ss_[s][training_class_[i]] += (v - numeric_mean_[s][training_class_[i]]) * (v - numeric_mean_[s][training_class_[i]]);
+            numeric_all_ss_[s] += (v - numeric_all_mean_[s]) * (v - numeric_all_mean_[s]);
         }
+        max_var = std::max(max_var, numeric_all_ss_[s] / static_cast<double>(n));
     }
-    const double epsilon = options_.var_smoothing * global_max_var;
-    for (auto& per_class_var : numeric_variance_)
-        for (double& v : per_class_var) v += epsilon;
+    variance_floor_ = options_.var_smoothing * max_var;
+    numeric_variance_.assign(n_numeric, std::vector<double>(K, 0.0));
+    for (std::size_t s = 0; s < n_numeric; ++s)
+        for (std::size_t k = 0; k < K; ++k) numeric_variance_[s][k] = numeric_ss_[s][k] / class_count_[k] + variance_floor_;
 
+    // Categorical predictors: counts and smoothed log probabilities.
+    categorical_count_.assign(categorical_levels_.size(), {});
+    categorical_log_prob_.assign(categorical_levels_.size(), {});
     for (std::size_t j = 0; j < p; ++j) {
         if (!predictor_is_categorical_[j]) continue;
-        const int   slot   = categorical_slot_[j];
-        const auto& levels = categorical_levels_[slot];
-        const std::size_t L = levels.size();
-
-        std::vector<std::vector<double>> counts(K, std::vector<double>(L, 0.0));
-        for (std::size_t i = 0; i < n; ++i) {
-            const auto  value     = *data.optional_string_at(predictor_names_[j], kept_rows[i]);
-            const auto  it        = std::lower_bound(levels.begin(), levels.end(), value);
-            const auto  level_idx = static_cast<std::size_t>(it - levels.begin());
-            counts[class_index[i]][level_idx] += 1.0;
-        }
-
-        categorical_log_prob_.emplace_back(K, std::vector<double>(L, 0.0));
+        const auto        s = static_cast<std::size_t>(categorical_slot_[j]);
+        const std::size_t L = categorical_levels_[s].size();
+        categorical_count_[s].assign(K, std::vector<double>(L, 0.0));
+        for (std::size_t i = 0; i < n; ++i)
+            categorical_count_[s][training_class_[i]][static_cast<std::size_t>(training_x_[i][j])] += 1.0;
+        categorical_log_prob_[s].assign(K, std::vector<double>(L, 0.0));
         for (std::size_t k = 0; k < K; ++k)
-            for (std::size_t l = 0; l < L; ++l) {
-                const double prob =
-                    (counts[k][l] + options_.laplace_smoothing)
-                    / (class_count[k] + options_.laplace_smoothing * static_cast<double>(L));
-                categorical_log_prob_.back()[k][l] = std::log(prob);
-            }
+            for (std::size_t l = 0; l < L; ++l)
+                categorical_log_prob_[s][k][l] =
+                    std::log((categorical_count_[s][k][l] + options_.laplace_smoothing)
+                             / (class_count_[k] + options_.laplace_smoothing * static_cast<double>(L)));
     }
 
     fitted_classes_.resize(n);
+    loo_fitted_classes_.resize(n);
     for (std::size_t i = 0; i < n; ++i) {
-        const auto lp = log_posteriors_for_row(data, kept_rows[i]);
-        const auto best =
-            static_cast<std::size_t>(std::max_element(lp.begin(), lp.end()) - lp.begin());
-        fitted_classes_[i] = classes_[best];
+        fitted_classes_[i]     = classes_[argmax(log_posteriors(training_x_[i]))];
+        loo_fitted_classes_[i] = classes_[argmax(loo_log_posteriors(i))];
     }
 }
 
-std::vector<double> NaiveBayesClassifier::log_posteriors_for_row(const dstruct::DataFrame& frame,
-                                                                  std::size_t row) const {
+std::vector<double> NaiveBayesClassifier::log_posteriors(const std::vector<double>& x) const {
     const std::size_t K = classes_.size();
     std::vector<double> lp(K);
     for (std::size_t k = 0; k < K; ++k) lp[k] = std::log(class_priors_[k]);
+    for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
+        if (predictor_is_categorical_[j]) {
+            const auto& table = categorical_log_prob_[categorical_slot_[j]];
+            for (std::size_t k = 0; k < K; ++k) lp[k] += table[k][static_cast<std::size_t>(x[j])];
+        } else {
+            const auto s = static_cast<std::size_t>(numeric_slot_[j]);
+            for (std::size_t k = 0; k < K; ++k) lp[k] += log_gaussian_pdf(x[j], numeric_mean_[s][k], numeric_variance_[s][k]);
+        }
+    }
+    return lp;
+}
+
+std::vector<double> NaiveBayesClassifier::loo_log_posteriors(std::size_t i) const {
+    const std::size_t K = classes_.size(), n = observations_;
+    const std::size_t c = training_class_[i];
+    const auto&       x = training_x_[i];
+    const double      nc = class_count_[c] - 1.0;  // size of the left-out row's class without it
+    std::vector<double> lp(K);
+    for (std::size_t k = 0; k < K; ++k) {
+        if (k == c && nc == 0.0) {
+            lp[k] = -std::numeric_limits<double>::infinity();
+            continue;
+        }
+        const double count = k == c ? nc : class_count_[k];
+        lp[k] = std::log(options_.priors.empty() ? count / static_cast<double>(n - 1) : class_priors_[k]);
+    }
+
+    // Variance floor without row i: downdate each overall sum of squares.
+    double max_var = 0.0;
+    for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
+        if (predictor_is_categorical_[j]) continue;
+        const auto   s   = static_cast<std::size_t>(numeric_slot_[j]);
+        const double dev = x[j] - numeric_all_mean_[s];
+        const double ss  = n > 1 ? std::max(0.0, numeric_all_ss_[s] - static_cast<double>(n) / static_cast<double>(n - 1) * dev * dev) : 0.0;
+        max_var          = std::max(max_var, n > 1 ? ss / static_cast<double>(n - 1) : 0.0);
+    }
+    const double floor = options_.var_smoothing * max_var;
 
     for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
         if (predictor_is_categorical_[j]) {
-            const auto  value     = *frame.optional_string_at(predictor_names_[j], row);
-            const int   slot      = categorical_slot_[j];
-            const auto& levels    = categorical_levels_[slot];
-            const auto  it        = std::lower_bound(levels.begin(), levels.end(), value);
-            const auto  level_idx = static_cast<std::size_t>(it - levels.begin());
-            for (std::size_t k = 0; k < K; ++k) lp[k] += categorical_log_prob_[slot][k][level_idx];
+            const auto        s     = static_cast<std::size_t>(categorical_slot_[j]);
+            const auto        level = static_cast<std::size_t>(x[j]);
+            const std::size_t L     = categorical_levels_[s].size();
+            for (std::size_t k = 0; k < K; ++k) {
+                if (!std::isfinite(lp[k])) continue;
+                const double cnt   = categorical_count_[s][k][level] - (k == c ? 1.0 : 0.0);
+                const double total = k == c ? nc : class_count_[k];
+                lp[k] += std::log((cnt + options_.laplace_smoothing) / (total + options_.laplace_smoothing * static_cast<double>(L)));
+            }
         } else {
-            const double value = *frame.optional_double_at(predictor_names_[j], row);
-            const int    slot  = numeric_slot_[j];
-            for (std::size_t k = 0; k < K; ++k)
-                lp[k] += log_gaussian_pdf(value, numeric_mean_[slot][k], numeric_variance_[slot][k]);
+            const auto s = static_cast<std::size_t>(numeric_slot_[j]);
+            for (std::size_t k = 0; k < K; ++k) {
+                if (!std::isfinite(lp[k])) continue;
+                double mean = numeric_mean_[s][k], var = numeric_ss_[s][k] / class_count_[k];
+                if (k == c) {
+                    const double dev = x[j] - numeric_mean_[s][c];
+                    mean             = (numeric_mean_[s][c] * class_count_[c] - x[j]) / nc;
+                    var = std::max(0.0, numeric_ss_[s][c] - class_count_[c] / nc * dev * dev) / nc;
+                }
+                lp[k] += log_gaussian_pdf(x[j], mean, var + floor);
+            }
         }
     }
     return lp;
@@ -229,21 +302,103 @@ std::vector<double> NaiveBayesClassifier::log_posteriors_for_row(const dstruct::
 
 double NaiveBayesClassifier::training_accuracy() const {
     std::size_t correct = 0;
-    for (std::size_t i = 0; i < fitted_classes_.size(); ++i)
-        if (fitted_classes_[i] == training_labels_[i]) ++correct;
+    for (std::size_t i = 0; i < fitted_classes_.size(); ++i) correct += fitted_classes_[i] == training_labels_[i];
     return static_cast<double>(correct) / static_cast<double>(fitted_classes_.size());
+}
+
+double NaiveBayesClassifier::loo_accuracy() const {
+    std::size_t correct = 0;
+    for (std::size_t i = 0; i < loo_fitted_classes_.size(); ++i) correct += loo_fitted_classes_[i] == training_labels_[i];
+    return static_cast<double>(correct) / static_cast<double>(loo_fitted_classes_.size());
 }
 
 linalg::DenseMatrix<double> NaiveBayesClassifier::confusion_matrix() const {
     const std::size_t k = classes_.size();
     linalg::DenseMatrix<double> matrix(k, k, 0.0);
     for (std::size_t i = 0; i < training_labels_.size(); ++i) {
-        const auto actual_it    = std::lower_bound(classes_.begin(), classes_.end(), training_labels_[i]);
-        const auto predicted_it = std::lower_bound(classes_.begin(), classes_.end(), fitted_classes_[i]);
-        matrix(static_cast<std::size_t>(actual_it - classes_.begin()),
-               static_cast<std::size_t>(predicted_it - classes_.begin())) += 1.0;
+        const auto predicted = std::lower_bound(classes_.begin(), classes_.end(), fitted_classes_[i]) - classes_.begin();
+        matrix(training_class_[i], static_cast<std::size_t>(predicted)) += 1.0;
     }
     return matrix;
+}
+
+dstruct::DataFrame NaiveBayesClassifier::gaussian_frame() const {
+    std::vector<std::string> predictor, cls;
+    std::vector<double> count, mean, sd;
+    for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
+        if (predictor_is_categorical_[j]) continue;
+        const auto s = static_cast<std::size_t>(numeric_slot_[j]);
+        for (std::size_t k = 0; k < classes_.size(); ++k) {
+            predictor.push_back(predictor_names_[j]), cls.push_back(classes_[k]), count.push_back(class_count_[k]);
+            mean.push_back(numeric_mean_[s][k]), sd.push_back(std::sqrt(numeric_variance_[s][k]));
+        }
+    }
+    dstruct::DataFrame frame;
+    frame.add_column("predictor", predictor);
+    frame.add_column("class", cls);
+    frame.add_column("n", count);
+    frame.add_column("mean", mean);
+    frame.add_column("sd", sd);
+    return frame;
+}
+
+dstruct::DataFrame NaiveBayesClassifier::categorical_frame() const {
+    std::vector<std::string> predictor, cls, level;
+    std::vector<double> count, prob;
+    for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
+        if (!predictor_is_categorical_[j]) continue;
+        const auto s = static_cast<std::size_t>(categorical_slot_[j]);
+        for (std::size_t k = 0; k < classes_.size(); ++k)
+            for (std::size_t l = 0; l < categorical_levels_[s].size(); ++l) {
+                predictor.push_back(predictor_names_[j]), cls.push_back(classes_[k]), level.push_back(categorical_levels_[s][l]);
+                count.push_back(categorical_count_[s][k][l]), prob.push_back(std::exp(categorical_log_prob_[s][k][l]));
+            }
+    }
+    dstruct::DataFrame frame;
+    frame.add_column("predictor", predictor);
+    frame.add_column("class", cls);
+    frame.add_column("level", level);
+    frame.add_column("count", count);
+    frame.add_column("probability", prob);
+    return frame;
+}
+
+dstruct::DataFrame NaiveBayesClassifier::posterior_terms(const dstruct::DataFrame& newdata, std::size_t row) const {
+    design_.validate_categorical_levels(newdata, "NaiveBayesClassifier::posterior_terms");
+    const auto kept = filter_complete_rows(newdata, /*require_response=*/false);
+    if (std::find(kept.begin(), kept.end(), row) == kept.end())
+        throw std::invalid_argument("NaiveBayesClassifier::posterior_terms: the row has a missing predictor");
+    const auto        x = encode_row(newdata, row);
+    const std::size_t K = classes_.size();
+    std::vector<std::string> terms{"log prior"};
+    std::vector<std::vector<double>> values(K);
+    for (std::size_t k = 0; k < K; ++k) values[k].push_back(std::log(class_priors_[k]));
+    for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
+        terms.push_back("log p(" + predictor_names_[j] + " | class)");
+        for (std::size_t k = 0; k < K; ++k) {
+            if (predictor_is_categorical_[j]) {
+                values[k].push_back(categorical_log_prob_[categorical_slot_[j]][k][static_cast<std::size_t>(x[j])]);
+            } else {
+                const auto s = static_cast<std::size_t>(numeric_slot_[j]);
+                values[k].push_back(log_gaussian_pdf(x[j], numeric_mean_[s][k], numeric_variance_[s][k]));
+            }
+        }
+    }
+    terms.push_back("log joint");
+    terms.push_back("posterior");
+    std::vector<double> joint(K);
+    for (std::size_t k = 0; k < K; ++k) joint[k] = std::accumulate(values[k].begin(), values[k].end(), 0.0);
+    const double top = *std::max_element(joint.begin(), joint.end());
+    double total = 0.0;
+    for (const double v : joint) total += std::exp(v - top);
+    dstruct::DataFrame frame;
+    frame.add_column("term", terms);
+    for (std::size_t k = 0; k < K; ++k) {
+        values[k].push_back(joint[k]);
+        values[k].push_back(std::exp(joint[k] - top) / total);
+        frame.add_column(classes_[k], values[k]);
+    }
+    return frame;
 }
 
 std::string NaiveBayesClassifier::summary() const {
@@ -283,7 +438,8 @@ std::string NaiveBayesClassifier::summary() const {
         }
     }
 
-    out << "\nTraining accuracy: " << format_stat(training_accuracy() * 100.0, 2) << "%  (" << observations_
+    out << "\nTraining accuracy: " << format_stat(training_accuracy() * 100.0, 2)
+        << "%, leave-one-out accuracy: " << format_stat(loo_accuracy() * 100.0, 2) << "%  (" << observations_
         << " observations)\n";
 
     return out.str();
@@ -299,39 +455,29 @@ std::vector<std::string> NaiveBayesClassifier::predict(const dstruct::DataFrame&
 
 NaiveBayesClassifierPrediction NaiveBayesClassifier::predict_detail(const dstruct::DataFrame& newdata) const {
     design_.validate_categorical_levels(newdata, "NaiveBayesClassifier::predict");
-    const auto kept_rows = filter_complete_rows(newdata, /*require_response=*/false);
-
     NaiveBayesClassifierPrediction result;
     result.class_label.assign(newdata.nrows(), "");
     result.probability.assign(newdata.nrows(), {});
-    const std::size_t K = classes_.size();
-
-    for (const auto row : kept_rows) {
-        const auto   lp     = log_posteriors_for_row(newdata, row);
-        const double max_lp = *std::max_element(lp.begin(), lp.end());
-
-        std::vector<double> prob(K);
-        double               sum = 0.0;
-        for (std::size_t k = 0; k < K; ++k) {
-            prob[k] = std::exp(lp[k] - max_lp);
-            sum += prob[k];
-        }
-        for (double& v : prob) v /= sum;
-
-        const auto best = static_cast<std::size_t>(std::max_element(prob.begin(), prob.end()) - prob.begin());
-        result.class_label[row] = classes_[best];
+    for (const auto row : filter_complete_rows(newdata, /*require_response=*/false)) {
+        const auto   lp  = log_posteriors(encode_row(newdata, row));
+        const double top = *std::max_element(lp.begin(), lp.end());
+        std::vector<double> prob(lp.size());
+        double total = 0.0;
+        for (std::size_t k = 0; k < lp.size(); ++k) total += prob[k] = std::exp(lp[k] - top);
+        for (double& v : prob) v /= total;
+        result.class_label[row] = classes_[argmax(prob)];
         result.probability[row] = std::move(prob);
     }
     return result;
 }
 
-plot::RPlot NaiveBayesClassifier::plot_classification(const dstruct::DataFrame& data,
+graphics::RPlot NaiveBayesClassifier::plot_classification(const dstruct::DataFrame& data,
                                                              const std::string& x_feature,
                                                              const std::string& y_feature) const {
     const auto  predictions = predict(data);
     const auto& response    = design_.response_name;
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs, ys;
         for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -343,7 +489,7 @@ plot::RPlot NaiveBayesClassifier::plot_classification(const dstruct::DataFrame& 
             xs.push_back(*x);
             ys.push_back(*y);
         }
-        plot.points(xs, ys, classes_[c], kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))]);
+        plot.points(xs, ys, classes_[c], class_color(c));
     }
 
     std::vector<double> mis_x, mis_y;
@@ -362,67 +508,46 @@ plot::RPlot NaiveBayesClassifier::plot_classification(const dstruct::DataFrame& 
     return plot;
 }
 
-plot::RPlot NaiveBayesClassifier::plot_decision_regions(const std::string& x_feature,
-                                                               const std::string& y_feature,
-                                                               std::size_t grid_resolution) const {
+graphics::RPlot NaiveBayesClassifier::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
+                                                            std::size_t grid_resolution,
+                                                            std::optional<std::array<double, 4>> limits) const {
     if (predictor_names_.size() != 2)
-        throw std::invalid_argument("NaiveBayesClassifier::plot_decision_regions: model must have exactly 2 "
-                                    "predictors");
+        throw std::invalid_argument("NaiveBayesClassifier::plot_decision_regions: model must have exactly 2 predictors");
     std::size_t xi = 2, yi = 2;
     for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
         if (predictor_names_[j] == x_feature) xi = j;
         if (predictor_names_[j] == y_feature) yi = j;
     }
-    if (xi == 2 || yi == 2)
-        throw std::invalid_argument("NaiveBayesClassifier::plot_decision_regions: x_feature/y_feature must match "
-                                    "the model's two predictors (" + predictor_names_[0] + ", " + predictor_names_[1]
-                                    + ")");
+    if (xi == 2 || yi == 2 || xi == yi)
+        throw std::invalid_argument("NaiveBayesClassifier::plot_decision_regions: x_feature/y_feature must match the "
+                                    "model's two predictors (" + predictor_names_[0] + ", " + predictor_names_[1] + ")");
     if (predictor_is_categorical_[xi] || predictor_is_categorical_[yi])
         throw std::invalid_argument("NaiveBayesClassifier::plot_decision_regions: both predictors must be numeric");
+    const auto sx = static_cast<std::size_t>(numeric_slot_[xi]), sy = static_cast<std::size_t>(numeric_slot_[yi]);
+    const double x_pad = std::max(1e-6, (numeric_max_[sx] - numeric_min_[sx]) * 0.05);
+    const double y_pad = std::max(1e-6, (numeric_max_[sy] - numeric_min_[sy]) * 0.10);
+    const auto box = limits.value_or(std::array<double, 4>{numeric_min_[sx] - x_pad, numeric_max_[sx] + x_pad,
+                                                           numeric_min_[sy] - y_pad, numeric_max_[sy] + y_pad});
 
-    double x_min = numeric_min_[numeric_slot_[xi]], x_max = numeric_max_[numeric_slot_[xi]];
-    double y_min = numeric_min_[numeric_slot_[yi]], y_max = numeric_max_[numeric_slot_[yi]];
-    const double x_pad = std::max(1e-6, (x_max - x_min) * 0.1);
-    const double y_pad = std::max(1e-6, (y_max - y_min) * 0.1);
-    x_min -= x_pad;
-    x_max += x_pad;
-    y_min -= y_pad;
-    y_max += y_pad;
-
-    std::vector<double> col_x, col_y;
-    col_x.reserve(grid_resolution * grid_resolution);
-    col_y.reserve(grid_resolution * grid_resolution);
-    for (std::size_t gx = 0; gx < grid_resolution; ++gx) {
-        for (std::size_t gy = 0; gy < grid_resolution; ++gy) {
-            col_x.push_back(x_min + (x_max - x_min) * static_cast<double>(gx) / static_cast<double>(grid_resolution - 1));
-            col_y.push_back(y_min + (y_max - y_min) * static_cast<double>(gy) / static_cast<double>(grid_resolution - 1));
-        }
-    }
-    dstruct::DataFrame grid;
-    grid.add_column(x_feature, col_x);
-    grid.add_column(y_feature, col_y);
-
-    const auto detail = predict_detail(grid);
-
-    std::vector<std::vector<double>> grid_x(classes_.size()), grid_y(classes_.size());
-    for (std::size_t i = 0; i < detail.class_label.size(); ++i) {
-        if (detail.class_label[i].empty()) continue;
-        const auto it = std::lower_bound(classes_.begin(), classes_.end(), detail.class_label[i]);
-        const auto c  = static_cast<std::size_t>(it - classes_.begin());
-        grid_x[c].push_back(col_x[i]);
-        grid_y[c].push_back(col_y[i]);
-    }
-
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
+    std::vector<graphics::RGB> fills;
+    for (std::size_t c = 0; c < classes_.size(); ++c) fills.push_back(graphics::tint(class_color(c), 0.8));
+    std::vector<double> x(2);
+    graphics::add_class_regions(
+        plot,
+        [&](double a, double b) {
+            x[xi] = a;
+            x[yi] = b;
+            return argmax(log_posteriors(x));
+        },
+        box, grid_resolution, fills);
     for (std::size_t c = 0; c < classes_.size(); ++c) {
-        auto color = kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))];
-        color.r    = static_cast<std::uint8_t>(std::min(255, color.r + (255 - color.r) * 3 / 4));
-        color.g    = static_cast<std::uint8_t>(std::min(255, color.g + (255 - color.g) * 3 / 4));
-        color.b    = static_cast<std::uint8_t>(std::min(255, color.b + (255 - color.b) * 3 / 4));
-        plot.points(grid_x[c], grid_y[c], classes_[c] + " region", color, 3.0);
+        std::vector<double> xs, ys;
+        for (std::size_t i = 0; i < observations_; ++i)
+            if (training_class_[i] == c) xs.push_back(training_x_[i][xi]), ys.push_back(training_x_[i][yi]);
+        plot.points(xs, ys, classes_[c], class_color(c));
     }
-
-    plot.title("Naive Bayes Decision Regions").x_label(x_feature).y_label(y_feature);
+    plot.title("Naive Bayes decision regions").x_label(x_feature).y_label(y_feature);
     return plot;
 }
 

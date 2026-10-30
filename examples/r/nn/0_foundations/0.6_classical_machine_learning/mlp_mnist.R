@@ -1,4 +1,5 @@
 # Native R NN example. Model composition and training run in R.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.6_classical_machine_learning/mlp_mnist.R
 # Epochs are honored in both modes; --quick reduces the dataset, --full uses all MNIST.
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT", getwd()), "examples/r/nn/common.R")
 if (!file.exists(.nn_common))
@@ -32,7 +33,7 @@ mlp_mnist_evaluate <- function(parameters, images, labels, rows) {
 
 main <- function(arguments = commandArgs(TRUE)) {
     name <- "mlp_mnist"
-    epochs <- 5L
+    epochs <- 1000L
     learning_rate <- 0.001
     minimum_accuracy <- 0.96
     args <- nn_options(arguments, list(data = file.path(nn_data_root(), "mnist"), epochs = as.numeric(epochs), batch = 256,
@@ -48,8 +49,8 @@ main <- function(arguments = commandArgs(TRUE)) {
     if (!is.finite(args$threads) || args$threads < 1L || args$threads != floor(args$threads))
         stop("threads must be a positive integer")
     nn$set_num_threads(args$threads)
-    train <- nn$load_mnist(args$data, "train")
-    test <- nn$load_mnist(args$data, "test")
+    train <- nn_components$dataset_assets$LoadMnist(args$data, "train")
+    test <- nn_components$dataset_assets$LoadMnist(args$data, "test")
     stopifnot(identical(as.numeric(train$images$shape()), c(60000, 28, 28, 1)), identical(as.numeric(test$images$shape()),
         c(10000, 28, 28, 1)))
     train_x <- nn$reshape(train$images, c(60000L, 784L))
@@ -61,7 +62,7 @@ main <- function(arguments = commandArgs(TRUE)) {
     validation <- ordering[55001L:60000L]
     testing <- 0L:9999L
     if (!args$full) {
-        fit <- head(fit, 64L)
+        fit <- head(fit, length(testing))
         validation <- head(validation, 32L)
         testing <- head(testing, 32L)
         args$batch <- min(args$batch, 16L)

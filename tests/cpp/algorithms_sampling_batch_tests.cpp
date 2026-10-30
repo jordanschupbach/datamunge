@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <random>
+#include <stdexcept>
 #include <vector>
 
 using datamunge::algorithms::CosineLSH;
@@ -147,4 +148,52 @@ TEST(MorrisCounter, SmallBaseReducesVariance) {
     auto [mean_big, rel_big]     = rel_spread(2.0);
     EXPECT_NEAR(mean_small, true_count, true_count * 0.05);  // near-unbiased, low variance
     EXPECT_LT(rel_small, rel_big);                           // smaller base -> tighter spread
+}
+
+TEST(MorrisCounter, ExactPmfMatchesMomentsAndClosedFormVariance) {
+    for (double a : {2.0, 1.25}) {
+        const std::uint64_t n   = 300;
+        const auto          pmf = datamunge::algorithms::morris_exponent_pmf(n, a, 200);
+        double total = 0, mean = 0, sq = 0;
+        for (std::size_t c = 0; c < pmf.size(); ++c) {
+            const double est = (std::pow(a, static_cast<double>(c)) - 1) / (a - 1);
+            total += pmf[c];
+            mean += pmf[c] * est;
+            sq += pmf[c] * est * est;
+        }
+        EXPECT_NEAR(total, 1.0, 1e-12);
+        EXPECT_NEAR(mean, static_cast<double>(n), 1e-6 * n);
+        EXPECT_NEAR(sq - mean * mean, datamunge::algorithms::morris_variance(n, a), 1e-6 * n * n);
+    }
+    EXPECT_THROW(MorrisCounter(1.0), std::invalid_argument);
+}
+
+TEST(MorrisCounter, AddMatchesRepeatedIncrementInDistribution) {
+    // Compare mean and variance of the exponent from add() with the exact pmf.
+    const std::uint64_t n = 2000;
+    const auto pmf = datamunge::algorithms::morris_exponent_pmf(n, 2.0, 60);
+    double em = 0, ev = 0;
+    for (std::size_t c = 0; c < pmf.size(); ++c) em += pmf[c] * c;
+    for (std::size_t c = 0; c < pmf.size(); ++c) ev += pmf[c] * (c - em) * (c - em);
+    const int reps = 20000;
+    double    m = 0, v = 0;
+    std::mt19937_64 rng(5);
+    std::vector<double> xs;
+    for (int r = 0; r < reps; ++r) {
+        MorrisCounter mc(2.0);
+        mc.add(n, rng);
+        xs.push_back(mc.exponent());
+        m += mc.exponent();
+    }
+    m /= reps;
+    for (double x : xs) v += (x - m) * (x - m);
+    v /= reps - 1;
+    EXPECT_NEAR(m, em, 4 * std::sqrt(ev / reps));
+    EXPECT_NEAR(v, ev, 0.05 * ev);
+    MorrisCounter z(2.0);
+    z.add(0, rng);
+    EXPECT_EQ(z.exponent(), 0.0);
+    z.add(1, rng);
+    EXPECT_EQ(z.exponent(), 1.0);  // the first event always increments
+    EXPECT_EQ(z.register_bits(), 1);
 }

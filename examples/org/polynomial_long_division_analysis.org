@@ -43,7 +43,7 @@ replaced by coefficient arithmetic mod \(p\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::int64_t md(std::int64_t a, std::int64_t p) { return ((a % p) + p) % p; }
 static std::string show(const GFPoly& f) {

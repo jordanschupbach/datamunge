@@ -1,0 +1,558 @@
+//? Title: Support Vector Machines: Margins, Kernels and Iris Classification
+//? Subtitle: Hand-solvable examples, primal–dual checks and held-out predictions with datamunge's stats::SVM
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given labelled measurements, we want to classify a new observation even when the classes
+cannot be separated perfectly by a straight line. The difficulty is to choose a boundary
+that separates useful structure without following every training point. A support vector
+machine balances the width of a separating margin against the cost of violating it.
+We derive the soft-margin primal and dual, the kernel construction and the two-coordinate
+SMO update. Four collinear points expose the support coefficients; two points give an exact
+cost path; four corners show how a kernel separates XOR. A scale-and-cost sweep checks the
+computed coefficients and objectives against closed forms. Finally, iris provides a three-class
+example with training-only standardisation and a reproducible held-out evaluation: the
+default RBF model correctly labels 44 of 45 held-out flowers. Pairwise
+optimality residuals accompany the accuracy figures: reaching a sweep limit is not a proof
+that the numerical optimiser has converged.
+)
+
+\toc
+
+> The method
+
+>> Separating labelled points with a margin
+
+Start with observations \((x_i,y_i)\), where \(x_i\in\mathbb R^p\) and
+\(y_i\in\{-1,+1\}\). A hyperplane has decision value \(f(x)=w^\top x+b\).
+Its perpendicular distance from \(x\) is \(|f(x)|/\lVert w\rVert\).
+For separable data we can rescale \(w,b\) so the nearest points have
+\(y_if(x_i)=1\). The planes \(f=+1\) and \(f=-1\) then have full separation
+\(2/\lVert w\rVert\). Maximising this width gives
+
+$$
+\min_{w,b}\frac12\lVert w\rVert^2,
+\qquad y_i(w^\top x_i+b)\geq1.
+$$
+\alttext(Minimise one half the squared norm of w, subject to each signed decision value being at least one.)
+
+This fixes an arbitrary scale of the decision function; the sign alone would give the same
+classifications for any positive rescaling. In the code, the alphabetically first of each
+pair of classes is \(+1\); the second is \(-1\). A zero decision votes for the first.
+
+>> Soft margins and hinge loss
+
+Overlapping data cannot satisfy every hard constraint. Allow slack \(\xi_i\geq0\)
+and penalise its sum with \(C>0\). At the optimum slack is the hinge loss:
+
+$$
+\begin{aligned}
+P &= \min_{w,b,\xi}\left\{\frac12\lVert w\rVert^2+C\sum_i\xi_i\right\},
+& y_if(x_i)&\geq1-\xi_i,\quad\xi_i\geq0,\\
+\xi_i&=\max(0,1-y_if(x_i)),
+& P(w,b)&=\frac12\lVert w\rVert^2+C\sum_i\max(0,1-y_if(x_i)).
+\end{aligned}
+$$
+\alttext(The soft-margin primal minimises one half the squared norm plus C times the sum of slacks, subject to signed decisions at least one minus slack. The least feasible slack is the positive part of one minus the signed decision.)
+
+A point with margin \(y_if(x_i)>1\) is outside the margin; one with margin between
+0 and 1 is correctly classified but inside it; a negative margin is misclassified.
+Smaller \(C\) makes violations cheaper. Larger \(C\) does not guarantee better predictions
+on new observations. This implementation uses a sum of losses, so duplicating the training
+set changes the relative strength of the penalty even at fixed \(C\).
+
+>> Deriving the dual and the support vectors
+
+Introduce multipliers \(\alpha_i\geq0\) for the margin constraints and
+\(\mu_i\geq0\) for the non-negative slacks. The Lagrangian is
+
+$$
+L=\tfrac12\lVert w\rVert^2+C\sum_i\xi_i+
+\sum_i\alpha_i(1-\xi_i-y_i(w^\top x_i+b))-\sum_i\mu_i\xi_i.
+$$
+\alttext(The Lagrangian is the primal objective plus alpha times each margin constraint violation, minus mu times each slack.)
+
+Stationarity gives \(w=\sum_i\alpha_i y_i x_i\), \(\sum_i\alpha_i y_i=0\)
+and \(C-\alpha_i-\mu_i=0\). Eliminating \(w,b,\xi\) leaves
+
+$$
+D=\max_\alpha\left\{\sum_i\alpha_i-\tfrac12\sum_{i,j}\alpha_i\alpha_jy_iy_jK(x_i,x_j)\right\},
+\qquad 0\leq\alpha_i\leq C,\quad \sum_i\alpha_iy_i=0.
+$$
+\alttext(Maximise the sum of alpha minus one half the kernel quadratic form weighted by the signed alphas, with each alpha between zero and C and the signed sum equal to zero.)
+
+For the linear model \(K(x,z)=x^\top z\). Complementary slackness gives the KKT rules:
+
+$$
+\alpha_i=0\Rightarrow y_if_i\geq1,\qquad
+0<\alpha_i<C\Rightarrow y_if_i=1,\qquad
+\alpha_i=C\Rightarrow y_if_i\leq1.
+$$
+\alttext(A zero coefficient requires a signed decision at least one; a coefficient strictly inside its box requires exactly one; a coefficient at C requires at most one.)
+
+Only non-zero coefficients contribute to
+\(f(x)=\sum_i\alpha_i y_iK(x_i,x)+b\). These observations are the support vectors.
+An observation exactly on the margin need not have a positive coefficient when the solution
+is degenerate. `training_details()` returns all pair rows, including zeros;
+`num_support_vectors()` counts distinct observations across pairs with coefficients above
+\(10^{-8}\), the threshold used for prediction. The current implementation retains the
+training design as well, so sparse predictions do not imply sparse training storage.
+
+For positive-semidefinite kernels the primal is convex and admits strictly feasible slacks,
+so strong duality holds. Any feasible primal and dual iterates obey \(P\geq P^*\geq D\).
+Consequently the gap \(P-D\) bounds objective suboptimality, provided the equality and box
+constraints are also satisfied numerically. `diagnostics()` reports the gap, the absolute
+equality residual and the largest violation of the KKT rules. For that residual it treats
+coefficients within \(\min(10^{-8},10^{-6}C)\) of a box face as on the face, avoiding
+misleading residuals from round-off coefficients. It does not clip a negative gap.
+
+>> Kernels: a linear separator in another space
+
+If \(K(x,z)=\phi(x)^\top\phi(z)\), the dual and decision need only the kernel;
+the feature map never has to be materialised. The available kernels are
+
+$$
+\begin{aligned}
+K_{\rm lin}(x,z)&=x^\top z, &
+K_{\rm poly}(x,z)&=(\gamma x^\top z+r)^d,\\
+K_{\rm RBF}(x,z)&=\exp(-\gamma\lVert x-z\rVert^2), &
+K_{\rm sig}(x,z)&=\tanh(\gamma x^\top z+r).
+\end{aligned}
+$$
+\alttext(The linear kernel is a dot product. The polynomial kernel raises gamma times the dot product plus r to integer degree d. The radial kernel exponentiates minus gamma times squared distance. The sigmoid kernel is the hyperbolic tangent of gamma times the dot product plus r.)
+
+Linear and RBF kernels are positive semidefinite; so is the polynomial kernel for positive
+\(\gamma\), non-negative \(r\) and positive integer \(d\). Arbitrary sigmoid parameters do
+not have that guarantee, so its gap is not generally an optimality certificate. We keep the
+sigmoid option in the iris comparison to show that sharing the same interface does not
+make every kernel choice a convex SVM.
+
+The defaults are RBF, \(C=1\), \(\gamma=1/p\), \(r=0\), \(d=3\).
+`gamma <= 0` requests the automatic positive value; it does not fit a negative-gamma RBF.
+Numeric design columns are standardised by the training mean and sample standard deviation
+(divisor \(n-1\)); near-constant columns use scale 1. Scaling is disabled in the hand examples
+so all coordinates and margins are in their stated units. Automatic gamma is based on the
+number of design columns, not on the variance as in some other libraries' defaults.
+
+>> Two-coordinate SMO updates and implementation limits
+
+Changing just one \(\alpha_i\) would break \(\sum_i\alpha_i y_i=0\).
+SMO changes two. With \(E_i=f_i-y_i\) and
+\(\eta=K_{ii}+K_{jj}-2K_{ij}>0\), the unconstrained step and equality-preserving partner are
+
+$$
+\alpha_j' = \operatorname{clip}_{[L,H]}
+\left(\alpha_j+\frac{y_j(E_i-E_j)}{\eta}\right),\qquad
+\alpha_i'=\alpha_i+y_iy_j(\alpha_j-\alpha_j').
+$$
+\alttext(Update alpha j by y j times the difference of errors divided by eta, clipped to its feasible interval; adjust alpha i by y i y j times the old minus new alpha j.)
+
+The interval comes from intersecting both boxes with the equality line:
+
+$$
+[L,H]=\begin{cases}
+[\max(0,\alpha_j-\alpha_i),\min(C,C+\alpha_j-\alpha_i)],&y_i\ne y_j,\\
+[\max(0,\alpha_i+\alpha_j-C),\min(C,\alpha_i+\alpha_j)],&y_i=y_j.
+\end{cases}
+$$
+\alttext(For opposite labels, the lower bound is the maximum of zero and alpha j minus alpha i, and the upper bound is the minimum of C and C plus alpha j minus alpha i. For equal labels, the bounds use the sum of the two coefficients.)
+
+For two points \(-a,+a\), labels \(+1,-1\), starting at zero with a linear kernel,
+\(E_i=-1,E_j=+1,\eta=4a^2\); the first step is already the exact solution
+\(\alpha_i=\alpha_j=\min(C,1/(2a^2))\). The worked cost path below checks this.
+
+The library uses simplified SMO with deterministic random partner selection, not Platt's
+full working-set heuristics. It skips non-positive-curvature pairs and changes below
+\(10^{-7}\). Fitting stops after `max_passes` unchanged sweeps, or after
+\(\max(200,20\,\texttt{max_passes})\) total sweeps. Either can occur before all KKT
+conditions meet `tolerance`; residuals must be inspected. Identical mapped observations,
+indefinite kernels and large cost values deserve particular care.
+
+For a binary problem with \(m\) rows and \(p\) predictors, the stored Gram matrix costs
+\(O(m^2)\) space and \(O(m^2p)\) construction time. Each sweep costs \(O(m^2)\)
+since decisions are recomputed from all coefficients; there is no error cache. This is a
+small-data implementation. Prediction costs \(O(sp)\) per pair with \(s\) support vectors.
+For \(k\) classes there are \(k(k-1)/2\) models; they vote for the final class, with ties
+resolved in sorted class order. Votes are counts, not posterior probabilities.
+
+> Simple examples
+
+>> Four points: which observations hold up the margin?
+
+Take points \((-2,0),(-1,0)\) in class `left` and \((1,0),(2,0)\) in class `right`.
+The largest-margin boundary is \(x=0\), with \(w=(-1,0)\), \(b=0\).
+Only the inner two points need coefficients: \(\alpha=(0,1/2,1/2,0)\).
+Thus \(\lVert w\rVert^2=1\), full margin width 2 and primal and dual objectives both
+\(1/2\). Moving either outer point farther away leaves that optimum unchanged.
+
+```{cpp, results="markdown", file="figures/svm_margin.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame data;
+  data.add_column("x", std::vector<double>{-2,-1,1,2});
+  data.add_column("z", std::vector<double>{0,0,0,0});
+  data.add_column("label", std::vector<std::string>{"left","left","right","right"});
+  dm::stats::SVMOptions opt;
+  opt.kernel=dm::stats::SVMKernel::Linear; opt.cost=10; opt.scale=false;
+  const dm::stats::SVM model(data,"label ~ x + z",opt);
+  auto plot=model.plot_decision_regions("x","z",100,std::array<double,4>{-3,3,-1,1.8});
+  plot.segments({-1,1},{-1,-1},{-1,1},{1.8,1.8},{90,90,90},1.2)
+      .segments({0},{-1},{0},{1.8},{0,0,0},1.5)
+      .title("Boundary x = 0; margin planes x = -1 and +1").size(800,430);
+  std::filesystem::create_directories("build");
+  plot.save_svg("build/svm_margin.svg");
+  std::print("{}\n",model.training_details().select({"row","label","alpha","decision","margin","slack"}).to_md(3));
+}
+```
+// result_begin: markdown
+| row | label | alpha | decision | margin | slack |
+| ---: | :--- | ---: | ---: | ---: | ---: |
+| 0 | left | 0.0 | 2 | 2 | 0 |
+| 1 | left | 0.5 | 1 | 1 | 0 |
+| 2 | right | 0.5 | -1 | 1 | 0 |
+| 3 | right | 0.0 | -2 | 2 | 0 |
+
+\image(figures/svm_margin.svg)
+// result_end
+\caption(Four collinear points: the two inner coefficients are one half, the outer ones zero. Shading is the predicted class; the grey lines are the margin planes.)
+\alttext(Four points lie on the horizontal axis, two blue to the left and two red to the right. A black vertical boundary is at zero; grey vertical margin lines at minus one and plus one pass through the inner observations.)
+
+>> Two points: a soft margin need not cause a classification error
+
+With just \((-1,+1)\) and \((+1,-1)\) in one predictor, the equality constraint requires
+both coefficients to equal \(t\). The dual is \(D(t)=2t-2t^2\), whose unconstrained
+maximum is \(t=1/2\). At cost \(C=0.1\), clipping gives \(t=0.1\),
+\(w=-0.2,b=0\). Both signed decisions are 0.2 and both slacks 0.8.
+The primal is \(0.02+0.1(1.6)=0.18\), exactly the dual \(0.2-0.02\).
+Both points are still classified correctly. The formal planes \(f=\pm1\) now lie at
+\(x=\mp5\): they enclose the training points rather than touch them.
+
+```{cpp, results="markdown", file="figures/svm_soft_margin.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame data;
+  data.add_column("x",std::vector<double>{-1,1});
+  data.add_column("label",std::vector<std::string>{"left","right"});
+  auto plot=dm::graphics::RPlot::create();
+  dm::dstruct::DataFrame table;
+  std::vector<double> costs, alphas, margins, slacks, primal, dual;
+  for (double cost : {0.1,0.5,10.0}) {
+    dm::stats::SVMOptions opt;
+    opt.kernel=dm::stats::SVMKernel::Linear; opt.scale=false; opt.cost=cost;
+    const dm::stats::SVM model(data,"label ~ x",opt);
+    const auto rows=model.training_details(), diag=model.diagnostics();
+    costs.push_back(cost); alphas.push_back(rows.double_at("alpha",0));
+    margins.push_back(rows.double_at("margin",0)); slacks.push_back(rows.double_at("slack",0));
+    primal.push_back(diag.double_at("primal",0)); dual.push_back(diag.double_at("dual",0));
+    dm::dstruct::DataFrame query; query.add_column("x",std::vector<double>{-6,6});
+    const auto f=model.decision_function(query);
+    plot.lines({-6,6},{f(0,0),f(1,0)},std::format("C = {}",cost),
+        cost==0.1 ? dm::RGB{37,99,235} : cost==0.5 ? dm::RGB{220,38,38} : dm::RGB{22,163,74});
+  }
+  plot.abline_h(1,{100,100,100}).abline_h(-1,{100,100,100})
+      .title("Two-point decision functions").x_label("x").y_label("f(x), positive means left")
+      .x_limits(-6,6).y_limits(-7,10).size(800,470);
+  std::filesystem::create_directories("build"); plot.save_svg("build/svm_soft_margin.svg");
+  table.add_column("C",costs); table.add_column("alpha",alphas); table.add_column("margin",margins);
+  table.add_column("slack",slacks); table.add_column("primal",primal); table.add_column("dual",dual);
+  std::print("{}\n",table.to_md(3));
+}
+```
+// result_begin: markdown
+| C | alpha | margin | slack | primal | dual |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.1 | 0.1 | 0.2 | 0.8 | 0.18 | 0.18 |
+| 0.5 | 0.5 | 1.0 | 0.0 | 0.50 | 0.50 |
+| 10.0 | 0.5 | 1.0 | 0.0 | 0.50 | 0.50 |
+
+\image(figures/svm_soft_margin.svg)
+// result_end
+\caption(The cost clips the coefficient at C until C reaches one half. The C=0.5 and C=10 decision lines coincide.)
+\alttext(A shallow blue descending line for cost 0.1 crosses decision levels plus and minus one at x minus and plus five. The steeper red and green coincident lines for costs 0.5 and 10 cross those levels at minus and plus one. All cross zero at the origin.)
+
+>> Four corners: why XOR needs a feature map
+
+Put class `same` at \((-1,-1),(1,1)\), and class `unlike` at
+\((-1,1),(1,-1)\). A linear separator cannot classify all four: the midpoint of
+each pair is the origin, which would have to lie strictly on both sides.
+For the degree-two kernel \(K(x,z)=(x^\top z)^2\), an explicit map is
+\(\phi(x)=(x_1^2,\sqrt2x_1x_2,x_2^2)\). The coordinate \(x_1x_2\) alone
+separates them. A maximum-margin solution is \(f(x)=x_1x_2\), with
+\(\lVert w_\phi\rVert^2=1/2\) and objective \(1/4\).
+
+For RBF with \(\gamma=1\), symmetry permits equal coefficients. Each signed decision is
+\(t(1+e^{-8}-2e^{-4})\). Set it to one to obtain
+
+$$
+t=\frac1{(1-e^{-4})^2},\qquad \lVert w_\phi\rVert^2=4t,\qquad P=D=2t.
+$$
+\alttext(The common RBF coefficient is one divided by the square of one minus e to the minus four. The squared normal norm is four times this coefficient, and both objectives are twice it.)
+
+The polynomial map sends opposite corners to identical features, so its individual
+coefficients are non-unique; only their sum within each class is fixed at \(1/4\).
+SMO can distribute that sum unevenly. This is why the table checks the norm and objective,
+not an invented unique coefficient of \(1/8\) at every corner.
+
+```{cpp, results="markdown", file="figures/svm_xor.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame data, table;
+  data.add_column("x",std::vector<double>{-1,1,-1,1});
+  data.add_column("z",std::vector<double>{-1,1,1,-1});
+  data.add_column("label",std::vector<std::string>{"same","same","unlike","unlike"});
+  auto layout=dm::graphics::RLayout::create(1,2);
+  std::vector<std::string> names; std::vector<double> errors,norms,duals,gaps;
+  for (auto kernel : {dm::stats::SVMKernel::Polynomial,dm::stats::SVMKernel::Radial}) {
+    dm::stats::SVMOptions opt;
+    opt.kernel=kernel; opt.degree=2; opt.gamma=1; opt.cost=10; opt.scale=false; opt.tolerance=1e-7;
+    const dm::stats::SVM model(data,"label ~ x + z",opt);
+    const auto diag=model.diagnostics(); names.push_back(std::format("{}",kernel));
+    errors.push_back(model.error(data)); norms.push_back(diag.double_at("norm_squared",0));
+    duals.push_back(diag.double_at("dual",0)); gaps.push_back(diag.double_at("gap",0));
+    layout.add(model.plot_decision_regions("x","z",120,std::array<double,4>{-2,2,-2,3.2}).title(names.back()));
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1100,480).fit_panels().save_svg("build/svm_xor.svg");
+  table.add_column("kernel",names); table.add_column("error",errors); table.add_column("norm_squared",norms);
+  table.add_column("dual",duals); table.add_column("gap",gaps);
+  std::print("{}\n",table.to_md(6));
+}
+```
+// result_begin: markdown
+| kernel | error | norm_squared | dual | gap |
+| :--- | ---: | ---: | ---: | ---: |
+| Polynomial | 0 | 0.500000 | 0.250000 | 0.000000 |
+| Radial | 0 | 4.150651 | 2.075326 | 0.000001 |
+
+\image(figures/svm_xor.svg)
+// result_end
+\caption(Two kernels separate four XOR corners. Norms are measured in different feature spaces, so their magnitudes do not rank the models.)
+\alttext(Two panels show blue points at the bottom-left and top-right corners, red points at the other two corners. Pale regions follow the corner labels. Both polynomial and radial kernels produce alternating class regions meeting near the coordinate axes.)
+
+> Checking the theory
+
+>> A closed form over scales and costs
+
+For points \(-a,+a\) the exact solution is
+
+$$
+\alpha^*=\min(C,1/(2a^2)),\quad w=-2a\alpha^*,\quad b=0,\quad
+\lVert w\rVert^2=4a^2(\alpha^*)^2,\quad y_if_i=2a^2\alpha^*.
+$$
+\alttext(The optimal coefficient is the minimum of C and one over twice a squared. The weight is minus twice a times that coefficient, the bias is zero, the squared norm is four a squared times the squared coefficient, and each signed decision is two a squared times the coefficient.)
+
+The cost at which the hard-margin solution becomes feasible is \(C=1/(2a^2)\).
+Scaling the coordinates by \(a\) moves this transition quadratically. We check four
+scales and 25 logarithmically spaced costs for each scale. Markers are fitted
+coefficients; lines are the analytic formula. This is a solver check, not a test of
+statistical generalisation.
+
+```{cpp, results="markdown", file="figures/svm_cost_path.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  auto plot=dm::graphics::RPlot::create();
+  std::vector<double> scales,alpha_error,gap_error,kkt;
+  const std::vector<dm::RGB> colours{{37,99,235},{220,38,38},{22,163,74},{147,51,234}};
+  for (double a : {0.5,1.0,2.0,4.0}) {
+    dm::dstruct::DataFrame data;
+    data.add_column("x",std::vector<double>{-a,a});
+    data.add_column("label",std::vector<std::string>{"left","right"});
+    std::vector<double> x,expected,observed;
+    double ae=0,ge=0,ke=0;
+    for (int i=0;i<=24;++i) {
+      const double logc=-2+i/8.0, c=std::pow(10.0,logc);
+      dm::stats::SVMOptions opt;
+      opt.kernel=dm::stats::SVMKernel::Linear; opt.cost=c; opt.scale=false;
+      const dm::stats::SVM model(data,"label ~ x",opt);
+      const auto diag=model.diagnostics();
+      const double alpha=model.training_details().double_at("alpha",0), exact=std::min(c,1/(2*a*a));
+      x.push_back(logc); expected.push_back(exact); observed.push_back(alpha);
+      ae=std::max(ae,std::abs(alpha-exact)); ge=std::max(ge,std::abs(diag.double_at("gap",0)));
+      ke=std::max(ke,diag.double_at("max_kkt_violation",0));
+    }
+    const auto colour=colours[scales.size()];
+    plot.lines(x,expected,std::format("a = {}",a),colour).points(x,observed,"",colour,2.5);
+    scales.push_back(a); alpha_error.push_back(ae); gap_error.push_back(ge); kkt.push_back(ke);
+  }
+  std::filesystem::create_directories("build");
+  plot.title("Exact coefficient paths: lines and fitted markers").x_label("log10(C)").y_label("alpha")
+      .y_limits(0,3.1).size(850,490).save_svg("build/svm_cost_path.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("a",scales); table.add_column("max_alpha_error",alpha_error);
+  table.add_column("max_abs_gap",gap_error); table.add_column("max_KKT",kkt);
+  std::print("{}\n",table.to_md(12));
+}
+```
+// result_begin: markdown
+| a | max_alpha_error | max_abs_gap | max_KKT |
+| ---: | ---: | ---: | ---: |
+| 0.5 | 0 | 0 | 0 |
+| 1.0 | 0 | 0 | 0 |
+| 2.0 | 0 | 0 | 0 |
+| 4.0 | 0 | 0 | 0 |
+
+\image(figures/svm_cost_path.svg)
+// result_end
+\caption(A hundred fits over four scales and 25 costs each. The largest coefficient error, absolute gap and KKT residual per scale are shown below the paths.)
+\alttext(Four rising coefficient curves flatten at 2, 0.5, 0.125 and 0.03125 for scales 0.5, 1, 2 and 4. Fitted markers lie on the analytic lines; larger scales reach their plateau at lower costs.)
+
+> A dataset example: iris
+
+>> The data and an evaluation protocol
+
+`dm::datasets::iris()` supplies 150 flowers, 50 of each species, with four measurements
+in centimetres. Unlike the artificial examples, all predictors are now standardised.
+The summary is descriptive; model means and scales are estimated only from training rows.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto iris=dm::datasets::iris();
+  std::print("{} flowers, {} columns.\n\n",iris.nrows(),iris.ncols());
+  std::print("{}\n",iris | dm::group_by("Species")
+      | dm::summarise(dm::agg::n("n"),dm::agg::mean("Sepal.Length","Sepal length"),
+                      dm::agg::mean("Sepal.Width","Sepal width"),
+                      dm::agg::mean("Petal.Length","Petal length"),dm::agg::mean("Petal.Width","Petal width"))
+      | dm::to_md(3));
+}
+```
+// result_begin: markdown
+150 flowers, 5 columns.
+
+| Species | n | Sepal length | Sepal width | Petal length | Petal width |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| setosa | 50 | 5.006 | 3.428 | 1.462 | 0.246 |
+| versicolor | 50 | 5.936 | 2.770 | 4.260 | 1.326 |
+| virginica | 50 | 6.588 | 2.974 | 5.552 | 2.026 |
+// result_end
+\caption(Species sizes and mean measurements in the built-in iris dataset.)
+
+We predeclare four \(C=1\) kernel models and compare them on the same stratified
+70%/30% split (seed 42), using all four measurements. These are descriptive comparisons;
+we do not choose a winner and reuse this holdout as an unbiased estimate of that selection.
+No hyperparameter search is performed. A 45-flower holdout has resolution only \(1/45\),
+so a difference of one flower is weak evidence about generalisation.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [train,test]=dm::stats::train_test_split(dm::datasets::iris(),0.3,42,"Species");
+  std::vector<std::string> names;
+  std::vector<double> train_error,test_error,support,max_gap,max_kkt;
+  for (auto kernel : {dm::stats::SVMKernel::Linear,dm::stats::SVMKernel::Polynomial,
+                      dm::stats::SVMKernel::Radial,dm::stats::SVMKernel::Sigmoid}) {
+    dm::stats::SVMOptions opt; opt.kernel=kernel;
+    const dm::stats::SVM model(train,"Species ~ .",opt);
+    names.push_back(std::format("{}",kernel)); train_error.push_back(model.error(train));
+    test_error.push_back(model.error(test)); support.push_back(model.num_support_vectors());
+    const auto diag=model.diagnostics();
+    const auto gaps=diag.numeric_column("gap").values(), kkts=diag.numeric_column("max_kkt_violation").values();
+    max_gap.push_back(*std::max_element(gaps.begin(),gaps.end()));
+    max_kkt.push_back(*std::max_element(kkts.begin(),kkts.end()));
+  }
+  std::print("Training: {}, holdout: {}.\n\n",train.nrows(),test.nrows());
+  dm::dstruct::DataFrame table;
+  table.add_column("kernel",names); table.add_column("train_error",train_error); table.add_column("holdout_error",test_error);
+  table.add_column("distinct_support",support); table.add_column("max_pair_gap",max_gap); table.add_column("max_pair_KKT",max_kkt);
+  std::print("{}\n",table.to_md(5));
+}
+```
+// result_begin: markdown
+Training: 105, holdout: 45.
+
+| kernel | train_error | holdout_error | distinct_support | max_pair_gap | max_pair_KKT |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Linear | 0.01905 | 0.04444 | 23 | 0.00716 | 0.01894 |
+| Polynomial | 0.08571 | 0.13333 | 43 | 0.00093 | 0.00713 |
+| Radial | 0.01905 | 0.02222 | 46 | 0.00256 | 0.00096 |
+| Sigmoid | 0.10476 | 0.04444 | 47 | 0.00131 | 0.02402 |
+// result_end
+\caption(Fixed kernel comparisons on the same held-out rows. The sigmoid residuals are not a convex optimality certificate.)
+
+The default RBF model makes one error among the 45 held-out flowers (97.8% accuracy);
+linear makes two, polynomial six, and sigmoid two. As an independent check, scikit-learn
+1.8.0 `SVC` was fitted on the identical exported training rows after sample-SD scaling,
+with explicit gamma 0.25, cost 1, degree 3 and offset 0. Its predictions agree for every
+training and held-out row for all four kernels. NumPy reconstruction from the fitted
+coefficients independently reproduces the pairwise norm, primal, dual and gap. Agreement
+in classification does not imply identical coefficients or exact numerical optimality.
+
+The next table exposes the three binary fits of the default RBF model, at \(\gamma=1/4\).
+Support counts here are per pair; their sum can exceed the number of distinct support
+observations because a flower participates in two binary problems. The equality residual
+checks feasibility separately from the primal–dual gap. The residuals quantify numerical
+precision; classification accuracy alone cannot establish an optimal fit.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [train,test]=dm::stats::train_test_split(dm::datasets::iris(),0.3,42,"Species");
+  const dm::stats::SVM model(train,"Species ~ .");
+  std::print("{}\n",model.diagnostics().select({"positive_class","negative_class","support_vectors",
+      "primal","dual","gap","equality_residual","max_kkt_violation","sweeps"}).to_md(6));
+}
+```
+// result_begin: markdown
+| positive_class | negative_class | support_vectors | primal | dual | gap | equality_residual | max_kkt_violation | sweeps |
+| :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| setosa | versicolor | 11 | 3.535635 | 3.533074 | 0.002561 | 0 | 0.000964 | 218 |
+| setosa | virginica | 12 | 2.846013 | 2.843887 | 0.002126 | 0 | 0.000928 | 219 |
+| versicolor | virginica | 33 | 19.365705 | 19.364182 | 0.001523 | 0 | 0.000798 | 224 |
+// result_end
+\caption(Per-pair RBF objectives, equality and KKT residuals, and actual sweep counts, including unchanged sweeps.)
+
+>> A visible boundary uses a different, two-predictor model
+
+For visualisation we fit only petal length and width on the same training split.
+These figures therefore show different models from the four-predictor table, with automatic
+\(\gamma=1/2\). We compare two prechosen costs to illustrate flexibility; no holdout-driven
+choice is made. Points are training flowers, colours are observed species and shading is
+the predicted class at cell centres. The plotted region is an approximation on a 140 by 140
+grid, not an exact algebraic contour.
+
+```{cpp, file="figures/svm_iris_regions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [train,test]=dm::stats::train_test_split(dm::datasets::iris(),0.3,42,"Species");
+  auto layout=dm::graphics::RLayout::create(1,2);
+  for (double c : {0.1,10.0}) {
+    dm::stats::SVMOptions opt; opt.cost=c;
+    const dm::stats::SVM model(train,"Species ~ Petal.Length + Petal.Width",opt);
+    layout.add(model.plot_decision_regions("Petal.Length","Petal.Width",140,
+        std::array<double,4>{0.5,7.5,-0.1,3.8}).title(std::format("RBF, C = {}",c)));
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1100,500).fit_panels().save_svg("build/svm_iris_regions.svg");
+}
+```
+// result_begin:
+// \image(figures/svm_iris_regions.svg)
+// result_end
+\caption(Petal-only RBF models on the 105 training flowers. The upper part of each plotting box leaves room for the species legend.)
+\alttext(Two panels show petal length against petal width. Setosa forms a compact blue cluster at low values; versicolor and virginica occupy the middle and upper-right. Their pale decision regions change between cost 0.1 and cost 10, particularly near the overlapping species.)
+
+> Conclusion
+
+The hand examples connect each coefficient to the geometry: zero coefficients at the outer
+points, non-zero support coefficients at the margin, and saturated coefficients inside it.
+The two-point solution shows exactly how changing units shifts the cost threshold. XOR
+makes the kernel construction tangible, and also exposes non-unique coefficients in a
+degenerate feature map. The computed objectives and residuals let us check those statements
+without treating the optimiser as a black box.
+
+Iris extends the same binary rule through three pairwise votes. Its training accuracy is a
+fit diagnostic; the held-out errors measure performance on different observations. The small
+holdout does not establish a universal kernel ranking, nor does a cost sweep by itself prove
+overfitting. Scaling, kernel parameters and the numerical stopping rule remain part of the
+model specification. This dense-Gram, simplified-SMO implementation suits small datasets;
+its residuals and memory cost matter before using it on larger problems.
+
+> References
+
+- C. Cortes and V. Vapnik (1995). *Support-vector networks*. Machine Learning 20, 273–297.
+  [Original paper|https://doi.org/10.1007/BF00994018]. Soft margins and the dual formulation.
+- J. C. Platt (1998). *Sequential Minimal Optimization: A Fast Algorithm for Training Support Vector Machines*.
+  Microsoft Research, MSR-TR-98-14.
+  [Technical report|https://www.microsoft.com/en-us/research/publication/sequential-minimal-optimization-a-fast-algorithm-for-training-support-vector-machines/].
+  The two-coordinate optimisation method; the library uses the simplified variant described above.

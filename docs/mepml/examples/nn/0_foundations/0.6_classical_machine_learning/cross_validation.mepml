@@ -1,0 +1,184 @@
+//? Title: Cross-Validation: Selection Without Fold Leakage
+//? Subtitle: Weight fold losses by validation size and refit after selecting
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A model setting must be selected without letting validation observations fit its preprocessing
+or parameters. We inspect unequal folds and use a callback that refits a linear model on each
+training partition. Sample-weighted scores distinguish mean error per observation from mean
+error per fold; a separate final test remains outside selection.
+)
+\toc
+
+> The method
+
+KFold creates k validation partitions with sizes floor(N/k) or ceil(N/k), each row held out
+exactly once. Each training set is the complement. StratifiedKFold distributes each class after
+seeded shuffling and requires at least k examples per class. A callback receives only the two
+index lists; it is responsible for fitting preprocessing and model from the training list.
+
+$$
+\widehat R=\frac{\sum_f n_f\overline L_f}{\sum_f n_f}.
+$$
+\alttext(Cross-validation averages fold mean losses weighted by the number of held-out observations in each fold.)
+
+This equals the mean of all out-of-fold observation losses. An unweighted average gives equal
+influence to unequal folds. Select settings by this development score, refit on all development
+rows, and evaluate a separate test set once. The selected CV score has selection optimism.
+Random folds are inappropriate for temporal dependence or grouped observations that must remain
+together. The split helper validates coverage but does not enforce callback leakage discipline.
+
+The concept diagram has a retained TikZ source in `diagrams/cross_validation_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/cross_validation_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/cross_validation_concept.tikz > build/cross_validation_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/cross_validation_concept.svg build/cross_validation_concept.dvi > build/cross_validation_concept.render.log 2>&1
+printf 'Rendered build/cross_validation_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/cross_validation_concept.svg from local TikZ source.
+// \image(figures/cross_validation_concept.svg)
+// result_end
+\caption(Weight fold losses by validation size and refit after selecting)
+\alttext(Partition development rows; each held out once Then Refit inside each fold; training-only state Then Weighted validation loss; select, refit, final test.)
+
+> Simple examples
+
+Seven rows split into three unshuffled folds have validation sizes 3,2,2. Artificial fold means 1,2,3 give weighted error 13/7 rather than the unweighted value 2.
+
+```{cpp, results="markdown", file="figures/cross_validation_sizes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace m = dm::nn::ml;
+  const auto folds = m::KFold(7, 3, 7, false);
+  size_t f = 0;
+  const auto score = m::CrossValidate(folds, [&](const auto &, const auto &) {
+    return double(++f);
+  });
+  std::vector<double> index, size;
+  for (size_t i = 0; i < folds.size(); ++i) {
+    index.push_back(i);
+    size.push_back(folds[i].validation.size());
+  }
+  auto p = dm::graphics::RPlot::create();
+  p.bars(index, size, "validation rows", {37, 99, 235}, .5)
+      .title("Remainder rows make fold sizes unequal")
+      .x_label("fold index")
+      .y_label("rows")
+      .y_limits(0, 4);
+  std::filesystem::create_directories("build");
+  p.size(820, 420).save_svg("build/cross_validation_sizes.svg");
+  if (std::abs(score.mean - 13. / 7) > 1e-12)
+    return 1;
+  dm::dstruct::DataFrame t;
+  t.add_column("fold", index);
+  t.add_column("validation_rows", size);
+  t.add_column("mean_loss", score.fold_losses);
+  std::print("{}\n\nSample-weighted mean: {:.9f}; unweighted mean: 2.\n", t.to_md(),
+             score.mean);
+}
+```
+// result_begin: markdown
+| fold | validation_rows | mean_loss |
+| ---: | ---: | ---: |
+| 0 | 3 | 1 |
+| 1 | 2 | 2 |
+| 2 | 2 | 3 |
+
+
+Sample-weighted mean: 1.857142857; unweighted mean: 2.
+\image(figures/cross_validation_sizes.svg)
+// result_end
+\caption(Balanced folds differ by at most one observation, but still require sample weighting.)
+\alttext(Balanced folds differ by at most one observation, but still require sample weighting.)
+
+> Checking the theory
+
+Here the candidates are an intercept-only predictor and an affine fit to 17 deterministic development rows. The final 31-row test uses new locations and is evaluated only after selecting.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::ml;
+  const auto dtype = n::DType::Float64;
+  const auto x = n::linspace(-1, 1, 17, dtype).reshape({17, 1}),
+             y = 1 + 2 * x + .1 * n::sin(7 * x);
+  const auto folds = m::KFold(17, 4, 19);
+  std::vector<double> candidate, score;
+  for (int degree : {0, 1}) {
+    // Each callback creates fresh parameters and fresh optimizer state.
+    const auto result = m::CrossValidate(folds, [&](const auto &tr, const auto &va) {
+      const auto tx = n::take_rows(x, std::vector<int64_t>(tr.begin(), tr.end()));
+      const auto ty = n::take_rows(y, std::vector<int64_t>(tr.begin(), tr.end()));
+      const auto vx = n::take_rows(x, std::vector<int64_t>(va.begin(), va.end()));
+      const auto vy = n::take_rows(y, std::vector<int64_t>(va.begin(), va.end()));
+      const auto X = m::PolynomialFeatures(tx, degree);
+      auto w = n::zeros({degree + 1, 1}, dtype).requires_grad_();
+      n::OptimizerConfig config;
+      config.kind = n::OptimizerKind::Sgd;
+      n::Optimizer optimizer({w}, .3, config);
+      for (int step = 0; step < 500; ++step) {
+        const auto loss = .5 * n::mean(n::square(n::matmul(X, w) - ty));
+        optimizer.minimize(loss);
+      }
+      n::NoGradGuard guard;
+      return n::mean(n::square(n::matmul(m::PolynomialFeatures(vx, degree), w) - vy)).item();
+    });
+    candidate.push_back(degree);
+    score.push_back(result.mean);
+  }
+  const int best = score[1] < score[0] ? 1 : 0;
+  const auto X = m::PolynomialFeatures(x, best);
+  auto w = n::zeros({best + 1, 1}, dtype).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Sgd;
+  n::Optimizer optimizer({w}, .3, config);
+  for (int step = 0; step < 500; ++step) {
+    optimizer.minimize(.5 * n::mean(n::square(n::matmul(X, w) - y)));
+  }
+  n::NoGradGuard guard;
+  const auto q = n::linspace(-.95, .95, 31, dtype).reshape({31, 1});
+  const double test = n::mean(n::square(n::matmul(m::PolynomialFeatures(q, best), w) -
+                                        (1 + 2 * q + .1 * n::sin(7 * q))))
+                          .item();
+  std::vector<int> coverage(17);
+  for (const auto &f : folds)
+    for (auto row : f.validation)
+      ++coverage[row];
+  for (auto count : coverage)
+    if (count != 1)
+      return 1;
+  dm::dstruct::DataFrame t;
+  t.add_column("degree", candidate);
+  t.add_column("CV_MSE", score);
+  std::print("{}\n\nSelected degree {}; final separate-grid MSE {:.9f}.\n", t.to_md(8), best,
+             test);
+}
+```
+// result_begin: markdown
+| degree | CV_MSE |
+| ---: | ---: |
+| 0 | 1.87531728 |
+| 1 | 0.00553113 |
+
+
+Selected degree 1; final separate-grid MSE 0.004447564.
+// result_end
+
+
+> Conclusion
+
+Coverage and weighted aggregation agree with exact counts. Each callback creates a fresh fit;
+final refitting is distinct from out-of-fold prediction. The final grid is a controlled synthetic
+check, not a population guarantee, and no fitted global preprocessing may be shared across folds.
+
+> References
+
+- [Hastie, Tibshirani and Friedman: The Elements of Statistical Learning, chapter 7](https://hastie.su.domains/ElemStatLearn/).

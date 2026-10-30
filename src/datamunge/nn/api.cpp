@@ -44,7 +44,7 @@ Axes  to_axes(const std::vector<int>& v) { return Axes(v.begin(), v.end()); }
 Activation parse_activation(const std::string& name) {
   const std::string n = lower(name);
   if (n == "none" || n == "linear" || n.empty()) return Activation::None;
-  for (int k = 0; k <= static_cast<int>(Activation::Tanh); ++k) {
+  for (int k = 0; k <= static_cast<int>(kLastActivation); ++k) {
     const auto a = static_cast<Activation>(k);
     if (activation_name(a) == n) return a;
   }

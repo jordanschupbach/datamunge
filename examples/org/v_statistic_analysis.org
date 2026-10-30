@@ -54,7 +54,7 @@ functionals from which V-statistics take their name.
 #include <vector>
 
 using namespace datamunge::stats;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Relation to the U-statistic and the \(O(1/n)\) bias

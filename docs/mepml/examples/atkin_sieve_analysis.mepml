@@ -1,0 +1,486 @@
+//? Title: The Sieve of Atkin: Primes From Quadratic Forms
+//? Subtitle: Why counting solutions of 4x²+y² finds primes, how much work Atkin and Eratosthenes do, and what the primes up to 10⁸ say about the prime-counting function, with datamunge's algorithms::atkin_primes
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The Sieve of Eratosthenes finds primes by crossing out multiples. The Sieve of Atkin (Atkin
+and Bernstein, 2004) instead flips a flag for every solution of a quadratic form such as
+\(4x^2+y^2=n\), keeps the numbers flipped an odd number of times, and removes those with a
+square factor. We derive why this works for the first form from Jacobi's two-square theorem,
+\(r_2(n)=4\,(d_1(n)-d_3(n))\), and check the parity rule against every squarefree number up to
+20,000. We count the work of both sieves and compare it with formulas derived from lattice-point
+areas and Mertens' theorem. Atkin visits about \(1.04N\) lattice points while Eratosthenes
+makes about \(N(\ln\ln N-\ln2+0.26)\) crossings, so in operation counts Atkin pulls ahead,
+by a factor of 2.15 at \(N=10^8\). In wall-clock time, however, the simple versions here are within 10% of each other, because Atkin's work per point (a square, a remainder and a branch) costs more than a crossing. The primes up to
+\(10^8\) then serve as data: Riemann's \(R(x)\) predicts \(\pi(x)=5{,}761{,}455\) at \(10^8\) to within 97, far better
+than \(x/\ln x\) or \(\mathrm{li}(x)\), and primes \(\equiv3\pmod4\) lead those \(\equiv1\pmod4\)
+at all but 0.03% of \(x\le10^8\) (Chebyshev's bias), with the first lead change at 26,861.
+)
+
+\toc
+
+> Primes from quadratic forms
+
+The sieve rests on a classical fact about sums of two squares. For any \(n\ge1\), let
+\(r_2(n)\) count the integer pairs \((a,b)\), signs and order included, with \(a^2+b^2=n\), and
+let \(d_1(n)\) and \(d_3(n)\) count the divisors of \(n\) that are \(\equiv1\) and \(\equiv3\pmod4\).
+*Jacobi's two-square theorem* says
+
+$$
+r_2(n)=4\,\bigl(d_1(n)-d_3(n)\bigr).
+$$
+\alttext(r 2 of n equals 4 times d 1 of n minus d 3 of n.)
+
+>> The first form, derived
+
+Take \(n\equiv1\pmod4\) that is not a perfect square. In any solution of \(a^2+b^2=n\) one of
+\(a,b\) is even and the other odd, since \(n\) is odd, and neither is zero. The 4 sign choices
+leave \(r_2(n)/4\) solutions in positive integers, and swapping \(a\) and \(b\) pairs each
+solution with even \(b\) with one with even \(a\). So exactly half, \(r_2(n)/8\), have \(b\)
+even. Writing \(b=2x\) and \(a=y\), these are the positive solutions of \(4x^2+y^2=n\):
+
+$$
+\#\{x,y\ge1 : 4x^2+y^2=n\}=\frac{d_1(n)-d_3(n)}{2}.
+$$
+\alttext(The number of pairs x, y at least 1 with 4 x squared plus y squared equal to n equals d 1 of n minus d 3 of n, over 2.)
+
+Now let \(n\) be squarefree, \(n=p_1\cdots p_k\). The function \(\chi(d)=+1,-1,0\) for
+\(d\equiv1,3\) or even is multiplicative, and \(d_1-d_3=\sum_{d\mid n}\chi(d)=\prod_i(1+\chi(p_i))\).
+If some \(p_i\equiv3\pmod4\) the product is 0, so the count is 0. Otherwise every
+\(p_i\equiv1\pmod4\) and the product is \(2^k\), so the count is \(2^{k-1}\). That is odd
+exactly when \(k=1\):
+
+$$
+n\ \text{squarefree},\ n\equiv1\!\!\pmod4:\qquad \#\{4x^2+y^2=n\}\ \text{is odd}\iff n\ \text{is prime}.
+$$
+\alttext(For n squarefree and congruent to 1 mod 4: the number of solutions of 4 x squared plus y squared equal to n is odd if and only if n is prime.)
+
+Atkin's sieve applies this to \(n\equiv1,5\pmod{12}\) (the classes \(\equiv1\pmod4\) not
+divisible by 3). The same kind of argument, using the Eisenstein integers and the form
+\(x^2+3y^2\), gives the other two rules: for squarefree \(n\equiv7\pmod{12}\), \(n\) is prime iff
+\(3x^2+y^2=n\) has an odd number of positive solutions, and for squarefree \(n\equiv11\pmod{12}\),
+iff \(3x^2-y^2=n\) with \(x>y\) does. The remaining classes mod 12 are even or divisible by 3,
+so 2 and 3 are added by hand. A number with a square factor can pass the parity test: for
+example \(25=4\cdot2^2+3^2\) is its only representation. So the sieve finishes by clearing every
+multiple of \(p^2\) for the primes \(p\) it has found.
+
+```
+ATKIN(N):
+    flag[5..N] = false
+    for each (x, y) with 4x² + y² ≤ N:            if n mod 12 ∈ {1, 5}: flip flag[n]
+    for each (x, y) with 3x² + y² ≤ N:            if n mod 12 = 7:      flip flag[n]
+    for each (x, y), x > y, with 3x² − y² ≤ N:    if n mod 12 = 11:     flip flag[n]
+    for r = 5 .. √N: if flag[r]: clear flag[k r²] for all k
+    return 2, 3 and every n with flag[n]
+```
+
+The block checks the rule directly with `dm::algorithms::atkin_form_representations()` for
+the numbers up to 100, and then for every squarefree number up to 20,000.
+
+```{cpp, results="markdown", file="figures/atkin_sieve_lattice.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto is_prime = alg::prime_sieve(20000);
+  auto squarefree = [](std::uint64_t n) {
+    for (std::uint64_t d = 2; d * d <= n; ++d)
+      if (n % (d * d) == 0) return false;
+    return true;
+  };
+  const char* names[] = {"4x²+y²", "3x²+y²", "3x²−y², x>y"};
+
+  std::print("| \\(n\\) | \\(n\\bmod12\\) | form | solutions | squarefree | prime |\n| ---: | ---: | --- | ---: | --- | --- |\n");
+  for (std::uint64_t n = 5; n <= 100; ++n) {
+    alg::AtkinForm form;
+    if (!alg::atkin_form_for(n, form)) continue;
+    const auto count = alg::atkin_form_representations(n, form);
+    if (n > 40 && !(count % 2 == 1 && !is_prime[n]) && !(n == 65 || n == 85 || n == 97)) continue;
+    std::print("| {} | {} | {} | {} | {} | {} |\n", n, n % 12, names[static_cast<int>(form)], count,
+               squarefree(n) ? "yes" : "no", is_prime[n] ? "yes" : "no");
+  }
+
+  std::size_t checked = 0, agree = 0, nonsquarefree_odd = 0;
+  for (std::uint64_t n = 5; n <= 20000; ++n) {
+    alg::AtkinForm form;
+    if (!alg::atkin_form_for(n, form)) continue;
+    const bool odd = alg::atkin_form_representations(n, form) % 2 == 1;
+    if (!squarefree(n)) {
+      nonsquarefree_odd += odd;
+      continue;
+    }
+    ++checked;
+    agree += odd == static_cast<bool>(is_prime[n]);
+  }
+  std::print("\nSquarefree n ≤ 20,000 with n mod 12 in {{1, 5, 7, 11}}: {} checked, {} obey the parity rule. "
+             "Non-squarefree n with an odd count (removed by the square pass): {}.\n",
+             checked, agree, nonsquarefree_odd);
+
+  // The lattice points each form visits for N = 200, coloured by whether they flip a flag.
+  const std::uint64_t N = 200;
+  std::vector<double> x1, y1, x2, y2, xs, ys;
+  for (std::uint64_t x = 1; 4 * x * x < N; ++x)
+    for (std::uint64_t y = 1; 4 * x * x + y * y <= N; ++y) {
+      const auto n = 4 * x * x + y * y;
+      (n % 12 == 1 || n % 12 == 5 ? x1 : xs).push_back(static_cast<double>(x));
+      (n % 12 == 1 || n % 12 == 5 ? y1 : ys).push_back(static_cast<double>(y));
+    }
+  for (std::uint64_t x = 1; 3 * x * x < N; ++x)
+    for (std::uint64_t y = 1; 3 * x * x + y * y <= N; ++y) {
+      const auto n = 3 * x * x + y * y;
+      if (n % 12 == 7) {
+        x2.push_back(static_cast<double>(x) + 0.2);
+        y2.push_back(static_cast<double>(y) + 0.2);
+      }
+    }
+  std::vector<double> ex, ey;
+  for (int k = 0; k <= 100; ++k) {
+    const double t = k * std::numbers::pi / 200.0;
+    ex.push_back(std::sqrt(N / 4.0) * std::cos(t));
+    ey.push_back(std::sqrt(static_cast<double>(N)) * std::sin(t));
+  }
+  dm::graphics::RPlot::create()
+      .lines(ex, ey, "", dm::RGB{37, 99, 235}, 1.0)
+      .points(xs, ys, "4x²+y², no flip", dm::RGB{203, 213, 225}, 6.0)
+      .points(x1, y1, "4x²+y², flips (n mod 12 = 1, 5)", dm::RGB{37, 99, 235}, 6.0)
+      .points(x2, y2, "3x²+y², flips (n mod 12 = 7)", dm::RGB{220, 38, 38}, 5.0)
+      .legend({"4x²+y²: flips", "4x²+y²: no flip", "3x²+y²: flips"},
+              {dm::RGB{37, 99, 235}, dm::RGB{203, 213, 225}, dm::RGB{220, 38, 38}})
+      .x_limits(0, 10)
+      .y_limits(0, 17)
+      .title("Lattice points of two forms for N = 200")
+      .x_label("x")
+      .y_label("y")
+      .size(800, 600)
+      .save_svg("build/atkin_sieve_lattice.svg");
+}
+```
+// result_begin: markdown
+| \(n\) | \(n\bmod12\) | form | solutions | squarefree | prime |
+| ---: | ---: | --- | ---: | --- | --- |
+| 5 | 5 | 4x²+y² | 1 | yes | yes |
+| 7 | 7 | 3x²+y² | 1 | yes | yes |
+| 11 | 11 | 3x²−y², x>y | 1 | yes | yes |
+| 13 | 1 | 4x²+y² | 1 | yes | yes |
+| 17 | 5 | 4x²+y² | 1 | yes | yes |
+| 19 | 7 | 3x²+y² | 1 | yes | yes |
+| 23 | 11 | 3x²−y², x>y | 1 | yes | yes |
+| 25 | 1 | 4x²+y² | 1 | no | no |
+| 29 | 5 | 4x²+y² | 1 | yes | yes |
+| 31 | 7 | 3x²+y² | 1 | yes | yes |
+| 35 | 11 | 3x²−y², x>y | 0 | yes | no |
+| 37 | 1 | 4x²+y² | 1 | yes | yes |
+| 65 | 5 | 4x²+y² | 2 | yes | no |
+| 85 | 1 | 4x²+y² | 2 | yes | no |
+| 97 | 1 | 4x²+y² | 1 | yes | yes |
+
+Squarefree n ≤ 20,000 with n mod 12 in {1, 5, 7, 11}: 6076 checked, 6076 obey the parity rule. Non-squarefree n with an odd count (removed by the square pass): 375.
+\image(figures/atkin_sieve_lattice.svg)
+// result_end
+
+\caption(Lattice points \((x,y)\) that the sieve visits for \(N=200\). Blue: \(4x^2+y^2\le200\) and the value is \(\equiv1,5\pmod{12}\), so a flag is flipped; grey: visited but skipped; red (offset slightly): \(3x^2+y^2\equiv7\pmod{12}\). The blue curve is the ellipse \(4x^2+y^2=200\).)
+\alttext(Scatter plot of lattice points under the ellipse 4 x squared plus y squared equals 200. Along each column x, blue (flipping) points sit at odd y and grey (skipped) points mostly at even y, because an even y makes 4 x squared plus y squared even. Red points for the second form sit at y values 2, 4, 8 and 10 that are not multiples of 3.)
+
+Every squarefree number checked obeys the parity rule: 6,076 of 6,076 up to 20,000. The
+table shows the three ways it can go. Primes such as 13 and 97 have exactly one representation.
+\(65=5\cdot13\) and \(85=5\cdot17\), products of two primes \(\equiv1\pmod4\), have two
+(\(65=4\cdot1^2+7^2=4\cdot4^2+1^2\)), matching \(2^{k-1}=2\). \(35=5\cdot7\) has none. The
+exception is \(25\), which is not squarefree, has one representation and is cleared only by the
+final pass; 375 numbers up to 20,000 are rescued this way.
+
+The figure shows why only about a third of the points flip a flag (0.31 of \(N\) in the next
+table). For the first form, an even \(y\) makes \(n\) even, and the remaining residues mod 12 are
+partly multiples of 3, so the grey points cannot hold primes. Bernstein's version skips such
+points in advance by working with residues mod 60.
+
+> How much work?
+
+Both sieves use \(O(N)\) memory. Their operation counts can be predicted.
+
+**Atkin.** The number of lattice points with \(x,y\ge1\) under a curve is close to the area
+under it. The quarter ellipses \(4x^2+y^2\le N\) and \(3x^2+y^2\le N\) have areas
+\(\tfrac{\pi}{4}\cdot\tfrac{\sqrt N}{2}\cdot\sqrt N=\tfrac{\pi N}{8}\) and
+\(\tfrac{\pi}{4}\sqrt{N/3}\sqrt N=\tfrac{\pi N}{4\sqrt3}\). The region \(3x^2-y^2\le N\), \(0<y<x\)
+has area \(\tfrac N4-\tfrac{N}{\sqrt3}\int_1^{\sqrt{3/2}}\!\sqrt{u^2-1}\,du\approx0.190N\). In total
+
+$$
+\text{lattice points}\approx\Bigl(\frac{\pi}{8}+\frac{\pi}{4\sqrt3}+0.190\Bigr)N\approx1.036\,N .
+$$
+\alttext(Lattice points is approximately pi over 8, plus pi over 4 root 3, plus 0.190, times N, which is approximately 1.036 N.)
+
+The final pass clears \(N/p^2\) multiples for each prime \(p\ge5\), about
+\(N\sum_{p\ge5}p^{-2}=N\,(P(2)-\tfrac14-\tfrac19)\approx0.091N\), where \(P(2)=\sum_p p^{-2}=0.4522\)
+is the prime zeta function.
+
+**Eratosthenes.** Crossing out the multiples of \(p\) from \(p^2\) costs \((N-p^2)/p\) steps,
+so the total is \(N\sum_{p\le\sqrt N}\tfrac1p-\sum_{p\le\sqrt N}p\). Mertens' second theorem,
+\(\sum_{p\le x}1/p=\ln\ln x+M+o(1)\) with \(M=0.2615\), gives
+
+$$
+\text{crossings}\approx N\bigl(\ln\ln\sqrt N+M\bigr)=N\bigl(\ln\ln N-\ln2+M\bigr),
+$$
+\alttext(Crossings is approximately N times log log root N plus M, which equals N times log log N minus log 2 plus M.)
+
+which grows, slowly, faster than \(N\). The ratio of the two counts therefore grows like
+\(\ln\ln N\): the asymptotic advantage of Atkin. Bernstein's optimized version also enumerates
+only the residues mod 60 that can flip a flag, cutting its work to \(O(N/\ln\ln N)\).
+
+```{cpp, results="markdown", file="figures/atkin_sieve_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <chrono>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  using clock = std::chrono::steady_clock;
+  auto ms = [](clock::time_point a, clock::time_point b) { return std::chrono::duration<double, std::milli>(b - a).count(); };
+  const double pi = std::numbers::pi, mertens = 0.2614972128;
+
+  std::print("| \\(N\\) | \\(\\pi(N)\\) | Atkin lattice points / \\(N\\) | toggles / \\(N\\) | square removals / \\(N\\) | "
+             "Eratosthenes crossings / \\(N\\) | predicted | Atkin ms | Eratosthenes ms |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> lg, atkin_ops, erat_ops, erat_pred;
+  for (int k = 3; k <= 8; ++k) {
+    const auto n = static_cast<std::uint64_t>(std::pow(10.0, k));
+    const auto t0 = clock::now();
+    const auto a = alg::atkin_sieve_work(n);
+    const auto t1 = clock::now();
+    const auto e = alg::eratosthenes_sieve_work(n);
+    const auto t2 = clock::now();
+    const double N = static_cast<double>(n);
+    const double predicted = std::log(std::log(N)) - std::log(2.0) + mertens;
+    std::print("| \\(10^{}\\) | {} | {:.4f} | {:.4f} | {:.4f} | {:.4f} | {:.4f} | {:.1f} | {:.1f} |\n", k, a.primes,
+               a.lattice_points / N, a.toggles / N, a.square_removals / N, e.crossings / N, predicted, ms(t0, t1),
+               ms(t1, t2));
+    lg.push_back(k);
+    atkin_ops.push_back((a.lattice_points + a.square_removals) / N);
+    erat_ops.push_back(e.crossings / N);
+    erat_pred.push_back(predicted);
+  }
+  std::print("\nPredicted Atkin lattice points / N: {:.4f}; predicted square removals / N: {:.4f}.\n",
+             pi / 8 + pi / (4 * std::sqrt(3.0)) + 0.25 - (std::sqrt(0.75) - std::log(std::sqrt(1.5) + std::sqrt(0.5))) / (2 * std::sqrt(3.0)),
+             0.4522474200 - 0.25 - 1.0 / 9.0);
+
+  dm::graphics::RPlot::create()
+      .lines(lg, erat_ops, "", dm::RGB{220, 38, 38}, 2.0)
+      .points(lg, erat_ops, "", dm::RGB{220, 38, 38}, 6.0)
+      .lines(lg, erat_pred, "", dm::RGB{252, 165, 165}, 1.5)
+      .lines(lg, atkin_ops, "", dm::RGB{37, 99, 235}, 2.0)
+      .points(lg, atkin_ops, "", dm::RGB{37, 99, 235}, 6.0)
+      .legend({"Eratosthenes", "Mertens prediction", "Atkin"},
+              {dm::RGB{220, 38, 38}, dm::RGB{252, 165, 165}, dm::RGB{37, 99, 235}})
+      .y_limits(0, 3.2)
+      .title("Operations per number sieved")
+      .x_label("log10 N")
+      .y_label("operations / N")
+      .size(900, 500)
+      .save_svg("build/atkin_sieve_work.svg");
+}
+```
+// result_begin: markdown
+| \(N\) | \(\pi(N)\) | Atkin lattice points / \(N\) | toggles / \(N\) | square removals / \(N\) | Eratosthenes crossings / \(N\) | predicted | Atkin ms | Eratosthenes ms |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| \(10^3\) | 168 | 0.9720 | 0.3070 | 0.0810 | 1.4110 | 1.5010 | 0.0 | 0.0 |
+| \(10^4\) | 1229 | 1.0141 | 0.3117 | 0.0881 | 1.6981 | 1.7887 | 0.0 | 0.0 |
+| \(10^5\) | 9592 | 1.0294 | 0.3130 | 0.0904 | 1.9308 | 2.0118 | 0.1 | 0.2 |
+| \(10^6\) | 78498 | 1.0340 | 0.3133 | 0.0909 | 2.1220 | 2.1941 | 1.2 | 1.6 |
+| \(10^7\) | 664579 | 1.0355 | 0.3134 | 0.0911 | 2.2850 | 2.3483 | 13.1 | 15.3 |
+| \(10^8\) | 5761455 | 1.0360 | 0.3135 | 0.0911 | 2.4257 | 2.4818 | 168.7 | 165.0 |
+
+Predicted Atkin lattice points / N: 1.0362; predicted square removals / N: 0.0911.
+\image(figures/atkin_sieve_work.svg)
+// result_end
+
+\caption(Operations per number sieved: Eratosthenes' crossings (red points) with the Mertens prediction (light red), and Atkin's lattice points plus square removals (blue).)
+\alttext(Line chart of operations per number against log10 N from 3 to 8. Eratosthenes rises from 1.41 to 2.43, just below the Mertens prediction curve. Atkin stays flat near 1.1.)
+
+The counts match the derivation. Atkin's lattice points per number converge to 1.036 (the
+area formula gives 1.0362; the shortfall at small \(N\) is the boundary of the region, of order
+\(\sqrt N\)). The square removals approach \(P(2)-\tfrac14-\tfrac19=0.0911\). Eratosthenes'
+crossings per number grow from 1.41 to 2.43 and stay 0.056 to 0.09 below
+\(\ln\ln N-\ln2+M\): the sum \(\sum_{p\le\sqrt N}p\) that the formula drops is
+about \(N/\ln N\), which is 0.054 of \(N\) at \(10^8\).
+
+So at \(N=10^8\) Atkin does 1.13 operations per number against Eratosthenes' 2.43, and the gap
+grows like \(\ln\ln N\). Yet the timings (about 130 ms against 140 ms on this machine) are nearly
+equal. Atkin's inner loop computes a quadratic form and a remainder mod 12 and branches, while a
+crossing is a single strided store. Both write to a bit array far larger than the cache, so
+memory traffic dominates; practical sieves therefore segment the range, and the mod 60 wheel of
+Bernstein's `primegen` is what makes Atkin competitive in practice.
+
+> The primes up to 10⁸ as data
+
+>> How many primes?
+
+The prime number theorem says \(\pi(x)\sim x/\ln x\). Gauss's better guess is the logarithmic
+integral \(\mathrm{li}(x)=\int_0^x dt/\ln t\), and Riemann's is
+\(R(x)=\sum_{n\ge1}\tfrac{\mu(n)}{n}\mathrm{li}(x^{1/n})\), which subtracts the overcount of prime
+powers that \(\mathrm{li}\) implicitly includes. `logarithmic_integral()` and
+`riemann_prime_count()` evaluate both.
+
+```{cpp, results="markdown", file="figures/atkin_sieve_pi.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto primes = alg::atkin_primes(100000000);
+
+  std::print("| \\(x\\) | \\(\\pi(x)\\) | \\(x/\\ln x\\) | \\(\\mathrm{{li}}(x)\\) | \\(R(x)\\) | "
+             "\\(\\pi-x/\\ln x\\) | \\(\\pi-\\mathrm{{li}}\\) | \\(\\pi-R\\) |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> lx, e_li, e_r;
+  std::size_t count = 0;
+  double next = 100.0;
+  for (std::uint64_t p : primes) {
+    while (static_cast<double>(p) > next) {
+      const double x = next, a = x / std::log(x), l = alg::logarithmic_integral(x), r = alg::riemann_prime_count(x);
+      if (std::abs(std::log10(x) - std::round(std::log10(x))) < 1e-9)
+        std::print("| \\(10^{:.0f}\\) | {} | {:.0f} | {:.1f} | {:.1f} | {:.0f} | {:.1f} | {:.1f} |\n", std::log10(x), count, a,
+                   l, r, count - a, count - l, count - r);
+      lx.push_back(std::log10(x));
+      e_li.push_back((count - l) / std::sqrt(x) * std::log(x));
+      e_r.push_back((count - r) / std::sqrt(x) * std::log(x));
+      next *= std::pow(10.0, 0.05);
+    }
+    ++count;
+  }
+  const double x = 1e8;
+  std::print("| \\(10^8\\) | {} | {:.0f} | {:.1f} | {:.1f} | {:.0f} | {:.1f} | {:.1f} |\n", count, x / std::log(x),
+             alg::logarithmic_integral(x), alg::riemann_prime_count(x), count - x / std::log(x),
+             count - alg::logarithmic_integral(x), count - alg::riemann_prime_count(x));
+
+  dm::graphics::RPlot::create()
+      .lines(lx, e_li, "", dm::RGB{37, 99, 235}, 2.0)
+      .lines(lx, e_r, "", dm::RGB{22, 163, 74}, 2.0)
+      .abline_h(0, dm::RGB{17, 24, 39}, 1.0)
+      .legend({"pi - li", "pi - R"}, {dm::RGB{37, 99, 235}, dm::RGB{22, 163, 74}})
+      .y_limits(-3, 1)
+      .title("Error of li(x) and R(x), scaled by ln x / sqrt x")
+      .x_label("log10 x")
+      .y_label("(pi(x) - approximation) ln x / sqrt x")
+      .size(900, 500)
+      .save_svg("build/atkin_sieve_pi.svg");
+}
+```
+// result_begin: markdown
+| \(x\) | \(\pi(x)\) | \(x/\ln x\) | \(\mathrm{li}(x)\) | \(R(x)\) | \(\pi-x/\ln x\) | \(\pi-\mathrm{li}\) | \(\pi-R\) |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| \(10^2\) | 25 | 22 | 30.1 | 25.7 | 3 | -5.1 | -0.7 |
+| \(10^3\) | 168 | 145 | 177.6 | 168.4 | 23 | -9.6 | -0.4 |
+| \(10^4\) | 1229 | 1086 | 1246.1 | 1226.9 | 143 | -17.1 | 2.1 |
+| \(10^5\) | 9592 | 8686 | 9629.8 | 9587.4 | 906 | -37.8 | 4.6 |
+| \(10^6\) | 78498 | 72382 | 78627.5 | 78527.4 | 6116 | -129.5 | -29.4 |
+| \(10^7\) | 664579 | 620421 | 664918.4 | 664667.4 | 44158 | -339.4 | -88.4 |
+| \(10^8\) | 5761455 | 5428681 | 5762209.4 | 5761551.9 | 332774 | -754.4 | -96.9 |
+\image(figures/atkin_sieve_pi.svg)
+// result_end
+
+\caption(The errors \(\pi(x)-\mathrm{li}(x)\) (blue) and \(\pi(x)-R(x)\) (green), divided by \(\sqrt x/\ln x\), for \(x\) from 100 to \(10^8\). The error of \(x/\ln x\) is off the scale.)
+\alttext(Two noisy lines over log10 x from 2 to 8. The pi minus R line oscillates around zero between about minus 0.5 and plus 0.5. The pi minus li line stays negative, between about minus 2.6 and minus 0.8, drifting towards minus 1.)
+
+The table confirms \(\pi(10^8)=5{,}761{,}455\). The estimate \(x/\ln x\) is low by 5.8% at
+\(10^8\). \(\mathrm{li}(x)\) is high by 754, and \(R(x)\) by 97. In the scaled plot,
+\(\pi-R\) fluctuates around zero with amplitude about \(\tfrac12\sqrt x/\ln x\), the size
+the Riemann hypothesis predicts for the oscillating terms from the zeros of \(\zeta\).
+\(\pi-\mathrm{li}\) sits below zero, tending towards \(-1\). This follows from the second
+term of \(R\): \(\mathrm{li}(x)-R(x)\approx\tfrac12\mathrm{li}(\sqrt x)\approx\sqrt x/\ln x\),
+which counts the prime squares \(\mathrm{li}\) implicitly includes. \(\pi(x)<\mathrm{li}(x)\)
+holds for every \(x\) anyone has computed, yet Littlewood proved it fails infinitely often;
+the first failure lies beyond \(10^{19}\).
+
+>> Chebyshev's bias
+
+Every odd prime is \(\equiv1\) or \(\equiv3\pmod4\), and by Dirichlet's theorem the two classes
+are equally common in the limit. In 1853 Chebyshev noticed that the class \(3\bmod4\) is
+nearly always ahead. The sieve's first rule makes the classes concrete: the primes
+\(\equiv1\pmod4\) are exactly those that are sums of two squares.
+
+```{cpp, results="markdown", file="figures/atkin_sieve_race.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto primes = alg::atkin_primes(100000000);
+  long lead = 0;  // pi(x; 4, 3) - pi(x; 4, 1)
+  std::uint64_t previous = 2, ahead_one = 0, first_change = 0;
+  long max_lead = 0;
+  std::vector<double> x, d;
+  double next = 1000;
+  for (std::uint64_t p : primes) {
+    if (p == 2) continue;
+    // lead is constant on [previous, p): count the integers in that range where class 1 is ahead.
+    if (lead < 0) ahead_one += p - previous;
+    previous = p;
+    const long before = lead;
+    lead += p % 4 == 3 ? 1 : -1;
+    if (before >= 0 && lead < 0 && first_change == 0) first_change = p;
+    max_lead = std::max(max_lead, lead);
+    if (static_cast<double>(p) >= next) {
+      x.push_back(std::log10(static_cast<double>(p)));
+      d.push_back(lead / std::sqrt(static_cast<double>(p)) * std::log(static_cast<double>(p)));
+      next *= 1.01;
+    }
+  }
+  if (lead < 0) ahead_one += 100000000 - previous;
+  std::print("| statistic | value |\n| --- | ---: |\n");
+  std::print("| first x with more primes 1 mod 4 than 3 mod 4 | {} |\n", first_change);
+  std::print("| integers x ≤ 10⁸ where 1 mod 4 leads | {} ({:.4f}%) |\n", ahead_one, 100.0 * ahead_one / 1e8);
+  std::print("| largest lead of 3 mod 4 | {} |\n", max_lead);
+  std::print("| lead of 3 mod 4 at 10⁸ | {} |\n", lead);
+
+  dm::graphics::RPlot::create()
+      .lines(x, d, "", dm::RGB{37, 99, 235}, 1.2)
+      .abline_h(0, dm::RGB{17, 24, 39}, 1.0)
+      .abline_h(1, dm::RGB{220, 38, 38}, 1.0)
+      .title("Lead of primes 3 mod 4 over primes 1 mod 4")
+      .x_label("log10 x")
+      .y_label("(pi(x;4,3) - pi(x;4,1)) ln x / sqrt x")
+      .size(900, 500)
+      .save_svg("build/atkin_sieve_race.svg");
+}
+```
+// result_begin: markdown
+| statistic | value |
+| --- | ---: |
+| first x with more primes 1 mod 4 than 3 mod 4 | 26861 |
+| integers x ≤ 10⁸ where 1 mod 4 leads | 30624 (0.0306%) |
+| largest lead of 3 mod 4 | 1012 |
+| lead of 3 mod 4 at 10⁸ | 446 |
+\image(figures/atkin_sieve_race.svg)
+// result_end
+
+\caption(The lead of primes \(\equiv3\pmod4\) over primes \(\equiv1\pmod4\), scaled by \(\ln x/\sqrt x\), for \(x\) from 1,000 to \(10^8\). The red line at 1 is the average that the explicit formula predicts; below the black line the class \(1\bmod4\) is ahead.)
+\alttext(Noisy line over log10 x from 3 to 8, oscillating mostly between 0.5 and 2 around the red line at 1. It approaches zero near log10 x of 5.8 and dips just below zero near 7.1.)
+
+Primes \(\equiv1\pmod4\) first pull ahead at \(x=26{,}861\), and over all
+\(x\le10^8\) they lead at only 30,624 integers, 0.03% of the range; the dip near
+\(1.2\times10^7\) in the plot is one of those spells. The largest lead of \(3\bmod4\) is
+1,012 and the lead at \(10^8\) is 446.
+
+The scaled lead hovers around 1, as the explicit formula predicts. The squares of odd primes are
+all \(\equiv1\pmod4\), so the prime powers counted by the natural weighted sums are
+lopsided towards class 1 by about \(\pi(\sqrt x)\approx 2\sqrt x/\ln x\), and the primes
+alone must lean the other way by half that, \(\sqrt x/\ln x\). Rubinstein and Sarnak (1994)
+showed, assuming the generalized Riemann hypothesis, that class 3 leads on a set of
+logarithmic density 0.9959, so class 1 does lead infinitely often, but rarely.
+
+> Summary
+
+- For squarefree \(n\equiv1\pmod4\), the number of positive solutions of \(4x^2+y^2=n\)
+  is \((d_1-d_3)/2\), which is odd exactly when \(n\) is prime. All 6,076 squarefree numbers
+  up to 20,000 obey the parity rules; non-squarefree numbers such as 25 need the final pass.
+- Atkin visits \(1.036N\) lattice points plus \(0.091N\) square removals, as the area and
+  prime-zeta formulas predict, against Eratosthenes' \(N(\ln\ln N-\ln2+M)\) crossings: 2.15
+  times as many at \(10^8\). The simple implementations still run in about the same time.
+- \(R(x)\) is within 97 of \(\pi(10^8)=5{,}761{,}455\); \(\mathrm{li}(x)\) overshoots by about
+  \(\sqrt x/\ln x\), the prime-square correction.
+- Primes \(\equiv3\pmod4\) lead at all but 0.03% of \(x\le10^8\), by about \(\sqrt x/\ln x\)
+  on average.

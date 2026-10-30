@@ -35,7 +35,7 @@ whose circumcircle the new point violates, and re-triangulate the resulting hole
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -97,7 +97,7 @@ four triangles, then draw the triangulation of a random cloud.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -1,0 +1,256 @@
+//? Title: Xiaolin Wu's Line Algorithm: How Two Pixels Share a Line
+//? Subtitle: Linear interpolation, endpoint weights and AirPassengers at two raster resolutions
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A line between pixel centres usually passes between rows or columns.
+Wu's two-pixel antialiasing splits ink between the two adjacent centres.
+We derive the split from conservation of weight and first moment, distinguish
+it from exact area coverage, and account for fractional endpoint columns.
+The existing full-column API is retained alongside an explicit clipped
+endpoint policy. The built-in `air_passengers` dataset supplies a real
+polyline: rendering it at two small resolutions shows both the benefit
+of fractional weights and the information a small raster cannot preserve.
+)
+
+\toc
+
+> The data: a monthly airline series
+
+`dm::datasets::air_passengers()` contains 144 monthly observations from
+1949 to 1960. `passengers` is the number of international airline passengers
+in thousands. The frame stores year and month separately; a calendar index
+puts successive records one unit apart. The increasing level and seasonal
+peaks are features of the observations, not consequences of antialiasing.
+
+```{cpp, results="markdown", file="figures/wu_airline_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto air = dm::datasets::air_passengers() | dm::mutate("time", [](const auto& r) {
+    return r.get_double("year") + (r.get_double("month")-1)/12;
+  });
+  std::print("{}\n",air.head(6).to_md());
+  std::print("\n{}\n",(air | dm::group_by("year") | dm::summarise(dm::agg::n("months"),
+      dm::agg::mean("passengers","mean_thousands"),dm::agg::max("passengers","peak_thousands"))).to_md(3));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().line(air.get_column("time").values(),air.get_column("passengers").values(),
+      "monthly data",dm::RGB{37,99,235},2)
+      .title("AirPassengers: the original 144 monthly observations")
+      .x_label("year").y_label("passengers (thousands)").size(1000,460).save_svg("build/wu_airline_data.svg");
+}
+```
+// result_begin: markdown
+| year | month | passengers | time |
+| ---: | ---: | ---: | ---: |
+| 1949 | 1 | 112 | 1949.000 |
+| 1949 | 2 | 118 | 1949.083 |
+| 1949 | 3 | 132 | 1949.167 |
+| 1949 | 4 | 129 | 1949.250 |
+| 1949 | 5 | 121 | 1949.333 |
+| 1949 | 6 | 135 | 1949.417 |
+
+
+| year | months | mean_thousands | peak_thousands |
+| ---: | ---: | ---: | ---: |
+| 1949 | 12 | 126.667 | 148 |
+| 1950 | 12 | 139.667 | 170 |
+| 1951 | 12 | 170.167 | 199 |
+| 1952 | 12 | 197.000 | 242 |
+| 1953 | 12 | 225.000 | 272 |
+| 1954 | 12 | 238.917 | 302 |
+| 1955 | 12 | 284.000 | 364 |
+| 1956 | 12 | 328.250 | 413 |
+| 1957 | 12 | 368.417 | 467 |
+| 1958 | 12 | 381.000 | 505 |
+| 1959 | 12 | 428.333 | 559 |
+| 1960 | 12 | 476.167 | 622 |
+
+\image(figures/wu_airline_data.svg)
+// result_end
+\caption(First rows, annual descriptive summaries and the data before mapping into a small pixel grid.)
+\alttext(A monthly time series rising from roughly one hundred thousand to several hundred thousand passengers, with growing seasonal peaks.)
+
+> Deriving the two-pixel split
+
+After exchanging axes for a steep line and ordering endpoints, the major
+coordinate increases and the absolute minor-axis slope is at most one.
+For a major-axis centre \(i\), the ideal minor coordinate is
+\(y(i)=y_0+m(i-x_0)\). Write \(j=\lfloor y(i)\rfloor\) and
+\(f=y(i)-j\). If the column's total ink weight is \(w_i\), require
+both conservation of that weight and the correct weighted centre:
+
+$$
+\alpha+\beta=w_i,\qquad j\alpha+(j+1)\beta=w_i y(i)
+\quad\Longrightarrow\quad
+\alpha=w_i(1-f),\qquad\beta=w_i f.
+$$
+\alttext(Two adjacent pixel weights sum to the column weight, and their weighted vertical position equals that weight times the ideal line position. Solving gives one minus the fractional part and the fractional part, both multiplied by the column weight.)
+
+For an interior column, \(w_i=1\). Nonnegative weights follow from
+\(0\le f<1\). The first-moment identity explains the split more
+precisely than saying one pixel is always the nearer one: the upper pixel
+is nearer when \(f>1/2\). The weights form a linear, triangular filter
+in the minor direction. They are not the exact intersection areas of a
+finite-width geometric stroke with square pixels.
+
+```{cpp, results="markdown", file="figures/wu_split.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto pixels = dm::algorithms::xiaolin_wu_line(0,0,12,5);
+  std::print("{}\n",dm::algorithms::wu_pixel_table(pixels).head(12).to_md(6));
+  auto plot = dm::algorithms::wu_pixel_plot(pixels);
+  plot.line({0,12},{0,5},"ideal centreline",dm::RGB{220,38,38},1)
+      .title("Two adjacent cells share the ink at each major-axis step")
+      .size(1000,630);
+  std::filesystem::create_directories("build");plot.save_svg("build/wu_split.svg");
+}
+```
+// result_begin: markdown
+| x | y | weight |
+| ---: | ---: | ---: |
+| 0 | 0 | 1.000000 |
+| 0 | 1 | 0.000000 |
+| 1 | 0 | 0.583333 |
+| 1 | 1 | 0.416667 |
+| 2 | 0 | 0.166667 |
+| 2 | 1 | 0.833333 |
+| 3 | 1 | 0.750000 |
+| 3 | 2 | 0.250000 |
+| 4 | 1 | 0.333333 |
+| 4 | 2 | 0.666667 |
+| 5 | 2 | 0.916667 |
+| 5 | 3 | 0.083333 |
+
+\image(figures/wu_split.svg)
+// result_end
+\caption(An integer-endpoint line under the existing full-column policy. Darker grey is larger ink weight; the red line shows the ideal centreline. Grey cells show numerical weights without display gamma correction.)
+\alttext(A magnified line on a pixel grid with grey cells on both sides of a thin red diagonal centreline. Each interior column splits one unit of ink between adjacent rows.)
+
+> Endpoint conventions change the conservation statement
+
+The four-argument function retains the previous convention: every rounded
+major-axis column has weight one, including both endpoints. An integer
+segment of major-axis length \(D\) therefore has total weight \(D+1\).
+This useful simple convention differs from endpoint-clipped Wu filtering.
+The explicit `ClippedColumns` overload instead uses
+
+$$
+w_i=\max\left(0,\min(x_1,i+1/2)-\max(x_0,i-1/2)\right),\qquad
+\sum_i w_i=x_1-x_0=D.
+$$
+\alttext(A column weight is the length of the segment's major-axis interval intersecting the pixel-centred unit interval. Because those unit intervals partition the axis, their weights sum to the segment's major-axis length.)
+
+For separated integer endpoints, the first and last columns have weight
+one half. The same interval-intersection formula also handles a short
+segment whose endpoints round to the same column without counting the
+endpoint twice. Nonzero segments have total weight
+\(D=\max(|\Delta x|,|\Delta y|)\); this is a projected length, not
+Euclidean arclength. For slope magnitude at most one, the latter is
+\(D\sqrt{1+m^2}\). Constant ink per major-axis step does not imply
+constant total ink per Euclidean length across all orientations.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("| segment | policy | major length | total ink | contributions |\n| :--- | :--- | ---: | ---: | ---: |\n");
+  for (const auto endpoints : {std::array<double,4>{0,0,12,5}, {0.2,0.3,3.7,1.6}, {0.1,0.2,0.2,0.25}}) {
+    for (const auto policy : {dm::algorithms::WuEndpointPolicy::FullColumns,dm::algorithms::WuEndpointPolicy::ClippedColumns}) {
+      const auto pixels = dm::algorithms::xiaolin_wu_line(endpoints[0],endpoints[1],endpoints[2],endpoints[3],policy);
+      const auto summary = dm::algorithms::wu_pixel_table(pixels) | dm::summarise(dm::agg::sum("weight","total"));
+      std::print("| ({},{}) to ({},{}) | {} | {:.3f} | {:.6f} | {} |\n",endpoints[0],endpoints[1],endpoints[2],endpoints[3],
+          policy == dm::algorithms::WuEndpointPolicy::FullColumns ? "full" : "clipped",
+          std::max(std::abs(endpoints[2]-endpoints[0]),std::abs(endpoints[3]-endpoints[1])),summary.double_at("total",0),pixels.size());
+    }
+  }
+}
+```
+// result_begin: markdown
+| segment | policy | major length | total ink | contributions |
+| :--- | :--- | ---: | ---: | ---: |
+| (0,0) to (12,5) | full | 12.000 | 13.000000 | 26 |
+| (0,0) to (12,5) | clipped | 12.000 | 12.000000 | 26 |
+| (0.2,0.3) to (3.7,1.6) | full | 3.500 | 5.000000 | 10 |
+| (0.2,0.3) to (3.7,1.6) | clipped | 3.500 | 3.500000 | 10 |
+| (0.1,0.2) to (0.2,0.25) | full | 0.100 | 1.000000 | 2 |
+| (0.1,0.2) to (0.2,0.25) | clipped | 0.100 | 0.100000 | 2 |
+// result_end
+\caption(Total ink under two explicitly named endpoint policies, including fractional and same-column segments.)
+
+A coincident-endpoint call is explicitly a unit-weight point marker in
+both policies, rather than a zero-length stroke. Coordinates must be
+finite and safely inside the integer range before rounding. Endpoint
+reversal and exchanging axes preserve the corresponding raster, subject
+to floating-point rounding. The implementation evaluates the line directly
+at each centre to avoid accumulated slope-update drift.
+
+For \(P\) major-axis columns, there are at most \(2P\) contributions:
+\(O(P)\) time, \(O(1)\) auxiliary state and \(O(P)\) returned storage.
+The library's grayscale plotting helper additionally merges repeated
+coordinates in \(O(P\log P)\) time. This floating-point implementation
+does not reproduce every integer optimisation of Wu's original paper.
+
+> Applying the rasteriser to monthly observations
+
+`wu_polyline()` keeps the frame's row order and scales each axis into the
+viewport interior, leaving a one-pixel margin. A constant coordinate maps
+to its axis centre. It neither averages observations nor sorts them.
+Each adjacent pair of monthly records becomes a segment with clipped
+endpoints. Contributions at shared coordinates add; the rendering helper
+saturates their sum at one before mapping it to grey. This is additive ink
+visualisation, not alpha-over compositing or a model of exact stroke joins.
+
+```{cpp, results="markdown", file="figures/wu_airline_rasters.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto air = dm::datasets::air_passengers() | dm::mutate("time", [](const auto& r) {
+    return 12*r.get_double("year")+r.get_double("month");
+  });
+  auto layout = dm::graphics::RLayout::create(1,2);
+  std::print("| viewport | input months | contributions | pixel coordinates | summed ink | largest pixel sum |\n"
+      "| :--- | ---: | ---: | ---: | ---: | ---: |\n");
+  for (const auto dimensions : {std::array<int,2>{48,16},{96,32}}) {
+    const auto pixels = dm::algorithms::wu_polyline(air,"time","passengers",dimensions[0],dimensions[1]);
+    const auto table = dm::algorithms::wu_pixel_table(pixels);
+    const auto summary = table | dm::summarise(dm::agg::sum("weight","ink"),dm::agg::max("weight","largest"));
+    std::print("| {} x {} | {} | {} | {} | {:.6f} | {:.6f} |\n",dimensions[0],dimensions[1],air.nrows(),
+        pixels.size(),table.nrows(),summary.double_at("ink",0),summary.double_at("largest",0));
+    layout.add(dm::algorithms::wu_pixel_plot(pixels).title(std::format("{} x {} pixels",dimensions[0],dimensions[1])).size(600,315));
+  }
+  std::filesystem::create_directories("build");layout.size(1200,315).save_svg("build/wu_airline_rasters.svg");
+}
+```
+// result_begin: markdown
+| viewport | input months | contributions | pixel coordinates | summed ink | largest pixel sum |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| 48 x 16 | 144 | 496 | 172 | 100.182115 | 1.968142 |
+| 96 x 32 | 144 | 718 | 402 | 221.133218 | 1.568698 |
+\image(figures/wu_airline_rasters.svg)
+// result_end
+\caption(The same 144 records mapped into 48 by 16 and 96 by 32 pixel viewports. Coordinate counts include zero-weight neighbours; summed ink is measured before display saturation.)
+\alttext(Two small raster renderings of the airline time series, with visibly larger cells at 48 by 16 pixels and finer seasonal detail at 96 by 32 pixels.)
+
+At the lower resolution several months share nearby horizontal pixel
+columns. Fractional shading softens the staircase but cannot encode each
+original measurement distinctly. The numerical input is preserved in the
+frame; the rendered image is a lossy representation. Larger viewports also
+change the relative horizontal and vertical scaling slightly because of
+the fixed margin, so total ink is not required to double exactly.
+
+> Conclusion
+
+Two adjacent weights preserve a column's total ink and its ideal minor-axis
+first moment. Explicit endpoint policies distinguish the existing
+full-column variant from interval-clipped endpoint filtering. Correct
+conservation is per projected major-axis length, and neither brightness nor
+grey display values should be mistaken for exact geometric coverage.
+The airline series demonstrates practical polyline rendering and the
+limits of a small pixel grid: antialiasing improves the representation of
+a line without adding missing resolution to the observations.
+
+> References
+
+- X. Wu (1991). *An Efficient Antialiasing Technique*. ACM SIGGRAPH Computer Graphics
+  25(4), 143–152. https://doi.org/10.1145/127719.122734
+- R datasets documentation, *AirPassengers: Monthly Airline Passenger Numbers 1949–1960*.
+  https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/AirPassengers.html

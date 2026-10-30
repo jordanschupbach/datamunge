@@ -1,0 +1,363 @@
+//? Title: Hamming Distance: Positions, Bit Flips and Error Balls
+//? Subtitle: Worked byte comparisons, a TikZ cube and finite error-correction geometry
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fixed-width records or transmitted words may change in a few positions, and we want
+to count those changes without shifting the alignment. Hamming distance counts unequal
+symbols at corresponding positions. The meaning of a symbol matters: one changed byte
+can contain several changed bits, and UTF-8 bytes are not Unicode characters. A TikZ
+position diagram and binary cube introduce the geometry, followed by small word and
+packed-bit examples, a strict edit-distance comparison, and finite codes with ambiguous
+nearest words. Hamming-shell counts then explain error balls, correction limits and the
+distribution of distances between uniform independent words. No real dataset is needed
+for these exact finite constructions.
+)
+
+\toc
+
+> The method
+
+>> One differing position contributes one unit
+
+Choose an alphabet and a common word length n. For two aligned words a and b,
+
+$$
+ d_H(a,b)=\sum_{i=0}^{n-1}\mathbf1[a_i\ne b_i].
+$$
+\alttext(Hamming distance sums one for each unequal pair of symbols at the same position and zero for each equal pair.)
+
+A coordinate contributes zero or one regardless of which two unequal symbols appear.
+There is no insertion, deletion, padding or search for a better alignment. The following
+TikZ diagram introduces both the positional count and its graph interpretation: on the
+binary cube, an edge changes one bit and a shortest path changes each differing bit once.
+The editable source is `diagrams/hamming_distance_concept.tikz`. Regeneration needs
+LaTeX with PGF/TikZ and the standalone class, plus dvisvgm. The shell block saves its
+DVI, SVG and compile logs locally in `build/`; only the rendered image is referenced.
+
+```{bash, results="output", file="figures/hamming_distance_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/hamming_distance_concept.tikz > build/hamming_distance_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/hamming_distance_concept.svg build/hamming_distance_concept.dvi > build/hamming_distance_concept.render.log 2>&1
+printf 'Rendered build/hamming_distance_concept.svg from the local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/hamming_distance_concept.svg from the local TikZ source.
+// \image(figures/hamming_distance_concept.svg)
+// result_end
+
+\caption(Aligned symbols identify the changed positions; a binary cube represents each single-bit substitution as an edge. The red three-edge path is shortest between 000 and 111.)
+\alttext(Two aligned seven-bit words differ at zero-based positions two and four. Beside them, a labelled three-dimensional binary cube highlights a path from 000 to 001 to 011 to 111, showing distance three.)
+
+>> Why this is a metric, and what the algorithm costs
+
+Nonnegativity, symmetry and the zero-distance condition follow coordinate by coordinate.
+For the triangle inequality, if \(a_i\ne c_i\), at least one of \(a_i\ne b_i\)
+or \(b_i\ne c_i\) must hold. Summing that indicator inequality gives
+\(d_H(a,c)\le d_H(a,b)+d_H(b,c)\). The metric lives on words with one fixed length;
+`hamming_distance()` throws `std::invalid_argument` on unequal byte lengths.
+Both empty words are allowed and have distance zero.
+
+The general string implementation compares all n bytes in one scan, using Θ(n) time
+and O(1) auxiliary storage. This is optimal for a full positional comparison in the
+worst case: a previously unread position might change the answer. Packed machine words
+can exploit bit operations instead. For two unsigned 64-bit words,
+
+$$
+ d_{bit}(u,v)=\operatorname{popcount}(u\mathbin{\oplus}v).
+$$
+\alttext(XOR marks every unequal bit with a one, and population count counts those ones.)
+
+`hamming_bit_distance()` implements this fixed-64-bit operation. It is O(1) for a
+machine word, including its leading zero bits; processing an arbitrary packed bit array
+would still require work proportional to its number of machine words.
+
+>> Representation and alignment are part of the contract
+
+`hamming_distance(std::string,std::string)` treats every byte, including embedded NUL,
+as one symbol. It neither decodes UTF-8 nor normalizes Unicode. A printable ASCII binary
+string has one byte per written bit, so its byte distance agrees with the corresponding
+bit distance; an arbitrary packed byte is different. Text applications requiring Unicode
+code points or grapheme clusters must choose and implement that representation first.
+The byte comparison API does not silently substitute a different alphabet.
+
+Any substitution-only script is also a legal Levenshtein edit script, hence for equal
+lengths \(d_L(a,b)\le d_H(a,b)\). Insertions and deletions may allow cheaper realignment,
+so the inequality need not be equality. The examples keep the same byte positions when
+showing Hamming comparisons.
+
+> Simple examples
+
+>> Seven letters reveal the mismatching columns
+
+`karolin` and `kathrin` disagree at zero-based positions 2, 3 and 4 and agree at
+0, 1, 5 and 6. `hamming_comparison()` exposes the byte values, each mismatch indicator
+and the cumulative count; the final cumulative count is the distance. The plot labels
+printable ASCII directly and other byte values in hexadecimal.
+
+```{cpp, results="markdown", file="figures/hamming_words.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  const auto t=dm::algorithms::hamming_comparison("karolin","kathrin");
+  std::filesystem::create_directories("build");dm::algorithms::plot_hamming_comparison("karolin","kathrin").size(900,340).save_svg("build/hamming_words.svg");
+  std::print("Distance: {}. Empty pair: {}.\n\n{}\n",dm::algorithms::hamming_distance("karolin","kathrin"),dm::algorithms::hamming_distance("",""),t.to_md(0));
+}
+```
+// result_begin: markdown
+Distance: 3. Empty pair: 0.
+
+| position | a_byte | b_byte | mismatch | cumulative_distance |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 107 | 107 | 0 | 0 |
+| 1 | 97 | 97 | 0 | 0 |
+| 2 | 114 | 116 | 1 | 1 |
+| 3 | 111 | 104 | 1 | 2 |
+| 4 | 108 | 114 | 1 | 3 |
+| 5 | 105 | 105 | 0 | 3 |
+| 6 | 110 | 110 | 0 | 3 |
+
+\image(figures/hamming_words.svg)
+// result_end
+
+\caption(Three unequal byte positions contribute exactly three units; the table preserves the original positions and cumulative count.)
+\alttext(The two seven-letter words appear in aligned columns with red markers at positions two, three and four. A table lists unsigned byte values, mismatch indicators and their cumulative sum.)
+
+
+>> A changed byte is not necessarily a single changed bit
+
+Compare one raw byte 0x00 with one raw byte 0xff. The byte distance is one; their
+packed-bit distance is eight. Writing those bytes as `00000000` and `11111111`
+changes the representation to eight ASCII positions, so that string distance is eight.
+The NUL is a real byte in the explicitly length-constructed string, not an empty string.
+For unequal lengths, the example captures the documented exception instead of padding.
+
+```{cpp, results="markdown", file="figures/hamming_bits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  const std::string zero(1,'\0'),ones(1,static_cast<char>(255));dm::dstruct::DataFrame results;
+  results.add_column("representation",std::vector<std::string>{"one raw byte","eight ASCII bit positions","packed unsigned word"});results.add_column("distance",std::vector<double>{double(dm::algorithms::hamming_distance(zero,ones)),double(dm::algorithms::hamming_distance("00000000","11111111")),double(dm::algorithms::hamming_bit_distance(0,255))});
+  std::filesystem::create_directories("build");dm::algorithms::plot_hamming_comparison("00000000","11111111").title("Eight bits changed inside one byte").size(900,340).save_svg("build/hamming_bits.svg");
+  std::print("{}\n\nRaw byte values:\n\n{}\n",results.to_md(0),dm::algorithms::hamming_comparison(zero,ones).to_md(0));
+  try{(void)dm::algorithms::hamming_distance("abc","ab");}catch(const std::invalid_argument& e){std::print("\nUnequal lengths: {}\n",e.what());}
+}
+```
+// result_begin: markdown
+| representation | distance |
+| :--- | ---: |
+| one raw byte | 1 |
+| eight ASCII bit positions | 8 |
+| packed unsigned word | 8 |
+
+
+Raw byte values:
+
+| position | a_byte | b_byte | mismatch | cumulative_distance |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 255 | 1 | 1 |
+
+
+Unequal lengths: hamming_distance: strings must have equal length
+\image(figures/hamming_bits.svg)
+// result_end
+
+\caption(Symbol choice changes the distance: one unequal raw byte contains eight unequal bits. The bit-string figure uses eight ASCII byte positions to represent those bits.)
+\alttext(Eight zero characters are aligned with eight one characters and all columns are red. Tables distinguish byte distance one from bit distance eight and show raw byte values zero and 255.)
+
+
+>> Permitting realignment changes the answer
+
+`abcdef` and `bcdefa` differ at all six fixed positions. Levenshtein distance is two:
+delete the leading a, then insert it at the end. It cannot be one, because equal-length
+distinct words at distance one must differ by a single substitution, and these differ at
+six positions. Thus the edit upper bound is strict here. Whether realignment is desirable
+depends on what a position represents in the application.
+
+```{cpp, results="markdown", file="figures/hamming_alignment.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  dm::dstruct::DataFrame result;result.add_column("metric",std::vector<std::string>{"Hamming: fixed alignment","Levenshtein: edits allowed"});result.add_column("distance",std::vector<double>{double(dm::algorithms::hamming_distance("abcdef","bcdefa")),double(dm::algorithms::levenshtein_distance("abcdef","bcdefa"))});
+  std::filesystem::create_directories("build");dm::algorithms::plot_hamming_comparison("abcdef","bcdefa").title("A cyclic shift changes all six positions").size(900,340).save_svg("build/hamming_alignment.svg");std::print("{}\n",result.to_md(0));
+}
+```
+// result_begin: markdown
+| metric | distance |
+| :--- | ---: |
+| Hamming: fixed alignment | 6 |
+| Levenshtein: edits allowed | 2 |
+
+\image(figures/hamming_alignment.svg)
+// result_end
+
+\caption(A delete-and-insert script costs two edits while every fixed Hamming position differs. The two metrics encode different allowed changes.)
+\alttext(The original six letters and their left cyclic shift disagree in all six aligned columns. The table reports Hamming distance six and Levenshtein distance two.)
+
+
+>> Minimum code distance separates detection from correction
+
+A finite codebook C is a set of distinct equal-width words. Its minimum distance is the
+smallest separation between different valid codewords. If \(d_{min}\ge s+1\), every
+pattern of one through s symbol changes leaves the codebook, so a receiver checking
+membership detects it. Unique correction of every pattern of at most t changes requires
+\(d_{min}\ge2t+1\): if two codewords were both within t of a received word, the
+triangle inequality would put their separation at most 2t. Conversely, overlapping
+radius-t balls arise when that bound fails. The universal radii are therefore
+
+$$
+ s_{detect}=d_{min}-1,\qquad t_{correct}=\left\lfloor\frac{d_{min}-1}{2}\right\rfloor.
+$$
+\alttext(Minimum code distance minus one is the guaranteed detection count; half that quantity, rounded down, is the guaranteed unique-correction count.)
+
+For the three-bit repetition code {000,111}, minimum distance three gives detection of
+up to two changed bits by membership checking and unique correction of one. A hard nearest
+codeword decoder does not automatically signal every detectable error: starting from 000,
+two flips can give 110, which is closer to the wrong word 111.
+
+The even-parity code {000,011,101,110} has minimum distance two and no guaranteed
+single-bit correction. The query 001 is tied at distance one from three codewords.
+`hamming_nearest()` reports every tied minimum and does not silently pick a codeword.
+No Hamming(7,4) encoder/decoder is needed for these finite geometric examples.
+
+```{cpp, results="markdown", file="figures/hamming_codes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  const std::vector<std::string> repetition={"000","111"},parity={"000","011","101","110"};const auto distances=dm::algorithms::hamming_distance_matrix(parity);const auto nearest=dm::algorithms::hamming_nearest(repetition,"110");
+  std::vector<std::vector<double>> cells;for(std::size_t i=0;i<4;++i)cells.push_back(distances.row(i));auto matrix=dm::graphics::RPlot::create(),query=dm::graphics::RPlot::create();matrix.image({0,1,2,3},{0,1,2,3},cells,dm::graphics::viridis_colors(3),0,2).title("Even-parity code: pairwise distances").x_label("codeword index: 000, 011, 101, 110").y_label("codeword index");
+  query.bars({0,1},nearest.numeric_column("distance").values(),"distance from 110",{37,99,235},.5).title("Two flips can cause a wrong correction").x_label("repetition codeword: 0 = 000, 1 = 111").y_label("Hamming distance").y_limits(0,3);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(matrix).add(query).size(1100,490).fit_panels().save_svg("build/hamming_codes.svg");
+  std::print("Repetition code:\n\n{}\n\nEven-parity code:\n\n{}\n\nQuery 001 in the even-parity code:\n\n{}\n\nQuery 110 in the repetition code:\n\n{}\n",dm::algorithms::hamming_code_summary(repetition).to_md(0),dm::algorithms::hamming_code_summary(parity).to_md(0),dm::algorithms::hamming_nearest(parity,"001").to_md(0),nearest.to_md(0));
+}
+```
+// result_begin: markdown
+Repetition code:
+
+| words | width | minimum_distance | detectable_errors | correctable_errors |
+| ---: | ---: | ---: | ---: | ---: |
+| 2 | 3 | 3 | 2 | 1 |
+
+
+Even-parity code:
+
+| words | width | minimum_distance | detectable_errors | correctable_errors |
+| ---: | ---: | ---: | ---: | ---: |
+| 4 | 3 | 2 | 1 | 0 |
+
+
+Query 001 in the even-parity code:
+
+| codeword | distance | nearest |
+| :--- | ---: | ---: |
+| 000 | 1 | 1 |
+| 011 | 1 | 1 |
+| 101 | 1 | 1 |
+| 110 | 3 | 0 |
+
+
+Query 110 in the repetition code:
+
+| codeword | distance | nearest |
+| :--- | ---: | ---: |
+| 000 | 2 | 0 |
+| 111 | 1 | 1 |
+
+\image(figures/hamming_codes.svg)
+// result_end
+
+\caption(All distinct even-parity codewords have distance two. A repetition-code nearest-word query illustrates why membership detection and hard correction have different guarantees.)
+\alttext(A four-by-four heat map shows a zero diagonal and distance two off the diagonal. A bar plot shows query 110 at distance two from 000 and one from 111; tables report correction radii and all three nearest ties for query 001 in the parity code.)
+
+
+> Checking the theory
+
+>> Shell counts, error balls and uniform-word distances
+
+There are \(\binom nk\) ways to choose k changed positions and \((q-1)^k\) ways to
+replace them over an alphabet of size q. Therefore a radius-t ball around any fixed word
+contains
+
+$$
+ N_k=\binom nk(q-1)^k,\qquad V_q(n,t)=\sum_{k=0}^tN_k.
+$$
+\alttext(A shell at distance k chooses the changed positions and one of q minus one replacement symbols at each. A ball sums shells from zero through its radius.)
+
+Disjoint correction balls around M codewords must fit into the q-to-the-n word space,
+so \(M V_q(n,t)\le q^n\), the sphere-packing bound. For the length-three repetition
+code, t=1 gives \(2(1+3)=8=2^3\): its two one-error balls partition the cube.
+The inequality is a necessary packing constraint, not a general construction of a code.
+
+If a uniformly random independent word is compared with a fixed word, each position
+differs with probability \(1-1/q\). Thus its Hamming distance is Binomial(n,1−1/q),
+with mean \(n(1-1/q)\) and variance \(n(1-1/q)/q\). For two independent uniform
+words the same law holds. This is a model for uniform independent symbols, not a claim
+about ordinary language, biological sequences or correlated errors.
+
+The next program computes shell sizes without enumerating every word. For eight bits,
+the shell counts are 1,8,28,56,70,56,28,8,1; a radius-two ball contains 37 words.
+For eight four-symbol positions, each changed position has three alternatives, shifting
+the distance distribution to mean six rather than four. Counts beyond 2^53 in the helper
+are approximate floating-point integers; it rejects word-space sizes exceeding double
+range. This example remains in a small exactly representable count range.
+
+```{cpp, results="markdown", file="figures/hamming_shells.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  const auto bits=dm::algorithms::hamming_shells(8),four=dm::algorithms::hamming_shells(8,4);auto probability=dm::graphics::RPlot::create(),ball=dm::graphics::RPlot::create();
+  probability.lines(bits.numeric_column("distance").values(),bits.numeric_column("probability").values(),"q = 2",{37,99,235}).lines(four.numeric_column("distance").values(),four.numeric_column("probability").values(),"q = 4",{220,38,38}).title("Uniform words of length eight").x_label("Hamming distance").y_label("probability").y_limits(0,.5);
+  ball.lines(bits.numeric_column("distance").values(),bits.numeric_column("cumulative_probability").values(),"q = 2",{37,99,235}).lines(four.numeric_column("distance").values(),four.numeric_column("cumulative_probability").values(),"q = 4",{220,38,38}).title("How much of word space is nearby?").x_label("ball radius").y_label("fraction of all words").y_limits(0,1.3);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(probability).add(ball).size(1100,490).fit_panels().save_svg("build/hamming_shells.svg");std::print("Binary alphabet:\n\n{}\n\nFour-symbol alphabet:\n\n{}\n\nRepetition-code radius-one packing: 2 * {:.0f} = 8.\n",bits.to_md(6),four.to_md(6),dm::algorithms::hamming_shells(3).double_at("ball_volume",1));
+}
+```
+// result_begin: markdown
+Binary alphabet:
+
+| distance | shell_size | ball_volume | probability | cumulative_probability |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 1 | 0.003906 | 0.003906 |
+| 1 | 8 | 9 | 0.031250 | 0.035156 |
+| 2 | 28 | 37 | 0.109375 | 0.144531 |
+| 3 | 56 | 93 | 0.218750 | 0.363281 |
+| 4 | 70 | 163 | 0.273438 | 0.636719 |
+| 5 | 56 | 219 | 0.218750 | 0.855469 |
+| 6 | 28 | 247 | 0.109375 | 0.964844 |
+| 7 | 8 | 255 | 0.031250 | 0.996094 |
+| 8 | 1 | 256 | 0.003906 | 1.000000 |
+
+
+Four-symbol alphabet:
+
+| distance | shell_size | ball_volume | probability | cumulative_probability |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 1 | 0.000015 | 0.000015 |
+| 1 | 24 | 25 | 0.000366 | 0.000381 |
+| 2 | 252 | 277 | 0.003845 | 0.004227 |
+| 3 | 1512 | 1789 | 0.023071 | 0.027298 |
+| 4 | 5670 | 7459 | 0.086517 | 0.113815 |
+| 5 | 13608 | 21067 | 0.207642 | 0.321457 |
+| 6 | 20412 | 41479 | 0.311462 | 0.632919 |
+| 7 | 17496 | 58975 | 0.266968 | 0.899887 |
+| 8 | 6561 | 65536 | 0.100113 | 1.000000 |
+
+
+Repetition-code radius-one packing: 2 * 4 = 8.
+\image(figures/hamming_shells.svg)
+// result_end
+
+\caption(Exact finite shell counts determine uniform-word distance probabilities and the fraction of word space covered by a ball. Increasing alphabet size increases the typical number of mismatches.)
+\alttext(Two probability curves peak near four mismatches for eight binary positions and six for a four-symbol alphabet. A second panel shows cumulative ball fractions; tables give shell and ball counts and probabilities.)
+
+
+> Conclusion
+
+Hamming distance is a count on an explicitly chosen fixed-width representation. The same
+raw byte pair can differ in one byte and eight bits; realignment can reduce edit distance
+without changing the positional count. A code's minimum separation determines universal
+error guarantees, while nearest-word ties and errors outside the correction radius remain
+visible. Shell counting links this geometry to error balls and a binomial law under stated
+uniform-independence assumptions. The examples are small finite constructions, not a
+forced real-data application or a benchmark of every possible implementation.
+
+> References
+
+- Hamming, R. W. (1950). [Error Detecting and Error Correcting Codes|https://doi.org/10.1002/j.1538-7305.1950.tb00463.x]. ~Bell System Technical Journal~, 29(2), 147–160. Positional distance and error-correction geometry.
+- The PGF/TikZ authors. [TikZ and PGF manual|https://tikz.dev/]. Reproducible concept diagrams; this report retains its standalone source and builds a local SVG through LaTeX/dvisvgm.

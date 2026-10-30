@@ -132,6 +132,7 @@
 %include "datamunge/optim/rbf_gaussian_process_surrogate.hpp"
 %include "datamunge/bayes/map.hpp"
 %include "datamunge/bayes/hmc.hpp"
+%ignore datamunge::bayes::NUTS::sample_chains;
 %include "datamunge/bayes/nuts.hpp"
 %include "datamunge/bayes/rwm.hpp"
 %include "datamunge/bayes/gibbs.hpp"

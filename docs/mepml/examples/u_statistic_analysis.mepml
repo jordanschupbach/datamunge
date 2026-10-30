@@ -1,0 +1,565 @@
+//? Title: U-statistics: Unbiased Estimation, Overlap and Two Kinds of Uncertainty
+//? Subtitle: Symmetric kernels, Hoeffding projections, jackknife diagnostics, degeneracy and incomplete averages with datamunge's stats::UStatistic
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Suppose a population quantity is the expected value of a function of several independent
+observations, such as half the squared difference of two measurements. We want to estimate
+that quantity from one sample, use all its observations fairly, and quantify the uncertainty
+without pretending that overlapping pairs are independent. A U-statistic averages a symmetric
+kernel over distinct-index subsets. We derive its unbiasedness, its first-order projection
+and the extra Monte Carlo variability introduced by sampling only some subsets. Three-point
+calculations connect the kernel terms to sample variance and delete-one diagnostics. An exact
+four-point sampling law shows why a degenerate kernel need not have a normal limit, or a
+useful first-order standard error. A two-point population sweep checks both variance rates.
+On pooled iris sepal lengths the complete variance is 0.685694 square centimetres and Gini
+mean difference is 0.946192 centimetres. A repeated-seed check separates computational error
+from sampling uncertainty: conditional RMSE falls from 0.288 with 10 draws to 0.0169 with 3000.
+)
+
+\toc
+
+> The method
+
+>> Symmetric kernels and the estimand
+
+Let \(X_1,\ldots,X_n\) be independent observations from a common distribution \(F\).
+A symmetric degree-\(m\) kernel \(h\) is unchanged by permuting its \(m\) arguments.
+Its population target and complete U-statistic are
+
+$$
+\theta=E[h(X_1,\ldots,X_m)],\qquad
+U_n=\binom nm^{-1}\sum_{1\leq i_1<\cdots<i_m\leq n}h(X_{i_1},\ldots,X_{i_m}).
+$$
+\alttext(Theta is the expectation of a kernel on m independent observations. U n averages that kernel over every unordered m-subset of n distinct observation indices.)
+
+Every term has expectation \(\theta\), so integrability gives \(E[U_n]=\theta\).
+With finite kernel variance there is also a simple variance argument for using all subsets. Start with the unbiased
+estimator \(h(X_1,\ldots,X_m)\), randomly permute all \(n\) indices, then average over
+the permutations conditional on the observed sample. The conditional average is \(U_n\);
+the law of total variance shows that this symmetrisation cannot increase variance.
+Broader minimum-variance claims require specifying the distribution family and the class of
+unbiased competitors; unbiasedness alone does not establish universal efficiency.
+
+The observations may have equal values; it is their *indices* that must be distinct within
+a tuple. The library accepts a callback of type `SymmetricKernel`. The caller must supply
+a deterministic, symmetric function of the configured degree. Symmetry is not tested.
+The finite-input checks reject NaNs and infinities rather than silently dropping observations.
+
+Three familiar choices are the mean kernel \(h(x)=x\), the variance kernel
+\(h(x,y)=(x-y)^2/2\), and Gini's mean-difference kernel \(h(x,y)=|x-y|\).
+The second targets population variance because independent copies satisfy
+\(E[(X-Y)^2]=2\operatorname{Var}(X)\). The identity
+
+$$
+\sum_{i<j}(x_i-x_j)^2=n\sum_i(x_i-\bar x)^2
+\quad\Longrightarrow\quad
+U_n\left[\frac{(x-y)^2}{2}\right]=\frac{\sum_i(x_i-\bar x)^2}{n-1}
+$$
+\alttext(The sum of squared differences over unordered pairs equals n times the centred sum of squares. Averaging half those differences over all pairs gives the sample variance with divisor n minus one.)
+
+makes the usual unbiased sample variance a degree-two U-statistic. Averaging over all ordered
+pairs including \(i=j\), a V-statistic, instead gives the variance with divisor \(n\).
+Gini's mean difference has the original measurement units; variance has squared units.
+Gini grows linearly with a single extreme observation, variance quadratically. Neither has
+bounded outlier influence, so calling Gini automatically robust would be misleading.
+
+>> Overlap, Hoeffding projections and the non-degenerate limit
+
+There are \(\binom nm\) kernel terms, but they share observations. Dividing the variance
+of one term by that count would generally miss their covariance. For degree two define
+
+$$
+h_1(x)=E[h(x,X')]-\theta,\qquad
+h_2(x,y)=h(x,y)-\theta-h_1(x)-h_1(y).
+$$
+\alttext(The first projection is the conditional kernel expectation minus theta. The second canonical projection removes theta and both first-projection terms from the pair kernel.)
+
+Then \(E[h_1(X)]=0\) and \(E[h_2(X,X')\mid X]=0\). Substitution gives
+
+$$
+U_n-\theta=\frac2n\sum_i h_1(X_i)+\binom n2^{-1}\sum_{i<j}h_2(X_i,X_j),
+\qquad
+\operatorname{Var}(U_n)=\frac{4\zeta_1}{n}+\frac{2\zeta_2}{n(n-1)},
+$$
+\alttext(The centred degree-two U-statistic is twice the sample mean of the first projection plus the average of the canonical pair projection. Its exact variance is four zeta one over n plus two zeta two over n times n minus one.)
+
+where \(\zeta_1=E[h_1(X)^2]\) and \(\zeta_2=E[h_2(X,X')^2]\).
+The variance formula follows because the two orders are orthogonal, and distinct canonical
+pair terms are uncorrelated even when they share one index: condition on that index and use
+the zero conditional expectation. For general degree, the canonical projection variances
+\(\zeta_s\) obey
+
+$$
+\operatorname{Var}(U_n)=\sum_{s=1}^m\frac{\binom ms^2}{\binom ns}\zeta_s.
+$$
+\alttext(The exact variance is the sum over projection orders s of the square of m choose s, divided by n choose s, times the variance of the order-s canonical projection.)
+
+These are *canonical projection variances*. They must not be substituted unchanged into
+formulas that instead use covariances of kernels with a given number of shared arguments.
+For fixed \(m\), finite second moment and \(\zeta_1>0\), the first term dominates;
+the ordinary i.i.d. central limit theorem and a negligible remainder imply
+
+$$
+\sqrt n(U_n-\theta)\xrightarrow{d}N(0,m^2\zeta_1).
+$$
+\alttext(For a fixed-degree non-degenerate kernel, square root n times the centred U-statistic converges to a normal law with variance m squared times zeta one.)
+
+If \(\zeta_1=0\), this argument gives no nontrivial normal approximation. The rate can
+change from \(n^{-1/2}\) to \(n^{-1}\), and the limit can be non-normal. A small computed
+standard error does not diagnose which regime applies.
+
+>> What the library's finite-sample diagnostics estimate
+
+For a complete average let \(g_i\) be the mean of the \(\binom{n-1}{m-1}\) terms
+containing observation \(i\). Every term is counted \(m\) times, so
+\(n^{-1}\sum_i g_i=U_n\). The existing result fields use
+
+$$
+\widehat\zeta_1=\frac1{n-1}\sum_i(g_i-U_n)^2,
+\qquad\widehat V_{\rm projection}=\frac{m^2}{n}\widehat\zeta_1.
+$$
+\alttext(The empirical first-projection variance is the sum of squared differences between conditional means and U, divided by n minus one. The legacy sampling-variance estimate multiplies it by m squared over n.)
+
+This is a leading-order estimate, not an exact finite-sample variance. `analyze()` also
+computes the complete-fit delete-one values without reevaluating the kernel. Splitting the
+complete sum into terms that contain \(i\) and terms that do not gives
+
+$$
+U_{(-i)}=\frac{nU_n-mg_i}{n-m},\qquad
+\widehat V_{\rm JK}=\frac{n-1}{n}\sum_i(U_{(-i)}-U_n)^2
+=\left(\frac{n-1}{n-m}\right)^2\widehat V_{\rm projection}.
+$$
+\alttext(The statistic with observation i deleted equals n U minus m g i, divided by n minus m. The delete-one jackknife variance is n minus one over n times the sum of squared deleted-value deviations, or the projection estimate multiplied by the square of n minus one over n minus m.)
+
+The pseudo-value is \(P_i=nU_n-(n-1)U_{(-i)}\). Its average equals \(U_n\);
+centred pseudo-values show which observations change the estimator most.
+The jackknife is still a sampling-variance estimate, with its own non-degeneracy requirements.
+It does not rescue a degenerate kernel. If \(n=m\), delete-one values do not exist and are
+reported as NaN, even though the legacy projection estimate is zero. `projections` exposes
+all these intermediate quantities.
+
+>> Incomplete averages: sampling variability plus computational variability
+
+With `max_terms=B>0`, the library draws \(B\) uniform \(m\)-subsets. Indices are distinct
+within a draw, but the same subset can be drawn again. Conditional on the fixed data the draws
+are independent. Let \(H\) be one uniformly selected subset's kernel value, and let
+\(v_X=\operatorname{Var}(H\mid X_1,\ldots,X_n)\). Then
+
+$$
+E[U_{n,B}\mid X]=U_n,\qquad
+\operatorname{Var}(U_{n,B}\mid X)=\frac{v_X}{B},
+\qquad
+\operatorname{Var}(U_{n,B})=\operatorname{Var}(U_n)+\frac{E[v_X]}{B}.
+$$
+\alttext(The conditional mean of an incomplete average is the complete average. Its conditional Monte Carlo variance is v X over B. Its unconditional variance adds that expected Monte Carlo variance to the complete statistic's sampling variance.)
+
+Equivalently, \(\operatorname{Var}(U_{n,B})=(1-1/B)\operatorname{Var}(U_n)+
+\operatorname{Var}(h(X_1,\ldots,X_m))/B\). The conditional Monte Carlo standard error is
+estimated from the sampled kernel values, using their sample variance divided by \(B\).
+It is unavailable from one draw. It does not describe how the underlying data sample varies.
+No finite-population correction applies: subset *draws* are with replacement, even when
+\(B\) exceeds the number of distinct subsets.
+
+The legacy incomplete projection fields use noisy inclusion averages, sometimes with uncovered
+observations. They are not a calibrated total standard error. `analyze()` reports coverage,
+conditional Monte Carlo variance and unavailable jackknife values explicitly. `incomplete_path()`
+checks computational RMSE against a complete reference; it is intended for samples where that
+reference is tractable.
+
+For a fixed non-degenerate kernel, typically \(B\gg n\) is needed to make computational
+variance negligible relative to the \(1/n\) sampling variance. For a degree-two degenerate
+kernel the corresponding requirement can be \(B\gg n^2\). Merely letting \(B\) grow
+does not give the complete estimator's limiting law. Subbagging and some random-forest
+constructions can be analysed as growing-degree U-statistics, but their rates, learner
+randomness and regularity assumptions require separate results; this report makes no
+automatic infinite-order normality claim.
+
+Enumeration takes \(\binom nm\) kernel calls; an incomplete average takes exactly \(B\).
+Bookkeeping costs \(O(m)\) per call and \(O(n+m)\) working memory. Complete enumeration
+has no automatic budget cap; an unrepresentable term count is rejected before evaluation.
+`term_details()` additionally stores \(O(Bm)\) or \(O(\binom nm m)\) output, so use it
+for small examples. Seeded draws reproduce within the same standard-library implementation.
+
+> Simple examples
+
+>> Three observations: see every pair before averaging
+
+For \(x=(1,2,4)\), the variance-kernel values are \(1/2,9/2,2\), hence
+\(U=(1/2+9/2+2)/3=7/3\). The ordinary centred sum of squares is \(14/3\), which
+also gives \(s^2=(14/3)/(3-1)=7/3\). These are just three *dependent* pair values;
+we will not treat them as three independent measurements.
+
+```{cpp, results="markdown", file="figures/u_statistic_terms.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::stats::SymmetricKernel kernel=[](const auto& x){return 0.5*(x[0]-x[1])*(x[0]-x[1]);};
+  const dm::stats::UStatistic u(2);
+  const auto terms=u.term_details({1,2,4},kernel);
+  const auto fit=u.run({1,2,4},kernel);
+  auto plot=dm::graphics::RPlot::barplot(terms.numeric_column("kernel").values(),{"(1,2)","(1,4)","(2,4)"});
+  plot.abline_h(fit.estimate,{90,90,90}).title("Three pair values; their mean is 7/3")
+      .x_label("Pair of observed values").y_label("Half the squared difference").y_limits(0,5.5);
+  std::filesystem::create_directories("build");
+  plot.size(780,450).save_svg("build/u_statistic_terms.svg");
+  std::print("U = {:.6f}, {} terms.\n\n{}\n",fit.estimate,fit.num_terms,terms.to_md(3));
+}
+```
+// result_begin: markdown
+U = 2.333333, 3 terms.
+
+| term | i1 | i2 | x1 | x2 | kernel |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0 | 1 | 1 | 2 | 0.5 |
+| 2 | 0 | 2 | 1 | 4 | 4.5 |
+| 3 | 1 | 2 | 2 | 4 | 2.0 |
+
+\image(figures/u_statistic_terms.svg)
+// result_end
+\caption(The complete degree-two average on three observations. Indices in the table are zero-based; the chart labels show observed values. The grey line is their average.)
+\alttext(Three green bars labelled pairs 1 and 2, 1 and 4, and 2 and 4 have heights 0.5, 4.5 and 2. A horizontal grey line marks their mean, about 2.333.)
+
+>> The inclusion means and the delete-one correction
+
+The inclusion means are \(g=(5/2,5/4,13/4)\). Subtracting \(U=7/3\) gives
+\((1/6,-13/12,11/12)\), so \(\widehat\zeta_1=49/48\) and the legacy projection
+variance is \(49/36\), with standard error \(7/6\).
+Deleting the three observations instead gives \(U_{(-i)}=(2,9/2,1/2)\).
+Their jackknife variance is \(49/9\), with standard error \(7/3\): the finite-sample
+correction is a factor of four in variance here. Neither estimate is an exact population
+variance inferred from just three observations.
+
+```{cpp, results="markdown", file="figures/u_statistic_projections.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto fit=dm::stats::UStatistic(2).analyze({1,2,4},
+      [](const auto& x){return 0.5*(x[0]-x[1])*(x[0]-x[1]);});
+  auto inclusion=dm::graphics::RPlot::barplot(fit.projections.numeric_column("conditional_mean").values(),{"1","2","4"});
+  auto deleted=dm::graphics::RPlot::barplot(fit.projections.numeric_column("leave_one_out").values(),{"1","2","4"});
+  inclusion.abline_h(fit.result.estimate,{90,90,90}).title("Terms containing each observation")
+           .x_label("Observation value").y_label("Conditional mean g_i").y_limits(0,5);
+  deleted.abline_h(fit.result.estimate,{90,90,90}).title("Average after deleting each observation")
+         .x_label("Deleted value").y_label("Delete-one U").y_limits(0,5);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(inclusion).add(deleted);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/u_statistic_projections.svg");
+  std::print("{}\n\n{}\n",fit.projections.to_md(6),
+      fit.summary().select({"estimate","projection_se","jackknife_se","conditional_mc_se"}).to_md(6));
+}
+```
+// result_begin: markdown
+| row | value | inclusions | conditional_mean | leave_one_out | pseudo_value |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 2 | 2.50 | 2.0 | 3 |
+| 1 | 2 | 2 | 1.25 | 4.5 | -2 |
+| 2 | 4 | 2 | 3.25 | 0.5 | 6 |
+
+
+| estimate | projection_se | jackknife_se | conditional_mc_se |
+| ---: | ---: | ---: | ---: |
+| 2.333333 | 1.166667 | 2.333333 | 0 |
+
+\image(figures/u_statistic_projections.svg)
+// result_end
+\caption(Exact inclusion means, delete-one values and pseudo-values. Both sets of bars average to the grey line U; their deviations have different finite-sample scales.)
+\alttext(Two bar charts. Inclusion means are 2.5, 1.25 and 3.25. Delete-one values are 2, 4.5 and 0.5. The grey line at about 2.333 is the mean in each chart.)
+
+>> A four-point sampling law with a genuinely degenerate kernel
+
+Let \(X\) be equally likely to be \(-1\) or \(+1\), and take \(h(x,y)=xy\).
+Then \(\theta=(EX)^2=0\) and \(h_1(x)=xEX-\theta=0\) for both population values.
+If \(K\) of \(n\) observations equal \(+1\), then \(S=2K-n\) and
+
+$$
+U_n=\frac{S^2-n}{n(n-1)},\qquad K\sim\operatorname{Binomial}(n,1/2),
+\qquad E[U_n]=0,\quad \operatorname{Var}(U_n)=\frac2{n(n-1)}.
+$$
+\alttext(The product-kernel U-statistic is S squared minus n divided by n times n minus one, where S is twice the count of plus-one observations minus n. Its expectation is zero and its exact variance is two over n times n minus one.)
+
+For \(n=4\), \(K=0,1,2,3,4\) has probabilities \((1,4,6,4,1)/16\), and the
+corresponding U-values are \((1,0,-1/3,0,1)\). A negative unbiased estimate of the
+non-negative target \((EX)^2\) is possible. In the balanced sample \((-1,-1,1,1)\),
+all inclusion means equal \(-1/3\), so *both* the projection and jackknife standard errors
+are zero, despite the population sampling variance being \(1/6\).
+
+```{cpp, results="markdown", file="figures/u_statistic_degenerate.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::stats::SymmetricKernel product=[](const auto& x){return x[0]*x[1];};
+  const dm::stats::UStatistic u(2);
+  const auto law=u.two_point_law(4,-1,1,0.5,product);
+  const auto balanced=u.analyze({-1,-1,1,1},product);
+  auto mass=dm::graphics::RPlot::barplot(law.distribution.numeric_column("probability").values(),{"0","1","2","3","4"});
+  mass.title("Exact probabilities of the count K").x_label("Number of +1 observations").y_label("Probability").y_limits(0,0.5);
+  auto value=dm::graphics::RPlot::create();
+  value.points(law.distribution.numeric_column("high_count").values(),law.distribution.numeric_column("estimate").values(),"",{37,99,235},6)
+       .abline_h(0,{90,90,90}).title("U conditional on the count K")
+       .x_label("Number of +1 observations").y_label("Product-kernel U").y_limits(-0.5,1.3);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(mass).add(value);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/u_statistic_degenerate.svg");
+  std::print("Target {:.6f}; exact sampling variance {:.6f}; first-order variance {:.6f}.\n\n{}\n\n{}\n",
+      law.target,law.variance,law.first_order_variance,law.distribution.to_md(6),
+      balanced.summary().select({"estimate","projection_se","jackknife_se"}).to_md(6));
+}
+```
+// result_begin: markdown
+Target 0.000000; exact sampling variance 0.166667; first-order variance 0.000000.
+
+| high_count | probability | estimate |
+| ---: | ---: | ---: |
+| 0 | 0.0625 | 1.000000 |
+| 1 | 0.2500 | 0.000000 |
+| 2 | 0.3750 | -0.333333 |
+| 3 | 0.2500 | 0.000000 |
+| 4 | 0.0625 | 1.000000 |
+
+
+| estimate | projection_se | jackknife_se |
+| ---: | ---: | ---: |
+| -0.333333 | 0 | 0 |
+
+\image(figures/u_statistic_degenerate.svg)
+// result_end
+\caption(An exact finite-sample law, not a simulation. The balanced sample has zero estimated standard errors even though repeated i.i.d. sampling has nonzero variance.)
+\alttext(Left: binomial probabilities at counts zero through four are 0.0625, 0.25, 0.375, 0.25 and 0.0625. Right: U-values are 1, 0, minus one third, 0 and 1; the distribution is not normal.)
+
+Indeed \(S/\sqrt n\) tends to a standard normal \(Z\), while \(\sum X_i^2=n\).
+It follows that \(nU_n\) tends to \(Z^2-1\), a centred chi-square law, rather than
+a normal distribution. For incomplete sampling in this example, \(\operatorname{Var}(h)=1\),
+so its unconditional variance is exactly
+\((1-1/B)2/[n(n-1)]+1/B\). This makes the \(B\gg n^2\) requirement concrete.
+
+> Checking the theory
+
+>> Exact sampling moments in two population regimes
+
+For the same product kernel under a general population mean \(\mu\) and variance
+\(\sigma^2\), \(h_1(x)=\mu(x-\mu)\) and
+\(h_2(x,y)=(x-\mu)(y-\mu)\). Thus
+
+$$
+\theta=\mu^2,\qquad
+\operatorname{Var}(U_n)=\frac{4\mu^2\sigma^2}{n}+\frac{2\sigma^4}{n(n-1)}.
+$$
+\alttext(The target is the squared population mean. The exact product-kernel variance is four times mu squared times sigma squared divided by n, plus twice sigma to the fourth divided by n times n minus one.)
+
+On \(\{-1,+1\}\), probability \(p=3/4\) for \(+1\) gives
+\(\mu=1/2,\sigma^2=3/4\), so \(n\operatorname{Var}(U_n)\to3/4\).
+At \(p=1/2\) the first projection vanishes and \(n^2\operatorname{Var}(U_n)\to2\).
+`two_point_law()` computes these laws from binomial and hypergeometric weights: a tuple's
+number of high values conditional on the sample count is hypergeometric. It evaluates only
+\(m+1\) kernel compositions and does not enumerate \(2^n\) ordered samples.
+
+```{cpp, results="markdown", file="figures/u_statistic_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::stats::SymmetricKernel product=[](const auto& x){return x[0]*x[1];};
+  std::vector<double> n,logn,regular_scaled,degenerate_scaled,regular_error,degenerate_error;
+  for (std::size_t size : {4u,8u,16u,32u,64u,128u}) {
+    const auto regular=dm::stats::UStatistic(2).two_point_law(size,-1,1,0.75,product);
+    const auto degenerate=dm::stats::UStatistic(2).two_point_law(size,-1,1,0.5,product);
+    const double a=0.75/size+1.125/(size*(size-1)),b=2.0/(size*(size-1));
+    n.push_back(size); logn.push_back(std::log2(size));
+    regular_scaled.push_back(size*regular.variance); degenerate_scaled.push_back(size*size*degenerate.variance);
+    regular_error.push_back(std::abs(regular.variance-a)); degenerate_error.push_back(std::abs(degenerate.variance-b));
+  }
+  auto regular=dm::graphics::RPlot::create(),degenerate=dm::graphics::RPlot::create();
+  regular.lines(logn,regular_scaled,"",{37,99,235}).points(logn,regular_scaled,"",{37,99,235},4)
+         .abline_h(0.75,{90,90,90}).title("Non-degenerate: n times variance")
+         .x_label("log2(n)").y_label("n Var(U)").y_limits(0.65,1.3);
+  degenerate.lines(logn,degenerate_scaled,"",{220,38,38}).points(logn,degenerate_scaled,"",{220,38,38},4)
+            .abline_h(2,{90,90,90}).title("Degenerate: n squared times variance")
+            .x_label("log2(n)").y_label("n squared Var(U)").y_limits(1.8,2.9);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(regular).add(degenerate);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/u_statistic_rates.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("n",n); table.add_column("n Var regular",regular_scaled); table.add_column("n2 Var degenerate",degenerate_scaled);
+  table.add_column("regular formula error",regular_error); table.add_column("degenerate formula error",degenerate_error);
+  std::print("{}\n",table.to_md(12));
+}
+```
+// result_begin: markdown
+| n | n Var regular | n2 Var degenerate | regular formula error | degenerate formula error |
+| ---: | ---: | ---: | ---: | ---: |
+| 4 | 1.125000000 | 2.666666667 | 0 | 0 |
+| 8 | 0.910714286 | 2.285714286 | 0 | 0 |
+| 16 | 0.825000000 | 2.133333333 | 0 | 0 |
+| 32 | 0.786290323 | 2.064516129 | 0 | 0 |
+| 64 | 0.767857143 | 2.031746032 | 0 | 0 |
+| 128 | 0.758858268 | 2.015748031 | 0 | 0 |
+
+\image(figures/u_statistic_rates.svg)
+// result_end
+\caption(Exact finite sums agree with the full variance formulas in both regimes. The grey lines are the limits 3/4 and 2; the different normalisations are essential.)
+\alttext(Two panels show decreasing scaled variances against log base two of sample size. The non-degenerate sequence approaches 0.75 after multiplication by n. The degenerate sequence approaches 2 after multiplication by n squared.)
+
+> A dataset example: iris sepal lengths
+
+>> Describe the sample before attaching inferential language
+
+`dm::datasets::iris()` contains 150 flowers, deliberately balanced at 50 per species.
+We analyse sepal length in centimetres, pooled and within each species. Pooled variance
+mixes between-species and within-species variation; it is not a measure of variation within
+a typical species. No missing values occur in the selected column.
+
+The U estimates below are descriptive summaries of this catalogue. Their unbiasedness and
+sampling-error interpretations refer to a hypothetical i.i.d. population model; the balanced
+species design is not an i.i.d. random sample from an unspecified iris population. We display
+jackknife standard errors as method diagnostics, without claiming calibrated biological
+confidence intervals.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto iris=dm::datasets::iris();
+  const dm::stats::SymmetricKernel variance=[](const auto& x){return 0.5*(x[0]-x[1])*(x[0]-x[1]);};
+  const dm::stats::SymmetricKernel gini=[](const auto& x){return std::abs(x[0]-x[1]);};
+  std::vector<std::string> groups; std::vector<double> n,mean,var,gmd,var_se,gmd_se;
+  for (const std::string group : {"All","setosa","versicolor","virginica"}) {
+    const auto rows=group=="All" ? iris : iris.filter([&](const auto& r){return r.get_string("Species")==group;});
+    const auto x=rows.numeric_column("Sepal.Length").values();
+    const auto a=dm::stats::UStatistic(2).analyze(x,variance),b=dm::stats::UStatistic(2).analyze(x,gini);
+    groups.push_back(group); n.push_back(x.size()); mean.push_back(dm::mean(dm::c(x)));
+    var.push_back(a.result.estimate); gmd.push_back(b.result.estimate);
+    var_se.push_back(std::sqrt(a.jackknife_variance)); gmd_se.push_back(std::sqrt(b.jackknife_variance));
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("group",groups); table.add_column("n",n); table.add_column("mean cm",mean);
+  table.add_column("variance cm2",var); table.add_column("GMD cm",gmd);
+  table.add_column("variance JK SE",var_se); table.add_column("GMD JK SE",gmd_se);
+  std::print("{}\n",table.to_md(6));
+}
+```
+// result_begin: markdown
+| group | n | mean cm | variance cm2 | GMD cm | variance JK SE | GMD JK SE |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| All | 150 | 5.843333 | 0.685694 | 0.946192 | 0.067544 | 0.047651 |
+| setosa | 50 | 5.006000 | 0.124249 | 0.400408 | 0.023305 | 0.041209 |
+| versicolor | 50 | 5.936000 | 0.266433 | 0.591837 | 0.045993 | 0.054990 |
+| virginica | 50 | 6.588000 | 0.404343 | 0.717061 | 0.081537 | 0.076596 |
+// result_end
+\caption(Complete pair averages and illustrative delete-one standard errors. Variance and its SE have squared-centimetre units; Gini mean difference and its SE have centimetre units.)
+
+>> Which observations move the two scale summaries?
+
+The centred pseudo-values below use every pair, with \(\binom{150}{2}=11175\) terms
+per kernel. Repeated sepal lengths have identical diagnostic values, so plotted points
+overlap. The variance kernel's influence grows quadratically far from the centre, while
+the Gini kernel grows linearly in the tails. The two vertical scales have different units.
+
+```{cpp, file="figures/u_statistic_iris_influence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto iris=dm::datasets::iris();
+  const auto x=iris.numeric_column("Sepal.Length").values();
+  const std::vector<dm::stats::SymmetricKernel> kernels{
+    [](const auto& t){return 0.5*(t[0]-t[1])*(t[0]-t[1]);},
+    [](const auto& t){return std::abs(t[0]-t[1]);}};
+  auto layout=dm::graphics::RLayout::create(1,2);
+  for (std::size_t k=0;k<kernels.size();++k) {
+    const auto fit=dm::stats::UStatistic(2).analyze(x,kernels[k]);
+    auto influence=fit.projections.numeric_column("pseudo_value").values();
+    for (auto& value:influence) value-=fit.result.estimate;
+    auto plot=dm::graphics::RPlot::create();
+    plot.points(x,influence,"",k==0 ? dm::RGB{37,99,235} : dm::RGB{220,38,38},4)
+        .abline_h(0,{90,90,90}).title(k==0 ? "Variance kernel" : "Gini mean-difference kernel")
+        .x_label("Sepal length (cm)").y_label(k==0 ? "Centred pseudo-value (cm2)" : "Centred pseudo-value (cm)");
+    layout.add(plot);
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1100,500).fit_panels().save_svg("build/u_statistic_iris_influence.svg");
+}
+```
+// result_begin:
+// \image(figures/u_statistic_iris_influence.svg)
+// result_end
+\caption(Centred delete-one pseudo-values for the pooled sample. These are finite-sample diagnostics, not independent extra observations or a guarantee of outlier resistance.)
+\alttext(Two scatter plots show centred pseudo-values against sepal length. The variance curve is U-shaped with stronger positive effects at the extremes. The Gini curve is flatter near the centre and grows more nearly linearly towards the tails.)
+
+>> Check incomplete averaging with repeated seeds
+
+The complete variance U-statistic is cheap enough here to provide an exact computational
+reference. For each budget we run 256 seeded incomplete averages on the *same 150 flowers*.
+Their RMSE around the complete value should follow \(\sqrt{v_X/B}\). This checks variability
+from subset selection; the flowers themselves are not resampled. Budgets share seeds across
+rows, so the plotted budget-wise errors are paired, not independent experiments.
+
+```{cpp, results="markdown", file="figures/u_statistic_incomplete.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto iris=dm::datasets::iris();
+  const auto x=iris.numeric_column("Sepal.Length").values();
+  const auto path=dm::stats::UStatistic(2,{0,2024}).incomplete_path(x,
+      [](const auto& t){return 0.5*(t[0]-t[1])*(t[0]-t[1]);},{10,30,100,300,1000,3000},256);
+  std::vector<double> inverse_root,log_budget;
+  for (double b:path.numeric_column("terms").values()) {inverse_root.push_back(1/std::sqrt(b)); log_budget.push_back(std::log10(b));}
+  auto error=dm::graphics::RPlot::create(),estimate=dm::graphics::RPlot::create();
+  error.lines(inverse_root,path.numeric_column("expected_rmse").values(),"Predicted RMSE",{90,90,90})
+       .points(inverse_root,path.numeric_column("rmse_to_complete").values(),"Observed RMSE",{37,99,235},5)
+       .title("Conditional error follows B to -1/2").x_label("1 / sqrt(B)").y_label("RMSE to complete U (cm2)").y_limits(0,0.5);
+  const double complete=path.double_at("complete_estimate",0);
+  estimate.lines({log_budget.front(),log_budget.back()},{complete,complete},"Complete",{90,90,90})
+          .points(log_budget,path.numeric_column("mean_estimate").values(),"Mean estimate",{37,99,235},5)
+          .title("Mean over 256 incomplete runs").x_label("log10(B)").y_label("Variance estimate (cm2)").y_limits(0.5,0.9);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(error).add(estimate);
+  std::filesystem::create_directories("build");
+  layout.size(1100,500).fit_panels().save_svg("build/u_statistic_incomplete.svg");
+  std::print("{}\n",path.select({"terms","mean_estimate","bias_to_complete","rmse_to_complete","expected_rmse"}).to_md(6));
+}
+```
+// result_begin: markdown
+| terms | mean_estimate | bias_to_complete | rmse_to_complete | expected_rmse |
+| ---: | ---: | ---: | ---: | ---: |
+| 10 | 0.721953 | 0.036260 | 0.287957 | 0.282313 |
+| 30 | 0.689680 | 0.003986 | 0.160814 | 0.162994 |
+| 100 | 0.691124 | 0.005431 | 0.092504 | 0.089275 |
+| 300 | 0.689023 | 0.003330 | 0.055332 | 0.051543 |
+| 1000 | 0.687602 | 0.001908 | 0.029525 | 0.028231 |
+| 3000 | 0.685448 | -0.000245 | 0.016916 | 0.016299 |
+
+\image(figures/u_statistic_incomplete.svg)
+// result_end
+\caption(Observed computational RMSE versus its conditional prediction, and the average incomplete estimate. A single seeded path need not approach the target monotonically; the variance law is the useful check.)
+\alttext(Left: observed RMSE markers lie close to a straight predicted line when plotted against one over square root of the number of subset draws. Right: mean variance estimates over 256 runs lie near a horizontal complete-average reference.)
+
+The table's `bias_to_complete` is the error of a finite average over seeds, not a claim
+that uniform subset sampling is biased. At the smallest budget its observed mean can still
+sit visibly above the target. The RMSE comparison concerns the distribution across repeated
+runs, not monotonic improvement along one random sequence.
+
+For independent validation, R 4.5.2 `var`, pairwise absolute differences and explicit
+delete-one refits reproduce all eight iris summaries and their jackknife standard errors.
+R `dbinom` and independent integer-binomial calculations reproduce all 12 count laws.
+NumPy also reconstructs every inclusion mean and pseudo-value, checks 4440 recorded random
+tuples against their indices, and independently aggregates the 1536 incomplete runs into
+the displayed conditional-error path. These checks are separate from the closed-form
+variance comparisons above.
+
+> Conclusion
+
+A symmetric kernel makes the estimand explicit; distinct-index averaging produces an
+unbiased estimate without requiring independent kernel terms. The inclusion means reveal
+why those terms are dependent and how delete-one diagnostics can be obtained from a single
+complete enumeration. The three-point calculation also shows how large the finite-sample
+jackknife correction can be.
+
+The exact product-kernel law supplies a limit to first-order reasoning: a balanced sample
+can report zero projection and jackknife uncertainty even though repeated sampling has
+positive variance and a non-normal limit. Incomplete averaging introduces a second source
+of variability with a different experimental interpretation. On the fixed iris sample it
+follows the conditional \(B^{-1/2}\) law; it cannot be substituted for uncertainty about
+the population or used to justify unrestricted growing-degree normal approximations.
+
+> References
+
+- W. Hoeffding (1948). *A class of statistics with asymptotically normal distribution*.
+  Annals of Mathematical Statistics 19(3), 293–325.
+  [Original paper|https://doi.org/10.1214/aoms/1177730196].
+- G. Blom (1976). *Some properties of incomplete U-statistics*. Biometrika 63(3), 573–580.
+  [Original paper|https://doi.org/10.1093/biomet/63.3.573].
+- L. Mentch and G. Hooker (2016). *Quantifying Uncertainty in Random Forests via Confidence Intervals and Hypothesis Tests*.
+  Journal of Machine Learning Research 17(26), 1–41.
+  [Paper and assumptions for subsampled ensembles|https://www.jmlr.org/papers/v17/14-168.html].

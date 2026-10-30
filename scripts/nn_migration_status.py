@@ -11,7 +11,7 @@ STATUS = ROOT / "examples/nn/language_status.json"
 
 
 def sources():
-    migrated = ROOT / "examples/cpp/nn"
+    migrated = ROOT / "examples/cpp/source/nn"
     original = ROOT / "examples/nn"
     found = [(p, p.relative_to(migrated)) for p in migrated.glob("[12]_*/**/*.cpp")]
     found += [(p, p.relative_to(original)) for p in original.glob("[0-9]*/**/*.cpp")]
@@ -30,11 +30,18 @@ def refresh(write_catalog=True):
     )
     dependencies += [
         ROOT / "prebindings/nn/src/nn.i",
+        ROOT / "examples/bindings/nn_components.i",
         ROOT / "src/pydatamunge/nn.py",
+        ROOT / "src/pydatamunge/nn_components.py",
         ROOT / "src/pydatamunge/nn_workflows.py",
         ROOT / "prebindings/nn/r/R/nn.R",
         ROOT / "examples/r/nn/common.R",
     ]
+    # A port can change behavior without changing its .cpp or language script:
+    # model components and language helpers are part of the implementation too.
+    dependencies += sorted((ROOT / "examples/nn/common").rglob("*.hpp"))
+    dependencies += sorted((ROOT / "examples/python/nn/common").rglob("*.py"))
+    dependencies += sorted((ROOT / "examples/r/nn/common").rglob("*.R"))
     for dependency in dependencies:
         api_digest.update(dependency.relative_to(ROOT).as_posix().encode())
         api_digest.update(dependency.read_bytes())

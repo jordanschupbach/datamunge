@@ -59,7 +59,7 @@ exposes a Carmichael number.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Self-contained modular arithmetic, used only to trace the rounds by hand in this report.
 // The 128-bit intermediate keeps (a*b) % m exact even when a and b approach 2^64.

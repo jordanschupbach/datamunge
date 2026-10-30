@@ -1,10 +1,10 @@
 # Native R NN example. CIFAR-10 CNN with crop/flip augmentation, trained in R.
+# CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_cifar10.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example cnn_cifar10
 # A small CIFAR-10 CNN trained with independent random crops and flips.
 #
 # Port of tflow's cnn_cifar10. Preparation (in ~/projects/tflow_examples):

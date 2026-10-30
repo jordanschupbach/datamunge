@@ -36,7 +36,7 @@ different initial offsets and concatenating the 8-bit results.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

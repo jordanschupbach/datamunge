@@ -186,7 +186,8 @@ Tensor norm(const Tensor& x, const Axes& axes = {}, bool keepdims = false);
 
 // ---- shape ops --------------------------------------------------------------------------------
 
-/// One dimension may be -1 and is inferred. Returns a view when possible.
+/// One dimension may be -1 and is inferred. Returns a view whenever view_strides() allows one
+/// (always for a contiguous input), and otherwise a packed copy.
 Tensor reshape(const Tensor& x, const Shape& shape);
 /// Collapses to 1-D.
 Tensor flatten(const Tensor& x);
@@ -260,12 +261,33 @@ Tensor argsort(const Tensor& x, bool descending = false);
 
 // ---- matrix ops -----------------------------------------------------------------------------------
 
-/// Batched matrix product over the last two axes. Leading (batch) axes
-/// broadcast, as in TF BatchMatMulV2. Both inputs need rank >= 2.
-/// Results are deterministic for fixed shapes, but not batch-invariant: the
-/// BLAS kernel blocks the reduction differently for different row counts, so
-/// one row of a [N, K] x [K, M] product can differ in the last bits (~1e-6
-/// relative in float32) from the same row computed with a different N.
+/// @brief Batched matrix product over the last two axes, like TF BatchMatMulV2.
+/// Leading axes broadcast. CPU operands use dtype promotion; CUDA operands must
+/// share one context and the same Float32/Float64 dtype. CUDA uses cuBLAS with
+/// native packing for strided views and no host numerical fallback. Both inputs
+/// need rank >= 2. Zero inner dimension produces zeros. The result retains the
+/// CUDA context, or uses the default CPU context for CPU inputs.
+/// Gradients with matching batch shapes run on CUDA; gradients requiring batch
+/// broadcast reduction currently fail until native reductions are implemented.
+/// Floating results can vary in their last bits with batch shape/backend.
+/// @param a Left operand, with stored final axes [m,k] (or [k,m] when transposed).
+/// @param b Right operand, with stored final axes [k,n] (or [n,k] when transposed).
+/// @param transpose_a Transpose the final two axes of a; default false.
+/// @param transpose_b Transpose the final two axes of b; default false.
+/// @return Packed tensor with broadcast batch shape followed by [m,n].
+/// @throws std::invalid_argument Invalid rank, incompatible dimensions/batches,
+/// mixed devices/contexts, or unsupported CUDA dtype.
+/// @throws std::logic_error CUDA matrix adapter is disabled or backend unsupported.
+/// @throws std::runtime_error Device allocation, packing or cuBLAS failure.
+/// @par Example
+/// @code
+/// const auto a=dm::nn::from_vector(std::vector<float>{1,2,3,4},{2,2});
+/// const auto b=dm::nn::from_vector(std::vector<float>{5,6},{2,1});
+/// std::print("{}\n",dm::nn::matmul(a,b).to_vector<float>()[0]); // 17
+/// @endcode
+/// @par References
+/// - NVIDIA cuBLAS GEMM: https://docs.nvidia.com/cuda/archive/12.8.0/cublas/index.html#cublas-t-gemm
+/// @see compute::Context::matmul()
 Tensor matmul(const Tensor& a, const Tensor& b, bool transpose_a = false, bool transpose_b = false);
 /// x + bias along the last axis (NHWC channels).
 Tensor bias_add(const Tensor& x, const Tensor& bias);

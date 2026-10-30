@@ -1,6 +1,6 @@
 # Native Python NN example. Reset-before GRU with explicit masked unroll and full BPTT on the marked-token task.
-"""CMD: just python-example gru
-Reset-before GRU with explicit masked unroll and full BPTT on the common
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/gru.py
+"""Reset-before GRU with explicit masked unroll and full BPTT on the common
 three-epoch task.
 
 Port of tflow's gru (common/ml/gated_sequence_demo.h with GatedCell::kGru).

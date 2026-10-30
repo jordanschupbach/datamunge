@@ -57,7 +57,7 @@ approximation that should be both converged and diverse. =datamunge='s
 #include <vector>
 
 using namespace datamunge::optim;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // ZDT1: convex Pareto front f2 = 1 - sqrt(f1), reached only when g(x)=1 (all variables but the
 // first are 0). A standard convergence + diversity test at n=30 variables.

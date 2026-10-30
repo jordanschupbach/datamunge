@@ -1,10 +1,10 @@
 # Native R NN example. Activation-L1 and Bernoulli-KL sparse autoencoders with matched controls.
+# CMD: nix develop .#r --command Rscript examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/sparse_autoencoder.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example sparse_autoencoder
 # BOTH activation-L1 and mean-unit Bernoulli-KL sparse autoencoders with matched controls.
 # Four matched 64-sigmoid variants, three epochs/default, no label targets.
 #

@@ -58,6 +58,7 @@
 %ignore datamunge::stats::LDAPrediction;
 %ignore datamunge::datasets::iris;
 %ignore datamunge::datasets::penguins;
+%ignore datamunge::datasets::tooth_growth;
 %ignore datamunge::stats::SVM;
 %ignore datamunge::stats::SVMOptions;
 %ignore datamunge::stats::SVMPrediction;
@@ -131,6 +132,7 @@
 %ignore datamunge::bayes::student_t_lpdf;
 %ignore datamunge::bayes::bernoulli_logit_lpmf;
 %ignore datamunge::bayes::poisson_log_lpmf;
+%ignore datamunge::bayes::laplace_lpdf;
 // Polynomial::divmod returns std::pair<Polynomial, Polynomial> -- this codebase avoids
 // exposing custom-class-pair returns to SWIG bindings directly (see poly_quotient()/
 // poly_remainder(), the binding-friendly free-function alternatives, in polynomial.hpp).
@@ -189,52 +191,124 @@
 // Plot/RPlot setters return *this for chaining. The default proxy for a returned reference
 // doesn't own the object, so in `dm.RPlot.create().points(...)` the temporary that does own it
 // is collected and the chain dangles. Returning `self` keeps the owning proxy alive instead.
-%pythonappend datamunge::plot::Plot::size %{ val = self %}
-%pythonappend datamunge::plot::Plot::title %{ val = self %}
-%pythonappend datamunge::plot::Plot::x_label %{ val = self %}
-%pythonappend datamunge::plot::Plot::y_label %{ val = self %}
-%pythonappend datamunge::plot::Plot::background %{ val = self %}
-%pythonappend datamunge::plot::Plot::axis_color %{ val = self %}
-%pythonappend datamunge::plot::Plot::grid_color %{ val = self %}
-%pythonappend datamunge::plot::Plot::show_grid %{ val = self %}
-%pythonappend datamunge::plot::Plot::x_limits %{ val = self %}
-%pythonappend datamunge::plot::Plot::y_limits %{ val = self %}
-%pythonappend datamunge::plot::Plot::hide_axes %{ val = self %}
-%pythonappend datamunge::plot::Plot::x_tick_labels %{ val = self %}
-%pythonappend datamunge::plot::RPlot::size %{ val = self %}
-%pythonappend datamunge::plot::RPlot::title %{ val = self %}
-%pythonappend datamunge::plot::RPlot::x_label %{ val = self %}
-%pythonappend datamunge::plot::RPlot::y_label %{ val = self %}
-%pythonappend datamunge::plot::RPlot::background %{ val = self %}
-%pythonappend datamunge::plot::RPlot::axis_color %{ val = self %}
-%pythonappend datamunge::plot::RPlot::grid_color %{ val = self %}
-%pythonappend datamunge::plot::RPlot::show_grid %{ val = self %}
-%pythonappend datamunge::plot::RPlot::x_limits %{ val = self %}
-%pythonappend datamunge::plot::RPlot::y_limits %{ val = self %}
-%pythonappend datamunge::plot::RPlot::hide_axes %{ val = self %}
-%pythonappend datamunge::plot::RPlot::x_tick_labels %{ val = self %}
-%pythonappend datamunge::plot::RPlot::xlab %{ val = self %}
-%pythonappend datamunge::plot::RPlot::ylab %{ val = self %}
-%pythonappend datamunge::plot::RPlot::points %{ val = self %}
-%pythonappend datamunge::plot::RPlot::line %{ val = self %}
-%pythonappend datamunge::plot::RPlot::lines %{ val = self %}
-%pythonappend datamunge::plot::RPlot::bars %{ val = self %}
-%pythonappend datamunge::plot::RPlot::box %{ val = self %}
-%pythonappend datamunge::plot::RPlot::abline %{ val = self %}
-%pythonappend datamunge::plot::RPlot::abline_h %{ val = self %}
-%pythonappend datamunge::plot::RPlot::abline_v %{ val = self %}
-%pythonappend datamunge::plot::RPlot::qqline %{ val = self %}
-%pythonappend datamunge::plot::RPlot::legend %{ val = self %}
-%pythonappend datamunge::plot::RPlot::text %{ val = self %}
-%pythonappend datamunge::plot::RPlot::polygon %{ val = self %}
-%pythonappend datamunge::plot::RPlot::segments %{ val = self %}
-%pythonappend datamunge::plot::RLayout::add %{ val = self %}
-%pythonappend datamunge::plot::RLayout::size %{ val = self %}
+%pythonappend datamunge::graphics::Plot::size %{ val = self %}
+%pythonappend datamunge::graphics::Plot::title %{ val = self %}
+%pythonappend datamunge::graphics::Plot::subtitle %{ val = self %}
+%pythonappend datamunge::graphics::Plot::x_label %{ val = self %}
+%pythonappend datamunge::graphics::Plot::y_label %{ val = self %}
+%pythonappend datamunge::graphics::Plot::background %{ val = self %}
+%pythonappend datamunge::graphics::Plot::axis_color %{ val = self %}
+%pythonappend datamunge::graphics::Plot::grid_color %{ val = self %}
+%pythonappend datamunge::graphics::Plot::show_grid %{ val = self %}
+%pythonappend datamunge::graphics::Plot::x_limits %{ val = self %}
+%pythonappend datamunge::graphics::Plot::y_limits %{ val = self %}
+%pythonappend datamunge::graphics::Plot::hide_axes %{ val = self %}
+%pythonappend datamunge::graphics::Plot::x_tick_labels %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::size %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::title %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::subtitle %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::x_label %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::y_label %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::background %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::axis_color %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::grid_color %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::show_grid %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::x_limits %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::y_limits %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::hide_axes %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::x_tick_labels %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::xlab %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::ylab %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::set_title %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::set_subtitle %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::set_xlab %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::set_ylab %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::set_col %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::points %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::points_colored %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::line %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::lines %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::bars %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::box %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::abline %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::abline_h %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::abline_v %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::qqline %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::legend %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::text %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::polygon %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::segments %{ val = self %}
+%pythonappend datamunge::graphics::RLayout::add %{ val = self %}
+%pythonappend datamunge::graphics::RLayout::size %{ val = self %}
+%pythonappend datamunge::graphics::RLayout::title %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::margins %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::tick_font_size %{ val = self %}
+// Splom facade setters chain like the RPlot verbs above.
+%pythonappend datamunge::Splom::title %{ val = self %}
+%pythonappend datamunge::Splom::size %{ val = self %}
+%pythonappend datamunge::Splom::color %{ val = self %}
+%pythonappend datamunge::Splom::group_by %{ val = self %}
+%pythonappend datamunge::Splom::marker_size %{ val = self %}
+%pythonappend datamunge::Splom::point_colors %{ val = self %}
+%pythonappend datamunge::Splom::level_palette %{ val = self %}
+%pythonappend datamunge::Splom::diagonal_names %{ val = self %}
+%pythonappend datamunge::Splom::diagonal_histogram %{ val = self %}
+%pythonappend datamunge::Splom::diagonal_density %{ val = self %}
+%pythonappend datamunge::Splom::span %{ val = self %}
+%pythonappend datamunge::Splom::prediction_level %{ val = self %}
+%pythonappend datamunge::Splom::bins %{ val = self %}
+%pythonappend datamunge::Splom::show_grid %{ val = self %}
+// Register color-sequence conversion before parsing methods that accept a palette.
+namespace datamunge { namespace graphics { struct RGB; } }
+%template(RGBVector) std::vector<datamunge::graphics::RGB>;
+%include "datamunge/plot/exceptions.i"
 %include "datamunge/plot/plot.hpp"
-%template(RGBVector) std::vector<datamunge::plot::RGB>;
-%template(DataSeriesVector) std::vector<datamunge::plot::DataSeries>;
-%template(ABLineVector) std::vector<datamunge::plot::ABLine>;
-%template(LegendEntryVector) std::vector<datamunge::plot::LegendEntry>;
+%template(DataSeriesVector) std::vector<datamunge::graphics::DataSeries>;
+%template(ABLineVector) std::vector<datamunge::graphics::ABLine>;
+%template(LegendEntryVector) std::vector<datamunge::graphics::LegendEntry>;
+// Datasets: download/cache helpers and the disk-backed image batch loader. The loader's
+// setters return the loader itself; keep the original Python proxy alive while chaining.
+%pythonappend datamunge::datasets::ImageLoader::set_batch_size %{ val = self %}
+%pythonappend datamunge::datasets::ImageLoader::set_shuffle %{ val = self %}
+%pythonappend datamunge::datasets::ImageLoader::set_seed %{ val = self %}
+%pythonappend datamunge::datasets::ImageLoader::set_drop_last %{ val = self %}
+%pythonappend datamunge::datasets::ImageLoader::set_normalize %{ val = self %}
+%pythonappend datamunge::datasets::ImageLoader::set_layout %{ val = self %}
+%pythonappend datamunge::datasets::ImageLoader::set_limit %{ val = self %}
+%pythonappend datamunge::datasets::ImageLoader::set_coarse_labels %{ val = self %}
+%extend datamunge::datasets::ImageLoader {
+%pythoncode %{
+def __iter__(self):
+    """Yields the remaining batches of the current epoch; call reset() for the next epoch."""
+    while self.has_next():
+        yield self.next()
+
+def __len__(self):
+    return self.num_batches()
+%}
+}
+%extend datamunge::CsvReader {
+%pythoncode %{
+def __iter__(self):
+    """Yields the remaining chunks as DataFrames."""
+    while self.has_next():
+        yield self.next()
+%}
+}
+// Download and loader errors (unknown names, missing files, bad batches) become language
+// exceptions instead of aborting the process. Scoped to these two headers.
+%exception {
+  try {
+    $action
+  } catch (const std::invalid_argument& error) {
+    SWIG_exception_fail(SWIG_ValueError, error.what());
+  } catch (const std::exception& error) {
+    SWIG_exception_fail(SWIG_RuntimeError, error.what());
+  }
+}
+%include "datamunge/datasets/download.hpp"
+%include "datamunge/datasets/image_loader.hpp"
+%exception;
 %include "datamunge/datamunge.hpp"
 %include "datamunge/vector.i"
 %pythoncode %{
@@ -302,6 +376,7 @@ RGBA = RGB
 %include "datamunge/optim/rbf_gaussian_process_surrogate.hpp"
 %include "datamunge/bayes/map.hpp"
 %include "datamunge/bayes/hmc.hpp"
+%ignore datamunge::bayes::NUTS::sample_chains;
 %include "datamunge/bayes/nuts.hpp"
 %include "datamunge/bayes/rwm.hpp"
 %include "datamunge/bayes/gibbs.hpp"
@@ -499,4 +574,45 @@ RGBA = RGB
   }
 }
 %include "datamunge/nn/api.hpp"
+%exception;
+
+// datamunge::fda hierarchical splines: BSplineBasis, TensorBSpline, knot refinement, tensor
+// P-spline fits, HierarchicalBSpline (Forsey-Bartels overlay) and TruncatedHierarchicalBSpline
+// (THB). See include/datamunge/fda/hierarchical_bspline.hpp. Sparse/dense matrix outputs
+// (design matrices, refinement and penalty operators) stay C++-only.
+%{
+  #include "datamunge/fda/hierarchical_bspline.hpp"
+%}
+%ignore datamunge::fda::LocalBSplineEvaluation;
+%ignore datamunge::fda::BSplineBasis::evaluate_point;
+%ignore datamunge::fda::BSplineBasis::evaluate;
+%ignore datamunge::fda::BSplineBasis::evaluate_dense;
+%ignore datamunge::fda::BSpline;
+%ignore datamunge::fda::BSplineRefinement::matrix;
+%ignore datamunge::fda::tensor_difference_penalty;
+// Bad arguments raise ValueError, bad ids/indices IndexError, singular fits RuntimeError.
+%exception {
+  try {
+    $action
+  } catch (const std::out_of_range& e) {
+    SWIG_exception(SWIG_IndexError, e.what());
+  } catch (const std::invalid_argument& e) {
+    SWIG_exception(SWIG_ValueError, e.what());
+  } catch (const std::exception& e) {
+    SWIG_exception(SWIG_RuntimeError, e.what());
+  }
+}
+%include "datamunge/fda/bspline.hpp"
+%template(BSplineBasisVector) std::vector<datamunge::fda::BSplineBasis>;
+%include "datamunge/fda/hierarchical_bspline.hpp"
+%exception;
+
+// Native simulation tasks share one generated adapter with R.
+%exception {
+  try { $action }
+  catch (const std::out_of_range& e) { SWIG_exception(SWIG_IndexError,e.what()); }
+  catch (const std::invalid_argument& e) { SWIG_exception(SWIG_ValueError,e.what()); }
+  catch (const std::exception& e) { SWIG_exception(SWIG_RuntimeError,e.what()); }
+}
+%include "prebindings/simulation/src/tasks.i"
 %exception;

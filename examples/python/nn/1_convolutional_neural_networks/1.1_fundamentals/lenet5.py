@@ -1,6 +1,6 @@
 # Native Python NN example. LeNet-5 architecture checks and MNIST fitting run in Python.
-"""CMD: just python-example lenet5
-LeNet-5: sparse convolutions, learned subsampling and a fixed RBF head.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/lenet5.py
+"""LeNet-5: sparse convolutions, learned subsampling and a fixed RBF head.
 
 Port of tflow's lenet5. Preparation (in ~/projects/tflow_examples):
 python3 scripts/fetch_datasets.py mnist --split both.
@@ -25,6 +25,7 @@ import os
 import time
 from pathlib import Path
 
+from pydatamunge.nn_components import dataset_assets
 from pydatamunge import nn
 from pydatamunge.nn_workflows import helper, options
 
@@ -106,10 +107,7 @@ def main(arguments=None):
     batch = checks.limit(batch, 16)
     checks.describe()
     data = Path(args["data"])
-    checks.require((data / "train-images-idx3-ubyte").exists() or (data / "train-images-idx3-ubyte.gz").exists(),
-                   "MNIST missing in " + str(data) + "; run python3 scripts/fetch_datasets.py mnist --split both "
-                   "in tflow_examples, or set data=")
-    train, test = nn.load_mnist(str(data), "train"), nn.load_mnist(str(data), "test")
+    train, test = dataset_assets.LoadMnist(str(data), "train"), dataset_assets.LoadMnist(str(data), "test")
     checks.require(list(train.images.shape()) == [60000, 28, 28, 1] and list(test.images.shape()) == [10000, 28, 28, 1],
                    "official MNIST dimensions required")
     train_x, test_x = nn.reshape(train.images, [60000, 784]), nn.reshape(test.images, [10000, 784])

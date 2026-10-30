@@ -1,9 +1,9 @@
 # Native R NN example. Kim CNN-rand sentence classification with Adadelta written out in R.
+# CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.9_1d_convolutions/kim_sentence_cnn.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example kim_sentence_cnn
 # Kim2014 CNN-rand: learned embeddings,parallel3/4/5-ReLU word convolutions,
 # max-over-time pooling,dropout.5,softmax and Adadelta with head maxnorm3.
 # Real pinned MR v1.0 sentences;fit-only vocabulary,duplicate-group holdout.

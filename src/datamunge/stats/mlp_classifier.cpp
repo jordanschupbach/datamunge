@@ -14,7 +14,7 @@ namespace datamunge::stats {
 
 namespace {
 
-const plot::RGB kSeriesColors[] = {
+const graphics::RGB kSeriesColors[] = {
     {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}, {124, 58, 237}, {8, 145, 178},
 };
 
@@ -346,7 +346,7 @@ void MLPClassifier::print_summary(std::ostream& os) const {
     os << "Training accuracy: " << format_stat(training_accuracy()) << "\n";
 }
 
-plot::RPlot MLPClassifier::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
+graphics::RPlot MLPClassifier::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
                                                  std::size_t grid_resolution) const {
     if (predictor_names_.size() != 2)
         throw std::invalid_argument("MLPClassifier::plot_decision_regions: model must have exactly 2 predictors");
@@ -366,7 +366,7 @@ plot::RPlot MLPClassifier::plot_decision_regions(const std::string& x_feature, c
     x_min -= x_pad; x_max += x_pad;
     y_min -= y_pad; y_max += y_pad;
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     std::vector<std::vector<double>> grid_x(classes_.size()), grid_y(classes_.size());
     for (std::size_t gx = 0; gx < grid_resolution; ++gx) {
         for (std::size_t gy = 0; gy < grid_resolution; ++gy) {
@@ -392,10 +392,10 @@ plot::RPlot MLPClassifier::plot_decision_regions(const std::string& x_feature, c
     return plot;
 }
 
-plot::RPlot MLPClassifier::plot_loss_curve() const {
+graphics::RPlot MLPClassifier::plot_loss_curve() const {
     std::vector<double> epochs(loss_curve_.size());
     for (std::size_t i = 0; i < loss_curve_.size(); ++i) epochs[i] = static_cast<double>(i + 1);
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     plot.line(epochs, loss_curve_, "training cross-entropy", {37, 99, 235}, 2.0);
     plot.title("Training Loss Curve").x_label("epoch").y_label("mean cross-entropy");
     return plot;

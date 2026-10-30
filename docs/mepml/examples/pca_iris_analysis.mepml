@@ -1,0 +1,633 @@
+//? Title: PCA on Iris: Axes, Metric and Reconstruction
+//? Subtitle: Exact projection geometry, discarded energy and frozen preprocessing
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Several correlated measurements can describe nearly the same variation. We want a
+smaller set of coordinates, with a measurable account of what their projection loses.
+PCA chooses orthogonal directions that retain the most squared variation in a specified
+feature metric. Four points make its axes and reconstruction error exact; a unit-change
+example separates standardized error from original-unit error, and a wide two-row
+example separates returned axes from numerical rank. Iris then illustrates score plots,
+loadings, scaling choices and the eigenvalue-tail identity. A final split projects new
+flowers through training-only means, scales and axes. Species colours are descriptive,
+with no classification accuracy or biological importance inferred from variance shares.
+)
+\toc
+
+> The method
+
+>> Choose the origin and the feature metric
+
+Let X have n rows and p numeric columns. Fit preprocessing once:
+
+$$
+ Z_{ij}=\frac{X_{ij}-\mu_j}{s_j},\qquad C=\frac{Z^TZ}{n-1}.
+$$
+\alttext(Each feature subtracts its fitted origin and divides by its fitted scale. The preprocessed cross-product matrix is divided by n minus one.)
+
+With centring enabled, mu is the training mean. Without scaling, s=1 and C is the
+sample covariance matrix. With scaling, s is the sample standard deviation, using
+n−1, and C is the correlation matrix for nonconstant columns. Exactly constant centred
+columns retain scale one and zero energy. They contribute no variance; they do not
+magically become unit-variance features. The library defaults to centring and scaling.
+R prcomp defaults to centring without scaling and rejects constant scaled columns.
+
+If centring is disabled, mu=0 and C is a second-moment matrix rather than covariance.
+Scaling then uses sqrt(sum(x_j squared)/(n−1)), not a centred standard deviation.
+We use centred fits throughout the numerical examples. Changing a column's units
+changes raw covariance PCA; standardizing each nonconstant column cancels positive
+unit rescalings. Neither convention is universally more meaningful: scaling selects
+a weighted squared-error objective, and small-variance noise can be amplified too.
+
+The retained local TikZ source illustrates a perpendicular rank-one projection of the
+four-point example below. Regeneration needs LaTeX with PGF/TikZ, standalone and Latin
+Modern, plus dvisvgm. The exported report uses the saved image file.
+
+```{bash, results="output", file="figures/pca_iris_projection_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/pca_iris_projection.tikz > build/pca_iris_projection.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/pca_iris_projection_concept.svg build/pca_iris_projection.dvi > build/pca_iris_projection.render.log 2>&1
+printf 'Rendered the local PCA projection diagram.\n'
+```
+// result_begin:
+// Rendered the local PCA projection diagram.
+// \image(figures/pca_iris_projection_concept.svg)
+// result_end
+\caption(PCA projects orthogonally in the chosen preprocessed coordinates, then reverses preprocessing for reconstruction.)
+\alttext(Four points surround a zero mean. The first principal axis is the diagonal; point three comma one projects to two comma two with a perpendicular residual. A box states the score, projection and inverse-preprocessing steps.)
+
+>> Maximize variance along a unit axis
+
+A unit vector v has projected sample variance v-transpose C v. A Lagrange multiplier
+for v-transpose v=1 yields Cv=lambda v. Maximizing that Rayleigh quotient chooses the
+largest eigenvalue; repeating in the orthogonal complement selects the next axes.
+For orthonormal columns V and descending eigenvalues lambda,
+
+$$
+ CV=V\Lambda,\qquad V^TV=I,\qquad T=ZV,\qquad
+ \frac{T^TT}{n-1}=\Lambda.
+$$
+\alttext(The axes diagonalize the preprocessed covariance, scores multiply observations by those axes, and score cross-products recover the eigenvalues.)
+
+The rotation columns are often called loadings, but they are not automatically
+variable-component correlations. For standardized nonconstant variables those
+correlations are V_jc*sqrt(lambda_c), when lambda_c is positive. Scores are not whitened:
+their variances remain lambda. Eigenvector signs are arbitrary; a repeated eigenvalue
+allows any orthonormal basis of its eigenspace. Compare projectors or reconstructed
+geometry when checking implementations. Cutting through a tied eigenspace can give
+different equally optimal projections, without identifying a preferred direction.
+
+The native covariance eigensolver returns a full p-axis basis, including zero-energy
+columns. It does not return only min(n−1,p) nontrivial components. Centred data have
+rank at most min(n−1,p); `numerical_rank()` uses a scale-relative Gram-eigenvalue
+threshold, 64*max(n,p)*machine_epsilon*lambda_1. All-zero energy has rank zero and
+zero variance shares. Numerical rank is distinct from a scientific choice of k.
+
+>> Derive projection loss from discarded variance
+
+For the first k axes, the fitted affine reconstruction is
+
+$$
+ \widehat Z_k=ZV_kV_k^T,\qquad
+ \widehat X_{k,ij}=\mu_j+s_j\widehat Z_{k,ij},\qquad
+ \|Z-\widehat Z_k\|_F^2=(n-1)\sum_{c>k}\lambda_c.
+$$
+\alttext(Projection onto the leading axes reconstructs preprocessed rows. Reversing the scales and offsets returns original units. Total training squared error equals n minus one times the discarded eigenvalue sum.)
+
+Write Z in its orthonormal axis basis. Each omitted score column contributes its
+squared norm, (n−1)*lambda_c, with no cross terms. Retaining the largest such norms
+minimizes rank-k squared error: the Eckart–Young result. Divide by n*p and take a
+square root for RMS per entry, rather than dividing by n−1 again. `spectrum()` reports
+the training tail; `reconstruction_curve(data)` measures residuals against the actual
+input coordinates. All p axes reconstruct within floating-point error, not literal
+exact-zero arithmetic. k=0 returns the fitted origin.
+
+This optimality concerns preprocessed error. In original units it weights squared
+coordinate residuals by s_j squared; a scaled fit need not be the best raw-unit rank-k
+fit. A new query row can even have increasing original-unit error when one more axis
+is retained, while its preprocessed error decreases. The tail identity uses the training
+sample; query errors need not equal that same training eigenvalue tail.
+
+>> Preprocessing and numerical limits are part of the fitted model
+
+Fitting drops rows with a null selected feature and records their original indices.
+Retained predictors must be finite. Transform/reconstruction require every query row
+to be complete and finite, and use only the frozen training schema, means, scales and
+axes. An individual row projects identically alone or as part of a batch. Missing
+selected columns or mismatched types are rejected; extra columns are ignored.
+
+Covariance is formed with extended-precision accumulation and normalized before the
+Jacobi eigensolve, avoiding the eigensolver norm's overflow/underflow for representable
+very large/small covariance scales. Forming a Gram matrix still squares the condition
+number; near-null directions do not have SVD-level relative accuracy. Small negative
+computed eigenvalues are clipped to zero. For n observations and p features the main
+work is O(np^2+p^3) with bounded Jacobi sweeps and storage O(np+p^2); projecting m
+new rows or sweeping their reconstruction prefixes costs O(mp^2).
+
+> Simple examples
+
+>> Four points give an exact eighty/twenty split
+
+Use (-3,-1), (-1,-3), (1,3), (3,1), with no scaling. Their mean is zero,
+covariance diagonal 20/3 and off-diagonal four. The axes lie along (1,1) and (1,-1),
+with eigenvalues 32/3 and 8/3. Keeping the diagonal axis maps the negative pair to
+(-2,-2) and the positive pair to (2,2). The four residuals have squared norm two each:
+SSE=8 and RMS=sqrt(8/8)=1. Zero axes gives SSE=40; both axes reconstruct to roundoff.
+
+```{cpp, results="markdown", file="figures/pca_iris_four_points.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{-3, -1, 1, 3});
+  d.add_column("y", std::vector<double>{-1, -3, 3, 1});
+  const PCA  fit(d, {"x", "y"}, PCAOptions{true, false});
+  const auto r     = fit.reconstruct(d, 1);
+  const auto curve = fit.reconstruction_curve(d);
+  if (std::abs(curve.double_at("preprocessed_sse", 1) - 8) > 1e-12)
+    throw std::runtime_error("projection reference mismatch");
+  auto geometry = dm::graphics::RPlot::create();
+  geometry
+      .points(
+          d.numeric_column("x").values(),
+          d.numeric_column("y").values(),
+          "observations",
+          {37, 99, 235},
+          5)
+      .points(r.col(0), r.col(1), "rank-one projection", {220, 38, 38}, 6)
+      .line({-3.5, 3.5}, {-3.5, 3.5}, "leading axis", {22, 163, 74})
+      .title("Project onto the leading diagonal")
+      .x_label("x")
+      .y_label("y")
+      .x_limits(-6.5, 6.5)
+      .y_limits(-4, 6);
+  for (std::size_t i = 0; i < d.nrows(); ++i)
+    geometry.line(
+        {d.double_at("x", i), r(i, 0)}, {d.double_at("y", i), r(i, 1)}, "", {107, 114, 128});
+  auto error = dm::graphics::RPlot::create();
+  error
+      .line(
+          curve.numeric_column("components").values(),
+          curve.numeric_column("preprocessed_sse").values(),
+          "measured SSE",
+          {37, 99, 235})
+      .points({0, 1, 2}, {40, 8, 0}, "exact tail", {220, 38, 38}, 5)
+      .title("Discarding an axis discards its energy")
+      .x_label("retained components")
+      .y_label("squared reconstruction error")
+      .y_limits(0, 55);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(geometry)
+      .add(error)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/pca_iris_four_points.svg");
+  std::print(
+      "{}\n\n{}\n\nFull-basis residual SSE: {:.9e}.\n",
+      fit.spectrum().to_md(9),
+      curve.to_md(9),
+      curve.double_at("preprocessed_sse", 2));
+}
+```
+// result_begin: markdown
+| component | variance | share | cumulative_share | tail_sse |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 10.666666667 | 0.8 | 0.8 | 8 |
+| 2 | 2.666666667 | 0.2 | 1.0 | 0 |
+
+
+| components | preprocessed_sse | preprocessed_rmse | original_rmse |
+| ---: | ---: | ---: | ---: |
+| 0 | 40 | 2.236067977 | 2.236067977 |
+| 1 | 8 | 1.000000000 | 1.000000000 |
+| 2 | 0 | 0.000000000 | 0.000000000 |
+
+
+Full-basis residual SSE: 1.257482554e-30.
+\image(figures/pca_iris_four_points.svg)
+// result_end
+\caption(Exact axes, eigenvalues and perpendicular residuals give an independently checkable reconstruction identity.)
+\alttext(Four original points connect to their diagonal projections. A second panel compares measured SSE at zero, one and two axes with the exact values forty, eight and zero. Tables give the spectrum and measured error.)
+
+>> A metric change can reverse the meaning of a smaller error
+
+Multiplying only y by 100 changes raw covariance PCA but leaves the standardized
+correlation matrix and its .8/.2 variance shares unchanged. This is a unit transformation,
+not new evidence about which variable matters. For a separate query, fit the same
+four-point pattern with y multiplied by ten and scaling enabled. Choose the query's
+standardized coordinates as (1,0). The leading standardized axis is the diagonal:
+its residual is (.5,-.5), half the preprocessed squared error of the zero-axis fit.
+But y's scale is ten times larger, so original-unit squared error grows from s_x^2
+to (s_x^2+s_y^2)/4=25.25*s_x^2. The plot divides each RMS by its own zero-axis RMS.
+
+```{cpp, results="markdown", file="figures/pca_iris_metric.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{-3, -1, 1, 3});
+  d.add_column("y", std::vector<double>{-1, -3, 3, 1});
+  const auto changed = d.mutate_with("y", [](const auto& r) { return 100 * r.get_double("y"); });
+  std::vector<double> first = {
+      PCA(d, {"x", "y"}, PCAOptions{true, false}).explained_variance_ratio()[0],
+      PCA(changed, {"x", "y"}, PCAOptions{true, false}).explained_variance_ratio()[0],
+      PCA(d, {"x", "y"}).explained_variance_ratio()[0],
+      PCA(changed, {"x", "y"}).explained_variance_ratio()[0]};
+  const auto stretched = d.mutate_with("y", [](const auto& r) { return 10 * r.get_double("y"); });
+  const PCA  fit(stretched, {"x", "y"});
+  dm::dstruct::DataFrame q;
+  q.add_column("x", std::vector<double>{fit.scales()[0]});
+  q.add_column("y", std::vector<double>{0});
+  const auto curve  = fit.reconstruction_curve(q);
+  auto       pre    = curve.numeric_column("preprocessed_rmse").values(),
+       raw          = curve.numeric_column("original_rmse").values();
+  const double pre0 = pre[0], raw0 = raw[0];
+  for (auto& v : pre)
+    v /= pre0;
+  for (auto& v : raw)
+    v /= raw0;
+  auto shares = dm::graphics::RPlot::create(), errors = dm::graphics::RPlot::create();
+  shares.bars({0, 1, 2, 3}, first, "PC1 share", {37, 99, 235}, .5)
+      .title("Feature units affect covariance PCA")
+      .x_label("0 raw, 1 new units, 2 scaled, 3 scaled new units")
+      .y_label("first-component energy share")
+      .y_limits(0, 1.4);
+  errors.line({0, 1, 2}, pre, "preprocessed", {37, 99, 235})
+      .line({0, 1, 2}, raw, "original units", {220, 38, 38})
+      .title("Query errors use different metrics")
+      .x_label("retained components")
+      .y_label("RMS divided by its zero-axis RMS")
+      .y_limits(0, 7);
+  dm::dstruct::DataFrame table;
+  table.add_column(
+      "fit", std::vector<std::string>{"raw", "raw, y times 100", "scaled", "scaled, y times 100"});
+  table.add_column("pc1_share", first);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(shares).add(errors).size(1100, 490).fit_panels().save_svg(
+      "build/pca_iris_metric.svg");
+  std::print("{}\n\nQuery reconstruction errors:\n\n{}\n", table.to_md(9), curve.to_md(9));
+}
+```
+// result_begin: markdown
+| fit | pc1_share |
+| :--- | ---: |
+| raw | 0.800000000 |
+| raw, y times 100 | 0.999936009 |
+| scaled | 0.800000000 |
+| scaled, y times 100 | 0.800000000 |
+
+
+Query reconstruction errors:
+
+| components | preprocessed_sse | preprocessed_rmse | original_rmse |
+| ---: | ---: | ---: | ---: |
+| 0 | 1.0 | 0.707106781 | 1.82574186 |
+| 1 | 0.5 | 0.500000000 | 9.17423930 |
+| 2 | 0.0 | 0.000000000 | 0.00000000 |
+
+\image(figures/pca_iris_metric.svg)
+// result_end
+\caption(PCA optimizes one declared metric; standardized and original-unit error need not move together on a new row.)
+\alttext(Bars compare PC1 shares before and after changing one feature unit, with and without standardization. Relative query-error curves show preprocessed RMS decreasing while original-unit RMS initially rises.)
+
+> Checking rank and normalization
+
+>> Three returned axes can contain only one varying direction
+
+Two rows (0,0,5) and (1,2,5) give three feature axes but centred rank at most
+one. Sample standardization makes the first two columns equal and the third zero,
+so the spectrum is (2,0,0). The constant column has offset five and divisor one.
+A full basis is useful for an invertible coordinate description, but its null axes
+have no training variance to explain. For entirely constant centred data every
+variance share is zero; there is no meaningful one-hundred-percent leading axis.
+
+```{cpp, results="markdown", file="figures/pca_iris_rank.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 1});
+  d.add_column("y", std::vector<double>{0, 2});
+  d.add_column("constant", std::vector<double>{5, 5});
+  const PCA fit(d, {"x", "y", "constant"});
+  if (fit.num_components() != 3 || fit.numerical_rank() != 1)
+    throw std::runtime_error("rank reference mismatch");
+  auto p = fit.plot_scree();
+  p.title("Three axes, one varying direction").y_limits(0, 130);
+  std::filesystem::create_directories("build");
+  p.size(900, 430).save_svg("build/pca_iris_rank.svg");
+  dm::dstruct::DataFrame prep;
+  prep.add_column("feature", fit.feature_names());
+  prep.add_column("offset", fit.means());
+  prep.add_column("divisor", fit.scales());
+  std::print(
+      "Returned axes: {}; numerical Gram rank: {}.\n\n{}\n\n{}\n",
+      fit.num_components(),
+      fit.numerical_rank(),
+      fit.spectrum().to_md(9),
+      prep.to_md(9));
+}
+```
+// result_begin: markdown
+Returned axes: 3; numerical Gram rank: 1.
+
+| component | variance | share | cumulative_share | tail_sse |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 2 | 1 | 1 | 0 |
+| 2 | 0 | 0 | 1 | 0 |
+| 3 | 0 | 0 | 1 | 0 |
+
+
+| feature | offset | divisor |
+| :--- | ---: | ---: |
+| x | 0.5 | 0.707106781 |
+| y | 1.0 | 1.414213562 |
+| constant | 5.0 | 1.000000000 |
+
+\image(figures/pca_iris_rank.svg)
+// result_end
+\caption(Component count, numerical rank and a selected compression dimension describe different things.)
+\alttext(A scree plot has one hundred percent on the first of three returned axes and zero on the other two. Tables expose the spectrum and the constant feature’s preserved offset and unit divisor.)
+
+> Iris measurements
+
+All 150 rows have four complete numeric flower measurements in centimetres. The four
+features enter every fit; Species is withheld and supplies colours only afterwards.
+Each species has fifty rows. The full-data fits are descriptive, not held-out estimates
+of prediction quality. No species label is used to select axes or a retained dimension.
+
+>> Scaled scores and rotation coefficients describe one metric
+
+This baseline centres and sample-standardizes all four measurements. The score
+axes mix them linearly; the spectrum table defines their variance shares and the
+loadings table preserves each coefficient. A large coefficient means a geometric
+contribution under this scaling convention, not a causal or biological importance.
+The species separation visible in the scores does not validate a classifier. Even
+uncorrelated component scores can be statistically dependent.
+
+```{cpp, results="markdown", file="figures/pca_iris_scaled.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  const auto               d = dm::datasets::iris();
+  const PCA                fit(d, {"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"});
+  std::vector<std::string> species;
+  for (auto i : fit.kept_row_indices())
+    species.push_back(d.string_at("Species", i));
+  auto scores = fit.plot_scores(species).title("Species colours added after fitting");
+  scores.y_limits(-3, 4.5);
+  auto scree = fit.plot_scree().title("Sample-standardized training spectrum");
+  scree.y_limits(0, 100);
+  dm::dstruct::DataFrame prep;
+  prep.add_column("feature", fit.feature_names());
+  prep.add_column("training_mean_cm", fit.means());
+  prep.add_column("training_sample_sd_cm", fit.scales());
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(scores).add(scree).size(1100, 490).fit_panels().save_svg(
+      "build/pca_iris_scaled.svg");
+  std::print(
+      "{} flowers; {} retained rows; numerical Gram rank {}.\n\n{}\n\n{}\n\n{}\n",
+      d.nrows(),
+      fit.observations(),
+      fit.numerical_rank(),
+      prep.to_md(6),
+      fit.spectrum().to_md(9),
+      fit.loadings_frame().to_md(6));
+}
+```
+// result_begin: markdown
+150 flowers; 150 retained rows; numerical Gram rank 4.
+
+| feature | training_mean_cm | training_sample_sd_cm |
+| :--- | ---: | ---: |
+| Sepal.Length | 5.843333 | 0.828066 |
+| Sepal.Width | 3.057333 | 0.435866 |
+| Petal.Length | 3.758000 | 1.765298 |
+| Petal.Width | 1.199333 | 0.762238 |
+
+
+| component | variance | share | cumulative_share | tail_sse |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 2.918497817 | 0.729624454 | 0.729624454 | 161.14382534 |
+| 2 | 0.914030471 | 0.228507618 | 0.958132072 | 24.95328509 |
+| 3 | 0.146756876 | 0.036689219 | 0.994821291 | 3.08651063 |
+| 4 | 0.020714836 | 0.005178709 | 1.000000000 | 0.00000000 |
+
+
+| feature | PC1 | PC2 | PC3 | PC4 |
+| :--- | ---: | ---: | ---: | ---: |
+| Sepal.Length | 0.521066 | 0.377418 | -0.719566 | 0.261286 |
+| Sepal.Width | -0.269347 | 0.923296 | 0.244382 | -0.123510 |
+| Petal.Length | 0.580413 | 0.024492 | 0.142126 | -0.801449 |
+| Petal.Width | 0.564857 | 0.066942 | 0.634273 | 0.523597 |
+
+\image(figures/pca_iris_scaled.svg)
+// result_end
+\caption(Standardization fixes the feature weights; scores and rotation coefficients describe the resulting training geometry.)
+\alttext(PC1/PC2 scores coloured by species sit beside the four-component scree plot. Tables report the four training means and sample scales, spectral shares and principal-axis coefficients.)
+
+>> Measure reconstruction and compare raw versus scaled fits
+
+The standardized training fit's discarded eigenvalues predict the measured
+preprocessed error at every retained prefix. k=0 is the mean-only reconstruction,
+and k=4 leaves only floating-point residuals. A raw covariance fit uses the same
+centred observations but minimizes error in centimetres rather than feature-standardized
+units. All four Iris features share those units, so their pooled original-unit RMS
+is interpretable in centimetres. The raw fit cannot have worse training raw-unit error
+than a scaled fit at the same k, apart from numerical tolerance. Its larger leading
+variance share reflects a different objective, not a more informative representation.
+
+```{cpp, results="markdown", file="figures/pca_iris_reconstruction.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  const auto                     d = dm::datasets::iris();
+  const std::vector<std::string> f = {"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+  const PCA                      scaled(d, f), raw(d, f, PCAOptions{true, false});
+  const auto a = scaled.reconstruction_curve(d), b = raw.reconstruction_curve(d),
+             spectrum = scaled.spectrum();
+  std::vector<double> tail, expected;
+  long double         total = 0;
+  for (double v : scaled.explained_variance())
+    total += v;
+  tail.push_back(double((scaled.observations() - 1) * total));
+  for (std::size_t i = 0; i < 4; ++i)
+    tail.push_back(spectrum.double_at("tail_sse", i));
+  for (std::size_t k = 0; k <= 4; ++k) {
+    if (std::abs(tail[k] - a.double_at("preprocessed_sse", k)) > 1e-8)
+      throw std::runtime_error("tail identity mismatch");
+    expected.push_back(std::sqrt(tail[k] / (d.nrows() * f.size())));
+  }
+  auto       identity = dm::graphics::RPlot::create(), comparison = dm::graphics::RPlot::create();
+  const auto k = a.numeric_column("components").values();
+  identity.line(k, a.numeric_column("preprocessed_rmse").values(), "measured", {37, 99, 235})
+      .points(k, expected, "eigenvalue tail", {220, 38, 38}, 5)
+      .title("Measured RMS matches the spectral tail")
+      .x_label("retained components")
+      .y_label("standardized RMS per entry")
+      .y_limits(0, 1.4);
+  comparison.line(k, a.numeric_column("original_rmse").values(), "scaled fit", {37, 99, 235})
+      .line(k, b.numeric_column("original_rmse").values(), "raw fit", {220, 38, 38})
+      .title("A raw fit optimizes error in centimetres")
+      .x_label("retained components")
+      .y_label("original-unit RMS (cm)")
+      .y_limits(0, 1.4);
+  auto table = a;
+  table.add_column("training_eigenvalue_tail_sse", tail);
+  table.add_column("raw_fit_original_rmse", b.numeric_column("original_rmse").values());
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(identity)
+      .add(comparison)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/pca_iris_reconstruction.svg");
+  std::print(
+      "{}\n\nFirst two components retain {:.6f}% (scaled) and {:.6f}% (raw) of their respective "
+      "total energies.\nFull-basis standardized residual SSE: {:.9e}.\n",
+      table.to_md(10),
+      100 * scaled.cumulative_explained_variance_ratio()[1],
+      100 * raw.cumulative_explained_variance_ratio()[1],
+      a.double_at("preprocessed_sse", 4));
+}
+```
+// result_begin: markdown
+| components | preprocessed_sse | preprocessed_rmse | original_rmse | training_eigenvalue_tail_sse | raw_fit_original_rmse |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 596.00000000 | 0.996661093 | 1.065653634 | 596.00000000 | 1.065653634 |
+| 1 | 161.14382534 | 0.518240332 | 0.309004062 | 161.14382534 | 0.292582142 |
+| 2 | 24.95328509 | 0.203933343 | 0.188513413 | 24.95328509 | 0.159188800 |
+| 3 | 3.08651063 | 0.071722970 | 0.106639448 | 3.08651063 | 0.076935350 |
+| 4 | 0.00000000 | 0.000000000 | 0.000000000 | 0.00000000 | 0.000000000 |
+
+
+First two components retain 95.813207% (scaled) and 97.768521% (raw) of their respective total energies.
+Full-basis standardized residual SSE: 3.455299131e-28.
+\image(figures/pca_iris_reconstruction.svg)
+// result_end
+\caption(Eigenvalue tails explain training loss in one metric; raw and scaled PCA solve different reconstruction problems.)
+\alttext(Measured standardized RMS coincides with eigenvalue-tail predictions. Original-centimetre RMS curves compare raw and standardized fits across zero to four retained axes. A table preserves all measured errors and tail sums.)
+
+>> Project thirty new flowers without fitting their centre
+
+A fixed row-index split holds out every fifth observation: 120 training rows and
+30 test rows. This deterministic split is not a population sampling study. The training
+rows alone determine means, sample scales and axes. Test scores use those same axes;
+adding another query to their batch cannot change an individual projection. We compare
+one test row alone against its projection in the full test batch. Reconstruction curves
+measure all test rows against their actual measurements, with no query-centre fit and
+no training-tail equality assumed for the test data. The k=2 error describes this one
+representation and split, not classification accuracy or a tuned dimension choice.
+
+```{cpp, results="markdown", file="figures/pca_iris_frozen.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::stats;
+  const auto               d = dm::datasets::iris();
+  std::vector<std::size_t> train_rows, test_rows;
+  for (std::size_t i = 0; i < d.nrows(); ++i)
+    (i % 5 == 0 ? test_rows : train_rows).push_back(i);
+  const auto train = d.take_rows(train_rows), test = d.take_rows(test_rows);
+  const PCA  fit(train, {"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"});
+  const auto projected = fit.transform(test), one = fit.transform(test.head(1));
+  for (std::size_t c = 0; c < 4; ++c)
+    if (projected(0, c) != one(0, c))
+      throw std::runtime_error("query batch changed projection");
+  auto scores = fit.plot_scores().title("Training axes and untouched projections");
+  scores.legend({"training", "test"}, {{37, 99, 235}, {220, 38, 38}})
+      .points(projected.col(0), projected.col(1), "test", {220, 38, 38}, 5)
+      .y_limits(-3, 4.5);
+  const auto a = fit.reconstruction_curve(train), b = fit.reconstruction_curve(test);
+  auto       error = dm::graphics::RPlot::create();
+  error
+      .line(
+          a.numeric_column("components").values(),
+          a.numeric_column("preprocessed_rmse").values(),
+          "training",
+          {37, 99, 235})
+      .line(
+          b.numeric_column("components").values(),
+          b.numeric_column("preprocessed_rmse").values(),
+          "test",
+          {220, 38, 38})
+      .title("Both samples use the training metric")
+      .x_label("retained components")
+      .y_label("preprocessed RMS per entry")
+      .y_limits(0, 1.4);
+  auto table = a;
+  table.add_column("test_preprocessed_rmse", b.numeric_column("preprocessed_rmse").values());
+  table.add_column("test_original_rmse", b.numeric_column("original_rmse").values());
+  dm::dstruct::DataFrame means;
+  means.add_column("feature", fit.feature_names());
+  means.add_column("fitted_mean", fit.means());
+  std::vector<double> test_means;
+  for (const auto& f : fit.feature_names()) {
+    long double sum = 0;
+    for (double v : test.numeric_column(f).values())
+      sum += v;
+    test_means.push_back(double(sum / test.nrows()));
+  }
+  means.add_column("test_mean_not_used", test_means);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(scores).add(error).size(1100, 490).fit_panels().save_svg(
+      "build/pca_iris_frozen.svg");
+  std::print(
+      "{} training rows; {} test rows. Query singleton/batch projections match "
+      "exactly.\n\n{}\n\n{}\n",
+      train.nrows(),
+      test.nrows(),
+      means.to_md(6),
+      table.to_md(10));
+}
+```
+// result_begin: markdown
+120 training rows; 30 test rows. Query singleton/batch projections match exactly.
+
+| feature | fitted_mean | test_mean_not_used |
+| :--- | ---: | ---: |
+| Sepal.Length | 5.799167 | 6.020000 |
+| Sepal.Width | 3.035000 | 3.146667 |
+| Petal.Length | 3.732500 | 3.860000 |
+| Petal.Width | 1.183333 | 1.263333 |
+
+
+| components | preprocessed_sse | preprocessed_rmse | original_rmse | test_preprocessed_rmse | test_original_rmse |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 476.000000000 | 0.995824616 | 1.053933933 | 1.059966686 | 1.113182843 |
+| 1 | 125.268478624 | 0.510858099 | 0.304764328 | 0.567891906 | 0.338353525 |
+| 2 | 19.711727551 | 0.202647722 | 0.184081736 | 0.226350513 | 0.207512888 |
+| 3 | 2.391347215 | 0.070583095 | 0.104242749 | 0.081354575 | 0.120150930 |
+| 4 | 0.000000000 | 0.000000000 | 0.000000000 | 0.000000000 | 0.000000000 |
+
+\image(figures/pca_iris_frozen.svg)
+// result_end
+\caption(Frozen training preprocessing makes a projection independent of the other rows in its query batch.)
+\alttext(Training scores and thirty test projections share one two-axis plot. Training and test reconstruction RMS curves share the fitted training metric. Tables contrast fitted and unused test means and report all prefix errors.)
+
+> Conclusion
+
+The first two standardized Iris components retain 95.8132% of training energy,
+with RMS reconstruction error .203933 in standardized coordinates and .188513 cm
+in original units. The raw covariance fit retains 97.7685% of its own energy and
+has .159189 cm RMS error at k=2. Those percentages concern different metrics.
+On the fixed split, k=2 RMS in the training metric is .202648 for training rows and
+.226351 for test rows; this one comparison does not select a generally optimal k.
+
+The four-point calculation connects axes, eigenvalues and perpendicular projection
+error. Unit changes and the new-row counterexample show why variance shares and
+reconstruction loss need their metric. Full axis count is distinct from rank, and
+null or repeated directions limit interpretations of individual loadings. Iris then
+checks the same energy identity in four dimensions and applies frozen preprocessing
+to separate rows. These are geometric representation diagnostics, not proof of a
+biological signal, an optimal classifier or a universal retained-variance threshold.
+
+> References
+
+- Pearson, K. (1901). [On lines and planes of closest fit to systems of points in space|https://doi.org/10.1080/14786440109462720]. Philosophical Magazine 2, 559–572.
+- Eckart, C. and Young, G. (1936). [The approximation of one matrix by another of lower rank|https://doi.org/10.1007/BF02288367]. Psychometrika 1, 211–218.
+- R Core Team. [prcomp|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prcomp.html]. Sample normalization, rotation/score conventions, sign ambiguity and the SVD implementation; the native implementation here uses a covariance eigensolver and explicitly differs on defaults and constant columns.
+- Fisher, R. A. (1936). [The use of multiple measurements in taxonomic problems|https://doi.org/10.1111/j.1469-1809.1936.tb02137.x]. Annals of Eugenics 7(2), 179–188. Iris measurement provenance.

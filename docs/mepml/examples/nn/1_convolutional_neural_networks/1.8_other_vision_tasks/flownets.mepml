@@ -1,0 +1,714 @@
+//? Title: FlowNetS: explicit tensor optical-flow fitting
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Two frames must reveal where each visible point moves,including regions with weak texture or occlusion. This example predicts input-pixel displacement with six encoder scales and learned flow decoding. Hand warps,unit conversions and masked losses precede published Middlebury targets,visible SGD/Adam and pair-only restored inference,with every held-out motion error shown.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/flownets.cpp`.
+
+> The method
+
+FlowNetS concatenates two jointly centered RGB frames,encodes six scales,
+and decodes a flow pyramid with learned feature/flow transposes and skips.
+Every internal field remains in input-image pixels/20. A valid-block GT
+pyramid supervises all heads through smooth endpoint objectives;only the two
+observed frames enter prediction. Fixed and fitted constant references make
+the small experiment’s generalization limits inspectable.
+
+The editable concept diagram is `diagrams/flownets_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/flownets_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/flownets_concept.tikz > build/flownets_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/flownets_concept.svg build/flownets_concept.dvi > build/flownets_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/flownets_concept.svg)
+// result_end
+\caption(FlowNetS: explicit tensor optical-flow fitting)
+\alttext(Observed frame pair; Joint RGB centering; then Six encoder scales; Visible multiscale Adam; then Learned flow decoder; Inspect pixels and warps.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/flownets_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(163);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return m::FlowNetS(p, image, n::zeros({1, 64, 64, 3}), 64, 64, 8).flow;
+      },
+      "FlowNetS: explicit tensor optical-flow fitting");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 3}), options);
+  diagram.save_svg("build/flownets_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+113 displayed nodes; 615658 reachable learned values.
+\image(figures/flownets_architecture.svg)
+// result_end
+\caption(Executed flownets tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right flownets architecture with rotated names and exact output shapes.)
+
+> A backward warp fixes the direction convention
+
+Flow at a first-frame pixel is(dx,dy),pointing **into the second frame**.
+To reconstruct the first frame,sample second(x+dx,y+dy). Positive dx is right;
+positive dy is down in image coordinates. This is backward sampling,not a
+forward scatter. Bilinear outside taps are zero. A detached coverage mask
+marks full windows when sampled all-one coverage is at least.9999.
+
+On an image with intensity x+4y,a half-pixel rightward sample gives
+x+.5+4y away from the boundary. The last column has incomplete coverage and
+is zeroed by the default complete-window policy. The core sampler’s position
+derivative at an integer uses the mean of one-sided slopes;this is the stated
+adaptation from the old sampler’s right-sided choice.
+```{cpp, results="markdown", file="figures/flownets_warp.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto image = n::arange(0, 12).reshape({1, 3, 4, 1});
+  const auto field = n::ones({1, 3, 4, 2}) * n::tensor({.5, 0.}).reshape({1, 1, 1, 2});
+  const auto warped = m::FlowWarp(image, field);
+  auto a = n::plot_tensor_map(n::reverse(image.reshape({3, 4}), {0}), 0, 11),
+       b = n::plot_tensor_map(n::reverse(warped.value.reshape({3, 4}), {0}), 0, 11);
+  a.title("Second-frame ramp").x_label("column").y_label("original row0 at bottom");
+  b.title("Sample at x plus half a pixel")
+      .x_label("column")
+      .y_label("original row0 at bottom");
+  const auto x = n::arange(-4., 4.01, .5).reshape({1, 1, 17, 1}) + n::zeros({1, 17, 1, 1}),
+             y = n::arange(-4., 4.01, .5).reshape({1, 17, 1, 1}) + n::zeros({1, 1, 17, 1});
+  const auto wheel = m::FlowColors(n::concat({x, y}, 3));
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  n::save_image_grid(wheel.to(n::DType::Float32), "figures/flownets_direction.png", 1, 0, 1, 0,
+                     0, 12);
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(a).add(b).size(1100, 500).fit_panels().save_svg("build/flownets_warp.svg");
+  std::print("Warped top-left {:.3f},valid pixels {}/12;incomplete final column is zero.\n",
+             warped.value.to_vector<double>()[0], n::sum(warped.valid).item());
+}
+```
+// result_begin: markdown
+Warped top-left 0.500,valid pixels 9/12;incomplete final column is zero.
+\image(figures/flownets_warp.svg)
+// result_end
+\caption(A hand bilinear warp on a3x4 ramp. Both maps use0–11 intensity limits and show original row0 at the bottom. Native oracles check all source/flow coordinate Jacobians,partial borders and integer-coordinate slope conventions.)
+\alttext(A hand bilinear warp on a3x4 ramp. Both maps use0–11 intensity limits and show original row0 at the bottom. Native oracles check all source/flow coordinate Jacobians,partial borders and integer-coordinate slope conventions.)
+
+
+\image(figures/flownets_direction.png)
+\caption(The source teaching HSV direction legend,not the official Middlebury color wheel. Horizontal dx and vertical dy range-4..4px,positive dy downward. Zero is white;magnitude4px reaches full saturation. Every numeric color operation is tensor based.)
+\alttext(Tensor HSV displacement legend with white zero motion and saturated directions around the center.)
+
+> Keep displacement units separate from spatial resolution
+
+Every FlowNetS pyramid field stores **input-image pixels divided by20**.
+Resizing such a field changes its sampling lattice,not its values. Multiply
+the finest resized field by20 to recover input-pixel dx/dy. A separate
+helper rescales components only when values are expressed in their own
+source-grid pixels. Confusing these conventions scales predictions incorrectly.
+```{cpp, results="markdown", file="figures/flownets_units.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto field = n::ones({1, 2, 3, 2}) * n::tensor({2., -3.}).reshape({1, 1, 1, 2});
+  const auto unchanged = m::FlowResizeValues(field, 4, 9),
+             relative = m::FlowResizeVectors(field, 2, 3, 4, 9),
+             level = m::FlowPyramidPixels(field, 2);
+  auto a = dm::graphics::RPlot::create(), b = dm::graphics::RPlot::create();
+  a.bars({-.18, .82}, n::select(unchanged.reshape({-1, 2}), 0, 0).to_vector<double>(),
+         "fixed input units", {37, 99, 235}, .3)
+      .bars({.18, 1.18}, n::select(relative.reshape({-1, 2}), 0, 0).to_vector<double>(),
+            "grid-relative", {220, 38, 38}, .3)
+      .title("Resize values versus grid vectors")
+      .x_label("0 horizontal,1 vertical")
+      .y_label("component in declared units")
+      .y_limits(-8, 8);
+  b.bars({0., 1.}, n::select(level.reshape({-1, 2}), 0, 0).to_vector<double>(),
+         "level2 pixels", {22, 163, 74})
+      .title("Input pixels/20 to level2 pixels")
+      .x_label("0 horizontal,1 vertical")
+      .y_label("component multiplied by20/4")
+      .y_limits(-20, 15);
+  std::filesystem::create_directories("build");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(a).add(b).size(1100, 500).fit_panels().save_svg("build/flownets_units.svg");
+  std::print("Resize keeps(2,-3);grid-relative resize to4x9 gives(6,-6);level2 conversion "
+             "gives(10,-15).\n");
+}
+```
+// result_begin: markdown
+Resize keeps(2,-3);grid-relative resize to4x9 gives(6,-6);level2 conversion gives(10,-15).
+\image(figures/flownets_units.svg)
+// result_end
+\caption(An anisotropic resize preserves fixed input-image values,but grid-relative vectors scale width/height separately. Signed bars include zero and the full negative range. Level2 conversion multiplies input-pixel/20 values by5.)
+\alttext(An anisotropic resize preserves fixed input-image values,but grid-relative vectors scale width/height separately. Signed bars include zero and the full negative range. Level2 conversion multiplies input-pixel/20 values by5.)
+
+> A smooth masked endpoint objective
+
+For vector residual d,pixel loss is
+\(\sqrt{\lVert d\rVert^2+\epsilon^2}-\epsilon\),with epsilon.001.
+The implementation preserves the source Float32 representations of1e-6 and
+.001. Its derivative is d/sqrt(norm²+epsilon²),finite and zero at d=0.
+Each supported image averages its valid pixels;unsupported images are excluded.
+Invalid target/prediction locations are selected out **before** arithmetic.
+
+Five target levels use valid-block mean GT divided by20. Weighted losses
+have coefficients .005,.01,.02,.08,.32 from levels2 through6. Empty blocks
+have zero targets/masks,not an invented flow vector with positive supervision.
+Endpoint/augmented-angular metrics use input pixels,and strict bad-pixel
+thresholds include the3px and5% boundary cases in native tests.
+```{cpp, results="markdown", file="figures/flownets_loss.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto dx = n::arange(-1., 1.001, .01, n::DType::Float64).reshape({1, 1, 201, 1});
+  const auto p = n::concat({dx, n::zeros_like(dx)}, 3).requires_grad_();
+  const auto objective = m::FlowEndpointLoss(p, n::zeros_like(p), n::ones({1, 1, 201, 1}));
+  const auto gradient = n::grad(objective, {p})[0] * 201.;
+  const auto values = n::sqrt(n::square(dx) + double(1e-6f)) - double(.001f);
+  const auto fine =
+      n::arange(-.006, .006001, .0001, n::DType::Float64).reshape({1, 1, 121, 1});
+  const auto fine_field = n::concat({fine, n::zeros_like(fine)}, 3).requires_grad_();
+  const auto fine_loss =
+      m::FlowEndpointLoss(fine_field, n::zeros_like(fine_field), n::ones({1, 1, 121, 1}));
+  const auto fine_gradient = n::grad(fine_loss, {fine_field})[0] * 121.;
+  auto a = dm::graphics::RPlot::create(), b = dm::graphics::RPlot::create();
+  a.lines(dx.reshape({201}).to_vector<double>(), values.reshape({201}).to_vector<double>(),
+          "smooth endpoint", {37, 99, 235})
+      .title("Smooth endpoint norm near zero")
+      .x_label("horizontal residual;vertical zero")
+      .y_label("smooth vector endpoint loss")
+      .y_limits(-.05, 1.3);
+  b.lines(fine.reshape({121}).to_vector<double>(),
+          n::select(fine_gradient, 3, 0).reshape({121}).to_vector<double>(),
+          "local derivative", {220, 38, 38})
+      .title("Finite gradient near perfect flow")
+      .x_label("horizontal residual near zero")
+      .y_label("local horizontal derivative")
+      .y_limits(-1.2, 1.4);
+  std::filesystem::create_directories("build");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(a).add(b).size(1100, 480).fit_panels().save_svg("build/flownets_loss.svg");
+  const auto score = m::ScoreTensorFlow(
+      n::zeros({1, 1, 1, 2}), n::tensor({3., 4.}, {1, 1, 1, 2}), n::ones({1, 1, 1, 1}));
+  std::print(
+      "Hand3/4/5 endpoint error {},augmented angular error {:.6f}deg,bad3/Fl-all {}/{}.\n",
+      score.epe.item(), score.aae.item(), score.bad3.item(), score.fl_all.item());
+}
+```
+// result_begin: markdown
+Hand3/4/5 endpoint error 5,augmented angular error 78.690068deg,bad3/Fl-all 1/1.
+\image(figures/flownets_loss.svg)
+// result_end
+\caption(Smooth endpoint loss and its full vector-graph horizontal derivative. Empty images,NaN-invalid targets and every masked gradient have independent native oracles;the output also checks physical3/4/5 displacement error.)
+\alttext(Smooth endpoint loss and its full vector-graph horizontal derivative. Empty images,NaN-invalid targets and every masked gradient have independent native oracles;the output also checks physical3/4/5 displacement error.)
+
+> Execute full and compact six-scale FlowNetS
+
+Concatenate the jointly centered RGB frames into six channels. Encoder
+kernels7/5/5/3/3/3 use stride2 with explicit symmetric padding;extra
+conv3_1 through6_1 retain the deepest features. Four decoder levels use
+learned feature transposes,learned bias-free flow transposes,encoder skips
+and new flow predictions. Glorot kernels,zero biases and LeakyReLU(.1) follow
+the teaching source. There is no BN or target input. FlowNetS directly
+concatenates images;the local correlation primitive is used by PWC-Net later.
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::print("| base | learned scalars | learned tensors | stages | both-image gradients "
+             "|\n|---:|---:|---:|---:|---|\n");
+  for (int base : {64, 8}) {
+    n::ParameterStore p(163);
+    const auto first = (.5 +
+                        .4 * n::sin(n::arange(0, 2 * 64 * 64 * 3, 1, n::DType::Float64) * .17))
+                           .to(n::DType::Float32)
+                           .reshape({2, 64, 64, 3})
+                           .requires_grad_(),
+               second = (.5 + .4 * n::cos(n::arange(0, 2 * 64 * 64 * 3, 1, n::DType::Float64) *
+                                          .13))
+                            .to(n::DType::Float32)
+                            .reshape({2, 64, 64, 3})
+                            .requires_grad_();
+    const auto out = m::FlowNetS(p, first, second, 64, 64, base);
+    n::Tensor loss;
+    for (const auto &level : out.pyramid)
+      loss = loss.defined() ? loss + n::mean(n::square(level)) : n::mean(n::square(level));
+    auto leaves = p.parameters();
+    leaves.push_back(first);
+    leaves.push_back(second);
+    const auto gradients = n::grad(loss, leaves);
+    for (const auto &g : gradients)
+      if (!n::all(n::less(n::abs(g), INFINITY)).item<bool>() ||
+          (base == 8 && n::sum(n::square(g.to(n::DType::Float64))).item() <= 0))
+        return 1;
+    if (p.size() != 42 || out.stages.size() != 27 ||
+        out.flow.shape() != n::Shape{2, 64, 64, 2})
+      return 1;
+    std::print("| {} | {} | {} | {} | finite,compact nonzero |\n", base, p.count(), p.size(),
+               out.stages.size());
+  }
+}
+```
+// result_begin: markdown
+| base | learned scalars | learned tensors | stages | both-image gradients |
+|---:|---:|---:|---:|---|
+| 64 | 38676506 | 42 | 27 | finite,compact nonzero |
+| 8 | 615658 | 42 | 27 | finite,compact nonzero |
+// result_end
+
+> Published Middlebury targets with related families isolated
+
+This report replaces the old external archive with a reproducible custom
+subset of the official public frame10/11 and flow10.flo files. Download
+`other-color-twoframes.zip` and `other-gt-flow.zip` from Middlebury’s data
+page into `build/cnn-datasets/optical_flow`. The pinned SHA256 values are
+`dc7afbab15a7da40b52d633f825191bf693e227320bb624546ed9f2f8d668e50` and
+`e967b729cc47a493b3226515e0172224e503f7b14a54f97660f8d5f745632ab9`.
+From the repository root,run:
+
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::filesystem::path cache = dm::datasets::data_home();
+  dm::datasets::prepare_example_data("optical_flow", (cache / "optical_flow").string());
+}
+```
+// result_begin:
+// Validated32/8/24 published-GT crops with disjoint scene families.
+// result_end
+
+C++ validates little-endian PIEH ingress and image dimensions,then uses
+tensor finite/abs<1e9 masks to zero unknown flow. Original RGB is divided by255;
+**no image or flow resize** changes physical displacement units. On each
+scene,a5x5 origin grid floors[0,.25,.5,.75,1]*(dimension-64). Take the first
+eight row-major unique crops with>409 valid GT samples. This declared
+validity-only rule never reads predictions or benchmark scores. The manifest
+records every scene,family,source dimension and crop coordinate.
+
+Fitting has Dimetrodon,Grove2,Grove3,Hydrangea(32 crops,three families).
+Validation has RubberWhale(eight crops,one family). Test has Urban2,Urban3,
+Venus(24 crops,two families). Related Grove and Urban scenes remain together.
+Crops overlap within a scene;24 test crops are **three source pairs**,not24
+independent sequences. The published data include photographed and rendered
+scenes. These custom crops are not official benchmark evaluation.
+
+A fixed zero field has no fitted parameters. For the constant reference,fit
+two input-pixel coordinates by one explicit SGD(.5) update on the sum of
+the two masked-coordinate MSEs. The independent closed-form mean only checks
+the result. Save that fitted tensor for the later comparison.
+```{cpp, results="markdown", file="figures/flownets_prior.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  std::filesystem::path root = cache / "optical_flow";
+  if (const auto *p = std::getenv("DATAMUNGE_FLOW_DIR"))
+    root = p;
+  else
+    dm::datasets::prepare_example_data("optical_flow", root.string());
+  const auto split = m::LoadFlowPairs(root);
+
+  n::ParameterStore constant(173, n::DType::Float64);
+  const auto q = constant.get("flow", {2}, n::init::zeros());
+  n::OptimizerConfig opt;
+  opt.kind = n::OptimizerKind::Sgd;
+  n::Optimizer sgd(constant, .5, opt);
+  const auto target = split.fit.flow.to(n::DType::Float64),
+             mask = split.fit.valid.to(n::DType::Float64);
+  for (int step = 0; step < 1; ++step) {
+    const auto loss = n::sum(
+        n::sum(mask * n::square(q.reshape({1, 1, 1, 2}) - target), {0, 1, 2}) / n::sum(mask));
+    sgd.minimize(loss);
+  }
+  const auto fitted = q.detach().to(n::DType::Float32);
+  const auto closed = m::FitMeanFlow(split.fit);
+  const auto expected =
+      n::from_vector(std::vector<double>{closed[0], closed[1]}, {2}).to(n::DType::Float32);
+  const double parity = n::max(n::abs(fitted - expected)).item();
+  if (parity > 1e-8)
+    return 1;
+  const auto first = m::FlowBatch(split.fit, {0, 8, 16, 24});
+  const auto reference = n::ones(first.flow.shape()) * fitted.reshape({1, 1, 1, 2});
+  const auto warped = m::FlowWarp(first.second, reference).value;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  n::save_npz("build/flownets_prior.npz", {{"flow", fitted}});
+  n::save_image_grid(m::FlowPreviewTiles(first, reference, warped),
+                     "figures/flownets_inputs.png", 1, 0, 1, 0, 0, 2);
+  auto plot = dm::graphics::RPlot::create();
+  plot.bars({0., 1.}, fitted.to_vector<double>(), "SGD-fitted mean", {147, 51, 234})
+      .title("Visible SGD fits constant input-pixel flow")
+      .x_label("0 horizontal,1 vertical")
+      .y_label("input-image pixels")
+      .y_limits(-1.1, .35)
+      .size(950, 480);
+  plot.save_svg("build/flownets_prior.svg");
+  std::print("One SGD(.5) update;mean oracle parity {:.3g};dx/dy {:.6f}/{:.6f}px.\n| split | "
+             "crops | scenes | related families | GT pixels |\n|---|---:|---:|---:|---:|\n",
+             parity, fitted.to_vector<double>()[0], fitted.to_vector<double>()[1]);
+  const std::vector<std::pair<std::string, m::FlowData>> splits = {
+      {"fit", split.fit}, {"validation", split.validation}, {"test", split.test}};
+  for (const auto &item : splits) {
+    const auto scenes = item.second.scene_ids.to_vector<int>(),
+               families = item.second.family_ids.to_vector<int>();
+    std::print("| {} | {} | {} | {} | {} |\n", item.first, item.second.first.size(0),
+               std::set<int>(scenes.begin(), scenes.end()).size(),
+               std::set<int>(families.begin(), families.end()).size(),
+               n::count_nonzero(item.second.valid).item<std::int64_t>());
+  }
+}
+```
+// result_begin: markdown
+One SGD(.5) update;mean oracle parity 0;dx/dy -0.169839/-0.734982px.
+| split | crops | scenes | related families | GT pixels |
+|---|---:|---:|---:|---:|
+| fit | 32 | 4 | 3 | 127839 |
+| validation | 8 | 1 | 1 | 32338 |
+| test | 24 | 3 | 2 | 98304 |
+\image(figures/flownets_prior.svg)
+// result_end
+\caption(The two constant-flow coordinates are fitted by visible tensor SGD. Signed bars include zero and the entire negative range. The saved tensor is used unchanged for held-out inference.)
+\alttext(The two constant-flow coordinates are fitted by visible tensor SGD. Signed bars include zero and the entire negative range. The saved tensor is used unchanged for held-out inference.)
+
+
+\image(figures/flownets_inputs.png)
+\caption(One actual fitting crop from each of Dimetrodon,Grove2,Grove3 and Hydrangea. Each row is frame1,frame2,published GT HSV,SGD-constant HSV,constant EPE/5 in red,and frame2 warped with the constant. This is a baseline preview before CNN fitting.)
+\alttext(Observed Middlebury image pairs,published target vectors and visible errors of the fitted constant reference.)
+
+> Visible multiscale Adam and pair-only restored inference
+
+Warm all42 leaves,then construct Adam(.001). Three epochs visit all32 fitting
+crops once each in two-image batches. Every step visibly computes the five
+normalized endpoint losses and minimizes their weighted sum. Validation uses
+the same multiscale objective and selects a checkpoint;there is no BN state.
+Independent restored deployment receives only the two RGB frames. Compare
+all24 test crops with initial weights,zero flow and the saved SGD constant.
+
+Scores average supported images equally. Endpoint error is in original input
+pixels;AAE uses augmented(u,v,1) vectors. Bad1/bad3 are strict>1/>3px;Fl-all
+requires both>3px and>5% of true magnitude. Report scene-level EPE as well
+as aggregates because crops from the same source pair are correlated.
+```{cpp, results="markdown", file="figures/flownets_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  std::filesystem::path root = cache / "optical_flow";
+  if (const auto *p = std::getenv("DATAMUNGE_FLOW_DIR"))
+    root = p;
+  else
+    dm::datasets::prepare_example_data("optical_flow", root.string());
+  const auto split = m::LoadFlowPairs(root);
+
+  const m::FlowPrepared fit{split.fit, m::PrepareFlowSupervision(split.fit)},
+      validation{split.validation, m::PrepareFlowSupervision(split.validation)};
+  n::ParameterStore p(163);
+  {
+    n::NoGradGuard guard;
+    m::FlowNetS(p, n::zeros({1, 64, 64, 3}), n::zeros({1, 64, 64, 3}), 64, 64, 8);
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(p, .001, config);
+  auto predict = [](n::ParameterStore &weights, const m::FlowData &d) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> parts;
+    for (std::int64_t i = 0; i < d.first.size(0); i += 2)
+      parts.push_back(
+          m::FlowNetS(weights, n::slice_axis(d.first, 0, i, std::min(i + 2, d.first.size(0))),
+                      n::slice_axis(d.second, 0, i, std::min(i + 2, d.second.size(0))), 64, 64,
+                      8)
+              .flow);
+    return n::concat(parts, 0);
+  };
+  auto objective = [&](const m::FlowPrepared &data) {
+    n::NoGradGuard guard;
+    double total = 0;
+    for (std::int64_t i = 0; i < data.data.first.size(0); i += 2) {
+      const auto batch = m::FlowBatch(data, {std::size_t(i), std::size_t(i + 1)});
+      total += m::FlowObjective(m::FlowNetS(p, batch.data.first, batch.data.second, 64, 64, 8),
+                                batch.target.flow, batch.target.valid)[0]
+                   .item() *
+               2.;
+    }
+    return total / data.data.first.size(0);
+  };
+  const auto initial_prediction = predict(p, split.test);
+  const auto probe = m::FlowBatch(fit, {0, 1});
+  const double initial = objective(probe);
+  n::BatchOrder order(32, 2, 167);
+  std::vector<double> epochs, training, valid;
+  double best = INFINITY;
+  int selected = 0, updates = 0;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  std::print("615658 learned scalars/42 warmed leaves,no BN.\n| epoch | weighted fit | L2 | "
+             "L3 | L4 | L5 | L6 | validation |\n|---:|---:|---:|---:|---:|---:|---:|---:|\n");
+  for (int epoch = 1; epoch <= 3; ++epoch) {
+    order.begin_epoch();
+    std::array<double, 6> sums{};
+    int seen = 0;
+    for (auto ids = order.next(); !ids.empty(); ids = order.next()) {
+      const auto batch = m::FlowBatch(fit, std::vector<std::size_t>(ids.begin(), ids.end()));
+      const auto forward = m::FlowNetS(p, batch.data.first, batch.data.second, 64, 64, 8);
+      const auto losses = m::FlowObjective(forward, batch.target.flow, batch.target.valid);
+      for (std::size_t i = 0; i < 6; ++i) {
+        if (!std::isfinite(losses[i].item()))
+          return 1;
+        sums[i] += losses[i].item() * ids.size();
+      }
+      seen += ids.size();
+      adam.minimize(losses[0]);
+      ++updates;
+    }
+    if (seen != 32)
+      return 1;
+    for (auto &value : sums)
+      value /= seen;
+    epochs.push_back(epoch);
+    training.push_back(sums[0]);
+    valid.push_back(objective(validation));
+    if (valid.back() < best) {
+      best = valid.back();
+      selected = epoch;
+      p.save("build/flownets_best.npz");
+    }
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",
+               epoch, sums[0], sums[1], sums[2], sums[3], sums[4], sums[5], valid.back());
+  }
+  p.load("build/flownets_best.npz");
+  const double restored = objective(validation), learned_probe = objective(probe);
+  if (std::abs(restored - best) > 1e-8 || learned_probe >= initial ||
+      training.back() >= training.front())
+    return 1;
+  n::ParameterStore deployed(991);
+  {
+    n::NoGradGuard guard;
+    m::FlowNetS(deployed, n::zeros({1, 64, 64, 3}), n::zeros({1, 64, 64, 3}), 64, 64, 8);
+  }
+  deployed.load("build/flownets_best.npz");
+  std::vector<n::Tensor> snapshot;
+  for (const auto &v : deployed.parameters())
+    snapshot.push_back(v.clone());
+  const auto prediction = predict(deployed, split.test), reference = predict(p, split.test),
+             repeat = predict(deployed, split.test);
+  const double parity = n::max(n::abs(prediction - reference)).item();
+  if (parity > 1e-7 || !n::all(n::equal(prediction, repeat)).item<bool>())
+    return 1;
+  const auto single = predict(deployed, m::FlowBatch(split.test, {3}));
+  if (n::max(n::abs(single - n::slice_axis(prediction, 0, 3, 4))).item() > 1e-6)
+    return 1;
+  for (std::size_t i = 0; i < snapshot.size(); ++i)
+    if (!n::all(n::equal(snapshot[i], deployed.parameters()[i])).item<bool>())
+      return 1;
+  auto changed = split.test;
+  changed.second = n::zeros_like(changed.second);
+  const double sensitivity = n::mean(n::abs(prediction - predict(deployed, changed))).item();
+  if (sensitivity <= 1e-6)
+    return 1;
+  const auto fitted = n::load_npz("build/flownets_prior.npz").at(0).second;
+  const auto constant = n::ones(split.test.flow.shape()) * fitted.reshape({1, 1, 1, 2});
+  const auto learned = m::ScoreTensorFlow(prediction, split.test.flow, split.test.valid),
+             untrained =
+                 m::ScoreTensorFlow(initial_prediction, split.test.flow, split.test.valid),
+             zero = m::ScoreTensorFlow(n::zeros_like(prediction), split.test.flow,
+                                       split.test.valid),
+             prior = m::ScoreTensorFlow(constant, split.test.flow, split.test.valid);
+  std::print(
+      "{} visible Adam updates;selected epoch{},restored validation {:.6f};fixed fitting "
+      "weighted loss {:.6f}->{:.6f}.\nPair-only deployment parity {:.3g};all42 tensors "
+      "immutable,repeat exact,single/batch agree;second-image sensitivity {:.6f}px.\n| model "
+      "| EPE px | AAE degrees | bad1 | bad3 | Fl-all |\n|---|---:|---:|---:|---:|---:|\n",
+      updates, selected, restored, initial, learned_probe, parity, sensitivity);
+  for (const auto &item :
+       std::vector<std::pair<std::string, m::TensorFlowMetrics>>{{"learned", learned},
+                                                                 {"initial", untrained},
+                                                                 {"zero", zero},
+                                                                 {"SGD constant", prior}})
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n", item.first,
+               item.second.epe.item(), item.second.aae.item(), item.second.bad1.item(),
+               item.second.bad3.item(), item.second.fl_all.item());
+  std::vector<double> scene_epe;
+  std::print("\nErrors by held-out source pair.\n\n| test source pair | crops | learned EPE "
+             "px |\n|---|---:|---:|\n");
+  const std::vector<std::string> scene_names = {"Urban2", "Urban3", "Venus"};
+  for (int scene = 0; scene < 3; ++scene) {
+    const auto first = scene * 8;
+    const auto metric =
+        m::ScoreTensorFlow(n::slice_axis(prediction, 0, first, first + 8),
+                           n::slice_axis(split.test.flow, 0, first, first + 8),
+                           n::slice_axis(split.test.valid, 0, first, first + 8));
+    scene_epe.push_back(metric.epe.item());
+    std::print("| {} | 8 | {:.6f} |\n", scene_names[scene], metric.epe.item());
+  }
+  const auto warped = m::FlowWarp(split.test.second, prediction).value;
+  n::save_image_grid(m::FlowPreviewTiles(split.test, prediction, warped),
+                     "figures/flownets_predictions.png", 2, 0, 1, 0, 0, 2);
+  n::save_npz("build/flownets_test.npz", {{"prediction", prediction},
+                                          {"truth", split.test.flow},
+                                          {"valid", split.test.valid},
+                                          {"warped_second", warped}});
+  auto a = dm::graphics::RPlot::create(), b = dm::graphics::RPlot::create();
+  a.bars({0., 1., 2., 3.},
+         {learned.epe.item(), untrained.epe.item(), zero.epe.item(), prior.epe.item()}, "EPE",
+         {37, 99, 235})
+      .title("All24 held-out crop errors")
+      .x_label("0 CNN,1 init,2 zero,3 SGD")
+      .y_label("mean per-image EPE in input pixels")
+      .y_limits(0, 6);
+  b.bars({0., 1., 2.}, scene_epe, "scene EPE", {22, 163, 74})
+      .title("Three source pairs remain distinct")
+      .x_label("0 Urban2,1 Urban3,2 Venus")
+      .y_label("mean EPE over eight crops")
+      .y_limits(0, 8);
+  auto metrics = dm::graphics::RLayout::create(1, 2);
+  metrics.add(a).add(b).size(1100, 480).fit_panels().save_svg("build/flownets_metrics.svg");
+  std::filesystem::copy_file("build/flownets_metrics.svg", "figures/flownets_metrics.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  a = dm::graphics::RPlot::create();
+  a.lines(epochs, training, "weighted fitting", {37, 99, 235})
+      .lines(epochs, valid, "validation", {220, 38, 38})
+      .title("Visible complete FlowNetS Adam fitting")
+      .x_label("epoch")
+      .y_label("weighted input-pixel/20 endpoint loss")
+      .y_limits(0, .1)
+      .size(950, 480);
+  a.save_svg("build/flownets_training.svg");
+}
+```
+// result_begin: markdown
+615658 learned scalars/42 warmed leaves,no BN.
+| epoch | weighted fit | L2 | L3 | L4 | L5 | L6 | validation |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 0.069760 | 0.162887 | 0.163885 | 0.165412 | 0.162906 | 0.159269 | 0.023476 |
+| 2 | 0.066610 | 0.157045 | 0.152876 | 0.154994 | 0.153349 | 0.152899 | 0.042858 |
+| 3 | 0.065364 | 0.156923 | 0.152618 | 0.150958 | 0.150351 | 0.150019 | 0.039832 |
+48 visible Adam updates;selected epoch1,restored validation 0.023476;fixed fitting weighted loss 0.050434->0.039880.
+Pair-only deployment parity 0;all42 tensors immutable,repeat exact,single/batch agree;second-image sensitivity 0.329653px.
+| model | EPE px | AAE degrees | bad1 | bad3 | Fl-all |
+|---|---:|---:|---:|---:|---:|
+| learned | 4.246750 | 80.930115 | 0.880107 | 0.733368 | 0.733368 |
+| initial | 4.205583 | 79.497056 | 0.872986 | 0.721141 | 0.721141 |
+| zero | 3.916913 | 67.942204 | 0.853933 | 0.701772 | 0.701772 |
+| SGD constant | 4.174930 | 79.984316 | 0.973663 | 0.650614 | 0.650614 |
+
+Errors by held-out source pair.
+
+| test source pair | crops | learned EPE px |
+|---|---:|---:|
+| Urban2 | 8 | 2.541693 |
+| Urban3 | 8 | 4.478318 |
+| Venus | 8 | 5.720239 |
+\image(figures/flownets_training.svg)
+// result_end
+\caption(Forty-eight visible Adam updates with all five pyramid losses. Validation selects the checkpoint using only its held-out fitting-family complement;the test comparison remains separate.)
+\alttext(Forty-eight visible Adam updates with all five pyramid losses. Validation selects the checkpoint using only its held-out fitting-family complement;the test comparison remains separate.)
+
+
+\image(figures/flownets_metrics.svg)
+\caption(Held-out equal-crop-weighted EPE compares trained,initial,zero and SGD-constant flow. The second panel separates the three source image pairs;overlapping crops are not independent sequences.)
+\alttext(Held-out aggregate and source-pair endpoint errors,including simple fixed and fitted references.)
+
+\image(figures/flownets_predictions.png)
+\caption(All24 held-out crops,two six-panel tiles per row. Within each:frame1,frame2,published GT HSV,predicted HSV,EPE/5 in red,and backward-warped frame2. Order is eight Urban2,eight Urban3,eight Venus. Black warp borders denote incomplete source coverage;invalid GT colors/errors are black.)
+\alttext(Actual Middlebury frame pairs and published motion targets compared with learned vectors,errors and image warps.)
+
+The selected epoch1 model has test EPE4.246750px,compared with4.205583
+for its initialization,3.916913 for zero flow and4.174930 for the fitted
+constant. All42 leaves fit,but this run does not improve held-out motion
+quality. Urban2/Urban3/Venus errors2.541693/4.478318/5.720239px also show
+why a single aggregate hides substantial source-pair differences.
+
+A lower short fitting objective need not improve motion estimates on new
+scene families. The source pair counts,zero/constant references and actual
+warps expose this distinction. There is no pretraining,FlyingChairs training,
+online augmentation,or official benchmark claim. Published GT is used only
+for supervision,declared support filtering and evaluation,not as an inference input.
+
+> Conclusion
+
+Tensor coordinate,unit,transpose,masked-loss and metric checks establish the optical-flow mechanism. Published targets and auditable family-disjoint crops then support visible optimization of a constant and every FlowNetS leaf. Pair-only restored inference is immutable;actual held-out fields and warps show the limits of the short fit.
+
+> References
+
+- [Fischer et al.(2015),FlowNet:Learning Optical Flow with Convolutional Networks](https://arxiv.org/abs/1504.06852).
+- [NVIDIA FlowNetS architecture](https://github.com/NVIDIA/flownet2-pytorch/blob/master/networks/FlowNetS.py).
+- [Middlebury public optical-flow data](https://vision.middlebury.edu/flow/data/).
+- [Middlebury .flo format specification](https://vision.middlebury.edu/flow/code/flow-code/README.txt).
+- [Baker et al.(2011),A Database and Evaluation Methodology for Optical Flow](https://vision.middlebury.edu/flow/floweval-ijcv2011.pdf).

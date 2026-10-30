@@ -44,7 +44,7 @@ correctness. The savings depend on the instance, but are typically enormous.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

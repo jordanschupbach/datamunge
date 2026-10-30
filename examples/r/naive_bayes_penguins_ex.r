@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/naive_bayes_penguins_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # Note: unlike the C++ example, this doesn't call drop_nulls() first (that method isn't
 # exposed on the SWIG-bound DataFrame facade) -- NaiveBayesClassifier drops incomplete rows

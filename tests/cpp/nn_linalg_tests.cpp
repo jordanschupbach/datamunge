@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <cmath>
 #include <datamunge/nn/einsum.hpp>
 #include <datamunge/nn/linalg.hpp>

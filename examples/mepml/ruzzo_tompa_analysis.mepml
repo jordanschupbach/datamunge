@@ -38,7 +38,7 @@ absorbed at most once, so the whole pass is \(O(n)\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -127,7 +127,7 @@ still, so all three islands stay separate. The program confirms the segmentation
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

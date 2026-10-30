@@ -44,7 +44,7 @@ the =total_mistakes= made; =perceptron_predict= applies it to new points.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * The update rule and why it works

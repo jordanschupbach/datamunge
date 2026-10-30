@@ -1,3 +1,6 @@
+/// @file training.cpp
+/// @brief Resumable mini-batch ordering, validation stopping rules, and weighted metric summaries.
+
 #include "datamunge/nn/training.hpp"
 
 #include <algorithm>

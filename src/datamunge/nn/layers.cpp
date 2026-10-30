@@ -1,4 +1,5 @@
 #include "datamunge/nn/layers.hpp"
+#include "datamunge/nn/model_plot.hpp"
 
 #include <cmath>
 #include <stdexcept>
@@ -26,6 +27,10 @@ std::string activation_name(Activation activation) {
     case Activation::Softsign: return "softsign";
     case Activation::Sigmoid: return "sigmoid";
     case Activation::Tanh: return "tanh";
+    case Activation::HardSigmoid: return "hard_sigmoid";
+    case Activation::HardSwish: return "hard_swish";
+    case Activation::HardTanh: return "hard_tanh";
+    case Activation::LogSigmoid: return "log_sigmoid";
   }
   return "?";
 }
@@ -46,6 +51,10 @@ Tensor activate(const Tensor& x, Activation activation, double alpha) {
     case Activation::Softsign: return softsign(x);
     case Activation::Sigmoid: return sigmoid(x);
     case Activation::Tanh: return tanh(x);
+    case Activation::HardSigmoid: return relu6(x + 3.0) / 6.0;
+    case Activation::HardSwish: return x * relu6(x + 3.0) / 6.0;
+    case Activation::HardTanh: return clip(x, -1.0, 1.0);
+    case Activation::LogSigmoid: return log_sigmoid(x);
   }
   return x;
 }
@@ -68,7 +77,11 @@ Tensor dense(ParameterStore& store, const std::string& name, const Tensor& x, st
   out_shape.back() = units;
   Tensor y         = x.dim() == 2 ? matmul(x, W) : reshape(matmul(reshape(x, {-1, in}), W), out_shape);
   if (options.bias) y = bias_add(y, store.get(name + "/b", {units}, init::constant(options.bias_value)));
-  return activate(y, options.activation, options.alpha);
+  const Tensor output = activate(y, options.activation, options.alpha);
+  if (model_plot_detail::recording())
+    return model_plot_detail::layer(name, "Dense / " + activation_name(options.activation), x,
+                                    output);
+  return output;
 }
 
 Tensor dense(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t units,
@@ -298,7 +311,15 @@ Tensor conv2d(ParameterStore& store, const std::string& name, const Tensor& x, s
               std::int64_t kernel, const ConvLayerOptions& options) {
   const std::int64_t in = channels(x, 4, "conv2d layer");
   const Tensor       w  = store.get(name + "/W", {kernel, kernel, in, filters}, options.init);
-  return finish(store, name, conv2d(x, w, layer_conv_options(options)), filters, options);
+  const Tensor output =
+      finish(store, name, conv2d(x, w, layer_conv_options(options)), filters, options);
+  if (model_plot_detail::recording())
+    return model_plot_detail::layer(
+        name,
+        "Conv2D k" + std::to_string(kernel) + " s" + std::to_string(options.stride) + " d" +
+            std::to_string(options.dilation) + " / " + activation_name(options.activation),
+        x, output);
+  return output;
 }
 
 Tensor conv1d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
@@ -314,7 +335,14 @@ Tensor conv1d(ParameterStore& store, const std::string& name, const Tensor& x, s
   o.dilations = {1, options.dilation};
   o.padding   = options.padding;
   const Tensor y = squeeze(conv2d(expand_dims(x, 1), w, o), {1});
-  return finish(store, name, y, filters, options);
+  const Tensor output = finish(store, name, y, filters, options);
+  if (model_plot_detail::recording())
+    return model_plot_detail::layer(
+        name,
+        "Conv1D k" + std::to_string(kernel) + " s" + std::to_string(options.stride) + " d" +
+            std::to_string(options.dilation) + " / " + activation_name(options.activation),
+        x, output);
+  return output;
 }
 
 Tensor depthwise_conv2d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t multiplier,
@@ -327,7 +355,17 @@ Tensor depthwise_conv2d(ParameterStore& store, const std::string& name, const Te
     for (std::int64_t c = 0; c < s[2]; ++c) per_channel.push_back(init({s[0], s[1], 1, s[3]}, dt, g));
     return concat(per_channel, 2);
   });
-  return finish(store, name, depthwise_conv2d(x, w, layer_conv_options(options)), in * multiplier, options);
+  const Tensor output =
+      finish(store, name, depthwise_conv2d(x, w, layer_conv_options(options)), in * multiplier,
+             options);
+  if (model_plot_detail::recording())
+    return model_plot_detail::layer(name,
+                                    "DepthwiseConv2D k" + std::to_string(kernel) + " s" +
+                                        std::to_string(options.stride) + " d" +
+                                        std::to_string(options.dilation) + " / " +
+                                        activation_name(options.activation),
+                                    x, output);
+  return output;
 }
 
 Tensor separable_conv2d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
@@ -348,15 +386,33 @@ Tensor conv2d_transpose(ParameterStore& store, const std::string& name, const Te
   const Tensor       w    = store.get(name + "/W", {kernel, kernel, filters, in}, [init](const Shape& s, DType dt, Generator& g) {
     return transpose(init({s[0], s[1], s[3], s[2]}, dt, g), {0, 1, 3, 2}).contiguous();
   });
-  return finish(store, name, conv2d_transpose(x, w, layer_conv_options(options)), filters, options);
+  const Tensor output = finish(
+      store, name, conv2d_transpose(x, w, layer_conv_options(options)), filters, options);
+  if (model_plot_detail::recording())
+    return model_plot_detail::layer(name,
+                                    "Conv2DTranspose k" + std::to_string(kernel) + " s" +
+                                        std::to_string(options.stride) + " d" +
+                                        std::to_string(options.dilation) + " / " +
+                                        activation_name(options.activation),
+                                    x, output);
+  return output;
 }
 
 Tensor conv3d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
               std::int64_t kernel, const ConvLayerOptions& options) {
   const std::int64_t in = channels(x, 5, "conv3d layer");
   const Tensor       w  = store.get(name + "/W", {kernel, kernel, kernel, in, filters}, options.init);
-  return finish(store, name, conv3d(x, w, conv3d_options(options.stride, options.padding, options.dilation)), filters,
-                options);
+  const Tensor output =
+      finish(store, name,
+             conv3d(x, w, conv3d_options(options.stride, options.padding, options.dilation)),
+             filters, options);
+  if (model_plot_detail::recording())
+    return model_plot_detail::layer(
+        name,
+        "Conv3D k" + std::to_string(kernel) + " s" + std::to_string(options.stride) + " d" +
+            std::to_string(options.dilation) + " / " + activation_name(options.activation),
+        x, output);
+  return output;
 }
 
 Tensor conv3d_transpose(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
@@ -367,7 +423,15 @@ Tensor conv3d_transpose(ParameterStore& store, const std::string& name, const Te
     return transpose(init({s[0], s[1], s[2], s[4], s[3]}, dt, g), {0, 1, 2, 4, 3}).contiguous();
   });
   const Conv3DOptions o = conv3d_options(options.stride, options.padding, options.dilation);
-  return finish(store, name, conv3d_transpose(x, w, o), filters, options);
+  const Tensor output = finish(store, name, conv3d_transpose(x, w, o), filters, options);
+  if (model_plot_detail::recording())
+    return model_plot_detail::layer(name,
+                                    "Conv3DTranspose k" + std::to_string(kernel) + " s" +
+                                        std::to_string(options.stride) + " d" +
+                                        std::to_string(options.dilation) + " / " +
+                                        activation_name(options.activation),
+                                    x, output);
+  return output;
 }
 
 Tensor batch_norm(ParameterStore& params, ParameterStore& stats, const std::string& name, const Tensor& x,
@@ -379,7 +443,11 @@ Tensor batch_norm(ParameterStore& params, ParameterStore& stats, const std::stri
   const Tensor beta  = options.center ? params.get(name + "/beta", {c}, init::zeros()) : zeros({c}, dt);
   const Tensor mu    = stats.get(name + "/moving_mean", {c}, init::zeros());
   const Tensor var   = stats.get(name + "/moving_var", {c}, init::ones());
-  if (!training) return batch_norm_infer(x, gamma, beta, mu.detach(), var.detach(), options.eps);
+  if (!training) {
+    const auto output = batch_norm_infer(x, gamma, beta, mu.detach(), var.detach(), options.eps);
+    return model_plot_detail::recording()
+      ? model_plot_detail::layer(name, "BatchNorm / inference", x, output) : output;
+  }
   const BatchNormResult r = batch_norm_train(x, gamma, beta, options.eps);
   if (options.update_stats) {
     NoGradGuard  guard;
@@ -387,7 +455,8 @@ Tensor batch_norm(ParameterStore& params, ParameterStore& stats, const std::stri
     stats.set(name + "/moving_mean", mu.detach() * m + cast(r.mean, mu.dtype()) * (1.0 - m));
     stats.set(name + "/moving_var", var.detach() * m + cast(r.variance, var.dtype()) * (1.0 - m));
   }
-  return r.y;
+  return model_plot_detail::recording()
+    ? model_plot_detail::layer(name, "BatchNorm / training", x, r.y) : r.y;
 }
 
 Tensor group_norm(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t groups, double eps) {

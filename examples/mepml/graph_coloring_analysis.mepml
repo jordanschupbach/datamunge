@@ -59,7 +59,7 @@ valid vertex indices.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The greedy / Welsh-Powell heuristic
@@ -207,7 +207,7 @@ matching chi(K_4) = 4 and showing the Delta + 1 bound tight (Delta = 3).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

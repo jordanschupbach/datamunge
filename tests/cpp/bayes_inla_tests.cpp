@@ -65,10 +65,10 @@ TEST(INLA, ConjugateNormalMatchesClosedFormAtPinnedTheta) {
     EXPECT_NEAR(result.latent_sd[0], std::sqrt(var_star), 1e-3);
 }
 
-// ---- Grid integration should account for theta's own posterior spread, so its marginal sd
-// for the latent field must be at least as large as EmpiricalBayes's mode-only sd. ----
+// ---- On this fixture, integrating theta gives a larger latent SD than EB.
+// Total variance >= its own within term; there is no general ordering against EB. ----
 
-TEST(INLA, GridSdIsAtLeastEmpiricalBayesSd) {
+TEST(INLA, ThisGridFixtureHasLargerSdThanEmpiricalBayes) {
     const std::vector<double> y{4.1, 5.3, 4.8, 5.6, 4.4, 5.9, 5.0, 4.6, 5.2, 5.0,
                                  4.9, 5.4, 5.8, 3.9, 5.1, 4.7, 5.0, 5.3, 5.6, 4.4};
     const std::size_t n = y.size();

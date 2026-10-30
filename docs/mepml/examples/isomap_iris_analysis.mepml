@@ -1,0 +1,586 @@
+//? Title: Isomap: Neighbour Graphs, Geodesics and Shortcuts
+//? Subtitle: Hand-checkable paths and spectra, Swiss-roll recovery and an iris connectivity study with datamunge
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+High-dimensional observations can lie on a curved surface where straight-line distance
+crosses folds rather than following the surface. We want low-dimensional coordinates
+that preserve travel distances along that surface, while recognizing when the sampled
+points do not determine those distances reliably. Isomap replaces global straight-line
+distances by shortest paths through local neighbours, then applies classical scaling.
+We work through a four-point line, a square cycle and two disconnected triangles before
+checking a Swiss roll with known intrinsic coordinates and Fisher's iris measurements.
+The square has perfect positive-inertia fit and zero residual variance yet distorted
+edge lengths. On a 1000-point roll, six neighbours give a 7.45% intrinsic distance error,
+while forty give 67.53%. Iris needs 25 neighbours for connectivity under the stated graph
+rule; that connection threshold is not evidence that the flowers form one sampled manifold.
+)
+
+\toc
+
+> The method
+
+>> Local measurements define a graph
+
+Let \(x_i\in\mathbb R^p\), \(i=1,\ldots,n\), be the retained feature rows.
+`dm::stats::Isomap` uses raw Euclidean or Manhattan distances. Feature units and scaling
+therefore define the model; standardizing a column changes neighbourhoods and paths,
+not just the axis labels. This report uses Euclidean distances throughout.
+
+For each point retain exactly \(k\) other neighbours. Equal distances are ordered by
+increasing retained-row index, making the choice reproducible. The undirected graph uses
+the *union* rule: an edge exists if either endpoint selects the other. It is not the
+mutual-neighbour graph, so a vertex can have degree greater than \(k\). An edge has
+its original feature distance as weight. Duplicate observations retain their zero-length
+edges; a zero weight does not mean an edge is absent.
+
+`isomap_graph()` exposes the directed selections, union adjacency, original distances,
+component labels and retained row indices without requiring connectivity. Formula-free
+numeric features are selected explicitly, nulls are omitted jointly and retained
+nonfinite values are rejected. Labels and synthetic truth columns are never included
+unless explicitly named as features. The current API requires \(2\le k<n\).
+
+>> Shortest paths estimate geodesics
+
+Starting with edge weights, zeros on the diagonal and infinity for absent edges,
+Floyd–Warshall applies
+
+$$
+ D_{ij}^{(m)}=\min\{D_{ij}^{(m-1)},D_{im}^{(m-1)}+D_{mj}^{(m-1)}\}.
+$$
+\alttext(At step m, the shortest path from i to j either avoids vertex m or joins a shortest i-to-m path to a shortest m-to-j path.)
+
+Induction on the allowed intermediate vertices proves that the final \(D_G\) contains
+all-pairs shortest-path distances. A disconnected graph has infinite cross-component
+distances, so no single finite classical-scaling matrix exists. The constructor rejects
+it; it does not invent inter-component edges. Inspect the graph or fit components
+separately before deciding whether a larger neighbourhood makes scientific sense.
+Some other implementations, including scikit-learn, repair disconnected graphs, so their
+results need not have this same meaning.
+
+For Euclidean input edges, the triangle inequality gives \(d_E(i,j)\le D_G(i,j)\).
+There is no universal ordering between \(D_G\) and the true manifold distance:
+sparse paths can detour, while chord edges and cross-fold shortcuts can underestimate it.
+The original consistency argument requires suitable sampling density, small local
+neighbourhoods, controlled curvature/branch separation and an intrinsically Euclidean
+geometry. It does not say that a connected graph or an attractive plot certifies recovery.
+A circle or a sheet with holes need not have a globally distance-preserving flat map.
+
+With fixed distance ties, increasing \(k\) only adds edges. Component counts and shortest
+paths can therefore only decrease. That monotonicity does not make embedding quality
+monotone. At \(k=n-1\), every pair is an edge and \(D_G=d_E\); Isomap reduces to
+ordinary Euclidean classical MDS, which has the same centred score geometry as unscaled PCA.
+
+>> Classical scaling and what its spectrum means
+
+Let \(J=I-\mathbf1\mathbf1^\top/n\). Squaring distances elementwise and centring gives
+
+$$
+ B=-\tfrac12 J D_G^{\circ2}J=V\Lambda V^\top,\qquad
+ Y_d=V_{1:d}\operatorname{diag}\{\sqrt{\max(\lambda_1,0)},\ldots,
+                                      \sqrt{\max(\lambda_d,0)}\}.
+$$
+\alttext(The centred Gram matrix is minus one half the doubly centred squared graph-distance matrix. Coordinates use its largest eigenvectors scaled by square roots of positive eigenvalues; negative modes contribute zero.)
+
+If \(D_G\) is Euclidean, \(B\) is positive semidefinite and sufficiently many axes
+recover its distances. A general graph metric can produce negative eigenvalues. Orthogonal
+invariance of the Frobenius norm shows that dropping all negative modes and retaining
+the largest positive modes minimizes \(\|B-YY^\top\|_F\) among rank-at-most-\(d\)
+positive-semidefinite Gram matrices. This is a *strain* optimum, not a least-squares
+distance-stress optimum. The full signed spectrum is available from `spectrum()`.
+Eigenvector signs and rotations within repeated eigenspaces are arbitrary; axis-by-axis
+correlations are therefore a poor general comparison between implementations.
+
+The historical `goodness_of_fit()` is only
+\(\sum_{a\le d}\max(\lambda_a,0)/\sum_a\max(\lambda_a,0)\). It omits negative modes.
+`dimension_diagnostics()` separately reports negative absolute-inertia mass, normalized
+Gram error and actual graph-distance errors. For unordered pairs \(i<j\), write
+\(\widehat D_{ij}=\|y_i-y_j\|_2\):
+
+$$
+ E_G=\sqrt{\frac{\sum_{i<j}(\widehat D_{ij}-D_{G,ij})^2}
+                       {\sum_{i<j}D_{G,ij}^2}},\qquad
+ R_V=1-\operatorname{corr}(D_{G,ij},\widehat D_{ij})^2.
+$$
+\alttext(Relative geodesic error is the norm of the pair-distance errors divided by the graph-distance norm. Residual variance is one minus squared Pearson correlation of those distance vectors.)
+
+Residual variance follows the original Isomap diagnostic. Correlation ignores affine
+changes between the two distance vectors, so zero residual variance does not establish
+an isometry. A constant distance vector has undefined correlation and is reported as NaN.
+All of these scores describe the fitted graph; none can detect a wrong graph using only
+its own shortest-path targets. `reference_diagnostics()` can compare with independent
+reference coordinates when known, as on the Swiss roll below.
+
+>> Computation and scope
+
+Brute-force input distances cost \(O(n^2p)\), and deterministic partial sorting costs
+\(O(n^2\log k)\). The dense shortest-path and symmetric eigendecomposition stages each
+cost \(O(n^3)\). The implementation uses contiguous Floyd–Warshall matrices and a
+Householder/implicit-QL eigensolver, with \(O(n^2+np+nk)\) storage. This is a dense
+in-sample method; it has no out-of-sample transform or built-in validation procedure.
+A small retained fraction or a high graph-fit score does not replace geometric checks.
+
+> Simple examples
+
+>> Four points on a line
+
+Use \((x,y)=(0,0),(1,0),(2,0),(4,0)\) and \(k=2\). Directed neighbour lists are
+\((1,2),(0,2),(1,0),(2,1)\), indexed from zero. In particular, the union graph has
+edge \((1,3)\) even though row 1 did not select row 3. The only missing unordered
+edge is \((0,3)\), whose shortest length is \(2+2=4\) through row 2.
+Thus every graph distance is \(|x_i-x_j|\).
+
+$$
+ \bar x=\tfrac74,\qquad
+ x_c=(-\tfrac74,-\tfrac34,\tfrac14,\tfrac94)^\top,\qquad
+ B=x_cx_c^\top,\quad \lambda_1=x_c^\top x_c=\tfrac{35}4.
+$$
+\alttext(The four positions have mean seven quarters. Their centred outer product is the Gram matrix, whose only nonzero eigenvalue is thirty-five quarters. One embedding coordinate recovers those centred positions up to sign.)
+
+```{cpp, results="markdown", file="figures/isomap_four_points.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{0,1,2,4});d.add_column("y",std::vector<double>{0,0,0,0});
+  const dm::stats::Isomap m(d,{"x","y"},{1,2});
+  auto graph=m.neighborhood_graph().plot().title("Five union edges on four points").x_limits(-.5,4.5).y_limits(-.4,1.2);
+  for(std::size_t i=0;i<4;++i)graph.text(d.double_at("x",i),.15,std::to_string(i));
+  auto coordinate=dm::graphics::RPlot::create();coordinate.points(d.numeric_column("x").values(),m.dimension(0));
+  coordinate.title("One axis recovers centred positions").x_label("original x").y_label("Isomap coordinate; arbitrary sign");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(graph).add(coordinate).size(1100,490).fit_panels().save_svg("build/isomap_four_points.svg");
+  std::print("Union edges:\n\n{}\n\nPair distances:\n\n{}\n\nSpectrum:\n\n{}\n",
+      m.neighborhood_graph().edge_table().to_md(),m.pair_distances().to_md(),m.spectrum().select({"dimension","eigenvalue"}).to_md(6));
+}
+```
+// result_begin: markdown
+Union edges:
+
+| row_i | row_j | distance | mutual |
+| ---: | ---: | ---: | ---: |
+| 0 | 1 | 1 | 1 |
+| 0 | 2 | 2 | 1 |
+| 1 | 2 | 1 | 1 |
+| 1 | 3 | 3 | 0 |
+| 2 | 3 | 2 | 0 |
+
+
+Pair distances:
+
+| row_i | row_j | ambient_distance | geodesic_distance | embedded_distance |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 1 | 1 | 1 |
+| 0 | 2 | 2 | 2 | 2 |
+| 0 | 3 | 4 | 4 | 4 |
+| 1 | 2 | 1 | 1 | 1 |
+| 1 | 3 | 3 | 3 | 3 |
+| 2 | 3 | 2 | 2 | 2 |
+
+
+Spectrum:
+
+| dimension | eigenvalue |
+| ---: | ---: |
+| 1 | 8.75 |
+| 2 | 0.00 |
+| 3 | 0.00 |
+| 4 | 0.00 |
+
+\image(figures/isomap_four_points.svg)
+// result_end
+
+\caption(The union graph has five edges, with some projected segments overlapping on the line. Its shortest-path matrix is exactly the ordinary line-distance matrix; one Isomap axis recovers it.)
+\alttext(Four labelled points lie on a horizontal line. A second panel shows their Isomap coordinate as a straight function of original position. Tables list the five edges, six pair distances and rank-one spectrum.)
+
+>> A square cycle with a negative eigenvalue
+
+Now take \((0,0),(1,0),(1,1),(0,1)\), again with \(k=2\). Every vertex selects
+its two adjacent corners, so edges have length one and opposite corners have graph
+distance two. Each squared-distance row has mean \(3/2\), giving
+
+$$
+ B=\tfrac14\begin{pmatrix}3&1&-5&1\\1&3&1&-5\\-5&1&3&1\\1&-5&1&3\end{pmatrix},
+ \qquad \operatorname{eig}(B)=(2,2,0,-1).
+$$
+\alttext(The square-cycle geodesic Gram matrix has diagonal three quarters, adjacent entries one quarter and opposite entries minus five quarters. Its eigenvalues are two, two, zero and minus one.)
+
+Two positive axes explain 100% of positive inertia. Yet the resulting square has adjacent
+distances \(\sqrt2\), while opposite distances remain two. Its relative graph-distance
+error is \((\sqrt2-1)/\sqrt3\), and its relative strain is \(1/3\). Negative
+absolute-inertia mass is \(1/(2+2+1)=1/5\). Because the six pair distances have only
+two distinct levels before and after embedding, their Pearson correlation is one.
+Residual variance is therefore zero despite the edge distortion. All three diagnostics
+must be read according to their definitions.
+
+```{cpp, results="markdown", file="figures/isomap_square_cycle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{0,1,1,0});d.add_column("y",std::vector<double>{0,0,1,1});
+  const dm::stats::Isomap m(d,{"x","y"},{2,2});
+  auto graph=m.neighborhood_graph().plot().title("Input cycle: unit edges").x_limits(-.936,1.936).y_limits(-.6,1.6);
+  auto embedded=m.plot_embedding().title("Embedded edges: sqrt(2)").x_limits(-2.089,2.089).y_limits(-1.6,1.6);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(graph).add(embedded).size(1100,490).fit_panels().save_svg("build/isomap_square_cycle.svg");
+  std::print("{}\n\n{}\n",m.pair_distances().to_md(6),m.dimension_diagnostics().tail(1).to_md(6));
+}
+```
+// result_begin: markdown
+| row_i | row_j | ambient_distance | geodesic_distance | embedded_distance |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 1.000000 | 1 | 1.414214 |
+| 0 | 2 | 1.414214 | 2 | 2.000000 |
+| 0 | 3 | 1.000000 | 1 | 1.414214 |
+| 1 | 2 | 1.000000 | 1 | 1.414214 |
+| 1 | 3 | 1.414214 | 2 | 2.000000 |
+| 2 | 3 | 1.000000 | 1 | 1.414214 |
+
+
+| dimensions | gof_positive | negative_mass | relative_strain | geodesic_rmse | relative_geodesic_error | residual_variance |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 1 | 0.2 | 0.333333 | 0.338204 | 0.239146 | 0 |
+
+\image(figures/isomap_square_cycle.svg)
+// result_end
+
+\caption(The square's graph metric is not a Euclidean square metric. Positive-inertia fit one and residual variance zero coexist with a 23.91% relative distance error.)
+\alttext(The original four-cycle and its two-axis embedding are shown side by side. The table distinguishes unit graph edges from embedded square-root-two edges and reports the negative eigenvalue contribution.)
+
+>> Two triangles are not one connected geometry
+
+Take two unit right triangles ten units apart. At \(k=2\), each vertex selects the
+other two vertices of its own triangle: there are six union edges and two components.
+The cross-component block of \(D_G\) is infinite, so the constructor rejects a global
+embedding. At \(k=3\), new long edges force the components together. That change makes
+a computation possible; it does not establish that the gap represents a sampled surface.
+The graph inspector allows both situations to be examined without catching a failed fit.
+
+```{cpp, results="markdown", file="figures/isomap_components.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{0,1,0,10,11,10});d.add_column("y",std::vector<double>{0,0,1,0,0,1});
+  auto layout=dm::graphics::RLayout::create(1,2);dm::dstruct::DataFrame rows;
+  for(std::size_t k:{2,3}){const auto graph=dm::stats::isomap_graph(d,{"x","y"},k);
+    layout.add(graph.plot().title(std::format("k = {}: {} component{}",k,graph.component_sizes.size(),graph.component_sizes.size()==1?"":"s")).x_limits(-1,12).y_limits(-.3,2.3));
+    const auto row=graph.diagnostics();rows=k==2?row:rows.concat_rows(row);}
+  try{const dm::stats::Isomap rejected(d,{"x","y"},{2,2});}catch(const std::invalid_argument& e){std::print("Rejected fit: {}\n\n",e.what());}
+  std::filesystem::create_directories("build");layout.size(1100,490).fit_panels().save_svg("build/isomap_components.svg");
+  std::print("{}\n",rows.select({"k","components","edges","longest_edge"}).to_md(6));
+}
+```
+// result_begin: markdown
+Rejected fit: Isomap: neighbor graph is disconnected (2 components); inspect isomap_graph() before choosing a neighborhood
+
+| k | components | edges | longest_edge |
+| ---: | ---: | ---: | ---: |
+| 2 | 2 | 6 | 1.414214 |
+| 3 | 1 | 11 | 10.000000 |
+
+\image(figures/isomap_components.svg)
+// result_end
+
+\caption(The graph at two neighbours has two independent triangles. Three neighbours introduce long bridges; the increased connectivity changes the metric rather than proving a manifold hypothesis.)
+\alttext(Two panels show disconnected triangles with only short edges, then the same points connected by long cross-gap edges. The table reports component and edge counts.)
+
+> Checking the theory on a Swiss roll
+
+>> Known intrinsic coordinates give an independent target
+
+`dm::datasets::swiss_roll(1000,0,1)` supplies a noiseless rolled sheet and withheld
+coordinates. Points are \((t\cos t,h,t\sin t)\), where \(t\) ranges from
+\(3\pi/2\) to \(9\pi/2\), and \(h\) from zero to 21. The true flat coordinate
+along the spiral is arc length, not \(t\):
+
+$$
+ s(t)=\int_0^t\sqrt{1+u^2}\,du
+      =\tfrac12\{t\sqrt{1+t^2}+\operatorname{asinh}t\},\qquad
+ ds^2+dh^2=(1+t^2)dt^2+dh^2.
+$$
+\alttext(Arc length along the spiral integrates square root one plus t squared. Together with height it makes the rolled sheet's line element Euclidean.)
+
+The intrinsic domain is a rectangle in \((s,h)\), so its geodesic distance is ordinary
+Euclidean distance in those coordinates. Only `x,y,z` enter the fit. We evaluate complete
+pair distances in \((s,h)\), making the check invariant to reflection or rotation of the
+embedding. This avoids claiming recovery merely from one embedding axis correlating with
+one latent parameter.
+
+The two neighbourhoods below illustrate a local regime and a broad regime. They do not
+establish a universal best \(k\). Colours use withheld arc length solely for interpretation.
+`max_edge_stretch` is the largest intrinsic reference length of a selected edge divided
+by its observed chord length; a large value exposes a shortcut when truth is available.
+
+```{cpp, results="markdown", file="figures/isomap_swiss_maps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto roll=dm::datasets::swiss_roll(1000,0,1);const auto color=dm::graphics::value_colors(roll.numeric_column("arc_length").values());
+  auto observed=dm::graphics::RPlot::create(),truth=dm::graphics::RPlot::create();
+  observed.points_colored(roll.numeric_column("x").values(),roll.numeric_column("z").values(),color,2.8).title("Observed roll, viewed along its axis").x_label("x").y_label("z");
+  truth.points_colored(roll.numeric_column("arc_length").values(),roll.numeric_column("height").values(),color,2.8).title("Withheld flat coordinates").x_label("arc length s").y_label("height h");
+  auto layout=dm::graphics::RLayout::create(2,2).add(observed).add(truth);dm::dstruct::DataFrame fits,references;
+  for(std::size_t k:{6,40}){
+    const dm::stats::Isomap m(roll,{"x","y","z"},{2,k});auto plot=dm::graphics::RPlot::create();
+    plot.points_colored(m.dimension(0),m.dimension(1),color,2.8).title(std::format("Isomap: k = {}",k)).x_label("Y1").y_label("Y2");layout.add(plot);
+    auto fit=m.dimension_diagnostics().tail(1).select({"gof_positive","relative_geodesic_error","residual_variance"});fit.add_column("k",std::vector<double>{static_cast<double>(k)});
+    fits=k==6?fit:fits.concat_rows(fit);auto reference=m.reference_diagnostics(roll,{"arc_length","height"});reference.add_column("k",std::vector<double>{static_cast<double>(k)});
+    references=k==6?reference:references.concat_rows(reference);
+  }
+  std::filesystem::create_directories("build");layout.size(1100,940).fit_panels().save_svg("build/isomap_swiss_maps.svg");
+  std::print("Fit to each model's graph:\n\n{}\n\nIndependent intrinsic-distance checks:\n\n{}\n",
+      fits.select({"k","gof_positive","relative_geodesic_error","residual_variance"}).to_md(6),
+      references.select({"k","geodesic_relative_error","embedding_relative_error","max_edge_stretch"}).to_md(6));
+}
+```
+// result_begin: markdown
+Fit to each model's graph:
+
+| k | gof_positive | relative_geodesic_error | residual_variance |
+| ---: | ---: | ---: | ---: |
+| 6 | 0.935099 | 0.022124 | 0.001271 |
+| 40 | 0.534816 | 0.231600 | 0.253091 |
+
+
+Independent intrinsic-distance checks:
+
+| k | geodesic_relative_error | embedding_relative_error | max_edge_stretch |
+| ---: | ---: | ---: | ---: |
+| 6 | 0.082408 | 0.074494 | 1.011531 |
+| 40 | 0.605807 | 0.675332 | 11.024380 |
+
+\image(figures/isomap_swiss_maps.svg)
+// result_end
+
+\caption(Observed roll, independent flat coordinates and two Isomap embeddings. Colours run from purple to yellow along increasing arc length. Graph-fit scores and independent intrinsic-distance errors answer different questions.)
+\alttext(A coloured spiral and a flat coloured rectangle provide input and reference views. Below them are Isomap embeddings for six and forty neighbours, whose distortion is assessed in the accompanying tables.)
+
+At six neighbours the graph-distance error to the true sheet is 8.24%, and the
+embedding error is 7.45%. At forty neighbours these rise to 60.58% and 67.53%.
+The maximum edge stretch rises from 1.01 to 11.02, directly identifying cross-fold
+shortcuts rather than inferring them solely from an unattractive map.
+
+>> A neighbourhood sweep and a density check
+
+We inspect the graph first, then fit only connected cases. All candidates use the same
+1000 points and the same two axes. The curves compare fidelity to the graph itself with
+fidelity to the independently known sheet. Sparse graphs can detour and larger graphs
+can short circuit; these are competing errors, so a monotone improvement is not expected.
+
+A 500-point version with the same seed uses the first 500 noiseless sampled positions.
+It illustrates that six neighbours can already create damaging shortcuts at lower sampling
+density. Connectivity and the count \(k\) alone do not specify neighbourhood geometry.
+
+```{cpp, results="markdown", file="figures/isomap_swiss_sweep.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto roll=dm::datasets::swiss_roll(1000,0,1);dm::dstruct::DataFrame graphs,errors;
+  std::vector<double> connected_k,graph_error,intrinsic_error,inertia;
+  for(std::size_t k:{3,4,6,8,12,20,40,80}){
+    const auto graph=dm::stats::isomap_graph(roll,{"x","y","z"},k);const auto row=graph.diagnostics();graphs=k==3?row:graphs.concat_rows(row);
+    if(graph.component_sizes.size()!=1)continue;
+    const dm::stats::Isomap m(roll,{"x","y","z"},{2,k});const auto fit=m.dimension_diagnostics().tail(1),reference=m.reference_diagnostics(roll,{"arc_length","height"});
+    auto error=reference.select({"geodesic_relative_error","embedding_relative_error","max_edge_stretch"});error.add_column("k",std::vector<double>{static_cast<double>(k)});
+    errors=connected_k.empty()?error:errors.concat_rows(error);connected_k.push_back(k);graph_error.push_back(fit.double_at("relative_geodesic_error",0));
+    intrinsic_error.push_back(reference.double_at("embedding_relative_error",0));inertia.push_back(m.goodness_of_fit());
+  }
+  auto metric=dm::graphics::RPlot::create(),scores=dm::graphics::RPlot::create();
+  metric.lines(connected_k,graph_error,"to own graph",dm::RGB{37,99,235}).lines(connected_k,intrinsic_error,"to true sheet",dm::RGB{220,38,38});
+  metric.title("Two different distance targets").x_label("neighbours k").y_label("relative distance error").y_limits(0,1.05);
+  scores.lines(connected_k,inertia,"positive inertia",dm::RGB{37,99,235});scores.title("Positive-inertia fit is not truth").x_label("neighbours k").y_label("retained positive fraction").y_limits(0,1.15);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(metric).add(scores).size(1100,490).fit_panels().save_svg("build/isomap_swiss_sweep.svg");
+  const auto sparse=dm::datasets::swiss_roll(500,0,1);const dm::stats::Isomap small(sparse,{"x","y","z"},{2,6});
+  std::print("Connectivity:\n\n{}\n\nIndependent errors:\n\n{}\n\n500 points, k=6:\n\n{}\n",graphs.select({"k","components","edges"}).to_md(),
+      errors.select({"k","geodesic_relative_error","embedding_relative_error","max_edge_stretch"}).to_md(6),
+      small.reference_diagnostics(sparse,{"arc_length","height"}).select({"n","geodesic_relative_error","embedding_relative_error","max_edge_stretch"}).to_md(6));
+}
+```
+// result_begin: markdown
+Connectivity:
+
+| k | components | edges |
+| ---: | ---: | ---: |
+| 3 | 9 | 1880 |
+| 4 | 1 | 2447 |
+| 6 | 1 | 3573 |
+| 8 | 1 | 4686 |
+| 12 | 1 | 6907 |
+| 20 | 1 | 11368 |
+| 40 | 1 | 22482 |
+| 80 | 1 | 47040 |
+
+
+Independent errors:
+
+| k | geodesic_relative_error | embedding_relative_error | max_edge_stretch |
+| ---: | ---: | ---: | ---: |
+| 4 | 0.200713 | 0.185090 | 1.007467 |
+| 6 | 0.082408 | 0.074494 | 1.011531 |
+| 8 | 0.320642 | 0.320803 | 10.944157 |
+| 12 | 0.364157 | 0.367112 | 10.944157 |
+| 20 | 0.442418 | 0.459277 | 10.975887 |
+| 40 | 0.605807 | 0.675332 | 11.024380 |
+| 80 | 0.657026 | 0.707874 | 11.024380 |
+
+
+500 points, k=6:
+
+| n | geodesic_relative_error | embedding_relative_error | max_edge_stretch |
+| ---: | ---: | ---: | ---: |
+| 500 | 0.330638 | 0.331581 | 10.944157 |
+
+\image(figures/isomap_swiss_sweep.svg)
+// result_end
+
+\caption(Neighbourhood sensitivity on a fixed roll, with a separate lower-density case. Only connected candidates appear in the embedding curves; every candidate's component count is retained in the table.)
+\alttext(Relative errors to graph and true-sheet distances are plotted against neighbour count. A second panel shows retained positive inertia. Tables include disconnected candidates and an independent 500-point check.)
+
+The graph first connects at four neighbours in this sweep. Moving from six to eight
+neighbours introduces an edge with intrinsic-to-chord ratio 10.94 and raises embedding
+error from 7.45% to 32.08%. The 500-point case already has that shortcut at six neighbours,
+with 33.16% embedding error. These are fixed-sample comparisons, not estimates of an
+optimal neighbourhood for other samples.
+
+> Iris measurements
+
+>> Data and scaling
+
+`dm::datasets::iris()` contains 150 flowers, four numeric measurements in centimetres and
+a species label. We use all four measurements without scaling. Their shared physical unit
+does not make their variances equal, but it makes the raw Euclidean baseline explicit.
+Species is withheld from graph construction, fitting and diagnostics; it colours the final
+map only. No classification accuracy or prediction on new flowers is estimated.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::iris();
+  std::print("{} flowers; {} columns.\n\n{}\n",d.nrows(),d.ncols(),d | dm::group_by("Species") |
+      dm::summarise(dm::agg::n("n"),dm::agg::mean("Sepal.Length","mean_sepal_length_cm"),dm::agg::mean("Petal.Length","mean_petal_length_cm"),dm::agg::mean("Petal.Width","mean_petal_width_cm")) | dm::to_md(3));
+}
+```
+// result_begin: markdown
+150 flowers; 5 columns.
+
+| Species | n | mean_sepal_length_cm | mean_petal_length_cm | mean_petal_width_cm |
+| :--- | ---: | ---: | ---: | ---: |
+| setosa | 50 | 5.006 | 1.462 | 0.246 |
+| versicolor | 50 | 5.936 | 4.260 | 1.326 |
+| virginica | 50 | 6.588 | 5.552 | 2.026 |
+// result_end
+
+\caption(Species counts and measurements in centimetres. All selected features are complete, so retained and original row orders agree here.)
+
+>> Connectivity is a property to inspect, not an automatic tuning rule
+
+The next graph-only sweep does not fit invalid global maps. At small \(k\), separate
+components are a genuine output. With the stated tie/union rule, iris first becomes
+connected at \(k=25\). That is a fairly broad neighbourhood among 150 observations.
+Joining separated groups is not proof that their shortest paths approximate travel on a
+single biological manifold; component-wise analysis can be more defensible than forcing
+a connection just to obtain one picture.
+
+```{cpp, results="markdown", file="figures/isomap_iris_connectivity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::iris();const std::vector<std::string> features={"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};
+  dm::dstruct::DataFrame selected;std::vector<double> k,components,longest;
+  for(std::size_t count=2;count<=30;++count){const auto graph=dm::stats::isomap_graph(d,features,count);const auto row=graph.diagnostics();
+    k.push_back(count);components.push_back(graph.component_sizes.size());longest.push_back(row.double_at("longest_edge",0));
+    if(count==2 || count==3 || count==10 || count==24 || count==25 || count==30)selected=selected.ncols()?selected.concat_rows(row):row;}
+  auto connectivity=dm::graphics::RPlot::create(),length=dm::graphics::RPlot::create();
+  connectivity.lines(k,components).points(k,components).title("Iris union-graph connectivity").x_label("neighbours k").y_label("connected components").y_limits(.5,4.5);
+  length.lines(k,longest).title("Broader neighbourhoods add long edges").x_label("neighbours k").y_label("longest selected edge (cm metric)");
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(connectivity).add(length).size(1100,490).fit_panels().save_svg("build/isomap_iris_connectivity.svg");
+  std::print("{}\n",selected.select({"k","components","edges","min_degree","max_degree","longest_edge"}).to_md(6));
+}
+```
+// result_begin: markdown
+| k | components | edges | min_degree | max_degree | longest_edge |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 4 | 211 | 2 | 7 | 0.883176 |
+| 3 | 2 | 311 | 3 | 9 | 0.927362 |
+| 10 | 2 | 987 | 10 | 21 | 1.389244 |
+| 24 | 2 | 2242 | 24 | 45 | 1.951922 |
+| 25 | 1 | 2321 | 25 | 47 | 1.997498 |
+| 30 | 1 | 2760 | 30 | 59 | 2.102380 |
+
+\image(figures/isomap_iris_connectivity.svg)
+// result_end
+
+\caption(Component counts and longest selected edge across the iris neighbourhood sweep. The first connected candidate is 25; graph degree can exceed k because adjacency uses the union rule.)
+\alttext(Iris has four components at k equals two, two at k equals three through twenty-four, and one from twenty-five. The second panel shows increasing longest-edge length as neighbourhoods broaden.)
+
+>> Compare a connected map with the Euclidean baseline
+
+We display the \(k=25\) Isomap map beside two-dimensional classical Euclidean MDS on
+the same unscaled features. Rotations and reflections are immaterial. The first table
+checks Isomap against its own graph; the second checks both graph and embedded distances
+against raw Euclidean feature distances. Those raw distances are a comparison baseline,
+not known manifold truth as on the Swiss roll. A changed graph target must not be confused
+with the MDS distance-reconstruction target.
+
+```{cpp, results="markdown", file="figures/isomap_iris_maps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::iris();const std::vector<std::string> features={"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};
+  const dm::stats::Isomap iso(d,features,{2,25});const dm::stats::MDS mds(d,features);
+  std::vector<std::string> labels;for(auto row:iso.kept_row_indices())labels.push_back(d.string_at("Species",row));
+  auto nonlinear=iso.plot_embedding(labels).title("Isomap, k = 25").y_limits(-2.5,4.0);
+  auto baseline=mds.plot_embedding(labels).title("Euclidean classical MDS").y_limits(-2.5,4.0);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(nonlinear).add(baseline).size(1100,510).fit_panels().save_svg("build/isomap_iris_maps.svg");
+  std::print("Isomap versus its graph:\n\n{}\n\nIsomap versus original Euclidean distances:\n\n{}\n\nMDS versus original Euclidean distances:\n\n{}\n",
+      iso.dimension_diagnostics().tail(1).select({"gof_positive","negative_mass","relative_geodesic_error","residual_variance"}).to_md(6),
+      iso.reference_diagnostics(d,features).select({"geodesic_relative_error","embedding_relative_error"}).to_md(6),
+      mds.dimension_diagnostics().tail(1).select({"gof_positive","relative_distance_error"}).to_md(6));
+}
+```
+// result_begin: markdown
+Isomap versus its graph:
+
+| gof_positive | negative_mass | relative_geodesic_error | residual_variance |
+| ---: | ---: | ---: | ---: |
+| 0.944961 | 0.024390 | 0.063124 | 0.006956 |
+
+
+Isomap versus original Euclidean distances:
+
+| geodesic_relative_error | embedding_relative_error |
+| ---: | ---: |
+| 0.168406 | 0.171154 |
+
+
+MDS versus original Euclidean distances:
+
+| gof_positive | relative_distance_error |
+| ---: | ---: |
+| 0.977685 | 0.041796 |
+
+\image(figures/isomap_iris_maps.svg)
+// result_end
+
+\caption(Two unsupervised iris maps coloured by held-out species labels. Similar visual separation does not establish a manifold model or supervised predictive performance; the distance targets and errors are reported separately.)
+\alttext(Isomap and Euclidean MDS show the 150 flowers coloured by species. Tables separate Isomap's graph-fit diagnostics from both maps' errors relative to ordinary feature-space distances.)
+
+The connected Isomap map has 6.31% relative error against its own graph, but 17.12%
+against the original feature distances; MDS has 4.18% against those feature distances.
+This comparison describes different targets and does not establish a biological winner.
+
+An independent NumPy/SciPy calculation reproduces the stated iris graph, shortest paths,
+spectrum and coordinate Gram matrix. Stock scikit-learn agrees on two continuous
+Swiss-roll checks, but differs on iris: rounding and neighbour tie choices can change
+the selected graph. Comparisons must match the graph before comparing coordinates.
+
+> Conclusion
+
+Isomap learns a global metric from local edges before it learns coordinates. The worked
+examples separate shortest-path correctness, connectivity and Euclidean representability.
+Even perfect positive-inertia fit and residual variance can hide distance distortion.
+The Swiss roll supplies an independent target and exposes both neighbourhood and sampling
+sensitivity. Iris illustrates a different limitation: obtaining connectivity by broadening
+neighbourhoods does not validate a single connected manifold. Graph inspection, signed
+spectra and clearly named distance targets make these distinctions reviewable.
+
+> References
+
+- Tenenbaum, J. B., de Silva, V. and Langford, J. C. (2000). [A Global Geometric Framework for Nonlinear Dimensionality Reduction|https://doi.org/10.1126/science.290.5500.2319]. ~Science~, 290(5500), 2319–2323. Isomap, geodesic approximation and residual variance.
+- Torgerson, W. S. (1952). [Multidimensional scaling: I. Theory and method|https://doi.org/10.1007/BF02288916]. ~Psychometrika~, 17, 401–419. Classical scaling.
+- scikit-learn developers. [Isomap|https://scikit-learn.org/stable/modules/generated/sklearn.manifold.Isomap.html] and [implementation|https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/manifold/_isomap.py]. Connected-graph comparison on continuous Swiss-roll samples; iris neighbour ties and disconnected graphs are handled differently.
+- Fisher, R. A. (1936). [The use of multiple measurements in taxonomic problems|https://doi.org/10.1111/j.1469-1809.1936.tb02137.x]. ~Annals of Eugenics~, 7(2), 179–188. Iris measurements, used directly through the built-in dataset.
+

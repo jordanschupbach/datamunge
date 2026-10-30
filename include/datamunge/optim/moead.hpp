@@ -46,6 +46,10 @@ public:
                                                      const std::vector<double>& lower_bound,
                                                      const std::vector<double>& upper_bound) const;
 
+    /// @brief The options this MOEAD was configured with.
+    /// @return The stored options.
+    [[nodiscard]] const MOEADOptions& options() const noexcept { return options_; }
+
 private:
     MOEADOptions options_;
 };

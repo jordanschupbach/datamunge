@@ -32,18 +32,18 @@ if(DATAMUNGE_NN_EXAMPLES_ALE)
 endif()
 
 file(GLOB_RECURSE NN_EXAMPLES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/[0-9]*/*.cpp
-     ${CMAKE_CURRENT_SOURCE_DIR}/../cpp/nn/[12]_*/*.cpp
+     ${CMAKE_CURRENT_SOURCE_DIR}/../cpp/source/nn/[12]_*/*.cpp
 )
 set(NN_MIGRATED_TARGETS "")
 foreach(source ${NN_EXAMPLES})
   get_filename_component(name ${source} NAME_WE)
   add_executable(${name} ${source})
-  if(source MATCHES "/cpp/nn/")
+  if(source MATCHES "/cpp/source/nn/")
     list(APPEND NN_MIGRATED_TARGETS ${name})
   endif()
-  set_target_properties(${name} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+  set_target_properties(${name} PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
   target_include_directories(
-    ${name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../cpp/nn
+    ${name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../cpp/source/nn
   )
   target_link_libraries(${name} PRIVATE ${DATAMUNGE_TARGET})
   file(STRINGS "${source}" ale_headers REGEX "#include.*common/rl/ale_env[.]hpp")

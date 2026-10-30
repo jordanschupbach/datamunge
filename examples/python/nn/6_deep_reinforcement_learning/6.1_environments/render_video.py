@@ -1,7 +1,6 @@
 # Native Python NN example. Rollout "video" of the hand-written 6.1 controllers.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/render_video.py
 """Rollout "video" of the hand-written 6.1 controllers.
-
-CMD: just python-example render_video
 
 Port of tflow's render_video. tflow renders every built-in environment's 3D
 world offscreen with vsim's NVRHI/Vulkan renderer and streams the frames,

@@ -44,7 +44,7 @@ right choice depends on whether unbiasedness, symmetry about zero, or simplicity
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -107,7 +107,7 @@ sum of rounding error* \-\- flat for banker's rounding, a rising staircase for r
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

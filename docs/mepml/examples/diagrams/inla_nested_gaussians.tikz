@@ -1,0 +1,15 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[font=\large,>={Stealth[length=2.5mm]},box/.style={draw,rounded corners,thick,align=center,minimum width=4.1cm,minimum height=1.5cm}]
+\node[box,draw=blue!70!black,fill=blue!4] (a) at (0,0) {Fix $\theta_k$\\fit latent mode $m_k$ and $H_k$};
+\node[box,draw=orange!80!black,fill=orange!4] (b) at (6,0) {Score $\theta_k$\\$\log\widetilde p(y\mid\theta_k)+\log p(\theta_k)$};
+\draw[->,thick] (a)--(b);
+\node[align=center] at (0,-2.4) {$x\mid y,\theta_k\ \approx\ N(m_k,H_k^{-1})$\\[5pt]conditional Gaussian};
+\node[align=center] at (6,-2.4) {$w_k\ \propto\ \exp(\ell_k)\,\Delta_k$\\[5pt]normalized cell weights};
+\draw[->,thick] (3,-3.3)--(3,-4.1);
+\node[box,draw=green!50!black,fill=green!4,minimum width=10cm] at (3,-5.2) {$\widetilde p(x_j\mid y)=\sum_k w_k\,N(m_{kj},[H_k^{-1}]_{jj})$\\[8pt]$\operatorname{Var}(x_j\mid y)\approx E_w[V_{kj}]+\operatorname{Var}_w(m_{kj})$};
+\node[align=center] at (3,-7) {Integrating Gaussian components can produce a non-Gaussian marginal.\\A mode-only fit keeps one component and omits this mixing.};
+\end{tikzpicture}
+\end{document}

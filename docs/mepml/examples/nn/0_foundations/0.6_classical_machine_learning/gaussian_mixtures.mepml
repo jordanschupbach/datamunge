@@ -1,0 +1,154 @@
+//? Title: Gaussian Mixtures: Responsibilities and Tensor Adam
+//? Subtitle: Optimise a marginal likelihood with valid masses and positive variances
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Unlabelled observations may come from overlapping populations with different means and
+covariances. We inspect soft membership in a symmetric two-Gaussian model, then track
+explicit tensor Adam on a small separated fixture. A softplus variance bound prevents singular
+covariances, while likelihood and posterior normalization remain explicit checks.
+)
+\toc
+
+> The method
+
+A mixture sums weighted Gaussian densities; the negative log of that sum is the observed-data
+objective. Here the learned covariance is diagonal (one scalar per component in the 1-D example).
+Unconstrained mass logits a and scale logits s define valid probabilities and positive variances:
+
+$$
+\pi=\operatorname{softmax}(a),\quad v=0.01+\operatorname{softplus}(s),\quad
+J=-\frac1N\sum_i\operatorname{logsumexp}_k\left[
+\log\pi_k-\frac12\left(\log(2\pi v_k)+\frac{(x_i-\mu_k)^2}{v_k}\right)\right].
+$$
+\alttext(Softmax normalises component masses, softplus puts variances above 0.01, and log-sum-exp marginalises the latent component.)
+
+Bayes responsibilities are the softmax of the component log-joints. Differentiating J weights
+each component score by these responsibilities, allowing the visible Adam loop to fit means,
+variances and masses directly. This is direct likelihood optimisation, with O(NKD) work per step,
+not EM. Adam does not guarantee monotonic likelihood. We check finite improvement and valid
+probabilities rather than require every step to improve. The variance bound is approached smoothly;
+it is not an eigenvalue-clipping update. The objective is nonconvex and labels can permute.
+
+The concept diagram has a retained TikZ source in `diagrams/gaussian_mixtures_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/gaussian_mixtures_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/gaussian_mixtures_concept.tikz > build/gaussian_mixtures_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/gaussian_mixtures_concept.svg build/gaussian_mixtures_concept.dvi > build/gaussian_mixtures_concept.render.log 2>&1
+printf 'Rendered build/gaussian_mixtures_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/gaussian_mixtures_concept.svg from local TikZ source.
+// \image(figures/gaussian_mixtures_concept.svg)
+// result_end
+\caption(Optimise a marginal likelihood with valid masses and positive variances)
+\alttext(Learnable means + logits; softmax masses; bounded variances. Then Log-sum-exp likelihood; marginalise component IDs. Then Autograd + Adam; explicit parameter updates.)
+
+> Simple examples
+
+Equal masses, means -1 and 1, and unit variances give component-one probability sigmoid(2x). At x=0 it is exactly one half.
+
+```{cpp, results="markdown", file="figures/gaussian_mixtures_responsibilities.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto x = n::linspace(-2, 2, 9, dtype).reshape({9, 1});
+  const auto means = n::tensor({-1, 1}, {1, 2}, dtype);
+  const auto joint =
+      -.5 * n::square(x - means) - .5 * std::log(2 * std::numbers::pi) - std::log(2.);
+  const auto posterior = n::softmax(joint, 1), exact = n::sigmoid(2 * x);
+  const auto probability = n::select(posterior, 1, 1);
+  if (n::max(n::abs(probability - n::reshape(exact, {9}))).item() > 1e-12)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.lines(x.to_vector<double>(), probability.to_vector<double>(), "tensor posterior",
+          {37, 99, 235})
+      .points(x.to_vector<double>(), exact.to_vector<double>(), "analytic sigmoid",
+              {234, 88, 12})
+      .title("Soft assignment between two unit Gaussians")
+      .x_label("x")
+      .y_label("P(component +1)")
+      .y_limits(0, 1.1);
+  std::filesystem::create_directories("build");
+  p.size(850, 420).save_svg("build/gaussian_mixtures_responsibilities.svg");
+  std::print("Maximum analytic responsibility error {:.12f}.\n",
+             n::max(n::abs(probability - n::reshape(exact, {9}))).item());
+}
+```
+// result_begin: markdown
+Maximum analytic responsibility error 0.000000000000.
+\image(figures/gaussian_mixtures_responsibilities.svg)
+// result_end
+\caption(A symmetric Gaussian density ratio reduces exactly to a logistic curve.)
+\alttext(A symmetric Gaussian density ratio reduces exactly to a logistic curve.)
+
+> Checking the theory
+
+```{cpp, results="markdown", file="figures/gaussian_mixtures_adam.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto x = n::tensor({-2.2, -2, -1.8, 1.8, 2, 2.2}, {6, 1}, dtype);
+  auto means = n::tensor({-1, 1}, {1, 2}, dtype).requires_grad_();
+  auto scale = n::full({1, 2}, .5, dtype).requires_grad_();
+  auto mass = n::zeros({1, 2}, dtype).requires_grad_();
+  auto log_joint = [&]() {
+    const auto variance = .01 + n::softplus(scale);
+    return n::log_softmax(mass, 1) -
+           .5 * (n::log(2 * std::numbers::pi * variance) + n::square(x - means) / variance);
+  };
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer({means, scale, mass}, .03, config);
+  std::vector<double> step, nll;
+  const double initial = -n::mean(n::logsumexp(log_joint(), {1})).item();
+  for (int i = 0; i < 1200; ++i) {
+    const auto objective = -n::mean(n::logsumexp(log_joint(), {1}));
+    step.push_back(i);
+    nll.push_back(objective.item());
+    optimizer.minimize(objective);
+  }
+  n::NoGradGuard guard;
+  const auto variance = .01 + n::softplus(scale), posterior = n::softmax(log_joint(), 1);
+  const double final = -n::mean(n::logsumexp(log_joint(), {1})).item();
+  const double mass_error = n::max(n::abs(n::sum(posterior, {1}) - 1)).item();
+  if (final >= initial || mass_error > 1e-12 || n::min(variance).item() < .01)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.lines(step, nll, "Adam mean NLL", {37, 99, 235})
+      .title("Optimise observed-data mixture likelihood")
+      .x_label("Adam step")
+      .y_label("mean NLL");
+  std::filesystem::create_directories("build");
+  p.size(850, 420).save_svg("build/gaussian_mixtures_adam.svg");
+  std::print("Initial/final mean NLL {:.9f}, {:.9f}; means {}; variances {}; posterior mass "
+             "error {:.12f}.\n",
+             initial, final, means.to_vector<double>(), variance.to_vector<double>(),
+             mass_error);
+}
+```
+// result_begin: markdown
+Initial/final mean NLL 2.107752292, 0.299915247; means [-1.9999999999999998, 2]; variances [0.026666666666666665, 0.026666666666666665]; posterior mass error 0.000000000000.
+\image(figures/gaussian_mixtures_adam.svg)
+// result_end
+\caption(The curve records mean observed-data NLL before each Adam update; improvement need not be monotonic.)
+\alttext(The curve records mean observed-data NLL before each Adam update; improvement need not be monotonic.)
+
+
+> Conclusion
+
+The symmetric posterior agrees with its analytic sigmoid. Direct tensor Adam improves the
+six-point observed-data likelihood while preserving normalised masses and the variance bound.
+The 1-D fixture does not establish a global optimum or full-covariance benchmark performance.
+
+> References
+
+- [Dempster, Laird and Rubin (1977), Maximum likelihood from incomplete data via the EM algorithm](https://doi.org/10.1111/j.2517-6161.1977.tb01600.x).

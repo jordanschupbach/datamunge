@@ -3,6 +3,7 @@
 // statistical training parity; learned and moving state share one NPZ checkpoint.
 #pragma once
 #include <set>
+#include <datamunge/nn/point_data.hpp>
 
 #include "common/ecg_sensor.hpp"
 #include "common/point_models.hpp"
@@ -11,46 +12,9 @@
 namespace point_training {
 namespace nn = datamunge::nn;
 using nn::Tensor;
-struct PointData {
-  Tensor xyz, labels, source;
-};
-inline PointData Rows(const PointData& d, const std::vector<std::int64_t>& rows) {
-  return {nn::take_rows(d.xyz, rows), nn::take_rows(d.labels, rows), nn::take_rows(d.source, rows)};
-}
-inline std::vector<PointData> LoadPoints(const std::filesystem::path& root) {
-  const auto             arrays = replay::ToMap(nn::load_npz((root / "point_clouds.npz").string()));
-  std::vector<PointData> pools;
-  std::set<int>          ids;
-  for (const std::string split : {"fit", "validation", "test"}) {
-    auto      full = arrays.at(split + "_xyz");
-    const int n    = split == "fit" ? 24 : split == "validation" ? 6 : 12;
-    check::Require(
-        full.dtype() == nn::DType::Float32 && full.shape() == nn::Shape({n, 1024, 3}),
-        "real surface XYZ shape");
-    PointData d{
-        nn::slice(full, {0, 0, 0}, {n, 256, 3}),
-        arrays.at(split + "_label"),
-        arrays.at(split + "_source_id")};
-    check::Require(
-        d.labels.dtype() == nn::DType::Int32 && d.source.dtype() == nn::DType::Int32 &&
-            d.labels.shape() == nn::Shape({n}) && d.source.shape() == nn::Shape({n}),
-        "aligned labels/source IDs");
-    std::vector<int> counts(3);
-    const auto       labels = d.labels.to_vector<int>(), source = d.source.to_vector<int>();
-    for (int b = 0; b < n; ++b) {
-      check::Require(
-          labels[b] >= 0 && labels[b] < 3 && ids.insert(source[b]).second,
-          "unique disjoint object IDs");
-      ++counts[labels[b]];
-    }
-    for (float x : d.xyz.to_vector<float>())
-      check::Require(std::isfinite(x) && std::abs(x) <= 1.00001, "finite unit-ball points");
-    for (int count : counts)
-      check::Require(count == n / 3, "balanced source classes");
-    pools.push_back(d);
-  }
-  return pools;
-}
+using datamunge::nn::models::PointData;
+using datamunge::nn::models::LoadPoints;
+inline PointData Rows(const PointData&d,const std::vector<std::int64_t>&rows){return datamunge::nn::models::PointRows(d,rows);}
 class PointModel {
  public:
   nn::ParameterStore             parameters{971}, state{977};
@@ -78,18 +42,6 @@ class PointModel {
   Tensor Predict(const PointData& d) {
     nn::NoGradGuard guard;
     return Forward(d.xyz, false).logits;
-  }
-  Tensor Objective(const PointData& d, bool update) {
-    auto net = Forward(d.xyz, true, update);
-    auto ce  = nn::sparse_softmax_cross_entropy(net.logits, d.labels);
-    return plus ? ce : nn::add(ce, point_models::PointTransformPenalty(net.feature_transform, 16));
-  }
-  double Update(const PointData& d) {
-    auto   loss  = Objective(d, true);
-    double value = loss.item();
-    check::Require(std::isfinite(value) && value >= 0, "finite point objective");
-    optimizer->minimize(loss);
-    return value;
   }
   replay::Map Values() const {
     auto out = replay::Arrays(parameters), stats = replay::Arrays(state);

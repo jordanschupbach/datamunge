@@ -31,6 +31,8 @@ stage <- "build/nn-r-native/source/datamungerNN"
 dir.create(file.path(stage, "src"), recursive = TRUE, showWarnings = FALSE)
 copy_tree("prebindings/nn/r", stage)
 copy_tree("include", file.path(stage, "inst/include"))
+# Header-only example components bound by examples/bindings/nn_components.i.
+copy_tree("examples/nn/common", file.path(stage, "inst/include/common"), "[.]hpp$")
 copy_tree("src/datamunge", file.path(stage, "src/datamunge"), "[.](cpp|h|hpp)$")
 for (file in list.files(pattern = "^LICENSE")) if (!dir.exists(file)) copy_changed(file, file.path(stage, file))
 
@@ -59,7 +61,7 @@ for (file in helpers) copy_changed(file, file.path(installed_examples, "common",
 # Stage SWIG output atomically and normalize its temporary invocation path.
 temporary <- tempfile(".swig-", tmpdir = "build/nn-r-native")
 dir.create(temporary, recursive = TRUE)
-flags <- c("-c++", "-r", "-Iinclude", "-dll", "datamungerNN", "-package", "datamungerNN")
+flags <- c("-c++", "-r", "-Iinclude", "-Iexamples/bindings", "-Iexamples/nn", "-dll", "datamungerNN", "-package", "datamungerNN")
 if (identical(Sys.info()[["sysname"]], "Linux")) flags <- c(flags, "-DSWIGWORDSIZE64")
 flags <- c(flags, "-outdir", temporary, "-o", file.path(temporary, "nn_r_wrap.cpp"), "prebindings/nn/src/nn.i")
 status <- system2("swig", vapply(flags, shQuote, character(1)))
@@ -67,6 +69,13 @@ if (status != 0L) stop("SWIG generation failed with status ", status)
 for (file in c("nn_r_wrap.cpp", "datamungerNN.R")) {
   text <- readLines(file.path(temporary, file), warn = FALSE)
   text <- gsub(temporary, "src", text, fixed = TRUE)
+  if (file == "datamungerNN.R") {
+    # The R backend emits original C++ field names in S4 representations,
+    # including ignored/renamed fields. Quote reserved slot names so that
+    # components with an `in` channel count produce valid R source.
+    text <- sub("^([[:space:]]*)(in)([[:space:]]*=)", "\\1`\\2`\\3", text)
+    text <- gsub("([@$])in\\b", "\\1`in`", text, perl = TRUE)
+  }
   destination <- if (file == "nn_r_wrap.cpp") file.path(stage, "src", file) else file.path(stage, "R/nn_native.R")
   write_changed(destination, text)
 }

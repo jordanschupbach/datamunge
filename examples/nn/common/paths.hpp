@@ -1,7 +1,7 @@
 // Where the nn example ports read datasets and write their outputs.
 //
-// Datasets: $DATAMUNGE_DATA_DIR, or ~/projects/tflow_examples/output/datasets
-// (the tflow examples' download cache, filled by its scripts/fetch_datasets.py).
+// Datasets: $DATAMUNGE_DATA_DIR, or the user's cache. Public datasets are
+// prepared by the example data loaders when first needed.
 // Outputs (checkpoints, histories, fixtures): $DATAMUNGE_OUTPUT_DIR, or
 // output/nn relative to the working directory (`just run-nn` runs from the
 // repository root). Both are created on demand by the caller.
@@ -11,13 +11,12 @@
 #include <filesystem>
 #include <string>
 #include "common/runtime.hpp"
+#include "common/dataset_assets.hpp"
 
 namespace paths {
 
 inline std::filesystem::path DataRoot() {
-  if (const char* dir = std::getenv("DATAMUNGE_DATA_DIR"); dir && *dir) return dir;
-  const char* home = std::getenv("HOME");
-  return std::filesystem::path(home ? home : ".") / "projects" / "tflow_examples" / "output" / "datasets";
+  return dataset_assets::DataRoot();
 }
 
 /// DataRoot() / name, e.g. Dataset("mnist").

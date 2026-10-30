@@ -1,0 +1,466 @@
+//? Title: Squeeze-and-Excitation: Channel Recalibration and Explicit Fitting
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Tensor attention modules expose how global context changes channel or branch weights.
+We check the small module, complete network counts and gradients, then show every update
+of the source-shaped compact CIFAR classifier with tensor Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/senet.cpp`.
+
+> The method
+
+SE globally averages each channel, reduces C to floor(C/r) with a biased pointwise filter and
+ReLU, expands back with another biased filter, then applies logistic sigmoid. The gate scales
+all spatial positions of that channel. For hidden h=floor(C/r), it adds 2Ch+h+C parameters.
+The full residual family uses r=16: SE-ResNet-50 has 28088024 learned scalars and SE-ResNeXt-50
+32×4d has 27559896, each adding 2530992 over its plain backbone. The small diagnostic compares
+the convolution implementation with an explicit tensor dense composition; both retain gate
+derivatives. A gate is not detached or treated as a fixed multiplier during fitting.
+The quarter-width CIFAR model contains 1645382 learned scalars.
+
+The backbone retains all sixteen ResNet-50 bottlenecks (3/4/6/3). Each unit ends with a linear
+1×1/BN, its attention gate, shortcut addition and ReLU. He-uniform bias-free convolution
+filters use symmetric padding, and BN learns scale/shift with epsilon 1e-5. A global mean
+and biased classifier finish the model. In grouped variants, the width is
+floor(planes*base_width/64)*cardinality. Stage stride belongs either to the first 1×1 or to
+the spatial filter; grouped layers and replacement hooks receive the actual spatial stride,
+preventing double downsampling when it belongs to the first filter.
+
+Full-width count/forward and backward probes below use 64-pixel inputs to bound computation;
+they retain every block and channel but are not full-resolution ImageNet accuracy evaluations.
+The backward probe freezes moving updates, shifts BN betas away from inactive ReLUs, and checks
+every parameter gradient is finite. Its printed norm range does not guarantee every derivative
+is nonzero for arbitrary data or gates. All numerical model/gradient computations use tensors.
+
+The explicit fit uses the source's quarter-width CIFAR backbone: a 3×3 stride-one stem without
+pooling, all sixteen blocks, stage stride on the first 1×1 and original 32×32 images. It shows
+11 batch-eight epochs on 128 fit/64 validation/64 official-test rows, tensor Adam(.001), explicit
+kernel L2=.0001/2, padded crops/flips and paired learned/BN checkpoint selection by validation NLL.
+All attention parameters participate in the optimizer. This bounded single-seed run differs
+from the paper's ImageNet schedule and cannot establish attention accuracy superiority.
+
+The editable concept diagram is `diagrams/senet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/senet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/senet_concept.tikz > build/senet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/senet_concept.svg build/senet_concept.dvi > build/senet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/senet_concept.svg)
+// result_end
+\caption(Squeeze-and-Excitation: Channel Recalibration and Explicit Fitting)
+\alttext(Global channel means; Biased channel MLP; then Logistic channel gates; Scale residual branch; then All sixteen blocks; Explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/senet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::AttentionResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.stride_on_3x3 = false;
+  cfg.attention     = n::models::ChannelAttention::kSqueezeExcitation;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out      = n::models::AttentionResNet(p, state, image, cfg, false);
+        auto       previous = image;
+        for (std::size_t i = 0; i < out.blocks.size(); ++i) {
+          n::model_stage("Residual block " + std::to_string(i + 1), previous, out.blocks[i]);
+          previous = out.blocks[i];
+        }
+        return out.logits;
+      },
+      "Squeeze-and-Excitation: Channel Recalibration and Explicit Fitting");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/senet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+21 displayed nodes; 1645382 reachable learned values.
+\image(figures/senet_architecture.svg)
+// result_end
+\caption(Executed senet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right senet architecture with rotated names and exact output shapes.)
+
+> Small module and visible gates
+
+```{cpp, results="markdown", file="figures/senet_gate.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type);
+  const auto x =
+      n::sin(.17 * n::arange(0, 2 * 7 * 7 * 32).to(type) + .2).reshape({2, 7, 7, 32});
+  {
+    n::NoGradGuard guard;
+    n::models::SqueezeExcitationModule(p, "se", x, 4);
+    p.set("se/reduce/b", n::full({8}, .3, type));
+  }
+  const auto out = n::models::SqueezeExcitationModule(p, "se", x, 4);
+  const auto hidden =
+      n::relu(n::matmul(n::mean(x, {1, 2}), p.at("se/reduce/W").reshape({32, 8})) +
+              p.at("se/reduce/b"));
+  const auto gate =
+      n::sigmoid(n::matmul(hidden, p.at("se/expand/W").reshape({8, 32})) + p.at("se/expand/b"))
+          .reshape({2, 1, 1, 32});
+  const double error = n::max(n::abs(out.output - x * gate)).item();
+  if (error > 1e-12 || p.count() != 552)
+    return 1;
+  auto curve = dm::graphics::RPlot::create();
+  curve
+      .lines(n::arange(0, 32).to_vector<double>(),
+             n::slice_axis(out.gate, 0, 0, 1).reshape({32}).to_vector<double>(),
+             "sample 0 gate", {37, 99, 235})
+      .title("SE channel weights, logistic gate")
+      .x_label("channel")
+      .y_label("gate")
+      .y_limits(0, 1.2);
+  const auto map = n::slice_axis(n::slice_axis(out.output, 0, 0, 1), 3, 0, 1).reshape({7, 7});
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(curve)
+      .add(n::plot_tensor_map(map, -1, 1).title("Gated signed channel 0"))
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/senet_gate.svg");
+  std::print("32-channel SE, reduction four: 552 learned scalars; independent tensor dense "
+             "composition agrees within {:.12f}. Gate range [{:.6f},{:.6f}].\n",
+             error, n::min(gate).item(), n::max(gate).item());
+}
+```
+// result_begin: markdown
+32-channel SE, reduction four: 552 learned scalars; independent tensor dense composition agrees within 0.000000000000. Gate range [0.258272,0.746263].
+\image(figures/senet_gate.svg)
+// result_end
+\caption(Global spatial averaging produces one descriptor per channel. Two biased pointwise layers with a ReLU and logistic gate rescale signed input features. The dense tensor composition checks the module definition; the gate remains part of the gradient graph.)
+\alttext(Global spatial averaging produces one descriptor per channel. Two biased pointwise layers with a ReLU and logistic gate rescale signed input features. The dense tensor composition checks the module definition; the gate remains part of the gradient graph.)
+
+> Complete network counts and backward
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  struct Case {
+    int cardinality, base;
+    int64_t count;
+  };
+  for (const auto &c : std::vector<Case>{{1, 64, 28088024}, {32, 4, 27559896}}) {
+    n::ParameterStore p(17), state(17);
+    n::models::AttentionResNetConfig cfg;
+    cfg.attention = n::models::ChannelAttention::kSqueezeExcitation;
+    cfg.cardinality = c.cardinality;
+    cfg.base_width = c.base;
+    cfg.update_stats = false;
+    {
+      n::NoGradGuard guard;
+      const auto out = n::models::AttentionResNet(p, state, n::zeros({1, 64, 64, 3}), cfg);
+      if (p.count() != c.count || out.blocks.size() != 16 ||
+          out.features.shape() != n::Shape{1, 2, 2, 2048})
+        return 1;
+      std::print("Full-width senet groups {}: {} learned / {} moving scalars; sixteen blocks, "
+                 "64-pixel forward.\n",
+                 c.cardinality, p.count(), state.count());
+      for (const auto &name : p.names())
+        if (name.ends_with("/beta"))
+          p.set(name,
+                (.5 * n::sin(.37 * n::arange(0, p.at(name).numel()).to(n::DType::Float32) +
+                             double(name.size())))
+                    .reshape(p.at(name).shape()));
+    }
+    const auto x = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                       .reshape({2, 64, 64, 3});
+    const auto before = state.flatten();
+    const auto out = n::models::AttentionResNet(p, state, x, cfg, true);
+    const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+    double low = std::numeric_limits<double>::infinity(), high = 0;
+    for (const auto &g : gradients) {
+      const double norm = n::sqrt(n::sum(n::square(g))).item();
+      if (!std::isfinite(norm))
+        return 1;
+      low = std::min(low, norm);
+      high = std::max(high, norm);
+    }
+    if (high == 0 || before != state.flatten())
+      return 1;
+    std::print("Every {} parameter-tensor gradient finite; norm range [{:.12f},{:.9f}], "
+               "moving state frozen.\n",
+               gradients.size(), low, high);
+  }
+}
+```
+// result_begin: markdown
+Full-width senet groups 1: 28088024 learned / 53120 moving scalars; sixteen blocks, 64-pixel forward.
+Every 225 parameter-tensor gradient finite; norm range [0.007497377228,23.249969482], moving state frozen.
+Full-width senet groups 32: 27559896 learned / 68224 moving scalars; sixteen blocks, 64-pixel forward.
+Every 225 parameter-tensor gradient finite; norm range [0.007449598052,23.473028183], moving state frozen.
+// result_end
+
+> Original pixels and explicit optimization
+
+```{cpp, results="markdown", file="figures/senet_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/senet_inputs.png", 5, 0., 1., 4, 1.,
+                     4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/senet_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/senet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+             vy       = n::slice_axis(labels, 0, 128, 192);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  n::models::AttentionResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.stride_on_3x3 = false;
+  cfg.attention     = n::models::ChannelAttention::kSqueezeExcitation;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::AttentionResNet(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 1645382)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/senet_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 11; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/senet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "senet / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("senet quarter-width ResNet-50")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/senet_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 1645382 learned scalars, 13280 moving scalars; 176 explicit Adam updates.
+Selected epoch 11; validation NLL 2.296753; inference training NLL 1.454913; test NLL 2.520617; test accuracy 0.250000.
+\image(figures/senet_training.svg)
+// result_end
+\caption(Explicit 11-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 11-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+
+
+> Observed subset result
+
+validation selects epoch 11, the last epoch, with validation NLL 2.296753, inference training NLL
+1.454913, test NLL 2.520617 and 25.0000% test accuracy on 64 images. Sixteen correct test images
+are well above the roughly six expected by chance, but the test NLL above ln 10 ≈ 2.303 shows that
+the wrong predictions are confident ones.
+
+These fixed-seed subset results do not establish a ranking of attention mechanisms or
+deformable variants. Validation selection and training/inference BN differences matter;
+the small test split is not a published benchmark.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/senet_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+The gate definition, complete topology and visible optimizer loop connect attention to executable
+tensor computation. The subset fit and diagnostic gate maps do not establish published accuracy
+or make the gates causal explanations of image content.
+
+> References
+
+- [Hu et al., Squeeze-and-Excitation Networks](https://arxiv.org/abs/1709.01507).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

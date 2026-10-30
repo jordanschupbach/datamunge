@@ -1,5 +1,7 @@
 #include <datamunge/image/detail/zlib_codec.hpp>
 
+#include <datamunge/algorithms/checksums.hpp>
+
 #include <algorithm>
 #include <array>
 #include <cstdint>
@@ -20,23 +22,9 @@ constexpr std::array<int, 30> kDistBase = {1,    2,    3,    4,    5,    7,    9
 constexpr std::array<int, 30> kDistExtra = {0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13};
 constexpr std::array<int, 19> kCodeLengthOrder = {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
 
-// Adler-32 with deferred modulo (same result as adler32(), several times faster).
+// Adler-32 over a raw buffer (algorithms::adler32 reduces modulo 65521 only every 5552 bytes).
 [[nodiscard]] std::uint32_t fast_adler32(const unsigned char* data, std::size_t length) {
-    constexpr std::uint32_t kMod = 65521;
-    constexpr std::size_t kMaxRun = 5552; // largest n keeping b below 2^32 before reducing
-    std::uint32_t a = 1, b = 0;
-    while (length > 0) {
-        const std::size_t run = std::min(length, kMaxRun);
-        for (std::size_t i = 0; i < run; ++i) {
-            a += data[i];
-            b += a;
-        }
-        a %= kMod;
-        b %= kMod;
-        data += run;
-        length -= run;
-    }
-    return (b << 16) | a;
+    return algorithms::adler32({reinterpret_cast<const char*>(data), length});
 }
 
 // =====================================================================================

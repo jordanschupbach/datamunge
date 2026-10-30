@@ -1,0 +1,377 @@
+//? Title: Baillie–PSW: Two Primality Tests With No Common Liar
+//? Subtitle: Why primes pass the strong Fermat and strong Lucas tests, a census of the composites that fool each test below ten million, and what the combination costs, with datamunge's algorithms::baillie_psw and its Lucas-sequence building blocks
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A probable-prime test checks an identity that every prime satisfies. Composites that satisfy it
+anyway are its *pseudoprimes*, or liars. The Baillie–PSW test combines a strong Fermat test to
+base 2, which checks \(2^{n-1}\equiv1\) through its chain of square roots, and a strong Lucas test,
+which checks the analogous identity \(U_{n+1}\equiv0\) for a Lucas sequence chosen by Selfridge's
+rule. We derive both identities: the first from the fact that \(\pm1\) are the only square roots of
+1 modulo a prime, the second from the Frobenius map in \(\mathbb F_{p^2}\). A census of all odd
+composites below \(10^7\) finds 162 strong pseudoprimes to base 2 and 178 strong Lucas
+pseudoprimes, and no number in both lists. The two kinds of liar have different shapes: a base-2
+liar needs \(n-1\) to be divisible by the order of 2 modulo each prime factor \(p\), a Lucas liar
+needs \(n+1\) to be divisible by the matching rank in \(\mathbb F_{p^2}\), and the factors of the
+two kinds of liar share visibly different amounts of \(p-1\) with \(n-1\). No composite below
+\(2^{64}\) passes both, so Baillie–PSW is a deterministic test for 64-bit integers; on 64-bit
+primes it costs about 3.8 times a single strong Fermat test, a third of a deterministic
+Miller–Rabin test, and on random odd numbers less than either.
+)
+
+\toc
+
+> Two identities that every prime satisfies
+
+>> The strong Fermat test
+
+Fermat's little theorem says \(a^{p-1}\equiv1\pmod p\) for a prime \(p\nmid a\). Write
+\(n-1=d\cdot2^s\) with \(d\) odd. If \(n\) is prime, the sequence
+
+$$
+a^{d},\ a^{2d},\ a^{4d},\ \dots,\ a^{2^sd}=a^{n-1}\equiv1\pmod n
+$$
+\alttext(a to the d, a to the 2 d, a to the 4 d, and so on up to a to the 2 to the s d, which equals a to the n minus 1, congruent to 1 mod n.)
+
+ends at 1, and each term is the square of the one before. Modulo a prime the only square roots of
+1 are \(\pm1\), because \(x^2-1=(x-1)(x+1)\equiv0\) forces one factor to vanish in a field. So the
+first 1 in the sequence is either the very first term or is preceded by \(-1\):
+
+$$
+a^{d}\equiv1\quad\text{or}\quad a^{2^rd}\equiv-1\ \text{for some }0\le r<s.
+$$
+\alttext(a to the d is congruent to 1, or a to the 2 to the r d is congruent to minus 1 for some r from 0 to s minus 1.)
+
+An odd composite \(n\) that satisfies this for \(a=2\) is a *strong pseudoprime to base 2*. For a
+composite modulus 1 has other square roots (by the Chinese remainder theorem), which is why the
+strong test catches many composites that pass \(a^{n-1}\equiv1\) alone.
+
+>> The strong Lucas test
+
+Let \(P,Q\) be integers with discriminant \(D=P^2-4Q\), and let \(\alpha,\beta\) be the roots of
+\(x^2-Px+Q\). The Lucas sequences are
+
+$$
+U_k=\frac{\alpha^k-\beta^k}{\alpha-\beta},\qquad V_k=\alpha^k+\beta^k,
+$$
+\alttext(U k equals alpha to the k minus beta to the k, over alpha minus beta. V k equals alpha to the k plus beta to the k.)
+
+integers satisfying \(X_{k+1}=PX_k-QX_{k-1}\) with \(U_0=0,U_1=1,V_0=2,V_1=P\). Now take a prime
+\(p\nmid 2QD\) with Jacobi symbol \((D/p)=-1\). Then \(D\) is not a square mod \(p\), the polynomial is
+irreducible, and \(\alpha,\beta\) live in the field \(\mathbb F_{p^2}\) as conjugates. The Frobenius
+map \(x\mapsto x^p\) is the field's only non-trivial automorphism, so it swaps the roots:
+\(\alpha^p=\beta\). Hence \(\alpha^{p+1}=\alpha\beta=Q=\beta^{p+1}\), and
+
+$$
+U_{p+1}=\frac{\alpha^{p+1}-\beta^{p+1}}{\alpha-\beta}\equiv0\pmod p .
+$$
+\alttext(U p plus 1 equals alpha to the p plus 1 minus beta to the p plus 1, over alpha minus beta, which is congruent to 0 mod p.)
+
+This is the Lucas analogue of Fermat's theorem, with \(p+1\) in place of \(p-1\). The strong form
+follows the same square-root argument in \(\mathbb F_{p^2}\): writing \(n+1=d\cdot2^s\) with \(d\) odd,
+a prime satisfies \(U_d\equiv0\) or \(V_{d2^r}\equiv0\) for some \(0\le r<s\), using
+\(U_{2k}=U_kV_k\) and \(V_{2k}=V_k^2-2Q^k\). Selfridge's rule fixes the parameters: \(D\) is the
+first of \(5,-7,9,-11,\dots\) with \((D/n)=-1\), \(P=1\), \(Q=(1-D)/4\). (For a perfect square no
+such \(D\) exists, so squares are rejected first.) `lucas_sequence_mod()` computes \(U_k\) and \(V_k\)
+modulo \(n\) in \(O(\log k)\) doubling and increment steps.
+
+>> The combination
+
+```
+BAILLIE-PSW(n):
+    trial-divide by the primes up to 37
+    if n fails the strong Fermat test to base 2: return composite
+    if n is a perfect square: return composite
+    choose D, P, Q by Selfridge's rule
+    return whether n passes the strong Lucas test with D, P, Q
+```
+
+The first block shows the parameters and the two tests on a few numbers: three primes, the
+smallest strong pseudoprime to base 2, a Carmichael number, and the two smallest strong Lucas
+pseudoprimes.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::print("| \\(n\\) | factors | \\(D\\) | \\(Q\\) | strong Fermat (base 2) | Lucas | strong Lucas | Baillie–PSW |\n"
+             "| ---: | --- | ---: | ---: | --- | --- | --- | --- |\n");
+  auto yes = [](bool b) { return b ? "pass" : "fail"; };
+  for (std::uint64_t n : {97ULL, 5459ULL + 2, 1000000007ULL, 2047ULL, 561ULL, 5459ULL, 5777ULL, 3215031751ULL}) {
+    const auto f = alg::factorize(n);
+    std::string factors;
+    for (std::size_t i = 0; i < f.size(); ++i) factors += (i ? "·" : "") + std::to_string(f[i]);
+    const auto s = alg::selfridge_parameters(n);
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n", n, factors, s.D, s.Q, yes(alg::is_strong_probable_prime_base(n, 2)),
+               yes(alg::lucas_probable_prime(n)), yes(alg::strong_lucas_probable_prime(n)), alg::baillie_psw(n) ? "prime" : "composite");
+  }
+}
+```
+// result_begin: markdown
+| \(n\) | factors | \(D\) | \(Q\) | strong Fermat (base 2) | Lucas | strong Lucas | Baillie–PSW |
+| ---: | --- | ---: | ---: | --- | --- | --- | --- |
+| 97 | 97 | 5 | -1 | pass | pass | pass | prime |
+| 5461 | 43·127 | -19 | 5 | fail | fail | fail | composite |
+| 1000000007 | 1000000007 | 5 | -1 | pass | pass | pass | prime |
+| 2047 | 23·89 | 5 | -1 | pass | fail | fail | composite |
+| 561 | 3·11·17 | 13 | -3 | fail | fail | fail | composite |
+| 5459 | 53·103 | -7 | 2 | fail | pass | pass | composite |
+| 5777 | 53·109 | 5 | -1 | fail | pass | pass | composite |
+| 3215031751 | 151·751·28351 | -11 | 3 | pass | fail | fail | composite |
+// result_end
+
+Both primes pass every test, as the derivation requires. The composites show the division of
+labour. \(2047=23\cdot89\), the smallest strong pseudoprime to base 2, and \(3{,}215{,}031{,}751\),
+the smallest number that is a strong pseudoprime to bases 2, 3, 5 and 7 at once, pass the Fermat
+side and fail both Lucas tests. \(5459=53\cdot103\) and \(5777=53\cdot109\), the smallest strong
+Lucas pseudoprimes, pass the Lucas side and fail the strong base-2 test. The Carmichael number
+\(561\) satisfies \(a^{560}\equiv1\) for every base coprime to it, yet fails the strong test,
+because \(2^{35}\bmod561\) is neither \(\pm1\) and the chain reaches 1 through a square root of 1
+other than \(-1\).
+
+> A census of liars below ten million
+
+The block tests every odd composite \(n<10^7\) with four tests: Fermat to base 2
+(\(2^{n-1}\equiv1\)), strong Fermat to base 2, Lucas and strong Lucas (both with Selfridge's
+parameters). It counts the liars of each test as \(n\) grows, and the numbers that fool both
+strong tests.
+
+```{cpp, results="markdown", file="figures/baillie_psw_census.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::uint64_t N = 10000000;
+  const auto is_prime = alg::prime_sieve(N);
+  std::uint64_t fermat = 0, strong = 0, lucas = 0, slucas = 0, both = 0, carmichael_fermat = 0;
+  std::vector<std::uint64_t> first_spsp, first_slpsp;
+  std::vector<double> lx, c_fermat, c_strong, c_lucas, c_slucas;
+  double next = 1000;
+  for (std::uint64_t n = 9; n < N; n += 2) {
+    if (!is_prime[n]) {
+      const bool f = alg::mod_pow(2, n - 1, n) == 1;
+      const bool s = f && alg::is_strong_probable_prime_base(n, 2);
+      const bool sl = alg::strong_lucas_probable_prime(n);
+      const bool l = sl || alg::lucas_probable_prime(n);
+      fermat += f;
+      strong += s;
+      lucas += l;
+      slucas += sl;
+      both += s && sl;
+      if (s && first_spsp.size() < 8) first_spsp.push_back(n);
+      if (sl && first_slpsp.size() < 8) first_slpsp.push_back(n);
+    }
+    if (static_cast<double>(n) >= next) {
+      lx.push_back(std::log10(next));
+      for (auto [v, c] : {std::pair{&c_fermat, fermat}, {&c_strong, strong}, {&c_lucas, lucas}, {&c_slucas, slucas}})
+        v->push_back(std::log10(1.0 + static_cast<double>(c)));
+      next *= 1.25;
+    }
+  }
+  std::print("| odd composites \\(n<10^7\\) that pass | count |\n| --- | ---: |\n");
+  std::print("| Fermat, base 2 | {} |\n| strong Fermat, base 2 | {} |\n| Lucas (Selfridge) | {} |\n| strong Lucas (Selfridge) | {} |\n"
+             "| strong Fermat base 2 **and** strong Lucas | {} |\n", fermat, strong, lucas, slucas, both);
+  auto list = [](const std::vector<std::uint64_t>& v) {
+    std::string s;
+    for (std::size_t i = 0; i < v.size(); ++i) s += (i ? ", " : "") + std::to_string(v[i]);
+    return s;
+  };
+  std::print("\nFirst strong pseudoprimes to base 2: {}.\n\nFirst strong Lucas pseudoprimes: {}.\n", list(first_spsp), list(first_slpsp));
+
+  dm::graphics::RPlot::create()
+      .lines(lx, c_fermat, "", dm::RGB{252, 165, 165}, 2.0)
+      .lines(lx, c_strong, "", dm::RGB{220, 38, 38}, 2.5)
+      .lines(lx, c_lucas, "", dm::RGB{147, 197, 253}, 2.0)
+      .lines(lx, c_slucas, "", dm::RGB{37, 99, 235}, 2.5)
+      .legend({"Fermat base 2", "strong base 2", "Lucas", "strong Lucas"},
+              {dm::RGB{252, 165, 165}, dm::RGB{220, 38, 38}, dm::RGB{147, 197, 253}, dm::RGB{37, 99, 235}})
+      .x_limits(3, 7)
+      .y_limits(0, 3.4)
+      .title("Pseudoprimes below N")
+      .x_label("log10 N")
+      .y_label("log10 (1 + count)")
+      .size(900, 500)
+      .save_svg("build/baillie_psw_census.svg");
+}
+```
+// result_begin: markdown
+| odd composites \(n<10^7\) that pass | count |
+| --- | ---: |
+| Fermat, base 2 | 750 |
+| strong Fermat, base 2 | 162 |
+| Lucas (Selfridge) | 757 |
+| strong Lucas (Selfridge) | 178 |
+| strong Fermat base 2 **and** strong Lucas | 0 |
+
+First strong pseudoprimes to base 2: 2047, 3277, 4033, 4681, 8321, 15841, 29341, 42799.
+
+First strong Lucas pseudoprimes: 5459, 5777, 10877, 16109, 18971, 22499, 24569, 25199.
+\image(figures/baillie_psw_census.svg)
+// result_end
+
+\caption(Number of odd composites below \(N\) passing each test, on log scales: Fermat and strong Fermat to base 2 (light and dark red), Lucas and strong Lucas with Selfridge's parameters (light and dark blue).)
+\alttext(Line chart of log10 of one plus the count of liars against log10 N from 3 to 7. The Fermat and Lucas curves are close together and reach about 2.9, roughly 750 liars. The strong base-2 and strong Lucas curves start later, at about 2,000 and 5,000, run close together, and reach about 2.2, roughly 170 liars.)
+
+Strengthening each test removes about four fifths of its liars: below \(10^7\) there are 750
+Fermat pseudoprimes to base 2 but 162 strong ones, and 757 Lucas pseudoprimes but 178 strong
+ones. The first lists agree with the published sequences (OEIS A001262 and A217255). The two
+strong families are about equally common and grow at about the same rate, yet not one number
+below \(10^7\) is in both. Exhaustive searches have extended this to every \(n<2^{64}\), so for
+64-bit integers Baillie–PSW makes no mistakes. Pomerance gave a heuristic argument that
+counterexamples exist in infinite number, but none has ever been found.
+
+> Why the liars differ
+
+Let \(n=\prod p_i\) be squarefree. Fermat's congruence \(2^{n-1}\equiv1\pmod n\) holds exactly when,
+for each \(p_i\), the multiplicative order of 2 modulo \(p_i\) divides \(n-1\). The Lucas congruence
+\(U_{n+1}\equiv0\) holds when, for each \(p_i\), the *rank of apparition* (the least \(k\) with
+\(p_i\mid U_k\)) divides \(n+1\). For a prime with \((D/p)=-1\) that rank divides \(p+1\). So a
+base-2 liar needs its prime factors' \(p-1\) to share structure with \(n-1\), and a Lucas liar
+needs their \(p+1\) to share structure with \(n+1\). A number fooling both would need both at
+once, and since \(n-1\) and \(n+1\) share only the factor 2, this is rare enough that no example is
+known. The block checks this for the liars found above, measuring each liar's factors \(p\) by
+\(\gcd(p-1,n-1)/(p-1)\) and \(\gcd(p+1,n+1)/(p+1)\), the share of \(p\mp1\) that divides \(n\mp1\).
+
+```{cpp, results="markdown", file="figures/baillie_psw_structure.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <numeric>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::uint64_t N = 10000000;
+  const auto is_prime = alg::prime_sieve(N);
+  std::vector<double> sx, sy, lx, ly;
+  for (std::uint64_t n = 9; n < N; n += 2) {
+    if (is_prime[n]) continue;
+    const bool s = alg::is_strong_probable_prime_base(n, 2);
+    const bool l = alg::strong_lucas_probable_prime(n);
+    if (!s && !l) continue;
+    double minus = 1, plus = 1;  // smallest share over the prime factors
+    for (std::uint64_t p : alg::factorize(n)) {
+      minus = std::min(minus, static_cast<double>(std::gcd(p - 1, n - 1)) / static_cast<double>(p - 1));
+      plus = std::min(plus, static_cast<double>(std::gcd(p + 1, n + 1)) / static_cast<double>(p + 1));
+    }
+    (s ? sx : lx).push_back(std::log2(minus));
+    (s ? sy : ly).push_back(std::log2(plus));
+  }
+  auto median = [](std::vector<double> v) {
+    std::ranges::sort(v);
+    return v[v.size() / 2];
+  };
+  std::print("| liars | count | median \\(\\log_2\\) share of \\(p-1\\) in \\(n-1\\) | median \\(\\log_2\\) share of \\(p+1\\) in \\(n+1\\) |\n"
+             "| --- | ---: | ---: | ---: |\n");
+  std::print("| strong base 2 | {} | {:.1f} | {:.1f} |\n", sx.size(), median(sx), median(sy));
+  std::print("| strong Lucas | {} | {:.1f} | {:.1f} |\n", lx.size(), median(lx), median(ly));
+  dm::graphics::RPlot::create()
+      .points(sx, sy, "", dm::RGB{220, 38, 38}, 5.0)
+      .points(lx, ly, "", dm::RGB{37, 99, 235}, 5.0)
+      .legend({"strong base 2", "strong Lucas"}, {dm::RGB{220, 38, 38}, dm::RGB{37, 99, 235}})
+      .y_limits(-22, 4)
+      .title("Shared structure of the liars' prime factors")
+      .x_label("log2 min over p | n of gcd(p-1, n-1)/(p-1)")
+      .y_label("log2 min over p | n of gcd(p+1, n+1)/(p+1)")
+      .size(900, 600)
+      .save_svg("build/baillie_psw_structure.svg");
+}
+```
+// result_begin: markdown
+| liars | count | median \(\log_2\) share of \(p-1\) in \(n-1\) | median \(\log_2\) share of \(p+1\) in \(n+1\) |
+| --- | ---: | ---: | ---: |
+| strong base 2 | 162 | -2.8 | -10.4 |
+| strong Lucas | 178 | -9.8 | -8.4 |
+\image(figures/baillie_psw_structure.svg)
+// result_end
+
+\caption(Each liar below \(10^7\) as a point: horizontally, the smallest fraction of \(p-1\) that divides \(n-1\) over its prime factors \(p\); vertically, the same for \(p+1\) and \(n+1\). Both axes are \(\log_2\); 0 means the whole of \(p\mp1\) divides \(n\mp1\).)
+\alttext(Scatter plot of the strong liars below 10 million. Red base-2 liars cluster on the right, with most horizontal values between minus 5 and 0 and a few down to minus 12. Blue Lucas liars cluster on the left, from about minus 15 to minus 5. Vertically the red group lies between about minus 16 and minus 5 and the blue group between minus 14 and 0.)
+
+The horizontal axis separates the two families almost completely. For strong base-2 liars
+the median share is \(2^{-2.8}\): each prime factor's \(p-1\) mostly divides \(n-1\), and for many
+liars all of it does. For strong Lucas liars the median is \(2^{-9.8}\), essentially only the
+common factor 2. The vertical axis separates them less cleanly (medians \(2^{-10.4}\) and
+\(2^{-8.4}\)). The Lucas condition needs only the rank of apparition, which can be a small divisor
+of \(p+1\), to divide \(n+1\), just as the base-2 condition needs only the order of 2 to divide
+\(n-1\). Still, the picture shows why a common liar is hard to build: its factors would have to
+sit at the right of the red cloud and the top of the blue one at the same time.
+
+> Cost
+
+Each Fermat test takes about \(\log_2 n\) modular squarings. The Lucas test's doubling step updates
+\(U\), \(V\) and \(Q^k\), and an increment step adds more multiplications, so it costs a small multiple
+of one Fermat test. The block times both, Baillie–PSW, and `is_probable_prime()` (deterministic
+Miller–Rabin with a fixed set of bases for 64-bit numbers) on a million random odd 64-bit numbers
+and on 100,000 64-bit primes.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <chrono>
+#include <random>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::mt19937_64 rng(1);
+  std::vector<std::uint64_t> odd(1000000), primes;
+  for (auto& v : odd) v = rng() | 1ULL | (1ULL << 63);
+  while (primes.size() < 100000) {
+    const std::uint64_t v = rng() | 1ULL | (1ULL << 63);
+    if (alg::is_probable_prime(v)) primes.push_back(v);
+  }
+  using clock = std::chrono::steady_clock;
+  auto time = [&](const std::vector<std::uint64_t>& xs, auto&& test) {
+    std::size_t passed = 0;
+    const auto t0 = clock::now();
+    for (auto v : xs) passed += test(v);
+    const double ns = std::chrono::duration<double, std::nano>(clock::now() - t0).count() / xs.size();
+    return std::pair{ns, passed};
+  };
+  std::print("| test | ns per random odd number | passed | ns per prime | passed |\n| --- | ---: | ---: | ---: | ---: |\n");
+  auto row = [&](const char* name, auto&& test) {
+    const auto [a, pa] = time(odd, test);
+    const auto [b, pb] = time(primes, test);
+    std::print("| {} | {:.0f} | {} | {:.0f} | {} |\n", name, a, pa, b, pb);
+  };
+  row("strong Fermat, base 2", [](std::uint64_t v) { return alg::is_strong_probable_prime_base(v, 2); });
+  row("strong Lucas", [](std::uint64_t v) { return alg::strong_lucas_probable_prime(v); });
+  row("Baillie–PSW", [](std::uint64_t v) { return alg::baillie_psw(v); });
+  row("deterministic Miller–Rabin", [](std::uint64_t v) { return alg::is_probable_prime(v); });
+}
+```
+// result_begin: markdown
+| test | ns per random odd number | passed | ns per prime | passed |
+| --- | ---: | ---: | ---: | ---: |
+| strong Fermat, base 2 | 408 | 45199 | 437 | 100000 |
+| strong Lucas | 1090 | 45199 | 1011 | 100000 |
+| Baillie–PSW | 160 | 45199 | 1356 | 100000 |
+| deterministic Miller–Rabin | 322 | 45199 | 4813 | 100000 |
+// result_end
+
+About 4.5% of random odd 64-bit numbers are prime (the prime number theorem predicts
+\(2/\ln2^{63.5}\approx4.5\%\)), and all four tests agreed on every one of the million numbers.
+The strong Lucas test costs about 2.7 times a strong Fermat test, so on a prime Baillie–PSW
+costs both, about 1.2 µs on this machine, against 3.8 µs for the deterministic Miller–Rabin test,
+which runs several bases. On random odd numbers Baillie–PSW is the cheapest test of all, at about
+150 ns: trial division by the primes up to 37 removes about 70% of odd numbers at once,
+and almost every remaining composite fails the base-2 test, so the Lucas test runs only on
+numbers that are very likely prime.
+
+> Summary
+
+- Primes satisfy the strong Fermat condition because \(\pm1\) are the only square roots of 1 in a
+  field, and the strong Lucas condition because Frobenius swaps the roots in \(\mathbb F_{p^2}\),
+  giving \(U_{p+1}\equiv0\) when \((D/p)=-1\).
+- Below \(10^7\) the strong base-2 test has 162 liars and the strong Lucas test 178; none is common
+  to both. No common liar exists below \(2^{64}\), so Baillie–PSW is deterministic there.
+- The liars' prime factors share most of \(p-1\) with \(n-1\) for the base-2 test and almost none
+  for the Lucas test, a structural reason the families do not meet.
+- On primes the test costs about 3.8 strong Fermat tests, a third of deterministic Miller–Rabin;
+  on random inputs, with trial division first, it is cheaper still.

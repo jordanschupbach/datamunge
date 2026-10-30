@@ -1,0 +1,565 @@
+//? Title: Kernel PCA: Centring, Nonlinear Features and New Observations
+//? Subtitle: Exact small kernels, spectral limits and an iris projection with frozen training geometry
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A curved collection of observations may need more than a rotation of its original
+measurement axes to reveal useful low-dimensional structure. We want coordinates that
+retain variation in a chosen nonlinear feature space, together with evidence of what
+those coordinates discard. Kernel PCA obtains them from a centred matrix of pairwise
+kernel similarities. Three-point linear and Gaussian calculations and a four-point
+quadratic feature map make centring, normalization and rank explicit. Eight symmetric
+ring points show that radial information need not be the leading component at every
+scale. Iris then illustrates kernel sensitivity without choosing parameters from species
+labels, followed by projection of untouched observations using a training-only centre.
+)
+
+\toc
+
+> The method
+
+>> Choose the geometry before seeking principal axes
+
+For raw numeric predictors \(x_i\in\mathbb R^p\), a positive semidefinite kernel
+represents inner products \(k(x_i,x_j)=\langle\phi(x_i),\phi(x_j)\rangle\).
+A linear kernel keeps the original geometry; a nonlinear kernel changes it before
+performing ordinary principal-component analysis in feature space. Here the choices are
+
+$$
+ k_L(x,z)=x^Tz,\qquad k_R(x,z)=\exp(-\gamma\|x-z\|^2),\qquad
+ k_P(x,z)=(\gamma x^Tz+c)^d.
+$$
+\alttext(Linear similarity is the dot product. Gaussian similarity decays with squared distance. The polynomial kernel raises a scaled dot product plus an offset to an integer power.)
+
+The RBF parameter gamma is an inverse squared length scale, with
+\(\ell=(2\gamma)^{-1/2}\). Polynomial d is a positive integer, gamma is positive
+and c is nonnegative, giving a PSD kernel on arbitrary real vectors. Fractional powers
+and negative offsets are rejected rather than treated as valid feature maps by default.
+All active parameters and retained predictors must be finite; unrepresentable kernel
+values are rejected.
+
+`KernelPCA` uses predictors in their supplied units. It does not standardize them or
+select gamma. Uniformly rescaling x by a requires rescaling RBF gamma by
+\(1/a^2\) to preserve similarities. Changing only one column's units changes the metric
+in a way one scalar gamma cannot generally undo. In a train/test analysis, any external
+scaling must also be learned on training rows and frozen for the test rows.
+
+>> Centre features, not the original measurements alone
+
+Let \(K_{ij}=k(x_i,x_j)\), \(\mu=n^{-1}\sum_i\phi(x_i)\) and
+\(H=I-11^T/n\). The Gram matrix of centred feature vectors is
+
+$$
+ K_c=HKH,\qquad (K_c)_{ij}=K_{ij}-\bar K_{i\cdot}-\bar K_{\cdot j}+\bar K_{\cdot\cdot}.
+$$
+\alttext(Double centring subtracts each kernel row and column mean and adds the grand mean. The resulting matrix is the inner-product matrix of feature vectors centred on their training mean.)
+
+Thus \(K_c1=0\), its rank is at most n−1, and an unchanged constant kernel has zero
+centred rank. Centering raw x suffices for a linear kernel, but does not generally centre
+nonlinear features. In the quadratic example below, the mean of x is zero while the
+mean of its squared feature is 2.5.
+
+For numerical stability the linear implementation forms centred input dot products.
+For RBF it centres `expm1(-gamma*distance_squared)` before restoring any common
+constant: the added all-ones matrix vanishes under H. This retains a tiny-gamma signal
+even when every entry in a double-precision raw kernel has rounded to one.
+`kernel_matrix()` exposes rounded raw K; `centered_kernel_matrix()` exposes the more
+accurately computed centred geometry.
+
+>> Normalize eigenvectors to obtain scores and feature-space variance
+
+For \(K_cv_j=\lambda_jv_j\), \(\|v_j\|=1\) and positive lambda, a unit feature
+axis and its training scores are
+
+$$
+ u_j=\frac{\sum_i v_{ij}(\phi(x_i)-\mu)}{\sqrt{\lambda_j}},\qquad
+ Z_{ij}=\langle\phi(x_i)-\mu,u_j\rangle=\sqrt{\lambda_j}v_{ij}.
+$$
+\alttext(A kernel eigenvector divided by the square root of its eigenvalue gives the dual coefficients of a unit feature-space axis. Training scores multiply that eigenvector by the square root instead.)
+
+Consequently \(Z^TZ=\operatorname{diag}(\lambda_1,\ldots,\lambda_q)\).
+The Gram eigenvalue is the sum of squared scores; its sample covariance variance is
+\(\lambda_j/(n-1)\). These are feature-space variances, with no general interpretation
+as centimetres squared of the original measurements. `eigenvalues()` preserves the
+retained Gram-scale API; `all_eigenvalues()` and `spectrum()` expose the full signed
+spectrum and the sample-variance normalization.
+
+Signs are arbitrary; the implementation fixes a largest-magnitude eigenvector entry
+positive. Repeated eigenvalues permit rotations of an entire eigenspace, so comparisons
+should use projectors or score Gram matrices, not signed columns. Truncating through a
+tied block can make even the selected subspace ambiguous. Numerical rank uses
+\(64n\epsilon\lambda_{\max}\); requests beyond it throw rather than promoting
+roundoff into a component. Materially negative eigenvalues also throw.
+
+For a PSD kernel, q leading axes minimize total training feature-space projection loss:
+
+$$
+ \sum_i\|\phi(x_i)-\mu-\Pi_q(\phi(x_i)-\mu)\|^2
+ =\operatorname{tr}(K_c)-\sum_{j\le q}\lambda_j
+ =\sum_{j>q}\lambda_j.
+$$
+\alttext(The total squared feature-space projection loss is the sum of discarded positive eigenvalues. Keeping leading axes minimizes this loss among subspaces of the same dimension.)
+
+`spectrum()` reports the tail energy and cumulative share within the chosen kernel.
+The numerical summary uses resolved eigenvalues above tolerance. A larger retained share
+across different kernels is not proof of a better map: those kernels define different
+feature spaces. Low-dimensional coordinates need not preserve original distances,
+classes or manifold geodesics. Nor is a feature-space projection an inverse transform
+back to raw measurements; this implementation does not solve a pre-image problem.
+
+>> Project new observations using the training mean
+
+For a new row x, centre its cross-kernel row against the frozen training frame:
+
+$$
+ k_c(x,i)=k(x,x_i)-\frac1n\sum_jk(x,x_j)-\bar K_{\cdot i}+\bar K_{\cdot\cdot},
+ \qquad z_j(x)=\sum_i k_c(x,i)\frac{v_{ij}}{\sqrt{\lambda_j}}.
+$$
+\alttext(A new kernel row subtracts its own mean over training points and the stored training column means, then adds the training grand mean. Its dot product with normalized dual coefficients gives the new scores.)
+
+The query-row mean is over training landmarks, not other test observations. Adding
+queries to a batch cannot change an existing row's coordinates. `transform()` uses this
+rule; refitting on the combined frame, or separately centring a test kernel matrix,
+would answer different questions.
+
+`projection_details()` additionally evaluates
+\(\|\phi(x)-\mu\|^2=k(x,x)-2\overline{k(x,X)}+\bar K_{\cdot\cdot}\)
+and subtracts the sum of retained squared scores. The remainder is a feature-space
+projection loss, not a predictive test error or calibrated anomaly score. Missing or
+nonfinite query predictors retain their row positions with NaN scores and a status;
+training nulls are omitted jointly and original positions remain in `kept_row_indices()`.
+
+Dense fitting costs \(O(n^2p+n^3)\) time and \(O(n^2+np)\) storage. Projecting m new
+rows costs \(O(mn(p+q))\). The eigensolver is scaled before decomposition, so a small
+kernel scale is not confused with zero by an absolute stopping threshold.
+
+> Simple examples
+
+>> Three linear points expose centring and out-of-sample projection
+
+For x = (0,1,2), the raw Gram matrix has rows (0,0,0), (0,1,2), (0,2,4).
+The training mean is one, so the centred matrix has rows (1,0,−1), (0,0,0),
+(−1,0,1). Its only positive eigenvalue is two, scores are (−1,0,1) up to one
+common sign, and sample variance is one. A new x=3 projects to magnitude two on
+the same axis; it is not centred by itself to zero.
+
+```{cpp, results="markdown", file="figures/kpca_linear_three.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{0,1,2});
+  const dm::stats::KernelPCA m(d,{"x"},{.n_components=1,.kernel="linear"});dm::dstruct::DataFrame q;q.add_column("x",std::vector<double>{3});
+  dm::dstruct::DataFrame matrices;for(std::size_t j=0;j<3;++j){matrices.add_column("K"+std::to_string(j),m.kernel_matrix().col(j));matrices.add_column("Kc"+std::to_string(j),m.centered_kernel_matrix().col(j));}
+  auto scores=dm::graphics::RPlot::create(),row=dm::graphics::RPlot::create();scores.points({0,1,2},m.dimension(0),"training scores",{37,99,235},6).points({3},m.transform(q).col(0),"new observation",{220,38,38},6).title("One axis with the training centre").x_label("raw x").y_label("kernel score").y_limits(-3,3);
+  row.bars({0,1,2},m.centered_kernel_matrix().row(0),"Kc first row",{37,99,235},.5).title("Centred inner products against x = 0").x_label("training row").y_label("centred similarity").y_limits(-1.5,1.5);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(scores).add(row).size(1100,490).fit_panels().save_svg("build/kpca_linear_three.svg");
+  std::print("{}\n\n{}\n\nNew x = 3:\n\n{}\n",matrices.to_md(3),m.spectrum().to_md(6),m.projection_details(q).to_md(6));
+}
+```
+// result_begin: markdown
+| K0 | Kc0 | K1 | Kc1 | K2 | Kc2 |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 0 | 0 | 0 | -1 |
+| 0 | 0 | 1 | 0 | 2 | 0 |
+| 0 | -1 | 2 | 0 | 4 | 1 |
+
+
+| component | eigenvalue | sample_variance | positive_share | cumulative_share | residual_energy | retained | resolved |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2 | 1 | 1 | 1 | 0 | 1 | 1 |
+| 2 | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
+| 3 | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
+
+
+New x = 3:
+
+| query_row | centered_norm_squared | projected_norm_squared | residual_energy | status |
+| ---: | ---: | ---: | ---: | :--- |
+| 0 | 4 | 4 | 0 | ok |
+
+\image(figures/kpca_linear_three.svg)
+// result_end
+
+\caption(Linear kernel PCA centres the original scalar predictor and reproduces its single nonzero principal component. Raw and centred Gram entries are shown together.)
+\alttext(Training scores at zero, one and two and one projected query at three appear beside the first centred-kernel row. Tables show the exact Gram matrices, rank-one spectrum and zero query projection loss.)
+
+
+>> Four quadratic points make the nonlinear features explicit
+
+Take x = (−2,−1,1,2) and \(k(x,z)=(xz+1)^2\).
+An explicit feature map is \(\phi(x)=(x^2,\sqrt2x,1)\), because its dot product
+expands to that kernel. The centred features are
+\((x^2-2.5,\sqrt2x,0)\). Their two nonzero columns are orthogonal over these four
+points, with squared norms 9 and 20. Therefore the leading score is \(\sqrt2x\),
+the second is \(x^2-2.5\), and Gram eigenvalues are 20 and 9, up to score signs.
+The second component joins opposite signs of x with the same magnitude. This demonstrates
+a nonlinear feature without claiming that principal components identify a class boundary.
+
+```{cpp, results="markdown", file="figures/kpca_quadratic_four.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{-2,-1,1,2});
+  const dm::stats::KernelPCA m(d,{"x"},{.kernel="polynomial",.gamma=1,.degree=2,.coef0=1});
+  const std::vector<std::string> magnitude={"outer magnitude","inner magnitude","inner magnitude","outer magnitude"};auto features=dm::graphics::RPlot::create();
+  features.points({-2,-1,1,2},{1.5,-1.5,-1.5,1.5},"x squared - 2.5",{37,99,235},6).title("The centred quadratic feature").x_label("raw x").y_label("x squared - training mean").y_limits(-2.5,3);
+  auto scores=m.plot_embedding(magnitude).title("Linear and quadratic score axes").y_limits(-2.5,3);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(features).add(scores).size(1100,490).fit_panels().save_svg("build/kpca_quadratic_four.svg");
+  std::print("{}\n\n{}\n",m.spectrum().to_md(6),m.projection_details(d).to_md(6));
+}
+```
+// result_begin: markdown
+| component | eigenvalue | sample_variance | positive_share | cumulative_share | residual_energy | retained | resolved |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 20 | 6.666667 | 0.689655 | 0.689655 | 9 | 1 | 1 |
+| 2 | 9 | 3.000000 | 0.310345 | 1.000000 | 0 | 1 | 1 |
+| 3 | 0 | 0.000000 | 0.000000 | 1.000000 | 0 | 0 | 0 |
+| 4 | 0 | 0.000000 | 0.000000 | 1.000000 | 0 | 0 | 0 |
+
+
+| query_row | centered_norm_squared | projected_norm_squared | residual_energy | status |
+| ---: | ---: | ---: | ---: | :--- |
+| 0 | 10.25 | 10.25 | 0 | ok |
+| 1 | 4.25 | 4.25 | 0 | ok |
+| 2 | 4.25 | 4.25 | 0 | ok |
+| 3 | 10.25 | 10.25 | 0 | ok |
+
+\image(figures/kpca_quadratic_four.svg)
+// result_end
+
+\caption(A polynomial kernel reproduces a hand-written finite feature map. Two retained axes span its complete centred training feature space.)
+\alttext(The centred squared predictor is plotted against x, then the two kernel scores are coloured by inner or outer magnitude. The spectrum has eigenvalues twenty and nine and the training projection losses vanish to roundoff.)
+
+
+>> Three Gaussian points give two exact eigenvalues
+
+For x = (−1,0,1), write \(a=e^{-\gamma}\), \(b=e^{-4\gamma}\).
+The uncentred kernel rows are (1,a,b), (a,1,a), (b,a,1).
+Reflection symmetry produces the odd unit vector \((-1,0,1)/\sqrt2\) and the even
+unit vector \((1,-2,1)/\sqrt6\), both orthogonal to the constant direction.
+Their centred eigenvalues are
+\(\lambda_{odd}=1-b\) and \(\lambda_{even}=1-4a/3+b/3\).
+At gamma one, both are positive; retaining both recovers all centred feature energy
+of these three observations, without recovering a general raw-space inverse map.
+
+```{cpp, results="markdown", file="figures/kpca_rbf_three.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{-1,0,1});const dm::stats::KernelPCA m(d,{"x"},{.gamma=1});
+  auto axes=dm::graphics::RPlot::create(),geometry=m.plot_embedding().title("Two feature-space coordinates");axes.points({-1,0,1},m.dimension(0),"odd axis",{37,99,235},6).points({-1,0,1},m.dimension(1),"even axis",{220,38,38},6).title("Three-point odd and even modes").x_label("raw x").y_label("score").y_limits(-1.2,1.3);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(axes).add(geometry).size(1100,490).fit_panels().save_svg("build/kpca_rbf_three.svg");
+  dm::dstruct::DataFrame reference;reference.add_column("mode",std::vector<std::string>{"odd","even"});reference.add_column("closed_form",std::vector<double>{1-std::exp(-4.),1-4*std::exp(-1.)/3+std::exp(-4.)/3});reference.add_column("computed",m.eigenvalues());std::print("{}\n\n{}\n",reference.to_md(9),m.diagnostics().to_md(9));
+}
+```
+// result_begin: markdown
+| mode | closed_form | computed |
+| :--- | ---: | ---: |
+| odd | 0.981684361 | 0.981684361 |
+| even | 0.515599291 | 0.515599291 |
+
+
+| n | p | d | rank | trace | retained_share | mean_residual_energy | max_centered_row_mean | relative_eigen_residual |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 3 | 1 | 2 | 2 | 1.497283653 | 1 | 0 | 0 | 0 |
+
+\image(figures/kpca_rbf_three.svg)
+// result_end
+
+\caption(Reflection symmetry yields exact odd/even eigenpairs of a centred three-point Gaussian kernel.)
+\alttext(Two score columns vary in odd and even patterns over the three original coordinates. A second panel shows their feature-space triangle; a table compares computed eigenvalues with closed forms.)
+
+
+> Checking the theory
+
+>> Small gamma approaches scaled linear PCA; large gamma loses a preferred axis
+
+Expanding the RBF kernel at small positive gamma gives
+\(K_{ij}=1-\gamma\|x_i-x_j\|^2+O(\gamma^2)\), hence
+\(K_c=2\gamma X_cX_c^T+O(\gamma^2)\).
+Leading eigenspaces approach linear PCA when separated by an eigengap; score magnitudes
+shrink as \(\sqrt{2\gamma}\). They do not approach raw linear scores without that
+rescaling. In the three-point example, the odd eigenvalue is approximately 4 gamma and
+the even one approximately \(2\gamma^2\); the tiny second mode eventually falls below
+numerical rank tolerance and is not requested in the sweep.
+
+For distinct points, gamma tending to infinity gives \(K\to I\) and \(K_c\to H\),
+with n−1 equal eigenvalues of one. It is H, not I, after centring. There is then no
+preferred ordering of directions, and a two-dimensional truncation captures only
+\(2/(n-1)\) of feature energy. Duplicates change this limit to blocks of identical
+kernel rows. A displayed direction at a nearly repeated eigenvalue should not be given
+a stable scientific interpretation.
+
+```{cpp, results="markdown", file="figures/kpca_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{-1,0,1});dm::dstruct::DataFrame results;std::vector<double> logg,ratio,share;
+  for(double g:{1e-100,1e-10,1e-5,.001,.01,.1,1.,10.,100.}){const dm::stats::KernelPCA m(d,{"x"},{.n_components=1,.gamma=g});auto row=m.diagnostics();row.add_column("gamma",std::vector<double>{g});row.add_column("lambda_over_4gamma",std::vector<double>{m.eigenvalues()[0]/(4*g)});row.add_column("lambda1",std::vector<double>{m.eigenvalues()[0]});results=results.nrows()?results.concat_rows(row):row;if(g>=1e-5){logg.push_back(std::log10(g));ratio.push_back(m.eigenvalues()[0]/(4*g));share.push_back(m.diagnostics().double_at("retained_share",0));}}
+  auto limit=dm::graphics::RPlot::create(),energy=dm::graphics::RPlot::create();limit.lines(logg,ratio,"lambda1 / (4 gamma)",{37,99,235}).title("The scaled linear limit").x_label("log10 gamma").y_label("eigenvalue ratio").y_limits(0,1.3);energy.lines(logg,share,"one-axis energy share",{37,99,235}).title("At large gamma the two modes tie").x_label("log10 gamma").y_label("retained feature energy").y_limits(0,1.3);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(limit).add(energy).size(1100,490).fit_panels().save_svg("build/kpca_limits.svg");
+  std::print("{}\n",results.select({"gamma","lambda1","lambda_over_4gamma","rank","retained_share","relative_eigen_residual"}).to_md(dm::dstruct::DataFrame::MarkdownOptions{.digits=6,.scientific={"gamma","lambda1","relative_eigen_residual"}}));
+}
+```
+// result_begin: markdown
+| gamma | lambda1 | lambda_over_4gamma | rank | retained_share | relative_eigen_residual |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1.000000e-100 | 4.000000e-100 | 1.000000 | 1 | 1.000000 | 1.830226e-16 |
+| 1.000000e-10 | 4.000000e-10 | 1.000000 | 2 | 1.000000 | 4.072051e-17 |
+| 1.000000e-05 | 3.999920e-05 | 0.999980 | 2 | 0.999995 | 2.157987e-16 |
+| 1.000000e-03 | 3.992011e-03 | 0.998003 | 2 | 0.999500 | 2.319171e-16 |
+| 1.000000e-02 | 3.921056e-02 | 0.980264 | 2 | 0.995008 | 1.864746e-16 |
+| 1.000000e-01 | 3.296800e-01 | 0.824200 | 2 | 0.950991 | 2.528559e-16 |
+| 1.000000e+00 | 9.816844e-01 | 0.245421 | 2 | 0.655644 | 2.616940e-16 |
+| 1.000000e+01 | 1.000000e+00 | 0.025000 | 2 | 0.500015 | 1.404811e-16 |
+| 1.000000e+02 | 1.000000e+00 | 0.002500 | 2 | 0.500000 | 2.001466e-16 |
+
+\image(figures/kpca_limits.svg)
+// result_end
+
+\caption(Gamma changes both the overall feature scale and the distribution of feature energy. The extremely small gamma row exercises stable centring even when raw similarities round to one.)
+\alttext(Log-gamma curves show the leading eigenvalue divided by four gamma approaching one at small gamma, and one-axis energy share approaching one half at large gamma. A table includes very small parameter values and numerical rank.)
+
+
+>> Eight ring points distinguish radial information from variance ordering
+
+Use four axis-aligned points on radius one and four on radius three, with no noise or
+randomness. The ring contrast is an exact eigenvector by rotational symmetry, while
+angular modes occur in repeated pairs. At gamma 0.01 the leading pair is angular; at
+0.3 the radial contrast becomes the leading mode. The input table and embedding plots below
+use ring labels only for colour. This controlled example does not estimate classifier
+accuracy, and a leading radial axis is not guaranteed for other radii, sample patterns or
+gamma values. Rotations within the repeated angular pair are immaterial to its subspace.
+
+```{cpp, results="markdown", file="figures/kpca_eight_rings.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{1,0,-1,0,3,0,-3,0});d.add_column("y",std::vector<double>{0,1,0,-1,0,3,0,-3});const std::vector<std::string> labels={"inner","inner","inner","inner","outer","outer","outer","outer"};
+  const dm::stats::KernelPCA angular(d,{"x","y"},{.gamma=.01}),radial(d,{"x","y"},{.gamma=.3});auto a=angular.plot_embedding(labels).title("Small gamma: leading angular pair").y_limits(-.5,.7),b=radial.plot_embedding(labels).title("Gamma 0.3: leading radial contrast").y_limits(-.8,1.2);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,490).fit_panels().save_svg("build/kpca_eight_rings.svg");
+  std::print("Input points:\n\n{}\n\nGamma .01:\n\n{}\n\nGamma .3:\n\n{}\n",d.to_md(1),angular.spectrum().head(5).to_md(6),radial.spectrum().head(5).to_md(6));
+}
+```
+// result_begin: markdown
+Input points:
+
+| x | y |
+| ---: | ---: |
+| 1 | 0 |
+| 0 | 1 |
+| -1 | 0 |
+| 0 | -1 |
+| 3 | 0 |
+| 0 | 3 |
+| -3 | 0 |
+| 0 | -3 |
+
+
+Gamma .01:
+
+| component | eigenvalue | sample_variance | positive_share | cumulative_share | residual_energy | retained | resolved |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.341387 | 0.048770 | 0.465936 | 0.465936 | 0.391304 | 1 | 1 |
+| 2 | 0.341387 | 0.048770 | 0.465936 | 0.931872 | 0.049917 | 1 | 1 |
+| 3 | 0.027527 | 0.003932 | 0.037570 | 0.969442 | 0.022390 | 0 | 1 |
+| 4 | 0.022094 | 0.003156 | 0.030154 | 0.999596 | 0.000296 | 0 | 1 |
+| 5 | 0.000148 | 0.000021 | 0.000202 | 0.999797 | 0.000148 | 0 | 1 |
+
+
+Gamma .3:
+
+| component | eigenvalue | sample_variance | positive_share | cumulative_share | residual_energy | retained | resolved |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1.294937 | 0.184991 | 0.219963 | 0.219963 | 4.592129 | 1 | 1 |
+| 2 | 1.178793 | 0.168399 | 0.200234 | 0.420197 | 3.413336 | 1 | 1 |
+| 3 | 1.178793 | 0.168399 | 0.200234 | 0.620432 | 2.234543 | 0 | 1 |
+| 4 | 1.043422 | 0.149060 | 0.177240 | 0.797671 | 1.191121 | 0 | 1 |
+| 5 | 0.519992 | 0.074285 | 0.088328 | 0.885999 | 0.671129 | 0 | 1 |
+
+\image(figures/kpca_eight_rings.svg)
+// result_end
+
+\caption(An exact eight-point ring construction shows that nonlinear radial structure can move into or out of the leading component as the kernel scale changes.)
+\alttext(Two embeddings of four inner and four outer axis-aligned points are coloured by ring. Small gamma preserves an angular two-axis pattern; at gamma point three the leading coordinate separates ring radii. Tables list the input and leading spectra.)
+
+
+> Iris measurements
+
+>> Raw-centimetre kernels and the linear-PCA identity
+
+`dm::datasets::iris()` contains 150 complete observations, four numeric measurements in
+centimetres and 50 flowers in each of three species. All four measurements enter the
+kernel; Species is reserved for descriptive colouring and the later split. No fitted
+classifier or species-based gamma selection is part of this analysis.
+
+The linear kernel must reproduce centred, unscaled PCA: its Gram eigenvalues are n−1
+times sample covariance eigenvalues, and scores agree up to signs or repeated-subspace
+rotations. The program compares two-component score Gram matrices, avoiding sign choices.
+The RBF gamma values 0.13 and 10 are prespecified illustrations in the raw-centimetre
+metric, not claims of optimality. The polynomial kernel's explicit example already showed
+what its nonlinear map does; a label-ranked comparison of arbitrary kernels would add a
+supervised choice to an unsupervised illustration.
+
+```{cpp, results="markdown", file="figures/kpca_iris_maps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  const auto d=dm::datasets::iris();const std::vector<std::string> f={"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};const auto labels=d.get_column<std::string>("Species").values();
+  const dm::stats::PCA pca(d,f,{.center=true,.scale=false});const dm::stats::KernelPCA linear(d,f,{.kernel="linear"}),rbf(d,f,{.gamma=.13}),narrow(d,f,{.gamma=10});
+  const auto pc=dm::linalg::DenseMatrix<double>::from_columns({pca.component_scores(0),pca.component_scores(1)});const auto difference=linear.embedding()*linear.embedding().transpose()-pc*pc.transpose();
+  auto a=pca.plot_scores(labels).title("Centred unscaled PCA").y_limits(-1.6,2.1),b=linear.plot_embedding(labels).title("Linear kernel: the same score geometry").y_limits(-1.6,2.1),c=rbf.plot_embedding(labels).title("RBF gamma 0.13, raw centimetres").y_limits(-.65,1.05),e=narrow.plot_embedding(labels).title("RBF gamma 10, raw centimetres").y_limits(-.6,1.0);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(2,2).add(a).add(b).add(c).add(e).size(1100,960).fit_panels().save_svg("build/kpca_iris_maps.svg");
+  const auto summary=d|dm::group_by("Species")|dm::summarise(dm::agg::n("n"),dm::agg::mean("Petal.Length","mean_petal_length_cm"),dm::agg::mean("Petal.Width","mean_petal_width_cm"));dm::dstruct::DataFrame check;check.add_column("component",std::vector<double>{1,2});check.add_column("linear_gram_eigenvalue",linear.eigenvalues());check.add_column("pca_variance_times_149",std::vector<double>{149*pca.explained_variance()[0],149*pca.explained_variance()[1]});
+  std::print("{} rows, {} columns. Score-Gram Frobenius difference: {:.3e}\n\n{}\n\n{}\n\nRBF .13:\n\n{}\n",d.nrows(),d.ncols(),difference.norm_frobenius(),summary|dm::to_md(3),check.to_md(6),rbf.diagnostics().select({"rank","trace","retained_share","mean_residual_energy"}).to_md(6));
+}
+```
+// result_begin: markdown
+150 rows, 5 columns. Score-Gram Frobenius difference: 9.880e-13
+
+| Species | n | mean_petal_length_cm | mean_petal_width_cm |
+| :--- | ---: | ---: | ---: |
+| setosa | 50 | 1.462 | 0.246 |
+| versicolor | 50 | 4.260 | 1.326 |
+| virginica | 50 | 5.552 | 2.026 |
+
+
+| component | linear_gram_eigenvalue | pca_variance_times_149 |
+| ---: | ---: | ---: |
+| 1 | 630.008014 | 630.008014 |
+| 2 | 36.157941 | 36.157941 |
+
+
+RBF .13:
+
+| rank | trace | retained_share | mean_residual_energy |
+| ---: | ---: | ---: | ---: |
+| 147 | 74.298432 | 0.834523 | 0.081965 |
+
+\image(figures/kpca_iris_maps.svg)
+// result_end
+
+\caption(Linear kernel PCA and ordinary unscaled PCA recover the same two-component score geometry. Nonlinear kernels change the geometry before reduction; species colours are external descriptions.)
+\alttext(Four panels compare ordinary PCA, linear kernel PCA and Gaussian kernels at gamma point thirteen and ten. Tables give species summaries, the eigenvalue normalization identity and feature-space diagnostics.)
+
+
+The linear score-Gram discrepancy is 1.494e-12, with leading Gram eigenvalues
+630.008014 and 36.157941, matching 149 times the PCA variances. At RBF gamma 0.13,
+two components retain 83.45% of this kernel's resolved feature energy, with mean
+training projection loss 0.081965. This fraction describes that feature geometry.
+
+>> Gamma sensitivity without using species to select it
+
+We scan declared values in the same raw-unit metric and report retained feature energy,
+mean projection loss and original-neighbourhood trustworthiness/continuity at k=10.
+Trustworthiness penalizes new false neighbours and continuity penalizes torn original
+neighbours. Both use original raw-feature distances as their reference, which is one
+chosen criterion, not every possible downstream purpose. This scan describes sensitivity;
+it does not select a winner or evaluate a supervised task. Feature-energy shares compare
+how much each kernel's own geometry compresses, rather than a common amount of original
+measurement variance.
+
+```{cpp, results="markdown", file="figures/kpca_iris_gamma.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  const auto d=dm::datasets::iris();const std::vector<std::string> f={"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};dm::dstruct::DataFrame results;std::vector<double> x,energy,trust,continuity;
+  for(double g:{.0001,.001,.01,.05,.13,.5,2.,10.,100.}){const dm::stats::KernelPCA m(d,f,{.gamma=g});auto row=m.diagnostics();const double t=dm::stats::trustworthiness(d,f,m.embedding(),10),c=dm::stats::continuity(d,f,m.embedding(),10);row.add_column("gamma",std::vector<double>{g});row.add_column("trustworthiness",std::vector<double>{t});row.add_column("continuity",std::vector<double>{c});results=results.nrows()?results.concat_rows(row):row;x.push_back(std::log10(g));energy.push_back(row.double_at("retained_share",0));trust.push_back(t);continuity.push_back(c);}
+  auto a=dm::graphics::RPlot::create(),b=dm::graphics::RPlot::create();a.lines(x,energy,"two-axis share",{37,99,235}).title("Compression of each kernel's geometry").x_label("log10 gamma").y_label("retained feature energy").y_limits(0,1.3);b.lines(x,trust,"trustworthiness",{37,99,235}).lines(x,continuity,"continuity",{220,38,38}).title("Raw-metric neighbourhood checks, k = 10").x_label("log10 gamma").y_label("rank preservation").y_limits(0,1.3);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,490).fit_panels().save_svg("build/kpca_iris_gamma.svg");
+  std::print("{}\n",results.select({"gamma","rank","trace","retained_share","mean_residual_energy","trustworthiness","continuity"}).to_md(6));
+}
+```
+// result_begin: markdown
+| gamma | rank | trace | retained_share | mean_residual_energy | trustworthiness | continuity |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.0001 | 30 | 0.136142 | 0.977376 | 0.000021 | 0.982979 | 0.990761 |
+| 0.0010 | 46 | 1.349648 | 0.974648 | 0.000228 | 0.983133 | 0.990701 |
+| 0.0100 | 80 | 12.409033 | 0.953140 | 0.003877 | 0.982572 | 0.989532 |
+| 0.0500 | 126 | 45.087952 | 0.909603 | 0.027172 | 0.964501 | 0.968600 |
+| 0.1300 | 147 | 74.298432 | 0.834523 | 0.081965 | 0.940377 | 0.962320 |
+| 0.5000 | 148 | 107.234426 | 0.582306 | 0.298608 | 0.936074 | 0.962235 |
+| 2.0000 | 148 | 131.531448 | 0.280574 | 0.630848 | 0.893437 | 0.932991 |
+| 10.0000 | 148 | 145.620013 | 0.097499 | 0.876148 | 0.787450 | 0.769824 |
+| 100.0000 | 148 | 148.890909 | 0.024315 | 0.968471 | 0.615430 | 0.575385 |
+
+\image(figures/kpca_iris_gamma.svg)
+// result_end
+
+\caption(The scan measures kernel compression and raw-metric neighbourhood preservation on the same 150 observations; it is a descriptive parameter study without label-based tuning.)
+\alttext(One panel shows two-component retained feature energy against log gamma, and the other shows neighbourhood trustworthiness and continuity. The table includes rank, feature energy and projection loss for every declared gamma.)
+
+
+At gamma 0.0001, the two-axis retained share is 0.977376 and raw-metric
+trustworthiness is 0.982979. At gamma 10 they are 0.097499 and 0.787450. These
+changes show why a smooth-looking two-axis map needs a scale-specific interpretation.
+The data include a repeated four-measurement tuple: high-gamma rank is 148 rather
+than the distinct-point upper bound 149. Numerical rank at smaller gamma also reflects
+the declared relative tolerance, rather than estimating an intrinsic manifold dimension.
+
+>> Fit on 120 flowers, project the remaining 30
+
+Use the prespecified `train_test_split(iris,.2,42,"Species")`, with ten test flowers per
+species, and fix gamma at 0.13 before this split analysis. Only the 120 training flowers
+define feature centring, the eigensystem and dual coefficients. Species is used to balance
+the split, not as a predictor; the frozen transform is unsupervised conditional on that
+sampling design. Projecting the 30 held-out rows does not refit any of these quantities.
+
+Training and test projection losses share the same feature-space definition. Their
+comparison checks how this fixed subspace represents other flowers on one small split;
+it is not regression accuracy, classification accuracy or a claim that a different
+kernel would generalize better. The historical data also do not define a representative
+population sampling experiment.
+
+```{cpp, results="markdown", file="figures/kpca_iris_projection.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  const auto [train,test]=dm::stats::train_test_split(dm::datasets::iris(),.2,42,"Species");const std::vector<std::string> f={"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};const dm::stats::KernelPCA m(train,f,{.gamma=.13});const auto projected=m.transform(test);
+  auto scores=m.plot_embedding().title("Training axes and new projections");scores.points(projected.col(0),projected.col(1),"30 test projections",{220,38,38},5).y_limits(-.9,1.2);
+  auto a=m.projection_details(train),b=m.projection_details(test);a.add_column("sample",std::vector<std::string>(train.nrows(),"training"));b.add_column("sample",std::vector<std::string>(test.nrows(),"test"));const auto summary=a.concat_rows(b)|dm::group_by("sample")|dm::summarise(dm::agg::n("n"),dm::agg::mean("centered_norm_squared","mean_centered_norm_squared"),dm::agg::mean("residual_energy","mean_projection_loss"));
+  auto loss=dm::graphics::RPlot::create();loss.points(a.numeric_column("centered_norm_squared").values(),a.numeric_column("residual_energy").values(),"training",{37,99,235}).points(b.numeric_column("centered_norm_squared").values(),b.numeric_column("residual_energy").values(),"test",{220,38,38}).title("Loss in the frozen RBF feature space").x_label("squared norm about training centre").y_label("squared orthogonal projection loss").y_limits(0,1.2);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(scores).add(loss).size(1100,490).fit_panels().save_svg("build/kpca_iris_projection.svg");
+  std::print("{} training, {} test flowers.\n\n{}\n\nFirst five test projections:\n\n{}\n",train.nrows(),test.nrows(),summary|dm::to_md(6),b.head(5).select({"query_row","centered_norm_squared","projected_norm_squared","residual_energy","status"}).to_md(6));
+}
+```
+// result_begin: markdown
+120 training, 30 test flowers.
+
+| sample | n | mean_centered_norm_squared | mean_projection_loss |
+| :--- | ---: | ---: | ---: |
+| training | 120 | 0.496362 | 0.082928 |
+| test | 30 | 0.491887 | 0.080447 |
+
+
+First five test projections:
+
+| query_row | centered_norm_squared | projected_norm_squared | residual_energy | status |
+| ---: | ---: | ---: | ---: | :--- |
+| 0 | 0.665384 | 0.651842 | 0.013543 | ok |
+| 1 | 0.682739 | 0.614997 | 0.067742 | ok |
+| 2 | 0.766070 | 0.663998 | 0.102072 | ok |
+| 3 | 0.605374 | 0.552030 | 0.053344 | ok |
+| 4 | 0.612291 | 0.600778 | 0.011514 | ok |
+
+\image(figures/kpca_iris_projection.svg)
+// result_end
+
+\caption(Out-of-sample projection uses the training kernel means and axes. Test feature-space loss measures representation by that fixed subspace, without refitting or a pre-image calculation.)
+\alttext(Training and projected test coordinates share one pair of training axes. A second panel compares feature-space projection loss with centred squared norm for both samples; tables summarize their losses and individual query diagnostics.)
+
+
+The mean training projection loss is 0.082928 and the mean held-out loss is 0.080447
+in this fixed RBF feature space. Similar averages on this split do not establish a
+population guarantee; individual held-out projection diagnostics remain visible.
+
+> Conclusion
+
+Kernel PCA performs ordinary variance maximization after choosing and centring a feature
+geometry. The exact examples distinguish raw and centred kernels, Gram eigenvalues and
+sample variances, and nonlinear structure from the ordering of principal axes. The RBF
+limits explain both scaled linear behaviour at small gamma and the loss of preferred
+axes at large gamma. Iris confirms the linear-PCA identity and exposes the dependence of
+compression and neighbourhood preservation on kernel scale. New observations use training
+centring and normalized dual coefficients; feature-space projection losses remain
+representation diagnostics rather than original-unit prediction errors.
+
+> References
+
+- Schölkopf, B., Smola, A. and Müller, K.-R. (1998). [Nonlinear Component Analysis as a Kernel Eigenvalue Problem|https://doi.org/10.1162/089976698300017467]. ~Neural Computation~, 10(5), 1299–1319. Feature-space centring, normalization and kernel projections.
+- scikit-learn developers. [KernelPCA|https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.KernelPCA.html]. Canonical implementation reference for positive kernel eigenpairs and frozen-training transforms; parameter and rank conventions must be matched when comparing.
+- Venna, J. and Kaski, S. (2001). [Neighborhood Preservation in Nonlinear Projection Methods: An Experimental Study|https://doi.org/10.1007/3-540-44668-0_68]. ~ICANN 2001~, LNCS 2130, 485–491. Rank-based neighbourhood diagnostics.
+- Fisher, R. A. (1936). [The use of multiple measurements in taxonomic problems|https://doi.org/10.1111/j.1469-1809.1936.tb02137.x]. ~Annals of Eugenics~, 7(2), 179–188. Iris measurements.

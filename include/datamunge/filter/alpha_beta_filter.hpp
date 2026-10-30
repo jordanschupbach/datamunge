@@ -38,6 +38,15 @@ class AlphaBetaFilter {
 
     [[nodiscard]] double position() const { return x_; }
     [[nodiscard]] double velocity() const { return v_; }
+    /// @brief The position-correction gain alpha.
+    /// @return The value passed to the constructor.
+    [[nodiscard]] double alpha() const noexcept { return alpha_; }
+    /// @brief The velocity-correction gain beta.
+    /// @return The value passed to the constructor.
+    [[nodiscard]] double beta() const noexcept { return beta_; }
+    /// @brief The time step between measurements.
+    /// @return The value passed to the constructor.
+    [[nodiscard]] double dt() const noexcept { return dt_; }
 
     [[nodiscard]] std::vector<AlphaBetaState> filter(const std::vector<double>& measurements) {
         std::vector<AlphaBetaState> result;
@@ -87,6 +96,18 @@ class AlphaBetaGammaFilter {
     [[nodiscard]] double position() const { return x_; }
     [[nodiscard]] double velocity() const { return v_; }
     [[nodiscard]] double acceleration() const { return a_; }
+    /// @brief The position-correction gain alpha.
+    /// @return The value passed to the constructor.
+    [[nodiscard]] double alpha() const noexcept { return alpha_; }
+    /// @brief The velocity-correction gain beta.
+    /// @return The value passed to the constructor.
+    [[nodiscard]] double beta() const noexcept { return beta_; }
+    /// @brief The acceleration-correction gain gamma.
+    /// @return The value passed to the constructor.
+    [[nodiscard]] double gamma() const noexcept { return gamma_; }
+    /// @brief The time step between measurements.
+    /// @return The value passed to the constructor.
+    [[nodiscard]] double dt() const noexcept { return dt_; }
 
     [[nodiscard]] std::vector<AlphaBetaGammaState> filter(const std::vector<double>& measurements) {
         std::vector<AlphaBetaGammaState> result;

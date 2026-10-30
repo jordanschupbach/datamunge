@@ -1,0 +1,35 @@
+#version 450
+// Bit-preserving strided packing (mode 0) and scalar-pattern fill (mode 1).
+// Each invocation owns one packed output word; the last word's padding is zero.
+layout(local_size_x=64) in;
+layout(std430,binding=0) readonly buffer Input { uint input_words[]; };
+layout(std430,binding=1) writeonly buffer Output { uint output_words[]; };
+layout(std430,binding=2) readonly buffer Layout { uint dimensions[]; };
+layout(push_constant) uniform Parameters {
+  uint bytes, width, rank, base, mode, low, high, reserved;
+} args;
+void main() {
+  uint word=gl_GlobalInvocationID.x+gl_NumWorkGroups.x*64*gl_GlobalInvocationID.y;
+  if(word >= (args.bytes+3)/4) return;
+  uint packed=0;
+  for(uint k=0;k<4;++k) {
+    uint byte_index=word*4+k;
+    if(byte_index>=args.bytes) break;
+    uint value,within=byte_index%args.width;
+    if(args.mode==1) {
+      uint pattern=within<4?args.low:args.high;
+      value=(pattern>>((within%4)*8))&255;
+    } else {
+      uint index=byte_index/args.width,source=args.base;
+      for(uint d=args.rank;d>0;--d) {
+        uint dimension=dimensions[2*(d-1)];
+        source+=(index%dimension)*dimensions[2*(d-1)+1];
+        index/=dimension;
+      }
+      uint source_byte=source*args.width+within;
+      value=(input_words[source_byte/4]>>((source_byte%4)*8))&255;
+    }
+    packed|=value<<(8*k);
+  }
+  output_words[word]=packed;
+}

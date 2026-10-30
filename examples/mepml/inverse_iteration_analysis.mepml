@@ -45,7 +45,7 @@ eigenpairs of large sparse matrices.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static double residual(const std::vector<std::vector<double>>& A, double lam, const std::vector<double>& v) {
     const int n = static_cast<int>(A.size());
@@ -112,7 +112,7 @@ the residual falling per iteration.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static double residual(const std::vector<std::vector<double>>& A, double lam, const std::vector<double>& v) {
     const int n = static_cast<int>(A.size());

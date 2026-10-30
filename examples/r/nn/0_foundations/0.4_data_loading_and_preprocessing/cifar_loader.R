@@ -1,9 +1,9 @@
 # Native R NN example. CIFAR-10/CIFAR-100 binary decoding, planar-to-NHWC conversion and labels.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/cifar_loader.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example cifar_loader
 # Port of tflow's cifar_loader. Write original-format records with
 # deterministic pixel patterns, read them from disk, and check every output
 # coordinate. CIFAR-100 exposes both fine and coarse labels. Multiple CIFAR-10
@@ -101,7 +101,7 @@ main <- function(arguments = commandArgs(TRUE)) {
             cat(sprintf("  loaded %d real file(s), shape=[%d,32,32,3]\n", length(files), dataset$images$size(0L)))
             cat("    fine-label counts:", paste0(" ", histogram, collapse = ""), "\n", sep = "")
             if (kind == "k10" && length(files) == 1L && basename(files[1]) == "test_batch.bin") {
-                library_data <- nn$load_cifar10(dirname(files[1]), "test")
+                library_data <- nn_components$dataset_assets$LoadCifar10(dirname(files[1]), "test")
                 ours <- nn$div(nn$cast(dataset$images, nn$DType$Float32), 255)
                 nn_require(nn$all(nn$equal(ours, library_data$images))$item() == 1 &&
                     identical(library_data$labels$values(), dataset$labels$values()),

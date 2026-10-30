@@ -46,7 +46,7 @@ eigenvalue routine \-\- LAPACK's included.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -119,7 +119,7 @@ The figure tracks the off-diagonal "mass" collapsing as the iteration proceeds o
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

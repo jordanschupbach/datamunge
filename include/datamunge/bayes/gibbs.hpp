@@ -1,5 +1,8 @@
 #pragma once
 
+/// @file gibbs.hpp
+/// @brief Metropolis-within-Gibbs: coordinate-wise random-walk Metropolis updates.
+
 #include <datamunge/optim/function_types.hpp>
 
 #include <cstddef>
@@ -8,8 +11,11 @@
 
 namespace datamunge::bayes {
 
+/// Settings for GibbsSampler.
 struct GibbsOptions {
+    /// @brief Number of post-warmup sweeps kept.
     std::size_t num_samples{1000};
+    /// @brief Number of warmup sweeps (per-coordinate step adaptation).
     std::size_t num_warmup{1000};
     /// @brief Initial per-coordinate proposal std dev. A single entry is broadcast to every
     ///        coordinate; otherwise its length must match the parameter vector, and each
@@ -19,14 +25,17 @@ struct GibbsOptions {
     ///        rate for a SCALAR random-walk proposal (Roberts & Rosenthal 2001), unlike
     ///        RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
     double target_accept_rate{0.44};
+    /// @brief Random seed.
     std::uint64_t seed{42};
 };
 
+/// Output of GibbsSampler::sample().
 struct GibbsResult {
     /// @brief Post-warmup draws, one vector<double> per sample.
     std::vector<std::vector<double>> samples;
     /// @brief Mean acceptance rate per coordinate (across all iterations), in parameter order.
     std::vector<double> accept_rates;
+    /// @brief Per-coordinate step sizes after warmup.
     std::vector<double> final_step_sizes;
 };
 
@@ -45,12 +54,22 @@ struct GibbsResult {
 ///        different scales or are only weakly correlated.
 class GibbsSampler {
 public:
+    /// @brief Stores the sampler settings.
+    /// @param options Sampler settings.
     explicit GibbsSampler(GibbsOptions options = {});
 
+    /// @brief Runs warmup sweeps (adapting each coordinate's step), then num_samples sweeps.
+    /// @param log_posterior Log density up to a constant; only evaluate() is used.
+    /// @param initial_params Starting point.
+    /// @return Draws, per-coordinate acceptance rates and step sizes.
     GibbsResult sample(optim::ArbitraryFunction& log_posterior, const std::vector<double>& initial_params) const;
 
+    /// @brief The options this GibbsSampler was configured with.
+    /// @return The stored options.
+    [[nodiscard]] const GibbsOptions& options() const noexcept { return options_; }
+
 private:
-    GibbsOptions options_;
+    GibbsOptions options_; ///< Sampler settings.
 };
 
 } // namespace datamunge::bayes

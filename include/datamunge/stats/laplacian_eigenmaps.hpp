@@ -57,8 +57,8 @@ public:
     void                      print_summary(std::ostream& os) const;
     void                      print_summary() const;
 
-    [[nodiscard]] plot::RPlot plot_embedding(std::size_t dimension_x = 0, std::size_t dimension_y = 1) const;
-    [[nodiscard]] plot::RPlot plot_embedding(const std::vector<std::string>& group_labels,
+    [[nodiscard]] graphics::RPlot plot_embedding(std::size_t dimension_x = 0, std::size_t dimension_y = 1) const;
+    [[nodiscard]] graphics::RPlot plot_embedding(const std::vector<std::string>& group_labels,
                                              std::size_t dimension_x = 0, std::size_t dimension_y = 1) const;
 
 private:

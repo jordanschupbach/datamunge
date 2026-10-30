@@ -1,7 +1,12 @@
 #pragma once
 
+/// @file number_theory.hpp
+/// @brief Binary GCD, Tonelli-Shanks square roots, Karatsuba multiplication, and Shanks's
+///        baby-step giant-step discrete logarithm with its instrumented variant.
+
 #include <cstdint>
 #include <string>
+#include <vector>
 
 namespace datamunge::algorithms {
 
@@ -69,5 +74,47 @@ struct DiscreteLog {
 /// @return a @ref DiscreteLog: @c exists is false when no such exponent exists; otherwise
 ///         @c base^exponent ≡ target (mod p).
 DiscreteLog baby_step_giant_step(std::uint64_t base, std::uint64_t target, std::uint64_t p);
+
+/// @brief A baby-step giant-step run with its operation counts and, optionally, the visited values.
+struct BsgsTrace {
+    bool          exists{false};      ///< whether a logarithm was found.
+    std::uint64_t exponent{0};        ///< the smallest @c x in [0, order) with @c base^x ≡ target, when found.
+    std::uint64_t order{0};           ///< the group order @c n used to size the search.
+    std::uint64_t table_size{0};      ///< @c m, the number of baby steps tabulated.
+    std::uint64_t baby_steps{0};      ///< multiplications spent building the table (equals @c m).
+    std::uint64_t giant_steps{0};     ///< table lookups made before the match (or before giving up).
+    std::uint64_t giant_index{0};     ///< @c i of the match @c x = i·m + j.
+    std::uint64_t baby_index{0};      ///< @c j of the match.
+    std::vector<std::uint64_t> baby;  ///< @c base^j for j < m, when recording was requested.
+    std::vector<std::uint64_t> giant; ///< @c target·base^{-mi} for each giant step taken, when recorded.
+};
+
+/// @brief Baby-step giant-step with a chosen group order and table size, counting its work.
+///
+/// Solves @c base^x ≡ target (mod p) for @c x in [0, n), where n is @p order (default @c p-1). With
+/// @c m baby steps it needs at most @c ceil(n/m) giant steps, so @c m = ceil(sqrt(n)) minimises the
+/// worst case @c m + n/m. Passing the exact order of @p base (a divisor of @c p-1) shrinks the search.
+///
+/// @param base       the base, a unit modulo @p p.
+/// @param target     the value whose logarithm is sought.
+/// @param p          a prime modulus.
+/// @param order      a multiple of the order of @p base (0 means @c p-1).
+/// @param table_size the number of baby steps @c m (0 means @c ceil(sqrt(order))).
+/// @param record     whether to store the baby and giant values in the result.
+/// @return the trace; @c exists is false when @p target is not a power of @p base.
+/// @throws std::invalid_argument if @p p < 2 or @p base is not coprime to @p p.
+BsgsTrace baby_step_giant_step_trace(std::uint64_t base, std::uint64_t target, std::uint64_t p,
+                                     std::uint64_t order = 0, std::uint64_t table_size = 0,
+                                     bool record = false);
+
+/// @brief The multiplicative order of @p g modulo the prime @p p: the least @c k > 0 with
+///        @c g^k ≡ 1. It divides @c p-1, so it is found by factoring @c p-1 and dividing out
+///        each prime while the power stays 1.
+/// @throws std::invalid_argument if @p p < 2 or @p g ≡ 0 (mod p).
+std::uint64_t element_order(std::uint64_t g, std::uint64_t p);
+
+/// @brief The smallest primitive root modulo the prime @p p (a generator of the whole group).
+/// @throws std::invalid_argument if @p p < 2.
+std::uint64_t primitive_root(std::uint64_t p);
 
 } // namespace datamunge::algorithms

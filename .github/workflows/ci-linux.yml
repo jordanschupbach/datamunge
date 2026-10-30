@@ -13,6 +13,32 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  documentation:
+    name: Doxygen inventory and completed documentation batches
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install documentation tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends cmake doxygen python3
+      - name: Verify the coverage auditor
+        run: python3 -m unittest discover -s tests/python -p test_documentation_audit.py -v
+      - name: Generate the complete core inventory
+        run: |
+          cmake -S docs -B build/debug/docs
+          cmake --build build/debug/docs --target GenerateDocsXml
+          python3 scripts/check_documentation.py --json build/debug/docs/coverage.json
+      - name: Enforce completed batches
+        run: python3 scripts/check_documentation.py --check --completed
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: documentation-coverage
+          path: |
+            build/debug/docs/coverage.json
+            build/debug/docs/audit/warnings.log
+
   nix-flake-check:
     name: Nix flake check (incl. lint/format)
     runs-on: ubuntu-latest

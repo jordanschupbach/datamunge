@@ -7,6 +7,7 @@
 #include <cstddef>
 #include <memory>
 #include <string>
+#include <utility>
 #include <unordered_map>
 #include <vector>
 
@@ -103,9 +104,32 @@ struct DesignInfo {
 // contrasts.
 enum class ResponseKind { Numeric, Categorical };
 
+/// @brief A parsed model formula such as `"y ~ x1 + x2"`, R's `formula` object.
+///
+/// Parses (and validates the syntax of) the text on construction; columns are
+/// resolved later against a data frame by each model. Converts implicitly from
+/// a string, so model constructors taking a Formula also accept `"y ~ x"`.
+///
+/// @par Example
+/// @code
+/// const auto f = dm::formula("len ~ supp * dose");
+/// const auto model = dm::stats::LM(f, dm::datasets::tooth_growth());
+/// std::print("{} | response: {}\n", f, f.response_name());  // len ~ supp * dose | response: len
+/// @endcode
+///
+/// @see formula()
 class Formula {
  public:
-    explicit Formula(std::string formula_text);
+    /// @brief Parses a formula from its text (implicit, so a std::string can stand in for a Formula).
+    /// @param formula_text  The formula, e.g. `"y ~ x1 + log(x2)"`.
+    /// @throws std::invalid_argument  If the text has no `~` or a malformed term.
+    Formula(std::string formula_text);  // NOLINT(google-explicit-constructor): implicit by design
+
+    /// @brief Parses a formula from a string literal (implicit, so `"y ~ x"` can stand in for a Formula).
+    /// @param formula_text  The formula, e.g. `"y ~ x1 + log(x2)"`.
+    /// @throws std::invalid_argument  If the text has no `~` or a malformed term.
+    Formula(const char* formula_text)  // NOLINT(google-explicit-constructor): implicit by design
+        : Formula(std::string(formula_text)) {}
 
     [[nodiscard]] const std::string& text() const { return text_; }
     [[nodiscard]] const std::string& response_name() const { return response_name_; }
@@ -130,8 +154,33 @@ class Formula {
     std::string              response_name_;
     bool                     intercept_requested_{true};
     std::vector<std::string> raw_terms_; // ':'-joined factor strings, '.' kept literal for later expansion
+    std::vector<std::string> removed_terms_; // terms subtracted with '-', also excluded from the expansion of '.'
 
     void parse();
 };
 
+/// @brief Builds a model formula, like R's `formula("y ~ x")` / `y ~ x`.
+///
+/// Pass the result to any formula-based model in R's `(formula, data)` order.
+///
+/// @param text  The formula text, e.g. `"len ~ supp * dose"`.
+/// @return The parsed formula.
+/// @throws std::invalid_argument  If the text has no `~` or a malformed term.
+///
+/// @par Example
+/// @code
+/// const auto model = dm::stats::LM(dm::formula("len ~ supp * dose"), dm::datasets::tooth_growth());
+/// std::print("{}\n", model.coefficient_names().size());  // 4
+/// @endcode
+///
+/// @par References
+/// - R Core Team. "formula: Model Formulae". https://stat.ethz.ch/R-manual/R-devel/library/stats/html/formula.html
+inline Formula formula(std::string text) { return Formula(std::move(text)); }
+
 } // namespace datamunge::stats
+
+/// @brief Core library APIs and their algorithm, data, and numerical submodules.
+namespace datamunge {
+/// @brief `dm::formula("y ~ x")`, the top-level spelling of stats::formula().
+using stats::formula;
+} // namespace datamunge

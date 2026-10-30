@@ -1,4 +1,5 @@
 # Native Python NN example. Embedding lookup, sparse gradients, masking and skip-gram.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/embedding.py
 """Train context-word embeddings directly with a final confusion matrix."""
 import math
 from pydatamunge import nn

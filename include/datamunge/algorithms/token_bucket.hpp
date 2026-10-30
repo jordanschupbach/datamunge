@@ -37,6 +37,22 @@ class TokenBucket {
         return tokens_;
     }
 
+    /// @brief Maximum tokens (the largest allowed burst).
+    /// @return The capacity passed to the constructor.
+    [[nodiscard]] double capacity() const noexcept { return capacity_; }
+
+    /// @brief Refill rate.
+    /// @return Tokens added per unit time.
+    [[nodiscard]] double rate() const noexcept { return rate_; }
+
+    /// @brief Tokens as of the last update, without applying any refill (unlike \ref available).
+    /// @return The stored token count at \ref last_time.
+    [[nodiscard]] double stored_tokens() const noexcept { return tokens_; }
+
+    /// @brief Time of the last refill update.
+    /// @return The most recent \c now seen by \ref allow or \ref available (0 initially).
+    [[nodiscard]] double last_time() const noexcept { return last_; }
+
   private:
     void refill(double now) {
         if (now > last_) {

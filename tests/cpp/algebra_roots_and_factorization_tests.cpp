@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <random>
 
 using namespace datamunge::algebra;
 
@@ -305,4 +306,56 @@ TEST(PolyGcd, HandlesNearZeroRemainderNoise) {
     ASSERT_EQ(g.degree(), 1);
     EXPECT_NEAR(g.coefficient(0), -1.0, 1e-6);
     EXPECT_NEAR(g.coefficient(1), 1.0, 1e-6);
+}
+
+TEST(FactorGfP, ReconstructsAndEveryFactorIsIrreducible) {
+    std::mt19937 rng(17);
+    for (long long p : {2LL, 3LL, 5LL, 17LL}) {
+        std::uniform_int_distribution<long long> coef(0, p - 1);
+        for (int trial = 0; trial < 60; ++trial) {
+            // Random product of small random polynomials, so repeated factors are common.
+            std::vector<long long> f{1 + coef(rng) % (p - 1)};
+            const int pieces = 1 + static_cast<int>(rng() % 5);
+            for (int k = 0; k < pieces; ++k) {
+                std::vector<long long> g(2 + rng() % 4);
+                for (auto& c : g) c = coef(rng);
+                g.back() = 1;
+                const int reps = 1 + static_cast<int>(rng() % 3);
+                for (int r = 0; r < reps; ++r) f = gf_multiply_reference(f, g, p);
+            }
+            const auto fac = factor_gf_p(f, p);
+            std::vector<long long> product{fac.leading};
+            for (std::size_t k = 0; k < fac.factors.size(); ++k) {
+                EXPECT_EQ(fac.factors[k].back(), 1);
+                EXPECT_EQ(berlekamp_factor_count(fac.factors[k], p), 1) << "p=" << p << " trial " << trial;
+                for (int m = 0; m < fac.multiplicities[k]; ++m) product = gf_multiply_reference(product, fac.factors[k], p);
+            }
+            EXPECT_EQ(product, f) << "p=" << p << " trial " << trial;
+        }
+    }
+}
+
+TEST(FactorGfP, GaussCountAndExpectedFactorsMatchExhaustiveEnumeration) {
+    EXPECT_DOUBLE_EQ(count_monic_irreducibles(2, 1), 2.0);
+    EXPECT_DOUBLE_EQ(count_monic_irreducibles(2, 4), 3.0);
+    EXPECT_DOUBLE_EQ(count_monic_irreducibles(3, 6), 116.0);
+    for (int n = 1; n <= 5; ++n) {
+        const long long p = 3;
+        long long total = 1;
+        for (int k = 0; k < n; ++k) total *= p;
+        double irreducible = 0, distinct = 0;
+        for (long long code = 0; code < total; ++code) {
+            std::vector<long long> f(n + 1, 1);
+            long long c = code;
+            for (int k = 0; k < n; ++k) {
+                f[k] = c % p;
+                c /= p;
+            }
+            const auto fac = factor_gf_p(f, p);
+            distinct += static_cast<double>(fac.factors.size());
+            irreducible += fac.factors.size() == 1 && fac.multiplicities[0] == 1;
+        }
+        EXPECT_DOUBLE_EQ(irreducible, count_monic_irreducibles(p, n)) << n;
+        EXPECT_NEAR(distinct / total, expected_distinct_irreducible_factors(p, n), 1e-12) << n;
+    }
 }

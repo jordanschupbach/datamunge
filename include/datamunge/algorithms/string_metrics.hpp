@@ -1,4 +1,6 @@
 #pragma once
+/// @file string_metrics.hpp
+/// @brief Byte-string edit distances, positional distance and lexical similarity measures.
 
 #include <cstddef>
 #include <string>
@@ -42,15 +44,25 @@ std::size_t levenshtein_distance(const std::string& a, const std::string& b);
 /// @return the unrestricted Damerau-Levenshtein distance between @p a and @p b.
 std::size_t damerau_levenshtein_distance(const std::string& a, const std::string& b);
 
-/// @brief The Hamming distance between two byte strings of *equal length*: the number of positions
-///        at which the corresponding characters differ. Unlike edit distance it counts only
-///        substitutions -- there is no insertion or deletion -- so it is defined only when
-///        @c |a|==|b|.
-///
-/// @param a the first string.
-/// @param b the second string; must have the same length as @p a.
-/// @return the number of positions where @p a and @p b differ.
-/// @throws std::invalid_argument if @p a and @p b have different lengths.
+/// @brief Counts unequal byte positions in two fixed-width strings (Hamming distance).
+/// The strings must have equal byte length. Embedded NULs and every byte value are
+/// compared literally; there is no UTF-8 decoding, Unicode normalization, padding or
+/// realignment. Both empty strings give zero. Inputs are borrowed and unchanged,
+/// with no shared mutable state. A single scan costs O(n) time and O(1) storage.
+/// @param a First byte string.
+/// @param b Second string, of the same byte length.
+/// @return Number of unequal positions, between zero and a.size().
+/// @throws std::invalid_argument Lengths differ.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::hamming_distance("karolin","kathrin")); // 3
+/// std::print("{}\n",dm::algorithms::hamming_distance("","")); // 0
+/// @endcode
+/// @par References
+/// - R. W. Hamming (1950), Error Detecting and Error Correcting Codes,
+///   Bell System Technical Journal 29(2), 147-160.
+///   https://doi.org/10.1002/j.1538-7305.1950.tb00463.x
+/// @see levenshtein_distance()
 std::size_t hamming_distance(const std::string& a, const std::string& b);
 
 /// @brief The Jaro similarity (Jaro 1989) between @p a and @p b, a value in @c [0,1] where 1 means

@@ -1,3 +1,5 @@
+/// @file nelder_mead.cpp
+/// @brief NelderMead native update, trial and stopping implementation.
 #include <datamunge/optim/nelder_mead.hpp>
 
 #include <algorithm>
@@ -6,8 +8,12 @@
 #include <stdexcept>
 
 namespace datamunge::optim {
+/// @brief Private nelder mead arithmetic, validation and local state.
 namespace {
 
+/// @brief Validate native step/search ranges before using callbacks.
+/// @param options Borrowed method controls.
+/// @throws std::invalid_argument A checked step, tolerance or search control is out of range.
 void validate(const NelderMeadOptions& options) {
     if (options.initial_simplex_scale <= 0.0)
         throw std::invalid_argument("NelderMead: initial_simplex_scale must be positive");
@@ -65,6 +71,7 @@ double NelderMead::optimize(ArbitraryFunction& function, std::vector<double>& co
         }
         for (double& component : centroid) component /= static_cast<double>(dimension);
 
+        /// @brief Form centroid + factor*(centroid-worst) into a caller-owned trial vector.
         auto point_from_centroid = [&](const double factor, std::vector<double>& point) {
             for (std::size_t j = 0; j < dimension; ++j)
                 point[j] = centroid[j] + factor * (centroid[j] - simplex[worst][j]);

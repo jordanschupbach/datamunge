@@ -1,9 +1,9 @@
 # Native R NN example. CSV parsing and training-only numeric/categorical feature columns.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/csv_features.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example csv_features
 # Port of tflow's csv_features. Read a table containing quoted commas, escaped
 # quotes, embedded newlines, CRLF, missing values and held-out categories.
 # Fit numeric means/scales and sorted categorical vocabularies on four

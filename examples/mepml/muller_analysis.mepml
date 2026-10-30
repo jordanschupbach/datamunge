@@ -42,7 +42,7 @@ the secant method (1.618) and Newton (2.0), but with no derivative required.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -114,7 +114,7 @@ points \(1,\ 1.5,\ 2\), Muller's parabola locks on quickly. We also confirm it f
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -6,11 +6,16 @@ reporting are visible in that source file. Shared `common/` headers provide
 model components, numerical operations, data readers and small reusable helpers;
 they no longer own end-to-end `Run`/`Train` harnesses. MNIST examples show the
 workflow directly in `main`; examples with multiple experiment variants may
-keep their workflow in a function defined in the same file.
+keep their workflow in a function defined in the same file, taking plain
+parameters (a depth, a version) and defining the model inside. A generic harness
+parameterized by model callbacks does not count, even when pasted into the file:
+the R and Python examples must be able to mirror the loop line by line over the
+SWIG-bound components (`examples/bindings/nn_components.i`). `just nn-audit`
+reports every example's status (see `docs/nn-example-audit.md`).
 
 
 Sections **1 (129 CNN examples)** and **2 (36 autoencoder examples)** now live
-under [`examples/cpp/nn`](../cpp/nn/README.md). Their matching Python entry points
+under [`examples/cpp/source/nn`](../cpp/source/nn/README.md). Their matching Python entry points
 are under [`examples/python/nn`](../python/nn/README.md). The commands below still
 discover both the migrated C++ sources and the remaining sections here. Shared
 C++ helpers stay in `examples/nn/common` until the remaining catalogue migrates.
@@ -51,6 +56,13 @@ those schedules and convergence thresholds. Its outputs go in
 `output/nn/full/`; it has no runtime deadline unless `--timeout` is specified.
 `DATAMUNGE_OUTPUT_DIR` overrides either output location.
 
-Datasets still come from `DATAMUNGE_DATA_DIR` or the existing tflow download
-cache. Example builds default to four compiler jobs; set
+Datasets use `DATAMUNGE_DATA_DIR`, otherwise `$XDG_CACHE_HOME/datamunge/datasets`
+or `~/.cache/datamunge/datasets`. MNIST, Fashion-MNIST and CIFAR are downloaded
+and verified on first use. MNIST-derived autoencoder pools and memory copy/QA
+tasks are prepared in C++; Python and R use these functions through SWIG.
+Cached files are preserved. `DATAMUNGE_DATA_OFFLINE=1` disables network fetches.
+The development shells default BLAS/OpenMP to one thread for small examples;
+set `OMP_NUM_THREADS` or `OPENBLAS_NUM_THREADS` to override that budget.
+Specialized corpora and pretrained-model assets still need preparation as
+described in their individual examples. Example builds default to four compiler jobs; set
 `DATAMUNGE_EXAMPLE_BUILD_JOBS` to change that limit.

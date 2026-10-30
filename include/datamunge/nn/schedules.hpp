@@ -9,6 +9,7 @@
 
 #include <cstdint>
 
+/// @brief Validated learning-rate functions indexed by a nonnegative training step.
 namespace datamunge::nn::schedule {
 
 /// initial * factor^floor(step / interval), factor in (0, 1].

@@ -1,0 +1,293 @@
+//? Title: The Z-Algorithm: Reusing Prefix Matches to Guarantee Linear Work
+//? Subtitle: A trace of the rightmost Z-box, binary-safe search and Titanic passenger-name queries
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The Z-array records how much of a string's prefix reappears at every
+position. Maintaining the rightmost known prefix-match interval lets the
+algorithm reuse earlier answers, limiting explicit equality tests to
+at most twice the input length. We derive that invariant, inspect an
+actual trace, and reduce exact substring matching to a virtual sequence
+with a separator outside the byte alphabet. The application searches
+`dm::datasets::titanic()` passenger names independently and records both
+matches and actual comparison work. A repetitive-string check contrasts
+the linear algorithm with the quadratic work of naive prefix matching.
+)
+
+\toc
+
+> The data: separate passenger-name strings
+
+The Titanic frame contains 891 passenger records and 12 columns. We use
+its `Name` column directly, preserving case and punctuation. Titles such
+as `Miss.` and `Mrs.` provide frequent exact queries, while `William` and
+`Anna` also illustrate matches within other parts of a name. These are
+byte-substring searches, not a parser for titles or given names.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto passengers = dm::datasets::titanic();
+  std::print("{}\n", passengers.select({"PassengerId", "Name"}).head(6).to_md());
+  std::print("\n{}\n", dm::algorithms::z_search_summary(passengers, "Name", {"Miss."})
+      .select({"records", "text_bytes", "matches", "matched_records"}).to_md());
+}
+```
+// result_begin: markdown
+| PassengerId | Name |
+| ---: | :--- |
+| 1 | Braund, Mr. Owen Harris |
+| 2 | Cumings, Mrs. John Bradley (Florence Briggs Thayer) |
+| 3 | Heikkinen, Miss. Laina |
+| 4 | Futrelle, Mrs. Jacques Heath (Lily May Peel) |
+| 5 | Allen, Mr. William Henry |
+| 6 | Moran, Mr. James |
+
+
+| records | text_bytes | matches | matched_records |
+| ---: | ---: | ---: | ---: |
+| 891 | 24026 | 182 | 182 |
+// result_end
+\caption(The first six names and a summary of the records, text bytes and exact Miss. occurrences in the complete dataset.)
+
+> The method: one prefix question at every position
+
+For a sequence \(S\) of length \(n\), define
+
+$$
+Z[i]=\max\{k:0\le k\le n-i,\ S[0,k)=S[i,i+k)\}.
+$$
+\alttext(Z at position i is the largest length k for which the sequence prefix of length k equals the substring of length k starting at i.)
+
+This implementation sets \(Z[0]=n\); some conventions leave it zero.
+A naive algorithm compares the prefix separately against every suffix.
+For \(S=a^n\), its comparisons total \(n(n-1)/2\), even though the
+answers have an obvious repeated structure.
+
+The Z-algorithm maintains a half-open interval \([\ell,r)\), the
+rightmost prefix-match box discovered at positions already processed:
+\(S[\ell,r)=S[0,r-\ell)\). The operational scan starts at position
+one with an empty box, independently of the \(Z[0]=n\) convention.
+At the next position \(i\), choose a starting match length
+
+$$
+b_i=\begin{cases}
+0,& i\ge r,\\
+\min\{r-i,Z[i-\ell]\},& i<r.
+\end{cases}
+$$
+\alttext(The initial match length is zero outside the known box. Inside it, reuse the smaller of the remaining box length and the Z-value at the mirrored prefix position.)
+
+The mirror index \(i-\ell\) is smaller than \(i\), so its answer is
+already available. Capping at \(r-i\) prevents us from claiming anything
+past the verified box. Starting from \(b_i\), compare symbols until a
+mismatch or the sequence end, then replace the box by
+\([i,i+Z[i])\) when that reaches farther right.
+
+>> Why reuse is correct
+
+If \(i<r\), the box identity copies the relevant region back into the
+prefix. When \(Z[i-\ell]<r-i\), its terminating mismatch also lies
+inside the box and transfers to the new position: the copied answer is
+already exact. The shared library loop may perform that one known failing
+test, but it cannot gain a successful extension there.
+
+If \(Z[i-\ell]\ge r-i\), only the remaining box length is established;
+further comparisons must start at the old right edge. Outside the box,
+no characters can be reused. In every case, the seed is valid and direct
+extension finds the exact answer.
+
+>> Why the comparison count is linear
+
+Every successful explicit comparison reaches beyond the old right edge;
+no later position needs to verify that same extension of the frontier
+again. There are at most \(n-1\) such successes. Each processed position
+can terminate with at most one failing equality test, giving
+
+$$
+C_{\rm success}\le n-1,\qquad
+C_{\rm fail}\le n-1,\qquad C\le2(n-1)\quad(n>0).
+$$
+\alttext(There are at most n minus one successful extension tests and n minus one failing tests, so total equality comparisons are at most twice n minus one.)
+
+Bounds checks and loop bookkeeping add constant work per position.
+Thus time and Z-array storage are \(O(n)\), even for highly repetitive
+inputs. The counters below measure equality tests from the actual loop;
+they are not estimates from another implementation.
+
+> Following the rightmost box
+
+The small self-similar sequence `aabaabaab`, retained from the old report,
+contains nested prefix matches: \(Z[3]=6\) and \(Z[6]=3\). Its trace
+shows both the copied seed and the final answer, making skipped work
+visible rather than merely printing the final array.
+
+```{cpp, results="markdown", file="figures/z_algorithm_frontier.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto trace = dm::algorithms::z_array_trace("aabaabaab");
+  std::print("{}\n", trace.select({"position", "z", "seed", "left_before", "right_before", "right_after", "comparisons"}).to_md());
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .line(trace.get_column("position").values(), trace.get_column("right_after").values(),
+            "verified endpoint r", dm::RGB{37, 99, 235}, 2)
+      .points(trace.get_column("position").values(), trace.get_column("right_after").values(), "", dm::RGB{37, 99, 235}, 4)
+      .title("The Z-box frontier advances and is then reused")
+      .x_label("processed sequence position").y_label("right endpoint r (exclusive)")
+      .y_limits(0, 10).size(900, 460).save_svg("build/z_algorithm_frontier.svg");
+}
+```
+// result_begin: markdown
+| position | z | seed | left_before | right_before | right_after | comparisons |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 9 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 0 | 0 | 0 | 2 | 2 |
+| 2 | 0 | 0 | 1 | 2 | 2 | 1 |
+| 3 | 6 | 0 | 1 | 2 | 9 | 6 |
+| 4 | 1 | 1 | 3 | 9 | 9 | 1 |
+| 5 | 0 | 0 | 3 | 9 | 9 | 1 |
+| 6 | 3 | 3 | 3 | 9 | 9 | 0 |
+| 7 | 1 | 1 | 3 | 9 | 9 | 1 |
+| 8 | 0 | 0 | 3 | 9 | 9 | 1 |
+
+\image(figures/z_algorithm_frontier.svg)
+// result_end
+\caption(The actual trace of aabaabaab. Row zero records the array convention without initialising a full box. After position 3 establishes the far endpoint, later positions reuse that verified interval.)
+\alttext(A monotone plot of the rightmost verified endpoint against processed position, reaching the sequence end at position three and remaining there.)
+
+> Exact search with a separator that cannot be a byte
+
+For pattern \(P\) of length \(m\) and text \(T\) of length \(n\),
+consider the virtual sequence
+
+$$
+S=P\;\Vert\;\langle256\rangle\;\Vert\;T.
+$$
+\alttext(The virtual sequence consists of the pattern, the integer sentinel 256 and the text.)
+
+Every input byte is interpreted as an unsigned value from 0 to 255, so the
+sentinel cannot equal any input symbol. For an index \(i\ge m+1\) in
+the text region, \(Z_S[i]=m\) exactly when a complete pattern begins
+at text offset \(i-m-1\). The sentinel prevents an extension beyond
+\(m\). All overlaps are retained.
+
+The library accesses this conceptual sequence without copying a joined
+string. It stores the Z-array, giving \(O(n+m)\) time and temporary
+storage for one fitting nonempty pattern. Unlike the old fixed-byte
+separator contract, no input byte is reserved. Empty patterns keep the
+existing API convention of matching every boundary \(0,\ldots,n\),
+with no preprocessing; a pattern longer than the text also returns early.
+
+> Applying it to every passenger name
+
+Each name is searched as a separate record. In particular, a query cannot
+match the end of one surname followed by the beginning of another record.
+The work size includes each record's virtual pattern and sentinel when
+preprocessing runs. A sum of per-record linear bounds provides a direct
+check of the implementation's guarantee.
+
+```{cpp, results="markdown", file="figures/z_algorithm_names.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto work = dm::algorithms::z_search_summary(dm::datasets::titanic(), "Name",
+      {"Mr.", "Mrs.", "Miss.", "Master.", "William", "Anna"});
+  std::print("{}\n", work.to_md());
+  std::vector<double> x(work.nrows());
+  std::iota(x.begin(), x.end(), 0);
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .bars(x, work.get_column("comparisons").values(), "actual comparisons", dm::RGB{147, 197, 253})
+      .points(x, work.get_column("comparison_bound").values(), "sum of linear bounds", dm::RGB{220, 38, 38}, 5)
+      .x_ticks(x, work.get_column<std::string>("pattern").values())
+      .title("Actual Z-search work on 891 separate passenger names")
+      .x_label("query").y_label("symbol equality tests").size(1000, 480).save_svg("build/z_algorithm_names.svg");
+}
+```
+// result_begin: markdown
+| pattern | records | text_bytes | matches | matched_records | comparisons | processed_symbols | comparison_bound | box_reuses |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Mr. | 891 | 24026 | 517 | 517 | 28992 | 27590 | 53398 | 1167 |
+| Mrs. | 891 | 24026 | 125 | 125 | 29620 | 28481 | 55180 | 904 |
+| Miss. | 891 | 24026 | 182 | 182 | 30361 | 29372 | 56962 | 754 |
+| Master. | 891 | 24026 | 40 | 40 | 31787 | 31154 | 60526 | 398 |
+| William | 891 | 24026 | 70 | 69 | 30846 | 31154 | 60526 | 456 |
+| Anna | 891 | 24026 | 17 | 17 | 27956 | 28481 | 55180 | 122 |
+
+\image(figures/z_algorithm_names.svg)
+// result_end
+\caption(Occurrence counts, matched-record counts, actual comparisons, processed lengths and box reuses for six queries. The red markers are rigorous bounds, not performance targets.)
+\alttext(Bars of observed equality comparisons for six name queries, all below their per-record summed linear-bound markers.)
+
+The six query totals agree with an independent byte-string search.
+`William` occurs 70 times across 69 records, showing why occurrences and
+matched records are separate columns. All observed comparison totals lie
+below their summed linear bounds; the maximum is still small on these
+short names.
+
+Searching six patterns independently repeats preprocessing six times.
+For a large dictionary, an automaton such as Aho–Corasick can share work
+across patterns. Conversely, the right-to-left skipping methods in the
+Zhu–Takaoka report can use fewer comparisons on short names even without
+Z's worst-case linear guarantee. Comparison counts alone do not include
+allocation, cache behaviour or wall-clock time.
+
+> A repetitive worst case for naive preprocessing
+
+For \(a^n\), the first shifted prefix match extends through \(n-1\)
+symbols. Every later match is copied to the end from the established box,
+so the Z-algorithm makes exactly \(n-1\) equality tests. The naive method
+repeats the already-known suffix matches:
+
+$$
+C_Z=n-1,\qquad C_{\rm naive}=\sum_{i=1}^{n-1}(n-i)=\frac{n(n-1)}2.
+$$
+\alttext(Z preprocessing of a repeated-byte string needs n minus one comparisons, whereas independent naive suffix comparisons sum to n times n minus one over two.)
+
+```{cpp, results="markdown", file="figures/z_algorithm_growth.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::vector<double> log_n, log_z, log_naive;
+  std::print("| n | actual Z tests | Z bound | naive closed form | box reuses |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t n : {16, 64, 256, 1024, 4096}) {
+    const auto work = dm::algorithms::z_array_stats(std::string(n, 'a'));
+    const auto naive = n * (n - 1) / 2;
+    std::print("| {} | {} | {} | {} | {} |\n", n, work.comparisons, 2 * (n-1), naive, work.box_reuses);
+    log_n.push_back(std::log10(n)); log_z.push_back(std::log10(work.comparisons)); log_naive.push_back(std::log10(naive));
+  }
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .line(log_n, log_z, "Z: measured", dm::RGB{37, 99, 235}, 2)
+      .line(log_n, log_naive, "naive: formula", dm::RGB{220, 38, 38}, 2)
+      .title("Repeated bytes: linear reuse versus quadratic rechecking")
+      .x_label("log10(sequence length)").y_label("log10(equality tests)")
+      .size(900, 460).save_svg("build/z_algorithm_growth.svg");
+}
+```
+// result_begin: markdown
+| n | actual Z tests | Z bound | naive closed form | box reuses |
+| ---: | ---: | ---: | ---: | ---: |
+| 16 | 15 | 30 | 120 | 14 |
+| 64 | 63 | 126 | 2016 | 62 |
+| 256 | 255 | 510 | 32640 | 254 |
+| 1024 | 1023 | 2046 | 523776 | 1022 |
+| 4096 | 4095 | 8190 | 8386560 | 4094 |
+\image(figures/z_algorithm_growth.svg)
+// result_end
+\caption(The actual Z counts agree with n minus one at every tested sequence length. The naive curve is the derived closed form; it is not a timing measurement.)
+\alttext(A log-log plot where Z comparisons have slope near one and naive comparisons have slope near two.)
+
+> Conclusion
+
+The Z-box makes verified equality reusable: a copied seed is capped by the
+known interval, and any new successful tests advance its frontier.
+Instrumentation connects that invariant to the linear comparison bound.
+The same preprocessing gives exact byte-substring search with overlaps
+and no reserved input symbol. Passenger-name queries provide a real
+record-wise application; repeated-byte strings verify the case where
+naive preprocessing wastes the most already-known work.
+
+> References
+
+- D. Gusfield (1997). *Algorithms on Strings, Trees, and Sequences*, chapter 1,
+  fundamental preprocessing. Cambridge University Press. https://doi.org/10.1017/CBO9780511574931

@@ -1,0 +1,31 @@
+% Standalone TikZ source. Regenerate with the report's shell block (LaTeX + dvisvgm).
+\documentclass[tikz,border=10pt]{standalone}
+\usetikzlibrary{arrows.meta,positioning}
+\begin{document}
+\begin{tikzpicture}[font=\sffamily\large,>=Stealth]
+  \node[font=\sffamily\Large\bfseries] at (3,3.4) {Compare the same positions};
+  \node[anchor=east] at (-.6,2.5) {$a$};
+  \node[anchor=east] at (-.6,1.75) {$b$};
+  \foreach \i/\a/\b/\m in {0/1/1/0,1/0/0/0,2/1/0/1,3/1/1/0,4/1/0/1,5/0/0/0,6/1/1/0} {
+    \ifnum\m=1\def\shade{red!18}\else\def\shade{green!12}\fi
+    \node[draw=black!35,fill=\shade,minimum width=.7cm,minimum height=.6cm] at (\i,2.5) {\a};
+    \node[draw=black!35,fill=\shade,minimum width=.7cm,minimum height=.6cm] at (\i,1.75) {\b};
+    \node[font=\sffamily\small,text=black!65] at (\i,1.15) {\i};
+  }
+  \node[align=center] at (3,.15) {Two differing positions\\$d_H(a,b)=2$};
+  \draw[black!20] (7.25,-.9)--(7.25,3.85);
+  \node[font=\sffamily\Large\bfseries] at (11.25,3.4) {One flip is one cube edge};
+  \coordinate (000) at (9,.2); \coordinate (001) at (11.4,.2);
+  \coordinate (010) at (9,1.9); \coordinate (011) at (11.4,1.9);
+  \coordinate (100) at (10.15,.95); \coordinate (101) at (12.55,.95);
+  \coordinate (110) at (10.15,2.65); \coordinate (111) at (12.55,2.65);
+  \foreach \a/\b in {000/001,000/010,000/100,001/011,001/101,010/011,010/110,100/101,100/110,011/111,101/111,110/111}
+    \draw[black!35,line width=.8pt] (\a)--(\b);
+  \draw[->,red!75!black,line width=2pt] (000)--(001);
+  \draw[->,red!75!black,line width=2pt] (001)--(011);
+  \draw[->,red!75!black,line width=2pt] (011)--(111);
+  \foreach \v in {000,001,010,011,100,101,110,111}
+    \node[fill=white,inner sep=3pt,text=black] at (\v) {\texttt{\v}};
+  \node[align=center] at (11.25,-.65) {$000\to001\to011\to111$\\Three flips: $d_H(000,111)=3$};
+\end{tikzpicture}
+\end{document}

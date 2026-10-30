@@ -39,6 +39,10 @@ public:
                                                      const std::vector<double>& lower_bound,
                                                      const std::vector<double>& upper_bound) const;
 
+    /// @brief The options this SPEA2 was configured with.
+    /// @return The stored options.
+    [[nodiscard]] const SPEA2Options& options() const noexcept { return options_; }
+
 private:
     SPEA2Options options_;
 };

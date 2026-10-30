@@ -4,6 +4,7 @@
 #include <datamunge/autodiff/autodiff.hpp>
 #include <datamunge/bayes/bayes.hpp>
 #include <datamunge/cv/cv.hpp>
+#include <datamunge/datasets/datasets.hpp>
 #include <datamunge/dstruct/dstruct.hpp>
 #include <datamunge/fem/fem.hpp>
 #include <datamunge/filter/filter.hpp>
@@ -15,9 +16,17 @@
 #include <datamunge/optim/optim.hpp>
 #include <datamunge/plot/ggplot.hpp>
 #include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/figure.hpp>
+#include <datamunge/plot/histogram.hpp>
+#include <datamunge/plot/splom.hpp>
+#include <datamunge/plot/class_regions.hpp>
 #include <datamunge/random/random.hpp>
+#include <datamunge/random/mt19937_64_analysis.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/quality.hpp>
 #include <datamunge/stats/stats.hpp>
 #include <datamunge/vector.hpp>
+#include <datamunge/plot/compose.hpp>
 #include <datamunge/bspline_regression.hpp>
 #include <datamunge/pspline_regression.hpp>
 
@@ -213,6 +222,9 @@ class DataFrame {
   [[nodiscard]] double numeric_min(const std::string& column_name) const;
   [[nodiscard]] double numeric_max(const std::string& column_name) const;
   [[nodiscard]] std::string to_string(std::size_t max_rows = 10) const;
+  /// @brief The frame as a Markdown table (numeric columns right-aligned, at most @p digits
+  ///        decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().
+  [[nodiscard]] std::string to_md(int digits = 3) const;
 
   /// @brief true if column_name holds numeric values, false if it holds strings.
   [[nodiscard]] bool is_numeric_column(const std::string& column_name) const;
@@ -225,10 +237,57 @@ class DataFrame {
   // Bundled sample datasets.
   [[nodiscard]] static DataFrame* iris();
   [[nodiscard]] static DataFrame* penguins();
+  [[nodiscard]] static DataFrame* tooth_growth();
+  /// @brief UCI wine recognition data, 178 x 14; see datasets::wine().
+  [[nodiscard]] static DataFrame* wine();
+  /// @brief Kaggle Titanic training set, 891 x 12 with missing values; see datasets::titanic().
+  [[nodiscard]] static DataFrame* titanic();
+  /// @brief Rubin's eight schools coaching experiment, 8 x 3; see datasets::eight_schools().
+  [[nodiscard]] static DataFrame* eight_schools();
+  /// @brief Monthly airline passengers 1949-1960, 144 x 3; see datasets::air_passengers().
+  [[nodiscard]] static DataFrame* air_passengers();
+  /// @brief Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3; see datasets::volcano().
+  [[nodiscard]] static DataFrame* volcano();
+  /// @brief Old Faithful eruptions, 272 x 2; see datasets::faithful().
+  [[nodiscard]] static DataFrame* faithful();
+  /// @brief Motor Trend cars, 32 x 12 (row names as `model`); see datasets::mtcars().
+  [[nodiscard]] static DataFrame* mtcars();
+  /// @brief New York air quality 1973, 153 x 6 with missing values; see datasets::airquality().
+  [[nodiscard]] static DataFrame* airquality();
+  /// @brief Wisconsin diagnostic breast cancer, 569 x 31; see datasets::breast_cancer().
+  [[nodiscard]] static DataFrame* breast_cancer();
+  /// @brief Efron et al.'s diabetes progression data, 442 x 11; see datasets::diabetes().
+  [[nodiscard]] static DataFrame* diabetes();
+  /// @brief 8x8 handwritten digits, 1797 x 65; see datasets::digits().
+  [[nodiscard]] static DataFrame* digits();
+  /// @brief ggplot2's diamonds, 53940 x 10, downloaded once and cached; see datasets::diamonds().
+  [[nodiscard]] static DataFrame* diamonds();
+  /// @brief California housing, 20640 x 10, downloaded once and cached; see
+  ///        datasets::california_housing().
+  [[nodiscard]] static DataFrame* california_housing();
+  /// @brief Any table-shaped dataset by name, e.g. "wine"; see datasets::load().
+  /// @throws std::invalid_argument for an unknown or image dataset name.
+  [[nodiscard]] static DataFrame* dataset(const std::string& name);
+  /// @brief One row per available dataset (name, rows, columns, storage, size_mb,
+  ///        description); see datasets::catalog().
+  [[nodiscard]] static DataFrame* dataset_catalog();
+  /// @brief Reads a whole CSV file, typing columns automatically; see datasets::read_csv().
+  /// @param path The file to read.
+  /// @param delimiter The field separator.
+  /// @throws std::runtime_error if the file cannot be read or is malformed.
+  [[nodiscard]] static DataFrame* read_csv(const std::string& path, char delimiter = ',');
+  /// @brief Parses CSV text, typing columns automatically; see datasets::parse_csv().
+  /// @throws std::runtime_error if the text is malformed.
+  [[nodiscard]] static DataFrame* parse_csv(const std::string& text, char delimiter = ',');
+  /// @brief An ImageLoader batch as a table (`pixel_0`.., `label`, `index`); see
+  ///        datasets::to_dataframe().
+  [[nodiscard]] static DataFrame* from_image_batch(const datasets::ImageBatch& batch);
 
  private:
   friend class LM;
   friend class GGPlot;
+  friend class Splom;
+  friend class CsvReader;
   friend class LDA;
   friend class SVM;
   friend class DecisionTreeClassifier;
@@ -275,6 +334,50 @@ class DataFrame {
   dstruct::DataFrame frame_;
 };
 
+/// @brief SWIG-friendly streaming CSV reader: returns a big file as DataFrames of at most
+///        batch_size() rows each, so only one chunk is in memory at a time.
+///
+/// Wraps datasets::CsvReader; column types are fixed from the first 1000 rows.
+///
+/// @par Example
+/// @code
+/// dm::CsvReader reader(dm::datasets::fetch("diamonds"), 10000);
+/// while (reader.has_next()) {
+///   std::unique_ptr<dm::DataFrame> chunk(reader.next());
+///   // ... use chunk ...
+/// }
+/// @endcode
+class CsvReader {
+ public:
+  /// @brief Opens @p path and infers its column types.
+  /// @param path The CSV file.
+  /// @param batch_size Rows per chunk; must be positive.
+  /// @param delimiter The field separator.
+  /// @throws std::invalid_argument if batch_size is not positive.
+  /// @throws std::runtime_error if the file cannot be opened or is malformed.
+  explicit CsvReader(const std::string& path, int batch_size = 1000, char delimiter = ',');
+
+  /// @brief true while rows remain.
+  [[nodiscard]] bool has_next();
+  /// @brief The next chunk (caller owns it).
+  /// @throws std::out_of_range when no rows remain.
+  [[nodiscard]] DataFrame* next();
+  /// @brief Rewinds to the first data row.
+  void reset();
+  /// @brief Rows per chunk.
+  [[nodiscard]] int batch_size() const;
+  /// @brief Changes the rows per chunk.
+  /// @throws std::invalid_argument if @p rows is not positive.
+  void set_batch_size(int rows);
+  /// @brief Column names, in file order.
+  [[nodiscard]] std::vector<std::string> column_names() const;
+  /// @brief Rows returned since opening or the last reset().
+  [[nodiscard]] double rows_read() const;
+
+ private:
+  datasets::CsvReader impl_;  ///< The core reader.
+};
+
 /// @brief SWIG-friendly facade for datamunge::gis::ShapeLayer — reads a shapefile (.shp geometry
 ///        + .dbf attributes) and draws it as a map. Geometry access is flattened into per-shape/
 ///        per-part coordinate vectors rather than exposing gis::Shape's nested
@@ -303,8 +406,8 @@ class ShapeLayer {
   [[nodiscard]] std::vector<double> point_x(std::size_t shape_index) const;
   [[nodiscard]] std::vector<double> point_y(std::size_t shape_index) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot(datamunge::plot::RGB fill_color = {148, 163, 184},
-                                            datamunge::plot::RGB border_color = {51, 65, 85},
+  [[nodiscard]] datamunge::graphics::RPlot plot(datamunge::graphics::RGB fill_color = {148, 163, 184},
+                                            datamunge::graphics::RGB border_color = {51, 65, 85},
                                             std::size_t width = 800, std::size_t height = 800) const;
 
  private:
@@ -313,7 +416,7 @@ class ShapeLayer {
   gis::ShapeLayer layer_;
 };
 
-/// @brief SWIG-friendly facade for datamunge::plot::GGPlot — a ggplot2-style grammar-of-graphics
+/// @brief SWIG-friendly facade for datamunge::graphics::GGPlot — a ggplot2-style grammar-of-graphics
 ///        builder. Geom/theme/scale/facet calls are chainable, mirroring ggplot2's own layered
 ///        `ggplot(df, aes(...)) + geom_point() + ...` style as closely as C++ method chaining allows.
 class GGPlot {
@@ -323,23 +426,23 @@ class GGPlot {
          const std::string& color_column = "", const std::string& fill_column = "",
          const std::string& group_column = "");
 
-  GGPlot& geom_point(datamunge::plot::RGB color = {37, 99, 235}, double size = 3.0);
-  GGPlot& geom_line(datamunge::plot::RGB color = {37, 99, 235}, double width = 1.5);
-  GGPlot& geom_bar(datamunge::plot::RGB color = {37, 99, 235});
-  GGPlot& geom_col(datamunge::plot::RGB color = {37, 99, 235});
-  GGPlot& geom_histogram(std::size_t bins = 30, datamunge::plot::RGB color = {96, 165, 250});
-  GGPlot& geom_boxplot(datamunge::plot::RGB color = {96, 165, 250});
-  GGPlot& geom_smooth(datamunge::plot::RGB color = {220, 38, 38});
-  GGPlot& geom_area(datamunge::plot::RGB color = {96, 165, 250});
+  GGPlot& geom_point(datamunge::graphics::RGB color = {37, 99, 235}, double size = 3.0);
+  GGPlot& geom_line(datamunge::graphics::RGB color = {37, 99, 235}, double width = 1.5);
+  GGPlot& geom_bar(datamunge::graphics::RGB color = {37, 99, 235});
+  GGPlot& geom_col(datamunge::graphics::RGB color = {37, 99, 235});
+  GGPlot& geom_histogram(std::size_t bins = 30, datamunge::graphics::RGB color = {96, 165, 250});
+  GGPlot& geom_boxplot(datamunge::graphics::RGB color = {96, 165, 250});
+  GGPlot& geom_smooth(datamunge::graphics::RGB color = {220, 38, 38});
+  GGPlot& geom_area(datamunge::graphics::RGB color = {96, 165, 250});
   GGPlot& geom_ribbon(const std::string& ymin_column, const std::string& ymax_column,
-                      datamunge::plot::RGB color = {96, 165, 250});
-  GGPlot& geom_density(datamunge::plot::RGB color = {37, 99, 235});
+                      datamunge::graphics::RGB color = {96, 165, 250});
+  GGPlot& geom_density(datamunge::graphics::RGB color = {37, 99, 235});
 
   GGPlot& facet_wrap(const std::string& column, std::size_t ncol = 0);
   GGPlot& theme_minimal();
   GGPlot& theme_bw();
   GGPlot& theme_classic();
-  GGPlot& scale_color_manual(const std::vector<datamunge::plot::RGB>& values);
+  GGPlot& scale_color_manual(const std::vector<datamunge::graphics::RGB>& values);
   GGPlot& labs(const std::string& title = "", const std::string& x = "", const std::string& y = "");
 
   /// @brief Renders the plot as a standalone SVG document and returns it as a string.
@@ -348,8 +451,377 @@ class GGPlot {
   void save_svg(const std::string& path) const;
   void show(const std::string& title_hint = "") const;
 
+  /// @brief Number of data rows being plotted.
+  /// @return The row count of the frame passed to the constructor.
+  [[nodiscard]] int rows() const { return static_cast<int>(impl_.data().nrows()); }
+  /// @brief The column mapped to x.
+  /// @return The x column name.
+  [[nodiscard]] std::string x_column() const { return impl_.mapping().x; }
+  /// @brief The column mapped to y.
+  /// @return The y column name; empty when unmapped.
+  [[nodiscard]] std::string y_column() const { return impl_.mapping().y; }
+  /// @brief The discrete color grouping column.
+  /// @return The color column name; empty when unmapped.
+  [[nodiscard]] std::string color_column() const { return impl_.mapping().color; }
+  /// @brief Number of geom layers added so far.
+  /// @return The layer count.
+  [[nodiscard]] int layer_count() const { return static_cast<int>(impl_.layer_count()); }
+  /// @brief The geom of each layer in drawing order ("point", "line", "smooth", ...).
+  /// @return One name per layer.
+  [[nodiscard]] std::vector<std::string> layer_kinds() const { return impl_.layer_kinds(); }
+  /// @brief The selected theme's name.
+  /// @return "gray" (the default), "minimal", "bw" or "classic".
+  [[nodiscard]] std::string theme_name() const {
+    switch (impl_.theme()) {
+      case datamunge::graphics::GGTheme::Minimal: return "minimal";
+      case datamunge::graphics::GGTheme::BW: return "bw";
+      case datamunge::graphics::GGTheme::Classic: return "classic";
+      case datamunge::graphics::GGTheme::Gray: break;
+    }
+    return "gray";
+  }
+  /// @brief The facet_wrap() column.
+  /// @return The column name; empty when not faceted.
+  [[nodiscard]] std::string facet_column() const { return impl_.facet_column(); }
+  /// @brief The title set by labs().
+  /// @return The title; empty when unset.
+  [[nodiscard]] std::string title_text() const { return impl_.title_text(); }
+  /// @brief The x-axis label set by labs().
+  /// @return The label; empty when unset.
+  [[nodiscard]] std::string x_label() const { return impl_.x_label(); }
+  /// @brief The y-axis label set by labs().
+  /// @return The label; empty when unset.
+  [[nodiscard]] std::string y_label() const { return impl_.y_label(); }
+
  private:
-  datamunge::plot::GGPlot impl_;
+  datamunge::graphics::GGPlot impl_;
+};
+
+/// @brief A scatterplot matrix (R's `pairs()`, GGally's `ggpairs()`) over the columns of a
+///        data frame, with chainable setters; the SWIG-friendly facade for graphics::Splom.
+///
+/// Panel (row i, column j) puts variable j on x and variable i on y. The panel type follows
+/// the two variables' kinds (numeric columns are quantitative, string columns categorical):
+/// - diagonal: kernel density curves, one per group_by() group (numeric), or a stacked bar of
+///   level counts (string), titled with the variable name;
+/// - numeric vs numeric above the diagonal: the points with a local linear smooth of the mean and
+///   a 95% prediction band, one per group; point colors follow set_col() or group_by();
+/// - numeric vs numeric below the diagonal: bivariate kernel density contours, one set per group;
+/// - string vs numeric: one violin per level with the median and interquartile range marked;
+/// - string vs string: a mosaic shaded by chi-squared Pearson residuals, with its p-value.
+///
+/// Values are copied at construction, so the frame need not outlive the matrix. Rows with a
+/// missing value in either variable are dropped from that panel only. Setters return
+/// `Splom&` for chaining; nothing is drawn until to_svg(), save(), or show(). The default
+/// figure is 960 by 960 pixels with blue `{37, 99, 235}` points of radius 2.5.
+///
+/// @par Example
+/// @code
+/// const auto iris = dm::datasets::iris();
+/// const auto species = dm::factor(dm::c(iris.get_column<std::string>("Species").values()));
+/// const auto palette = dm::c(dm::RGB{255, 255, 80}, dm::RGB{100, 255, 255},
+///                            dm::RGB{220, 100, 255});
+/// auto pairs = dm::Splom(iris).set_title("Iris Pairs").set_col(species, palette);
+/// pairs.show();  // or pairs.save("iris_pairs.svg") without a display
+/// @endcode
+/// @see dm::splom(), dm::Plot, graphics::Splom
+class Splom {
+ public:
+  /// @brief Builds the matrix from a facade DataFrame (the overload SWIG bindings use).
+  ///
+  /// @param data  Source frame; its values are copied.
+  /// @param columns Columns to include in order; empty selects every numeric column plus every
+  ///        string column with at most graphics::Splom::max_default_levels distinct values.
+  /// @throws std::invalid_argument For a missing column, or fewer than two variables.
+  /// @see Splom(const dstruct::DataFrame&, const std::vector<std::string>&)
+  explicit Splom(const DataFrame& data, const std::vector<std::string>& columns = std::vector<std::string>());
+#ifndef SWIG
+  /// @brief Builds the matrix straight from a core frame, e.g. `dm::Splom(dm::datasets::iris())`.
+  ///
+  /// With @p columns empty, every numeric column is used, plus each string column that has
+  /// between 1 and graphics::Splom::max_default_levels (12) distinct values; so iris gives a 5 by 5
+  /// grid including Species. Naming columns fixes both the selection and the panel order.
+  ///
+  /// @param data  Source frame; its values are copied.
+  /// @param columns  Columns to include, in panel order; empty selects them automatically.
+  /// @throws std::invalid_argument For a missing column, or fewer than two variables.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto iris = dm::datasets::iris();
+  /// std::print("{}\n", dm::Splom(iris).variables());
+  /// // ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species"]
+  /// auto petals = dm::Splom(iris, {"Petal.Length", "Petal.Width", "Species"});
+  /// @endcode
+  explicit Splom(const dstruct::DataFrame& data, const std::vector<std::string>& columns = std::vector<std::string>());
+  /// @brief R's `col = palette[f]`: colors scatter points by @p factor (one-based codes from
+  ///        `dm::factor()`, one per row) using @p palette, e.g.
+  ///        `dm::Splom(iris).set_col(dm::factor(species), palette)`. The categorical column the
+  ///        factor came from fills its violins and stacked bar with the same palette.
+  ///
+  /// Row i takes `palette[(factor[i] - 1) % palette.size()]`; a code below 1 (missing) uses
+  /// the single color(). Replaces any earlier group_by()/point_colors()/set_col() choice.
+  ///
+  /// @param factor  One level code per data row, as returned by `dm::factor()`.
+  /// @param palette  Nonempty colors indexed by level code - 1, recycled when shorter.
+  /// @return This matrix, for chaining.
+  /// @throws std::invalid_argument If @p factor's length is not the row count or @p palette is empty.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto tooth = dm::datasets::tooth_growth();
+  /// const auto supp = dm::factor(dm::c(tooth.get_column<std::string>("supp").values()));
+  /// auto pairs = dm::Splom(tooth)
+  ///                  .set_title("ToothGrowth Pairs")
+  ///                  .set_col(supp, dm::c(dm::RGB{100, 255, 255}, dm::RGB{220, 100, 255}));
+  /// pairs.save("tooth_pairs.svg");
+  /// @endcode
+  /// @see group_by()
+  Splom& set_col(const Vector<int>& factor, const Vector<datamunge::graphics::RGB>& palette);
+  /// @brief Sets one scatter color per row (recycled), e.g. `set_col(palette.select(f))`.
+  ///
+  /// Row i takes `colors[i % colors.size()]`. Same as point_colors(): clears group_by()
+  /// grouping, and an empty vector restores the single color(). Unlike the factor overload,
+  /// violins and stacked bars keep their default level colors.
+  ///
+  /// @param colors  Per-row colors, recycled when shorter than the frame.
+  /// @return This matrix, for chaining.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto iris = dm::datasets::iris();
+  /// const auto species = dm::factor(dm::c(iris.get_column<std::string>("Species").values()));
+  /// const auto palette = dm::c(dm::RGB{230, 159, 0}, dm::RGB{86, 180, 233},
+  ///                            dm::RGB{0, 158, 115});
+  /// auto pairs = dm::Splom(iris).set_col(palette.select(species));
+  /// @endcode
+  Splom& set_col(const Vector<datamunge::graphics::RGB>& colors);
+  /// @brief Sets one color for every scatter point; same as color().
+  /// @param color  Point color, alpha included; also used for bars without grouping.
+  /// @return This matrix, for chaining.
+  ///
+  /// @par Example
+  /// @code
+  /// auto pairs = dm::Splom(dm::datasets::iris()).set_col(dm::RGBA{220, 38, 38, 0.5});
+  /// @endcode
+  Splom& set_col(datamunge::graphics::RGB color);
+  /// @brief Same as title(), matching the `set_*` style of dm::Plot.
+  /// @param value  Figure heading; empty removes the heading band.
+  /// @return This matrix, for chaining.
+  ///
+  /// @par Example
+  /// @code
+  /// auto pairs = dm::Splom(dm::datasets::iris()).set_title("Iris Pairs");
+  /// @endcode
+  Splom& set_title(const std::string& value);
+#endif
+
+  /// @brief Sets the heading above the grid; "" removes it.
+  ///
+  /// A nonempty title reserves a band above the panels (none by default). show() also uses
+  /// it as the window title when no hint is passed.
+  ///
+  /// @param value  Figure heading.
+  /// @return This matrix, for chaining.
+  /// @see set_title()
+  Splom& title(const std::string& value);
+  /// @brief Sets the figure size in pixels (default 960 by 960); panels share it equally.
+  /// @param width  Figure width in pixels.
+  /// @param height  Figure height in pixels.
+  /// @return This matrix, for chaining.
+  /// @throws std::invalid_argument  If either dimension is zero.
+  ///
+  /// @par Example
+  /// @code
+  /// auto pairs = dm::Splom(dm::datasets::iris()).size(600, 600);
+  /// pairs.save("small_pairs.png");
+  /// @endcode
+  Splom& size(std::size_t width, std::size_t height);
+  /// @brief Uses one color for all points and clears any grouping.
+  ///
+  /// Clears group_by(), point_colors(), and the factor form of set_col().
+  ///
+  /// @param value  Point color (default `{37, 99, 235}`).
+  /// @return This matrix, for chaining.
+  /// @see set_col(datamunge::graphics::RGB)
+  Splom& color(datamunge::graphics::RGB value);
+  /// @brief Splits every numeric panel by the groups of string column @p column (GGally's
+  ///        `ggpairs(aes(colour = group))`); an empty palette uses the default level palette.
+  ///
+  /// The column need not be a panel variable but must be a string column of the source
+  /// frame. Groups are its sorted distinct non-missing values, and group k takes
+  /// `palette[k % palette.size()]`. Each group gets its own points, diagonal density, smooth
+  /// and prediction band, and density contours; rows with a missing group are left out of
+  /// those panels. When the column is also a panel variable its violins, bars, and mosaic axis
+  /// share the colors. Pass "" to clear the grouping. Clears point_colors().
+  ///
+  /// @param column  String column to group by, or "" to clear.
+  /// @param palette  Group colors in sorted-group order; empty uses the default.
+  /// @return This matrix, for chaining.
+  /// @throws std::invalid_argument  If @p column is not a string column of the source frame.
+  ///
+  /// @par Example
+  /// @code
+  /// auto pairs = dm::Splom(dm::datasets::iris()).group_by("Species");
+  /// std::print("{}\n", pairs.groups());  // ["setosa", "versicolor", "virginica"]
+  /// @endcode
+  /// @see groups(), set_col()
+  Splom& group_by(const std::string& column,
+                  const std::vector<datamunge::graphics::RGB>& palette = std::vector<datamunge::graphics::RGB>());
+  /// @brief Sets one color per data row for the points (recycled); clears group_by().
+  ///
+  /// Same as set_col(const Vector<RGB>&) for callers holding a std::vector; an empty vector
+  /// restores the single color().
+  ///
+  /// @param colors  Per-row colors, recycled when shorter than the frame.
+  /// @return This matrix, for chaining.
+  ///
+  /// @par Example
+  /// @code
+  /// auto pairs = dm::Splom(dm::datasets::iris())
+  ///                  .point_colors({dm::RGB{0, 0, 0}, dm::RGB{255, 0, 0}});  // alternate rows
+  /// @endcode
+  Splom& point_colors(const std::vector<datamunge::graphics::RGB>& colors);
+  /// @brief Sets the fills cycled over categorical levels in violins and stacked bars.
+  ///
+  /// An empty vector restores the default palette. group_by() and the factor form of
+  /// set_col() override it for their own column. Scatter points are unaffected.
+  ///
+  /// @param colors  Fill colors in sorted-level order, recycled.
+  /// @return This matrix, for chaining.
+  Splom& level_palette(const std::vector<datamunge::graphics::RGB>& colors);
+  /// @brief Sets the point radius in pixels (default 2.5).
+  /// @param value  Positive marker radius.
+  /// @return This matrix, for chaining.
+  /// @throws std::invalid_argument  If @p value is not positive.
+  Splom& marker_size(double value);
+  /// @brief Shows only the variable names on the diagonal, like R's `pairs()`.
+  /// @return This matrix, for chaining.
+  /// @see diagonal_density(), diagonal_histogram()
+  Splom& diagonal_names();
+  /// @brief Shows kernel densities, one per group (numeric), or a stacked bar (string) on the
+  ///        diagonal (the default).
+  /// @return This matrix, for chaining.
+  /// @see diagonal_histogram(), diagonal_names()
+  Splom& diagonal_density();
+  /// @brief Shows a histogram (numeric) or stacked bar (string) on the diagonal.
+  /// @return This matrix, for chaining.
+  /// @see diagonal_density(), bins()
+  Splom& diagonal_histogram();
+  /// @brief Sets the fraction of each group's points used in each local fit of the smooths
+  ///        above the diagonal (R's `loess(span =)`, default 0.75).
+  /// @param value  Span in (0, 1]; smaller values follow the data more closely.
+  /// @return This matrix, for chaining.
+  /// @throws std::invalid_argument  If @p value is not in (0, 1].
+  ///
+  /// @par Example
+  /// @code
+  /// auto pairs = dm::Splom(dm::datasets::iris()).group_by("Species").span(0.5).prediction_level(0.9);
+  /// @endcode
+  Splom& span(double value);
+  /// @brief Sets the coverage of the prediction bands above the diagonal (default 0.95).
+  /// @param value  Coverage in (0, 1).
+  /// @return This matrix, for chaining.
+  /// @throws std::invalid_argument  If @p value is not in (0, 1).
+  /// @see span()
+  Splom& prediction_level(double value);
+  /// @brief Sets the histogram bin count used by diagonal_histogram() (default 10).
+  /// @param value  Positive number of equal-width bins.
+  /// @return This matrix, for chaining.
+  /// @throws std::invalid_argument  If @p value is zero.
+  Splom& bins(std::size_t value);
+  /// @brief Toggles the light background grid of the scatter and violin panels (default on).
+  /// @param enabled  True draws the grid.
+  /// @return This matrix, for chaining.
+  ///
+  /// @par Example
+  /// @code
+  /// auto pairs = dm::Splom(dm::datasets::iris(), {"Sepal.Length", "Sepal.Width", "Species"})
+  ///                  .marker_size(1.5)
+  ///                  .bins(15)
+  ///                  .show_grid(false);
+  /// @endcode
+  Splom& show_grid(bool enabled = true);
+
+  /// @brief Variable names in panel order.
+  /// @return A copy of the selected column names.
+  [[nodiscard]] std::vector<std::string> variables() const;
+  /// @brief Sorted group labels set by group_by(), in palette order; empty without grouping.
+  /// @return A copy of the group labels; also empty after the factor form of set_col().
+  [[nodiscard]] std::vector<std::string> groups() const;
+  /// @brief The figure title set by set_title() or title().
+  /// @return The title; empty when unset.
+  [[nodiscard]] std::string title_text() const { return impl_.title_text(); }
+  /// @brief Figure width in pixels.
+  /// @return The width (960 by default).
+  [[nodiscard]] int width() const { return static_cast<int>(impl_.width()); }
+  /// @brief Figure height in pixels.
+  /// @return The height (960 by default).
+  [[nodiscard]] int height() const { return static_cast<int>(impl_.height()); }
+  /// @brief Builds the panel with variable @p col on x and variable @p row on y.
+  ///
+  /// The panel is a standalone dm::Plot sized to one grid cell, useful for inspecting or
+  /// saving a single pair. Indices are zero-based positions in variables().
+  ///
+  /// @param row  Zero-based index of the y variable.
+  /// @param col  Zero-based index of the x variable; equal to @p row gives the diagonal panel.
+  /// @return The rendered-on-demand panel plot.
+  /// @throws std::out_of_range  If either index is not below variables().size().
+  /// @throws std::invalid_argument  If the panel has no complete rows to draw.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto pairs = dm::Splom(dm::datasets::iris(), {"Sepal.Length", "Sepal.Width"});
+  /// pairs.panel(1, 0).save("sepal_scatter.svg");  // Sepal.Length on x, Sepal.Width on y
+  /// @endcode
+  [[nodiscard]] datamunge::graphics::RPlot panel(std::size_t row, std::size_t col) const;
+
+  /// @brief Renders the matrix as a standalone SVG document and returns it as a string.
+  /// @return The complete SVG text of the full grid, including the title band.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto svg = dm::Splom(dm::datasets::iris()).set_title("Iris Pairs").to_svg();
+  /// std::print("{}\n", svg.contains("Iris Pairs"));  // true
+  /// @endcode
+  [[nodiscard]] std::string to_svg() const;
+  /// @brief Writes the matrix to @p path, choosing the format from the extension.
+  ///
+  /// `.svg` or no extension writes to_svg(); `.png` and `.pdf` write the tiled raster the
+  /// viewer shows. Needs no display.
+  ///
+  /// @param path  Destination file; an existing file is overwritten.
+  /// @throws std::invalid_argument  For any other extension.
+  /// @throws std::runtime_error  If the file cannot be written.
+  ///
+  /// @par Example
+  /// @code
+  /// const auto pairs = dm::Splom(dm::datasets::iris()).group_by("Species");
+  /// pairs.save("iris_pairs.svg");
+  /// pairs.save("iris_pairs.png");
+  /// @endcode
+  void save(const std::string& path) const;
+  /// @brief Writes to_svg() to @p path regardless of its extension.
+  /// @param path  Destination file; an existing file is overwritten.
+  /// @throws std::runtime_error  If the file cannot be opened for writing.
+  void save_svg(const std::string& path) const;
+  /// @brief Opens the matrix in the interactive X11 viewer and blocks until the window closes.
+  ///
+  /// Zoom and pan act on every panel at once; q or Escape closes the window. Requires an
+  /// X11-enabled build and a reachable display; use save() in headless code.
+  ///
+  /// @param title_hint  Window title; empty uses the figure title, or "datamunge splom".
+  /// @throws std::runtime_error  If X11 is unavailable or the display cannot be opened.
+  ///
+  /// @par Example
+  /// @code
+  /// dm::Splom(dm::datasets::iris()).set_title("Iris Pairs").group_by("Species").show();
+  /// @endcode
+  void show(const std::string& title_hint = "") const;
+
+ private:
+  /// @brief The wrapped core matrix; every facade call forwards to it.
+  datamunge::graphics::Splom impl_;
 };
 
 /// @brief SWIG-friendly facade for datamunge::stats::LM — R-`lm()`-style linear models fit from a DataFrame.
@@ -400,10 +872,10 @@ class LM {
   ///        term/df/sum_sq/mean_sq/f_value/p_value.
   [[nodiscard]] DataFrame* anova() const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_normal_qq() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_scale_location() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_leverage() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_normal_qq() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_scale_location() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_leverage() const;
 
   /// @brief Saves all four diagnostic plots as "<path_prefix>_<name>.svg".
   void save_diagnostic_plots(const std::string& path_prefix) const;
@@ -586,17 +1058,34 @@ class LDA {
 
   [[nodiscard]] std::string summary() const;
   void                      print_summary() const;
+  /// @brief The fit as Markdown tables (priors, group means, coefficients, proportion of trace).
+  [[nodiscard]] std::string to_md(int digits = 4) const;
 
   [[nodiscard]] std::vector<std::string> predict(const DataFrame& newdata) const;
   /// @brief "class" column, LD1/LD2/... discriminant scores, and posterior_<class> probability columns.
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_discriminants() const;
+  /// @brief LD1/LD2 scatter; with @p decision_regions, class regions shaded and boundaries drawn.
+  [[nodiscard]] datamunge::graphics::RPlot plot_discriminants(bool decision_regions = true) const;
   void                                       save_discriminant_plot(const std::string& path) const;
+  /// @brief Decision regions in predictor space, for a model with exactly two predictors.
+  [[nodiscard]] datamunge::graphics::RPlot plot_decision_regions() const;
+
+#ifndef SWIG
+  /// @brief Same figure as dm::plot() of the wrapped stats::LDA.
+  friend graphics::Figure plot(const LDA& model) { return datamunge::plot(model.lda_); }
+#endif
 
  private:
   stats::LDA lda_;
 };
+
+#ifndef SWIG
+/// @brief dm::plot() for the LDA facade; see plot(const stats::LDA&).
+/// @param model  The fitted model.
+/// @return The figure.
+graphics::Figure plot(const LDA& model);
+#endif
 
 /// @brief SWIG-friendly facade for datamunge::stats::SVM — R-`e1071::svm()`-style multi-class SVM classification.
 class SVM {
@@ -655,10 +1144,10 @@ class DecisionTreeClassifier {
 
   /// @brief Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
   ///        points overlaid in a distinct marker.
-  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
   /// @brief Background grid of predicted class regions plus training points; requires exactly 2 predictors.
-  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
 
@@ -688,8 +1177,8 @@ class DecisionTreeRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::DecisionTreeRegressor tree_;
@@ -729,11 +1218,11 @@ class RandomForestClassifier {
 
   /// @brief Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
   ///        points overlaid in a distinct marker.
-  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
   /// @brief Background grid of majority-vote predicted class regions plus training points; requires exactly 2
   ///        predictors.
-  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
 
@@ -768,8 +1257,8 @@ class RandomForestRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::RandomForestRegressor forest_;
@@ -816,12 +1305,12 @@ class ElasticNet {
 
   /// @brief Coefficient trace (one series per predictor) across the lambda path; throws unless lambda was
   ///        auto-selected.
-  [[nodiscard]] datamunge::plot::RPlot plot_coefficient_path() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_coefficient_path() const;
   /// @brief Cross-validated MSE across the lambda path with the selected lambda marked; throws unless lambda
   ///        was auto-selected.
-  [[nodiscard]] datamunge::plot::RPlot plot_cv_curve() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::ElasticNet net_;
@@ -857,10 +1346,10 @@ class Ridge {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_coefficient_path() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_cv_curve() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_coefficient_path() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::Ridge ridge_;
@@ -898,10 +1387,10 @@ class Lasso {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_coefficient_path() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_cv_curve() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_coefficient_path() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::Lasso lasso_;
@@ -934,10 +1423,10 @@ class KNNClassifier {
 
   /// @brief Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
   ///        points overlaid in a distinct marker.
-  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
   /// @brief Background grid of predicted class regions plus training points; requires exactly 2 predictors.
-  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
 
@@ -966,8 +1455,8 @@ class KNNRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::KNNRegressor knn_;
@@ -1048,14 +1537,14 @@ class PCA {
   void                      print_summary() const;
 
   /// @brief Scatter of scores in the (component_x, component_y) plane, single series.
-  [[nodiscard]] datamunge::plot::RPlot plot_scores(std::size_t component_x = 0, std::size_t component_y = 1) const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_scores(std::size_t component_x = 0, std::size_t component_y = 1) const;
   /// @brief Same, colored by an external grouping vector (e.g. a withheld response column);
   ///        `group_labels` must have one entry per kept_row_indices() entry.
-  [[nodiscard]] datamunge::plot::RPlot plot_scores_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_scores_grouped(const std::vector<std::string>& group_labels,
                                                             std::size_t component_x = 0,
                                                             std::size_t component_y = 1) const;
   /// @brief Scree plot: percent of variance explained by each component, as a bar chart.
-  [[nodiscard]] datamunge::plot::RPlot plot_scree() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_scree() const;
 
  private:
   stats::PCA pca_;
@@ -1096,10 +1585,10 @@ class MDS {
   void                      print_summary() const;
 
   /// @brief Scatter of the embedding in the (dimension_x, dimension_y) plane, single series.
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0, std::size_t dimension_y = 1) const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding(std::size_t dimension_x = 0, std::size_t dimension_y = 1) const;
   /// @brief Same, colored by an external grouping vector (e.g. a withheld response column);
   ///        `group_labels` must have one entry per kept_row_indices() entry.
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
                                                                std::size_t dimension_x = 0,
                                                                std::size_t dimension_y = 1) const;
 
@@ -1136,9 +1625,9 @@ class Isomap {
   [[nodiscard]] std::string summary() const;
   void                      print_summary() const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding(std::size_t dimension_x = 0,
                                                        std::size_t dimension_y = 1) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
                                                                std::size_t dimension_x = 0,
                                                                std::size_t dimension_y = 1) const;
 
@@ -1172,9 +1661,9 @@ class LLE {
   [[nodiscard]] std::string summary() const;
   void                      print_summary() const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding(std::size_t dimension_x = 0,
                                                        std::size_t dimension_y = 1) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
                                                                std::size_t dimension_x = 0,
                                                                std::size_t dimension_y = 1) const;
 
@@ -1216,9 +1705,9 @@ class TSNE {
   [[nodiscard]] std::string summary() const;
   void                      print_summary() const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding(std::size_t dimension_x = 0,
                                                        std::size_t dimension_y = 1) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
                                                                std::size_t dimension_x = 0,
                                                                std::size_t dimension_y = 1) const;
 
@@ -1252,9 +1741,9 @@ class LaplacianEigenmaps {
   [[nodiscard]] std::string summary() const;
   void                      print_summary() const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding(std::size_t dimension_x = 0,
                                                        std::size_t dimension_y = 1) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
                                                                std::size_t dimension_x = 0,
                                                                std::size_t dimension_y = 1) const;
 
@@ -1289,9 +1778,9 @@ class DiffusionMaps {
   [[nodiscard]] std::string summary() const;
   void                      print_summary() const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding(std::size_t dimension_x = 0,
                                                        std::size_t dimension_y = 1) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
                                                                std::size_t dimension_x = 0,
                                                                std::size_t dimension_y = 1) const;
 
@@ -1325,9 +1814,9 @@ class KernelPCA {
   [[nodiscard]] std::string summary() const;
   void                      print_summary() const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding(std::size_t dimension_x = 0,
                                                        std::size_t dimension_y = 1) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
                                                                std::size_t dimension_x = 0,
                                                                std::size_t dimension_y = 1) const;
 
@@ -1365,9 +1854,9 @@ class SammonMapping {
   [[nodiscard]] std::string summary() const;
   void                      print_summary() const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding(std::size_t dimension_x = 0,
                                                        std::size_t dimension_y = 1) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
                                                                std::size_t dimension_x = 0,
                                                                std::size_t dimension_y = 1) const;
 
@@ -1409,9 +1898,9 @@ class UMAP {
   [[nodiscard]] std::string summary() const;
   void                      print_summary() const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding(std::size_t dimension_x = 0,
                                                        std::size_t dimension_y = 1) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+  [[nodiscard]] datamunge::graphics::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
                                                                std::size_t dimension_x = 0,
                                                                std::size_t dimension_y = 1) const;
 
@@ -1510,12 +1999,12 @@ class GBMClassifier {
   /// @brief "class" column plus one numeric probability column per class (prob_<class>).
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_training_deviance() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_training_deviance() const;
 
  private:
   stats::GBMClassifier gbm_;
@@ -1545,9 +2034,9 @@ class GBMRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_training_deviance() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_training_deviance() const;
 
  private:
   stats::GBMRegressor gbm_;
@@ -1583,12 +2072,12 @@ class XGBoostClassifier {
   /// @brief "class" column plus one numeric probability column per class (prob_<class>).
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_training_deviance() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_training_deviance() const;
 
  private:
   stats::XGBoostClassifier xgb_;
@@ -1618,9 +2107,9 @@ class XGBoostRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_training_deviance() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_training_deviance() const;
 
  private:
   stats::XGBoostRegressor xgb_;
@@ -1655,10 +2144,10 @@ class KernelRegression {
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
   /// @brief Scatter of `data` plus the fitted kernel-regression curve; only valid for a single-predictor model.
-  [[nodiscard]] datamunge::plot::RPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200) const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_cv_curve() const;
 
  private:
   stats::KernelRegression kernel_regression_;
@@ -1702,11 +2191,11 @@ class GaussianProcessRegression {
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata, const std::string& interval_kind = "none",
                                         double level = 0.95) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200,
+  [[nodiscard]] datamunge::graphics::RPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200,
                                                        double level = 0.95) const;
-  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_length_scale_profile() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_length_scale_profile() const;
 
  private:
   stats::GaussianProcessRegression gpr_;
@@ -1737,10 +2226,10 @@ class NaiveBayesClassifier {
   /// @brief "class" column plus one numeric probability column per class (prob_<class>).
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
   /// @brief Background grid of predicted class regions; requires exactly two predictors, both numeric.
-  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::graphics::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
 
@@ -1797,10 +2286,10 @@ class GLM {
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata, const std::string& interval_kind = "none",
                                         double level = 0.95) const;
 
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_normal_qq() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_scale_location() const;
-  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_leverage() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_normal_qq() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_scale_location() const;
+  [[nodiscard]] datamunge::graphics::RPlot plot_residuals_vs_leverage() const;
   void                                        save_diagnostic_plots(const std::string& path_prefix) const;
 
  private:

@@ -52,7 +52,7 @@ weight, and whether the tree reached every vertex.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Growing one tree: Prim's algorithm
@@ -204,7 +204,7 @@ lightest edges in the whole graph.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

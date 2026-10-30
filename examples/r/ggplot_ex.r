@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/ggplot_ex.r
 # Demonstrates GGPlot -- the ggplot2-style grammar-of-graphics library.
 # Uses the flat ClassName_method(obj, ...) call form throughout, not obj$method(...), per
 # memory/datamunge_r_dollar_dispatch_bug.md. Every mutator/void call below is wrapped in

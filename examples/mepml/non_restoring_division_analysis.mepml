@@ -38,7 +38,7 @@ add/subtracts plus at most one correction, independent of the data.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -112,7 +112,7 @@ We confirm several divisions, then \-\- across a set of dividends \-\- count res
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

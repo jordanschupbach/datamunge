@@ -1,7 +1,12 @@
+/// @file lmm.cpp
+/// @brief Linear mixed models: the profiled (RE)ML criterion, its minimisation over the
+///        relative covariance factor \f$\theta\f$, and the estimates and BLUPs at the optimum.
+
 #include <datamunge/stats/lmm.hpp>
 
 #include <datamunge/linalg/cholesky.hpp>
 #include <datamunge/optim/differential_evolution.hpp>
+#include <datamunge/optim/nelder_mead.hpp>
 #include <datamunge/random/distributions.hpp>
 #include <datamunge/stats/detail/mixed_model_formula.hpp>
 
@@ -17,34 +22,52 @@
 
 namespace datamunge::stats {
 
+/// @brief Helpers private to this file.
 namespace {
 
 using linalg::CholeskyDecomposition;
 using linalg::cholesky;
 using linalg::DenseMatrix;
 
+/// @brief \f$2\pi\f$, for the normal log-likelihood constant.
 constexpr double kTwoPi = 6.283185307179586476925286766559;
 
+/// @brief Builds the lower-triangular \f$\Lambda\f$ from \f$\theta\f$ (shared with GLMM and INLA).
 using detail::build_lambda;
+/// @brief Locates the `( ... | group )` term in a mixed-model formula.
 using detail::find_random_effect_span;
+/// @brief Trims surrounding whitespace.
 using detail::mixed_model_trim;
+/// @brief Parses the random-effect terms left of `|`.
 using detail::parse_random_effect_rhs;
 using detail::RandomEffectSpec;
 
+/// @brief One group's factorised relative covariance.
 struct GroupBlock {
-    CholeskyDecomposition<double> chol_m; // Cholesky of M_g = Z_g*Lambda*Lambda'*Z_g' + I
-    double log_det_m{0.0};
+    CholeskyDecomposition<double> chol_m;  ///< Cholesky factor of \f$M_g=I+Z_g\Lambda\Lambda^\top Z_g^\top\f$.
+    double log_det_m{0.0};                 ///< \f$\log|M_g|\f$.
 };
 
+/// @brief Everything the profiled criterion computes at one \f$\theta\f$.
 struct ProfileFit {
-    std::vector<GroupBlock> blocks;
-    std::vector<double> beta;
-    DenseMatrix<double> xtwx; // sum_g X_g' M_g^-1 X_g  (p x p)
-    double rss{0.0};
-    double sigma2{0.0};
-    double criterion{0.0}; // -2 log (RE)ML
+    std::vector<GroupBlock> blocks;  ///< Per-group factorisations, in group order.
+    std::vector<double> beta;        ///< GLS estimate \f$\hat\beta_\theta\f$.
+    DenseMatrix<double> xtwx;        ///< \f$\sum_g X_g^\top M_g^{-1}X_g\f$ (\f$p\times p\f$).
+    double rss{0.0};                 ///< \f$r^\top M^{-1}r\f$ at \f$\hat\beta_\theta\f$.
+    double sigma2{0.0};              ///< Profiled \f$\hat\sigma^2_\theta\f$ (divisor \f$n\f$ or \f$n-p\f$).
+    double criterion{0.0};           ///< \f$-2\f$ times the profiled (restricted) log-likelihood.
 };
 
+/// @brief Evaluates the profiled ML or REML criterion at @p theta.
+/// @param theta       Entries of \f$\Lambda\f$, row by row.
+/// @param X           Fixed-effect design, \f$n\times p\f$.
+/// @param y           Response.
+/// @param Z           Random-effect design, \f$n\times q\f$.
+/// @param group_rows  Row indices of each group.
+/// @param q           Number of random effects per group.
+/// @param reml        REML (true) or ML (false).
+/// @return The criterion and the quantities it was built from.
+/// @throws std::runtime_error If a block or \f$X^\top M^{-1}X\f$ is not positive definite.
 ProfileFit compute_profile(const std::vector<double>& theta, const DenseMatrix<double>& X, const std::vector<double>& y,
                             const DenseMatrix<double>& Z, const std::vector<std::vector<std::size_t>>& group_rows,
                             const std::size_t q, const bool reml) {
@@ -66,7 +89,7 @@ ProfileFit compute_profile(const std::vector<double>& theta, const DenseMatrix<d
         for (std::size_t a = 0; a < ng; ++a)
             for (std::size_t k = 0; k < q; ++k) {
                 double s = 0.0;
-                for (std::size_t c = 0; c <= k; ++c) s += Z(rows[a], c) * lambda(k, c);
+                for (std::size_t c = k; c < q; ++c) s += Z(rows[a], c) * lambda(c, k);  // (Z Lambda)(a, k), Lambda lower triangular
                 zl(a, k) = s;
             }
 
@@ -141,12 +164,23 @@ ProfileFit compute_profile(const std::vector<double>& theta, const DenseMatrix<d
     return result;
 }
 
+/// @brief The profiled criterion as an objective for the optimisers; failures map to a huge value.
 class LMMObjective : public optim::ArbitraryFunction {
 public:
+    /// @brief Binds the data; the references must outlive the objective.
+    /// @param X           Fixed-effect design.
+    /// @param y           Response.
+    /// @param Z           Random-effect design.
+    /// @param group_rows  Row indices of each group.
+    /// @param q           Number of random effects per group.
+    /// @param reml        REML (true) or ML (false).
     LMMObjective(const DenseMatrix<double>& X, const std::vector<double>& y, const DenseMatrix<double>& Z,
                  const std::vector<std::vector<std::size_t>>& group_rows, const std::size_t q, const bool reml)
         : X_(X), y_(y), Z_(Z), group_rows_(group_rows), q_(q), reml_(reml) {}
 
+    /// @brief The criterion at @p theta.
+    /// @param theta  Entries of \f$\Lambda\f$, row by row.
+    /// @return The criterion, or a huge value where it cannot be evaluated.
     double evaluate(const std::vector<double>& theta) override {
         try {
             return compute_profile(theta, X_, y_, Z_, group_rows_, q_, reml_).criterion;
@@ -156,12 +190,12 @@ public:
     }
 
 private:
-    const DenseMatrix<double>& X_;
-    const std::vector<double>& y_;
-    const DenseMatrix<double>& Z_;
-    const std::vector<std::vector<std::size_t>>& group_rows_;
-    std::size_t q_;
-    bool reml_;
+    const DenseMatrix<double>& X_;                             ///< Fixed-effect design.
+    const std::vector<double>& y_;                             ///< Response.
+    const DenseMatrix<double>& Z_;                             ///< Random-effect design.
+    const std::vector<std::vector<std::size_t>>& group_rows_;  ///< Row indices of each group.
+    std::size_t q_;                                            ///< Random effects per group.
+    bool reml_;                                                ///< REML (true) or ML (false).
 };
 
 } // namespace
@@ -309,8 +343,21 @@ void LMM::fit(const dstruct::DataFrame& data) {
     de_options.seed = options_.seed;
     optim::DifferentialEvolution de(de_options);
     de.optimize(objective, theta0, lower, upper);
-    theta_ = theta0;
-    lambda_ = build_lambda(theta_, q);
+    // DE finds the basin; Nelder-Mead from its best point resolves the optimum to ~1e-8.
+    std::vector<double> polished = theta0;
+    optim::NelderMeadOptions nm_options;
+    nm_options.max_iterations = 4000;
+    nm_options.tolerance = 1e-12;
+    optim::NelderMead(nm_options).optimize(objective, polished);
+    if (objective.evaluate(polished) < objective.evaluate(theta0)) theta0 = polished;
+    // Lambda and Lambda * diag(+-1) give the same covariance: make Lambda's diagonal non-negative.
+    lambda_ = build_lambda(theta0, q);
+    for (std::size_t k = 0; k < q; ++k)
+        if (lambda_(k, k) < 0.0)
+            for (std::size_t i = k; i < q; ++i) lambda_(i, k) = -lambda_(i, k);
+    theta_.clear();
+    for (std::size_t i = 0; i < q; ++i)
+        for (std::size_t j = 0; j <= i; ++j) theta_.push_back(lambda_(i, j));
 
     const ProfileFit final_fit = compute_profile(theta_, design_matrix_, response_, random_effect_design_, group_rows_, q, options_.reml);
     coefficients_ = final_fit.beta;
@@ -382,6 +429,36 @@ void LMM::fit(const dstruct::DataFrame& data) {
     }
 }
 
+double LMM::deviance_at(const std::vector<double>& theta) const {
+    const std::size_t q = random_effect_names_.size();
+    if (theta.size() != q * (q + 1) / 2) throw std::invalid_argument("LMM::deviance_at: theta must have q(q+1)/2 entries");
+    return compute_profile(theta, design_matrix_, response_, random_effect_design_, group_rows_, q, options_.reml).criterion;
+}
+
+dstruct::DataFrame LMM::coefficient_frame() const {
+    dstruct::DataFrame out;
+    out.add_column("term", design_.coefficient_names);
+    out.add_column("estimate", coefficients_);
+    out.add_column("std_error", standard_errors_);
+    out.add_column("z_value", z_values_);
+    out.add_column("p_value", p_values_);
+    return out;
+}
+
+dstruct::DataFrame LMM::random_effects_frame() const {
+    dstruct::DataFrame out;
+    out.add_column(group_variable_, group_labels_);
+    std::vector<double> sizes;
+    for (const auto& rows : group_rows_) sizes.push_back(static_cast<double>(rows.size()));
+    out.add_column("n", sizes);
+    for (std::size_t k = 0; k < random_effect_names_.size(); ++k) {
+        std::vector<double> col;
+        for (const auto& b : random_effects_) col.push_back(b[k]);
+        out.add_column(random_effect_names_[k], col);
+    }
+    return out;
+}
+
 std::vector<double> LMM::random_effect_std_devs() const {
     std::vector<double> sd(random_effect_covariance_.rows());
     for (std::size_t i = 0; i < sd.size(); ++i) sd[i] = std::sqrt(std::max(0.0, random_effect_covariance_(i, i)));
@@ -428,13 +505,13 @@ void LMM::print_summary(std::ostream& os) const {
     const auto sd = random_effect_std_devs();
     os << "Random effects:\n";
     os << ' ' << std::left << std::setw(9) << "Groups" << std::setw(13) << "Name" << std::right << std::setw(10)
-       << "Variance" << std::setw(10) << "Std.Dev." << std::setw(7) << "Corr" << "\n";
+       << "Variance" << std::setw(10) << "Std.Dev." << std::setw(9) << "Corr" << "\n";
     os << std::setprecision(4);
     for (std::size_t i = 0; i < q; ++i) {
         os << ' ' << std::left << std::setw(9) << (i == 0 ? group_variable_ : std::string()) << std::setw(13)
            << random_effect_names_[i] << std::right << std::setw(10) << random_effect_covariance_(i, i) << std::setw(10)
            << sd[i];
-        for (std::size_t j = 0; j < i; ++j) os << std::setw(7) << random_effect_correlation(i, j);
+        for (std::size_t j = 0; j < i; ++j) os << std::setw(9) << random_effect_correlation(i, j);
         os << "\n";
     }
     os << ' ' << std::left << std::setw(22) << "Residual" << std::right << std::setw(10) << sigma2_ << std::setw(10)

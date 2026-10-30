@@ -41,7 +41,7 @@ which is why BDF2 is sometimes preferred -- but for most work the trapezoidal ru
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

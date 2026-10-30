@@ -1,6 +1,6 @@
 # Native Python NN example. Visible-only transformer masked autoencoder (75 percent patch masking).
-"""CMD: just python-example masked_autoencoder
-Visible-only transformer MAE with 75 percent masking and a smaller mask-token decoder.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/masked_autoencoder.py
+"""Visible-only transformer MAE with 75 percent masking and a smaller mask-token decoder.
 
 Port of tflow's masked_autoencoder. Preparation (in ~/projects/tflow_examples):
 just autoencoder-assets; data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs

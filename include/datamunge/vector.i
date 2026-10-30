@@ -11,10 +11,10 @@
 // (Relies on the including module's %{ #include "datamunge/datamunge.hpp" %} block.)
 
 // RGB/RGBA is a plain aggregate, which SWIG only gives a no-argument constructor.
-%extend datamunge::plot::RGB {
-  RGB() { return new datamunge::plot::RGB(); }
+%extend datamunge::graphics::RGB {
+  RGB() { return new datamunge::graphics::RGB(); }
   RGB(int r, int g, int b, double alpha = 1.0) {
-    return new datamunge::plot::RGB{r, g, b, alpha};
+    return new datamunge::graphics::RGB{r, g, b, alpha};
   }
 }
 
@@ -24,6 +24,8 @@ namespace datamunge {
 void set_seed(std::uint64_t seed);
 /// n draws from Uniform[lower, upper).
 std::vector<double> unif(double lower, double upper, std::size_t n);
+/// Alias for unif(lower, upper, n), sharing its generator and validation.
+std::vector<double> runif(double lower, double upper, std::size_t n);
 /// n draws from Normal(mean, sd).
 std::vector<double> rnorm(double mean, double sd, std::size_t n);
 /// n evenly spaced values from `from` to `to` inclusive.

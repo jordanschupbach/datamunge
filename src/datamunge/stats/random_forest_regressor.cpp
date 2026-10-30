@@ -1,3 +1,6 @@
+/// @file random_forest_regressor.cpp
+/// @brief Random forest regressor: fitting, out-of-bag error, importance and plots.
+
 #include <datamunge/stats/random_forest_regressor.hpp>
 
 #include <algorithm>
@@ -11,8 +14,13 @@
 
 namespace datamunge::stats {
 
+/// @brief Formatting helpers for the regressor summary.
 namespace {
 
+/// @brief Formats @p v with fixed @p precision ("NaN" for NaN).
+/// @param v          Value.
+/// @param precision  Digits after the point.
+/// @return The text.
 std::string format_stat(double v, int precision = 4) {
     if (std::isnan(v)) return "NaN";
     std::ostringstream oss;
@@ -42,6 +50,8 @@ void RandomForestRegressor::fit(const dstruct::DataFrame& data, RandomForestRegr
     predictor_names_ = design_.coefficient_names;
     observations_    = n;
     training_y_      = dm.y;
+    // Rows with a missing value are dropped; every row index below refers to this frame.
+    const auto complete = data.take_rows(dm.used_row_indices);
 
     max_features_used_ = options_.max_features;
     if (max_features_used_ == 0)
@@ -86,19 +96,19 @@ void RandomForestRegressor::fit(const dstruct::DataFrame& data, RandomForestRegr
             }
         }
 
-        const auto bootstrap_frame = data.take_rows(indices);
+        const auto bootstrap_frame = complete.take_rows(indices);
         tree_options.random_seed   = options_.seed * 1000003ULL + t * 7919ULL + 1;
 
         trees_.emplace_back(bootstrap_frame, formula_.text(), tree_options);
         in_bag_[t] = std::move(in_bag);
     }
 
-    fitted_values_ = predict(data);
+    fitted_values_ = predict(complete);
 
     std::vector<double>      oob_sum(n, 0.0);
     std::vector<std::size_t> oob_count(n, 0);
     for (std::size_t t = 0; t < trees_.size(); ++t) {
-        const auto preds = trees_[t].predict(data);
+        const auto preds = trees_[t].predict(complete);
         for (std::size_t i = 0; i < n; ++i) {
             if (in_bag_[t][i] || std::isnan(preds[i])) continue;
             oob_sum[i] += preds[i];
@@ -212,18 +222,18 @@ std::vector<double> RandomForestRegressor::predict(const dstruct::DataFrame& new
     return result;
 }
 
-plot::RPlot RandomForestRegressor::plot_predicted_vs_actual() const {
-    auto plot = plot::RPlot::create();
+graphics::RPlot RandomForestRegressor::plot_predicted_vs_actual() const {
+    auto plot = graphics::RPlot::create();
     plot.points(training_y_, fitted_values_, "predictions");
     plot.title("Predicted vs Actual").x_label("Actual").y_label("Predicted");
     return plot;
 }
 
-plot::RPlot RandomForestRegressor::plot_residuals_vs_fitted() const {
+graphics::RPlot RandomForestRegressor::plot_residuals_vs_fitted() const {
     std::vector<double> residuals(training_y_.size());
     for (std::size_t i = 0; i < training_y_.size(); ++i) residuals[i] = training_y_[i] - fitted_values_[i];
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     plot.points(fitted_values_, residuals, "residuals");
     plot.title("Residuals vs Fitted").x_label("Fitted values").y_label("Residuals");
     return plot;

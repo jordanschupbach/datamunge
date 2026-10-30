@@ -1,6 +1,6 @@
 # Native Python NN example. Transposed convolution, its adjoint identity and checkerboard artifacts.
-"""CMD: just python-example transposed_convolutions
-Transposed convolution, its adjoint identity and checkerboard artifacts.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/transposed_convolutions.py
+"""Transposed convolution, its adjoint identity and checkerboard artifacts.
 
 Port of tflow's transposed_convolutions. TensorFlow implements transposed
 convolution as Conv2DBackpropInput; nn.conv2d_transpose is the same
@@ -19,7 +19,7 @@ interior phase means/CV separately from boundary effects, and export maps.
 Inputs come from the same std::mt19937(18) stream as the C++ (bit-identical).
 Arrays: output/nn/python/<mode>/visualizations/transposed_convolutions/checkerboards.npz.
 
-C++ reference: examples/cpp/nn/1_convolutional_neural_networks/1.1_fundamentals/transposed_convolutions.cpp
+C++ reference: examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/transposed_convolutions.cpp
 """
 import math
 import struct

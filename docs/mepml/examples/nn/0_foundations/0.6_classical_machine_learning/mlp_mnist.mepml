@@ -1,0 +1,260 @@
+//? Title: MLP Digit Classification: Nonlinear Hidden Features
+//? Subtitle: A hidden layer changes the function class; evaluate it with a fixed split
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Some label patterns cannot be separated by an affine readout of the original inputs. A multilayer
+perceptron first learns nonlinear features and then classifies them with softmax. We exhibit XOR's
+linear limitation, fit a small hidden-layer model and run a fixed-budget demonstration on bundled
+8×8 digits. The original full MNIST workflow and its architecture remain available separately.
+)
+\toc
+
+> The method
+
+A one-hidden-layer network computes h=ReLU(XW1+b1), z=hW2+b2. Backpropagation chains the softmax
+score p-y through W2 and the active ReLU mask. Hidden width H gives DH+H+HK+K parameters.
+An explicit XOR construction on x1,x2 in {0,1} is
+
+$$
+f(x)=\operatorname{ReLU}(x_1+x_2)-2\operatorname{ReLU}(x_1+x_2-1).
+$$
+\alttext(Two rectified sums produce zero at both equal-input corners and one at the two unequal-input corners.)
+
+No affine function can assign opposite signs to the two diagonal XOR pairs: adding the two
+positive-corner inequalities contradicts adding the negative-corner inequalities. Hidden features
+remove that restriction. Training is nonconvex; zero training error says nothing by itself about
+held-out performance. The original 784→256→128→10 network has 235146 parameters. This report's
+offline dataset model uses 64→32→10, explicit minibatch Adam and fixed pixel scaling by 16; it does not
+reproduce that MNIST training budget, split or epsilon-LRP analysis. Use `just run-nn mlp_mnist`
+with prepared MNIST files for the original complete workflow.
+
+The concept diagram has a retained TikZ source in `diagrams/mlp_mnist_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/mlp_mnist_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/mlp_mnist_concept.tikz > build/mlp_mnist_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/mlp_mnist_concept.svg build/mlp_mnist_concept.dvi > build/mlp_mnist_concept.render.log 2>&1
+printf 'Rendered build/mlp_mnist_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/mlp_mnist_concept.svg from local TikZ source.
+// \image(figures/mlp_mnist_concept.svg)
+// result_end
+\caption(A hidden layer changes the function class; evaluate it with a fixed split)
+\alttext(Input predictors; pixels or XOR corners Then Nonlinear hidden features; h=\mathrm{ReLU}(XW+b) Then Softmax output; backpropagate p-y.)
+
+> Simple examples
+
+```{cpp, results="markdown", file="figures/mlp_mnist_xor.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto x = n::tensor({0, 0, 0, 1, 1, 0, 1, 1}, {4, 2});
+  const auto y = n::from_vector(std::vector<int64_t>{0, 1, 1, 0});
+  const auto sum = n::sum(x, {1}), exact = n::relu(sum) - 2 * n::relu(sum - 1);
+  if (exact.to_vector<int>() != std::vector<int>({0, 1, 1, 0}))
+    return 1;
+  n::ParameterStore p(17);
+  auto logits = [&](const n::Tensor &input) {
+    const auto h = n::dense(p, "hidden", input, 8, n::Activation::Tanh);
+    return n::dense(p, "output", h, 2);
+  };
+  {
+    n::NoGradGuard guard;
+    logits(x);
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(p, .03, config);
+  for (int step = 0; step < 1000; ++step) {
+    const auto loss = n::sparse_softmax_cross_entropy(logits(x), y);
+    optimizer.minimize(loss);
+  }
+  n::NoGradGuard guard;
+  const auto axis = n::linspace(-.25, 1.25, 51).to_vector<double>();
+  std::vector<float> coordinates;
+  for (double a : axis)
+    for (double b : axis) {
+      coordinates.push_back(a);
+      coordinates.push_back(b);
+    }
+  const auto query = n::from_vector(coordinates, {51 * 51, 2});
+  const auto probabilities = n::softmax(logits(query), 1);
+  std::vector<std::vector<double>> z(51, std::vector<double>(51));
+  for (int i = 0; i < 51; ++i)
+    for (int j = 0; j < 51; ++j)
+      z[i][j] = probabilities.at({i * 51 + j, 1});
+  auto plot = dm::graphics::RPlot::create();
+  plot.image(axis, axis, z, dm::graphics::terrain_colors(16), 0, 1)
+      .points({0, 1}, {1, 0}, "different", {37, 99, 235}, 8)
+      .points({0, 1}, {0, 1}, "equal", {220, 38, 38}, 8)
+      .title("Tensor Adam learns nonlinear XOR probabilities")
+      .x_label("x1")
+      .y_label("x2");
+  std::filesystem::create_directories("build");
+  plot.size(850, 420).save_svg("build/mlp_mnist_xor.svg");
+  const double accuracy = n::accuracy(logits(x), y);
+  if (accuracy != 1)
+    return 1;
+  std::print("Explicit two-ReLU XOR values {}; fitted accuracy {} after {} Adam steps.\n",
+             exact.to_vector<int>(), accuracy, optimizer.iterations());
+}
+```
+// result_begin: markdown
+Explicit two-ReLU XOR values [0, 1, 1, 0]; fitted accuracy 1 after 1000 Adam steps.
+\image(figures/mlp_mnist_xor.svg)
+// result_end
+\caption(The fitted XOR regions illustrate nonlinear features; the four corners are training observations.)
+\alttext(The fitted XOR regions illustrate nonlinear features; the four corners are training observations.)
+
+> Checking the theory
+
+The exact construction above checks representation, while fitted XOR checks optimisation on four points. They answer different questions. The digit model checks normalization of all held-out probability rows.
+
+> A dataset example
+
+```{cpp, results="markdown", file="figures/mlp_mnist_inputs.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto data = dm::datasets::digits();
+  std::vector<double> pixels;
+  std::vector<int> seen(10);
+  for (int digit = 0; digit < 10; ++digit) {
+    for (size_t row = 0; row < data.nrows(); ++row) {
+      if (int(data.get_column("digit").values()[row]) != digit)
+        continue;
+      for (int j = 0; j < 64; ++j)
+        pixels.push_back(data.get_column("pixel_" + std::to_string(j)).values()[row] / 16.);
+      break;
+    }
+  }
+  const auto sheet = n::image_grid(n::from_vector(pixels, {10, 8, 8, 1}), 5, 2, 0.);
+  std::vector<double> horizontal(sheet.size(1)), vertical(sheet.size(0));
+  std::iota(horizontal.begin(), horizontal.end(), 0.);
+  std::iota(vertical.begin(), vertical.end(), 0.);
+  std::vector<std::vector<double>> intensity(horizontal.size(),
+                                             std::vector<double>(vertical.size()));
+  for (size_t x = 0; x < horizontal.size(); ++x)
+    for (size_t y = 0; y < vertical.size(); ++y)
+      intensity[x][y] = sheet.at({int64_t(vertical.size() - 1 - y), int64_t(x), 0});
+  std::vector<dm::graphics::RGB> grayscale;
+  for (int value = 0; value < 256; ++value) {
+    grayscale.push_back({value, value, value});
+  }
+  auto p = dm::graphics::RPlot::create();
+  p.image(horizontal, vertical, intensity, grayscale, 0, 1)
+      .title("Bundled 8 by 8 digits: labels 0 to 9")
+      .x_label("pixel column")
+      .y_label("pixel row, inverted");
+  std::filesystem::create_directories("build");
+  p.size(850, 390).save_svg("build/mlp_mnist_inputs.svg");
+  std::print("First dataset row of each class; labels 0..4 above 5..9.\n");
+}
+```
+// result_begin: markdown
+First dataset row of each class; labels 0..4 above 5..9.
+\image(figures/mlp_mnist_inputs.svg)
+// result_end
+\caption(Representative input images, ordered by digit label: 0–4, then 5–9.)
+\alttext(Ten grayscale digit images from the bundled dataset, one per class.)
+
+The built-in digits dataset has 1797 8×8 images, distinct from 28×28 MNIST. A seeded stratified four-fold partition reserves fold zero, with hidden width 32 and a fixed 80-epoch budget. Pixels divide by the known maximum 16. The visible loop runs Adam at .003 for 80 epochs, with kernel L2 coefficient .0001 and no test-driven checkpoint selection. The held-out fold is used only after fitting.
+
+```{cpp, results="markdown", file="figures/mlp_mnist_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  const auto data = dm::datasets::digits();
+  std::vector<double> values;
+  std::vector<int> ids;
+  const auto labels = data.get_column("digit").values();
+  for (size_t row = 0; row < data.nrows(); ++row) {
+    ids.push_back(int(labels[row]));
+    for (int j = 0; j < 64; ++j)
+      values.push_back(data.get_column("pixel_" + std::to_string(j)).values()[row] / 16.);
+  }
+  const auto x =
+      n::cast(n::from_vector(values, {int64_t(data.nrows()), 64}), n::DType::Float32);
+  const auto y = n::from_vector(std::vector<int64_t>(ids.begin(), ids.end()));
+  const auto split = n::ml::StratifiedKFold(ids, 4, 2026)[0];
+  const std::vector<int64_t> tr(split.training.begin(), split.training.end());
+  const std::vector<int64_t> te(split.validation.begin(), split.validation.end());
+  const auto tx = n::take_rows(x, tr), ty = n::take_rows(y, tr);
+  const auto vx = n::take_rows(x, te), vy = n::take_rows(y, te);
+  n::ParameterStore parameters(17);
+  auto logits = [&](const n::Tensor &input) {
+    const auto h = n::dense(parameters, "hidden", input, 32, n::Activation::Relu);
+    return n::dense(parameters, "output", h, 10);
+  };
+  {
+    n::NoGradGuard guard;
+    logits(n::take_rows(tx, {0}));
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer(parameters, .003, config);
+  n::BatchOrder batches(tx.size(0), 64, 17);
+  std::vector<double> epoch, training_nll;
+  for (int e = 0; e < 80; ++e) {
+    batches.begin_epoch();
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto prediction = logits(n::take_rows(tx, rows));
+      auto objective = n::sparse_softmax_cross_entropy(prediction, n::take_rows(ty, rows));
+      // L2 applies to kernels, leaving biases unpenalised.
+      for (const auto &weight : parameters.parameters())
+        if (weight.dim() == 2)
+          objective = objective + .00005 * n::sum(n::square(weight));
+      optimizer.minimize(objective);
+    }
+    n::NoGradGuard guard;
+    epoch.push_back(e + 1);
+    training_nll.push_back(n::sparse_softmax_cross_entropy(logits(tx), ty).item());
+  }
+  n::NoGradGuard guard;
+  const auto z = logits(vx), p = n::softmax(z, 1);
+  const double accuracy = n::accuracy(z, vy),
+               nll = n::sparse_softmax_cross_entropy(z, vy).item();
+  const double mass_error = n::max(n::abs(n::sum(p, {1}) - 1)).item();
+  if (mass_error > 2e-6 || accuracy < .85)
+    return 1;
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(epoch, training_nll, "training NLL", {37, 99, 235})
+      .title("Explicit minibatch Adam on bundled digits")
+      .x_label("epoch")
+      .y_label("mean training NLL");
+  std::filesystem::create_directories("build");
+  plot.size(850, 420).save_svg("build/mlp_mnist_digits.svg");
+  std::print("{} training rows; {} held-out rows; 80 epochs; {} Adam updates.\n\nAccuracy "
+             "{:.6f}; NLL {:.6f}; maximum mass error {:.9f}.\n",
+             tx.size(0), vx.size(0), optimizer.iterations(), accuracy, nll, mass_error);
+}
+```
+// result_begin: markdown
+1347 training rows; 450 held-out rows; 80 epochs; 1760 Adam updates.
+
+Accuracy 0.973333; NLL 0.068156; maximum mass error 0.000000119.
+\image(figures/mlp_mnist_digits.svg)
+// result_end
+\caption(Training loss on the bundled 8×8 digits; held-out scores are evaluated after the fixed training budget.)
+\alttext(Training loss on the bundled 8×8 digits; held-out scores are evaluated after the fixed training budget.)
+
+
+> Conclusion
+
+The explicit construction and fitted XOR model show why nonlinear features expand the hypothesis
+class. The digit run evaluates one fixed architecture on a separate dataset. It does not establish
+an architecture ranking or reproduce the full MNIST benchmark and its relevance analysis.
+
+> References
+
+- [Rumelhart, Hinton and Williams (1986), Learning representations by back-propagating errors](https://doi.org/10.1038/323533a0).
+- [Scikit-learn bundled digits dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html).

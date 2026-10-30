@@ -16,6 +16,7 @@
 /// information-theoretic lower bound.
 
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <queue>
 #include <string>
@@ -29,13 +30,15 @@ namespace datamunge::algorithms {
 struct HuffmanCode {
     std::unordered_map<char, std::string> codes;  ///< symbol -> binary codeword.
 
+    /// One node of the decoding tree.
     struct Node {
         char        symbol = 0;    ///< Valid only at leaves.
-        bool        leaf   = false;
-        int         left = -1, right = -1;
+        bool        leaf   = false;  ///< True for a leaf (a symbol), false for an internal node.
+        int         left   = -1;     ///< Index of the child reached by a 0 bit, or -1.
+        int         right  = -1;     ///< Index of the child reached by a 1 bit, or -1.
     };
-    std::vector<Node> tree;  ///< Decoding tree; root is the last element (or index root_).
-    int               root = -1;
+    std::vector<Node> tree;  ///< Decoding tree; root is the last element (or index root).
+    int               root = -1;  ///< Index of the root node in tree, or -1 for an empty code.
 };
 
 /// \brief Build an optimal Huffman code from symbol frequencies in \p text.
@@ -118,6 +121,41 @@ inline double huffman_average_bits(const HuffmanCode& hc, const std::string& tex
     std::size_t total = 0;
     for (char ch : text) total += hc.codes.at(ch).size();
     return static_cast<double>(total) / static_cast<double>(text.size());
+}
+
+
+/// \brief Huffman codeword lengths for an integer-symbol alphabet with the given counts.
+///
+/// Entry s is the length of symbol s's codeword; symbols with zero count get length 0, and a
+/// lone non-zero symbol gets length 1. The expected length \f$\sum_s p_s\ell_s\f$ lies in
+/// \f$[H, H+1)\f$ for the source entropy \f$H\f$.
+inline std::vector<int> huffman_code_lengths(const std::vector<std::uint64_t>& counts) {
+    std::vector<int> lengths(counts.size(), 0);
+    // Each heap item is (weight, node); nodes < K are leaves, later ones internal.
+    using Item = std::pair<std::uint64_t, std::size_t>;
+    std::priority_queue<Item, std::vector<Item>, std::greater<Item>> pq;
+    std::vector<std::size_t> parent;
+    for (std::size_t s = 0; s < counts.size(); ++s) {
+        parent.push_back(s);
+        if (counts[s] > 0) pq.push({counts[s], s});
+    }
+    if (pq.size() == 1) lengths[pq.top().second] = 1;
+    while (pq.size() > 1) {
+        const auto a = pq.top(); pq.pop();
+        const auto b = pq.top(); pq.pop();
+        const std::size_t node = parent.size();
+        parent.push_back(node);
+        parent[a.second] = node;
+        parent[b.second] = node;
+        pq.push({a.first + b.first, node});
+    }
+    for (std::size_t s = 0; s < counts.size(); ++s) {
+        if (counts[s] == 0) continue;
+        int depth = 0;
+        for (std::size_t v = s; parent[v] != v; v = parent[v]) ++depth;
+        if (depth > 0) lengths[s] = depth;
+    }
+    return lengths;
 }
 
 }  // namespace datamunge::algorithms

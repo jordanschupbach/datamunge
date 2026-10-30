@@ -1,3 +1,5 @@
+/// @file rmsprop.cpp
+/// @brief RMSProp native update, trial and stopping implementation.
 #include <datamunge/optim/rmsprop.hpp>
 
 #include <cmath>

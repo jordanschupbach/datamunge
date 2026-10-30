@@ -48,7 +48,7 @@ configuration -- the discrete solution of Laplace's equation on the mesh. This i
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

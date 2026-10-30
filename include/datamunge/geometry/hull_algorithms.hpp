@@ -1,204 +1,159 @@
 #pragma once
 
-// Classic convex-hull algorithms, complementing the module's default
-// Andrew's-monotone-chain `convex_hull`. All three return the strict convex hull
-// (hull vertices counterclockwise, points on an edge excluded, no repeated
-// first/last vertex), matching `convex_hull`'s convention, so they are
-// interchangeable and cross-checkable.
+/// @file hull_algorithms.hpp
+/// @brief Classic convex-hull algorithms (Graham scan, Jarvis march, Chan's algorithm,
+///        Quickhull), the binary-search tangent Chan's algorithm relies on, convex layers, and
+///        random point clouds with controllable hull size.
+///
+/// They complement the module's default Andrew's-monotone-chain `convex_hull`. Every hull
+/// function returns the strict convex hull: vertices counterclockwise, points on an edge
+/// excluded, no repeated first/last vertex. They are interchangeable and cross-checkable.
+///
+/// Chan's algorithm (Chan 1996) is output-sensitive: \f$O(n\log h)\f$ for \f$h\f$ hull
+/// vertices. It guesses \f$m\f$, splits the points into groups of at most \f$m\f$, hulls each
+/// group with Graham scan, and gift-wraps the groups for at most \f$m\f$ steps, finding each
+/// group's candidate by binary search on its hull. When the wrap does not close, it squares
+/// \f$m\f$ and starts again. `chans_algorithm_trace` records every round.
+///
+/// Orientation tests are exact for integer coordinates up to about \f$2^{26}\f$; with general
+/// floating-point input near-collinear triples can be misclassified.
 
 #include <datamunge/geometry/point2d.hpp>
 
-#include <algorithm>
+#include <cstdint>
 #include <vector>
 
 namespace datamunge::geometry {
 
-namespace detail {
+/// @brief Graham scan: sort by polar angle around the lowest point, then sweep keeping only
+///        left turns. \f$O(n\log n)\f$.
+/// @param points Input points (duplicates allowed).
+/// @return The strict convex hull, counterclockwise.
+std::vector<Point2D> graham_scan(std::vector<Point2D> points);
 
-inline std::vector<Point2D> sorted_unique(std::vector<Point2D> pts) {
-    std::sort(pts.begin(), pts.end(),
-              [](const Point2D& a, const Point2D& b) { return a.x < b.x || (a.x == b.x && a.y < b.y); });
-    pts.erase(std::unique(pts.begin(), pts.end()), pts.end());
-    return pts;
-}
+/// @brief Graham scan that also counts the orientation tests (calls of `cross`) it makes,
+///        in the angular sort and in the sweep.
+/// @param points Input points (duplicates allowed).
+/// @param orientation_tests Incremented by the number of orientation tests.
+/// @return The strict convex hull, counterclockwise.
+std::vector<Point2D> graham_scan(std::vector<Point2D> points, long long& orientation_tests);
 
-// Signed area * 2 (shoelace); positive when the polygon is counterclockwise.
-inline double signed_area2(const std::vector<Point2D>& poly) {
-    double a = 0;
-    const std::size_t n = poly.size();
-    for (std::size_t i = 0; i < n; ++i) {
-        const Point2D& p = poly[i];
-        const Point2D& q = poly[(i + 1) % n];
-        a += p.x * q.y - q.x * p.y;
-    }
-    return a;
-}
+/// @brief Gift wrapping (Jarvis march): from the leftmost point, repeatedly pick the most
+///        clockwise next point. \f$O(nh)\f$ for \f$h\f$ hull vertices.
+/// @param points Input points (duplicates allowed).
+/// @return The strict convex hull, counterclockwise.
+std::vector<Point2D> jarvis_march(std::vector<Point2D> points);
 
-inline void make_ccw(std::vector<Point2D>& poly) {
-    if (poly.size() >= 3 && signed_area2(poly) < 0) std::reverse(poly.begin(), poly.end());
-}
+/// @brief Jarvis march that also counts its orientation tests (\f$n-2\f$ per hull vertex
+///        for \f$n\f$ distinct points).
+/// @param points Input points (duplicates allowed).
+/// @param orientation_tests Incremented by the number of orientation tests.
+/// @return The strict convex hull, counterclockwise.
+std::vector<Point2D> jarvis_march(std::vector<Point2D> points, long long& orientation_tests);
 
-} // namespace detail
+/// @brief Result of a tangent search from an outside point to a convex polygon.
+struct TangentSearch {
+    int              index = -1;          ///< Index of the tangent vertex in the polygon.
+    std::vector<int> probes;              ///< Vertices examined by the binary search, in order.
+    long long        orientation_tests{}; ///< Orientation tests used.
+};
 
-// Graham scan: sort by polar angle around the lowest point, then sweep keeping
-// only left turns. O(n log n).
-inline std::vector<Point2D> graham_scan(std::vector<Point2D> points) {
-    std::vector<Point2D> pts = detail::sorted_unique(std::move(points));
-    const int            n   = static_cast<int>(pts.size());
-    if (n < 3) return pts;
+/// @brief Find the vertex \f$v_t\f$ of a convex polygon such that every vertex lies left of,
+///        or on, the ray from @p p through \f$v_t\f$, by binary search in \f$O(\log k)\f$.
+///
+/// Seen from an outside point, the directions to the vertices of a convex polygon form a
+/// cyclic bitonic sequence: they turn counterclockwise from one tangent vertex to the other,
+/// then clockwise back. The wanted vertex is the most clockwise one (the minimum), found by
+/// halving the cycle. Of two vertices collinear with @p p, the farther is returned. This is the
+/// step that lets Chan's algorithm query a group hull of size \f$m\f$ in \f$O(\log m)\f$.
+/// @param polygon Strictly convex polygon, counterclockwise, no repeated vertex.
+/// @param p Point strictly outside the polygon.
+/// @return The tangent index, the probe sequence and the test count; index -1 if @p polygon
+///         is empty.
+TangentSearch convex_polygon_tangent(const std::vector<Point2D>& polygon, const Point2D& p);
 
-    int piv = 0;
-    for (int i = 1; i < n; ++i)
-        if (pts[i].y < pts[piv].y || (pts[i].y == pts[piv].y && pts[i].x < pts[piv].x)) piv = i;
-    std::swap(pts[0], pts[piv]);
-    const Point2D p0 = pts[0];
-    std::sort(pts.begin() + 1, pts.end(), [&](const Point2D& a, const Point2D& b) {
-        const double c = cross(p0, a, b);
-        if (c != 0) return c > 0; // a before b when p0->a->b turns left
-        return squared_distance(p0, a) < squared_distance(p0, b);
-    });
+/// @brief Options for `chans_algorithm_trace`.
+struct ChanOptions {
+    long long initial_m       = 4;     ///< First guess for the hull size (squared each round).
+    bool      square_guess    = true;  ///< Square \f$m\f$ after a failed round; false doubles it.
+    bool      binary_tangent  = true;  ///< Binary-search the tangents; false scans each group hull.
+    bool      record_geometry = false; ///< Keep each round's group hulls and wrap path.
+};
 
-    std::vector<Point2D> hull;
-    for (const Point2D& p : pts) {
-        while (hull.size() >= 2 && cross(hull[hull.size() - 2], hull.back(), p) <= 0) hull.pop_back();
-        hull.push_back(p);
-    }
-    return hull; // counterclockwise
-}
+/// @brief One round of Chan's algorithm with guess \f$m\f$.
+struct ChanRound {
+    long long                         m{};                   ///< Guess for the hull size.
+    int                               groups{};              ///< Number of groups, \f$\lceil n/m\rceil\f$.
+    int                               group_hull_vertices{}; ///< Vertices over all group hulls.
+    int                               wrap_steps{};          ///< Wrap steps taken (at most \f$m\f$).
+    bool                              completed{};           ///< Whether the wrap closed.
+    long long                         hull_tests{};          ///< Orientation tests in the group hulls.
+    long long                         wrap_tests{};          ///< Orientation tests in the wrap.
+    std::vector<std::vector<Point2D>> group_hulls;           ///< Group hulls (if recorded).
+    std::vector<Point2D>              wrap_path;             ///< Vertices wrapped so far (if recorded).
+};
 
-// Gift wrapping (Jarvis march): from the leftmost point, repeatedly pick the most
-// clockwise next point, wrapping the hull. O(n * h) for h hull vertices.
-inline std::vector<Point2D> jarvis_march(std::vector<Point2D> points) {
-    std::vector<Point2D> pts = detail::sorted_unique(std::move(points));
-    const int            n   = static_cast<int>(pts.size());
-    if (n < 3) return pts;
+/// @brief Hull plus the per-round trace of Chan's algorithm.
+struct ChanResult {
+    std::vector<Point2D>   hull;                ///< Strict convex hull, counterclockwise.
+    std::vector<ChanRound> rounds;              ///< One entry per guess \f$m\f$.
+    long long              orientation_tests{}; ///< Total over all rounds.
+    int                    distinct_points{};   ///< Points left after removing duplicates.
+};
 
-    int start = 0;
-    for (int i = 1; i < n; ++i)
-        if (pts[i].x < pts[start].x || (pts[i].x == pts[start].x && pts[i].y < pts[start].y)) start = i;
+/// @brief Chan's algorithm with a round-by-round trace.
+///
+/// Duplicates are removed by hashing (no sort, which would cost \f$O(n\log n)\f$). Groups are
+/// consecutive runs of the remaining points in input order. Round \f$t\f$ uses
+/// \f$m_t=\min(n, m_0^{2^{t}})\f$ and costs \f$O(n\log m_t)\f$; the first round with
+/// \f$m_t\ge h\f$ closes the wrap, so the total is \f$O(n\log h)\f$.
+/// Doubling the guess instead (`square_guess = false`) costs \f$O(n\log^2 h)\f$.
+/// @param points Input points (duplicates allowed).
+/// @param options Initial guess, tangent method and whether to record geometry.
+/// @return The hull and the trace.
+ChanResult chans_algorithm_trace(const std::vector<Point2D>& points, const ChanOptions& options = {});
 
-    std::vector<Point2D> hull;
-    int                  cur = start;
-    do {
-        hull.push_back(pts[cur]);
-        int next = (cur + 1) % n;
-        for (int q = 0; q < n; ++q) {
-            if (q == cur) continue;
-            const double o = cross(pts[cur], pts[next], pts[q]);
-            if (o < 0 || (o == 0 && squared_distance(pts[cur], pts[q]) > squared_distance(pts[cur], pts[next])))
-                next = q;
-        }
-        cur = next;
-    } while (cur != start && static_cast<int>(hull.size()) <= n + 1);
+/// @brief Chan's output-sensitive convex hull, \f$O(n\log h)\f$.
+/// @param points Input points (duplicates allowed).
+/// @return The strict convex hull, counterclockwise.
+std::vector<Point2D> chans_algorithm(std::vector<Point2D> points);
 
-    detail::make_ccw(hull);
-    return hull;
-}
+/// @brief Quickhull: split by the line through the two extreme-x points, then recursively take
+///        the farthest point on each side. \f$O(n\log n)\f$ on average, \f$O(n^2)\f$ worst.
+/// @param points Input points (duplicates allowed).
+/// @return The strict convex hull, counterclockwise.
+std::vector<Point2D> quickhull(std::vector<Point2D> points);
 
-// Chan's algorithm: partition the points into groups, take each group's hull
-// (Graham scan), then gift-wrap over the group-hull vertices. Doubling the guess
-// m for the number of hull vertices until the wrap completes gives the optimal
-// O(n log h) when the per-group tangent is found by binary search; this version
-// scans each group's hull for clarity, so it wraps over far fewer candidates
-// than plain gift wrapping while keeping the same grouping structure.
-inline std::vector<Point2D> chans_algorithm(std::vector<Point2D> points) {
-    std::vector<Point2D> pts = detail::sorted_unique(std::move(points));
-    const int            n   = static_cast<int>(pts.size());
-    if (n < 3) return pts;
+/// @brief Convex layers ("onion peeling"): layer 0 is the hull's vertices, layer 1 the hull
+///        of the rest, and so on.
+///
+/// Each layer is computed with Chan's algorithm, so peeling costs
+/// \f$O\big(\sum_j n_j\log h_j\big)\f$ for \f$n_j\f$ points left and \f$h_j\f$ vertices on
+/// layer \f$j\f$. Points on a hull edge but not at a vertex go to a deeper layer. Duplicate
+/// points get the same layer.
+/// @param points Input points.
+/// @return The layer of each input point, in input order.
+std::vector<int> convex_layers(const std::vector<Point2D>& points);
 
-    for (long long m = 4;; m = std::min<long long>(n, m * m)) {
-        const int groups = static_cast<int>((n + m - 1) / m);
-        std::vector<std::vector<Point2D>> subhulls;
-        subhulls.reserve(groups);
-        for (int g = 0; g < groups; ++g) {
-            const int lo = static_cast<int>(g * m);
-            const int hi = static_cast<int>(std::min<long long>(n, (g + 1) * m));
-            subhulls.push_back(graham_scan(std::vector<Point2D>(pts.begin() + lo, pts.begin() + hi)));
-        }
+/// @brief Shapes for `random_point_cloud`, chosen for their different expected hull sizes.
+enum class PointCloud {
+    Square,   ///< Uniform in \f$[0,1]^2\f$: \f$E[h]=\Theta(\log n)\f$.
+    Disk,     ///< Uniform in the unit disk: \f$E[h]=\Theta(n^{1/3})\f$.
+    Gaussian, ///< Standard bivariate normal: \f$E[h]=\Theta(\sqrt{\log n})\f$.
+    Parabola  ///< On \f$y=x^2\f$ at distinct integers \f$x\f$ (convex position): \f$h=n\f$.
+};
 
-        Point2D start = pts[0];
-        for (const Point2D& p : pts)
-            if (p.y < start.y || (p.y == start.y && p.x < start.x)) start = p;
-
-        std::vector<Point2D> hull;
-        Point2D              cur       = start;
-        bool                 completed = false;
-        for (long long step = 0; step <= m; ++step) {
-            hull.push_back(cur);
-            Point2D next;
-            bool    have = false;
-            for (const auto& sh : subhulls)
-                for (const Point2D& q : sh) {
-                    if (q == cur) continue;
-                    if (!have) { next = q; have = true; continue; }
-                    const double o = cross(cur, next, q);
-                    if (o < 0 || (o == 0 && squared_distance(cur, q) > squared_distance(cur, next))) next = q;
-                }
-            if (!have || next == start) { completed = true; break; }
-            cur = next;
-        }
-        if (completed) {
-            detail::make_ccw(hull);
-            return hull;
-        }
-        if (m >= n) { // safety: should have completed by now
-            detail::make_ccw(hull);
-            return hull;
-        }
-    }
-}
-
-namespace detail {
-
-// Recursively collect the hull vertices strictly left of the directed edge a->b,
-// appended between a and b (a and b themselves are added by the caller).
-inline void quickhull_rec(const std::vector<Point2D>& pts, const Point2D& a, const Point2D& b,
-                          std::vector<Point2D>& out) {
-    int    far  = -1;
-    double best = 0;
-    for (std::size_t i = 0; i < pts.size(); ++i) {
-        const double c = cross(a, b, pts[i]);
-        if (c > best) { best = c; far = static_cast<int>(i); }
-    }
-    if (far < 0) return; // no point strictly left: edge a->b is on the hull
-    const Point2D c = pts[far];
-
-    std::vector<Point2D> left_ac, left_cb;
-    for (const Point2D& p : pts) {
-        if (cross(a, c, p) > 0) left_ac.push_back(p);
-        else if (cross(c, b, p) > 0) left_cb.push_back(p);
-    }
-    quickhull_rec(left_ac, a, c, out);
-    out.push_back(c);
-    quickhull_rec(left_cb, c, b, out);
-}
-
-} // namespace detail
-
-// Quickhull: split the points by the line through the two extreme x points, then
-// recursively find the farthest point of each side and divide. O(n log n) average.
-inline std::vector<Point2D> quickhull(std::vector<Point2D> points) {
-    std::vector<Point2D> pts = detail::sorted_unique(std::move(points));
-    const int            n   = static_cast<int>(pts.size());
-    if (n < 3) return pts;
-
-    const Point2D a = pts.front(); // leftmost (sorted by x, then y)
-    const Point2D b = pts.back();  // rightmost
-
-    std::vector<Point2D> above, below;
-    for (const Point2D& p : pts) {
-        const double c = cross(a, b, p);
-        if (c > 0) above.push_back(p);
-        else if (c < 0) below.push_back(p);
-    }
-
-    std::vector<Point2D> hull;
-    hull.push_back(a);
-    detail::quickhull_rec(above, a, b, hull); // upper chain a -> b
-    hull.push_back(b);
-    detail::quickhull_rec(below, b, a, hull); // lower chain b -> a
-    detail::make_ccw(hull);
-    return hull;
-}
+/// @brief Draw @p n random points from one of the `PointCloud` shapes.
+///
+/// For Square, Disk and Gaussian the coordinates are rounded to multiples of \f$2^{-20}\f$, so
+/// orientation tests on them are exact. Parabola points are \f$(x,x^2)\f$ for a random
+/// permutation of the integers \f$x\in[-n/2,n/2)\f$; their orientation signs stay correct for
+/// \f$n\f$ up to several million, because a triple's true orientation \f$(b-a)(c-a)(c-b)\f$ is
+/// far larger than the rounding error whenever the products exceed \f$2^{53}\f$.
+/// @param n Number of points.
+/// @param cloud Shape to sample.
+/// @param seed Random seed.
+/// @return The points.
+std::vector<Point2D> random_point_cloud(int n, PointCloud cloud, std::uint64_t seed);
 
 } // namespace datamunge::geometry

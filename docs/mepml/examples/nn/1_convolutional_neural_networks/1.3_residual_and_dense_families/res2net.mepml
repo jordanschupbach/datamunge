@@ -1,0 +1,495 @@
+//? Title: Res2Net: Multi-Scale Features Inside One Bottleneck
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Res2Net chains channel splits inside a residual bottleneck to create multiple receptive fields.
+We check spatial values, derivatives and the special stage-entry path, verify the full ImageNet
+architecture, then explicitly fit all fifty layers at compact widths using tensor Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/res2net.cpp`.
+
+> The method
+
+The original 26w/4s bottleneck reduces to s*d channels, where d=floor(planes*26/64),
+then splits them into s equal groups. Ordinary blocks apply a 3×3 BN/ReLU transform to
+the first group, then add each processed result into the next input group before its 3×3.
+The last split bypasses these filters. Concatenation and linear 1×1/BN expansion precede
+shortcut addition and ReLU.
+
+$$y_0=K_0(x_0),\qquad y_i=K_i(x_i+y_{i-1})\ (1\le i<s-1),\qquad y_{s-1}=x_{s-1}.$$
+\alttext(Hierarchical split connections create longer spatial-filter paths within one block.)
+
+With positive activations and uniform 3×3 kernels, centre-output derivatives from split zero
+have 3/5/7 side support in the first three processed groups; the last split has its own direct
+1×1 derivative. Exact support, derivative mass and a separate scalar spatial recurrence are
+checked below. The recurrence is an independent numerical oracle; model computations remain
+tensor operations. These controlled linear receptive fields do not claim all trained units
+stay linear or activate every possible path.
+
+The first block of EVERY stage is special, including the stride-one first stage: processed
+splits are independent, without hierarchical additions; the last is padded 3×3 average pooling.
+Padding zeros remain in its divisor, giving 16/9 at a corner for a constant-four last split.
+Scale one retains one 3×3 filter without bypass. Ordinary blocks require stride one; stage
+entries permit stride two. This is the original release, without the later v1b modifications.
+
+Full Res2Net-50 uses 3/4/6/3 blocks, a 7×7/2 stem and padded max-pool, outer widths
+256/512/1024/2048 and stage sides 56/28/14/7 at 224 pixels. It has 25699120 learned and
+59492 moving scalars. BN learns scale/shift with epsilon 1e-5; He-uniform fan-in initialization
+replaces normal fan-out. The compact fit retains all sixteen blocks/fifty layers, quarter outer
+widths, a 3×3/1 stem and no initial pool. Split widths floor to 6/13/26/52; learned/moving
+counts are 1493062/14852. Complete compact backward checks reach every parameter tensor.
+
+Six batch-eight epochs (96 updates, kept short so the report runs quickly) use 128 fit/64
+validation/64 official-test images, Adam(.001), explicit kernel L2=.0001/2 and independent
+padded crop/flip augmentation. Paired learned/moving-state checkpoints are selected solely by
+validation NLL before test evaluation. The visible loop uses the tensor library throughout. These bounded CIFAR fits differ from both the larger
+source-example run and published ImageNet experiments; they do not reproduce benchmark results.
+
+The editable concept diagram is `diagrams/res2net_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/res2net_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/res2net_concept.tikz > build/res2net_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/res2net_concept.svg build/res2net_concept.dvi > build/res2net_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/res2net_concept.svg)
+// result_end
+\caption(Res2Net: Multi-Scale Features Inside One Bottleneck)
+\alttext(Reduce and split channels; hierarchical 3x3 paths; then Stage entries independent; pool final split; then All fifty compact layers; explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/res2net_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::Res2NetConfig cfg;
+  cfg.stage_width = 16;
+  cfg.small_stem  = true;
+  cfg.classes     = 10;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out      = n::models::Res2Net(p, state, image, cfg, false);
+        auto       previous = image;
+        for (std::size_t i = 0; i < out.stages.size(); ++i) {
+          n::model_stage("Stage " + std::to_string(i + 1), previous, out.stages[i]);
+          previous = out.stages[i];
+        }
+        return out.logits;
+      },
+      "Res2Net: Multi-Scale Features Inside One Bottleneck");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/res2net_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+9 displayed nodes; 1493062 reachable learned values.
+\image(figures/res2net_architecture.svg)
+// result_end
+\caption(Executed res2net tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right res2net architecture with rotated names and exact output shapes.)
+
+> Simple internal-scale example
+
+The controlled positive fixture avoids ReLU boundaries and exposes exact spatial supports.
+
+```{cpp, results="markdown", file="figures/res2net_scales.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  auto layout = dm::graphics::RLayout::create(2, 2);
+  for (auto [scale, stage, stride] : std::vector<std::tuple<int, bool, int>>{
+           {4, false, 1}, {4, true, 1}, {4, true, 2}, {1, false, 1}}) {
+    n::ParameterStore p(17, type), state(17, type);
+    n::models::ResNetNormConfig cfg;
+    cfg.scale = true;
+    cfg.epsilon = 1e-5;
+    const auto x = (n::ones({1, 11, 11, scale}, type) * n::arange(1, scale + 1).to(type))
+                       .detach()
+                       .requires_grad_();
+    const int processed = scale == 1 ? 1 : scale - 1, side = (11 + stride - 1) / stride;
+    {
+      n::NoGradGuard guard;
+      n::models::Res2ScaleTransform(p, state, "s", x, 1, scale, cfg, stage, stride);
+    }
+    for (int i = 0; i < processed; ++i) {
+      const std::string name = "s/group" + std::to_string(i);
+      p.set(name + "/W", n::full({3, 3, 1, 1}, 1. / 9, type));
+      p.set(name + "/bn/gamma", n::full({1}, std::sqrt(1.00001), type));
+    }
+    const auto out =
+        n::models::Res2ScaleTransform(p, state, "s", x, 1, scale, cfg, stage, stride);
+    if (out.mixed.shape() != n::Shape{1, side, side, scale})
+      return 1;
+    // Independent scalar spatial recurrence, used only as a numerical oracle.
+    std::vector<std::vector<double>> reference(scale, std::vector<double>(side * side));
+    double error = 0;
+    for (int g = 0; g < scale; ++g)
+      for (int r = 0; r < side; ++r)
+        for (int c = 0; c < side; ++c) {
+          double value = 0;
+          const bool bypass = scale > 1 && g == scale - 1;
+          if (bypass && !stage)
+            value = g + 1;
+          else
+            for (int dr = -1; dr <= 1; ++dr)
+              for (int dc = -1; dc <= 1; ++dc) {
+                const int ir = r * stride + dr, ic = c * stride + dc;
+                if (ir < 0 || ir >= 11 || ic < 0 || ic >= 11)
+                  continue;
+                value += (g + 1 + (!stage && g > 0 ? reference[g - 1][ir * 11 + ic] : 0)) / 9.;
+              }
+          reference[g][r * side + c] = value;
+          error = std::max(error, std::abs(out.mixed.at({0, r, c, g}) - value));
+        }
+    if (error > 1e-12)
+      return 1;
+    for (int g = 0; g < scale; ++g) {
+      const auto centre = n::slice(out.groups[g], {0, side / 2, side / 2, 0}, {1, 1, 1, 1});
+      const auto dx = n::grad(n::sum(centre), {x}, {.retain_graph = true})[0];
+      for (int ch = 0; ch < scale; ++ch) {
+        const auto map = n::slice_axis(dx, 3, ch, ch + 1).reshape({11, 11});
+        int diameter = 0;
+        if (stage || scale == 1)
+          diameter = ch == g ? 3 : 0;
+        else if (g == scale - 1)
+          diameter = ch == g ? 1 : 0;
+        else if (ch <= g)
+          diameter = 2 * (g - ch + 1) + 1;
+        const double support = n::sum(n::greater(n::abs(map), 1e-12).to(type)).item(),
+                     mass = n::sum(map).item();
+        if (support != diameter * diameter || std::abs(mass - (diameter ? 1 : 0)) > 1e-12)
+          return 1;
+        if (scale == 4 && !stage && ch == (g == 3 ? 3 : 0))
+          layout.add(n::plot_tensor_map(n::greater(n::abs(map), 1e-12).to(type), 0, 1).title(
+              "Split " + std::to_string(g) + ": support " + std::to_string(diameter) + "x" +
+              std::to_string(diameter)));
+      }
+    }
+    std::print("scale {}, stage {}, stride {}: scalar recurrence max error {:.12f}; every "
+               "centre-output/channel derivative support and mass verified.\n",
+               scale, stage, stride, error);
+    if (scale == 4 && stage && std::abs(out.groups.back().at({0, 0, 0, 0}) - 16. / 9) > 1e-12)
+      return 1;
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1100, 920).fit_panels().save_svg("build/res2net_scales.svg");
+}
+```
+// result_begin: markdown
+scale 4, stage false, stride 1: scalar recurrence max error 0.000000000000; every centre-output/channel derivative support and mass verified.
+scale 4, stage true, stride 1: scalar recurrence max error 0.000000000000; every centre-output/channel derivative support and mass verified.
+scale 4, stage true, stride 2: scalar recurrence max error 0.000000000000; every centre-output/channel derivative support and mass verified.
+scale 1, stage false, stride 1: scalar recurrence max error 0.000000000000; every centre-output/channel derivative support and mass verified.
+\image(figures/res2net_scales.svg)
+// result_end
+\caption(Ordinary four-split centre derivatives have 3x3, 5x5 and 7x7 support with respect to input split zero; the last split has a direct 1x1 path from itself. Stage-entry groups instead remain independent, including at stride one. Binary support maps use one for a nonzero derivative and zero elsewhere; colour range is [0,1].)
+\alttext(Ordinary four-split centre derivatives have 3x3, 5x5 and 7x7 support with respect to input split zero; the last split has a direct 1x1 path from itself. Stage-entry groups instead remain independent, including at stride one. Binary support maps use one for a nonzero derivative and zero elsewhere; colour range is [0,1].)
+
+> Complete model checks
+
+Full ImageNet count/geometry and compact complete backward graphs are verified separately.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    const auto out = n::models::Res2Net(p, state, n::zeros({1, 224, 224, 3}));
+    if (p.count() != 25699120 || state.count() != 59492 || out.blocks.size() != 16 ||
+        out.stem.shape() != n::Shape{1, 56, 56, 64} || out.logits.shape() != n::Shape{1, 1000})
+      return 1;
+    for (int i = 0; i < 4; ++i)
+      if (out.stages[i].shape() != n::Shape{1, 56 / (1 << i), 56 / (1 << i), 256 << i})
+        return 1;
+    std::print("Full Res2Net-50 26w/4s: {} learned / {} moving scalars; 16 blocks and all "
+               "224-pixel stages verified.\n",
+               p.count(), state.count());
+  }
+  n::ParameterStore p(17), state(17);
+  n::Generator rng(29);
+  n::models::Res2NetConfig cfg;
+  cfg.stage_width = 16;
+  cfg.small_stem = true;
+  cfg.classes = 10;
+  cfg.update_stats = false;
+  const auto out =
+      n::models::Res2Net(p, state, n::normal({2, 16, 16, 3}, 0, .2, rng), cfg, true);
+  if (p.count() != 1493062 || state.count() != 14852 || out.blocks.size() != 16)
+    return 1;
+  const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+  for (const auto &g : gradients)
+    if (!std::isfinite(n::sum(n::abs(g)).item()))
+      return 1;
+  std::print(
+      "Compact complete Res2Net-50: {} learned / {} moving scalars; {} finite "
+      "parameter-tensor gradients. Stage split widths 6/13/26/52 use floor(planes*26/64).\n",
+      p.count(), state.count(), gradients.size());
+}
+```
+// result_begin: markdown
+Full Res2Net-50 26w/4s: 25699120 learned / 59492 moving scalars; 16 blocks and all 224-pixel stages verified.
+Compact complete Res2Net-50: 1493062 learned / 14852 moving scalars; 257 finite parameter-tensor gradients. Stage split widths 6/13/26/52 use floor(planes*26/64).
+// result_end
+
+> Dataset and explicit fitting
+
+Original images precede the visible tensor training loop.
+
+```{cpp, results="markdown", file="figures/res2net_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/res2net_inputs.png", 5, 0., 1., 4, 1.,
+                     4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/res2net_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/res2net_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+             vy       = n::slice_axis(labels, 0, 128, 192);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  n::models::Res2NetConfig cfg;
+  cfg.stage_width = 16;
+  cfg.small_stem  = true;
+  cfg.classes     = 10;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::Res2Net(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 1493062 || state.count() != 14852)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/res2net_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 6; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/res2net_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "res2net / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("Compact Res2Net-50 26w/4s")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/res2net_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 1493062 learned scalars, 14852 moving scalars; 96 explicit Adam updates.
+Selected epoch 4; validation NLL 2.428941; inference training NLL 2.163193; test NLL 2.232393; test accuracy 0.250000.
+\image(figures/res2net_training.svg)
+// result_end
+\caption(Explicit six-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit six-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+
+
+The selected epoch is 4: validation NLL 2.428941, inference training NLL 2.163193,
+and test NLL 2.232393 with accuracy 0.250000, above the 0.1 chance level. The
+training/validation gap already shows the start of overfitting on this tiny split. Receptive-field and topology checks establish the
+implementation properties; this fit does not establish a multi-scale accuracy benefit.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/res2net_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Hierarchical split paths provide several spatial supports within one bottleneck. Stage-entry
+pooling and independence are essential exceptions. Visible derivatives, full counts and an
+explicit optimizer connect those details to a complete trainable tensor model.
+
+> References
+
+- [Gao et al. (2021), Res2Net](https://arxiv.org/abs/1904.01169).
+- [Authors' original implementation](https://github.com/Res2Net/Res2Net-PretrainedModels/blob/master/res2net.py).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

@@ -3,6 +3,7 @@
 #include <datamunge/linalg/dense.hpp>
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
@@ -51,9 +52,96 @@ std::vector<double> back_solve_transpose(const linalg::DenseMatrix<double>& L, c
     return v;
 }
 
-const plot::RGB kSeriesColors[] = {
-    {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}, {124, 58, 237}, {8, 145, 178},
+// Class colors: Tableau 10, the same palette graphics::Splom uses for group_by(), so a report's
+// pairs plot and LDA plots agree.
+const graphics::RGB kSeriesColors[] = {
+    {78, 121, 167}, {242, 142, 43}, {225, 87, 89},  {118, 183, 178}, {89, 161, 79},
+    {237, 201, 72}, {176, 122, 161}, {255, 157, 167}, {156, 117, 95}, {186, 176, 172},
 };
+
+graphics::RGB class_color(std::size_t c) { return kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))]; }
+
+// A linear score a*u + b*v + c over the plane.
+struct Linear2D {
+    double a{0.0}, b{0.0}, c{0.0};
+    [[nodiscard]] double operator()(double u, double v) const { return a * u + b * v + c; }
+};
+
+using Polygon2D = std::vector<std::array<double, 2>>;
+
+// Sutherland-Hodgman: the part of a convex polygon where f >= 0.
+Polygon2D clip_half_plane(const Polygon2D& poly, const Linear2D& f) {
+    Polygon2D out;
+    for (std::size_t i = 0; i < poly.size(); ++i) {
+        const auto& p = poly[i];
+        const auto& q = poly[(i + 1) % poly.size()];
+        const double fp = f(p[0], p[1]);
+        const double fq = f(q[0], q[1]);
+        if (fp >= 0.0) out.push_back(p);
+        if ((fp >= 0.0) != (fq >= 0.0)) {
+            const double t = fp / (fp - fq);
+            out.push_back({p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])});
+        }
+    }
+    return out;
+}
+
+// Plot box around the points: 5% padding in x and 10% in y, as RPlot pads by default.
+std::array<double, 4> padded_box(const std::vector<double>& xs, const std::vector<double>& ys) {
+    auto [x_lo, x_hi] = std::minmax_element(xs.begin(), xs.end());
+    auto [y_lo, y_hi] = std::minmax_element(ys.begin(), ys.end());
+    double x0 = *x_lo, x1 = *x_hi, y0 = *y_lo, y1 = *y_hi;
+    if (x1 - x0 <= 0.0) { x0 -= 1.0; x1 += 1.0; }
+    if (y1 - y0 <= 0.0) { y0 -= 1.0; y1 += 1.0; }
+    const double dx = 0.05 * (x1 - x0);
+    const double dy = 0.10 * (y1 - y0);
+    return {x0 - dx, x1 + dx, y0 - dy, y1 + dy};
+}
+
+// Shades each class's region {score_k >= score_j for all j} inside `box` and draws the
+// boundaries between neighbouring regions, then fixes the axes to `box` so the shading fills
+// the panel. Regions are convex, so clipping the box by one half-plane per rival is exact.
+void add_decision_regions(graphics::RPlot& plot, const std::vector<Linear2D>& scores, const std::array<double, 4>& box) {
+    const Polygon2D rect = {{box[0], box[2]}, {box[1], box[2]}, {box[1], box[3]}, {box[0], box[3]}};
+    const double    diag = std::hypot(box[1] - box[0], box[3] - box[2]);
+    std::vector<double> bx0, by0, bx1, by1;
+    for (std::size_t k = 0; k < scores.size(); ++k) {
+        Polygon2D region = rect;
+        for (std::size_t j = 0; j < scores.size() && region.size() >= 3; ++j) {
+            if (j == k) continue;
+            region = clip_half_plane(region, {scores[k].a - scores[j].a, scores[k].b - scores[j].b, scores[k].c - scores[j].c});
+        }
+        if (region.size() < 3) continue;
+        std::vector<double> xs, ys;
+        for (const auto& pt : region) {
+            xs.push_back(pt[0]);
+            ys.push_back(pt[1]);
+        }
+        auto fill = class_color(k);
+        fill.alpha = 0.14;
+        plot.polygon(xs, ys, fill, true);
+
+        // Edges of this region lying on the line score_k = score_j are the k|j boundary.
+        for (std::size_t j = k + 1; j < scores.size(); ++j) {
+            const Linear2D g{scores[k].a - scores[j].a, scores[k].b - scores[j].b, scores[k].c - scores[j].c};
+            const double   norm = std::hypot(g.a, g.b);
+            if (norm == 0.0) continue;
+            const auto on_line = [&](const std::array<double, 2>& pt) { return std::abs(g(pt[0], pt[1])) / norm <= 1e-9 * diag; };
+            for (std::size_t i = 0; i < region.size(); ++i) {
+                const auto& p = region[i];
+                const auto& q = region[(i + 1) % region.size()];
+                if (on_line(p) && on_line(q)) {
+                    bx0.push_back(p[0]);
+                    by0.push_back(p[1]);
+                    bx1.push_back(q[0]);
+                    by1.push_back(q[1]);
+                }
+            }
+        }
+    }
+    if (!bx0.empty()) plot.segments(bx0, by0, bx1, by1, graphics::RGB{75, 85, 99}, 1.5);
+    plot.x_limits(box[0], box[1]).y_limits(box[2], box[3]);
+}
 
 } // namespace
 
@@ -71,6 +159,9 @@ void LDA::fit(const dstruct::DataFrame& data, LDAOptions options) {
     predictor_names_ = design_.coefficient_names;
     observations_    = n;
     training_labels_ = cd.labels;
+    training_predictors_.assign(n, std::vector<double>(p, 0.0));
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j < p; ++j) training_predictors_[i][j] = cd.X(i, j);
 
     classes_.clear();
     for (const auto& label : cd.labels)
@@ -331,26 +422,146 @@ void LDA::print_summary(std::ostream& os) const { os << summary(); }
 
 void LDA::print_summary() const { print_summary(std::cout); }
 
-plot::RPlot LDA::plot_discriminants() const {
-    auto plot = plot::RPlot::create();
+graphics::RPlot LDA::plot_discriminants(bool decision_regions) const {
+    auto plot = graphics::RPlot::create();
     const bool has_ld2 = scaling_.cols() > 1;
+
+    std::vector<double> all_x, all_y;
+    for (const auto& z : training_discriminants_) {
+        all_x.push_back(z[0]);
+        all_y.push_back(has_ld2 ? z[1] : 0.0);
+    }
+
+    if (decision_regions && !all_x.empty()) {
+        // In discriminant space the within-class covariance is the identity, so LDA's score is
+        // -||z - m_k||^2 / 2 + log(prior_k) = z.m_k - ||m_k||^2 / 2 + log(prior_k) + const(z),
+        // where m_k is class k's mean projected onto the axes shown.
+        std::vector<Linear2D> scores;
+        for (std::size_t c = 0; c < classes_.size(); ++c) {
+            double m[2] = {0.0, 0.0};
+            for (std::size_t ld = 0; ld < std::min<std::size_t>(2, scaling_.cols()); ++ld)
+                for (std::size_t j = 0; j < overall_mean_.size(); ++j)
+                    m[ld] += (group_means_[c][j] - overall_mean_[j]) * scaling_(j, ld);
+            scores.push_back({m[0], m[1], -0.5 * (m[0] * m[0] + m[1] * m[1]) + std::log(priors_[c])});
+        }
+        add_decision_regions(plot, scores, padded_box(all_x, all_y));
+    }
 
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs;
         std::vector<double> ys;
         for (std::size_t i = 0; i < training_labels_.size(); ++i) {
             if (training_labels_[i] != classes_[c]) continue;
-            xs.push_back(training_discriminants_[i][0]);
-            ys.push_back(has_ld2 ? training_discriminants_[i][1] : 0.0);
+            xs.push_back(all_x[i]);
+            ys.push_back(all_y[i]);
         }
-        const auto& color = kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))];
-        plot.points(xs, ys, classes_[c], color);
+        plot.points(xs, ys, classes_[c], class_color(c));
     }
 
     plot.title("Linear Discriminant Analysis").x_label("LD1").y_label(has_ld2 ? "LD2" : "(single discriminant)");
     return plot;
 }
 
+graphics::RPlot LDA::plot_decision_regions() const {
+    if (predictor_names_.size() != 2) {
+        throw std::logic_error("LDA::plot_decision_regions: the model must have exactly two predictors, not " +
+                               std::to_string(predictor_names_.size()));
+    }
+    auto plot = graphics::RPlot::create();
+    std::vector<double> all_x, all_y;
+    for (const auto& x : training_predictors_) {
+        all_x.push_back(x[0]);
+        all_y.push_back(x[1]);
+    }
+    if (!all_x.empty()) {
+        std::vector<Linear2D> scores;
+        for (std::size_t c = 0; c < classes_.size(); ++c)
+            scores.push_back({precision_means_[c][0], precision_means_[c][1],
+                              -0.5 * mahalanobis_offset_[c] + std::log(priors_[c])});
+        add_decision_regions(plot, scores, padded_box(all_x, all_y));
+    }
+    for (std::size_t c = 0; c < classes_.size(); ++c) {
+        std::vector<double> xs, ys;
+        for (std::size_t i = 0; i < training_labels_.size(); ++i) {
+            if (training_labels_[i] != classes_[c]) continue;
+            xs.push_back(all_x[i]);
+            ys.push_back(all_y[i]);
+        }
+        plot.points(xs, ys, classes_[c], class_color(c));
+    }
+    plot.title("LDA decision regions").x_label(predictor_names_[0]).y_label(predictor_names_[1]);
+    return plot;
+}
+
+dstruct::DataFrame LDA::group_means_frame() const {
+    dstruct::DataFrame frame;
+    frame.add_column("class", classes_);
+    for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
+        std::vector<double> column;
+        for (const auto& row : group_means_) column.push_back(row[j]);
+        frame.add_column(predictor_names_[j], column);
+    }
+    return frame;
+}
+
+dstruct::DataFrame LDA::coefficients_frame() const {
+    dstruct::DataFrame frame;
+    frame.add_column("predictor", predictor_names_);
+    for (std::size_t ld = 0; ld < scaling_.cols(); ++ld) {
+        std::vector<double> column;
+        for (std::size_t j = 0; j < scaling_.rows(); ++j) column.push_back(scaling_(j, ld));
+        frame.add_column("LD" + std::to_string(ld + 1), column);
+    }
+    return frame;
+}
+
+dstruct::DataFrame LDA::confusion_frame() const {
+    dstruct::DataFrame frame;
+    frame.add_column("actual", classes_);
+    const auto counts = confusion_matrix();
+    for (std::size_t predicted = 0; predicted < classes_.size(); ++predicted) {
+        std::vector<double> column;
+        for (std::size_t actual = 0; actual < classes_.size(); ++actual) column.push_back(counts(actual, predicted));
+        frame.add_column(classes_[predicted], column);
+    }
+    return frame;
+}
+
+std::string LDA::to_md(int digits) const {
+    std::ostringstream out;
+    out << "Linear discriminant analysis of `" << formula_.text() << "` on " << observations_ << " observations and "
+        << classes_.size() << " classes; training accuracy " << format_stat(training_accuracy() * 100.0, 2) << "%.\n\n";
+
+    dstruct::DataFrame priors;
+    for (std::size_t c = 0; c < classes_.size(); ++c) priors.add_column(classes_[c], std::vector<double>{priors_[c]});
+    out << "Prior probabilities of groups:\n\n" << priors.to_md(digits) << "\n";
+    out << "Group means:\n\n" << group_means_frame().to_md(digits) << "\n";
+    out << "Coefficients of linear discriminants:\n\n" << coefficients_frame().to_md(digits) << "\n";
+
+    dstruct::DataFrame trace;
+    for (std::size_t ld = 0; ld < proportion_of_trace_.size(); ++ld)
+        trace.add_column("LD" + std::to_string(ld + 1), std::vector<double>{proportion_of_trace_[ld]});
+    out << "Proportion of trace:\n\n" << trace.to_md(digits);
+    return out.str();
+}
+
 void LDA::save_discriminant_plot(const std::string& path) const { plot_discriminants().save(path); }
 
 } // namespace datamunge::stats
+
+namespace datamunge {
+
+graphics::Figure plot(const stats::LDA& model) {
+    auto discriminants = model.plot_discriminants();
+    if (model.predictor_names().size() != 2) return discriminants;
+    discriminants.title("Discriminant space");
+    auto regions = model.plot_decision_regions();
+    regions.title("Predictor space");
+    return graphics::RLayout::create(1, 2)
+        .add(discriminants)
+        .add(regions)
+        .size(1200, 520)
+        .fit_panels();
+}
+
+} // namespace datamunge

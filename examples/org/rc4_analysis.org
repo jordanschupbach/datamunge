@@ -42,7 +42,7 @@ key bytes from many related-IV keystreams, which is exactly how WEP fell.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::string hex_of(const std::string& s) {
     static const char* h = "0123456789abcdef";

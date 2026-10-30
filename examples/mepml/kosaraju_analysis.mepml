@@ -35,7 +35,7 @@ remains, and so on. Two linear-time DFS passes give the whole decomposition in \
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -93,7 +93,7 @@ We decompose a small directed graph and report its SCCs and their sizes.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -1,0 +1,505 @@
+//? Title: Stochastic Depth: Survival, Scaling and Visible Optimization
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Stochastic depth randomly removes a residual contribution while preserving its shortcut.
+We check both scaling conventions, whole-batch and per-row masks, endpoint behavior and exact
+derivatives, then explicitly compare constant-depth and masked CIFAR-20 fits using tensor Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/stochastic_depth.cpp`.
+
+> The method
+
+Let b be Bernoulli(p). The original convention uses bF in training and pF in inference;
+the inverted convention uses bF/p in training and F in inference. These match expected branch
+outputs for p>0, but their fluctuations differ. At p=0 both training conventions give zero;
+inverted inference still returns F. Deterministic endpoints avoid division by zero.
+
+$$y=x+mF(x),\qquad J_y=I+mJ_F,\qquad
+ p_l=1-\frac{l}{L}(1-p_{\rm last}),\quad l=1,\ldots,L.$$
+\alttext(A constant sampled multiplier changes the branch contribution and its derivatives, while the shortcut remains.)
+
+A whole-batch gate is one scalar shared by every image; per-example gates have shape
+[N,1,...,1], shared across each image's features. They are nondifferentiable sampled constants.
+The visible fixture checks binary gates, outputs, input and learned-weight derivatives for
+both conventions and mask granularities at p=0,.6,1. Independent mask counts are 512 batches
+or 8192 rows for the interior-probability rate checks; spatial pixels do not count as separate
+samples. Inference and endpoint calls do not consume random masks.
+
+The linear schedule has expected active masks L-(1-p_last)(L+1)/2. With L=54 and
+p_last=.5 this is 40.25, not 40.5: block indices begin at one. This implementation computes
+EVERY branch before masking and updates its BN moments even when dropped. It demonstrates
+regularization and does not implement conditional-execution speedup or memory skipping.
+A caller-owned generator supplies one stream rather than the source's per-block seeds.
+
+The complete CIFAR 6n+2 classifier uses a 3×3 conv/BN/ReLU stem, three n-unit stages,
+two bias-free filters per unit, option-A average-pool/zero-pad shortcuts and post-add ReLU.
+Global mean and a dense classifier finish the model. BN learns scale/shift, eps 1e-5;
+He-uniform fan-in initialization and this optimizer schedule are adaptations. CIFAR-110
+has 1727962 learned/8096 moving scalars and 54 residual blocks; its backward probe retains
+all blocks/widths at 16-pixel synthetic inputs. CIFAR-20 has 269722/1376 scalars and nine units.
+
+Two visible fits reset parameter, minibatch, augmentation and mask seeds, comparing final
+survival one against .5 with whole-batch inverted DropPath. Both retain all CIFAR-20 layers,
+use 128 fit/64 validation/64 official-test images, ten batch-eight epochs (160 updates, kept short for build time) of Adam(.001), explicit
+kernel L2=.0001/2 and padded crops/flips. Each selects paired parameters/moving state by
+validation NLL before testing. Equal seeds alone do not establish a general accuracy advantage;
+this tiny experiment differs from both the original example's larger fit and the paper schedule.
+
+The editable concept diagram is `diagrams/stochastic_depth_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/stochastic_depth_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/stochastic_depth_concept.tikz > build/stochastic_depth_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/stochastic_depth_concept.svg build/stochastic_depth_concept.dvi > build/stochastic_depth_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/stochastic_depth_concept.svg)
+// result_end
+\caption(Stochastic Depth: Survival, Scaling and Visible Optimization)
+\alttext(Linear survival schedule; batch or row mask; then Original or inverted scale; branch already computed; then Paired CIFAR-20 fits; explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/stochastic_depth_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  const double                     survival = .5;
+  n::models::StochasticCifarConfig cfg;
+  cfg.depth         = 20;
+  cfg.last_survival = survival;
+  n::Generator      mask_rng(71);
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::StochasticCifarResNet(p, state, image, cfg, false, mask_rng).logits;
+      },
+      "Stochastic Depth: Survival, Scaling and Visible Optimization");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/stochastic_depth_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+103 displayed nodes; 269722 reachable learned values.
+\image(figures/stochastic_depth_architecture.svg)
+// result_end
+\caption(Executed stochastic depth tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right stochastic depth architecture with rotated names and exact output shapes.)
+
+> Simple mask and derivative checks
+
+The tensor fixture exposes both scaling conventions and their zero-survival exception.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  using Scaling = n::models::DropPathScaling;
+  for (bool row : {false, true})
+    for (auto scaling : {Scaling::kOriginal, Scaling::kInverted})
+      for (double survival : {0., .6, 1.}) {
+        const bool inverted = scaling == Scaling::kInverted;
+        const int rows = row ? 8192 : 4,
+                  repeats = row || survival == 0 || survival == 1 ? 1 : 512;
+        n::Generator gen(73);
+        const auto x = n::full({rows, 2, 2, 2}, .25).requires_grad_(),
+                   weight = n::scalar(1.5).requires_grad_();
+        int64_t alive = 0, samples = 0;
+        double error = 0;
+        for (int repeat = 0; repeat < repeats; ++repeat) {
+          const auto branch = x * weight;
+          const auto train = n::models::DropPath(branch, survival, true, row, scaling, gen),
+                     infer = n::models::DropPath(branch, survival, false, row, scaling, gen);
+          const auto gradients = n::grad(n::sum(x + train.value), {x, weight});
+          const auto multiplier =
+              inverted && survival > 0 ? train.gate / survival : train.gate;
+          error = std::max(
+              error, n::max(n::abs((x + train.value) - x * (1 + 1.5 * multiplier))).item());
+          error = std::max(
+              error,
+              n::max(n::abs(gradients[0] - (n::ones_like(x) + 1.5 * multiplier))).item());
+          const double expected_weight = n::sum(x.detach() * multiplier).item();
+          error = std::max(error, std::abs(gradients[1].item() - expected_weight) /
+                                      std::max(1., std::abs(expected_weight)));
+          error = std::max(
+              error, n::max(n::abs(infer.value - x * 1.5 * (inverted ? 1 : survival))).item());
+          if (n::sum(n::abs(train.gate * (1 - train.gate))).item() != 0)
+            return 1;
+          alive += static_cast<int64_t>(n::sum(train.gate).item());
+          samples += train.gate.numel();
+        }
+        const double empirical = double(alive) / samples,
+                     tolerance = 4 * std::sqrt(survival * (1 - survival) / samples) + .002;
+        if (error > 3e-5 || std::abs(empirical - survival) > tolerance ||
+            (survival > 0 && survival < 1 && (alive == 0 || alive == samples)))
+          return 1;
+        std::print("{} / {}, survival {}: observed {:.6f}, {} independent masks; "
+                   "value/input/weight derivative max error {:.9f}.\n",
+                   row ? "per row" : "whole batch", inverted ? "inverted" : "original",
+                   survival, empirical, samples, error);
+      }
+  std::print(
+      "At survival zero, both training values are zero; original inference returns zero and "
+      "inverted inference returns the full branch. Endpoints never divide by zero.\n");
+}
+```
+// result_begin: markdown
+whole batch / original, survival 0: observed 0.000000, 1 independent masks; value/input/weight derivative max error 0.000000000.
+whole batch / original, survival 0.6: observed 0.605469, 512 independent masks; value/input/weight derivative max error 0.000000000.
+whole batch / original, survival 1: observed 1.000000, 1 independent masks; value/input/weight derivative max error 0.000000000.
+whole batch / inverted, survival 0: observed 0.000000, 1 independent masks; value/input/weight derivative max error 0.000000000.
+whole batch / inverted, survival 0.6: observed 0.605469, 512 independent masks; value/input/weight derivative max error 0.000000000.
+whole batch / inverted, survival 1: observed 1.000000, 1 independent masks; value/input/weight derivative max error 0.000000000.
+per row / original, survival 0: observed 0.000000, 1 independent masks; value/input/weight derivative max error 0.000000000.
+per row / original, survival 0.6: observed 0.598511, 8192 independent masks; value/input/weight derivative max error 0.000000000.
+per row / original, survival 1: observed 1.000000, 1 independent masks; value/input/weight derivative max error 0.000000000.
+per row / inverted, survival 0: observed 0.000000, 1 independent masks; value/input/weight derivative max error 0.000000000.
+per row / inverted, survival 0.6: observed 0.598511, 8192 independent masks; value/input/weight derivative max error 0.000000000.
+per row / inverted, survival 1: observed 1.000000, 1 independent masks; value/input/weight derivative max error 0.000000000.
+At survival zero, both training values are zero; original inference returns zero and inverted inference returns the full branch. Endpoints never divide by zero.
+// result_end
+
+> Schedule, shortcut and complete model
+
+Expected mask-active depth is distinct from executed work.
+
+```{cpp, results="markdown", file="figures/stochastic_depth_schedule.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto p = n::models::SurvivalProbabilities(54, .5f);
+  double expected = 0;
+  std::vector<double> index, probabilities;
+  for (size_t i = 0; i < p.size(); ++i) {
+    expected += p[i];
+    index.push_back(i + 1);
+    probabilities.push_back(p[i]);
+  }
+  if (std::abs(expected - 40.25) > 2e-6 || p.back() != .5f)
+    return 1;
+  const auto x =
+      n::arange(1, 33).to(n::DType::Float32).reshape({1, 4, 4, 2}).detach().requires_grad_();
+  const auto shortcut = n::models::CifarIdentityShortcut(x, 4, 2);
+  const auto a = n::slice_axis(n::slice_axis(x, 1, 0, 4, 2), 2, 0, 4, 2),
+             b = n::slice_axis(n::slice_axis(x, 1, 0, 4, 2), 2, 1, 4, 2),
+             c = n::slice_axis(n::slice_axis(x, 1, 1, 4, 2), 2, 0, 4, 2),
+             d = n::slice_axis(n::slice_axis(x, 1, 1, 4, 2), 2, 1, 4, 2);
+  const auto reference = n::concat({(a + b + c + d) / 4, n::zeros({1, 2, 2, 2})}, 3);
+  if (n::max(n::abs(shortcut - reference)).item() != 0 ||
+      n::max(n::abs(n::grad(n::sum(shortcut), {x})[0] - .25)).item() != 0)
+    return 1;
+  auto schedule = dm::graphics::RPlot::create();
+  schedule.lines(index, probabilities, "linear survival", {37, 99, 235})
+      .title("54 residual blocks: expected active 40.25")
+      .x_label("block index, 1..54")
+      .y_label("survival probability")
+      .y_limits(0, 1.2);
+  auto pooled = n::plot_tensor_map(n::slice_axis(shortcut, 3, 0, 1).reshape({2, 2}))
+                    .title("Option-A shortcut: first pooled channel");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(schedule)
+      .add(pooled)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/stochastic_depth_schedule.svg");
+  n::set_num_threads(2);
+  n::ParameterStore params(17), state(17);
+  n::Generator gen(71), rng(29);
+  n::models::StochasticCifarConfig cfg;
+  cfg.last_survival = 1;
+  cfg.update_stats = false;
+  const auto out = n::models::StochasticCifarResNet(
+      params, state, n::normal({2, 16, 16, 3}, 0, .2, rng), cfg, true, gen);
+  if (params.count() != 1727962 || state.count() != 8096 || out.gates.size() != 54 ||
+      out.logits.shape() != n::Shape{2, 10})
+    return 1;
+  for (int i = 0; i < 3; ++i)
+    if (out.stages[i].shape() != n::Shape{2, 16 / (1 << i), 16 / (1 << i), 16 << i})
+      return 1;
+  const auto gradients = n::grad(n::mean(n::square(out.logits)), params.parameters());
+  for (const auto &g : gradients)
+    if (!std::isfinite(n::sum(n::abs(g)).item()))
+      return 1;
+  std::print("54-block expected mask-active depth {:.6f}; shortcut values and .25 pooling "
+             "derivatives verified.\nComplete CIFAR-110: {} learned / {} moving scalars, {} "
+             "finite parameter-tensor gradients with all gates open. Every branch is computed "
+             "even when its gate is zero.\n",
+             expected, params.count(), state.count(), gradients.size());
+}
+```
+// result_begin: markdown
+54-block expected mask-active depth 40.250000; shortcut values and .25 pooling derivatives verified.
+Complete CIFAR-110: 1727962 learned / 8096 moving scalars, 329 finite parameter-tensor gradients with all gates open. Every branch is computed even when its gate is zero.
+\image(figures/stochastic_depth_schedule.svg)
+// result_end
+\caption(Linear survival counts nonzero masks, not executed branches. The option-A shortcut averages 2x2 windows and appends zero channels. Full CIFAR-110 backward checks use 16-pixel synthetic inputs and every gate open.)
+\alttext(Linear survival counts nonzero masks, not executed branches. The option-A shortcut averages 2x2 windows and appends zero channels. Full CIFAR-110 backward checks use 16-pixel synthetic inputs and every gate open.)
+
+> Dataset and paired optimization
+
+Original CIFAR images precede the explicit fitting comparison.
+
+```{cpp, results="markdown", file="figures/stochastic_depth_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/stochastic_depth_inputs.png", 5, 0.,
+                     1., 4, 1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/stochastic_depth_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/stochastic_depth_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  auto training_plot      = dm::graphics::RPlot::create(),
+       validation_plot    = dm::graphics::RPlot::create();
+  int setting             = 0;
+  for (double survival : std::vector<double>{1., .5}) {
+    n::set_num_threads(2);
+
+    std::filesystem::path cache;
+    if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+      cache = p;
+    else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+      cache = std::filesystem::path(p) / "datamunge/datasets";
+    else
+      cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+    const auto raw = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+    const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+               labels = n::cast(raw.labels, n::DType::Int64);
+    const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+    const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+               vy       = n::slice_axis(labels, 0, 128, 192);
+    const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+    const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+               qy       = n::slice_axis(official.labels, 0, 0, 64);
+    n::models::StochasticCifarConfig cfg;
+    cfg.depth         = 20;
+    cfg.last_survival = survival;
+    n::Generator      mask_rng(71);
+    n::ParameterStore p(17), state(17);
+    auto              output = [&](const n::Tensor& image, bool training) {
+      return n::models::StochasticCifarResNet(p, state, image, cfg, training, mask_rng).logits;
+    };
+    {
+      n::NoGradGuard guard;
+      output(n::zeros({1, 32, 32, 3}), false);
+    }
+    if (p.count() != 269722 || state.count() != 1376)
+      return 1;
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer  optimizer(p, .001, config);
+    n::BatchOrder batches(128, 8, 2026);
+    n::Generator  augmentation(151);
+    std::filesystem::create_directories("build");
+    const std::string   checkpoint = "build/stochastic_depth_best";
+    double              best       = std::numeric_limits<double>::infinity();
+    int                 best_epoch = 0;
+    std::vector<double> epochs, train, validation;
+    for (int epoch = 1; epoch <= 10; ++epoch) {
+      batches.begin_epoch();
+      n::WeightedMean average;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+        std::vector<n::Tensor> transformed;
+        for (int64_t row = 0; row < batch.size(0); ++row) {
+          auto image =
+              n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+          image = n::augment::random_crop(image, 32, 32, augmentation);
+          transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+        }
+        const auto nll = n::sparse_softmax_cross_entropy(
+            output(2 * n::concat(transformed, 0) - 1, true), target);
+        auto objective = nll;
+        for (const auto& w : p.parameters())
+          if (w.dim() >= 2)
+            objective = objective + .00005 * n::sum(n::square(w));
+        optimizer.minimize(objective);
+        average.add(nll.item(), rows.size());
+      }
+      n::NoGradGuard guard;
+      const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+      if (!std::isfinite(val))
+        return 1;
+      epochs.push_back(epoch);
+      train.push_back(average.value());
+      validation.push_back(val);
+      if (val < best) {
+        best       = val;
+        best_epoch = epoch;
+        p.save(checkpoint + "_params.npz");
+        state.save(checkpoint + "_state.npz");
+      }
+    }
+    p.load(checkpoint + "_params.npz");
+    state.load(checkpoint + "_state.npz");
+    n::NoGradGuard guard;
+    const auto     prediction = output(qx, false);
+    const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+    const double   training_nll =
+        n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+    if (!std::isfinite(test_nll))
+      return 1;
+    const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+    const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+    n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+        .save_svg(
+            "build/stochastic_depth_confusion_api_" + std::to_string(rendered_confusions++) +
+                ".svg",
+            {.title = "stochastic depth / selected-checkpoint test counts"});
+
+    if (n::sum(confusion).item() != 64)
+      return 1;
+    const std::string label = survival == 1 ? "constant depth" : "last survival .5";
+    const std::vector<dm::graphics::RGB> colours = {{37, 99, 235}, {234, 88, 12}, {22, 163, 74}};
+    training_plot.lines(epochs, train, label, colours[setting]);
+    validation_plot.lines(epochs, validation, label, colours[setting]);
+    ++setting;
+    std::print("CIFAR-20 last survival {}: ", survival);
+    std::print(
+        "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+        "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+        "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+        p.count(),
+        state.count(),
+        optimizer.iterations(),
+        best_epoch,
+        best,
+        training_nll,
+        test_nll,
+        n::accuracy(prediction, qy));
+  }
+  training_plot.title("CIFAR-20: augmented training").x_label("epoch").y_label("mean NLL");
+  validation_plot.title("CIFAR-20: inference validation").x_label("epoch").y_label("mean NLL");
+  dm::graphics::RLayout::create(1, 2)
+      .add(training_plot)
+      .add(validation_plot)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/stochastic_depth_training.svg");
+}
+```
+// result_begin: markdown
+CIFAR-20 last survival 1: 128 fit / 64 validation / 64 official-test rows; 269722 learned scalars, 1376 moving scalars; 160 explicit Adam updates.
+Selected epoch 8; validation NLL 2.329446; inference training NLL 1.319105; test NLL 2.225254; test accuracy 0.265625.
+CIFAR-20 last survival 0.5: 128 fit / 64 validation / 64 official-test rows; 269722 learned scalars, 1376 moving scalars; 160 explicit Adam updates.
+Selected epoch 7; validation NLL 2.278336; inference training NLL 1.780219; test NLL 2.191659; test accuracy 0.265625.
+\image(figures/stochastic_depth_training.svg)
+// result_end
+\caption(Two complete CIFAR-20 fits compare constant depth with a linear schedule ending at survival .5. Both compute every branch and select paired parameter/moving-state checkpoints by validation NLL.)
+\alttext(Two complete CIFAR-20 fits compare constant depth with a linear schedule ending at survival .5. Both compute every branch and select paired parameter/moving-state checkpoints by validation NLL.)
+
+
+The constant-depth fit selects epoch 8 (validation NLL 2.329446, test NLL 2.225254,
+accuracy 0.265625); the .5-survival fit selects epoch 7 (validation NLL 2.278336,
+test NLL 2.191659, accuracy 0.265625). The .5-survival fit has slightly lower
+validation and test NLL at the same test accuracy, and a smaller gap to its
+inference training NLL (1.780219 against 1.319105). These 64-image, single-seed
+results do not establish a regularization advantage. Training traces
+use augmentation/batch moments and differ from restored inference training NLL.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/stochastic_depth_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/stochastic_depth_confusion_api_1.svg)
+\caption(Held-out classification confusion counts, evaluation 2. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Stochastic masks alter residual contributions and their derivatives according to an explicit
+scaling convention. Boundary, schedule and topology checks explain those choices; the paired
+optimizer loop makes the regularization experiment and its limited evidence reproducible.
+
+> References
+
+- [Huang et al. (2016), Deep Networks with Stochastic Depth](https://arxiv.org/abs/1603.09382).
+- [Torchvision inverted stochastic depth](https://github.com/pytorch/vision/blob/main/torchvision/ops/stochastic_depth.py).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

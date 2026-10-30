@@ -35,7 +35,7 @@ threshold \-\- which ignores outliers by construction.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The algorithm
@@ -139,7 +139,7 @@ ways: ordinary least squares over everything, and RANSAC.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

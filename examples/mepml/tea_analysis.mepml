@@ -43,7 +43,7 @@ encrypts and decrypts.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static int popcount64(std::uint64_t x) { int d = 0; while (x) { d += x & 1; x >>= 1; } return d; }
 static std::uint64_t join(std::array<std::uint32_t, 2> v) {
@@ -120,7 +120,7 @@ each of the 64 plaintext bits and count how many of the 64 ciphertext bits chang
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static int popcount64(std::uint64_t x) { int d = 0; while (x) { d += x & 1; x >>= 1; } return d; }
 static std::uint64_t join(std::array<std::uint32_t, 2> v) {

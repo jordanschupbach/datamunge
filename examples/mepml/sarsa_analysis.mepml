@@ -42,7 +42,7 @@ iteration* toward the optimal \(\varepsilon\)\-greedy policy.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The SARSA update versus Q-learning
@@ -205,7 +205,7 @@ algorithms on this identical environment.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

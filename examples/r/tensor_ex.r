@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/tensor_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # Note: Tensor_shape()'s return value (a vector<size_t>) can't be marshaled back to R in this
 # package's bindings (a distinct bug from the vector<string> issues -- see

@@ -47,7 +47,7 @@ run on never-ending tasks.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Bootstrapping: the TD(0) update
@@ -181,7 +181,7 @@ move probabilities \-\- it only samples them.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

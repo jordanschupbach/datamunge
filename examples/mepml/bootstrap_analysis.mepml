@@ -57,7 +57,7 @@ Monte Carlo error made negligible by taking \(B\) large.
 #include <vector>
 
 using namespace datamunge::stats;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static double mean_of(const std::vector<double>& v) {
     return std::accumulate(v.begin(), v.end(), 0.0) / static_cast<double>(v.size());
@@ -151,7 +151,7 @@ the ~mean~, whose bootstrap standard error should reproduce the analytic
 #include <vector>
 
 using namespace datamunge::stats;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static double mean_of(const std::vector<double>& v) {
     return std::accumulate(v.begin(), v.end(), 0.0) / static_cast<double>(v.size());

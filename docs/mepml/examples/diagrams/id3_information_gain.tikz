@@ -1,0 +1,14 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[font=\large,>={Stealth[length=2.5mm]},box/.style={draw,rounded corners,thick,align=center,minimum width=4.6cm,minimum height=1.5cm}]
+\node[box,draw=blue!70!black,fill=blue!5] (root) at (0,0) {Four rows: 3 no, 1 yes\\$H(Y)=h_2(1/4)=0.811278$ bits};
+\node[box,draw=green!50!black,fill=green!5] (left) at (-3.7,-3) {$A=0$: 2 no, 0 yes\\$H(Y\mid A=0)=0$};
+\node[box,draw=orange!80!black,fill=orange!5] (right) at (3.7,-3) {$A=1$: 1 no, 1 yes\\$H(Y\mid A=1)=1$ bit};
+\draw[->,thick] (root)--node[left]{weight $2/4$}(left);
+\draw[->,thick] (root)--node[right]{weight $2/4$}(right);
+\node[align=center] at (0,-5) {$H(Y\mid A)=\frac12\,0+\frac12\,1=0.5$ bits\\[5pt]$\operatorname{Gain}(A)=0.811278-0.5=0.311278$ bits};
+\node[align=center,text=blue!70!black] at (0,-6.5) {Choose the largest immediate reduction in class uncertainty.\\A mixed child may need another categorical question.};
+\end{tikzpicture}
+\end{document}

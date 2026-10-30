@@ -1,9 +1,9 @@
 # Native R NN example. Transposed convolution, its adjoint identity and checkerboard artifacts.
+# CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/transposed_convolutions.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example transposed_convolutions
 # nn$conv2d_transpose (TF Conv2DBackpropInput) is the adjoint of a specified
 # forward convolution, not generally its inverse. Verify SAME/VALID outputs
 # against an independent scatter-and-add loop, the inner-product adjoint
@@ -12,7 +12,7 @@ rm(.nn_common)
 # weighted 4x4) and to nearest resize + 3x3 convolution, and measure interior
 # phase means/CV. Inputs come from the same std::mt19937(18) stream as the C++.
 # Arrays: output/nn/r/<mode>/visualizations/transposed_convolutions/checkerboards.npz.
-# C++ reference: examples/cpp/nn/1_convolutional_neural_networks/1.1_fundamentals/transposed_convolutions.cpp
+# C++ reference: examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/transposed_convolutions.cpp
 
 nn_helper("checks")
 nn_helper("im2col")

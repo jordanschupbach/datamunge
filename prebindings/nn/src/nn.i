@@ -21,6 +21,12 @@ namespace std {
   $1 = Rf_asReal($input);
 }
 %typemap(scoercein) double "$input = as.numeric($input);";
+%typemap(in) float {
+  if ((!Rf_isReal($input) && !Rf_isInteger($input)) || Rf_length($input) != 1)
+    SWIG_exception_fail(SWIG_TypeError, "expected one numeric scalar");
+  $1 = static_cast<float>(Rf_asReal($input));
+}
+%typemap(scoercein) float "$input = as.numeric($input);";
 // R has no std_array.i: use ordinary numeric vectors for fixed-size options.
 %typemap(scoerceout) const std::vector<std::string>& "";
 %typemap(rtype) const std::vector<std::string>& "character";
@@ -29,15 +35,38 @@ namespace std {
 %typemap(scoercein) std::array<std::int64_t, N> "$input = as.numeric($input);";
 %typemap(scoerceout) std::array<std::int64_t, N> "";
 %typemap(rtypecheck) std::array<std::int64_t, N> "is.numeric($arg) && length($arg) == N";
+// Written through a local array so they also compile when SWIG routes the argument/result
+// through SwigValueWrapper (it does once nn_components.i declares std::array for R).
 %typemap(in) std::array<std::int64_t, N> {
   if ((!Rf_isInteger($input) && !Rf_isReal($input)) || Rf_length($input) != N)
     SWIG_exception_fail(SWIG_TypeError, "expected numeric vector of length " #N);
+  std::array<std::int64_t, N> values{};
   for (int i = 0; i < N; ++i)
-    $1[i] = static_cast<std::int64_t>(Rf_isInteger($input) ? INTEGER($input)[i] : REAL($input)[i]);
+    values[i] = static_cast<std::int64_t>(Rf_isInteger($input) ? INTEGER($input)[i] : REAL($input)[i]);
+  $1 = values;
 }
 %typemap(out) std::array<std::int64_t, N> {
+  const std::array<std::int64_t, N>& values = $1;
   $result = PROTECT(Rf_allocVector(REALSXP, N));
-  for (int i = 0; i < N; ++i) REAL($result)[i] = $1[i];
+  for (int i = 0; i < N; ++i) REAL($result)[i] = static_cast<double>(values[i]);
+  UNPROTECT(1);
+}
+// Struct members (Conv2DOptions::strides ...) and const-reference parameters: SWIG passes class-typed
+// members by pointer, so the same numeric-vector convention is spelled out for those signatures.
+%typemap(rtype) std::array<std::int64_t, N>*, const std::array<std::int64_t, N>& "numeric";
+%typemap(scoercein) std::array<std::int64_t, N>*, const std::array<std::int64_t, N>& "$input = as.numeric($input);";
+%typemap(scoerceout) std::array<std::int64_t, N>*, const std::array<std::int64_t, N>& "";
+%typemap(rtypecheck) std::array<std::int64_t, N>*, const std::array<std::int64_t, N>& "is.numeric($arg) && length($arg) == N";
+%typemap(in) std::array<std::int64_t, N>* (std::array<std::int64_t, N> values), const std::array<std::int64_t, N>& (std::array<std::int64_t, N> values) {
+  if ((!Rf_isInteger($input) && !Rf_isReal($input)) || Rf_length($input) != N)
+    SWIG_exception_fail(SWIG_TypeError, "expected numeric vector of length " #N);
+  for (int i = 0; i < N; ++i)
+    values[i] = static_cast<std::int64_t>(Rf_isInteger($input) ? INTEGER($input)[i] : REAL($input)[i]);
+  $1 = &values;
+}
+%typemap(out) std::array<std::int64_t, N>*, const std::array<std::int64_t, N>& {
+  $result = PROTECT(Rf_allocVector(REALSXP, N));
+  for (int i = 0; i < N; ++i) REAL($result)[i] = static_cast<double>((*$1)[i]);
   UNPROTECT(1);
 }
 %enddef
@@ -45,6 +74,14 @@ NN_R_ARRAY(2)
 NN_R_ARRAY(3)
 NN_R_ARRAY(4)
 NN_R_ARRAY(6)
+// R integers are 32-bit: 64-bit counts (multiply-adds, large parameter censuses) come back as
+// doubles instead of wrapping around.
+%typemap(out) std::int64_t, long long %{ $result = Rf_ScalarReal(static_cast<double>($1)); %}
+%typemap(scoerceout) std::int64_t, long long "";
+%typemap(rtype) std::int64_t, long long "numeric";
+// std::vector<float> values arrive as numeric vectors; the proxy must not wrap them in a pointer class.
+%typemap(scoerceout) std::vector<float>, const std::vector<float>& "";
+%typemap(rtype) std::vector<float>, const std::vector<float>& "numeric";
 %ignore datamunge::nn::NoGradGuard;
 %ignore datamunge::nn::EnableGradGuard;
 %rename(CoreTensor) datamunge::nn::Tensor;
@@ -61,6 +98,13 @@ namespace datamunge::nn {
 using EarlyStoppingDecision = EarlyStopping::Decision;
 }
 %}
+// Device-aware execution is native-only until the shared compute binding is complete.
+%ignore datamunge::nn::Tensor::device;
+%ignore datamunge::nn::Tensor::context;
+%ignore datamunge::nn::Tensor::to(const compute::Context&) const;
+%ignore datamunge::nn::empty(const Shape&, DType, const compute::Context&);
+%ignore datamunge::nn::zeros(const Shape&, DType, const compute::Context&);
+%ignore datamunge::nn::full(const Shape&, double, DType, const compute::Context&);
 %ignore datamunge::nn::Storage;
 %ignore datamunge::nn::TensorImpl;
 %ignore datamunge::nn::detail;
@@ -85,6 +129,9 @@ using EarlyStoppingDecision = EarlyStopping::Decision;
 %template(DoubleVector) std::vector<double>;
 %template(FloatVector) std::vector<float>;
 %template(StringVector) std::vector<std::string>;
+// nn::pad takes one (before, after) pair per axis.
+%template(PaddingPair) std::pair<std::int64_t, std::int64_t>;
+%template(PaddingPairs) std::vector<std::pair<std::int64_t, std::int64_t> >;
 #ifdef SWIGPYTHON
 %template(Int64Pair) std::array<std::int64_t, 2>;
 %template(Int64Triple) std::array<std::int64_t, 3>;
@@ -206,6 +253,11 @@ public:
 // Host-side std::array box helpers stay C++-only; tensor box ops are bound.
 %ignore datamunge::nn::kDefaultBoxVariances;
 %ignore datamunge::nn::BoxT;
+// SWIG does not expand the `BoxT<T>` alias template, so without this typedef every `Box`
+// parameter became an opaque, unrelated `BoxT<float>` pointer type; declare the resolved
+// type first so Box, std::vector<Box> and the detection components agree on std::array<float, 4>.
+namespace datamunge { namespace nn { typedef std::array<float, 4> Box; } }
+%warnfilter(302) datamunge::nn::Box;
 %ignore datamunge::nn::box_area;
 %ignore datamunge::nn::box_iou;
 %ignore datamunge::nn::encode_box;
@@ -328,3 +380,7 @@ double top_k_accuracy(const Tensor& scores, const Tensor& labels, std::int64_t k
 }
 
 %include "datamunge/nn/mt19937.hpp"
+
+// Shared example components (examples/nn/common), so the R and Python examples
+// run the same main loops over the same C++ pieces as the C++ examples.
+%include "nn_components.i"

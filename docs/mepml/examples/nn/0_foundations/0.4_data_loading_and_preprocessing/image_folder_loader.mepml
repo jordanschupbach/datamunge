@@ -1,0 +1,121 @@
+//? Title: Image Folders: Stable Classes and Explicit Resize Geometry
+//? Subtitle: Carry the training class list into every validation scan
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A folder of labelled images must become a tensor batch with stable class identities, even when a
+validation folder omits a class. We generate small PNG files, scan sorted class directories and
+inspect bilinear enlargement and grayscale expansion. The examples separate image geometry from
+label assignment and make aspect-ratio stretching explicit.
+)
+\toc
+
+> The method
+
+scan_image_folder assigns integer labels from sorted immediate class directories, unless the
+caller supplies the training class list. A validation folder containing only zebra must still label
+it 1 when the training order is ant,zebra. load_image_batch gathers files and labels in requested
+row order, decodes PNG/JPEG to RGB, divides by 255 and stretches to the requested height and width.
+Half-pixel bilinear resizing maps output coordinate u to
+
+$$
+s(u)=\mathrm{clamp}((u+1/2)D_{\rm in}/D_{\rm out}-1/2,0,D_{\rm in}-1),\quad
+v=(1-a)(1-b)v_{00}+(1-a)b v_{01}+a(1-b)v_{10}+abv_{11}.
+$$
+\alttext(Output pixel centres map to input centres; two fractional offsets form the four bilinear weights.)
+
+Grayscale channels repeat into RGB; alpha is dropped. Corrupt files fail the batch rather than
+silently dropping a row. Unsupported extensions are ignored by the folder scan. The scan sorts
+paths; storage for a decoded batch is O(NHWC). Stretching changes aspect ratio, so use a different
+crop/pad policy when that distortion would alter the task.
+
+The concept diagram has a retained TikZ source in `diagrams/image_folder_loader_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/image_folder_loader_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/image_folder_loader_concept.tikz > build/image_folder_loader_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/image_folder_loader_concept.svg build/image_folder_loader_concept.dvi > build/image_folder_loader_concept.render.log 2>&1
+printf 'Rendered build/image_folder_loader_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/image_folder_loader_concept.svg from local TikZ source.
+// \image(figures/image_folder_loader_concept.svg)
+// result_end
+\caption(Carry the training class list into every validation scan)
+\alttext(Training class list; ant=0, zebra=1 Then Scan + gather paths; keep labels aligned Then Decode RGB + resize; half-pixel centres.)
+
+> Simple examples
+
+A two-pixel grayscale ramp 0,255 enlarged to four columns becomes 0,.25,.75,1. The same channel value is repeated into R, G and B.
+
+```{cpp, results="markdown", file="figures/image_folder_loader_resize.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/image/png.hpp>
+int main(){
+ namespace n=dm::nn;namespace im=dm::image;
+ std::filesystem::create_directories("build/images/ant");std::filesystem::create_directories("build/images/zebra");
+ std::filesystem::create_directories("build/validation/zebra");
+ im::Image ramp(2,1,im::ImageMode::Grayscale);ramp.data()[0]=0;ramp.data()[1]=255;
+ im::write_png(ramp,"build/images/ant/ramp.png");im::write_png(ramp,"build/images/zebra/ramp.png");im::write_png(ramp,"build/validation/zebra/ramp.png");
+ const auto folder=n::scan_image_folder("build/images"),val=n::scan_image_folder("build/validation",folder.class_names);
+ const auto x=n::load_image_batch(folder.images,{1,0},1,4);
+ std::vector<double> red;for(int i=0;i<4;++i)red.push_back(x.images.at({0,0,i,0}));
+ auto p=dm::graphics::RPlot::create();p.lines({0,1,2,3},red,"resized grayscale")
+ .title("Half-pixel interpolation with clamped borders").x_label("output column").y_label("normalised value");
+ p.size(820,420).save_svg("build/image_folder_loader_resize.svg");
+ if(std::abs(red[0])+std::abs(red[1]-.25)+std::abs(red[2]-.75)+std::abs(red[3]-1)>1e-6||val.images[0].label!=1||x.labels.at({0})!=1)return 1;
+ dm::dstruct::DataFrame t;t.add_column("column",std::vector<double>{0,1,2,3});t.add_column("R_equals_G_equals_B",red);
+ std::print("{}\n\nTraining labels: ant=0, zebra=1; validation zebra label: {}.\n",t.to_md(),val.images[0].label);
+}
+```
+// result_begin: markdown
+| column | R_equals_G_equals_B |
+| ---: | ---: |
+| 0 | 0.000 |
+| 1 | 0.250 |
+| 2 | 0.750 |
+| 3 | 1.000 |
+
+
+Training labels: ant=0, zebra=1; validation zebra label: 1.
+\image(figures/image_folder_loader_resize.svg)
+// result_end
+\caption(A two-pixel ramp exposes the half-pixel coordinate and border-clamp rules.)
+\alttext(A two-pixel ramp exposes the half-pixel coordinate and border-clamp rules.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;namespace d=n::data;
+ const auto folder=n::scan_image_folder("build/images");int bad=0;
+ try{n::scan_image_folder("build/validation",{"ant"});}catch(const std::invalid_argument&){++bad;}
+ d::WriteBinary("build/corrupt.png",{1,2,3});try{n::load_image_rgb("build/corrupt.png",2,2);}catch(const std::runtime_error&){++bad;}
+ double channel_error=0;
+ for(int width:{1,2,3,4,7}){const auto x=n::load_image_rgb(folder.images[0].path,2,width);
+ for(int r=0;r<2;++r)for(int c=0;c<width;++c)for(int k=1;k<3;++k)channel_error=std::max(channel_error,std::abs(x.at({r,c,k})-x.at({r,c,0})));}
+ if(bad!=2||channel_error!=0)return 1;
+ std::print("Five output widths: RGB channel discrepancy {}.\n\nUnknown class and corrupt image rejected: {}.\n",channel_error,bad);
+}
+```
+// result_begin: markdown
+Five output widths: RGB channel discrepancy 0.
+
+Unknown class and corrupt image rejected: 2.
+// result_end
+
+
+> Conclusion
+
+Training and validation use the same class IDs despite a missing validation class. The ramp checks
+the exact resize convention; grayscale expansion does not invent colour information. The fixture
+covers lossless PNG loading. JPEG uses the same public batch API but has its own lossy decoding error.
+
+> References
+
+- [TensorFlow image resize: bilinear interpolation](https://www.tensorflow.org/api_docs/python/tf/image/resize).
+- [Keras image folder loading and class names](https://keras.io/api/data_loading/image/).

@@ -35,7 +35,7 @@ a steady stream of short jobs can indefinitely postpone a long one.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Draw a Gantt chart: one horizontal row per process id, a colored box per run slice.
 inline void draw_gantt(const ScheduleResult& r, std::size_t nproc, const char* path) {

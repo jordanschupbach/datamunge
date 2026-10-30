@@ -1,0 +1,549 @@
+//? Title: DeepLab v3 global context and separable v3+ decoding
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Pixel classification needs both wide scene context and local boundary detail. DeepLab v3 adds image-level context to atrous features;v3+ combines separable context branches with low-level decoding. This report checks complete tensor graphs before fitting both compact models with explicit Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segmentation/deeplab_v3_plus.cpp`.
+
+> The method
+
+Five ASPP branches concatenate local,multiscale and global features. The optional separable decoder combines this context with a projected C2 map at stride4. Global means,dilated kernels,BN state and all fitting/evaluation arithmetic use tensors.
+
+The editable concept diagram is `diagrams/deeplab_v3_plus_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/deeplab_v3_plus_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/deeplab_v3_plus_concept.tikz > build/deeplab_v3_plus_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/deeplab_v3_plus_concept.svg build/deeplab_v3_plus_concept.dvi > build/deeplab_v3_plus_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/deeplab_v3_plus_concept.svg)
+// result_end
+\caption(DeepLab v3 global context and separable v3+ decoding)
+\alttext(Five context branches; Global image mean; then Separable decoder; Fuse low-level detail; then Visible Adam loop; Paired BN checkpoints.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/deeplab_v3_plus_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore  p(17), state(18);
+  m::DeepLabV3Config c;
+  c.classes        = 4;
+  c.backbone_depth = 18;
+  c.width_divisor  = 8;
+  c.head_width     = 32;
+  c.decoder_width  = 32;
+  c.low_width      = 8;
+  c.decoder        = true;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) { return m::DeepLabV3(p, state, image, c).logits; },
+      "DeepLab v3 global context and separable v3+ decoding");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 3}), options);
+  diagram.save_svg("build/deeplab_v3_plus_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+131 displayed nodes; 198004 reachable learned values.
+\image(figures/deeplab_v3_plus_architecture.svg)
+// result_end
+\caption(Executed deeplab v3 plus tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right deeplab v3 plus architecture with rotated names and exact output shapes.)
+
+> A global image branch with exact input derivatives
+
+DeepLab v3's context module concatenates five branches:1x1 projection,three
+atrous3x3 convolutions and a global image-average projection. The image branch
+computes a spatial mean,normalizes/projects it,and broadcasts back by aligned-
+corner bilinear resizing. A constant projected mean is therefore constant
+across spatial locations;it still receives gradients from every output pixel.
+
+This fixture fixes an identity1x1 projection and compensates the stored BN
+variance offset,so each positive input channel's global mean broadcasts exactly.
+The derivative of the sum of every repeated output is1 for every source pixel.
+Native independent calculations check separate batches/channels and all pixels.
+Training at N=1 makes the1x1 global BN batch variance zero;the compact fit uses
+batch4 and the warmed moving-state path uses inference mode.
+
+```{cpp, results="markdown", file="figures/deeplab_v3_plus_global.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::ParameterStore p(17), state(18);
+  m::ConvNormConfig cfg;
+  cfg.scale = true;
+  cfg.epsilon = 1e-5;
+  auto x = (.7 + .4 * n::sin(.13 * n::arange(0, 2 * 7 * 9 * 2)))
+               .reshape({2, 7, 9, 2})
+               .requires_grad_();
+  {
+    n::NoGradGuard guard;
+    m::ImagePoolBranch(p, state, "pool", x, 2, cfg);
+  }
+  p.set("pool/project/W", n::eye(2).reshape({1, 1, 2, 2}));
+  p.set("pool/project/bn/gamma", n::full({2}, std::sqrt(1. + cfg.epsilon)));
+  const auto out = m::ImagePoolBranch(p, state, "pool", x, 2, cfg),
+             g = n::grad(n::sum(out), {x})[0], means = n::mean(x, {1, 2}, true);
+  if (n::max(n::abs(g - 1.)).item() > 1e-5 || n::max(n::abs(out - means)).item() > 1e-5)
+    return 1;
+  const auto input =
+                 n::slice_axis(n::slice_axis(x.detach(), 0, 0, 1), 3, 0, 1).reshape({7, 9}),
+             context = n::slice_axis(n::slice_axis(out, 0, 0, 1), 3, 0, 1).reshape({7, 9});
+  auto a = n::plot_tensor_map(input, .3, 1.2), b = n::plot_tensor_map(context, .3, 1.2);
+  a.title("Known spatial input channel");
+  b.title("Projected global mean broadcast");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1200, 550).fit_panels().save_svg(
+      "build/deeplab_v3_plus_global.svg");
+  std::print("Separate per-image/channel means broadcast;all252 source derivatives are1 "
+             "within1e-5. First channel mean {:.6f}. Fixed BN compensation isolates the "
+             "operation without fitting.\n",
+             means.at({0, 0, 0, 0}));
+}
+```
+// result_begin: markdown
+Separate per-image/channel means broadcast;all252 source derivatives are1 within1e-5. First channel mean 0.745261. Fixed BN compensation isolates the operation without fitting.
+\image(figures/deeplab_v3_plus_global.svg)
+// result_end
+\caption(Known spatial channel and its identity-projected global mean,both on the fixed[.3,1.2] color range. The broadcast is constant spatially but differentiable to every input pixel.)
+\alttext(Known spatial channel and its identity-projected global mean,both on the fixed[.3,1.2] color range. The broadcast is constant spatially but differentiable to every input pixel.)
+
+> Full v3/v3+ graphs and the separable decoder
+
+Both models use a supported output-stride16 ResNet50 encoder. V3 concatenates
+ordinary ASPP features,projects1x1 and classifies. V3+ uses atrous depthwise/
+pointwise blocks in ASPP,projects C2 to48 channels,fuses at stride4 and applies
+two separable decoder blocks before linear class scores. Each depthwise stage
+has BN/ReLU before its pointwise normalized projection. This is the source's
+ResNet-based variant;it does not claim the paper's Xception backbone.
+
+Full v3/v3+ learned counts are39,048,533/26,696,133,state56,192/70,720 and
+179/203 learned tensor gradients. Both full backwards execute below at33px.
+Compact ResNet18/divisor8 uses head32,rates1/2/3,decoder32/low8,no dropout:
+241,740/198,004 learned and1,584/2,256 state scalars. Native checks require
+all compact gradients nonzero and verify five branches concatenate160 channels.
+Stride8 doubles base atrous rates and preserves learned parameter shapes.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  for (bool plus : {false, true}) {
+    n::ParameterStore p(17), state(18);
+    m::DeepLabV3Config c;
+    c.decoder = plus;
+    const auto net = m::DeepLabV3(
+        p, state, n::sin(.13 * n::arange(0, 33 * 33 * 3)).reshape({1, 33, 33, 3}), c, true);
+    const auto g = n::grad(n::mean(n::square(net.logits)), p.parameters());
+    if (p.count() != (plus ? 26696133 : 39048533) || state.count() != (plus ? 70720 : 56192) ||
+        g.size() != (plus ? 203 : 179) || net.branches.size() != 5)
+      return 1;
+    for (const auto &v : g)
+      if (!v.defined() || !std::isfinite(n::sum(n::square(v.to(n::DType::Float64))).item()))
+        return 1;
+    std::print("Full{}:{} learned/{} state scalars,all{} finite defined gradients at33px,five "
+               "ASPP branches.\n",
+               plus ? "v3+" : "v3", p.count(), state.count(), g.size());
+  }
+}
+```
+// result_begin: markdown
+Fullv3:39048533 learned/56192 state scalars,all179 finite defined gradients at33px,five ASPP branches.
+Fullv3+:26696133 learned/70720 state scalars,all203 finite defined gradients at33px,five ASPP branches.
+// result_end
+
+> Actual shape images and visible Adam for both variants
+
+The tensor generator creates64 fitting/16 validation/16 test96-pixel RGB
+shape scenes,seeds11/22/33. Class-independent noise,brightness and image-wide
+tint require spatial context;later objects occlude earlier masks. Tensor RNG
+changes the old mt19937 fixed-seed pixels. Palette: background dark,circle red,
+rectangle green,triangle blue. Four actual fitting pairs appear below.
+
+```{cpp, results="markdown", file="figures/deeplab_v3_plus_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto data = m::TensorSegmentationShapes(64, 96, 11);
+  std::vector<n::Tensor> gallery;
+  const auto colored = m::ColorSegmentationLabels(n::slice_axis(data.labels, 0, 0, 4));
+  for (int i = 0; i < 4; ++i) {
+    gallery.push_back(n::slice_axis(data.images, 0, i, i + 1));
+    gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+  }
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::concat(gallery, 0), "build/deeplab_v3_plus_data.png", 2, 0., 1., 3, 1.,
+                     2);
+  const auto weights = m::SegmentationClassWeights(data.labels, 4);
+  std::print(
+      "64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. "
+      "Fit-only inverse-square-root pseudocount weights {:.6f}/{:.6f}/{:.6f}/{:.6f}. "
+      "Noise,tint and brightness are class-independent; later objects occlude earlier masks. "
+      "Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.\n",
+      weights.at({0}), weights.at({1}), weights.at({2}), weights.at({3}));
+}
+```
+// result_begin: markdown
+64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. Fit-only inverse-square-root pseudocount weights 1.149431/3.477891/3.045941/4.357872. Noise,tint and brightness are class-independent; later objects occlude earlier masks. Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.
+\image(figures/deeplab_v3_plus_data.png)
+// result_end
+\caption(Actual first four fitting RGB image/mask pairs. Labels describe spatial shape identity with shared appearance distributions and aligned occlusion.)
+\alttext(Actual first four fitting RGB image/mask pairs. Labels describe spatial shape identity with shared appearance distributions and aligned occlusion.)
+
+Fit-only inverse-square-root pixel weights use pseudocount1. Every learned
+leaf is warmed before Adam(.001),then all parameters fit32 epochs,batch4,
+512 visible updates per model. Stable weighted CE normalizes by selected
+pixel-weight sum. Explicit `.00005*sum(kernel²)` penalizes kernels;biases and
+BN affine leaves are optimized but excluded from that penalty. Training-mode
+forwards update moving BN moments exactly once per batch. Strict validation
+mean IoU selects paired learned/BN checkpoints;restoration reproduces the
+selected score before test evaluation. Test data never fits weights or selects
+checkpoints. These bounded procedural fits make no VOC/Cityscapes benchmark claim.
+
+All encoder,ASPP,BN and optional decoder leaves enter the optimizer. The
+training forwards compute their logits once,so shared BN state updates once
+per batch. Decoder-enabled and decoder-free fits start independently from
+seed17 and select their own validation checkpoints.
+
+```{cpp, results="markdown", file="figures/deeplab_v3_plus_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <print>
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  namespace m             = n::models;
+  n::set_num_threads(2);
+  const auto fit              = m::TensorSegmentationShapes(64, 96, 11),
+             validation       = m::TensorSegmentationShapes(16, 96, 22),
+             test             = m::TensorSegmentationShapes(16, 96, 33);
+  const auto          weights = m::SegmentationClassWeights(fit.labels, 4);
+  std::vector<double> epochs;
+  for (int epoch = 1; epoch <= 32; ++epoch)
+    epochs.push_back(epoch);
+  auto loss_plot = dm::graphics::RPlot::create(), score_plot = dm::graphics::RPlot::create();
+  const std::array<dm::graphics::RGB, 3> colors = {{{37, 99, 235}, {22, 163, 74}, {220, 38, 38}}};
+  int                                    color_index = 0;
+  double                                 max_loss    = 0;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  for (int variant : {0, 1}) {
+    n::ParameterStore  p(17), state(17);
+    m::DeepLabV3Config config;
+    config.classes          = 4;
+    config.backbone_depth   = 18;
+    config.width_divisor    = 8;
+    config.head_width       = 32;
+    config.decoder_width    = 32;
+    config.low_width        = 8;
+    config.rates            = {1, 2, 3};
+    config.keep_probability = 1;
+    config.decoder          = variant == 1;
+    const auto forward      = [&](const n::Tensor& images, bool training) {
+      return m::DeepLabV3(p, state, images, config, training).logits;
+    };
+    // Create every learnable convolution/score leaf before Adam captures the store.
+    {
+      n::NoGradGuard guard;
+      forward(n::slice_axis(fit.images, 0, 0, 1), false);
+    }
+    n::OptimizerConfig adam_config;
+    adam_config.kind = n::OptimizerKind::Adam;
+    n::Optimizer           adam(p, .001, adam_config);
+    n::BatchOrder          batches(64, 4, 29);
+    std::vector<n::Tensor> kernels;
+    for (const auto& leaf : p.parameters())
+      if (leaf.dim() > 1)
+        kernels.push_back(leaf);
+    const std::string   prefix   = "build/deeplab_v3_plus_" + std::to_string(variant);
+    double              best     = -1;
+    int                 selected = 0, updates = 0;
+    std::vector<double> losses, miou;
+    const auto          evaluate = [&](const m::TensorSegmentationData& data) {
+      n::NoGradGuard guard;
+      auto           confusion = n::zeros({4, 4}, n::DType::Int64);
+      for (int first = 0; first < data.images.shape()[0]; first += 8) {
+        const auto end    = std::min<std::int64_t>(first + 8, data.images.shape()[0]);
+        const auto logits = forward(n::slice_axis(data.images, 0, first, end), false);
+        confusion =
+            confusion + m::SegmentationPredictionMetrics(
+                            n::argmax(logits, 3), n::slice_axis(data.labels, 0, first, end), 4)
+                            .confusion;
+      }
+      return m::SegmentationConfusionMetrics(confusion);
+    };
+    std::print(
+        "Variant{}: {} learned scalars, paired BN state. Fit-only weights "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}.\n",
+        variant,
+        p.count(),
+        weights.at({0}),
+        weights.at({1}),
+        weights.at({2}),
+        weights.at({3}));
+    std::print(
+        "| variant | epoch | weighted pixel CE | validation mIoU |\n|---:|---:|---:|---:|\n");
+    for (int epoch = 1; epoch <= 32; ++epoch) {
+      batches.begin_epoch();
+      double      total = 0;
+      std::size_t seen  = 0;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto batch   = m::TensorSegmentationBatch(fit, n::from_vector(rows));
+        const auto logits  = forward(batch.first, true);
+        const auto ce      = m::SegmentationCrossEntropy(logits, batch.second, 4, weights);
+        n::Tensor  penalty = n::zeros({});
+        for (const auto& kernel : kernels)
+          penalty = penalty + n::sum(n::square(kernel));
+        if (!std::isfinite(ce.item()))
+          return 1;
+        total += ce.item() * rows.size();
+        seen += rows.size();
+        adam.minimize(ce + .00005 * penalty);
+        ++updates;
+      }
+      const auto metric = evaluate(validation);
+      losses.push_back(total / double(seen));
+      miou.push_back(metric.mean_iou.item());
+      if (miou.back() > best) {
+        best     = miou.back();
+        selected = epoch;
+        p.save(prefix + "_best.npz");
+        state.save(prefix + "_best_state.npz");
+      }
+      std::print("| {} | {} | {:.6f} | {:.6f} |\n", variant, epoch, losses.back(), miou.back());
+    }
+    p.load(prefix + "_best.npz");
+    state.load(prefix + "_best_state.npz");
+    const auto restored = evaluate(validation), metric = evaluate(test);
+    const auto count_matrix = n::ConfusionMatrix::from_counts(metric.confusion);
+    const auto index        = std::to_string(rendered_confusions++);
+    count_matrix.save_svg(
+        "build/deeplab_v3_plus_confusion_api_" + index + ".svg",
+        {.title = "Selected-checkpoint pixel counts"});
+    count_matrix.save_svg(
+        "build/deeplab_v3_plus_confusion_api_" + index + "_normalized.svg",
+        {.title         = "Selected-checkpoint pixel recall",
+         .normalization = n::ConfusionMatrixNormalization::True});
+
+    if (std::abs(restored.mean_iou.item() - best) > 1e-12 || updates != 512)
+      return 1;
+    n::NoGradGuard         guard;
+    std::vector<n::Tensor> gallery;
+    const auto prediction = n::argmax(forward(n::slice_axis(test.images, 0, 0, 4), false), 3);
+    const auto truth      = m::ColorSegmentationLabels(n::slice_axis(test.labels, 0, 0, 4)),
+               colored    = m::ColorSegmentationLabels(prediction);
+    for (int i = 0; i < 4; ++i) {
+      gallery.push_back(n::slice_axis(test.images, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(truth, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+    }
+    const auto image_name = "deeplab_v3_plus_predictions_" + std::to_string(variant) + ".png";
+    n::save_image_grid(n::concat(gallery, 0), "build/" + image_name, 3, 0., 1., 3, 1., 2);
+    std::filesystem::copy_file(
+        "build/" + image_name,
+        "figures/" + image_name,
+        std::filesystem::copy_options::overwrite_existing);
+    const auto        color = colors[color_index++];
+    const std::string name  = variant ? "v3+ decoder" : "v3 ASPP";
+    loss_plot.lines(epochs, losses, name, color);
+    score_plot.lines(epochs, miou, name, color);
+    max_loss = std::max(max_loss, *std::max_element(losses.begin(), losses.end()));
+    std::print(
+        "Variant{} restored epoch{}: validation mIoU {:.6f}; test pixel accuracy "
+        "{:.6f}, mean IoU {:.6f}; per-class IoU(background,circle,rectangle,triangle) "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}. {} explicit Adam updates.\n",
+        variant,
+        selected,
+        best,
+        metric.pixel_accuracy.item(),
+        metric.mean_iou.item(),
+        metric.iou.at({0}),
+        metric.iou.at({1}),
+        metric.iou.at({2}),
+        metric.iou.at({3}),
+        updates);
+  }
+  loss_plot.title("DeepLab v3 context losses")
+      .x_label("epoch")
+      .y_label("unregularized weighted CE")
+      .y_limits(0, max_loss * 1.3);
+  score_plot.title("Validation mean IoU selection")
+      .x_label("epoch")
+      .y_label("present-class mIoU")
+      .y_limits(0, 1.3);
+  dm::graphics::RLayout::create(1, 2)
+      .add(loss_plot)
+      .add(score_plot)
+      .size(1200, 550)
+      .fit_panels()
+      .save_svg("build/deeplab_v3_plus_training.svg");
+}
+```
+// result_begin: markdown
+Variant0: 241740 learned scalars, paired BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 0 | 1 | 1.487096 | 0.184062 |
+| 0 | 2 | 1.135520 | 0.256883 |
+| 0 | 3 | 0.930326 | 0.276090 |
+| 0 | 4 | 0.771921 | 0.302453 |
+| 0 | 5 | 0.627903 | 0.332254 |
+| 0 | 6 | 0.544533 | 0.329080 |
+| 0 | 7 | 0.465050 | 0.340348 |
+| 0 | 8 | 0.409990 | 0.332437 |
+| 0 | 9 | 0.364765 | 0.322356 |
+| 0 | 10 | 0.335149 | 0.340495 |
+| 0 | 11 | 0.302416 | 0.333737 |
+| 0 | 12 | 0.289532 | 0.335012 |
+| 0 | 13 | 0.268646 | 0.341389 |
+| 0 | 14 | 0.264942 | 0.345572 |
+| 0 | 15 | 0.238365 | 0.347883 |
+| 0 | 16 | 0.233154 | 0.381906 |
+| 0 | 17 | 0.221919 | 0.356862 |
+| 0 | 18 | 0.221002 | 0.375786 |
+| 0 | 19 | 0.207947 | 0.361500 |
+| 0 | 20 | 0.196279 | 0.348800 |
+| 0 | 21 | 0.206357 | 0.348290 |
+| 0 | 22 | 0.200427 | 0.358122 |
+| 0 | 23 | 0.191004 | 0.351138 |
+| 0 | 24 | 0.188227 | 0.359099 |
+| 0 | 25 | 0.182479 | 0.358395 |
+| 0 | 26 | 0.182889 | 0.360707 |
+| 0 | 27 | 0.174655 | 0.343295 |
+| 0 | 28 | 0.175129 | 0.362951 |
+| 0 | 29 | 0.164842 | 0.349863 |
+| 0 | 30 | 0.165312 | 0.366284 |
+| 0 | 31 | 0.162000 | 0.359524 |
+| 0 | 32 | 0.157261 | 0.370972 |
+Variant0 restored epoch16: validation mIoU 0.381906; test pixel accuracy 0.822856, mean IoU 0.403804; per-class IoU(background,circle,rectangle,triangle) 0.876317/0.154771/0.352400/0.231730. 512 explicit Adam updates.
+Variant1: 198004 learned scalars, paired BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 1 | 1 | 1.355589 | 0.170250 |
+| 1 | 2 | 1.158008 | 0.243991 |
+| 1 | 3 | 1.041211 | 0.289121 |
+| 1 | 4 | 0.919916 | 0.309429 |
+| 1 | 5 | 0.826294 | 0.364886 |
+| 1 | 6 | 0.731110 | 0.375973 |
+| 1 | 7 | 0.617998 | 0.424272 |
+| 1 | 8 | 0.565117 | 0.385898 |
+| 1 | 9 | 0.509615 | 0.403264 |
+| 1 | 10 | 0.478386 | 0.417998 |
+| 1 | 11 | 0.381319 | 0.444573 |
+| 1 | 12 | 0.345365 | 0.437742 |
+| 1 | 13 | 0.295768 | 0.434319 |
+| 1 | 14 | 0.295978 | 0.504644 |
+| 1 | 15 | 0.254185 | 0.482391 |
+| 1 | 16 | 0.256863 | 0.439348 |
+| 1 | 17 | 0.256999 | 0.446133 |
+| 1 | 18 | 0.244608 | 0.459836 |
+| 1 | 19 | 0.211094 | 0.457347 |
+| 1 | 20 | 0.176979 | 0.462195 |
+| 1 | 21 | 0.195544 | 0.468397 |
+| 1 | 22 | 0.184216 | 0.455509 |
+| 1 | 23 | 0.176578 | 0.476453 |
+| 1 | 24 | 0.163127 | 0.441643 |
+| 1 | 25 | 0.137014 | 0.457225 |
+| 1 | 26 | 0.141535 | 0.439346 |
+| 1 | 27 | 0.138863 | 0.419760 |
+| 1 | 28 | 0.136957 | 0.481109 |
+| 1 | 29 | 0.119210 | 0.461324 |
+| 1 | 30 | 0.130589 | 0.450048 |
+| 1 | 31 | 0.127450 | 0.484263 |
+| 1 | 32 | 0.116745 | 0.456334 |
+Variant1 restored epoch14: validation mIoU 0.504644; test pixel accuracy 0.849108, mean IoU 0.446050; per-class IoU(background,circle,rectangle,triangle) 0.946789/0.194559/0.389883/0.252967. 512 explicit Adam updates.
+\image(figures/deeplab_v3_plus_training.svg)
+// result_end
+\caption(Two explicit512-update whole-model Adam fits. Curves show unregularized weighted CE and validation mean IoU; paired learned/BN restoration precedes all test predictions.)
+\alttext(Two explicit512-update whole-model Adam fits. Curves show unregularized weighted CE and validation mean IoU; paired learned/BN restoration precedes all test predictions.)
+
+V3/v3+ select epochs16/14,with validation mean IoU.381906/.504644.
+Test pixel accuracies are.822856/.849108,but mean IoU is only.403804/
+.446050. Circle IoU remains.154771/.194559. The low-resolution examples
+still confuse classes despite falling fitting loss;the decoder does not
+remove these limitations in this bounded fit.
+
+\image(figures/deeplab_v3_plus_predictions_0.png)
+\caption(DeepLab v3: each row shows an actual test image,truth mask and restored prediction. The fixed palette and retained errors make localization/class confusions visible.)
+\alttext(DeepLab v3 held-out image/truth/prediction triples.)
+\image(figures/deeplab_v3_plus_predictions_1.png)
+\caption(DeepLab v3+: each row shows an actual test image,truth mask and restored prediction. The fixed palette and retained errors make localization/class confusions visible.)
+\alttext(DeepLab v3+ held-out image/truth/prediction triples.)
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/deeplab_v3_plus_confusion_api_0.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/deeplab_v3_plus_confusion_api_0_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+\image(figures/deeplab_v3_plus_confusion_api_1.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 3. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/deeplab_v3_plus_confusion_api_1_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Global-mean derivative checks and full v3/v3+ graphs precede compact whole-model fitting. Actual image/mask predictions,fit-only class weights and paired BN restoration expose the measured behavior without an Xception or benchmark-performance claim.
+
+> References
+
+- [Chen et al.(2017), Rethinking Atrous Convolution for Semantic Image Segmentation](https://arxiv.org/abs/1706.05587).
+- [Chen et al.(2018), Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation](https://arxiv.org/abs/1802.02611).

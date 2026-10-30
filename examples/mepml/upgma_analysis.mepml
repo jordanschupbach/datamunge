@@ -39,7 +39,7 @@ a constant rate; where rates vary, neighbor-joining (which does not assume a clo
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -119,7 +119,7 @@ heights, and render the dendrogram.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

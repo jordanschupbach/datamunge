@@ -1,7 +1,6 @@
 # Native Python NN example. Multi-armed bandits.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/bandits.py
 """Multi-armed bandits.
-
-CMD: just python-example bandits
 
 Port of tflow's bandits. Bandits are one-step environments: no state (or a
 context that does not depend on the action), a reward per pull, and the

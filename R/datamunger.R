@@ -197,10 +197,25 @@ setClass('_p_std__vectorT_double_t', contains = 'C++Reference')
 setClass('_p_std__vectorT_std__vectorT_double_t_t', contains = 'C++Reference')
 setClass('_p_std__vectorT_size_t_t', contains = 'C++Reference')
 setClass('_p_std__vectorT_std__string_t', contains = 'C++Reference')
+setClass('_p_datamunge__datasets__ImageBatch', contains = 'C++Reference')
+setClass("datamunge::datasets::ImageBatch",
+    representation(
+        pixels = "numeric",
+        labels = "integer",
+        indices = "integer",
+        shape = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::datasets::ImageBatch
+
+setClass('_p_datamunge__datasets__ImageLoader', contains = 'C++Reference')
 setClass('_p_datamunge__Callback', contains = 'C++Reference')
 setClass('_p_datamunge__DataFrame', contains = 'C++Reference')
+setClass('_p_datamunge__CsvReader', contains = 'C++Reference')
 setClass('_p_datamunge__ShapeLayer', contains = 'C++Reference')
 setClass('_p_datamunge__GGPlot', contains = 'C++Reference')
+setClass('_p_datamunge__Splom', contains = 'C++Reference')
 setClass('_p_datamunge__LM', contains = 'C++Reference')
 setClass('_p_datamunge__LMM', contains = 'C++Reference')
 setClass('_p_datamunge__GLMM', contains = 'C++Reference')
@@ -242,8 +257,8 @@ setClass('_p_datamunge__Dual', contains = 'C++Reference')
 setClass('_p_datamunge__HyperDual', contains = 'C++Reference')
 setClass('_p_datamunge__Tape', contains = 'C++Reference')
 setClass('_p_datamunge__Var', contains = 'C++Reference')
-setClass('_p_datamunge__plot__RGB', contains = 'C++Reference')
-setClass("datamunge::plot::RGB",
+setClass('_p_datamunge__graphics__RGB', contains = 'C++Reference')
+setClass("datamunge::graphics::RGB",
     representation(
         r = "integer",
         g = "integer",
@@ -252,10 +267,10 @@ setClass("datamunge::plot::RGB",
         contains = "RSWIGStruct")
 
 
-# End class datamunge::plot::RGB
+# End class datamunge::graphics::RGB
 
-setClass('_p_datamunge__plot__DataSeries', contains = 'C++Reference')
-setClass("datamunge::plot::DataSeries",
+setClass('_p_datamunge__graphics__DataSeries', contains = 'C++Reference')
+setClass("datamunge::graphics::DataSeries",
     representation(
         kind = "character",
         x = "numeric",
@@ -268,10 +283,10 @@ setClass("datamunge::plot::DataSeries",
         contains = "RSWIGStruct")
 
 
-# End class datamunge::plot::DataSeries
+# End class datamunge::graphics::DataSeries
 
-setClass('_p_datamunge__plot__ABLine', contains = 'C++Reference')
-setClass("datamunge::plot::ABLine",
+setClass('_p_datamunge__graphics__ABLine', contains = 'C++Reference')
+setClass("datamunge::graphics::ABLine",
     representation(
         vertical = "logical",
         value = "numeric",
@@ -280,20 +295,21 @@ setClass("datamunge::plot::ABLine",
         contains = "RSWIGStruct")
 
 
-# End class datamunge::plot::ABLine
+# End class datamunge::graphics::ABLine
 
-setClass('_p_datamunge__plot__LegendEntry', contains = 'C++Reference')
-setClass("datamunge::plot::LegendEntry",
+setClass('_p_datamunge__graphics__LegendEntry', contains = 'C++Reference')
+setClass("datamunge::graphics::LegendEntry",
     representation(
         label = "character"),
         contains = "RSWIGStruct")
 
 
-# End class datamunge::plot::LegendEntry
+# End class datamunge::graphics::LegendEntry
 
-setClass('_p_datamunge__plot__Plot', contains = 'C++Reference')
-setClass('_p_datamunge__plot__RPlot', contains = c('_p_datamunge__plot__Plot'))
-setClass('_p_datamunge__plot__RLayout', contains = 'C++Reference')
+setClass('_p_datamunge__graphics__Plot', contains = 'C++Reference')
+setClass('_p_datamunge__graphics__RPlot', contains = c('_p_datamunge__graphics__Plot'))
+setClass('_p_datamunge__graphics__RLayout', contains = 'C++Reference')
+setClass('_p_std__vectorT_datamunge__graphics__RGB_t', contains = 'C++Reference')
 setClass('_p_datamunge__BSplineRegression', contains = 'C++Reference')
 setClass('_p_datamunge__PSplineRegression', contains = 'C++Reference')
 setClass('_p_datamunge__stats__ARIMAOptions', contains = 'C++Reference')
@@ -354,6 +370,21 @@ setClass("datamunge::stats::HypothesisTestResult",
 
 
 # End class datamunge::stats::HypothesisTestResult
+
+setClass('_p_datamunge__stats__KendallTau', contains = 'C++Reference')
+setClass("datamunge::stats::KendallTau",
+    representation(
+        concordant = "integer",
+        discordant = "integer",
+        ties_x = "integer",
+        ties_y = "integer",
+        ties_xy = "integer",
+        tau_a = "numeric",
+        tau_b = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::stats::KendallTau
 
 setClass('_p_datamunge__optim__ArbitraryFunction', contains = 'C++Reference')
 setClass('_p_datamunge__optim__DifferentiableFunction', contains = c('_p_datamunge__optim__ArbitraryFunction'))
@@ -959,13 +990,39 @@ setClass("datamunge::optim::BayesianOptimizationOptions",
     representation(
         initial_samples = "integer",
         max_iterations = "integer",
-        seed = "integer"),
+        seed = "integer",
+        candidates = "integer",
+        refine_iterations = "integer"),
         contains = "RSWIGStruct")
 
 
 # End class datamunge::optim::BayesianOptimizationOptions
 
+setClass('_p_datamunge__optim__BayesianOptimizationResult', contains = 'C++Reference')
+setClass("datamunge::optim::BayesianOptimizationResult",
+    representation(
+        best_point = "numeric",
+        best_value = "numeric",
+        points = "list",
+        values = "numeric",
+        best_values = "numeric",
+        acquisition_values = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::BayesianOptimizationResult
+
 setClass('_p_datamunge__optim__BayesianOptimization', contains = 'C++Reference')
+setClass('_p_datamunge__optim__SurrogatePrediction', contains = 'C++Reference')
+setClass("datamunge::optim::SurrogatePrediction",
+    representation(
+        mean = "numeric",
+        sd = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::SurrogatePrediction
+
 setClass('_p_datamunge__optim__RBFGaussianProcessSurrogate', contains = c('_p_datamunge__optim__BayesianSurrogate'))
 setClass('_p_datamunge__bayes__MAPOptions', contains = 'C++Reference')
 setClass("datamunge::bayes::MAPOptions",
@@ -1026,7 +1083,11 @@ setClass("datamunge::bayes::NUTSResult",
         samples = "list",
         accept_rate = "numeric",
         final_step_size = "numeric",
-        num_divergences = "integer"),
+        num_divergences = "integer",
+        divergent = "integer",
+        tree_depth = "integer",
+        n_leapfrog = "integer",
+        energy = "numeric"),
         contains = "RSWIGStruct")
 
 
@@ -1040,7 +1101,8 @@ setClass("datamunge::bayes::RWMOptions",
         num_warmup = "integer",
         initial_step_size = "numeric",
         target_accept_rate = "numeric",
-        seed = "integer"),
+        seed = "integer",
+        adapt_covariance = "logical"),
         contains = "RSWIGStruct")
 
 
@@ -1051,7 +1113,8 @@ setClass("datamunge::bayes::RWMResult",
     representation(
         samples = "list",
         accept_rate = "numeric",
-        final_step_size = "numeric"),
+        final_step_size = "numeric",
+        proposal_covariance = "list"),
         contains = "RSWIGStruct")
 
 
@@ -1166,12 +1229,37 @@ setClass("datamunge::algebra::SquareFreeFactor",
 
 # End class datamunge::algebra::SquareFreeFactor
 
+setClass('_p_datamunge__algebra__GfFactorization', contains = 'C++Reference')
+setClass("datamunge::algebra::GfFactorization",
+    representation(
+        leading = "integer",
+        multiplicities = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::algebra::GfFactorization
+
 setClass('_p_std__vectorT_std__vectorT_int_t_t', contains = 'C++Reference')
 setClass('_p_datamunge__algebra__MultivariatePolynomial', contains = 'C++Reference')
 setClass('_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t', contains = 'C++Reference')
 setClass('_p_datamunge__algebra__Expr', contains = 'C++Reference')
 setClass('_p_datamunge__nn__NnTensor', contains = 'C++Reference')
 setClass('_p_datamunge__nn__NnModel', contains = 'C++Reference')
+setClass('_p_datamunge__sim__TaskOutput', contains = 'C++Reference')
+setClass("datamunge::sim::TaskOutput",
+    representation(
+        observations = "numeric",
+        rewards = "numeric",
+        terminated = "integer",
+        truncated = "integer",
+        final_observations = "numeric",
+        final_valid = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::sim::TaskOutput
+
+setClass('_p_datamunge__sim__TaskBatch', contains = 'C++Reference')
 
 
 
@@ -4615,6 +4703,1023 @@ setMethod('$', '_p_std__vectorT_std__string_t', function(x, name)
 );
 # end of accessor method for std::vector< std::string >
 setMethod('delete', '_p_std__vectorT_std__string_t', function(obj) {delete_std__vectorT_std__string_t(obj)})
+# Start of data_home
+
+`data_home` = function(.copy = FALSE)
+{
+  ;.Call('R_swig_data_home', as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`data_home`, 'returnType') = 'character'
+class(`data_home`) = c("SWIGFunction", class('data_home'))
+
+# Start of downloadable
+
+`downloadable` = function(.copy = FALSE)
+{
+  ;.Call('R_swig_downloadable', as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`downloadable`, 'returnType') = 'character'
+class(`downloadable`) = c("SWIGFunction", class('downloadable'))
+
+# Start of fetch
+
+`fetch__SWIG_0` = function(name, directory, .copy = FALSE)
+{
+  name = as(name, "character"); 
+  directory = as(directory, "character"); 
+  ;.Call('R_swig_fetch__SWIG_0', name, directory, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`fetch__SWIG_0`, 'returnType') = 'character'
+attr(`fetch__SWIG_0`, "inputTypes") = c('character', 'character')
+class(`fetch__SWIG_0`) = c("SWIGFunction", class('fetch__SWIG_0'))
+
+# Start of fetch
+
+`fetch__SWIG_1` = function(name, .copy = FALSE)
+{
+  name = as(name, "character"); 
+  ;.Call('R_swig_fetch__SWIG_1', name, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`fetch__SWIG_1`, 'returnType') = 'character'
+attr(`fetch__SWIG_1`, "inputTypes") = c('character')
+class(`fetch__SWIG_1`) = c("SWIGFunction", class('fetch__SWIG_1'))
+
+`fetch` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) {
+      f <- fetch__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- fetch__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for fetch with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of download_file
+
+`download_file__SWIG_0` = function(url, destination, md5)
+{
+  url = as(url, "character"); 
+  destination = as(destination, "character"); 
+  md5 = as(md5, "character"); 
+  ;.Call('R_swig_download_file__SWIG_0', url, destination, md5, PACKAGE='datamunger');
+  
+}
+
+attr(`download_file__SWIG_0`, 'returnType') = 'void'
+attr(`download_file__SWIG_0`, "inputTypes") = c('character', 'character', 'character')
+class(`download_file__SWIG_0`) = c("SWIGFunction", class('download_file__SWIG_0'))
+
+# Start of download_file
+
+`download_file__SWIG_1` = function(url, destination)
+{
+  url = as(url, "character"); 
+  destination = as(destination, "character"); 
+  ;.Call('R_swig_download_file__SWIG_1', url, destination, PACKAGE='datamunger');
+  
+}
+
+attr(`download_file__SWIG_1`, 'returnType') = 'void'
+attr(`download_file__SWIG_1`, "inputTypes") = c('character', 'character')
+class(`download_file__SWIG_1`) = c("SWIGFunction", class('download_file__SWIG_1'))
+
+`download_file` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- download_file__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- download_file__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for download_file with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of ImageBatch_pixels_set
+
+`ImageBatch_pixels_set` = function(self, s_pixels)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_pixels = as.numeric(s_pixels);
+  ;.Call('R_swig_ImageBatch_pixels_set', self, s_pixels, PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_pixels_set`, 'returnType') = 'void'
+attr(`ImageBatch_pixels_set`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch', '_p_std__vectorT_double_t')
+class(`ImageBatch_pixels_set`) = c("SWIGFunction", class('ImageBatch_pixels_set'))
+
+# Start of ImageBatch_pixels_get
+
+`ImageBatch_pixels_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageBatch_pixels_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_pixels_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`ImageBatch_pixels_get`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch')
+class(`ImageBatch_pixels_get`) = c("SWIGFunction", class('ImageBatch_pixels_get'))
+
+# Start of ImageBatch_labels_set
+
+`ImageBatch_labels_set` = function(self, s_labels)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_labels = as.integer(s_labels);
+  ;.Call('R_swig_ImageBatch_labels_set', self, s_labels, PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_labels_set`, 'returnType') = 'void'
+attr(`ImageBatch_labels_set`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch', '_p_std__vectorT_int_t')
+class(`ImageBatch_labels_set`) = c("SWIGFunction", class('ImageBatch_labels_set'))
+
+# Start of ImageBatch_labels_get
+
+`ImageBatch_labels_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageBatch_labels_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_labels_get`, 'returnType') = '_p_std__vectorT_int_t'
+attr(`ImageBatch_labels_get`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch')
+class(`ImageBatch_labels_get`) = c("SWIGFunction", class('ImageBatch_labels_get'))
+
+# Start of ImageBatch_indices_set
+
+`ImageBatch_indices_set` = function(self, s_indices)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_indices = as.integer(s_indices);
+  ;.Call('R_swig_ImageBatch_indices_set', self, s_indices, PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_indices_set`, 'returnType') = 'void'
+attr(`ImageBatch_indices_set`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch', '_p_std__vectorT_int_t')
+class(`ImageBatch_indices_set`) = c("SWIGFunction", class('ImageBatch_indices_set'))
+
+# Start of ImageBatch_indices_get
+
+`ImageBatch_indices_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageBatch_indices_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_indices_get`, 'returnType') = '_p_std__vectorT_int_t'
+attr(`ImageBatch_indices_get`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch')
+class(`ImageBatch_indices_get`) = c("SWIGFunction", class('ImageBatch_indices_get'))
+
+# Start of ImageBatch_shape_set
+
+`ImageBatch_shape_set` = function(self, s_shape)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_shape = as.integer(s_shape);
+  ;.Call('R_swig_ImageBatch_shape_set', self, s_shape, PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_shape_set`, 'returnType') = 'void'
+attr(`ImageBatch_shape_set`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch', '_p_std__vectorT_int_t')
+class(`ImageBatch_shape_set`) = c("SWIGFunction", class('ImageBatch_shape_set'))
+
+# Start of ImageBatch_shape_get
+
+`ImageBatch_shape_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageBatch_shape_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_shape_get`, 'returnType') = '_p_std__vectorT_int_t'
+attr(`ImageBatch_shape_get`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch')
+class(`ImageBatch_shape_get`) = c("SWIGFunction", class('ImageBatch_shape_get'))
+
+# Start of ImageBatch_size
+
+`ImageBatch_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageBatch_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_size`, 'returnType') = 'integer'
+attr(`ImageBatch_size`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch')
+class(`ImageBatch_size`) = c("SWIGFunction", class('ImageBatch_size'))
+
+# Start of ImageBatch_features
+
+`ImageBatch_features` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageBatch_features', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_features`, 'returnType') = 'integer'
+attr(`ImageBatch_features`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch')
+class(`ImageBatch_features`) = c("SWIGFunction", class('ImageBatch_features'))
+
+# Start of ImageBatch_image
+
+`ImageBatch_image` = function(self, i, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  ;.Call('R_swig_ImageBatch_image', self, i, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageBatch_image`, 'returnType') = 'numeric'
+attr(`ImageBatch_image`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch', 'integer')
+class(`ImageBatch_image`) = c("SWIGFunction", class('ImageBatch_image'))
+
+# Start of new_ImageBatch
+
+`ImageBatch` = function()
+{
+  ;ans = .Call('R_swig_new_ImageBatch', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageBatch", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ImageBatch);
+  ans
+  
+}
+
+attr(`ImageBatch`, 'returnType') = '_p_datamunge__datasets__ImageBatch'
+class(`ImageBatch`) = c("SWIGFunction", class('ImageBatch'))
+
+# Start of delete_ImageBatch
+
+`delete_ImageBatch` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ImageBatch', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ImageBatch`, 'returnType') = 'void'
+attr(`delete_ImageBatch`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch')
+class(`delete_ImageBatch`) = c("SWIGFunction", class('delete_ImageBatch'))
+
+# Start of accessor method for datamunge::datasets::ImageBatch
+setMethod('$', '_p_datamunge__datasets__ImageBatch', function(x, name)
+
+{
+  accessorFuns = list('pixels' = ImageBatch_pixels_get, 'labels' = ImageBatch_labels_get, 'indices' = ImageBatch_indices_get, 'shape' = ImageBatch_shape_get, 'size' = ImageBatch_size, 'features' = ImageBatch_features, 'image' = ImageBatch_image);
+  vaccessors = c('pixels', 'labels', 'indices', 'shape');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::datasets::ImageBatch
+# Start of accessor method for datamunge::datasets::ImageBatch
+setMethod('$<-', '_p_datamunge__datasets__ImageBatch', function(x, name, value)
+
+{
+  accessorFuns = list('pixels' = ImageBatch_pixels_set, 'labels' = ImageBatch_labels_set, 'indices' = ImageBatch_indices_set, 'shape' = ImageBatch_shape_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__datasets__ImageBatch', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('pixels' = ImageBatch_pixels_set, 'labels' = ImageBatch_labels_set, 'indices' = ImageBatch_indices_set, 'shape' = ImageBatch_shape_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::datasets::ImageBatch
+setMethod('delete', '_p_datamunge__datasets__ImageBatch', function(obj) {delete_datamunge__datasets__ImageBatch(obj)})
+# Start definition of copy functions & methods for datamunge::datasets::ImageBatch
+CopyToR_datamunge__datasets__ImageBatch = function(value, obj = new("datamunge::datasets::ImageBatch"))
+{
+  obj@pixels = value$pixels;
+  obj@labels = value$labels;
+  obj@indices = value$indices;
+  obj@shape = value$shape;
+  obj;
+}
+
+
+
+CopyToC_datamunge__datasets__ImageBatch = function(value, obj)
+{
+  obj$pixels = value@pixels;
+  obj$labels = value@labels;
+  obj$indices = value@indices;
+  obj$shape = value@shape;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::datasets::ImageBatch
+setMethod('copyToR', '_p_datamunge__datasets__ImageBatch', CopyToR_datamunge__datasets__ImageBatch);
+setMethod('copyToC', "datamunge::datasets::ImageBatch", CopyToC_datamunge__datasets__ImageBatch);
+
+# End definition of copy methods for datamunge::datasets::ImageBatch
+# End definition of copy functions & methods for datamunge::datasets::ImageBatch
+# Start of new_ImageLoader
+
+`ImageLoader__SWIG_0` = function(dataset, split, directory)
+{
+  dataset = as(dataset, "character"); 
+  split = as(split, "character"); 
+  directory = as(directory, "character"); 
+  ;ans = .Call('R_swig_new_ImageLoader__SWIG_0', dataset, split, directory, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ImageLoader);
+  ans
+  
+}
+
+attr(`ImageLoader__SWIG_0`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader__SWIG_0`, "inputTypes") = c('character', 'character', 'character')
+class(`ImageLoader__SWIG_0`) = c("SWIGFunction", class('ImageLoader__SWIG_0'))
+
+# Start of new_ImageLoader
+
+`ImageLoader__SWIG_1` = function(dataset, split)
+{
+  dataset = as(dataset, "character"); 
+  split = as(split, "character"); 
+  ;ans = .Call('R_swig_new_ImageLoader__SWIG_1', dataset, split, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ImageLoader);
+  ans
+  
+}
+
+attr(`ImageLoader__SWIG_1`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader__SWIG_1`, "inputTypes") = c('character', 'character')
+class(`ImageLoader__SWIG_1`) = c("SWIGFunction", class('ImageLoader__SWIG_1'))
+
+# Start of new_ImageLoader
+
+`ImageLoader__SWIG_2` = function(dataset)
+{
+  dataset = as(dataset, "character"); 
+  ;ans = .Call('R_swig_new_ImageLoader__SWIG_2', dataset, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ImageLoader);
+  ans
+  
+}
+
+attr(`ImageLoader__SWIG_2`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader__SWIG_2`, "inputTypes") = c('character')
+class(`ImageLoader__SWIG_2`) = c("SWIGFunction", class('ImageLoader__SWIG_2'))
+
+`ImageLoader` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) {
+      f <- ImageLoader__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- ImageLoader__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- ImageLoader__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for ImageLoader with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of ImageLoader_set_batch_size
+
+`ImageLoader_set_batch_size` = function(self, size, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  size = as.integer(size);
+  
+  if(length(size) > 1) {
+    warning("using only the first element of size");
+  };
+  
+  ;ans = .Call('R_swig_ImageLoader_set_batch_size', self, size, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_set_batch_size`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader_set_batch_size`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', 'integer')
+class(`ImageLoader_set_batch_size`) = c("SWIGFunction", class('ImageLoader_set_batch_size'))
+
+# Start of ImageLoader_set_shuffle
+
+`ImageLoader_set_shuffle` = function(self, shuffle, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  shuffle = as.logical(shuffle);
+  ;ans = .Call('R_swig_ImageLoader_set_shuffle', self, shuffle, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_set_shuffle`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader_set_shuffle`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', 'logical')
+class(`ImageLoader_set_shuffle`) = c("SWIGFunction", class('ImageLoader_set_shuffle'))
+
+# Start of ImageLoader_set_seed
+
+`ImageLoader_set_seed` = function(self, seed, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  ;ans = .Call('R_swig_ImageLoader_set_seed', self, seed, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_set_seed`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader_set_seed`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', 'integer')
+class(`ImageLoader_set_seed`) = c("SWIGFunction", class('ImageLoader_set_seed'))
+
+# Start of ImageLoader_set_drop_last
+
+`ImageLoader_set_drop_last` = function(self, drop_last, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  drop_last = as.logical(drop_last);
+  ;ans = .Call('R_swig_ImageLoader_set_drop_last', self, drop_last, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_set_drop_last`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader_set_drop_last`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', 'logical')
+class(`ImageLoader_set_drop_last`) = c("SWIGFunction", class('ImageLoader_set_drop_last'))
+
+# Start of ImageLoader_set_normalize
+
+`ImageLoader_set_normalize` = function(self, normalize, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  normalize = as.logical(normalize);
+  ;ans = .Call('R_swig_ImageLoader_set_normalize', self, normalize, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_set_normalize`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader_set_normalize`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', 'logical')
+class(`ImageLoader_set_normalize`) = c("SWIGFunction", class('ImageLoader_set_normalize'))
+
+# Start of ImageLoader_set_layout
+
+`ImageLoader_set_layout` = function(self, layout, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  layout = as(layout, "character"); 
+  ;ans = .Call('R_swig_ImageLoader_set_layout', self, layout, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_set_layout`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader_set_layout`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', 'character')
+class(`ImageLoader_set_layout`) = c("SWIGFunction", class('ImageLoader_set_layout'))
+
+# Start of ImageLoader_set_limit
+
+`ImageLoader_set_limit` = function(self, count, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  count = as.integer(count);
+  
+  if(length(count) > 1) {
+    warning("using only the first element of count");
+  };
+  
+  ;ans = .Call('R_swig_ImageLoader_set_limit', self, count, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_set_limit`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader_set_limit`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', 'integer')
+class(`ImageLoader_set_limit`) = c("SWIGFunction", class('ImageLoader_set_limit'))
+
+# Start of ImageLoader_set_coarse_labels
+
+`ImageLoader_set_coarse_labels` = function(self, coarse, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  coarse = as.logical(coarse);
+  ;ans = .Call('R_swig_ImageLoader_set_coarse_labels', self, coarse, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageLoader", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_set_coarse_labels`, 'returnType') = '_p_datamunge__datasets__ImageLoader'
+attr(`ImageLoader_set_coarse_labels`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', 'logical')
+class(`ImageLoader_set_coarse_labels`) = c("SWIGFunction", class('ImageLoader_set_coarse_labels'))
+
+# Start of ImageLoader_dataset
+
+`ImageLoader_dataset` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_dataset', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_dataset`, 'returnType') = 'character'
+attr(`ImageLoader_dataset`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_dataset`) = c("SWIGFunction", class('ImageLoader_dataset'))
+
+# Start of ImageLoader_split
+
+`ImageLoader_split` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_split', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_split`, 'returnType') = 'character'
+attr(`ImageLoader_split`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_split`) = c("SWIGFunction", class('ImageLoader_split'))
+
+# Start of ImageLoader_directory
+
+`ImageLoader_directory` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_directory', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_directory`, 'returnType') = 'character'
+attr(`ImageLoader_directory`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_directory`) = c("SWIGFunction", class('ImageLoader_directory'))
+
+# Start of ImageLoader_batch_size
+
+`ImageLoader_batch_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_batch_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_batch_size`, 'returnType') = 'integer'
+attr(`ImageLoader_batch_size`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_batch_size`) = c("SWIGFunction", class('ImageLoader_batch_size'))
+
+# Start of ImageLoader_shuffle
+
+`ImageLoader_shuffle` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_shuffle', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_shuffle`, 'returnType') = 'logical'
+attr(`ImageLoader_shuffle`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_shuffle`) = c("SWIGFunction", class('ImageLoader_shuffle'))
+
+# Start of ImageLoader_seed
+
+`ImageLoader_seed` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_seed', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_seed`, 'returnType') = 'integer'
+attr(`ImageLoader_seed`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_seed`) = c("SWIGFunction", class('ImageLoader_seed'))
+
+# Start of ImageLoader_drop_last
+
+`ImageLoader_drop_last` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_drop_last', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_drop_last`, 'returnType') = 'logical'
+attr(`ImageLoader_drop_last`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_drop_last`) = c("SWIGFunction", class('ImageLoader_drop_last'))
+
+# Start of ImageLoader_normalize
+
+`ImageLoader_normalize` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_normalize', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_normalize`, 'returnType') = 'logical'
+attr(`ImageLoader_normalize`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_normalize`) = c("SWIGFunction", class('ImageLoader_normalize'))
+
+# Start of ImageLoader_layout
+
+`ImageLoader_layout` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_layout', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_layout`, 'returnType') = 'character'
+attr(`ImageLoader_layout`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_layout`) = c("SWIGFunction", class('ImageLoader_layout'))
+
+# Start of ImageLoader_coarse_labels
+
+`ImageLoader_coarse_labels` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_coarse_labels', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_coarse_labels`, 'returnType') = 'logical'
+attr(`ImageLoader_coarse_labels`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_coarse_labels`) = c("SWIGFunction", class('ImageLoader_coarse_labels'))
+
+# Start of ImageLoader_size
+
+`ImageLoader_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_size`, 'returnType') = 'integer'
+attr(`ImageLoader_size`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_size`) = c("SWIGFunction", class('ImageLoader_size'))
+
+# Start of ImageLoader_split_size
+
+`ImageLoader_split_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_split_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_split_size`, 'returnType') = 'integer'
+attr(`ImageLoader_split_size`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_split_size`) = c("SWIGFunction", class('ImageLoader_split_size'))
+
+# Start of ImageLoader_num_batches
+
+`ImageLoader_num_batches` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_num_batches', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_num_batches`, 'returnType') = 'integer'
+attr(`ImageLoader_num_batches`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_num_batches`) = c("SWIGFunction", class('ImageLoader_num_batches'))
+
+# Start of ImageLoader_height
+
+`ImageLoader_height` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_height', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_height`, 'returnType') = 'integer'
+attr(`ImageLoader_height`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_height`) = c("SWIGFunction", class('ImageLoader_height'))
+
+# Start of ImageLoader_width
+
+`ImageLoader_width` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_width', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_width`, 'returnType') = 'integer'
+attr(`ImageLoader_width`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_width`) = c("SWIGFunction", class('ImageLoader_width'))
+
+# Start of ImageLoader_channels
+
+`ImageLoader_channels` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_channels', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_channels`, 'returnType') = 'integer'
+attr(`ImageLoader_channels`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_channels`) = c("SWIGFunction", class('ImageLoader_channels'))
+
+# Start of ImageLoader_num_classes
+
+`ImageLoader_num_classes` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_num_classes', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_num_classes`, 'returnType') = 'integer'
+attr(`ImageLoader_num_classes`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_num_classes`) = c("SWIGFunction", class('ImageLoader_num_classes'))
+
+# Start of ImageLoader_class_names
+
+`ImageLoader_class_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_class_names', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_class_names`, 'returnType') = 'character'
+attr(`ImageLoader_class_names`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_class_names`) = c("SWIGFunction", class('ImageLoader_class_names'))
+
+# Start of ImageLoader_epoch
+
+`ImageLoader_epoch` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_epoch', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_epoch`, 'returnType') = 'integer'
+attr(`ImageLoader_epoch`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_epoch`) = c("SWIGFunction", class('ImageLoader_epoch'))
+
+# Start of ImageLoader_position
+
+`ImageLoader_position` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_position', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_position`, 'returnType') = 'integer'
+attr(`ImageLoader_position`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_position`) = c("SWIGFunction", class('ImageLoader_position'))
+
+# Start of ImageLoader_has_next
+
+`ImageLoader_has_next` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_has_next', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_has_next`, 'returnType') = 'logical'
+attr(`ImageLoader_has_next`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_has_next`) = c("SWIGFunction", class('ImageLoader_has_next'))
+
+# Start of ImageLoader_next_batch
+
+`ImageLoader_next_batch` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ImageLoader_next_batch', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageBatch", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_next_batch`, 'returnType') = '_p_datamunge__datasets__ImageBatch'
+attr(`ImageLoader_next_batch`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_next_batch`) = c("SWIGFunction", class('ImageLoader_next_batch'))
+
+# Start of ImageLoader_reset
+
+`ImageLoader_reset` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImageLoader_reset', self, PACKAGE='datamunger');
+  
+}
+
+attr(`ImageLoader_reset`, 'returnType') = 'void'
+attr(`ImageLoader_reset`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_reset`) = c("SWIGFunction", class('ImageLoader_reset'))
+
+# Start of ImageLoader_batch
+
+`ImageLoader_batch` = function(self, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  index = as.integer(index);
+  
+  if(length(index) > 1) {
+    warning("using only the first element of index");
+  };
+  
+  ;ans = .Call('R_swig_ImageLoader_batch', self, index, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageBatch", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_batch`, 'returnType') = '_p_datamunge__datasets__ImageBatch'
+attr(`ImageLoader_batch`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', 'integer')
+class(`ImageLoader_batch`) = c("SWIGFunction", class('ImageLoader_batch'))
+
+# Start of ImageLoader_take
+
+`ImageLoader_take` = function(self, indices, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  indices = as.integer(indices);
+  ;ans = .Call('R_swig_ImageLoader_take', self, indices, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageBatch", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_take`, 'returnType') = '_p_datamunge__datasets__ImageBatch'
+attr(`ImageLoader_take`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader', '_p_std__vectorT_int_t')
+class(`ImageLoader_take`) = c("SWIGFunction", class('ImageLoader_take'))
+
+# Start of ImageLoader_load_all
+
+`ImageLoader_load_all` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ImageLoader_load_all', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__datasets__ImageBatch", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImageLoader_load_all`, 'returnType') = '_p_datamunge__datasets__ImageBatch'
+attr(`ImageLoader_load_all`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`ImageLoader_load_all`) = c("SWIGFunction", class('ImageLoader_load_all'))
+
+# Start of delete_ImageLoader
+
+`delete_ImageLoader` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ImageLoader', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ImageLoader`, 'returnType') = 'void'
+attr(`delete_ImageLoader`, "inputTypes") = c('_p_datamunge__datasets__ImageLoader')
+class(`delete_ImageLoader`) = c("SWIGFunction", class('delete_ImageLoader'))
+
+# Start of accessor method for datamunge::datasets::ImageLoader
+setMethod('$', '_p_datamunge__datasets__ImageLoader', function(x, name)
+
+{
+  accessorFuns = list('set_batch_size' = ImageLoader_set_batch_size, 'set_shuffle' = ImageLoader_set_shuffle, 'set_seed' = ImageLoader_set_seed, 'set_drop_last' = ImageLoader_set_drop_last, 'set_normalize' = ImageLoader_set_normalize, 'set_layout' = ImageLoader_set_layout, 'set_limit' = ImageLoader_set_limit, 'set_coarse_labels' = ImageLoader_set_coarse_labels, 'dataset' = ImageLoader_dataset, 'split' = ImageLoader_split, 'directory' = ImageLoader_directory, 'batch_size' = ImageLoader_batch_size, 'shuffle' = ImageLoader_shuffle, 'seed' = ImageLoader_seed, 'drop_last' = ImageLoader_drop_last, 'normalize' = ImageLoader_normalize, 'layout' = ImageLoader_layout, 'coarse_labels' = ImageLoader_coarse_labels, 'size' = ImageLoader_size, 'split_size' = ImageLoader_split_size, 'num_batches' = ImageLoader_num_batches, 'height' = ImageLoader_height, 'width' = ImageLoader_width, 'channels' = ImageLoader_channels, 'num_classes' = ImageLoader_num_classes, 'class_names' = ImageLoader_class_names, 'epoch' = ImageLoader_epoch, 'position' = ImageLoader_position, 'has_next' = ImageLoader_has_next, 'next_batch' = ImageLoader_next_batch, 'reset' = ImageLoader_reset, 'batch' = ImageLoader_batch, 'take' = ImageLoader_take, 'load_all' = ImageLoader_load_all);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::datasets::ImageLoader
+setMethod('delete', '_p_datamunge__datasets__ImageLoader', function(obj) {delete_datamunge__datasets__ImageLoader(obj)})
 # Start of hello
 
 `hello` = function()
@@ -6528,6 +7633,60 @@ class(`DataFrame_to_string__SWIG_1`) = c("SWIGFunction", class('DataFrame_to_str
 }
 
 # Dispatch function
+# Start of DataFrame_to_md
+
+`DataFrame_to_md__SWIG_0` = function(self, digits, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  digits = as.integer(digits);
+  
+  if(length(digits) > 1) {
+    warning("using only the first element of digits");
+  };
+  
+  ;.Call('R_swig_DataFrame_to_md__SWIG_0', self, digits, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_to_md__SWIG_0`, 'returnType') = 'character'
+attr(`DataFrame_to_md__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', 'integer')
+class(`DataFrame_to_md__SWIG_0`) = c("SWIGFunction", class('DataFrame_to_md__SWIG_0'))
+
+# Start of DataFrame_to_md
+
+`DataFrame_to_md__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_DataFrame_to_md__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_to_md__SWIG_1`, 'returnType') = 'character'
+attr(`DataFrame_to_md__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame')
+class(`DataFrame_to_md__SWIG_1`) = c("SWIGFunction", class('DataFrame_to_md__SWIG_1'))
+
+`DataFrame_to_md` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) {
+      f <- DataFrame_to_md__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- DataFrame_to_md__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_to_md with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of DataFrame_is_numeric_column
 
 `DataFrame_is_numeric_column` = function(self, column_name, .copy = FALSE)
@@ -6632,6 +7791,379 @@ class(`DataFrame_iris`) = c("SWIGFunction", class('DataFrame_iris'))
 attr(`DataFrame_penguins`, 'returnType') = '_p_datamunge__DataFrame'
 class(`DataFrame_penguins`) = c("SWIGFunction", class('DataFrame_penguins'))
 
+# Start of DataFrame_tooth_growth
+
+`DataFrame_tooth_growth` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_tooth_growth', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_tooth_growth`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_tooth_growth`) = c("SWIGFunction", class('DataFrame_tooth_growth'))
+
+# Start of DataFrame_wine
+
+`DataFrame_wine` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_wine', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_wine`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_wine`) = c("SWIGFunction", class('DataFrame_wine'))
+
+# Start of DataFrame_titanic
+
+`DataFrame_titanic` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_titanic', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_titanic`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_titanic`) = c("SWIGFunction", class('DataFrame_titanic'))
+
+# Start of DataFrame_eight_schools
+
+`DataFrame_eight_schools` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_eight_schools', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_eight_schools`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_eight_schools`) = c("SWIGFunction", class('DataFrame_eight_schools'))
+
+# Start of DataFrame_air_passengers
+
+`DataFrame_air_passengers` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_air_passengers', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_air_passengers`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_air_passengers`) = c("SWIGFunction", class('DataFrame_air_passengers'))
+
+# Start of DataFrame_volcano
+
+`DataFrame_volcano` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_volcano', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_volcano`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_volcano`) = c("SWIGFunction", class('DataFrame_volcano'))
+
+# Start of DataFrame_faithful
+
+`DataFrame_faithful` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_faithful', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_faithful`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_faithful`) = c("SWIGFunction", class('DataFrame_faithful'))
+
+# Start of DataFrame_mtcars
+
+`DataFrame_mtcars` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_mtcars', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_mtcars`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_mtcars`) = c("SWIGFunction", class('DataFrame_mtcars'))
+
+# Start of DataFrame_airquality
+
+`DataFrame_airquality` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_airquality', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_airquality`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_airquality`) = c("SWIGFunction", class('DataFrame_airquality'))
+
+# Start of DataFrame_breast_cancer
+
+`DataFrame_breast_cancer` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_breast_cancer', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_breast_cancer`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_breast_cancer`) = c("SWIGFunction", class('DataFrame_breast_cancer'))
+
+# Start of DataFrame_diabetes
+
+`DataFrame_diabetes` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_diabetes', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_diabetes`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_diabetes`) = c("SWIGFunction", class('DataFrame_diabetes'))
+
+# Start of DataFrame_digits
+
+`DataFrame_digits` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_digits', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_digits`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_digits`) = c("SWIGFunction", class('DataFrame_digits'))
+
+# Start of DataFrame_diamonds
+
+`DataFrame_diamonds` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_diamonds', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_diamonds`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_diamonds`) = c("SWIGFunction", class('DataFrame_diamonds'))
+
+# Start of DataFrame_california_housing
+
+`DataFrame_california_housing` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_california_housing', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_california_housing`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_california_housing`) = c("SWIGFunction", class('DataFrame_california_housing'))
+
+# Start of DataFrame_dataset
+
+`DataFrame_dataset` = function(name)
+{
+  name = as(name, "character"); 
+  ;ans = .Call('R_swig_DataFrame_dataset', name, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_dataset`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_dataset`, "inputTypes") = c('character')
+class(`DataFrame_dataset`) = c("SWIGFunction", class('DataFrame_dataset'))
+
+# Start of DataFrame_dataset_catalog
+
+`DataFrame_dataset_catalog` = function()
+{
+  ;ans = .Call('R_swig_DataFrame_dataset_catalog', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_dataset_catalog`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame_dataset_catalog`) = c("SWIGFunction", class('DataFrame_dataset_catalog'))
+
+# Start of DataFrame_read_csv
+
+`DataFrame_read_csv__SWIG_0` = function(path, delimiter)
+{
+  path = as(path, "character"); 
+  delimiter = as(delimiter, "character");     
+  ;ans = .Call('R_swig_DataFrame_read_csv__SWIG_0', path, delimiter, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_read_csv__SWIG_0`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_read_csv__SWIG_0`, "inputTypes") = c('character', 'character')
+class(`DataFrame_read_csv__SWIG_0`) = c("SWIGFunction", class('DataFrame_read_csv__SWIG_0'))
+
+# Start of DataFrame_read_csv
+
+`DataFrame_read_csv__SWIG_1` = function(path)
+{
+  path = as(path, "character"); 
+  ;ans = .Call('R_swig_DataFrame_read_csv__SWIG_1', path, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_read_csv__SWIG_1`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_read_csv__SWIG_1`, "inputTypes") = c('character')
+class(`DataFrame_read_csv__SWIG_1`) = c("SWIGFunction", class('DataFrame_read_csv__SWIG_1'))
+
+`DataFrame_read_csv` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) {
+      f <- DataFrame_read_csv__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- DataFrame_read_csv__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_read_csv with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of DataFrame_parse_csv
+
+`DataFrame_parse_csv__SWIG_0` = function(text, delimiter)
+{
+  text = as(text, "character"); 
+  delimiter = as(delimiter, "character");     
+  ;ans = .Call('R_swig_DataFrame_parse_csv__SWIG_0', text, delimiter, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_parse_csv__SWIG_0`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_parse_csv__SWIG_0`, "inputTypes") = c('character', 'character')
+class(`DataFrame_parse_csv__SWIG_0`) = c("SWIGFunction", class('DataFrame_parse_csv__SWIG_0'))
+
+# Start of DataFrame_parse_csv
+
+`DataFrame_parse_csv__SWIG_1` = function(text)
+{
+  text = as(text, "character"); 
+  ;ans = .Call('R_swig_DataFrame_parse_csv__SWIG_1', text, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_parse_csv__SWIG_1`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_parse_csv__SWIG_1`, "inputTypes") = c('character')
+class(`DataFrame_parse_csv__SWIG_1`) = c("SWIGFunction", class('DataFrame_parse_csv__SWIG_1'))
+
+`DataFrame_parse_csv` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) {
+      f <- DataFrame_parse_csv__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- DataFrame_parse_csv__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_parse_csv with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of DataFrame_from_image_batch
+
+`DataFrame_from_image_batch` = function(batch)
+{
+  if (inherits(batch, "ExternalReference")) batch = slot(batch,"ref"); 
+  ;ans = .Call('R_swig_DataFrame_from_image_batch', batch, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_from_image_batch`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_from_image_batch`, "inputTypes") = c('_p_datamunge__datasets__ImageBatch')
+class(`DataFrame_from_image_batch`) = c("SWIGFunction", class('DataFrame_from_image_batch'))
+
 # Start of delete_DataFrame
 
 `delete_DataFrame` = function(self)
@@ -6649,7 +8181,7 @@ class(`delete_DataFrame`) = c("SWIGFunction", class('delete_DataFrame'))
 setMethod('$', '_p_datamunge__DataFrame', function(x, name)
 
 {
-  accessorFuns = list('nrows' = DataFrame_nrows, 'ncols' = DataFrame_ncols, 'shape' = DataFrame_shape, 'columns' = DataFrame_columns, 'add_numeric_column' = DataFrame_add_numeric_column, 'add_string_column' = DataFrame_add_string_column, 'add_string_column_encoded' = DataFrame_add_string_column_encoded, 'fill_null_numeric' = DataFrame_fill_null_numeric, 'fill_null_string' = DataFrame_fill_null_string, 'mutate_numeric' = DataFrame_mutate_numeric, 'mutate_string' = DataFrame_mutate_string, 'mutate_string_encoded' = DataFrame_mutate_string_encoded, 'rename' = DataFrame_rename, 'select' = DataFrame_select, 'select_encoded' = DataFrame_select_encoded, 'relocate' = DataFrame_relocate, 'relocate_encoded' = DataFrame_relocate_encoded, 'sort_by' = DataFrame_sort_by, 'arrange' = DataFrame_arrange, 'arrange_encoded' = DataFrame_arrange_encoded, 'drop_duplicates' = DataFrame_drop_duplicates, 'drop_duplicates_encoded' = DataFrame_drop_duplicates_encoded, 'distinct' = DataFrame_distinct, 'distinct_encoded' = DataFrame_distinct_encoded, 'pull_numeric' = DataFrame_pull_numeric, 'pull_numeric_valid' = DataFrame_pull_numeric_valid, 'pull_string' = DataFrame_pull_string, 'pull_string_valid' = DataFrame_pull_string_valid, 'n_distinct' = DataFrame_n_distinct, 'group_by_sum' = DataFrame_group_by_sum, 'group_by_sum_encoded' = DataFrame_group_by_sum_encoded, 'count' = DataFrame_count, 'count_encoded' = DataFrame_count_encoded, 'summarise' = DataFrame_summarise, 'summarise_encoded' = DataFrame_summarise_encoded, 'pivot_longer' = DataFrame_pivot_longer, 'pivot_longer_encoded' = DataFrame_pivot_longer_encoded, 'pivot_wider' = DataFrame_pivot_wider, 'pivot_wider_encoded' = DataFrame_pivot_wider_encoded, 'bind_rows' = DataFrame_bind_rows, 'bind_cols' = DataFrame_bind_cols, 'join' = DataFrame_join, 'numeric_count' = DataFrame_numeric_count, 'numeric_null_count' = DataFrame_numeric_null_count, 'numeric_sum' = DataFrame_numeric_sum, 'numeric_mean' = DataFrame_numeric_mean, 'numeric_min' = DataFrame_numeric_min, 'numeric_max' = DataFrame_numeric_max, 'to_string' = DataFrame_to_string, 'is_numeric_column' = DataFrame_is_numeric_column, 'is_null' = DataFrame_is_null, 'numeric_at' = DataFrame_numeric_at, 'string_at' = DataFrame_string_at);
+  accessorFuns = list('nrows' = DataFrame_nrows, 'ncols' = DataFrame_ncols, 'shape' = DataFrame_shape, 'columns' = DataFrame_columns, 'add_numeric_column' = DataFrame_add_numeric_column, 'add_string_column' = DataFrame_add_string_column, 'add_string_column_encoded' = DataFrame_add_string_column_encoded, 'fill_null_numeric' = DataFrame_fill_null_numeric, 'fill_null_string' = DataFrame_fill_null_string, 'mutate_numeric' = DataFrame_mutate_numeric, 'mutate_string' = DataFrame_mutate_string, 'mutate_string_encoded' = DataFrame_mutate_string_encoded, 'rename' = DataFrame_rename, 'select' = DataFrame_select, 'select_encoded' = DataFrame_select_encoded, 'relocate' = DataFrame_relocate, 'relocate_encoded' = DataFrame_relocate_encoded, 'sort_by' = DataFrame_sort_by, 'arrange' = DataFrame_arrange, 'arrange_encoded' = DataFrame_arrange_encoded, 'drop_duplicates' = DataFrame_drop_duplicates, 'drop_duplicates_encoded' = DataFrame_drop_duplicates_encoded, 'distinct' = DataFrame_distinct, 'distinct_encoded' = DataFrame_distinct_encoded, 'pull_numeric' = DataFrame_pull_numeric, 'pull_numeric_valid' = DataFrame_pull_numeric_valid, 'pull_string' = DataFrame_pull_string, 'pull_string_valid' = DataFrame_pull_string_valid, 'n_distinct' = DataFrame_n_distinct, 'group_by_sum' = DataFrame_group_by_sum, 'group_by_sum_encoded' = DataFrame_group_by_sum_encoded, 'count' = DataFrame_count, 'count_encoded' = DataFrame_count_encoded, 'summarise' = DataFrame_summarise, 'summarise_encoded' = DataFrame_summarise_encoded, 'pivot_longer' = DataFrame_pivot_longer, 'pivot_longer_encoded' = DataFrame_pivot_longer_encoded, 'pivot_wider' = DataFrame_pivot_wider, 'pivot_wider_encoded' = DataFrame_pivot_wider_encoded, 'bind_rows' = DataFrame_bind_rows, 'bind_cols' = DataFrame_bind_cols, 'join' = DataFrame_join, 'numeric_count' = DataFrame_numeric_count, 'numeric_null_count' = DataFrame_numeric_null_count, 'numeric_sum' = DataFrame_numeric_sum, 'numeric_mean' = DataFrame_numeric_mean, 'numeric_min' = DataFrame_numeric_min, 'numeric_max' = DataFrame_numeric_max, 'to_string' = DataFrame_to_string, 'to_md' = DataFrame_to_md, 'is_numeric_column' = DataFrame_is_numeric_column, 'is_null' = DataFrame_is_null, 'numeric_at' = DataFrame_numeric_at, 'string_at' = DataFrame_string_at);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -6663,6 +8195,231 @@ setMethod('$', '_p_datamunge__DataFrame', function(x, name)
 );
 # end of accessor method for datamunge::DataFrame
 setMethod('delete', '_p_datamunge__DataFrame', function(obj) {delete_datamunge__DataFrame(obj)})
+# Start of new_CsvReader
+
+`CsvReader__SWIG_0` = function(path, batch_size, delimiter)
+{
+  path = as(path, "character"); 
+  batch_size = as.integer(batch_size);
+  
+  if(length(batch_size) > 1) {
+    warning("using only the first element of batch_size");
+  };
+  
+  delimiter = as(delimiter, "character");     
+  ;ans = .Call('R_swig_new_CsvReader__SWIG_0', path, batch_size, delimiter, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__CsvReader", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CsvReader);
+  ans
+  
+}
+
+attr(`CsvReader__SWIG_0`, 'returnType') = '_p_datamunge__CsvReader'
+attr(`CsvReader__SWIG_0`, "inputTypes") = c('character', 'integer', 'character')
+class(`CsvReader__SWIG_0`) = c("SWIGFunction", class('CsvReader__SWIG_0'))
+
+# Start of new_CsvReader
+
+`CsvReader__SWIG_1` = function(path, batch_size)
+{
+  path = as(path, "character"); 
+  batch_size = as.integer(batch_size);
+  
+  if(length(batch_size) > 1) {
+    warning("using only the first element of batch_size");
+  };
+  
+  ;ans = .Call('R_swig_new_CsvReader__SWIG_1', path, batch_size, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__CsvReader", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CsvReader);
+  ans
+  
+}
+
+attr(`CsvReader__SWIG_1`, 'returnType') = '_p_datamunge__CsvReader'
+attr(`CsvReader__SWIG_1`, "inputTypes") = c('character', 'integer')
+class(`CsvReader__SWIG_1`) = c("SWIGFunction", class('CsvReader__SWIG_1'))
+
+# Start of new_CsvReader
+
+`CsvReader__SWIG_2` = function(path)
+{
+  path = as(path, "character"); 
+  ;ans = .Call('R_swig_new_CsvReader__SWIG_2', path, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__CsvReader", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CsvReader);
+  ans
+  
+}
+
+attr(`CsvReader__SWIG_2`, 'returnType') = '_p_datamunge__CsvReader'
+attr(`CsvReader__SWIG_2`, "inputTypes") = c('character')
+class(`CsvReader__SWIG_2`) = c("SWIGFunction", class('CsvReader__SWIG_2'))
+
+`CsvReader` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) {
+      f <- CsvReader__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- CsvReader__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- CsvReader__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CsvReader with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of CsvReader_has_next
+
+`CsvReader_has_next` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CsvReader_has_next', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CsvReader_has_next`, 'returnType') = 'logical'
+attr(`CsvReader_has_next`, "inputTypes") = c('_p_datamunge__CsvReader')
+class(`CsvReader_has_next`) = c("SWIGFunction", class('CsvReader_has_next'))
+
+# Start of CsvReader_next_chunk
+
+`CsvReader_next_chunk` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_CsvReader_next_chunk', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CsvReader_next_chunk`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`CsvReader_next_chunk`, "inputTypes") = c('_p_datamunge__CsvReader')
+class(`CsvReader_next_chunk`) = c("SWIGFunction", class('CsvReader_next_chunk'))
+
+# Start of CsvReader_reset
+
+`CsvReader_reset` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CsvReader_reset', self, PACKAGE='datamunger');
+  
+}
+
+attr(`CsvReader_reset`, 'returnType') = 'void'
+attr(`CsvReader_reset`, "inputTypes") = c('_p_datamunge__CsvReader')
+class(`CsvReader_reset`) = c("SWIGFunction", class('CsvReader_reset'))
+
+# Start of CsvReader_batch_size
+
+`CsvReader_batch_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CsvReader_batch_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CsvReader_batch_size`, 'returnType') = 'integer'
+attr(`CsvReader_batch_size`, "inputTypes") = c('_p_datamunge__CsvReader')
+class(`CsvReader_batch_size`) = c("SWIGFunction", class('CsvReader_batch_size'))
+
+# Start of CsvReader_set_batch_size
+
+`CsvReader_set_batch_size` = function(self, rows)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  rows = as.integer(rows);
+  
+  if(length(rows) > 1) {
+    warning("using only the first element of rows");
+  };
+  
+  ;.Call('R_swig_CsvReader_set_batch_size', self, rows, PACKAGE='datamunger');
+  
+}
+
+attr(`CsvReader_set_batch_size`, 'returnType') = 'void'
+attr(`CsvReader_set_batch_size`, "inputTypes") = c('_p_datamunge__CsvReader', 'integer')
+class(`CsvReader_set_batch_size`) = c("SWIGFunction", class('CsvReader_set_batch_size'))
+
+# Start of CsvReader_column_names
+
+`CsvReader_column_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CsvReader_column_names', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CsvReader_column_names`, 'returnType') = 'character'
+attr(`CsvReader_column_names`, "inputTypes") = c('_p_datamunge__CsvReader')
+class(`CsvReader_column_names`) = c("SWIGFunction", class('CsvReader_column_names'))
+
+# Start of CsvReader_rows_read
+
+`CsvReader_rows_read` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CsvReader_rows_read', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CsvReader_rows_read`, 'returnType') = 'numeric'
+attr(`CsvReader_rows_read`, "inputTypes") = c('_p_datamunge__CsvReader')
+class(`CsvReader_rows_read`) = c("SWIGFunction", class('CsvReader_rows_read'))
+
+# Start of delete_CsvReader
+
+`delete_CsvReader` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CsvReader', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CsvReader`, 'returnType') = 'void'
+attr(`delete_CsvReader`, "inputTypes") = c('_p_datamunge__CsvReader')
+class(`delete_CsvReader`) = c("SWIGFunction", class('delete_CsvReader'))
+
+# Start of accessor method for datamunge::CsvReader
+setMethod('$', '_p_datamunge__CsvReader', function(x, name)
+
+{
+  accessorFuns = list('has_next' = CsvReader_has_next, 'next_chunk' = CsvReader_next_chunk, 'reset' = CsvReader_reset, 'batch_size' = CsvReader_batch_size, 'set_batch_size' = CsvReader_set_batch_size, 'column_names' = CsvReader_column_names, 'rows_read' = CsvReader_rows_read);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::CsvReader
+setMethod('delete', '_p_datamunge__CsvReader', function(obj) {delete_datamunge__CsvReader(obj)})
 # Start of ShapeLayer_read
 
 `ShapeLayer_read` = function(path)
@@ -6883,14 +8640,14 @@ class(`ShapeLayer_point_y`) = c("SWIGFunction", class('ShapeLayer_point_y'))
   
   ;ans = .Call('R_swig_ShapeLayer_plot__SWIG_0', self, fill_color, border_color, width, height, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`ShapeLayer_plot__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`ShapeLayer_plot__SWIG_0`, "inputTypes") = c('_p_datamunge__ShapeLayer', '_p_datamunge__plot__RGB', '_p_datamunge__plot__RGB', 'integer', 'integer')
+attr(`ShapeLayer_plot__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`ShapeLayer_plot__SWIG_0`, "inputTypes") = c('_p_datamunge__ShapeLayer', '_p_datamunge__graphics__RGB', '_p_datamunge__graphics__RGB', 'integer', 'integer')
 class(`ShapeLayer_plot__SWIG_0`) = c("SWIGFunction", class('ShapeLayer_plot__SWIG_0'))
 
 # Start of ShapeLayer_plot
@@ -6908,14 +8665,14 @@ class(`ShapeLayer_plot__SWIG_0`) = c("SWIGFunction", class('ShapeLayer_plot__SWI
   
   ;ans = .Call('R_swig_ShapeLayer_plot__SWIG_1', self, fill_color, border_color, width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`ShapeLayer_plot__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`ShapeLayer_plot__SWIG_1`, "inputTypes") = c('_p_datamunge__ShapeLayer', '_p_datamunge__plot__RGB', '_p_datamunge__plot__RGB', 'integer')
+attr(`ShapeLayer_plot__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`ShapeLayer_plot__SWIG_1`, "inputTypes") = c('_p_datamunge__ShapeLayer', '_p_datamunge__graphics__RGB', '_p_datamunge__graphics__RGB', 'integer')
 class(`ShapeLayer_plot__SWIG_1`) = c("SWIGFunction", class('ShapeLayer_plot__SWIG_1'))
 
 # Start of ShapeLayer_plot
@@ -6927,14 +8684,14 @@ class(`ShapeLayer_plot__SWIG_1`) = c("SWIGFunction", class('ShapeLayer_plot__SWI
   if (inherits(border_color, "ExternalReference")) border_color = slot(border_color,"ref"); 
   ;ans = .Call('R_swig_ShapeLayer_plot__SWIG_2', self, fill_color, border_color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`ShapeLayer_plot__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`ShapeLayer_plot__SWIG_2`, "inputTypes") = c('_p_datamunge__ShapeLayer', '_p_datamunge__plot__RGB', '_p_datamunge__plot__RGB')
+attr(`ShapeLayer_plot__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`ShapeLayer_plot__SWIG_2`, "inputTypes") = c('_p_datamunge__ShapeLayer', '_p_datamunge__graphics__RGB', '_p_datamunge__graphics__RGB')
 class(`ShapeLayer_plot__SWIG_2`) = c("SWIGFunction", class('ShapeLayer_plot__SWIG_2'))
 
 # Start of ShapeLayer_plot
@@ -6945,14 +8702,14 @@ class(`ShapeLayer_plot__SWIG_2`) = c("SWIGFunction", class('ShapeLayer_plot__SWI
   if (inherits(fill_color, "ExternalReference")) fill_color = slot(fill_color,"ref"); 
   ;ans = .Call('R_swig_ShapeLayer_plot__SWIG_3', self, fill_color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`ShapeLayer_plot__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`ShapeLayer_plot__SWIG_3`, "inputTypes") = c('_p_datamunge__ShapeLayer', '_p_datamunge__plot__RGB')
+attr(`ShapeLayer_plot__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`ShapeLayer_plot__SWIG_3`, "inputTypes") = c('_p_datamunge__ShapeLayer', '_p_datamunge__graphics__RGB')
 class(`ShapeLayer_plot__SWIG_3`) = c("SWIGFunction", class('ShapeLayer_plot__SWIG_3'))
 
 # Start of ShapeLayer_plot
@@ -6962,13 +8719,13 @@ class(`ShapeLayer_plot__SWIG_3`) = c("SWIGFunction", class('ShapeLayer_plot__SWI
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_ShapeLayer_plot__SWIG_4', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`ShapeLayer_plot__SWIG_4`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`ShapeLayer_plot__SWIG_4`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`ShapeLayer_plot__SWIG_4`, "inputTypes") = c('_p_datamunge__ShapeLayer')
 class(`ShapeLayer_plot__SWIG_4`) = c("SWIGFunction", class('ShapeLayer_plot__SWIG_4'))
 
@@ -6983,19 +8740,19 @@ class(`ShapeLayer_plot__SWIG_4`) = c("SWIGFunction", class('ShapeLayer_plot__SWI
       f <- ShapeLayer_plot__SWIG_4; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__ShapeLayer') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__ShapeLayer') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
       f <- ShapeLayer_plot__SWIG_3; 
     }
   } else if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__ShapeLayer') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__ShapeLayer') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 )) {
       f <- ShapeLayer_plot__SWIG_2; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__ShapeLayer') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__ShapeLayer') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 )) {
       f <- ShapeLayer_plot__SWIG_1; 
     }
   } else if (argc == 5) {
-    if (( extends(argtypes[1], '_p_datamunge__ShapeLayer') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 ) && ( (is.integer(argv[[5]]) || is.numeric(argv[[5]])) && length(argv[[5]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__ShapeLayer') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 ) && ( (is.integer(argv[[5]]) || is.numeric(argv[[5]])) && length(argv[[5]]) == 1 )) {
       f <- ShapeLayer_plot__SWIG_0; 
     }
   };
@@ -7192,7 +8949,7 @@ class(`GGPlot__SWIG_4`) = c("SWIGFunction", class('GGPlot__SWIG_4'))
 }
 
 attr(`GGPlot_geom_point__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_point__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB', 'numeric')
+attr(`GGPlot_geom_point__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB', 'numeric')
 class(`GGPlot_geom_point__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_point__SWIG_0'))
 
 # Start of GGPlot_geom_point
@@ -7210,7 +8967,7 @@ class(`GGPlot_geom_point__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_point_
 }
 
 attr(`GGPlot_geom_point__SWIG_1`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_point__SWIG_1`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_point__SWIG_1`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_point__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_point__SWIG_1'))
 
 # Start of GGPlot_geom_point
@@ -7241,11 +8998,11 @@ class(`GGPlot_geom_point__SWIG_2`) = c("SWIGFunction", class('GGPlot_geom_point_
       f <- GGPlot_geom_point__SWIG_2; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
       f <- GGPlot_geom_point__SWIG_1; 
     }
   } else if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
       f <- GGPlot_geom_point__SWIG_0; 
     }
   };
@@ -7272,7 +9029,7 @@ class(`GGPlot_geom_point__SWIG_2`) = c("SWIGFunction", class('GGPlot_geom_point_
 }
 
 attr(`GGPlot_geom_line__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_line__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB', 'numeric')
+attr(`GGPlot_geom_line__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB', 'numeric')
 class(`GGPlot_geom_line__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_line__SWIG_0'))
 
 # Start of GGPlot_geom_line
@@ -7290,7 +9047,7 @@ class(`GGPlot_geom_line__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_line__S
 }
 
 attr(`GGPlot_geom_line__SWIG_1`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_line__SWIG_1`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_line__SWIG_1`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_line__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_line__SWIG_1'))
 
 # Start of GGPlot_geom_line
@@ -7321,11 +9078,11 @@ class(`GGPlot_geom_line__SWIG_2`) = c("SWIGFunction", class('GGPlot_geom_line__S
       f <- GGPlot_geom_line__SWIG_2; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
       f <- GGPlot_geom_line__SWIG_1; 
     }
   } else if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
       f <- GGPlot_geom_line__SWIG_0; 
     }
   };
@@ -7351,7 +9108,7 @@ class(`GGPlot_geom_line__SWIG_2`) = c("SWIGFunction", class('GGPlot_geom_line__S
 }
 
 attr(`GGPlot_geom_bar__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_bar__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_bar__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_bar__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_bar__SWIG_0'))
 
 # Start of GGPlot_geom_bar
@@ -7382,7 +9139,7 @@ class(`GGPlot_geom_bar__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_bar__SWI
       f <- GGPlot_geom_bar__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
       f <- GGPlot_geom_bar__SWIG_0; 
     }
   };
@@ -7408,7 +9165,7 @@ class(`GGPlot_geom_bar__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_bar__SWI
 }
 
 attr(`GGPlot_geom_col__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_col__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_col__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_col__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_col__SWIG_0'))
 
 # Start of GGPlot_geom_col
@@ -7439,7 +9196,7 @@ class(`GGPlot_geom_col__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_col__SWI
       f <- GGPlot_geom_col__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
       f <- GGPlot_geom_col__SWIG_0; 
     }
   };
@@ -7471,7 +9228,7 @@ class(`GGPlot_geom_col__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_col__SWI
 }
 
 attr(`GGPlot_geom_histogram__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_histogram__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', 'integer', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_histogram__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', 'integer', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_histogram__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_histogram__SWIG_0'))
 
 # Start of GGPlot_geom_histogram
@@ -7529,7 +9286,7 @@ class(`GGPlot_geom_histogram__SWIG_2`) = c("SWIGFunction", class('GGPlot_geom_hi
       f <- GGPlot_geom_histogram__SWIG_1; 
     }
   } else if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 )) {
       f <- GGPlot_geom_histogram__SWIG_0; 
     }
   };
@@ -7555,7 +9312,7 @@ class(`GGPlot_geom_histogram__SWIG_2`) = c("SWIGFunction", class('GGPlot_geom_hi
 }
 
 attr(`GGPlot_geom_boxplot__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_boxplot__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_boxplot__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_boxplot__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_boxplot__SWIG_0'))
 
 # Start of GGPlot_geom_boxplot
@@ -7586,7 +9343,7 @@ class(`GGPlot_geom_boxplot__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_boxp
       f <- GGPlot_geom_boxplot__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
       f <- GGPlot_geom_boxplot__SWIG_0; 
     }
   };
@@ -7612,7 +9369,7 @@ class(`GGPlot_geom_boxplot__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_boxp
 }
 
 attr(`GGPlot_geom_smooth__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_smooth__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_smooth__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_smooth__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_smooth__SWIG_0'))
 
 # Start of GGPlot_geom_smooth
@@ -7643,7 +9400,7 @@ class(`GGPlot_geom_smooth__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_smoot
       f <- GGPlot_geom_smooth__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
       f <- GGPlot_geom_smooth__SWIG_0; 
     }
   };
@@ -7669,7 +9426,7 @@ class(`GGPlot_geom_smooth__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_smoot
 }
 
 attr(`GGPlot_geom_area__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_area__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_area__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_area__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_area__SWIG_0'))
 
 # Start of GGPlot_geom_area
@@ -7700,7 +9457,7 @@ class(`GGPlot_geom_area__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_area__S
       f <- GGPlot_geom_area__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
       f <- GGPlot_geom_area__SWIG_0; 
     }
   };
@@ -7728,7 +9485,7 @@ class(`GGPlot_geom_area__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_area__S
 }
 
 attr(`GGPlot_geom_ribbon__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_ribbon__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', 'character', 'character', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_ribbon__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', 'character', 'character', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_ribbon__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_ribbon__SWIG_0'))
 
 # Start of GGPlot_geom_ribbon
@@ -7761,7 +9518,7 @@ class(`GGPlot_geom_ribbon__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_ribbo
       f <- GGPlot_geom_ribbon__SWIG_1; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 )) {
       f <- GGPlot_geom_ribbon__SWIG_0; 
     }
   };
@@ -7787,7 +9544,7 @@ class(`GGPlot_geom_ribbon__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_ribbo
 }
 
 attr(`GGPlot_geom_density__SWIG_0`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_geom_density__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__plot__RGB')
+attr(`GGPlot_geom_density__SWIG_0`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_datamunge__graphics__RGB')
 class(`GGPlot_geom_density__SWIG_0`) = c("SWIGFunction", class('GGPlot_geom_density__SWIG_0'))
 
 # Start of GGPlot_geom_density
@@ -7818,7 +9575,7 @@ class(`GGPlot_geom_density__SWIG_1`) = c("SWIGFunction", class('GGPlot_geom_dens
       f <- GGPlot_geom_density__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__plot__RGB') && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__GGPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
       f <- GGPlot_geom_density__SWIG_0; 
     }
   };
@@ -7959,7 +9716,7 @@ class(`GGPlot_theme_classic`) = c("SWIGFunction", class('GGPlot_theme_classic'))
 }
 
 attr(`GGPlot_scale_color_manual`, 'returnType') = '_p_datamunge__GGPlot'
-attr(`GGPlot_scale_color_manual`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t')
+attr(`GGPlot_scale_color_manual`, "inputTypes") = c('_p_datamunge__GGPlot', '_p_std__vectorT_datamunge__graphics__RGB_t')
 class(`GGPlot_scale_color_manual`) = c("SWIGFunction", class('GGPlot_scale_color_manual'))
 
 # Start of GGPlot_labs
@@ -8156,6 +9913,149 @@ class(`GGPlot_show__SWIG_1`) = c("SWIGFunction", class('GGPlot_show__SWIG_1'))
 }
 
 # Dispatch function
+# Start of GGPlot_rows
+
+`GGPlot_rows` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_rows', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_rows`, 'returnType') = 'integer'
+attr(`GGPlot_rows`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_rows`) = c("SWIGFunction", class('GGPlot_rows'))
+
+# Start of GGPlot_x_column
+
+`GGPlot_x_column` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_x_column', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_x_column`, 'returnType') = 'character'
+attr(`GGPlot_x_column`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_x_column`) = c("SWIGFunction", class('GGPlot_x_column'))
+
+# Start of GGPlot_y_column
+
+`GGPlot_y_column` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_y_column', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_y_column`, 'returnType') = 'character'
+attr(`GGPlot_y_column`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_y_column`) = c("SWIGFunction", class('GGPlot_y_column'))
+
+# Start of GGPlot_color_column
+
+`GGPlot_color_column` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_color_column', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_color_column`, 'returnType') = 'character'
+attr(`GGPlot_color_column`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_color_column`) = c("SWIGFunction", class('GGPlot_color_column'))
+
+# Start of GGPlot_layer_count
+
+`GGPlot_layer_count` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_layer_count', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_layer_count`, 'returnType') = 'integer'
+attr(`GGPlot_layer_count`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_layer_count`) = c("SWIGFunction", class('GGPlot_layer_count'))
+
+# Start of GGPlot_layer_kinds
+
+`GGPlot_layer_kinds` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_layer_kinds', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_layer_kinds`, 'returnType') = 'character'
+attr(`GGPlot_layer_kinds`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_layer_kinds`) = c("SWIGFunction", class('GGPlot_layer_kinds'))
+
+# Start of GGPlot_theme_name
+
+`GGPlot_theme_name` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_theme_name', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_theme_name`, 'returnType') = 'character'
+attr(`GGPlot_theme_name`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_theme_name`) = c("SWIGFunction", class('GGPlot_theme_name'))
+
+# Start of GGPlot_facet_column
+
+`GGPlot_facet_column` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_facet_column', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_facet_column`, 'returnType') = 'character'
+attr(`GGPlot_facet_column`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_facet_column`) = c("SWIGFunction", class('GGPlot_facet_column'))
+
+# Start of GGPlot_title_text
+
+`GGPlot_title_text` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_title_text', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_title_text`, 'returnType') = 'character'
+attr(`GGPlot_title_text`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_title_text`) = c("SWIGFunction", class('GGPlot_title_text'))
+
+# Start of GGPlot_x_label
+
+`GGPlot_x_label` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_x_label', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_x_label`, 'returnType') = 'character'
+attr(`GGPlot_x_label`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_x_label`) = c("SWIGFunction", class('GGPlot_x_label'))
+
+# Start of GGPlot_y_label
+
+`GGPlot_y_label` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GGPlot_y_label', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GGPlot_y_label`, 'returnType') = 'character'
+attr(`GGPlot_y_label`, "inputTypes") = c('_p_datamunge__GGPlot')
+class(`GGPlot_y_label`) = c("SWIGFunction", class('GGPlot_y_label'))
+
 # Start of delete_GGPlot
 
 `delete_GGPlot` = function(self)
@@ -8173,7 +10073,7 @@ class(`delete_GGPlot`) = c("SWIGFunction", class('delete_GGPlot'))
 setMethod('$', '_p_datamunge__GGPlot', function(x, name)
 
 {
-  accessorFuns = list('geom_point' = GGPlot_geom_point, 'geom_line' = GGPlot_geom_line, 'geom_bar' = GGPlot_geom_bar, 'geom_col' = GGPlot_geom_col, 'geom_histogram' = GGPlot_geom_histogram, 'geom_boxplot' = GGPlot_geom_boxplot, 'geom_smooth' = GGPlot_geom_smooth, 'geom_area' = GGPlot_geom_area, 'geom_ribbon' = GGPlot_geom_ribbon, 'geom_density' = GGPlot_geom_density, 'facet_wrap' = GGPlot_facet_wrap, 'theme_minimal' = GGPlot_theme_minimal, 'theme_bw' = GGPlot_theme_bw, 'theme_classic' = GGPlot_theme_classic, 'scale_color_manual' = GGPlot_scale_color_manual, 'labs' = GGPlot_labs, 'to_svg' = GGPlot_to_svg, 'save' = GGPlot_save, 'save_svg' = GGPlot_save_svg, 'show' = GGPlot_show);
+  accessorFuns = list('geom_point' = GGPlot_geom_point, 'geom_line' = GGPlot_geom_line, 'geom_bar' = GGPlot_geom_bar, 'geom_col' = GGPlot_geom_col, 'geom_histogram' = GGPlot_geom_histogram, 'geom_boxplot' = GGPlot_geom_boxplot, 'geom_smooth' = GGPlot_geom_smooth, 'geom_area' = GGPlot_geom_area, 'geom_ribbon' = GGPlot_geom_ribbon, 'geom_density' = GGPlot_geom_density, 'facet_wrap' = GGPlot_facet_wrap, 'theme_minimal' = GGPlot_theme_minimal, 'theme_bw' = GGPlot_theme_bw, 'theme_classic' = GGPlot_theme_classic, 'scale_color_manual' = GGPlot_scale_color_manual, 'labs' = GGPlot_labs, 'to_svg' = GGPlot_to_svg, 'save' = GGPlot_save, 'save_svg' = GGPlot_save_svg, 'show' = GGPlot_show, 'rows' = GGPlot_rows, 'x_column' = GGPlot_x_column, 'y_column' = GGPlot_y_column, 'color_column' = GGPlot_color_column, 'layer_count' = GGPlot_layer_count, 'layer_kinds' = GGPlot_layer_kinds, 'theme_name' = GGPlot_theme_name, 'facet_column' = GGPlot_facet_column, 'title_text' = GGPlot_title_text, 'x_label' = GGPlot_x_label, 'y_label' = GGPlot_y_label);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -8187,6 +10087,625 @@ setMethod('$', '_p_datamunge__GGPlot', function(x, name)
 );
 # end of accessor method for datamunge::GGPlot
 setMethod('delete', '_p_datamunge__GGPlot', function(obj) {delete_datamunge__GGPlot(obj)})
+# Start of new_Splom
+
+`Splom__SWIG_0` = function(data, columns)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  if (inherits(columns, "ExternalReference")) columns = slot(columns,"ref"); 
+  ;ans = .Call('R_swig_new_Splom__SWIG_0', data, columns, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_Splom);
+  ans
+  
+}
+
+attr(`Splom__SWIG_0`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t')
+class(`Splom__SWIG_0`) = c("SWIGFunction", class('Splom__SWIG_0'))
+
+# Start of new_Splom
+
+`Splom__SWIG_1` = function(data)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  ;ans = .Call('R_swig_new_Splom__SWIG_1', data, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_Splom);
+  ans
+  
+}
+
+attr(`Splom__SWIG_1`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame')
+class(`Splom__SWIG_1`) = c("SWIGFunction", class('Splom__SWIG_1'))
+
+`Splom` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) {
+      f <- Splom__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 )) {
+      f <- Splom__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Splom with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of Splom_title
+
+`Splom_title` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  value = as(value, "character"); 
+  ;ans = .Call('R_swig_Splom_title', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_title`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_title`, "inputTypes") = c('_p_datamunge__Splom', 'character')
+class(`Splom_title`) = c("SWIGFunction", class('Splom_title'))
+
+# Start of Splom_size
+
+`Splom_size` = function(self, width, height, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  width = as.integer(width);
+  
+  if(length(width) > 1) {
+    warning("using only the first element of width");
+  };
+  
+  height = as.integer(height);
+  
+  if(length(height) > 1) {
+    warning("using only the first element of height");
+  };
+  
+  ;ans = .Call('R_swig_Splom_size', self, width, height, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_size`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_size`, "inputTypes") = c('_p_datamunge__Splom', 'integer', 'integer')
+class(`Splom_size`) = c("SWIGFunction", class('Splom_size'))
+
+# Start of Splom_color
+
+`Splom_color` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(value, "ExternalReference")) value = slot(value,"ref"); 
+  ;ans = .Call('R_swig_Splom_color', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_color`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_color`, "inputTypes") = c('_p_datamunge__Splom', '_p_datamunge__graphics__RGB')
+class(`Splom_color`) = c("SWIGFunction", class('Splom_color'))
+
+# Start of Splom_group_by
+
+`Splom_group_by__SWIG_0` = function(self, column, palette, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column = as(column, "character"); 
+  if (inherits(palette, "ExternalReference")) palette = slot(palette,"ref"); 
+  ;ans = .Call('R_swig_Splom_group_by__SWIG_0', self, column, palette, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_group_by__SWIG_0`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_group_by__SWIG_0`, "inputTypes") = c('_p_datamunge__Splom', 'character', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`Splom_group_by__SWIG_0`) = c("SWIGFunction", class('Splom_group_by__SWIG_0'))
+
+# Start of Splom_group_by
+
+`Splom_group_by__SWIG_1` = function(self, column, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column = as(column, "character"); 
+  ;ans = .Call('R_swig_Splom_group_by__SWIG_1', self, column, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_group_by__SWIG_1`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_group_by__SWIG_1`, "inputTypes") = c('_p_datamunge__Splom', 'character')
+class(`Splom_group_by__SWIG_1`) = c("SWIGFunction", class('Splom_group_by__SWIG_1'))
+
+`Splom_group_by` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__Splom') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- Splom_group_by__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__Splom') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[3]]) == 1 )) {
+      f <- Splom_group_by__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Splom_group_by with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of Splom_point_colors
+
+`Splom_point_colors` = function(self, colors, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(colors, "ExternalReference")) colors = slot(colors,"ref"); 
+  ;ans = .Call('R_swig_Splom_point_colors', self, colors, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_point_colors`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_point_colors`, "inputTypes") = c('_p_datamunge__Splom', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`Splom_point_colors`) = c("SWIGFunction", class('Splom_point_colors'))
+
+# Start of Splom_level_palette
+
+`Splom_level_palette` = function(self, colors, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(colors, "ExternalReference")) colors = slot(colors,"ref"); 
+  ;ans = .Call('R_swig_Splom_level_palette', self, colors, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_level_palette`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_level_palette`, "inputTypes") = c('_p_datamunge__Splom', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`Splom_level_palette`) = c("SWIGFunction", class('Splom_level_palette'))
+
+# Start of Splom_marker_size
+
+`Splom_marker_size` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;ans = .Call('R_swig_Splom_marker_size', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_marker_size`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_marker_size`, "inputTypes") = c('_p_datamunge__Splom', 'numeric')
+class(`Splom_marker_size`) = c("SWIGFunction", class('Splom_marker_size'))
+
+# Start of Splom_diagonal_names
+
+`Splom_diagonal_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Splom_diagonal_names', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_diagonal_names`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_diagonal_names`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_diagonal_names`) = c("SWIGFunction", class('Splom_diagonal_names'))
+
+# Start of Splom_diagonal_density
+
+`Splom_diagonal_density` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Splom_diagonal_density', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_diagonal_density`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_diagonal_density`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_diagonal_density`) = c("SWIGFunction", class('Splom_diagonal_density'))
+
+# Start of Splom_diagonal_histogram
+
+`Splom_diagonal_histogram` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Splom_diagonal_histogram', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_diagonal_histogram`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_diagonal_histogram`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_diagonal_histogram`) = c("SWIGFunction", class('Splom_diagonal_histogram'))
+
+# Start of Splom_span
+
+`Splom_span` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;ans = .Call('R_swig_Splom_span', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_span`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_span`, "inputTypes") = c('_p_datamunge__Splom', 'numeric')
+class(`Splom_span`) = c("SWIGFunction", class('Splom_span'))
+
+# Start of Splom_prediction_level
+
+`Splom_prediction_level` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;ans = .Call('R_swig_Splom_prediction_level', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_prediction_level`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_prediction_level`, "inputTypes") = c('_p_datamunge__Splom', 'numeric')
+class(`Splom_prediction_level`) = c("SWIGFunction", class('Splom_prediction_level'))
+
+# Start of Splom_bins
+
+`Splom_bins` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  value = as.integer(value);
+  
+  if(length(value) > 1) {
+    warning("using only the first element of value");
+  };
+  
+  ;ans = .Call('R_swig_Splom_bins', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_bins`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_bins`, "inputTypes") = c('_p_datamunge__Splom', 'integer')
+class(`Splom_bins`) = c("SWIGFunction", class('Splom_bins'))
+
+# Start of Splom_show_grid
+
+`Splom_show_grid__SWIG_0` = function(self, enabled, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  enabled = as.logical(enabled);
+  ;ans = .Call('R_swig_Splom_show_grid__SWIG_0', self, enabled, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_show_grid__SWIG_0`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_show_grid__SWIG_0`, "inputTypes") = c('_p_datamunge__Splom', 'logical')
+class(`Splom_show_grid__SWIG_0`) = c("SWIGFunction", class('Splom_show_grid__SWIG_0'))
+
+# Start of Splom_show_grid
+
+`Splom_show_grid__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Splom_show_grid__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Splom", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_show_grid__SWIG_1`, 'returnType') = '_p_datamunge__Splom'
+attr(`Splom_show_grid__SWIG_1`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_show_grid__SWIG_1`) = c("SWIGFunction", class('Splom_show_grid__SWIG_1'))
+
+`Splom_show_grid` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__Splom') || is.null(argv[[1]]) ) {
+      f <- Splom_show_grid__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__Splom') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- Splom_show_grid__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Splom_show_grid with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of Splom_variables
+
+`Splom_variables` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Splom_variables', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_variables`, 'returnType') = 'character'
+attr(`Splom_variables`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_variables`) = c("SWIGFunction", class('Splom_variables'))
+
+# Start of Splom_groups
+
+`Splom_groups` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Splom_groups', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_groups`, 'returnType') = 'character'
+attr(`Splom_groups`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_groups`) = c("SWIGFunction", class('Splom_groups'))
+
+# Start of Splom_title_text
+
+`Splom_title_text` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Splom_title_text', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_title_text`, 'returnType') = 'character'
+attr(`Splom_title_text`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_title_text`) = c("SWIGFunction", class('Splom_title_text'))
+
+# Start of Splom_width
+
+`Splom_width` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Splom_width', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_width`, 'returnType') = 'integer'
+attr(`Splom_width`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_width`) = c("SWIGFunction", class('Splom_width'))
+
+# Start of Splom_height
+
+`Splom_height` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Splom_height', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_height`, 'returnType') = 'integer'
+attr(`Splom_height`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_height`) = c("SWIGFunction", class('Splom_height'))
+
+# Start of Splom_panel
+
+`Splom_panel` = function(self, row, col, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  row = as.integer(row);
+  
+  if(length(row) > 1) {
+    warning("using only the first element of row");
+  };
+  
+  col = as.integer(col);
+  
+  if(length(col) > 1) {
+    warning("using only the first element of col");
+  };
+  
+  ;ans = .Call('R_swig_Splom_panel', self, row, col, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Splom_panel`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`Splom_panel`, "inputTypes") = c('_p_datamunge__Splom', 'integer', 'integer')
+class(`Splom_panel`) = c("SWIGFunction", class('Splom_panel'))
+
+# Start of Splom_to_svg
+
+`Splom_to_svg` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Splom_to_svg', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_to_svg`, 'returnType') = 'character'
+attr(`Splom_to_svg`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_to_svg`) = c("SWIGFunction", class('Splom_to_svg'))
+
+# Start of Splom_save
+
+`Splom_save` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_Splom_save', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_save`, 'returnType') = 'void'
+attr(`Splom_save`, "inputTypes") = c('_p_datamunge__Splom', 'character')
+class(`Splom_save`) = c("SWIGFunction", class('Splom_save'))
+
+# Start of Splom_save_svg
+
+`Splom_save_svg` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_Splom_save_svg', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_save_svg`, 'returnType') = 'void'
+attr(`Splom_save_svg`, "inputTypes") = c('_p_datamunge__Splom', 'character')
+class(`Splom_save_svg`) = c("SWIGFunction", class('Splom_save_svg'))
+
+# Start of Splom_show
+
+`Splom_show__SWIG_0` = function(self, title_hint)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  title_hint = as(title_hint, "character"); 
+  ;.Call('R_swig_Splom_show__SWIG_0', self, title_hint, PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_show__SWIG_0`, 'returnType') = 'void'
+attr(`Splom_show__SWIG_0`, "inputTypes") = c('_p_datamunge__Splom', 'character')
+class(`Splom_show__SWIG_0`) = c("SWIGFunction", class('Splom_show__SWIG_0'))
+
+# Start of Splom_show
+
+`Splom_show__SWIG_1` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Splom_show__SWIG_1', self, PACKAGE='datamunger');
+  
+}
+
+attr(`Splom_show__SWIG_1`, 'returnType') = 'void'
+attr(`Splom_show__SWIG_1`, "inputTypes") = c('_p_datamunge__Splom')
+class(`Splom_show__SWIG_1`) = c("SWIGFunction", class('Splom_show__SWIG_1'))
+
+`Splom_show` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__Splom') || is.null(argv[[1]]) ) {
+      f <- Splom_show__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__Splom') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- Splom_show__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Splom_show with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of delete_Splom
+
+`delete_Splom` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_Splom', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_Splom`, 'returnType') = 'void'
+attr(`delete_Splom`, "inputTypes") = c('_p_datamunge__Splom')
+class(`delete_Splom`) = c("SWIGFunction", class('delete_Splom'))
+
+# Start of accessor method for datamunge::Splom
+setMethod('$', '_p_datamunge__Splom', function(x, name)
+
+{
+  accessorFuns = list('title' = Splom_title, 'size' = Splom_size, 'color' = Splom_color, 'group_by' = Splom_group_by, 'point_colors' = Splom_point_colors, 'level_palette' = Splom_level_palette, 'marker_size' = Splom_marker_size, 'diagonal_names' = Splom_diagonal_names, 'diagonal_density' = Splom_diagonal_density, 'diagonal_histogram' = Splom_diagonal_histogram, 'span' = Splom_span, 'prediction_level' = Splom_prediction_level, 'bins' = Splom_bins, 'show_grid' = Splom_show_grid, 'variables' = Splom_variables, 'groups' = Splom_groups, 'title_text' = Splom_title_text, 'width' = Splom_width, 'height' = Splom_height, 'panel' = Splom_panel, 'to_svg' = Splom_to_svg, 'save' = Splom_save, 'save_svg' = Splom_save_svg, 'show' = Splom_show);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::Splom
+setMethod('delete', '_p_datamunge__Splom', function(obj) {delete_datamunge__Splom(obj)})
 # Start of new_LM
 
 `LM__SWIG_0` = function(data, formula, weights_column)
@@ -8766,13 +11285,13 @@ class(`LM_anova`) = c("SWIGFunction", class('LM_anova'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_LM_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LM_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LM_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LM_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__LM')
 class(`LM_plot_residuals_vs_fitted`) = c("SWIGFunction", class('LM_plot_residuals_vs_fitted'))
 
@@ -8783,13 +11302,13 @@ class(`LM_plot_residuals_vs_fitted`) = c("SWIGFunction", class('LM_plot_residual
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_LM_plot_normal_qq', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LM_plot_normal_qq`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LM_plot_normal_qq`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LM_plot_normal_qq`, "inputTypes") = c('_p_datamunge__LM')
 class(`LM_plot_normal_qq`) = c("SWIGFunction", class('LM_plot_normal_qq'))
 
@@ -8800,13 +11319,13 @@ class(`LM_plot_normal_qq`) = c("SWIGFunction", class('LM_plot_normal_qq'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_LM_plot_scale_location', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LM_plot_scale_location`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LM_plot_scale_location`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LM_plot_scale_location`, "inputTypes") = c('_p_datamunge__LM')
 class(`LM_plot_scale_location`) = c("SWIGFunction", class('LM_plot_scale_location'))
 
@@ -8817,13 +11336,13 @@ class(`LM_plot_scale_location`) = c("SWIGFunction", class('LM_plot_scale_locatio
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_LM_plot_residuals_vs_leverage', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LM_plot_residuals_vs_leverage`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LM_plot_residuals_vs_leverage`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LM_plot_residuals_vs_leverage`, "inputTypes") = c('_p_datamunge__LM')
 class(`LM_plot_residuals_vs_leverage`) = c("SWIGFunction", class('LM_plot_residuals_vs_leverage'))
 
@@ -10983,6 +13502,60 @@ attr(`LDA_print_summary`, 'returnType') = 'void'
 attr(`LDA_print_summary`, "inputTypes") = c('_p_datamunge__LDA')
 class(`LDA_print_summary`) = c("SWIGFunction", class('LDA_print_summary'))
 
+# Start of LDA_to_md
+
+`LDA_to_md__SWIG_0` = function(self, digits, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  digits = as.integer(digits);
+  
+  if(length(digits) > 1) {
+    warning("using only the first element of digits");
+  };
+  
+  ;.Call('R_swig_LDA_to_md__SWIG_0', self, digits, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LDA_to_md__SWIG_0`, 'returnType') = 'character'
+attr(`LDA_to_md__SWIG_0`, "inputTypes") = c('_p_datamunge__LDA', 'integer')
+class(`LDA_to_md__SWIG_0`) = c("SWIGFunction", class('LDA_to_md__SWIG_0'))
+
+# Start of LDA_to_md
+
+`LDA_to_md__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LDA_to_md__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LDA_to_md__SWIG_1`, 'returnType') = 'character'
+attr(`LDA_to_md__SWIG_1`, "inputTypes") = c('_p_datamunge__LDA')
+class(`LDA_to_md__SWIG_1`) = c("SWIGFunction", class('LDA_to_md__SWIG_1'))
+
+`LDA_to_md` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__LDA') || is.null(argv[[1]]) ) {
+      f <- LDA_to_md__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__LDA') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- LDA_to_md__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for LDA_to_md with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of LDA_predict
 
 `LDA_predict` = function(self, newdata, .copy = FALSE)
@@ -11017,21 +13590,61 @@ class(`LDA_predict_frame`) = c("SWIGFunction", class('LDA_predict_frame'))
 
 # Start of LDA_plot_discriminants
 
-`LDA_plot_discriminants` = function(self, .copy = FALSE)
+`LDA_plot_discriminants__SWIG_0` = function(self, decision_regions, .copy = FALSE)
 {
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
-  ;ans = .Call('R_swig_LDA_plot_discriminants', self, as.logical(.copy), PACKAGE='datamunger');
+  decision_regions = as.logical(decision_regions);
+  ;ans = .Call('R_swig_LDA_plot_discriminants__SWIG_0', self, decision_regions, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LDA_plot_discriminants`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`LDA_plot_discriminants`, "inputTypes") = c('_p_datamunge__LDA')
-class(`LDA_plot_discriminants`) = c("SWIGFunction", class('LDA_plot_discriminants'))
+attr(`LDA_plot_discriminants__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`LDA_plot_discriminants__SWIG_0`, "inputTypes") = c('_p_datamunge__LDA', 'logical')
+class(`LDA_plot_discriminants__SWIG_0`) = c("SWIGFunction", class('LDA_plot_discriminants__SWIG_0'))
 
+# Start of LDA_plot_discriminants
+
+`LDA_plot_discriminants__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LDA_plot_discriminants__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LDA_plot_discriminants__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`LDA_plot_discriminants__SWIG_1`, "inputTypes") = c('_p_datamunge__LDA')
+class(`LDA_plot_discriminants__SWIG_1`) = c("SWIGFunction", class('LDA_plot_discriminants__SWIG_1'))
+
+`LDA_plot_discriminants` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__LDA') || is.null(argv[[1]]) ) {
+      f <- LDA_plot_discriminants__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__LDA') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- LDA_plot_discriminants__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for LDA_plot_discriminants with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of LDA_save_discriminant_plot
 
 `LDA_save_discriminant_plot` = function(self, path)
@@ -11045,6 +13658,23 @@ class(`LDA_plot_discriminants`) = c("SWIGFunction", class('LDA_plot_discriminant
 attr(`LDA_save_discriminant_plot`, 'returnType') = 'void'
 attr(`LDA_save_discriminant_plot`, "inputTypes") = c('_p_datamunge__LDA', 'character')
 class(`LDA_save_discriminant_plot`) = c("SWIGFunction", class('LDA_save_discriminant_plot'))
+
+# Start of LDA_plot_decision_regions
+
+`LDA_plot_decision_regions` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LDA_plot_decision_regions', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LDA_plot_decision_regions`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`LDA_plot_decision_regions`, "inputTypes") = c('_p_datamunge__LDA')
+class(`LDA_plot_decision_regions`) = c("SWIGFunction", class('LDA_plot_decision_regions'))
 
 # Start of delete_LDA
 
@@ -11063,7 +13693,7 @@ class(`delete_LDA`) = c("SWIGFunction", class('delete_LDA'))
 setMethod('$', '_p_datamunge__LDA', function(x, name)
 
 {
-  accessorFuns = list('classes' = LDA_classes, 'predictor_names' = LDA_predictor_names, 'observations' = LDA_observations, 'num_discriminants' = LDA_num_discriminants, 'priors' = LDA_priors, 'group_means' = LDA_group_means, 'scaling' = LDA_scaling, 'proportion_of_trace' = LDA_proportion_of_trace, 'training_accuracy' = LDA_training_accuracy, 'confusion_matrix' = LDA_confusion_matrix, 'summary' = LDA_summary, 'print_summary' = LDA_print_summary, 'predict' = LDA_predict, 'predict_frame' = LDA_predict_frame, 'plot_discriminants' = LDA_plot_discriminants, 'save_discriminant_plot' = LDA_save_discriminant_plot);
+  accessorFuns = list('classes' = LDA_classes, 'predictor_names' = LDA_predictor_names, 'observations' = LDA_observations, 'num_discriminants' = LDA_num_discriminants, 'priors' = LDA_priors, 'group_means' = LDA_group_means, 'scaling' = LDA_scaling, 'proportion_of_trace' = LDA_proportion_of_trace, 'training_accuracy' = LDA_training_accuracy, 'confusion_matrix' = LDA_confusion_matrix, 'summary' = LDA_summary, 'print_summary' = LDA_print_summary, 'to_md' = LDA_to_md, 'predict' = LDA_predict, 'predict_frame' = LDA_predict_frame, 'plot_discriminants' = LDA_plot_discriminants, 'save_discriminant_plot' = LDA_save_discriminant_plot, 'plot_decision_regions' = LDA_plot_decision_regions);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -11827,13 +14457,13 @@ class(`DecisionTreeClassifier_predict_frame`) = c("SWIGFunction", class('Decisio
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_DecisionTreeClassifier_plot_classification', self, data, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DecisionTreeClassifier_plot_classification`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DecisionTreeClassifier_plot_classification`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DecisionTreeClassifier_plot_classification`, "inputTypes") = c('_p_datamunge__DecisionTreeClassifier', '_p_datamunge__DataFrame', 'character', 'character')
 class(`DecisionTreeClassifier_plot_classification`) = c("SWIGFunction", class('DecisionTreeClassifier_plot_classification'))
 
@@ -11852,13 +14482,13 @@ class(`DecisionTreeClassifier_plot_classification`) = c("SWIGFunction", class('D
   
   ;ans = .Call('R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_0', self, x_feature, y_feature, grid_resolution, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DecisionTreeClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DecisionTreeClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DecisionTreeClassifier_plot_decision_regions__SWIG_0`, "inputTypes") = c('_p_datamunge__DecisionTreeClassifier', 'character', 'character', 'integer')
 class(`DecisionTreeClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", class('DecisionTreeClassifier_plot_decision_regions__SWIG_0'))
 
@@ -11871,13 +14501,13 @@ class(`DecisionTreeClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction"
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_1', self, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DecisionTreeClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DecisionTreeClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DecisionTreeClassifier_plot_decision_regions__SWIG_1`, "inputTypes") = c('_p_datamunge__DecisionTreeClassifier', 'character', 'character')
 class(`DecisionTreeClassifier_plot_decision_regions__SWIG_1`) = c("SWIGFunction", class('DecisionTreeClassifier_plot_decision_regions__SWIG_1'))
 
@@ -12240,13 +14870,13 @@ class(`DecisionTreeRegressor_predict`) = c("SWIGFunction", class('DecisionTreeRe
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_DecisionTreeRegressor_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DecisionTreeRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DecisionTreeRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DecisionTreeRegressor_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__DecisionTreeRegressor')
 class(`DecisionTreeRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", class('DecisionTreeRegressor_plot_predicted_vs_actual'))
 
@@ -12257,13 +14887,13 @@ class(`DecisionTreeRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", clas
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_DecisionTreeRegressor_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DecisionTreeRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DecisionTreeRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DecisionTreeRegressor_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__DecisionTreeRegressor')
 class(`DecisionTreeRegressor_plot_residuals_vs_fitted`) = c("SWIGFunction", class('DecisionTreeRegressor_plot_residuals_vs_fitted'))
 
@@ -12956,13 +15586,13 @@ class(`RandomForestClassifier_predict_frame`) = c("SWIGFunction", class('RandomF
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_RandomForestClassifier_plot_classification', self, data, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RandomForestClassifier_plot_classification`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RandomForestClassifier_plot_classification`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RandomForestClassifier_plot_classification`, "inputTypes") = c('_p_datamunge__RandomForestClassifier', '_p_datamunge__DataFrame', 'character', 'character')
 class(`RandomForestClassifier_plot_classification`) = c("SWIGFunction", class('RandomForestClassifier_plot_classification'))
 
@@ -12981,13 +15611,13 @@ class(`RandomForestClassifier_plot_classification`) = c("SWIGFunction", class('R
   
   ;ans = .Call('R_swig_RandomForestClassifier_plot_decision_regions__SWIG_0', self, x_feature, y_feature, grid_resolution, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RandomForestClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RandomForestClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RandomForestClassifier_plot_decision_regions__SWIG_0`, "inputTypes") = c('_p_datamunge__RandomForestClassifier', 'character', 'character', 'integer')
 class(`RandomForestClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", class('RandomForestClassifier_plot_decision_regions__SWIG_0'))
 
@@ -13000,13 +15630,13 @@ class(`RandomForestClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction"
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_RandomForestClassifier_plot_decision_regions__SWIG_1', self, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RandomForestClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RandomForestClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RandomForestClassifier_plot_decision_regions__SWIG_1`, "inputTypes") = c('_p_datamunge__RandomForestClassifier', 'character', 'character')
 class(`RandomForestClassifier_plot_decision_regions__SWIG_1`) = c("SWIGFunction", class('RandomForestClassifier_plot_decision_regions__SWIG_1'))
 
@@ -13652,13 +16282,13 @@ class(`RandomForestRegressor_predict`) = c("SWIGFunction", class('RandomForestRe
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_RandomForestRegressor_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RandomForestRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RandomForestRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RandomForestRegressor_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__RandomForestRegressor')
 class(`RandomForestRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", class('RandomForestRegressor_plot_predicted_vs_actual'))
 
@@ -13669,13 +16299,13 @@ class(`RandomForestRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", clas
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_RandomForestRegressor_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RandomForestRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RandomForestRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RandomForestRegressor_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__RandomForestRegressor')
 class(`RandomForestRegressor_plot_residuals_vs_fitted`) = c("SWIGFunction", class('RandomForestRegressor_plot_residuals_vs_fitted'))
 
@@ -14201,13 +16831,13 @@ class(`ElasticNet_predict`) = c("SWIGFunction", class('ElasticNet_predict'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_ElasticNet_plot_coefficient_path', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`ElasticNet_plot_coefficient_path`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`ElasticNet_plot_coefficient_path`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`ElasticNet_plot_coefficient_path`, "inputTypes") = c('_p_datamunge__ElasticNet')
 class(`ElasticNet_plot_coefficient_path`) = c("SWIGFunction", class('ElasticNet_plot_coefficient_path'))
 
@@ -14218,13 +16848,13 @@ class(`ElasticNet_plot_coefficient_path`) = c("SWIGFunction", class('ElasticNet_
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_ElasticNet_plot_cv_curve', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`ElasticNet_plot_cv_curve`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`ElasticNet_plot_cv_curve`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`ElasticNet_plot_cv_curve`, "inputTypes") = c('_p_datamunge__ElasticNet')
 class(`ElasticNet_plot_cv_curve`) = c("SWIGFunction", class('ElasticNet_plot_cv_curve'))
 
@@ -14235,13 +16865,13 @@ class(`ElasticNet_plot_cv_curve`) = c("SWIGFunction", class('ElasticNet_plot_cv_
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_ElasticNet_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`ElasticNet_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`ElasticNet_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`ElasticNet_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__ElasticNet')
 class(`ElasticNet_plot_predicted_vs_actual`) = c("SWIGFunction", class('ElasticNet_plot_predicted_vs_actual'))
 
@@ -14252,13 +16882,13 @@ class(`ElasticNet_plot_predicted_vs_actual`) = c("SWIGFunction", class('ElasticN
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_ElasticNet_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`ElasticNet_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`ElasticNet_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`ElasticNet_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__ElasticNet')
 class(`ElasticNet_plot_residuals_vs_fitted`) = c("SWIGFunction", class('ElasticNet_plot_residuals_vs_fitted'))
 
@@ -14729,13 +17359,13 @@ class(`Ridge_predict`) = c("SWIGFunction", class('Ridge_predict'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Ridge_plot_coefficient_path', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Ridge_plot_coefficient_path`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Ridge_plot_coefficient_path`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Ridge_plot_coefficient_path`, "inputTypes") = c('_p_datamunge__Ridge')
 class(`Ridge_plot_coefficient_path`) = c("SWIGFunction", class('Ridge_plot_coefficient_path'))
 
@@ -14746,13 +17376,13 @@ class(`Ridge_plot_coefficient_path`) = c("SWIGFunction", class('Ridge_plot_coeff
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Ridge_plot_cv_curve', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Ridge_plot_cv_curve`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Ridge_plot_cv_curve`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Ridge_plot_cv_curve`, "inputTypes") = c('_p_datamunge__Ridge')
 class(`Ridge_plot_cv_curve`) = c("SWIGFunction", class('Ridge_plot_cv_curve'))
 
@@ -14763,13 +17393,13 @@ class(`Ridge_plot_cv_curve`) = c("SWIGFunction", class('Ridge_plot_cv_curve'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Ridge_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Ridge_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Ridge_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Ridge_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__Ridge')
 class(`Ridge_plot_predicted_vs_actual`) = c("SWIGFunction", class('Ridge_plot_predicted_vs_actual'))
 
@@ -14780,13 +17410,13 @@ class(`Ridge_plot_predicted_vs_actual`) = c("SWIGFunction", class('Ridge_plot_pr
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Ridge_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Ridge_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Ridge_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Ridge_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__Ridge')
 class(`Ridge_plot_residuals_vs_fitted`) = c("SWIGFunction", class('Ridge_plot_residuals_vs_fitted'))
 
@@ -15270,13 +17900,13 @@ class(`Lasso_predict`) = c("SWIGFunction", class('Lasso_predict'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Lasso_plot_coefficient_path', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Lasso_plot_coefficient_path`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Lasso_plot_coefficient_path`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Lasso_plot_coefficient_path`, "inputTypes") = c('_p_datamunge__Lasso')
 class(`Lasso_plot_coefficient_path`) = c("SWIGFunction", class('Lasso_plot_coefficient_path'))
 
@@ -15287,13 +17917,13 @@ class(`Lasso_plot_coefficient_path`) = c("SWIGFunction", class('Lasso_plot_coeff
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Lasso_plot_cv_curve', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Lasso_plot_cv_curve`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Lasso_plot_cv_curve`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Lasso_plot_cv_curve`, "inputTypes") = c('_p_datamunge__Lasso')
 class(`Lasso_plot_cv_curve`) = c("SWIGFunction", class('Lasso_plot_cv_curve'))
 
@@ -15304,13 +17934,13 @@ class(`Lasso_plot_cv_curve`) = c("SWIGFunction", class('Lasso_plot_cv_curve'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Lasso_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Lasso_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Lasso_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Lasso_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__Lasso')
 class(`Lasso_plot_predicted_vs_actual`) = c("SWIGFunction", class('Lasso_plot_predicted_vs_actual'))
 
@@ -15321,13 +17951,13 @@ class(`Lasso_plot_predicted_vs_actual`) = c("SWIGFunction", class('Lasso_plot_pr
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Lasso_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Lasso_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Lasso_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Lasso_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__Lasso')
 class(`Lasso_plot_residuals_vs_fitted`) = c("SWIGFunction", class('Lasso_plot_residuals_vs_fitted'))
 
@@ -15671,13 +18301,13 @@ class(`KNNClassifier_predict_frame`) = c("SWIGFunction", class('KNNClassifier_pr
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_KNNClassifier_plot_classification', self, data, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KNNClassifier_plot_classification`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KNNClassifier_plot_classification`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KNNClassifier_plot_classification`, "inputTypes") = c('_p_datamunge__KNNClassifier', '_p_datamunge__DataFrame', 'character', 'character')
 class(`KNNClassifier_plot_classification`) = c("SWIGFunction", class('KNNClassifier_plot_classification'))
 
@@ -15696,13 +18326,13 @@ class(`KNNClassifier_plot_classification`) = c("SWIGFunction", class('KNNClassif
   
   ;ans = .Call('R_swig_KNNClassifier_plot_decision_regions__SWIG_0', self, x_feature, y_feature, grid_resolution, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KNNClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KNNClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KNNClassifier_plot_decision_regions__SWIG_0`, "inputTypes") = c('_p_datamunge__KNNClassifier', 'character', 'character', 'integer')
 class(`KNNClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", class('KNNClassifier_plot_decision_regions__SWIG_0'))
 
@@ -15715,13 +18345,13 @@ class(`KNNClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", class('
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_KNNClassifier_plot_decision_regions__SWIG_1', self, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KNNClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KNNClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KNNClassifier_plot_decision_regions__SWIG_1`, "inputTypes") = c('_p_datamunge__KNNClassifier', 'character', 'character')
 class(`KNNClassifier_plot_decision_regions__SWIG_1`) = c("SWIGFunction", class('KNNClassifier_plot_decision_regions__SWIG_1'))
 
@@ -16062,13 +18692,13 @@ class(`KNNRegressor_predict`) = c("SWIGFunction", class('KNNRegressor_predict'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_KNNRegressor_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KNNRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KNNRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KNNRegressor_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__KNNRegressor')
 class(`KNNRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", class('KNNRegressor_plot_predicted_vs_actual'))
 
@@ -16079,13 +18709,13 @@ class(`KNNRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", class('KNNReg
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_KNNRegressor_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KNNRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KNNRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KNNRegressor_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__KNNRegressor')
 class(`KNNRegressor_plot_residuals_vs_fitted`) = c("SWIGFunction", class('KNNRegressor_plot_residuals_vs_fitted'))
 
@@ -17096,13 +19726,13 @@ class(`PCA_print_summary`) = c("SWIGFunction", class('PCA_print_summary'))
   
   ;ans = .Call('R_swig_PCA_plot_scores__SWIG_0', self, component_x, component_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`PCA_plot_scores__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`PCA_plot_scores__SWIG_0`, "inputTypes") = c('_p_datamunge__PCA', 'integer', 'integer')
 class(`PCA_plot_scores__SWIG_0`) = c("SWIGFunction", class('PCA_plot_scores__SWIG_0'))
 
@@ -17119,13 +19749,13 @@ class(`PCA_plot_scores__SWIG_0`) = c("SWIGFunction", class('PCA_plot_scores__SWI
   
   ;ans = .Call('R_swig_PCA_plot_scores__SWIG_1', self, component_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`PCA_plot_scores__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`PCA_plot_scores__SWIG_1`, "inputTypes") = c('_p_datamunge__PCA', 'integer')
 class(`PCA_plot_scores__SWIG_1`) = c("SWIGFunction", class('PCA_plot_scores__SWIG_1'))
 
@@ -17136,13 +19766,13 @@ class(`PCA_plot_scores__SWIG_1`) = c("SWIGFunction", class('PCA_plot_scores__SWI
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_PCA_plot_scores__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`PCA_plot_scores__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`PCA_plot_scores__SWIG_2`, "inputTypes") = c('_p_datamunge__PCA')
 class(`PCA_plot_scores__SWIG_2`) = c("SWIGFunction", class('PCA_plot_scores__SWIG_2'))
 
@@ -17192,13 +19822,13 @@ class(`PCA_plot_scores__SWIG_2`) = c("SWIGFunction", class('PCA_plot_scores__SWI
   
   ;ans = .Call('R_swig_PCA_plot_scores_grouped__SWIG_0', self, group_labels, component_x, component_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`PCA_plot_scores_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`PCA_plot_scores_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__PCA', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`PCA_plot_scores_grouped__SWIG_0`) = c("SWIGFunction", class('PCA_plot_scores_grouped__SWIG_0'))
 
@@ -17216,13 +19846,13 @@ class(`PCA_plot_scores_grouped__SWIG_0`) = c("SWIGFunction", class('PCA_plot_sco
   
   ;ans = .Call('R_swig_PCA_plot_scores_grouped__SWIG_1', self, group_labels, component_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`PCA_plot_scores_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`PCA_plot_scores_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__PCA', '_p_std__vectorT_std__string_t', 'integer')
 class(`PCA_plot_scores_grouped__SWIG_1`) = c("SWIGFunction", class('PCA_plot_scores_grouped__SWIG_1'))
 
@@ -17234,13 +19864,13 @@ class(`PCA_plot_scores_grouped__SWIG_1`) = c("SWIGFunction", class('PCA_plot_sco
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_PCA_plot_scores_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`PCA_plot_scores_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`PCA_plot_scores_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__PCA', '_p_std__vectorT_std__string_t')
 class(`PCA_plot_scores_grouped__SWIG_2`) = c("SWIGFunction", class('PCA_plot_scores_grouped__SWIG_2'))
 
@@ -17277,13 +19907,13 @@ class(`PCA_plot_scores_grouped__SWIG_2`) = c("SWIGFunction", class('PCA_plot_sco
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_PCA_plot_scree', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`PCA_plot_scree`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scree`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`PCA_plot_scree`, "inputTypes") = c('_p_datamunge__PCA')
 class(`PCA_plot_scree`) = c("SWIGFunction", class('PCA_plot_scree'))
 
@@ -17652,13 +20282,13 @@ class(`MDS_print_summary`) = c("SWIGFunction", class('MDS_print_summary'))
   
   ;ans = .Call('R_swig_MDS_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`MDS_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`MDS_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__MDS', 'integer', 'integer')
 class(`MDS_plot_embedding__SWIG_0`) = c("SWIGFunction", class('MDS_plot_embedding__SWIG_0'))
 
@@ -17675,13 +20305,13 @@ class(`MDS_plot_embedding__SWIG_0`) = c("SWIGFunction", class('MDS_plot_embeddin
   
   ;ans = .Call('R_swig_MDS_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`MDS_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`MDS_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__MDS', 'integer')
 class(`MDS_plot_embedding__SWIG_1`) = c("SWIGFunction", class('MDS_plot_embedding__SWIG_1'))
 
@@ -17692,13 +20322,13 @@ class(`MDS_plot_embedding__SWIG_1`) = c("SWIGFunction", class('MDS_plot_embeddin
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_MDS_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`MDS_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`MDS_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__MDS')
 class(`MDS_plot_embedding__SWIG_2`) = c("SWIGFunction", class('MDS_plot_embedding__SWIG_2'))
 
@@ -17748,13 +20378,13 @@ class(`MDS_plot_embedding__SWIG_2`) = c("SWIGFunction", class('MDS_plot_embeddin
   
   ;ans = .Call('R_swig_MDS_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`MDS_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`MDS_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__MDS', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`MDS_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('MDS_plot_embedding_grouped__SWIG_0'))
 
@@ -17772,13 +20402,13 @@ class(`MDS_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('MDS_plot_
   
   ;ans = .Call('R_swig_MDS_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`MDS_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`MDS_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__MDS', '_p_std__vectorT_std__string_t', 'integer')
 class(`MDS_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('MDS_plot_embedding_grouped__SWIG_1'))
 
@@ -17790,13 +20420,13 @@ class(`MDS_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('MDS_plot_
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_MDS_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`MDS_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`MDS_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__MDS', '_p_std__vectorT_std__string_t')
 class(`MDS_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('MDS_plot_embedding_grouped__SWIG_2'))
 
@@ -18272,13 +20902,13 @@ class(`Isomap_print_summary`) = c("SWIGFunction", class('Isomap_print_summary'))
   
   ;ans = .Call('R_swig_Isomap_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Isomap_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Isomap_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Isomap_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__Isomap', 'integer', 'integer')
 class(`Isomap_plot_embedding__SWIG_0`) = c("SWIGFunction", class('Isomap_plot_embedding__SWIG_0'))
 
@@ -18295,13 +20925,13 @@ class(`Isomap_plot_embedding__SWIG_0`) = c("SWIGFunction", class('Isomap_plot_em
   
   ;ans = .Call('R_swig_Isomap_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Isomap_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Isomap_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Isomap_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__Isomap', 'integer')
 class(`Isomap_plot_embedding__SWIG_1`) = c("SWIGFunction", class('Isomap_plot_embedding__SWIG_1'))
 
@@ -18312,13 +20942,13 @@ class(`Isomap_plot_embedding__SWIG_1`) = c("SWIGFunction", class('Isomap_plot_em
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Isomap_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Isomap_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Isomap_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Isomap_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__Isomap')
 class(`Isomap_plot_embedding__SWIG_2`) = c("SWIGFunction", class('Isomap_plot_embedding__SWIG_2'))
 
@@ -18368,13 +20998,13 @@ class(`Isomap_plot_embedding__SWIG_2`) = c("SWIGFunction", class('Isomap_plot_em
   
   ;ans = .Call('R_swig_Isomap_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Isomap_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Isomap_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Isomap_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__Isomap', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`Isomap_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('Isomap_plot_embedding_grouped__SWIG_0'))
 
@@ -18392,13 +21022,13 @@ class(`Isomap_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('Isomap
   
   ;ans = .Call('R_swig_Isomap_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Isomap_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Isomap_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Isomap_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__Isomap', '_p_std__vectorT_std__string_t', 'integer')
 class(`Isomap_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('Isomap_plot_embedding_grouped__SWIG_1'))
 
@@ -18410,13 +21040,13 @@ class(`Isomap_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('Isomap
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_Isomap_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`Isomap_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`Isomap_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`Isomap_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__Isomap', '_p_std__vectorT_std__string_t')
 class(`Isomap_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('Isomap_plot_embedding_grouped__SWIG_2'))
 
@@ -18952,13 +21582,13 @@ class(`LLE_print_summary`) = c("SWIGFunction", class('LLE_print_summary'))
   
   ;ans = .Call('R_swig_LLE_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LLE_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LLE_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LLE_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__LLE', 'integer', 'integer')
 class(`LLE_plot_embedding__SWIG_0`) = c("SWIGFunction", class('LLE_plot_embedding__SWIG_0'))
 
@@ -18975,13 +21605,13 @@ class(`LLE_plot_embedding__SWIG_0`) = c("SWIGFunction", class('LLE_plot_embeddin
   
   ;ans = .Call('R_swig_LLE_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LLE_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LLE_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LLE_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__LLE', 'integer')
 class(`LLE_plot_embedding__SWIG_1`) = c("SWIGFunction", class('LLE_plot_embedding__SWIG_1'))
 
@@ -18992,13 +21622,13 @@ class(`LLE_plot_embedding__SWIG_1`) = c("SWIGFunction", class('LLE_plot_embeddin
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_LLE_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LLE_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LLE_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LLE_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__LLE')
 class(`LLE_plot_embedding__SWIG_2`) = c("SWIGFunction", class('LLE_plot_embedding__SWIG_2'))
 
@@ -19048,13 +21678,13 @@ class(`LLE_plot_embedding__SWIG_2`) = c("SWIGFunction", class('LLE_plot_embeddin
   
   ;ans = .Call('R_swig_LLE_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LLE_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LLE_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LLE_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__LLE', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`LLE_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('LLE_plot_embedding_grouped__SWIG_0'))
 
@@ -19072,13 +21702,13 @@ class(`LLE_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('LLE_plot_
   
   ;ans = .Call('R_swig_LLE_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LLE_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LLE_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LLE_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__LLE', '_p_std__vectorT_std__string_t', 'integer')
 class(`LLE_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('LLE_plot_embedding_grouped__SWIG_1'))
 
@@ -19090,13 +21720,13 @@ class(`LLE_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('LLE_plot_
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_LLE_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LLE_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LLE_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LLE_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__LLE', '_p_std__vectorT_std__string_t')
 class(`LLE_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('LLE_plot_embedding_grouped__SWIG_2'))
 
@@ -20289,13 +22919,13 @@ class(`TSNE_print_summary`) = c("SWIGFunction", class('TSNE_print_summary'))
   
   ;ans = .Call('R_swig_TSNE_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`TSNE_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`TSNE_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`TSNE_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__TSNE', 'integer', 'integer')
 class(`TSNE_plot_embedding__SWIG_0`) = c("SWIGFunction", class('TSNE_plot_embedding__SWIG_0'))
 
@@ -20312,13 +22942,13 @@ class(`TSNE_plot_embedding__SWIG_0`) = c("SWIGFunction", class('TSNE_plot_embedd
   
   ;ans = .Call('R_swig_TSNE_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`TSNE_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`TSNE_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`TSNE_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__TSNE', 'integer')
 class(`TSNE_plot_embedding__SWIG_1`) = c("SWIGFunction", class('TSNE_plot_embedding__SWIG_1'))
 
@@ -20329,13 +22959,13 @@ class(`TSNE_plot_embedding__SWIG_1`) = c("SWIGFunction", class('TSNE_plot_embedd
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_TSNE_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`TSNE_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`TSNE_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`TSNE_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__TSNE')
 class(`TSNE_plot_embedding__SWIG_2`) = c("SWIGFunction", class('TSNE_plot_embedding__SWIG_2'))
 
@@ -20385,13 +23015,13 @@ class(`TSNE_plot_embedding__SWIG_2`) = c("SWIGFunction", class('TSNE_plot_embedd
   
   ;ans = .Call('R_swig_TSNE_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`TSNE_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`TSNE_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`TSNE_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__TSNE', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`TSNE_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('TSNE_plot_embedding_grouped__SWIG_0'))
 
@@ -20409,13 +23039,13 @@ class(`TSNE_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('TSNE_plo
   
   ;ans = .Call('R_swig_TSNE_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`TSNE_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`TSNE_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`TSNE_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__TSNE', '_p_std__vectorT_std__string_t', 'integer')
 class(`TSNE_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('TSNE_plot_embedding_grouped__SWIG_1'))
 
@@ -20427,13 +23057,13 @@ class(`TSNE_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('TSNE_plo
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_TSNE_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`TSNE_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`TSNE_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`TSNE_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__TSNE', '_p_std__vectorT_std__string_t')
 class(`TSNE_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('TSNE_plot_embedding_grouped__SWIG_2'))
 
@@ -20896,13 +23526,13 @@ class(`LaplacianEigenmaps_print_summary`) = c("SWIGFunction", class('LaplacianEi
   
   ;ans = .Call('R_swig_LaplacianEigenmaps_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LaplacianEigenmaps_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LaplacianEigenmaps_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LaplacianEigenmaps_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__LaplacianEigenmaps', 'integer', 'integer')
 class(`LaplacianEigenmaps_plot_embedding__SWIG_0`) = c("SWIGFunction", class('LaplacianEigenmaps_plot_embedding__SWIG_0'))
 
@@ -20919,13 +23549,13 @@ class(`LaplacianEigenmaps_plot_embedding__SWIG_0`) = c("SWIGFunction", class('La
   
   ;ans = .Call('R_swig_LaplacianEigenmaps_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LaplacianEigenmaps_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LaplacianEigenmaps_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LaplacianEigenmaps_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__LaplacianEigenmaps', 'integer')
 class(`LaplacianEigenmaps_plot_embedding__SWIG_1`) = c("SWIGFunction", class('LaplacianEigenmaps_plot_embedding__SWIG_1'))
 
@@ -20936,13 +23566,13 @@ class(`LaplacianEigenmaps_plot_embedding__SWIG_1`) = c("SWIGFunction", class('La
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_LaplacianEigenmaps_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LaplacianEigenmaps_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LaplacianEigenmaps_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LaplacianEigenmaps_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__LaplacianEigenmaps')
 class(`LaplacianEigenmaps_plot_embedding__SWIG_2`) = c("SWIGFunction", class('LaplacianEigenmaps_plot_embedding__SWIG_2'))
 
@@ -20992,13 +23622,13 @@ class(`LaplacianEigenmaps_plot_embedding__SWIG_2`) = c("SWIGFunction", class('La
   
   ;ans = .Call('R_swig_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__LaplacianEigenmaps', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('LaplacianEigenmaps_plot_embedding_grouped__SWIG_0'))
 
@@ -21016,13 +23646,13 @@ class(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", c
   
   ;ans = .Call('R_swig_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__LaplacianEigenmaps', '_p_std__vectorT_std__string_t', 'integer')
 class(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('LaplacianEigenmaps_plot_embedding_grouped__SWIG_1'))
 
@@ -21034,13 +23664,13 @@ class(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", c
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__LaplacianEigenmaps', '_p_std__vectorT_std__string_t')
 class(`LaplacianEigenmaps_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('LaplacianEigenmaps_plot_embedding_grouped__SWIG_2'))
 
@@ -21546,13 +24176,13 @@ class(`DiffusionMaps_print_summary`) = c("SWIGFunction", class('DiffusionMaps_pr
   
   ;ans = .Call('R_swig_DiffusionMaps_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DiffusionMaps_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DiffusionMaps_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DiffusionMaps_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__DiffusionMaps', 'integer', 'integer')
 class(`DiffusionMaps_plot_embedding__SWIG_0`) = c("SWIGFunction", class('DiffusionMaps_plot_embedding__SWIG_0'))
 
@@ -21569,13 +24199,13 @@ class(`DiffusionMaps_plot_embedding__SWIG_0`) = c("SWIGFunction", class('Diffusi
   
   ;ans = .Call('R_swig_DiffusionMaps_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DiffusionMaps_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DiffusionMaps_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DiffusionMaps_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__DiffusionMaps', 'integer')
 class(`DiffusionMaps_plot_embedding__SWIG_1`) = c("SWIGFunction", class('DiffusionMaps_plot_embedding__SWIG_1'))
 
@@ -21586,13 +24216,13 @@ class(`DiffusionMaps_plot_embedding__SWIG_1`) = c("SWIGFunction", class('Diffusi
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_DiffusionMaps_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DiffusionMaps_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DiffusionMaps_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DiffusionMaps_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__DiffusionMaps')
 class(`DiffusionMaps_plot_embedding__SWIG_2`) = c("SWIGFunction", class('DiffusionMaps_plot_embedding__SWIG_2'))
 
@@ -21642,13 +24272,13 @@ class(`DiffusionMaps_plot_embedding__SWIG_2`) = c("SWIGFunction", class('Diffusi
   
   ;ans = .Call('R_swig_DiffusionMaps_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DiffusionMaps_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DiffusionMaps_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DiffusionMaps_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__DiffusionMaps', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`DiffusionMaps_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('DiffusionMaps_plot_embedding_grouped__SWIG_0'))
 
@@ -21666,13 +24296,13 @@ class(`DiffusionMaps_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class(
   
   ;ans = .Call('R_swig_DiffusionMaps_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DiffusionMaps_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DiffusionMaps_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DiffusionMaps_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__DiffusionMaps', '_p_std__vectorT_std__string_t', 'integer')
 class(`DiffusionMaps_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('DiffusionMaps_plot_embedding_grouped__SWIG_1'))
 
@@ -21684,13 +24314,13 @@ class(`DiffusionMaps_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class(
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_DiffusionMaps_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`DiffusionMaps_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`DiffusionMaps_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`DiffusionMaps_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__DiffusionMaps', '_p_std__vectorT_std__string_t')
 class(`DiffusionMaps_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('DiffusionMaps_plot_embedding_grouped__SWIG_2'))
 
@@ -22261,13 +24891,13 @@ class(`KernelPCA_print_summary`) = c("SWIGFunction", class('KernelPCA_print_summ
   
   ;ans = .Call('R_swig_KernelPCA_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelPCA_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelPCA_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelPCA_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__KernelPCA', 'integer', 'integer')
 class(`KernelPCA_plot_embedding__SWIG_0`) = c("SWIGFunction", class('KernelPCA_plot_embedding__SWIG_0'))
 
@@ -22284,13 +24914,13 @@ class(`KernelPCA_plot_embedding__SWIG_0`) = c("SWIGFunction", class('KernelPCA_p
   
   ;ans = .Call('R_swig_KernelPCA_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelPCA_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelPCA_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelPCA_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__KernelPCA', 'integer')
 class(`KernelPCA_plot_embedding__SWIG_1`) = c("SWIGFunction", class('KernelPCA_plot_embedding__SWIG_1'))
 
@@ -22301,13 +24931,13 @@ class(`KernelPCA_plot_embedding__SWIG_1`) = c("SWIGFunction", class('KernelPCA_p
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_KernelPCA_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelPCA_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelPCA_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelPCA_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__KernelPCA')
 class(`KernelPCA_plot_embedding__SWIG_2`) = c("SWIGFunction", class('KernelPCA_plot_embedding__SWIG_2'))
 
@@ -22357,13 +24987,13 @@ class(`KernelPCA_plot_embedding__SWIG_2`) = c("SWIGFunction", class('KernelPCA_p
   
   ;ans = .Call('R_swig_KernelPCA_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelPCA_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelPCA_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelPCA_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__KernelPCA', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`KernelPCA_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('KernelPCA_plot_embedding_grouped__SWIG_0'))
 
@@ -22381,13 +25011,13 @@ class(`KernelPCA_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('Ker
   
   ;ans = .Call('R_swig_KernelPCA_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelPCA_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelPCA_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelPCA_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__KernelPCA', '_p_std__vectorT_std__string_t', 'integer')
 class(`KernelPCA_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('KernelPCA_plot_embedding_grouped__SWIG_1'))
 
@@ -22399,13 +25029,13 @@ class(`KernelPCA_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('Ker
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_KernelPCA_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelPCA_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelPCA_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelPCA_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__KernelPCA', '_p_std__vectorT_std__string_t')
 class(`KernelPCA_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('KernelPCA_plot_embedding_grouped__SWIG_2'))
 
@@ -23106,13 +25736,13 @@ class(`SammonMapping_print_summary`) = c("SWIGFunction", class('SammonMapping_pr
   
   ;ans = .Call('R_swig_SammonMapping_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`SammonMapping_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`SammonMapping_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`SammonMapping_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__SammonMapping', 'integer', 'integer')
 class(`SammonMapping_plot_embedding__SWIG_0`) = c("SWIGFunction", class('SammonMapping_plot_embedding__SWIG_0'))
 
@@ -23129,13 +25759,13 @@ class(`SammonMapping_plot_embedding__SWIG_0`) = c("SWIGFunction", class('SammonM
   
   ;ans = .Call('R_swig_SammonMapping_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`SammonMapping_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`SammonMapping_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`SammonMapping_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__SammonMapping', 'integer')
 class(`SammonMapping_plot_embedding__SWIG_1`) = c("SWIGFunction", class('SammonMapping_plot_embedding__SWIG_1'))
 
@@ -23146,13 +25776,13 @@ class(`SammonMapping_plot_embedding__SWIG_1`) = c("SWIGFunction", class('SammonM
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_SammonMapping_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`SammonMapping_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`SammonMapping_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`SammonMapping_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__SammonMapping')
 class(`SammonMapping_plot_embedding__SWIG_2`) = c("SWIGFunction", class('SammonMapping_plot_embedding__SWIG_2'))
 
@@ -23202,13 +25832,13 @@ class(`SammonMapping_plot_embedding__SWIG_2`) = c("SWIGFunction", class('SammonM
   
   ;ans = .Call('R_swig_SammonMapping_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`SammonMapping_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`SammonMapping_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`SammonMapping_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__SammonMapping', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`SammonMapping_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('SammonMapping_plot_embedding_grouped__SWIG_0'))
 
@@ -23226,13 +25856,13 @@ class(`SammonMapping_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class(
   
   ;ans = .Call('R_swig_SammonMapping_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`SammonMapping_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`SammonMapping_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`SammonMapping_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__SammonMapping', '_p_std__vectorT_std__string_t', 'integer')
 class(`SammonMapping_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('SammonMapping_plot_embedding_grouped__SWIG_1'))
 
@@ -23244,13 +25874,13 @@ class(`SammonMapping_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class(
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_SammonMapping_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`SammonMapping_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`SammonMapping_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`SammonMapping_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__SammonMapping', '_p_std__vectorT_std__string_t')
 class(`SammonMapping_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('SammonMapping_plot_embedding_grouped__SWIG_2'))
 
@@ -24171,13 +26801,13 @@ class(`UMAP_print_summary`) = c("SWIGFunction", class('UMAP_print_summary'))
   
   ;ans = .Call('R_swig_UMAP_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`UMAP_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`UMAP_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`UMAP_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__UMAP', 'integer', 'integer')
 class(`UMAP_plot_embedding__SWIG_0`) = c("SWIGFunction", class('UMAP_plot_embedding__SWIG_0'))
 
@@ -24194,13 +26824,13 @@ class(`UMAP_plot_embedding__SWIG_0`) = c("SWIGFunction", class('UMAP_plot_embedd
   
   ;ans = .Call('R_swig_UMAP_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`UMAP_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`UMAP_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`UMAP_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__UMAP', 'integer')
 class(`UMAP_plot_embedding__SWIG_1`) = c("SWIGFunction", class('UMAP_plot_embedding__SWIG_1'))
 
@@ -24211,13 +26841,13 @@ class(`UMAP_plot_embedding__SWIG_1`) = c("SWIGFunction", class('UMAP_plot_embedd
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_UMAP_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`UMAP_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`UMAP_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`UMAP_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__UMAP')
 class(`UMAP_plot_embedding__SWIG_2`) = c("SWIGFunction", class('UMAP_plot_embedding__SWIG_2'))
 
@@ -24267,13 +26897,13 @@ class(`UMAP_plot_embedding__SWIG_2`) = c("SWIGFunction", class('UMAP_plot_embedd
   
   ;ans = .Call('R_swig_UMAP_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`UMAP_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`UMAP_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`UMAP_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__UMAP', '_p_std__vectorT_std__string_t', 'integer', 'integer')
 class(`UMAP_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('UMAP_plot_embedding_grouped__SWIG_0'))
 
@@ -24291,13 +26921,13 @@ class(`UMAP_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('UMAP_plo
   
   ;ans = .Call('R_swig_UMAP_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`UMAP_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`UMAP_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`UMAP_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__UMAP', '_p_std__vectorT_std__string_t', 'integer')
 class(`UMAP_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('UMAP_plot_embedding_grouped__SWIG_1'))
 
@@ -24309,13 +26939,13 @@ class(`UMAP_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('UMAP_plo
   if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
   ;ans = .Call('R_swig_UMAP_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`UMAP_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`UMAP_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`UMAP_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__UMAP', '_p_std__vectorT_std__string_t')
 class(`UMAP_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('UMAP_plot_embedding_grouped__SWIG_2'))
 
@@ -25666,13 +28296,13 @@ class(`GBMClassifier_predict_frame`) = c("SWIGFunction", class('GBMClassifier_pr
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_GBMClassifier_plot_classification', self, data, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GBMClassifier_plot_classification`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GBMClassifier_plot_classification`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GBMClassifier_plot_classification`, "inputTypes") = c('_p_datamunge__GBMClassifier', '_p_datamunge__DataFrame', 'character', 'character')
 class(`GBMClassifier_plot_classification`) = c("SWIGFunction", class('GBMClassifier_plot_classification'))
 
@@ -25691,13 +28321,13 @@ class(`GBMClassifier_plot_classification`) = c("SWIGFunction", class('GBMClassif
   
   ;ans = .Call('R_swig_GBMClassifier_plot_decision_regions__SWIG_0', self, x_feature, y_feature, grid_resolution, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GBMClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GBMClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GBMClassifier_plot_decision_regions__SWIG_0`, "inputTypes") = c('_p_datamunge__GBMClassifier', 'character', 'character', 'integer')
 class(`GBMClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", class('GBMClassifier_plot_decision_regions__SWIG_0'))
 
@@ -25710,13 +28340,13 @@ class(`GBMClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", class('
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_GBMClassifier_plot_decision_regions__SWIG_1', self, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GBMClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GBMClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GBMClassifier_plot_decision_regions__SWIG_1`, "inputTypes") = c('_p_datamunge__GBMClassifier', 'character', 'character')
 class(`GBMClassifier_plot_decision_regions__SWIG_1`) = c("SWIGFunction", class('GBMClassifier_plot_decision_regions__SWIG_1'))
 
@@ -25749,13 +28379,13 @@ class(`GBMClassifier_plot_decision_regions__SWIG_1`) = c("SWIGFunction", class('
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GBMClassifier_plot_training_deviance', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GBMClassifier_plot_training_deviance`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GBMClassifier_plot_training_deviance`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GBMClassifier_plot_training_deviance`, "inputTypes") = c('_p_datamunge__GBMClassifier')
 class(`GBMClassifier_plot_training_deviance`) = c("SWIGFunction", class('GBMClassifier_plot_training_deviance'))
 
@@ -26267,13 +28897,13 @@ class(`GBMRegressor_predict`) = c("SWIGFunction", class('GBMRegressor_predict'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GBMRegressor_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GBMRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GBMRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GBMRegressor_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__GBMRegressor')
 class(`GBMRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", class('GBMRegressor_plot_predicted_vs_actual'))
 
@@ -26284,13 +28914,13 @@ class(`GBMRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", class('GBMReg
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GBMRegressor_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GBMRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GBMRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GBMRegressor_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__GBMRegressor')
 class(`GBMRegressor_plot_residuals_vs_fitted`) = c("SWIGFunction", class('GBMRegressor_plot_residuals_vs_fitted'))
 
@@ -26301,13 +28931,13 @@ class(`GBMRegressor_plot_residuals_vs_fitted`) = c("SWIGFunction", class('GBMReg
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GBMRegressor_plot_training_deviance', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GBMRegressor_plot_training_deviance`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GBMRegressor_plot_training_deviance`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GBMRegressor_plot_training_deviance`, "inputTypes") = c('_p_datamunge__GBMRegressor')
 class(`GBMRegressor_plot_training_deviance`) = c("SWIGFunction", class('GBMRegressor_plot_training_deviance'))
 
@@ -26999,13 +29629,13 @@ class(`XGBoostClassifier_predict_frame`) = c("SWIGFunction", class('XGBoostClass
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_XGBoostClassifier_plot_classification', self, data, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`XGBoostClassifier_plot_classification`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`XGBoostClassifier_plot_classification`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`XGBoostClassifier_plot_classification`, "inputTypes") = c('_p_datamunge__XGBoostClassifier', '_p_datamunge__DataFrame', 'character', 'character')
 class(`XGBoostClassifier_plot_classification`) = c("SWIGFunction", class('XGBoostClassifier_plot_classification'))
 
@@ -27024,13 +29654,13 @@ class(`XGBoostClassifier_plot_classification`) = c("SWIGFunction", class('XGBoos
   
   ;ans = .Call('R_swig_XGBoostClassifier_plot_decision_regions__SWIG_0', self, x_feature, y_feature, grid_resolution, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`XGBoostClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`XGBoostClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`XGBoostClassifier_plot_decision_regions__SWIG_0`, "inputTypes") = c('_p_datamunge__XGBoostClassifier', 'character', 'character', 'integer')
 class(`XGBoostClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", class('XGBoostClassifier_plot_decision_regions__SWIG_0'))
 
@@ -27043,13 +29673,13 @@ class(`XGBoostClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", cla
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_XGBoostClassifier_plot_decision_regions__SWIG_1', self, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`XGBoostClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`XGBoostClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`XGBoostClassifier_plot_decision_regions__SWIG_1`, "inputTypes") = c('_p_datamunge__XGBoostClassifier', 'character', 'character')
 class(`XGBoostClassifier_plot_decision_regions__SWIG_1`) = c("SWIGFunction", class('XGBoostClassifier_plot_decision_regions__SWIG_1'))
 
@@ -27082,13 +29712,13 @@ class(`XGBoostClassifier_plot_decision_regions__SWIG_1`) = c("SWIGFunction", cla
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_XGBoostClassifier_plot_training_deviance', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`XGBoostClassifier_plot_training_deviance`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`XGBoostClassifier_plot_training_deviance`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`XGBoostClassifier_plot_training_deviance`, "inputTypes") = c('_p_datamunge__XGBoostClassifier')
 class(`XGBoostClassifier_plot_training_deviance`) = c("SWIGFunction", class('XGBoostClassifier_plot_training_deviance'))
 
@@ -27755,13 +30385,13 @@ class(`XGBoostRegressor_predict`) = c("SWIGFunction", class('XGBoostRegressor_pr
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_XGBoostRegressor_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`XGBoostRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`XGBoostRegressor_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`XGBoostRegressor_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__XGBoostRegressor')
 class(`XGBoostRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", class('XGBoostRegressor_plot_predicted_vs_actual'))
 
@@ -27772,13 +30402,13 @@ class(`XGBoostRegressor_plot_predicted_vs_actual`) = c("SWIGFunction", class('XG
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_XGBoostRegressor_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`XGBoostRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`XGBoostRegressor_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`XGBoostRegressor_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__XGBoostRegressor')
 class(`XGBoostRegressor_plot_residuals_vs_fitted`) = c("SWIGFunction", class('XGBoostRegressor_plot_residuals_vs_fitted'))
 
@@ -27789,13 +30419,13 @@ class(`XGBoostRegressor_plot_residuals_vs_fitted`) = c("SWIGFunction", class('XG
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_XGBoostRegressor_plot_training_deviance', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`XGBoostRegressor_plot_training_deviance`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`XGBoostRegressor_plot_training_deviance`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`XGBoostRegressor_plot_training_deviance`, "inputTypes") = c('_p_datamunge__XGBoostRegressor')
 class(`XGBoostRegressor_plot_training_deviance`) = c("SWIGFunction", class('XGBoostRegressor_plot_training_deviance'))
 
@@ -28150,13 +30780,13 @@ class(`KernelRegression_predict`) = c("SWIGFunction", class('KernelRegression_pr
   
   ;ans = .Call('R_swig_KernelRegression_plot_fit__SWIG_0', self, data, grid_resolution, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelRegression_plot_fit__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelRegression_plot_fit__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelRegression_plot_fit__SWIG_0`, "inputTypes") = c('_p_datamunge__KernelRegression', '_p_datamunge__DataFrame', 'integer')
 class(`KernelRegression_plot_fit__SWIG_0`) = c("SWIGFunction", class('KernelRegression_plot_fit__SWIG_0'))
 
@@ -28168,13 +30798,13 @@ class(`KernelRegression_plot_fit__SWIG_0`) = c("SWIGFunction", class('KernelRegr
   if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
   ;ans = .Call('R_swig_KernelRegression_plot_fit__SWIG_1', self, data, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelRegression_plot_fit__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelRegression_plot_fit__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelRegression_plot_fit__SWIG_1`, "inputTypes") = c('_p_datamunge__KernelRegression', '_p_datamunge__DataFrame')
 class(`KernelRegression_plot_fit__SWIG_1`) = c("SWIGFunction", class('KernelRegression_plot_fit__SWIG_1'))
 
@@ -28207,13 +30837,13 @@ class(`KernelRegression_plot_fit__SWIG_1`) = c("SWIGFunction", class('KernelRegr
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_KernelRegression_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelRegression_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelRegression_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelRegression_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__KernelRegression')
 class(`KernelRegression_plot_predicted_vs_actual`) = c("SWIGFunction", class('KernelRegression_plot_predicted_vs_actual'))
 
@@ -28224,13 +30854,13 @@ class(`KernelRegression_plot_predicted_vs_actual`) = c("SWIGFunction", class('Ke
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_KernelRegression_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelRegression_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelRegression_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelRegression_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__KernelRegression')
 class(`KernelRegression_plot_residuals_vs_fitted`) = c("SWIGFunction", class('KernelRegression_plot_residuals_vs_fitted'))
 
@@ -28241,13 +30871,13 @@ class(`KernelRegression_plot_residuals_vs_fitted`) = c("SWIGFunction", class('Ke
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_KernelRegression_plot_cv_curve', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`KernelRegression_plot_cv_curve`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`KernelRegression_plot_cv_curve`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`KernelRegression_plot_cv_curve`, "inputTypes") = c('_p_datamunge__KernelRegression')
 class(`KernelRegression_plot_cv_curve`) = c("SWIGFunction", class('KernelRegression_plot_cv_curve'))
 
@@ -28781,13 +31411,13 @@ class(`GaussianProcessRegression_predict_frame__SWIG_2`) = c("SWIGFunction", cla
   
   ;ans = .Call('R_swig_GaussianProcessRegression_plot_fit__SWIG_0', self, data, grid_resolution, level, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GaussianProcessRegression_plot_fit__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GaussianProcessRegression_plot_fit__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GaussianProcessRegression_plot_fit__SWIG_0`, "inputTypes") = c('_p_datamunge__GaussianProcessRegression', '_p_datamunge__DataFrame', 'integer', 'numeric')
 class(`GaussianProcessRegression_plot_fit__SWIG_0`) = c("SWIGFunction", class('GaussianProcessRegression_plot_fit__SWIG_0'))
 
@@ -28805,13 +31435,13 @@ class(`GaussianProcessRegression_plot_fit__SWIG_0`) = c("SWIGFunction", class('G
   
   ;ans = .Call('R_swig_GaussianProcessRegression_plot_fit__SWIG_1', self, data, grid_resolution, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GaussianProcessRegression_plot_fit__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GaussianProcessRegression_plot_fit__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GaussianProcessRegression_plot_fit__SWIG_1`, "inputTypes") = c('_p_datamunge__GaussianProcessRegression', '_p_datamunge__DataFrame', 'integer')
 class(`GaussianProcessRegression_plot_fit__SWIG_1`) = c("SWIGFunction", class('GaussianProcessRegression_plot_fit__SWIG_1'))
 
@@ -28823,13 +31453,13 @@ class(`GaussianProcessRegression_plot_fit__SWIG_1`) = c("SWIGFunction", class('G
   if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
   ;ans = .Call('R_swig_GaussianProcessRegression_plot_fit__SWIG_2', self, data, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GaussianProcessRegression_plot_fit__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GaussianProcessRegression_plot_fit__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GaussianProcessRegression_plot_fit__SWIG_2`, "inputTypes") = c('_p_datamunge__GaussianProcessRegression', '_p_datamunge__DataFrame')
 class(`GaussianProcessRegression_plot_fit__SWIG_2`) = c("SWIGFunction", class('GaussianProcessRegression_plot_fit__SWIG_2'))
 
@@ -28866,13 +31496,13 @@ class(`GaussianProcessRegression_plot_fit__SWIG_2`) = c("SWIGFunction", class('G
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GaussianProcessRegression_plot_predicted_vs_actual', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GaussianProcessRegression_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GaussianProcessRegression_plot_predicted_vs_actual`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GaussianProcessRegression_plot_predicted_vs_actual`, "inputTypes") = c('_p_datamunge__GaussianProcessRegression')
 class(`GaussianProcessRegression_plot_predicted_vs_actual`) = c("SWIGFunction", class('GaussianProcessRegression_plot_predicted_vs_actual'))
 
@@ -28883,13 +31513,13 @@ class(`GaussianProcessRegression_plot_predicted_vs_actual`) = c("SWIGFunction", 
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GaussianProcessRegression_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GaussianProcessRegression_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GaussianProcessRegression_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GaussianProcessRegression_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__GaussianProcessRegression')
 class(`GaussianProcessRegression_plot_residuals_vs_fitted`) = c("SWIGFunction", class('GaussianProcessRegression_plot_residuals_vs_fitted'))
 
@@ -28900,13 +31530,13 @@ class(`GaussianProcessRegression_plot_residuals_vs_fitted`) = c("SWIGFunction", 
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GaussianProcessRegression_plot_length_scale_profile', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GaussianProcessRegression_plot_length_scale_profile`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GaussianProcessRegression_plot_length_scale_profile`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GaussianProcessRegression_plot_length_scale_profile`, "inputTypes") = c('_p_datamunge__GaussianProcessRegression')
 class(`GaussianProcessRegression_plot_length_scale_profile`) = c("SWIGFunction", class('GaussianProcessRegression_plot_length_scale_profile'))
 
@@ -29177,13 +31807,13 @@ class(`NaiveBayesClassifier_predict_frame`) = c("SWIGFunction", class('NaiveBaye
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_NaiveBayesClassifier_plot_classification', self, data, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`NaiveBayesClassifier_plot_classification`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`NaiveBayesClassifier_plot_classification`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`NaiveBayesClassifier_plot_classification`, "inputTypes") = c('_p_datamunge__NaiveBayesClassifier', '_p_datamunge__DataFrame', 'character', 'character')
 class(`NaiveBayesClassifier_plot_classification`) = c("SWIGFunction", class('NaiveBayesClassifier_plot_classification'))
 
@@ -29202,13 +31832,13 @@ class(`NaiveBayesClassifier_plot_classification`) = c("SWIGFunction", class('Nai
   
   ;ans = .Call('R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_0', self, x_feature, y_feature, grid_resolution, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`NaiveBayesClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`NaiveBayesClassifier_plot_decision_regions__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`NaiveBayesClassifier_plot_decision_regions__SWIG_0`, "inputTypes") = c('_p_datamunge__NaiveBayesClassifier', 'character', 'character', 'integer')
 class(`NaiveBayesClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", class('NaiveBayesClassifier_plot_decision_regions__SWIG_0'))
 
@@ -29221,13 +31851,13 @@ class(`NaiveBayesClassifier_plot_decision_regions__SWIG_0`) = c("SWIGFunction", 
   y_feature = as(y_feature, "character"); 
   ;ans = .Call('R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_1', self, x_feature, y_feature, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`NaiveBayesClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`NaiveBayesClassifier_plot_decision_regions__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`NaiveBayesClassifier_plot_decision_regions__SWIG_1`, "inputTypes") = c('_p_datamunge__NaiveBayesClassifier', 'character', 'character')
 class(`NaiveBayesClassifier_plot_decision_regions__SWIG_1`) = c("SWIGFunction", class('NaiveBayesClassifier_plot_decision_regions__SWIG_1'))
 
@@ -29934,13 +32564,13 @@ class(`GLM_predict_frame__SWIG_2`) = c("SWIGFunction", class('GLM_predict_frame_
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GLM_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GLM_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GLM_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GLM_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__GLM')
 class(`GLM_plot_residuals_vs_fitted`) = c("SWIGFunction", class('GLM_plot_residuals_vs_fitted'))
 
@@ -29951,13 +32581,13 @@ class(`GLM_plot_residuals_vs_fitted`) = c("SWIGFunction", class('GLM_plot_residu
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GLM_plot_normal_qq', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GLM_plot_normal_qq`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GLM_plot_normal_qq`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GLM_plot_normal_qq`, "inputTypes") = c('_p_datamunge__GLM')
 class(`GLM_plot_normal_qq`) = c("SWIGFunction", class('GLM_plot_normal_qq'))
 
@@ -29968,13 +32598,13 @@ class(`GLM_plot_normal_qq`) = c("SWIGFunction", class('GLM_plot_normal_qq'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GLM_plot_scale_location', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GLM_plot_scale_location`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GLM_plot_scale_location`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GLM_plot_scale_location`, "inputTypes") = c('_p_datamunge__GLM')
 class(`GLM_plot_scale_location`) = c("SWIGFunction", class('GLM_plot_scale_location'))
 
@@ -29985,13 +32615,13 @@ class(`GLM_plot_scale_location`) = c("SWIGFunction", class('GLM_plot_scale_locat
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_GLM_plot_residuals_vs_leverage', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`GLM_plot_residuals_vs_leverage`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`GLM_plot_residuals_vs_leverage`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`GLM_plot_residuals_vs_leverage`, "inputTypes") = c('_p_datamunge__GLM')
 class(`GLM_plot_residuals_vs_leverage`) = c("SWIGFunction", class('GLM_plot_residuals_vs_leverage'))
 
@@ -33644,7 +36274,7 @@ setMethod('delete', '_p_datamunge__Var', function(obj) {delete_datamunge__Var(ob
 }
 
 attr(`RGB_r_set`, 'returnType') = 'void'
-attr(`RGB_r_set`, "inputTypes") = c('_p_datamunge__plot__RGB', 'integer')
+attr(`RGB_r_set`, "inputTypes") = c('_p_datamunge__graphics__RGB', 'integer')
 class(`RGB_r_set`) = c("SWIGFunction", class('RGB_r_set'))
 
 # Start of RGB_r_get
@@ -33657,7 +36287,7 @@ class(`RGB_r_set`) = c("SWIGFunction", class('RGB_r_set'))
 }
 
 attr(`RGB_r_get`, 'returnType') = 'integer'
-attr(`RGB_r_get`, "inputTypes") = c('_p_datamunge__plot__RGB')
+attr(`RGB_r_get`, "inputTypes") = c('_p_datamunge__graphics__RGB')
 class(`RGB_r_get`) = c("SWIGFunction", class('RGB_r_get'))
 
 # Start of RGB_g_set
@@ -33676,7 +36306,7 @@ class(`RGB_r_get`) = c("SWIGFunction", class('RGB_r_get'))
 }
 
 attr(`RGB_g_set`, 'returnType') = 'void'
-attr(`RGB_g_set`, "inputTypes") = c('_p_datamunge__plot__RGB', 'integer')
+attr(`RGB_g_set`, "inputTypes") = c('_p_datamunge__graphics__RGB', 'integer')
 class(`RGB_g_set`) = c("SWIGFunction", class('RGB_g_set'))
 
 # Start of RGB_g_get
@@ -33689,7 +36319,7 @@ class(`RGB_g_set`) = c("SWIGFunction", class('RGB_g_set'))
 }
 
 attr(`RGB_g_get`, 'returnType') = 'integer'
-attr(`RGB_g_get`, "inputTypes") = c('_p_datamunge__plot__RGB')
+attr(`RGB_g_get`, "inputTypes") = c('_p_datamunge__graphics__RGB')
 class(`RGB_g_get`) = c("SWIGFunction", class('RGB_g_get'))
 
 # Start of RGB_b_set
@@ -33708,7 +36338,7 @@ class(`RGB_g_get`) = c("SWIGFunction", class('RGB_g_get'))
 }
 
 attr(`RGB_b_set`, 'returnType') = 'void'
-attr(`RGB_b_set`, "inputTypes") = c('_p_datamunge__plot__RGB', 'integer')
+attr(`RGB_b_set`, "inputTypes") = c('_p_datamunge__graphics__RGB', 'integer')
 class(`RGB_b_set`) = c("SWIGFunction", class('RGB_b_set'))
 
 # Start of RGB_b_get
@@ -33721,7 +36351,7 @@ class(`RGB_b_set`) = c("SWIGFunction", class('RGB_b_set'))
 }
 
 attr(`RGB_b_get`, 'returnType') = 'integer'
-attr(`RGB_b_get`, "inputTypes") = c('_p_datamunge__plot__RGB')
+attr(`RGB_b_get`, "inputTypes") = c('_p_datamunge__graphics__RGB')
 class(`RGB_b_get`) = c("SWIGFunction", class('RGB_b_get'))
 
 # Start of RGB_alpha_set
@@ -33735,7 +36365,7 @@ class(`RGB_b_get`) = c("SWIGFunction", class('RGB_b_get'))
 }
 
 attr(`RGB_alpha_set`, 'returnType') = 'void'
-attr(`RGB_alpha_set`, "inputTypes") = c('_p_datamunge__plot__RGB', 'numeric')
+attr(`RGB_alpha_set`, "inputTypes") = c('_p_datamunge__graphics__RGB', 'numeric')
 class(`RGB_alpha_set`) = c("SWIGFunction", class('RGB_alpha_set'))
 
 # Start of RGB_alpha_get
@@ -33748,7 +36378,7 @@ class(`RGB_alpha_set`) = c("SWIGFunction", class('RGB_alpha_set'))
 }
 
 attr(`RGB_alpha_get`, 'returnType') = 'numeric'
-attr(`RGB_alpha_get`, "inputTypes") = c('_p_datamunge__plot__RGB')
+attr(`RGB_alpha_get`, "inputTypes") = c('_p_datamunge__graphics__RGB')
 class(`RGB_alpha_get`) = c("SWIGFunction", class('RGB_alpha_get'))
 
 # Start of new_RGB
@@ -33757,14 +36387,14 @@ class(`RGB_alpha_get`) = c("SWIGFunction", class('RGB_alpha_get'))
 {
   ;ans = .Call('R_swig_new_RGB__SWIG_0', PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RGB", ref=ans);
+  else new("_p_datamunge__graphics__RGB", ref=ans);
   
   reg.finalizer(ans@ref, delete_RGB);
   ans
   
 }
 
-attr(`RGB__SWIG_0`, 'returnType') = '_p_datamunge__plot__RGB'
+attr(`RGB__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RGB'
 class(`RGB__SWIG_0`) = c("SWIGFunction", class('RGB__SWIG_0'))
 
 # Start of new_RGB
@@ -33792,14 +36422,14 @@ class(`RGB__SWIG_0`) = c("SWIGFunction", class('RGB__SWIG_0'))
   
   ;ans = .Call('R_swig_new_RGB__SWIG_1', r, g, b, alpha, PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RGB", ref=ans);
+  else new("_p_datamunge__graphics__RGB", ref=ans);
   
   reg.finalizer(ans@ref, delete_RGB);
   ans
   
 }
 
-attr(`RGB__SWIG_1`, 'returnType') = '_p_datamunge__plot__RGB'
+attr(`RGB__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RGB'
 attr(`RGB__SWIG_1`, "inputTypes") = c('integer', 'integer', 'integer', 'numeric')
 class(`RGB__SWIG_1`) = c("SWIGFunction", class('RGB__SWIG_1'))
 
@@ -33827,14 +36457,14 @@ class(`RGB__SWIG_1`) = c("SWIGFunction", class('RGB__SWIG_1'))
   
   ;ans = .Call('R_swig_new_RGB__SWIG_2', r, g, b, PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RGB", ref=ans);
+  else new("_p_datamunge__graphics__RGB", ref=ans);
   
   reg.finalizer(ans@ref, delete_RGB);
   ans
   
 }
 
-attr(`RGB__SWIG_2`, 'returnType') = '_p_datamunge__plot__RGB'
+attr(`RGB__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RGB'
 attr(`RGB__SWIG_2`, "inputTypes") = c('integer', 'integer', 'integer')
 class(`RGB__SWIG_2`) = c("SWIGFunction", class('RGB__SWIG_2'))
 
@@ -33872,11 +36502,11 @@ class(`RGB__SWIG_2`) = c("SWIGFunction", class('RGB__SWIG_2'))
 }
 
 attr(`delete_RGB`, 'returnType') = 'void'
-attr(`delete_RGB`, "inputTypes") = c('_p_datamunge__plot__RGB')
+attr(`delete_RGB`, "inputTypes") = c('_p_datamunge__graphics__RGB')
 class(`delete_RGB`) = c("SWIGFunction", class('delete_RGB'))
 
-# Start of accessor method for datamunge::plot::RGB
-setMethod('$', '_p_datamunge__plot__RGB', function(x, name)
+# Start of accessor method for datamunge::graphics::RGB
+setMethod('$', '_p_datamunge__graphics__RGB', function(x, name)
 
 {
   accessorFuns = list('r' = RGB_r_get, 'g' = RGB_g_get, 'b' = RGB_b_get, 'alpha' = RGB_alpha_get);
@@ -33892,9 +36522,9 @@ setMethod('$', '_p_datamunge__plot__RGB', function(x, name)
 
 
 );
-# end of accessor method for datamunge::plot::RGB
-# Start of accessor method for datamunge::plot::RGB
-setMethod('$<-', '_p_datamunge__plot__RGB', function(x, name, value)
+# end of accessor method for datamunge::graphics::RGB
+# Start of accessor method for datamunge::graphics::RGB
+setMethod('$<-', '_p_datamunge__graphics__RGB', function(x, name, value)
 
 {
   accessorFuns = list('r' = RGB_r_set, 'g' = RGB_g_set, 'b' = RGB_b_set, 'alpha' = RGB_alpha_set);
@@ -33908,7 +36538,7 @@ setMethod('$<-', '_p_datamunge__plot__RGB', function(x, name, value)
 
 
 );
-setMethod('[[<-', c('_p_datamunge__plot__RGB', 'character'),function(x, i, j, ..., value)
+setMethod('[[<-', c('_p_datamunge__graphics__RGB', 'character'),function(x, i, j, ..., value)
 
 {
   name = i;
@@ -33923,10 +36553,10 @@ setMethod('[[<-', c('_p_datamunge__plot__RGB', 'character'),function(x, i, j, ..
 
 
 );
-# end of accessor method for datamunge::plot::RGB
-setMethod('delete', '_p_datamunge__plot__RGB', function(obj) {delete_datamunge__plot__RGB(obj)})
-# Start definition of copy functions & methods for datamunge::plot::RGB
-CopyToR_datamunge__plot__RGB = function(value, obj = new("datamunge::plot::RGB"))
+# end of accessor method for datamunge::graphics::RGB
+setMethod('delete', '_p_datamunge__graphics__RGB', function(obj) {delete_datamunge__graphics__RGB(obj)})
+# Start definition of copy functions & methods for datamunge::graphics::RGB
+CopyToR_datamunge__graphics__RGB = function(value, obj = new("datamunge::graphics::RGB"))
 {
   obj@r = value$r;
   obj@g = value$g;
@@ -33937,7 +36567,7 @@ CopyToR_datamunge__plot__RGB = function(value, obj = new("datamunge::plot::RGB")
 
 
 
-CopyToC_datamunge__plot__RGB = function(value, obj)
+CopyToC_datamunge__graphics__RGB = function(value, obj)
 {
   obj$r = value@r;
   obj$g = value@g;
@@ -33948,18 +36578,18 @@ CopyToC_datamunge__plot__RGB = function(value, obj)
 
 
 
-# Start definition of copy methods for datamunge::plot::RGB
-setMethod('copyToR', '_p_datamunge__plot__RGB', CopyToR_datamunge__plot__RGB);
-setMethod('copyToC', "datamunge::plot::RGB", CopyToC_datamunge__plot__RGB);
+# Start definition of copy methods for datamunge::graphics::RGB
+setMethod('copyToR', '_p_datamunge__graphics__RGB', CopyToR_datamunge__graphics__RGB);
+setMethod('copyToC', "datamunge::graphics::RGB", CopyToC_datamunge__graphics__RGB);
 
-# End definition of copy methods for datamunge::plot::RGB
-# End definition of copy functions & methods for datamunge::plot::RGB
+# End definition of copy methods for datamunge::graphics::RGB
+# End definition of copy functions & methods for datamunge::graphics::RGB
 # Start of DataSeries_Kind_Scatter_get
 
 `DataSeries_Kind_Scatter_get` = function(.copy = FALSE)
 {
   ;ans = .Call('R_swig_DataSeries_Kind_Scatter_get', as.logical(.copy), PACKAGE='datamunger');
-  ans = enumFromInteger(ans, "_datamunge__plot__DataSeries__Kind");
+  ans = enumFromInteger(ans, "_datamunge__graphics__DataSeries__Kind");
   
   ans
   
@@ -33973,7 +36603,7 @@ class(`DataSeries_Kind_Scatter_get`) = c("SWIGFunction", class('DataSeries_Kind_
 `DataSeries_Kind_Line_get` = function(.copy = FALSE)
 {
   ;ans = .Call('R_swig_DataSeries_Kind_Line_get', as.logical(.copy), PACKAGE='datamunger');
-  ans = enumFromInteger(ans, "_datamunge__plot__DataSeries__Kind");
+  ans = enumFromInteger(ans, "_datamunge__graphics__DataSeries__Kind");
   
   ans
   
@@ -33987,7 +36617,7 @@ class(`DataSeries_Kind_Line_get`) = c("SWIGFunction", class('DataSeries_Kind_Lin
 `DataSeries_Kind_Bar_get` = function(.copy = FALSE)
 {
   ;ans = .Call('R_swig_DataSeries_Kind_Bar_get', as.logical(.copy), PACKAGE='datamunger');
-  ans = enumFromInteger(ans, "_datamunge__plot__DataSeries__Kind");
+  ans = enumFromInteger(ans, "_datamunge__graphics__DataSeries__Kind");
   
   ans
   
@@ -34001,7 +36631,7 @@ class(`DataSeries_Kind_Bar_get`) = c("SWIGFunction", class('DataSeries_Kind_Bar_
 `DataSeries_Kind_Box_get` = function(.copy = FALSE)
 {
   ;ans = .Call('R_swig_DataSeries_Kind_Box_get', as.logical(.copy), PACKAGE='datamunger');
-  ans = enumFromInteger(ans, "_datamunge__plot__DataSeries__Kind");
+  ans = enumFromInteger(ans, "_datamunge__graphics__DataSeries__Kind");
   
   ans
   
@@ -34015,7 +36645,7 @@ class(`DataSeries_Kind_Box_get`) = c("SWIGFunction", class('DataSeries_Kind_Box_
 `DataSeries_Kind_Polygon_get` = function(.copy = FALSE)
 {
   ;ans = .Call('R_swig_DataSeries_Kind_Polygon_get', as.logical(.copy), PACKAGE='datamunger');
-  ans = enumFromInteger(ans, "_datamunge__plot__DataSeries__Kind");
+  ans = enumFromInteger(ans, "_datamunge__graphics__DataSeries__Kind");
   
   ans
   
@@ -34029,7 +36659,7 @@ class(`DataSeries_Kind_Polygon_get`) = c("SWIGFunction", class('DataSeries_Kind_
 `DataSeries_Kind_Text_get` = function(.copy = FALSE)
 {
   ;ans = .Call('R_swig_DataSeries_Kind_Text_get', as.logical(.copy), PACKAGE='datamunger');
-  ans = enumFromInteger(ans, "_datamunge__plot__DataSeries__Kind");
+  ans = enumFromInteger(ans, "_datamunge__graphics__DataSeries__Kind");
   
   ans
   
@@ -34043,7 +36673,7 @@ class(`DataSeries_Kind_Text_get`) = c("SWIGFunction", class('DataSeries_Kind_Tex
 `DataSeries_Kind_Segment_get` = function(.copy = FALSE)
 {
   ;ans = .Call('R_swig_DataSeries_Kind_Segment_get', as.logical(.copy), PACKAGE='datamunger');
-  ans = enumFromInteger(ans, "_datamunge__plot__DataSeries__Kind");
+  ans = enumFromInteger(ans, "_datamunge__graphics__DataSeries__Kind");
   
   ans
   
@@ -34057,7 +36687,7 @@ class(`DataSeries_Kind_Segment_get`) = c("SWIGFunction", class('DataSeries_Kind_
 `DataSeries_kind_set` = function(self, s_kind)
 {
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
-  s_kind = enumToInteger(s_kind, "_datamunge__plot__DataSeries__Kind"); 
+  s_kind = enumToInteger(s_kind, "_datamunge__graphics__DataSeries__Kind"); 
   
   if(length(s_kind) > 1) {
     warning("using only the first element of s_kind");
@@ -34068,7 +36698,7 @@ class(`DataSeries_Kind_Segment_get`) = c("SWIGFunction", class('DataSeries_Kind_
 }
 
 attr(`DataSeries_kind_set`, 'returnType') = 'void'
-attr(`DataSeries_kind_set`, "inputTypes") = c('_p_datamunge__plot__DataSeries', 'character')
+attr(`DataSeries_kind_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', 'character')
 class(`DataSeries_kind_set`) = c("SWIGFunction", class('DataSeries_kind_set'))
 
 # Start of DataSeries_kind_get
@@ -34077,14 +36707,14 @@ class(`DataSeries_kind_set`) = c("SWIGFunction", class('DataSeries_kind_set'))
 {
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_DataSeries_kind_get', self, as.logical(.copy), PACKAGE='datamunger');
-  ans = enumFromInteger(ans, "_datamunge__plot__DataSeries__Kind");
+  ans = enumFromInteger(ans, "_datamunge__graphics__DataSeries__Kind");
   
   ans
   
 }
 
 attr(`DataSeries_kind_get`, 'returnType') = 'character'
-attr(`DataSeries_kind_get`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`DataSeries_kind_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`DataSeries_kind_get`) = c("SWIGFunction", class('DataSeries_kind_get'))
 
 # Start of DataSeries_x_set
@@ -34098,7 +36728,7 @@ class(`DataSeries_kind_get`) = c("SWIGFunction", class('DataSeries_kind_get'))
 }
 
 attr(`DataSeries_x_set`, 'returnType') = 'void'
-attr(`DataSeries_x_set`, "inputTypes") = c('_p_datamunge__plot__DataSeries', '_p_std__vectorT_double_t')
+attr(`DataSeries_x_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', '_p_std__vectorT_double_t')
 class(`DataSeries_x_set`) = c("SWIGFunction", class('DataSeries_x_set'))
 
 # Start of DataSeries_x_get
@@ -34111,7 +36741,7 @@ class(`DataSeries_x_set`) = c("SWIGFunction", class('DataSeries_x_set'))
 }
 
 attr(`DataSeries_x_get`, 'returnType') = '_p_std__vectorT_double_t'
-attr(`DataSeries_x_get`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`DataSeries_x_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`DataSeries_x_get`) = c("SWIGFunction", class('DataSeries_x_get'))
 
 # Start of DataSeries_y_set
@@ -34125,7 +36755,7 @@ class(`DataSeries_x_get`) = c("SWIGFunction", class('DataSeries_x_get'))
 }
 
 attr(`DataSeries_y_set`, 'returnType') = 'void'
-attr(`DataSeries_y_set`, "inputTypes") = c('_p_datamunge__plot__DataSeries', '_p_std__vectorT_double_t')
+attr(`DataSeries_y_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', '_p_std__vectorT_double_t')
 class(`DataSeries_y_set`) = c("SWIGFunction", class('DataSeries_y_set'))
 
 # Start of DataSeries_y_get
@@ -34138,7 +36768,7 @@ class(`DataSeries_y_set`) = c("SWIGFunction", class('DataSeries_y_set'))
 }
 
 attr(`DataSeries_y_get`, 'returnType') = '_p_std__vectorT_double_t'
-attr(`DataSeries_y_get`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`DataSeries_y_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`DataSeries_y_get`) = c("SWIGFunction", class('DataSeries_y_get'))
 
 # Start of DataSeries_label_set
@@ -34152,7 +36782,7 @@ class(`DataSeries_y_get`) = c("SWIGFunction", class('DataSeries_y_get'))
 }
 
 attr(`DataSeries_label_set`, 'returnType') = 'void'
-attr(`DataSeries_label_set`, "inputTypes") = c('_p_datamunge__plot__DataSeries', 'character')
+attr(`DataSeries_label_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', 'character')
 class(`DataSeries_label_set`) = c("SWIGFunction", class('DataSeries_label_set'))
 
 # Start of DataSeries_label_get
@@ -34165,7 +36795,7 @@ class(`DataSeries_label_set`) = c("SWIGFunction", class('DataSeries_label_set'))
 }
 
 attr(`DataSeries_label_get`, 'returnType') = 'character'
-attr(`DataSeries_label_get`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`DataSeries_label_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`DataSeries_label_get`) = c("SWIGFunction", class('DataSeries_label_get'))
 
 # Start of DataSeries_color_set
@@ -34179,7 +36809,7 @@ class(`DataSeries_label_get`) = c("SWIGFunction", class('DataSeries_label_get'))
 }
 
 attr(`DataSeries_color_set`, 'returnType') = 'void'
-attr(`DataSeries_color_set`, "inputTypes") = c('_p_datamunge__plot__DataSeries', '_p_datamunge__plot__RGB')
+attr(`DataSeries_color_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', '_p_datamunge__graphics__RGB')
 class(`DataSeries_color_set`) = c("SWIGFunction", class('DataSeries_color_set'))
 
 # Start of DataSeries_color_get
@@ -34189,14 +36819,14 @@ class(`DataSeries_color_set`) = c("SWIGFunction", class('DataSeries_color_set'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_DataSeries_color_get', self, PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RGB", ref=ans);
+  else new("_p_datamunge__graphics__RGB", ref=ans);
   
   ans
   
 }
 
-attr(`DataSeries_color_get`, 'returnType') = '_p_datamunge__plot__RGB'
-attr(`DataSeries_color_get`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`DataSeries_color_get`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`DataSeries_color_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`DataSeries_color_get`) = c("SWIGFunction", class('DataSeries_color_get'))
 
 # Start of DataSeries_stroke_width_set
@@ -34210,7 +36840,7 @@ class(`DataSeries_color_get`) = c("SWIGFunction", class('DataSeries_color_get'))
 }
 
 attr(`DataSeries_stroke_width_set`, 'returnType') = 'void'
-attr(`DataSeries_stroke_width_set`, "inputTypes") = c('_p_datamunge__plot__DataSeries', 'numeric')
+attr(`DataSeries_stroke_width_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', 'numeric')
 class(`DataSeries_stroke_width_set`) = c("SWIGFunction", class('DataSeries_stroke_width_set'))
 
 # Start of DataSeries_stroke_width_get
@@ -34223,7 +36853,7 @@ class(`DataSeries_stroke_width_set`) = c("SWIGFunction", class('DataSeries_strok
 }
 
 attr(`DataSeries_stroke_width_get`, 'returnType') = 'numeric'
-attr(`DataSeries_stroke_width_get`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`DataSeries_stroke_width_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`DataSeries_stroke_width_get`) = c("SWIGFunction", class('DataSeries_stroke_width_get'))
 
 # Start of DataSeries_marker_size_set
@@ -34237,7 +36867,7 @@ class(`DataSeries_stroke_width_get`) = c("SWIGFunction", class('DataSeries_strok
 }
 
 attr(`DataSeries_marker_size_set`, 'returnType') = 'void'
-attr(`DataSeries_marker_size_set`, "inputTypes") = c('_p_datamunge__plot__DataSeries', 'numeric')
+attr(`DataSeries_marker_size_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', 'numeric')
 class(`DataSeries_marker_size_set`) = c("SWIGFunction", class('DataSeries_marker_size_set'))
 
 # Start of DataSeries_marker_size_get
@@ -34250,7 +36880,7 @@ class(`DataSeries_marker_size_set`) = c("SWIGFunction", class('DataSeries_marker
 }
 
 attr(`DataSeries_marker_size_get`, 'returnType') = 'numeric'
-attr(`DataSeries_marker_size_get`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`DataSeries_marker_size_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`DataSeries_marker_size_get`) = c("SWIGFunction", class('DataSeries_marker_size_get'))
 
 # Start of DataSeries_bar_width_set
@@ -34264,7 +36894,7 @@ class(`DataSeries_marker_size_get`) = c("SWIGFunction", class('DataSeries_marker
 }
 
 attr(`DataSeries_bar_width_set`, 'returnType') = 'void'
-attr(`DataSeries_bar_width_set`, "inputTypes") = c('_p_datamunge__plot__DataSeries', 'numeric')
+attr(`DataSeries_bar_width_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', 'numeric')
 class(`DataSeries_bar_width_set`) = c("SWIGFunction", class('DataSeries_bar_width_set'))
 
 # Start of DataSeries_bar_width_get
@@ -34277,7 +36907,7 @@ class(`DataSeries_bar_width_set`) = c("SWIGFunction", class('DataSeries_bar_widt
 }
 
 attr(`DataSeries_bar_width_get`, 'returnType') = 'numeric'
-attr(`DataSeries_bar_width_get`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`DataSeries_bar_width_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`DataSeries_bar_width_get`) = c("SWIGFunction", class('DataSeries_bar_width_get'))
 
 # Start of DataSeries_filled_set
@@ -34291,7 +36921,7 @@ class(`DataSeries_bar_width_get`) = c("SWIGFunction", class('DataSeries_bar_widt
 }
 
 attr(`DataSeries_filled_set`, 'returnType') = 'void'
-attr(`DataSeries_filled_set`, "inputTypes") = c('_p_datamunge__plot__DataSeries', 'logical')
+attr(`DataSeries_filled_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', 'logical')
 class(`DataSeries_filled_set`) = c("SWIGFunction", class('DataSeries_filled_set'))
 
 # Start of DataSeries_filled_get
@@ -34304,8 +36934,39 @@ class(`DataSeries_filled_set`) = c("SWIGFunction", class('DataSeries_filled_set'
 }
 
 attr(`DataSeries_filled_get`, 'returnType') = 'logical'
-attr(`DataSeries_filled_get`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`DataSeries_filled_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`DataSeries_filled_get`) = c("SWIGFunction", class('DataSeries_filled_get'))
+
+# Start of DataSeries_point_colors_set
+
+`DataSeries_point_colors_set` = function(self, s_point_colors)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_point_colors, "ExternalReference")) s_point_colors = slot(s_point_colors,"ref"); 
+  ;.Call('R_swig_DataSeries_point_colors_set', self, s_point_colors, PACKAGE='datamunger');
+  
+}
+
+attr(`DataSeries_point_colors_set`, 'returnType') = 'void'
+attr(`DataSeries_point_colors_set`, "inputTypes") = c('_p_datamunge__graphics__DataSeries', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`DataSeries_point_colors_set`) = c("SWIGFunction", class('DataSeries_point_colors_set'))
+
+# Start of DataSeries_point_colors_get
+
+`DataSeries_point_colors_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_DataSeries_point_colors_get', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataSeries_point_colors_get`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`DataSeries_point_colors_get`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
+class(`DataSeries_point_colors_get`) = c("SWIGFunction", class('DataSeries_point_colors_get'))
 
 # Start of new_DataSeries
 
@@ -34313,14 +36974,14 @@ class(`DataSeries_filled_get`) = c("SWIGFunction", class('DataSeries_filled_get'
 {
   ;ans = .Call('R_swig_new_DataSeries', PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__DataSeries", ref=ans);
+  else new("_p_datamunge__graphics__DataSeries", ref=ans);
   
   reg.finalizer(ans@ref, delete_DataSeries);
   ans
   
 }
 
-attr(`DataSeries`, 'returnType') = '_p_datamunge__plot__DataSeries'
+attr(`DataSeries`, 'returnType') = '_p_datamunge__graphics__DataSeries'
 class(`DataSeries`) = c("SWIGFunction", class('DataSeries'))
 
 # Start of delete_DataSeries
@@ -34333,15 +36994,15 @@ class(`DataSeries`) = c("SWIGFunction", class('DataSeries'))
 }
 
 attr(`delete_DataSeries`, 'returnType') = 'void'
-attr(`delete_DataSeries`, "inputTypes") = c('_p_datamunge__plot__DataSeries')
+attr(`delete_DataSeries`, "inputTypes") = c('_p_datamunge__graphics__DataSeries')
 class(`delete_DataSeries`) = c("SWIGFunction", class('delete_DataSeries'))
 
-# Start of accessor method for datamunge::plot::DataSeries
-setMethod('$', '_p_datamunge__plot__DataSeries', function(x, name)
+# Start of accessor method for datamunge::graphics::DataSeries
+setMethod('$', '_p_datamunge__graphics__DataSeries', function(x, name)
 
 {
-  accessorFuns = list('kind' = DataSeries_kind_get, 'x' = DataSeries_x_get, 'y' = DataSeries_y_get, 'label' = DataSeries_label_get, 'color' = DataSeries_color_get, 'stroke_width' = DataSeries_stroke_width_get, 'marker_size' = DataSeries_marker_size_get, 'bar_width' = DataSeries_bar_width_get, 'filled' = DataSeries_filled_get);
-  vaccessors = c('kind', 'x', 'y', 'label', 'color', 'stroke_width', 'marker_size', 'bar_width', 'filled');
+  accessorFuns = list('kind' = DataSeries_kind_get, 'x' = DataSeries_x_get, 'y' = DataSeries_y_get, 'label' = DataSeries_label_get, 'color' = DataSeries_color_get, 'stroke_width' = DataSeries_stroke_width_get, 'marker_size' = DataSeries_marker_size_get, 'bar_width' = DataSeries_bar_width_get, 'filled' = DataSeries_filled_get, 'point_colors' = DataSeries_point_colors_get);
+  vaccessors = c('kind', 'x', 'y', 'label', 'color', 'stroke_width', 'marker_size', 'bar_width', 'filled', 'point_colors');
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -34353,12 +37014,12 @@ setMethod('$', '_p_datamunge__plot__DataSeries', function(x, name)
 
 
 );
-# end of accessor method for datamunge::plot::DataSeries
-# Start of accessor method for datamunge::plot::DataSeries
-setMethod('$<-', '_p_datamunge__plot__DataSeries', function(x, name, value)
+# end of accessor method for datamunge::graphics::DataSeries
+# Start of accessor method for datamunge::graphics::DataSeries
+setMethod('$<-', '_p_datamunge__graphics__DataSeries', function(x, name, value)
 
 {
-  accessorFuns = list('kind' = DataSeries_kind_set, 'x' = DataSeries_x_set, 'y' = DataSeries_y_set, 'label' = DataSeries_label_set, 'color' = DataSeries_color_set, 'stroke_width' = DataSeries_stroke_width_set, 'marker_size' = DataSeries_marker_size_set, 'bar_width' = DataSeries_bar_width_set, 'filled' = DataSeries_filled_set);
+  accessorFuns = list('kind' = DataSeries_kind_set, 'x' = DataSeries_x_set, 'y' = DataSeries_y_set, 'label' = DataSeries_label_set, 'color' = DataSeries_color_set, 'stroke_width' = DataSeries_stroke_width_set, 'marker_size' = DataSeries_marker_size_set, 'bar_width' = DataSeries_bar_width_set, 'filled' = DataSeries_filled_set, 'point_colors' = DataSeries_point_colors_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -34369,11 +37030,11 @@ setMethod('$<-', '_p_datamunge__plot__DataSeries', function(x, name, value)
 
 
 );
-setMethod('[[<-', c('_p_datamunge__plot__DataSeries', 'character'),function(x, i, j, ..., value)
+setMethod('[[<-', c('_p_datamunge__graphics__DataSeries', 'character'),function(x, i, j, ..., value)
 
 {
   name = i;
-  accessorFuns = list('kind' = DataSeries_kind_set, 'x' = DataSeries_x_set, 'y' = DataSeries_y_set, 'label' = DataSeries_label_set, 'color' = DataSeries_color_set, 'stroke_width' = DataSeries_stroke_width_set, 'marker_size' = DataSeries_marker_size_set, 'bar_width' = DataSeries_bar_width_set, 'filled' = DataSeries_filled_set);
+  accessorFuns = list('kind' = DataSeries_kind_set, 'x' = DataSeries_x_set, 'y' = DataSeries_y_set, 'label' = DataSeries_label_set, 'color' = DataSeries_color_set, 'stroke_width' = DataSeries_stroke_width_set, 'marker_size' = DataSeries_marker_size_set, 'bar_width' = DataSeries_bar_width_set, 'filled' = DataSeries_filled_set, 'point_colors' = DataSeries_point_colors_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -34384,10 +37045,10 @@ setMethod('[[<-', c('_p_datamunge__plot__DataSeries', 'character'),function(x, i
 
 
 );
-# end of accessor method for datamunge::plot::DataSeries
-setMethod('delete', '_p_datamunge__plot__DataSeries', function(obj) {delete_datamunge__plot__DataSeries(obj)})
-# Start definition of copy functions & methods for datamunge::plot::DataSeries
-CopyToR_datamunge__plot__DataSeries = function(value, obj = new("datamunge::plot::DataSeries"))
+# end of accessor method for datamunge::graphics::DataSeries
+setMethod('delete', '_p_datamunge__graphics__DataSeries', function(obj) {delete_datamunge__graphics__DataSeries(obj)})
+# Start definition of copy functions & methods for datamunge::graphics::DataSeries
+CopyToR_datamunge__graphics__DataSeries = function(value, obj = new("datamunge::graphics::DataSeries"))
 {
   obj@kind = value$kind;
   obj@x = value$x;
@@ -34402,7 +37063,7 @@ CopyToR_datamunge__plot__DataSeries = function(value, obj = new("datamunge::plot
 
 
 
-CopyToC_datamunge__plot__DataSeries = function(value, obj)
+CopyToC_datamunge__graphics__DataSeries = function(value, obj)
 {
   obj$kind = value@kind;
   obj$x = value@x;
@@ -34417,12 +37078,12 @@ CopyToC_datamunge__plot__DataSeries = function(value, obj)
 
 
 
-# Start definition of copy methods for datamunge::plot::DataSeries
-setMethod('copyToR', '_p_datamunge__plot__DataSeries', CopyToR_datamunge__plot__DataSeries);
-setMethod('copyToC', "datamunge::plot::DataSeries", CopyToC_datamunge__plot__DataSeries);
+# Start definition of copy methods for datamunge::graphics::DataSeries
+setMethod('copyToR', '_p_datamunge__graphics__DataSeries', CopyToR_datamunge__graphics__DataSeries);
+setMethod('copyToC', "datamunge::graphics::DataSeries", CopyToC_datamunge__graphics__DataSeries);
 
-# End definition of copy methods for datamunge::plot::DataSeries
-# End definition of copy functions & methods for datamunge::plot::DataSeries
+# End definition of copy methods for datamunge::graphics::DataSeries
+# End definition of copy functions & methods for datamunge::graphics::DataSeries
 # Start of ABLine_vertical_set
 
 `ABLine_vertical_set` = function(self, s_vertical)
@@ -34434,7 +37095,7 @@ setMethod('copyToC', "datamunge::plot::DataSeries", CopyToC_datamunge__plot__Dat
 }
 
 attr(`ABLine_vertical_set`, 'returnType') = 'void'
-attr(`ABLine_vertical_set`, "inputTypes") = c('_p_datamunge__plot__ABLine', 'logical')
+attr(`ABLine_vertical_set`, "inputTypes") = c('_p_datamunge__graphics__ABLine', 'logical')
 class(`ABLine_vertical_set`) = c("SWIGFunction", class('ABLine_vertical_set'))
 
 # Start of ABLine_vertical_get
@@ -34447,7 +37108,7 @@ class(`ABLine_vertical_set`) = c("SWIGFunction", class('ABLine_vertical_set'))
 }
 
 attr(`ABLine_vertical_get`, 'returnType') = 'logical'
-attr(`ABLine_vertical_get`, "inputTypes") = c('_p_datamunge__plot__ABLine')
+attr(`ABLine_vertical_get`, "inputTypes") = c('_p_datamunge__graphics__ABLine')
 class(`ABLine_vertical_get`) = c("SWIGFunction", class('ABLine_vertical_get'))
 
 # Start of ABLine_value_set
@@ -34461,7 +37122,7 @@ class(`ABLine_vertical_get`) = c("SWIGFunction", class('ABLine_vertical_get'))
 }
 
 attr(`ABLine_value_set`, 'returnType') = 'void'
-attr(`ABLine_value_set`, "inputTypes") = c('_p_datamunge__plot__ABLine', 'numeric')
+attr(`ABLine_value_set`, "inputTypes") = c('_p_datamunge__graphics__ABLine', 'numeric')
 class(`ABLine_value_set`) = c("SWIGFunction", class('ABLine_value_set'))
 
 # Start of ABLine_value_get
@@ -34474,7 +37135,7 @@ class(`ABLine_value_set`) = c("SWIGFunction", class('ABLine_value_set'))
 }
 
 attr(`ABLine_value_get`, 'returnType') = 'numeric'
-attr(`ABLine_value_get`, "inputTypes") = c('_p_datamunge__plot__ABLine')
+attr(`ABLine_value_get`, "inputTypes") = c('_p_datamunge__graphics__ABLine')
 class(`ABLine_value_get`) = c("SWIGFunction", class('ABLine_value_get'))
 
 # Start of ABLine_slope_set
@@ -34488,7 +37149,7 @@ class(`ABLine_value_get`) = c("SWIGFunction", class('ABLine_value_get'))
 }
 
 attr(`ABLine_slope_set`, 'returnType') = 'void'
-attr(`ABLine_slope_set`, "inputTypes") = c('_p_datamunge__plot__ABLine', 'numeric')
+attr(`ABLine_slope_set`, "inputTypes") = c('_p_datamunge__graphics__ABLine', 'numeric')
 class(`ABLine_slope_set`) = c("SWIGFunction", class('ABLine_slope_set'))
 
 # Start of ABLine_slope_get
@@ -34501,7 +37162,7 @@ class(`ABLine_slope_set`) = c("SWIGFunction", class('ABLine_slope_set'))
 }
 
 attr(`ABLine_slope_get`, 'returnType') = 'numeric'
-attr(`ABLine_slope_get`, "inputTypes") = c('_p_datamunge__plot__ABLine')
+attr(`ABLine_slope_get`, "inputTypes") = c('_p_datamunge__graphics__ABLine')
 class(`ABLine_slope_get`) = c("SWIGFunction", class('ABLine_slope_get'))
 
 # Start of ABLine_color_set
@@ -34515,7 +37176,7 @@ class(`ABLine_slope_get`) = c("SWIGFunction", class('ABLine_slope_get'))
 }
 
 attr(`ABLine_color_set`, 'returnType') = 'void'
-attr(`ABLine_color_set`, "inputTypes") = c('_p_datamunge__plot__ABLine', '_p_datamunge__plot__RGB')
+attr(`ABLine_color_set`, "inputTypes") = c('_p_datamunge__graphics__ABLine', '_p_datamunge__graphics__RGB')
 class(`ABLine_color_set`) = c("SWIGFunction", class('ABLine_color_set'))
 
 # Start of ABLine_color_get
@@ -34525,14 +37186,14 @@ class(`ABLine_color_set`) = c("SWIGFunction", class('ABLine_color_set'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_ABLine_color_get', self, PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RGB", ref=ans);
+  else new("_p_datamunge__graphics__RGB", ref=ans);
   
   ans
   
 }
 
-attr(`ABLine_color_get`, 'returnType') = '_p_datamunge__plot__RGB'
-attr(`ABLine_color_get`, "inputTypes") = c('_p_datamunge__plot__ABLine')
+attr(`ABLine_color_get`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`ABLine_color_get`, "inputTypes") = c('_p_datamunge__graphics__ABLine')
 class(`ABLine_color_get`) = c("SWIGFunction", class('ABLine_color_get'))
 
 # Start of ABLine_stroke_width_set
@@ -34546,7 +37207,7 @@ class(`ABLine_color_get`) = c("SWIGFunction", class('ABLine_color_get'))
 }
 
 attr(`ABLine_stroke_width_set`, 'returnType') = 'void'
-attr(`ABLine_stroke_width_set`, "inputTypes") = c('_p_datamunge__plot__ABLine', 'numeric')
+attr(`ABLine_stroke_width_set`, "inputTypes") = c('_p_datamunge__graphics__ABLine', 'numeric')
 class(`ABLine_stroke_width_set`) = c("SWIGFunction", class('ABLine_stroke_width_set'))
 
 # Start of ABLine_stroke_width_get
@@ -34559,7 +37220,7 @@ class(`ABLine_stroke_width_set`) = c("SWIGFunction", class('ABLine_stroke_width_
 }
 
 attr(`ABLine_stroke_width_get`, 'returnType') = 'numeric'
-attr(`ABLine_stroke_width_get`, "inputTypes") = c('_p_datamunge__plot__ABLine')
+attr(`ABLine_stroke_width_get`, "inputTypes") = c('_p_datamunge__graphics__ABLine')
 class(`ABLine_stroke_width_get`) = c("SWIGFunction", class('ABLine_stroke_width_get'))
 
 # Start of new_ABLine
@@ -34568,14 +37229,14 @@ class(`ABLine_stroke_width_get`) = c("SWIGFunction", class('ABLine_stroke_width_
 {
   ;ans = .Call('R_swig_new_ABLine', PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__ABLine", ref=ans);
+  else new("_p_datamunge__graphics__ABLine", ref=ans);
   
   reg.finalizer(ans@ref, delete_ABLine);
   ans
   
 }
 
-attr(`ABLine`, 'returnType') = '_p_datamunge__plot__ABLine'
+attr(`ABLine`, 'returnType') = '_p_datamunge__graphics__ABLine'
 class(`ABLine`) = c("SWIGFunction", class('ABLine'))
 
 # Start of delete_ABLine
@@ -34588,11 +37249,11 @@ class(`ABLine`) = c("SWIGFunction", class('ABLine'))
 }
 
 attr(`delete_ABLine`, 'returnType') = 'void'
-attr(`delete_ABLine`, "inputTypes") = c('_p_datamunge__plot__ABLine')
+attr(`delete_ABLine`, "inputTypes") = c('_p_datamunge__graphics__ABLine')
 class(`delete_ABLine`) = c("SWIGFunction", class('delete_ABLine'))
 
-# Start of accessor method for datamunge::plot::ABLine
-setMethod('$', '_p_datamunge__plot__ABLine', function(x, name)
+# Start of accessor method for datamunge::graphics::ABLine
+setMethod('$', '_p_datamunge__graphics__ABLine', function(x, name)
 
 {
   accessorFuns = list('vertical' = ABLine_vertical_get, 'value' = ABLine_value_get, 'slope' = ABLine_slope_get, 'color' = ABLine_color_get, 'stroke_width' = ABLine_stroke_width_get);
@@ -34608,9 +37269,9 @@ setMethod('$', '_p_datamunge__plot__ABLine', function(x, name)
 
 
 );
-# end of accessor method for datamunge::plot::ABLine
-# Start of accessor method for datamunge::plot::ABLine
-setMethod('$<-', '_p_datamunge__plot__ABLine', function(x, name, value)
+# end of accessor method for datamunge::graphics::ABLine
+# Start of accessor method for datamunge::graphics::ABLine
+setMethod('$<-', '_p_datamunge__graphics__ABLine', function(x, name, value)
 
 {
   accessorFuns = list('vertical' = ABLine_vertical_set, 'value' = ABLine_value_set, 'slope' = ABLine_slope_set, 'color' = ABLine_color_set, 'stroke_width' = ABLine_stroke_width_set);
@@ -34624,7 +37285,7 @@ setMethod('$<-', '_p_datamunge__plot__ABLine', function(x, name, value)
 
 
 );
-setMethod('[[<-', c('_p_datamunge__plot__ABLine', 'character'),function(x, i, j, ..., value)
+setMethod('[[<-', c('_p_datamunge__graphics__ABLine', 'character'),function(x, i, j, ..., value)
 
 {
   name = i;
@@ -34639,10 +37300,10 @@ setMethod('[[<-', c('_p_datamunge__plot__ABLine', 'character'),function(x, i, j,
 
 
 );
-# end of accessor method for datamunge::plot::ABLine
-setMethod('delete', '_p_datamunge__plot__ABLine', function(obj) {delete_datamunge__plot__ABLine(obj)})
-# Start definition of copy functions & methods for datamunge::plot::ABLine
-CopyToR_datamunge__plot__ABLine = function(value, obj = new("datamunge::plot::ABLine"))
+# end of accessor method for datamunge::graphics::ABLine
+setMethod('delete', '_p_datamunge__graphics__ABLine', function(obj) {delete_datamunge__graphics__ABLine(obj)})
+# Start definition of copy functions & methods for datamunge::graphics::ABLine
+CopyToR_datamunge__graphics__ABLine = function(value, obj = new("datamunge::graphics::ABLine"))
 {
   obj@vertical = value$vertical;
   obj@value = value$value;
@@ -34653,7 +37314,7 @@ CopyToR_datamunge__plot__ABLine = function(value, obj = new("datamunge::plot::AB
 
 
 
-CopyToC_datamunge__plot__ABLine = function(value, obj)
+CopyToC_datamunge__graphics__ABLine = function(value, obj)
 {
   obj$vertical = value@vertical;
   obj$value = value@value;
@@ -34664,12 +37325,12 @@ CopyToC_datamunge__plot__ABLine = function(value, obj)
 
 
 
-# Start definition of copy methods for datamunge::plot::ABLine
-setMethod('copyToR', '_p_datamunge__plot__ABLine', CopyToR_datamunge__plot__ABLine);
-setMethod('copyToC', "datamunge::plot::ABLine", CopyToC_datamunge__plot__ABLine);
+# Start definition of copy methods for datamunge::graphics::ABLine
+setMethod('copyToR', '_p_datamunge__graphics__ABLine', CopyToR_datamunge__graphics__ABLine);
+setMethod('copyToC', "datamunge::graphics::ABLine", CopyToC_datamunge__graphics__ABLine);
 
-# End definition of copy methods for datamunge::plot::ABLine
-# End definition of copy functions & methods for datamunge::plot::ABLine
+# End definition of copy methods for datamunge::graphics::ABLine
+# End definition of copy functions & methods for datamunge::graphics::ABLine
 # Start of LegendEntry_label_set
 
 `LegendEntry_label_set` = function(self, s_label)
@@ -34681,7 +37342,7 @@ setMethod('copyToC', "datamunge::plot::ABLine", CopyToC_datamunge__plot__ABLine)
 }
 
 attr(`LegendEntry_label_set`, 'returnType') = 'void'
-attr(`LegendEntry_label_set`, "inputTypes") = c('_p_datamunge__plot__LegendEntry', 'character')
+attr(`LegendEntry_label_set`, "inputTypes") = c('_p_datamunge__graphics__LegendEntry', 'character')
 class(`LegendEntry_label_set`) = c("SWIGFunction", class('LegendEntry_label_set'))
 
 # Start of LegendEntry_label_get
@@ -34694,7 +37355,7 @@ class(`LegendEntry_label_set`) = c("SWIGFunction", class('LegendEntry_label_set'
 }
 
 attr(`LegendEntry_label_get`, 'returnType') = 'character'
-attr(`LegendEntry_label_get`, "inputTypes") = c('_p_datamunge__plot__LegendEntry')
+attr(`LegendEntry_label_get`, "inputTypes") = c('_p_datamunge__graphics__LegendEntry')
 class(`LegendEntry_label_get`) = c("SWIGFunction", class('LegendEntry_label_get'))
 
 # Start of LegendEntry_color_set
@@ -34708,7 +37369,7 @@ class(`LegendEntry_label_get`) = c("SWIGFunction", class('LegendEntry_label_get'
 }
 
 attr(`LegendEntry_color_set`, 'returnType') = 'void'
-attr(`LegendEntry_color_set`, "inputTypes") = c('_p_datamunge__plot__LegendEntry', '_p_datamunge__plot__RGB')
+attr(`LegendEntry_color_set`, "inputTypes") = c('_p_datamunge__graphics__LegendEntry', '_p_datamunge__graphics__RGB')
 class(`LegendEntry_color_set`) = c("SWIGFunction", class('LegendEntry_color_set'))
 
 # Start of LegendEntry_color_get
@@ -34718,14 +37379,14 @@ class(`LegendEntry_color_set`) = c("SWIGFunction", class('LegendEntry_color_set'
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_LegendEntry_color_get', self, PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RGB", ref=ans);
+  else new("_p_datamunge__graphics__RGB", ref=ans);
   
   ans
   
 }
 
-attr(`LegendEntry_color_get`, 'returnType') = '_p_datamunge__plot__RGB'
-attr(`LegendEntry_color_get`, "inputTypes") = c('_p_datamunge__plot__LegendEntry')
+attr(`LegendEntry_color_get`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`LegendEntry_color_get`, "inputTypes") = c('_p_datamunge__graphics__LegendEntry')
 class(`LegendEntry_color_get`) = c("SWIGFunction", class('LegendEntry_color_get'))
 
 # Start of new_LegendEntry
@@ -34734,14 +37395,14 @@ class(`LegendEntry_color_get`) = c("SWIGFunction", class('LegendEntry_color_get'
 {
   ;ans = .Call('R_swig_new_LegendEntry', PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__LegendEntry", ref=ans);
+  else new("_p_datamunge__graphics__LegendEntry", ref=ans);
   
   reg.finalizer(ans@ref, delete_LegendEntry);
   ans
   
 }
 
-attr(`LegendEntry`, 'returnType') = '_p_datamunge__plot__LegendEntry'
+attr(`LegendEntry`, 'returnType') = '_p_datamunge__graphics__LegendEntry'
 class(`LegendEntry`) = c("SWIGFunction", class('LegendEntry'))
 
 # Start of delete_LegendEntry
@@ -34754,11 +37415,11 @@ class(`LegendEntry`) = c("SWIGFunction", class('LegendEntry'))
 }
 
 attr(`delete_LegendEntry`, 'returnType') = 'void'
-attr(`delete_LegendEntry`, "inputTypes") = c('_p_datamunge__plot__LegendEntry')
+attr(`delete_LegendEntry`, "inputTypes") = c('_p_datamunge__graphics__LegendEntry')
 class(`delete_LegendEntry`) = c("SWIGFunction", class('delete_LegendEntry'))
 
-# Start of accessor method for datamunge::plot::LegendEntry
-setMethod('$', '_p_datamunge__plot__LegendEntry', function(x, name)
+# Start of accessor method for datamunge::graphics::LegendEntry
+setMethod('$', '_p_datamunge__graphics__LegendEntry', function(x, name)
 
 {
   accessorFuns = list('label' = LegendEntry_label_get, 'color' = LegendEntry_color_get);
@@ -34774,9 +37435,9 @@ setMethod('$', '_p_datamunge__plot__LegendEntry', function(x, name)
 
 
 );
-# end of accessor method for datamunge::plot::LegendEntry
-# Start of accessor method for datamunge::plot::LegendEntry
-setMethod('$<-', '_p_datamunge__plot__LegendEntry', function(x, name, value)
+# end of accessor method for datamunge::graphics::LegendEntry
+# Start of accessor method for datamunge::graphics::LegendEntry
+setMethod('$<-', '_p_datamunge__graphics__LegendEntry', function(x, name, value)
 
 {
   accessorFuns = list('label' = LegendEntry_label_set, 'color' = LegendEntry_color_set);
@@ -34790,7 +37451,7 @@ setMethod('$<-', '_p_datamunge__plot__LegendEntry', function(x, name, value)
 
 
 );
-setMethod('[[<-', c('_p_datamunge__plot__LegendEntry', 'character'),function(x, i, j, ..., value)
+setMethod('[[<-', c('_p_datamunge__graphics__LegendEntry', 'character'),function(x, i, j, ..., value)
 
 {
   name = i;
@@ -34805,10 +37466,10 @@ setMethod('[[<-', c('_p_datamunge__plot__LegendEntry', 'character'),function(x, 
 
 
 );
-# end of accessor method for datamunge::plot::LegendEntry
-setMethod('delete', '_p_datamunge__plot__LegendEntry', function(obj) {delete_datamunge__plot__LegendEntry(obj)})
-# Start definition of copy functions & methods for datamunge::plot::LegendEntry
-CopyToR_datamunge__plot__LegendEntry = function(value, obj = new("datamunge::plot::LegendEntry"))
+# end of accessor method for datamunge::graphics::LegendEntry
+setMethod('delete', '_p_datamunge__graphics__LegendEntry', function(obj) {delete_datamunge__graphics__LegendEntry(obj)})
+# Start definition of copy functions & methods for datamunge::graphics::LegendEntry
+CopyToR_datamunge__graphics__LegendEntry = function(value, obj = new("datamunge::graphics::LegendEntry"))
 {
   obj@label = value$label;
   obj;
@@ -34816,7 +37477,7 @@ CopyToR_datamunge__plot__LegendEntry = function(value, obj = new("datamunge::plo
 
 
 
-CopyToC_datamunge__plot__LegendEntry = function(value, obj)
+CopyToC_datamunge__graphics__LegendEntry = function(value, obj)
 {
   obj$label = value@label;
   obj
@@ -34824,12 +37485,12 @@ CopyToC_datamunge__plot__LegendEntry = function(value, obj)
 
 
 
-# Start definition of copy methods for datamunge::plot::LegendEntry
-setMethod('copyToR', '_p_datamunge__plot__LegendEntry', CopyToR_datamunge__plot__LegendEntry);
-setMethod('copyToC', "datamunge::plot::LegendEntry", CopyToC_datamunge__plot__LegendEntry);
+# Start definition of copy methods for datamunge::graphics::LegendEntry
+setMethod('copyToR', '_p_datamunge__graphics__LegendEntry', CopyToR_datamunge__graphics__LegendEntry);
+setMethod('copyToC', "datamunge::graphics::LegendEntry", CopyToC_datamunge__graphics__LegendEntry);
 
-# End definition of copy methods for datamunge::plot::LegendEntry
-# End definition of copy functions & methods for datamunge::plot::LegendEntry
+# End definition of copy methods for datamunge::graphics::LegendEntry
+# End definition of copy functions & methods for datamunge::graphics::LegendEntry
 # Start of delete_Plot
 
 `delete_Plot` = function(self)
@@ -34840,7 +37501,7 @@ setMethod('copyToC', "datamunge::plot::LegendEntry", CopyToC_datamunge__plot__Le
 }
 
 attr(`delete_Plot`, 'returnType') = 'void'
-attr(`delete_Plot`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`delete_Plot`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`delete_Plot`) = c("SWIGFunction", class('delete_Plot'))
 
 # Start of Plot_size
@@ -34862,14 +37523,14 @@ class(`delete_Plot`) = c("SWIGFunction", class('delete_Plot'))
   
   ;ans = .Call('R_swig_Plot_size', self, width, height, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_size`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_size`, "inputTypes") = c('_p_datamunge__plot__Plot', 'integer', 'integer')
+attr(`Plot_size`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_size`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'integer', 'integer')
 class(`Plot_size`) = c("SWIGFunction", class('Plot_size'))
 
 # Start of Plot_title
@@ -34880,15 +37541,33 @@ class(`Plot_size`) = c("SWIGFunction", class('Plot_size'))
   value = as(value, "character"); 
   ;ans = .Call('R_swig_Plot_title', self, value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_title`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_title`, "inputTypes") = c('_p_datamunge__plot__Plot', 'character')
+attr(`Plot_title`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_title`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
 class(`Plot_title`) = c("SWIGFunction", class('Plot_title'))
+
+# Start of Plot_subtitle
+
+`Plot_subtitle` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  value = as(value, "character"); 
+  ;ans = .Call('R_swig_Plot_subtitle', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__Plot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Plot_subtitle`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_subtitle`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
+class(`Plot_subtitle`) = c("SWIGFunction", class('Plot_subtitle'))
 
 # Start of Plot_x_label
 
@@ -34898,14 +37577,14 @@ class(`Plot_title`) = c("SWIGFunction", class('Plot_title'))
   value = as(value, "character"); 
   ;ans = .Call('R_swig_Plot_x_label', self, value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_x_label`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_x_label`, "inputTypes") = c('_p_datamunge__plot__Plot', 'character')
+attr(`Plot_x_label`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_x_label`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
 class(`Plot_x_label`) = c("SWIGFunction", class('Plot_x_label'))
 
 # Start of Plot_y_label
@@ -34916,14 +37595,14 @@ class(`Plot_x_label`) = c("SWIGFunction", class('Plot_x_label'))
   value = as(value, "character"); 
   ;ans = .Call('R_swig_Plot_y_label', self, value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_y_label`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_y_label`, "inputTypes") = c('_p_datamunge__plot__Plot', 'character')
+attr(`Plot_y_label`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_y_label`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
 class(`Plot_y_label`) = c("SWIGFunction", class('Plot_y_label'))
 
 # Start of Plot_background
@@ -34934,14 +37613,14 @@ class(`Plot_y_label`) = c("SWIGFunction", class('Plot_y_label'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_Plot_background', self, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_background`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_background`, "inputTypes") = c('_p_datamunge__plot__Plot', '_p_datamunge__plot__RGB')
+attr(`Plot_background`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_background`, "inputTypes") = c('_p_datamunge__graphics__Plot', '_p_datamunge__graphics__RGB')
 class(`Plot_background`) = c("SWIGFunction", class('Plot_background'))
 
 # Start of Plot_axis_color
@@ -34952,14 +37631,14 @@ class(`Plot_background`) = c("SWIGFunction", class('Plot_background'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_Plot_axis_color', self, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_axis_color`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_axis_color`, "inputTypes") = c('_p_datamunge__plot__Plot', '_p_datamunge__plot__RGB')
+attr(`Plot_axis_color`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_axis_color`, "inputTypes") = c('_p_datamunge__graphics__Plot', '_p_datamunge__graphics__RGB')
 class(`Plot_axis_color`) = c("SWIGFunction", class('Plot_axis_color'))
 
 # Start of Plot_grid_color
@@ -34970,14 +37649,14 @@ class(`Plot_axis_color`) = c("SWIGFunction", class('Plot_axis_color'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_Plot_grid_color', self, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_grid_color`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_grid_color`, "inputTypes") = c('_p_datamunge__plot__Plot', '_p_datamunge__plot__RGB')
+attr(`Plot_grid_color`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_grid_color`, "inputTypes") = c('_p_datamunge__graphics__Plot', '_p_datamunge__graphics__RGB')
 class(`Plot_grid_color`) = c("SWIGFunction", class('Plot_grid_color'))
 
 # Start of Plot_show_grid
@@ -34988,14 +37667,14 @@ class(`Plot_grid_color`) = c("SWIGFunction", class('Plot_grid_color'))
   enabled = as.logical(enabled);
   ;ans = .Call('R_swig_Plot_show_grid__SWIG_0', self, enabled, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_show_grid__SWIG_0`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_show_grid__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__Plot', 'logical')
+attr(`Plot_show_grid__SWIG_0`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_show_grid__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'logical')
 class(`Plot_show_grid__SWIG_0`) = c("SWIGFunction", class('Plot_show_grid__SWIG_0'))
 
 # Start of Plot_show_grid
@@ -35005,14 +37684,14 @@ class(`Plot_show_grid__SWIG_0`) = c("SWIGFunction", class('Plot_show_grid__SWIG_
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Plot_show_grid__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_show_grid__SWIG_1`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_show_grid__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_show_grid__SWIG_1`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_show_grid__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_show_grid__SWIG_1`) = c("SWIGFunction", class('Plot_show_grid__SWIG_1'))
 
 `Plot_show_grid` <- function(...) {
@@ -35022,11 +37701,11 @@ class(`Plot_show_grid__SWIG_1`) = c("SWIGFunction", class('Plot_show_grid__SWIG_
   f <- NULL;
 # dispatch functions 2
   if (argc == 1) {
-    if ( extends(argtypes[1], '_p_datamunge__plot__Plot') || is.null(argv[[1]]) ) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) {
       f <- Plot_show_grid__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__Plot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
       f <- Plot_show_grid__SWIG_0; 
     }
   };
@@ -35046,14 +37725,14 @@ class(`Plot_show_grid__SWIG_1`) = c("SWIGFunction", class('Plot_show_grid__SWIG_
   
   ;ans = .Call('R_swig_Plot_x_limits', self, min_x, max_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_x_limits`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_x_limits`, "inputTypes") = c('_p_datamunge__plot__Plot', 'numeric', 'numeric')
+attr(`Plot_x_limits`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_x_limits`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'numeric', 'numeric')
 class(`Plot_x_limits`) = c("SWIGFunction", class('Plot_x_limits'))
 
 # Start of Plot_y_limits
@@ -35065,14 +37744,14 @@ class(`Plot_x_limits`) = c("SWIGFunction", class('Plot_x_limits'))
   
   ;ans = .Call('R_swig_Plot_y_limits', self, min_y, max_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_y_limits`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_y_limits`, "inputTypes") = c('_p_datamunge__plot__Plot', 'numeric', 'numeric')
+attr(`Plot_y_limits`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_y_limits`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'numeric', 'numeric')
 class(`Plot_y_limits`) = c("SWIGFunction", class('Plot_y_limits'))
 
 # Start of Plot_hide_axes
@@ -35083,14 +37762,14 @@ class(`Plot_y_limits`) = c("SWIGFunction", class('Plot_y_limits'))
   enabled = as.logical(enabled);
   ;ans = .Call('R_swig_Plot_hide_axes__SWIG_0', self, enabled, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_hide_axes__SWIG_0`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_hide_axes__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__Plot', 'logical')
+attr(`Plot_hide_axes__SWIG_0`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_hide_axes__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'logical')
 class(`Plot_hide_axes__SWIG_0`) = c("SWIGFunction", class('Plot_hide_axes__SWIG_0'))
 
 # Start of Plot_hide_axes
@@ -35100,14 +37779,14 @@ class(`Plot_hide_axes__SWIG_0`) = c("SWIGFunction", class('Plot_hide_axes__SWIG_
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Plot_hide_axes__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_hide_axes__SWIG_1`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_hide_axes__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_hide_axes__SWIG_1`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_hide_axes__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_hide_axes__SWIG_1`) = c("SWIGFunction", class('Plot_hide_axes__SWIG_1'))
 
 `Plot_hide_axes` <- function(...) {
@@ -35117,11 +37796,11 @@ class(`Plot_hide_axes__SWIG_1`) = c("SWIGFunction", class('Plot_hide_axes__SWIG_
   f <- NULL;
 # dispatch functions 2
   if (argc == 1) {
-    if ( extends(argtypes[1], '_p_datamunge__plot__Plot') || is.null(argv[[1]]) ) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) {
       f <- Plot_hide_axes__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__Plot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
       f <- Plot_hide_axes__SWIG_0; 
     }
   };
@@ -35140,16 +37819,168 @@ class(`Plot_hide_axes__SWIG_1`) = c("SWIGFunction", class('Plot_hide_axes__SWIG_
   labels = as.character(labels);
   ;ans = .Call('R_swig_Plot_x_tick_labels', self, labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_x_tick_labels`, 'returnType') = '_p_datamunge__plot__Plot'
-attr(`Plot_x_tick_labels`, "inputTypes") = c('_p_datamunge__plot__Plot', 'character')
+attr(`Plot_x_tick_labels`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_x_tick_labels`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
 class(`Plot_x_tick_labels`) = c("SWIGFunction", class('Plot_x_tick_labels'))
 
+# Start of Plot_x_ticks
+
+`Plot_x_ticks` = function(self, positions, labels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  positions = as.numeric(positions);
+  labels = as.character(labels);
+  ;ans = .Call('R_swig_Plot_x_ticks', self, positions, labels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__Plot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Plot_x_ticks`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_x_ticks`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'numeric', 'character')
+class(`Plot_x_ticks`) = c("SWIGFunction", class('Plot_x_ticks'))
+
+# Start of Plot_y_tick_labels
+
+`Plot_y_tick_labels` = function(self, labels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  labels = as.character(labels);
+  ;ans = .Call('R_swig_Plot_y_tick_labels', self, labels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__Plot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Plot_y_tick_labels`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_y_tick_labels`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
+class(`Plot_y_tick_labels`) = c("SWIGFunction", class('Plot_y_tick_labels'))
+
+# Start of Plot_y_ticks
+
+`Plot_y_ticks` = function(self, positions, labels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  positions = as.numeric(positions);
+  labels = as.character(labels);
+  ;ans = .Call('R_swig_Plot_y_ticks', self, positions, labels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__Plot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Plot_y_ticks`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_y_ticks`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'numeric', 'character')
+class(`Plot_y_ticks`) = c("SWIGFunction", class('Plot_y_ticks'))
+
+# Start of Plot_margins
+
+`Plot_margins` = function(self, left, right, top, bottom, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  
+  
+  ;ans = .Call('R_swig_Plot_margins', self, left, right, top, bottom, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__Plot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Plot_margins`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_margins`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'numeric', 'numeric', 'numeric', 'numeric')
+class(`Plot_margins`) = c("SWIGFunction", class('Plot_margins'))
+
+# Start of Plot_tick_font_size
+
+`Plot_tick_font_size` = function(self, pixels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;ans = .Call('R_swig_Plot_tick_font_size', self, pixels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__Plot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Plot_tick_font_size`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_tick_font_size`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'numeric')
+class(`Plot_tick_font_size`) = c("SWIGFunction", class('Plot_tick_font_size'))
+
+# Start of Plot_pretty_ticks
+
+`Plot_pretty_ticks__SWIG_0` = function(self, enabled, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  enabled = as.logical(enabled);
+  ;ans = .Call('R_swig_Plot_pretty_ticks__SWIG_0', self, enabled, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__Plot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Plot_pretty_ticks__SWIG_0`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_pretty_ticks__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'logical')
+class(`Plot_pretty_ticks__SWIG_0`) = c("SWIGFunction", class('Plot_pretty_ticks__SWIG_0'))
+
+# Start of Plot_pretty_ticks
+
+`Plot_pretty_ticks__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Plot_pretty_ticks__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__Plot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Plot_pretty_ticks__SWIG_1`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`Plot_pretty_ticks__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_pretty_ticks__SWIG_1`) = c("SWIGFunction", class('Plot_pretty_ticks__SWIG_1'))
+
+`Plot_pretty_ticks` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) {
+      f <- Plot_pretty_ticks__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- Plot_pretty_ticks__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Plot_pretty_ticks with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of Plot_width
 
 `Plot_width` = function(self, .copy = FALSE)
@@ -35160,7 +37991,7 @@ class(`Plot_x_tick_labels`) = c("SWIGFunction", class('Plot_x_tick_labels'))
 }
 
 attr(`Plot_width`, 'returnType') = 'integer'
-attr(`Plot_width`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_width`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_width`) = c("SWIGFunction", class('Plot_width'))
 
 # Start of Plot_height
@@ -35173,7 +38004,7 @@ class(`Plot_width`) = c("SWIGFunction", class('Plot_width'))
 }
 
 attr(`Plot_height`, 'returnType') = 'integer'
-attr(`Plot_height`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_height`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_height`) = c("SWIGFunction", class('Plot_height'))
 
 # Start of Plot_title_text
@@ -35186,8 +38017,21 @@ class(`Plot_height`) = c("SWIGFunction", class('Plot_height'))
 }
 
 attr(`Plot_title_text`, 'returnType') = 'character'
-attr(`Plot_title_text`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_title_text`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_title_text`) = c("SWIGFunction", class('Plot_title_text'))
+
+# Start of Plot_subtitle_text
+
+`Plot_subtitle_text` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_subtitle_text', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_subtitle_text`, 'returnType') = 'character'
+attr(`Plot_subtitle_text`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_subtitle_text`) = c("SWIGFunction", class('Plot_subtitle_text'))
 
 # Start of Plot_x_label_text
 
@@ -35199,7 +38043,7 @@ class(`Plot_title_text`) = c("SWIGFunction", class('Plot_title_text'))
 }
 
 attr(`Plot_x_label_text`, 'returnType') = 'character'
-attr(`Plot_x_label_text`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_x_label_text`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_x_label_text`) = c("SWIGFunction", class('Plot_x_label_text'))
 
 # Start of Plot_y_label_text
@@ -35212,7 +38056,7 @@ class(`Plot_x_label_text`) = c("SWIGFunction", class('Plot_x_label_text'))
 }
 
 attr(`Plot_y_label_text`, 'returnType') = 'character'
-attr(`Plot_y_label_text`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_y_label_text`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_y_label_text`) = c("SWIGFunction", class('Plot_y_label_text'))
 
 # Start of Plot_series
@@ -35222,14 +38066,14 @@ class(`Plot_y_label_text`) = c("SWIGFunction", class('Plot_y_label_text'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Plot_series', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t", ref=ans);
+  else new("_p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_series`, 'returnType') = '_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t'
-attr(`Plot_series`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_series`, 'returnType') = '_p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t'
+attr(`Plot_series`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_series`) = c("SWIGFunction", class('Plot_series'))
 
 # Start of Plot_background_color
@@ -35239,14 +38083,14 @@ class(`Plot_series`) = c("SWIGFunction", class('Plot_series'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Plot_background_color', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RGB", ref=ans);
+  else new("_p_datamunge__graphics__RGB", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_background_color`, 'returnType') = '_p_datamunge__plot__RGB'
-attr(`Plot_background_color`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_background_color`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`Plot_background_color`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_background_color`) = c("SWIGFunction", class('Plot_background_color'))
 
 # Start of Plot_axes_color
@@ -35256,14 +38100,14 @@ class(`Plot_background_color`) = c("SWIGFunction", class('Plot_background_color'
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Plot_axes_color', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RGB", ref=ans);
+  else new("_p_datamunge__graphics__RGB", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_axes_color`, 'returnType') = '_p_datamunge__plot__RGB'
-attr(`Plot_axes_color`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_axes_color`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`Plot_axes_color`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_axes_color`) = c("SWIGFunction", class('Plot_axes_color'))
 
 # Start of Plot_major_grid_color
@@ -35273,14 +38117,14 @@ class(`Plot_axes_color`) = c("SWIGFunction", class('Plot_axes_color'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Plot_major_grid_color', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RGB", ref=ans);
+  else new("_p_datamunge__graphics__RGB", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_major_grid_color`, 'returnType') = '_p_datamunge__plot__RGB'
-attr(`Plot_major_grid_color`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_major_grid_color`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`Plot_major_grid_color`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_major_grid_color`) = c("SWIGFunction", class('Plot_major_grid_color'))
 
 # Start of Plot_grid_visible
@@ -35293,7 +38137,7 @@ class(`Plot_major_grid_color`) = c("SWIGFunction", class('Plot_major_grid_color'
 }
 
 attr(`Plot_grid_visible`, 'returnType') = 'logical'
-attr(`Plot_grid_visible`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_grid_visible`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_grid_visible`) = c("SWIGFunction", class('Plot_grid_visible'))
 
 # Start of Plot_has_x_limits
@@ -35306,7 +38150,7 @@ class(`Plot_grid_visible`) = c("SWIGFunction", class('Plot_grid_visible'))
 }
 
 attr(`Plot_has_x_limits`, 'returnType') = 'logical'
-attr(`Plot_has_x_limits`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_has_x_limits`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_has_x_limits`) = c("SWIGFunction", class('Plot_has_x_limits'))
 
 # Start of Plot_has_y_limits
@@ -35319,7 +38163,7 @@ class(`Plot_has_x_limits`) = c("SWIGFunction", class('Plot_has_x_limits'))
 }
 
 attr(`Plot_has_y_limits`, 'returnType') = 'logical'
-attr(`Plot_has_y_limits`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_has_y_limits`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_has_y_limits`) = c("SWIGFunction", class('Plot_has_y_limits'))
 
 # Start of Plot_x_min
@@ -35332,7 +38176,7 @@ class(`Plot_has_y_limits`) = c("SWIGFunction", class('Plot_has_y_limits'))
 }
 
 attr(`Plot_x_min`, 'returnType') = 'numeric'
-attr(`Plot_x_min`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_x_min`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_x_min`) = c("SWIGFunction", class('Plot_x_min'))
 
 # Start of Plot_x_max
@@ -35345,7 +38189,7 @@ class(`Plot_x_min`) = c("SWIGFunction", class('Plot_x_min'))
 }
 
 attr(`Plot_x_max`, 'returnType') = 'numeric'
-attr(`Plot_x_max`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_x_max`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_x_max`) = c("SWIGFunction", class('Plot_x_max'))
 
 # Start of Plot_y_min
@@ -35358,7 +38202,7 @@ class(`Plot_x_max`) = c("SWIGFunction", class('Plot_x_max'))
 }
 
 attr(`Plot_y_min`, 'returnType') = 'numeric'
-attr(`Plot_y_min`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_y_min`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_y_min`) = c("SWIGFunction", class('Plot_y_min'))
 
 # Start of Plot_y_max
@@ -35371,7 +38215,7 @@ class(`Plot_y_min`) = c("SWIGFunction", class('Plot_y_min'))
 }
 
 attr(`Plot_y_max`, 'returnType') = 'numeric'
-attr(`Plot_y_max`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_y_max`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_y_max`) = c("SWIGFunction", class('Plot_y_max'))
 
 # Start of Plot_axes_hidden
@@ -35384,7 +38228,7 @@ class(`Plot_y_max`) = c("SWIGFunction", class('Plot_y_max'))
 }
 
 attr(`Plot_axes_hidden`, 'returnType') = 'logical'
-attr(`Plot_axes_hidden`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_axes_hidden`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_axes_hidden`) = c("SWIGFunction", class('Plot_axes_hidden'))
 
 # Start of Plot_x_tick_label_list
@@ -35401,8 +38245,51 @@ class(`Plot_axes_hidden`) = c("SWIGFunction", class('Plot_axes_hidden'))
 }
 
 attr(`Plot_x_tick_label_list`, 'returnType') = '_p_std__vectorT_std__string_t'
-attr(`Plot_x_tick_label_list`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_x_tick_label_list`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_x_tick_label_list`) = c("SWIGFunction", class('Plot_x_tick_label_list'))
+
+# Start of Plot_x_tick_position_list
+
+`Plot_x_tick_position_list` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_x_tick_position_list', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_x_tick_position_list`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`Plot_x_tick_position_list`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_x_tick_position_list`) = c("SWIGFunction", class('Plot_x_tick_position_list'))
+
+# Start of Plot_y_tick_label_list
+
+`Plot_y_tick_label_list` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Plot_y_tick_label_list', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__string_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Plot_y_tick_label_list`, 'returnType') = '_p_std__vectorT_std__string_t'
+attr(`Plot_y_tick_label_list`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_y_tick_label_list`) = c("SWIGFunction", class('Plot_y_tick_label_list'))
+
+# Start of Plot_y_tick_position_list
+
+`Plot_y_tick_position_list` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_y_tick_position_list', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_y_tick_position_list`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`Plot_y_tick_position_list`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_y_tick_position_list`) = c("SWIGFunction", class('Plot_y_tick_position_list'))
 
 # Start of Plot_reference_lines
 
@@ -35411,14 +38298,14 @@ class(`Plot_x_tick_label_list`) = c("SWIGFunction", class('Plot_x_tick_label_lis
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Plot_reference_lines', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t", ref=ans);
+  else new("_p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_reference_lines`, 'returnType') = '_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t'
-attr(`Plot_reference_lines`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_reference_lines`, 'returnType') = '_p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t'
+attr(`Plot_reference_lines`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_reference_lines`) = c("SWIGFunction", class('Plot_reference_lines'))
 
 # Start of Plot_legend_entries
@@ -35428,15 +38315,106 @@ class(`Plot_reference_lines`) = c("SWIGFunction", class('Plot_reference_lines'))
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_Plot_legend_entries', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t", ref=ans);
+  else new("_p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t", ref=ans);
   
   ans
   
 }
 
-attr(`Plot_legend_entries`, 'returnType') = '_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t'
-attr(`Plot_legend_entries`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_legend_entries`, 'returnType') = '_p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t'
+attr(`Plot_legend_entries`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_legend_entries`) = c("SWIGFunction", class('Plot_legend_entries'))
+
+# Start of Plot_has_custom_margins
+
+`Plot_has_custom_margins` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_has_custom_margins', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_has_custom_margins`, 'returnType') = 'logical'
+attr(`Plot_has_custom_margins`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_has_custom_margins`) = c("SWIGFunction", class('Plot_has_custom_margins'))
+
+# Start of Plot_margin_left
+
+`Plot_margin_left` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_margin_left', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_margin_left`, 'returnType') = 'numeric'
+attr(`Plot_margin_left`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_margin_left`) = c("SWIGFunction", class('Plot_margin_left'))
+
+# Start of Plot_margin_right
+
+`Plot_margin_right` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_margin_right', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_margin_right`, 'returnType') = 'numeric'
+attr(`Plot_margin_right`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_margin_right`) = c("SWIGFunction", class('Plot_margin_right'))
+
+# Start of Plot_margin_top
+
+`Plot_margin_top` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_margin_top', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_margin_top`, 'returnType') = 'numeric'
+attr(`Plot_margin_top`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_margin_top`) = c("SWIGFunction", class('Plot_margin_top'))
+
+# Start of Plot_margin_bottom
+
+`Plot_margin_bottom` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_margin_bottom', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_margin_bottom`, 'returnType') = 'numeric'
+attr(`Plot_margin_bottom`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_margin_bottom`) = c("SWIGFunction", class('Plot_margin_bottom'))
+
+# Start of Plot_tick_font_px
+
+`Plot_tick_font_px` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_tick_font_px', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_tick_font_px`, 'returnType') = 'numeric'
+attr(`Plot_tick_font_px`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_tick_font_px`) = c("SWIGFunction", class('Plot_tick_font_px'))
+
+# Start of Plot_pretty_ticks_enabled
+
+`Plot_pretty_ticks_enabled` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_pretty_ticks_enabled', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_pretty_ticks_enabled`, 'returnType') = 'logical'
+attr(`Plot_pretty_ticks_enabled`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_pretty_ticks_enabled`) = c("SWIGFunction", class('Plot_pretty_ticks_enabled'))
 
 # Start of Plot_to_svg
 
@@ -35448,7 +38426,7 @@ class(`Plot_legend_entries`) = c("SWIGFunction", class('Plot_legend_entries'))
 }
 
 attr(`Plot_to_svg`, 'returnType') = 'character'
-attr(`Plot_to_svg`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_to_svg`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_to_svg`) = c("SWIGFunction", class('Plot_to_svg'))
 
 # Start of Plot_save
@@ -35462,7 +38440,7 @@ class(`Plot_to_svg`) = c("SWIGFunction", class('Plot_to_svg'))
 }
 
 attr(`Plot_save`, 'returnType') = 'void'
-attr(`Plot_save`, "inputTypes") = c('_p_datamunge__plot__Plot', 'character')
+attr(`Plot_save`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
 class(`Plot_save`) = c("SWIGFunction", class('Plot_save'))
 
 # Start of Plot_save_svg
@@ -35476,8 +38454,62 @@ class(`Plot_save`) = c("SWIGFunction", class('Plot_save'))
 }
 
 attr(`Plot_save_svg`, 'returnType') = 'void'
-attr(`Plot_save_svg`, "inputTypes") = c('_p_datamunge__plot__Plot', 'character')
+attr(`Plot_save_svg`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
 class(`Plot_save_svg`) = c("SWIGFunction", class('Plot_save_svg'))
+
+# Start of Plot_to_png
+
+`Plot_to_png` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_to_png', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_to_png`, 'returnType') = 'integer'
+attr(`Plot_to_png`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_to_png`) = c("SWIGFunction", class('Plot_to_png'))
+
+# Start of Plot_to_pdf
+
+`Plot_to_pdf` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Plot_to_pdf', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_to_pdf`, 'returnType') = 'integer'
+attr(`Plot_to_pdf`, "inputTypes") = c('_p_datamunge__graphics__Plot')
+class(`Plot_to_pdf`) = c("SWIGFunction", class('Plot_to_pdf'))
+
+# Start of Plot_save_png
+
+`Plot_save_png` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_Plot_save_png', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_save_png`, 'returnType') = 'void'
+attr(`Plot_save_png`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
+class(`Plot_save_png`) = c("SWIGFunction", class('Plot_save_png'))
+
+# Start of Plot_save_pdf
+
+`Plot_save_pdf` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_Plot_save_pdf', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`Plot_save_pdf`, 'returnType') = 'void'
+attr(`Plot_save_pdf`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
+class(`Plot_save_pdf`) = c("SWIGFunction", class('Plot_save_pdf'))
 
 # Start of Plot_view
 
@@ -35490,7 +38522,7 @@ class(`Plot_save_svg`) = c("SWIGFunction", class('Plot_save_svg'))
 }
 
 attr(`Plot_view__SWIG_0`, 'returnType') = 'void'
-attr(`Plot_view__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__Plot', 'character')
+attr(`Plot_view__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
 class(`Plot_view__SWIG_0`) = c("SWIGFunction", class('Plot_view__SWIG_0'))
 
 # Start of Plot_view
@@ -35503,7 +38535,7 @@ class(`Plot_view__SWIG_0`) = c("SWIGFunction", class('Plot_view__SWIG_0'))
 }
 
 attr(`Plot_view__SWIG_1`, 'returnType') = 'void'
-attr(`Plot_view__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_view__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_view__SWIG_1`) = c("SWIGFunction", class('Plot_view__SWIG_1'))
 
 `Plot_view` <- function(...) {
@@ -35513,11 +38545,11 @@ class(`Plot_view__SWIG_1`) = c("SWIGFunction", class('Plot_view__SWIG_1'))
   f <- NULL;
 # dispatch functions 2
   if (argc == 1) {
-    if ( extends(argtypes[1], '_p_datamunge__plot__Plot') || is.null(argv[[1]]) ) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) {
       f <- Plot_view__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__Plot') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
       f <- Plot_view__SWIG_0; 
     }
   };
@@ -35539,7 +38571,7 @@ class(`Plot_view__SWIG_1`) = c("SWIGFunction", class('Plot_view__SWIG_1'))
 }
 
 attr(`Plot_show__SWIG_0`, 'returnType') = 'void'
-attr(`Plot_show__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__Plot', 'character')
+attr(`Plot_show__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__Plot', 'character')
 class(`Plot_show__SWIG_0`) = c("SWIGFunction", class('Plot_show__SWIG_0'))
 
 # Start of Plot_show
@@ -35552,7 +38584,7 @@ class(`Plot_show__SWIG_0`) = c("SWIGFunction", class('Plot_show__SWIG_0'))
 }
 
 attr(`Plot_show__SWIG_1`, 'returnType') = 'void'
-attr(`Plot_show__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__Plot')
+attr(`Plot_show__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__Plot')
 class(`Plot_show__SWIG_1`) = c("SWIGFunction", class('Plot_show__SWIG_1'))
 
 `Plot_show` <- function(...) {
@@ -35562,11 +38594,11 @@ class(`Plot_show__SWIG_1`) = c("SWIGFunction", class('Plot_show__SWIG_1'))
   f <- NULL;
 # dispatch functions 2
   if (argc == 1) {
-    if ( extends(argtypes[1], '_p_datamunge__plot__Plot') || is.null(argv[[1]]) ) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) {
       f <- Plot_show__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__Plot') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__Plot') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
       f <- Plot_show__SWIG_0; 
     }
   };
@@ -35583,21 +38615,21 @@ class(`Plot_show__SWIG_1`) = c("SWIGFunction", class('Plot_show__SWIG_1'))
 {
   ;ans = .Call('R_swig_new_Plot', PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__Plot", ref=ans);
+  else new("_p_datamunge__graphics__Plot", ref=ans);
   
   reg.finalizer(ans@ref, delete_Plot);
   ans
   
 }
 
-attr(`Plot`, 'returnType') = '_p_datamunge__plot__Plot'
+attr(`Plot`, 'returnType') = '_p_datamunge__graphics__Plot'
 class(`Plot`) = c("SWIGFunction", class('Plot'))
 
-# Start of accessor method for datamunge::plot::Plot
-setMethod('$', '_p_datamunge__plot__Plot', function(x, name)
+# Start of accessor method for datamunge::graphics::Plot
+setMethod('$', '_p_datamunge__graphics__Plot', function(x, name)
 
 {
-  accessorFuns = list('size' = Plot_size, 'title' = Plot_title, 'x_label' = Plot_x_label, 'y_label' = Plot_y_label, 'background' = Plot_background, 'axis_color' = Plot_axis_color, 'grid_color' = Plot_grid_color, 'show_grid' = Plot_show_grid, 'x_limits' = Plot_x_limits, 'y_limits' = Plot_y_limits, 'hide_axes' = Plot_hide_axes, 'x_tick_labels' = Plot_x_tick_labels, 'width' = Plot_width, 'height' = Plot_height, 'title_text' = Plot_title_text, 'x_label_text' = Plot_x_label_text, 'y_label_text' = Plot_y_label_text, 'series' = Plot_series, 'background_color' = Plot_background_color, 'axes_color' = Plot_axes_color, 'major_grid_color' = Plot_major_grid_color, 'grid_visible' = Plot_grid_visible, 'has_x_limits' = Plot_has_x_limits, 'has_y_limits' = Plot_has_y_limits, 'x_min' = Plot_x_min, 'x_max' = Plot_x_max, 'y_min' = Plot_y_min, 'y_max' = Plot_y_max, 'axes_hidden' = Plot_axes_hidden, 'x_tick_label_list' = Plot_x_tick_label_list, 'reference_lines' = Plot_reference_lines, 'legend_entries' = Plot_legend_entries, 'to_svg' = Plot_to_svg, 'save' = Plot_save, 'save_svg' = Plot_save_svg, 'view' = Plot_view, 'show' = Plot_show);
+  accessorFuns = list('size' = Plot_size, 'title' = Plot_title, 'subtitle' = Plot_subtitle, 'x_label' = Plot_x_label, 'y_label' = Plot_y_label, 'background' = Plot_background, 'axis_color' = Plot_axis_color, 'grid_color' = Plot_grid_color, 'show_grid' = Plot_show_grid, 'x_limits' = Plot_x_limits, 'y_limits' = Plot_y_limits, 'hide_axes' = Plot_hide_axes, 'x_tick_labels' = Plot_x_tick_labels, 'x_ticks' = Plot_x_ticks, 'y_tick_labels' = Plot_y_tick_labels, 'y_ticks' = Plot_y_ticks, 'margins' = Plot_margins, 'tick_font_size' = Plot_tick_font_size, 'pretty_ticks' = Plot_pretty_ticks, 'width' = Plot_width, 'height' = Plot_height, 'title_text' = Plot_title_text, 'subtitle_text' = Plot_subtitle_text, 'x_label_text' = Plot_x_label_text, 'y_label_text' = Plot_y_label_text, 'series' = Plot_series, 'background_color' = Plot_background_color, 'axes_color' = Plot_axes_color, 'major_grid_color' = Plot_major_grid_color, 'grid_visible' = Plot_grid_visible, 'has_x_limits' = Plot_has_x_limits, 'has_y_limits' = Plot_has_y_limits, 'x_min' = Plot_x_min, 'x_max' = Plot_x_max, 'y_min' = Plot_y_min, 'y_max' = Plot_y_max, 'axes_hidden' = Plot_axes_hidden, 'x_tick_label_list' = Plot_x_tick_label_list, 'x_tick_position_list' = Plot_x_tick_position_list, 'y_tick_label_list' = Plot_y_tick_label_list, 'y_tick_position_list' = Plot_y_tick_position_list, 'reference_lines' = Plot_reference_lines, 'legend_entries' = Plot_legend_entries, 'has_custom_margins' = Plot_has_custom_margins, 'margin_left' = Plot_margin_left, 'margin_right' = Plot_margin_right, 'margin_top' = Plot_margin_top, 'margin_bottom' = Plot_margin_bottom, 'tick_font_px' = Plot_tick_font_px, 'pretty_ticks_enabled' = Plot_pretty_ticks_enabled, 'to_svg' = Plot_to_svg, 'save' = Plot_save, 'save_svg' = Plot_save_svg, 'to_png' = Plot_to_png, 'to_pdf' = Plot_to_pdf, 'save_png' = Plot_save_png, 'save_pdf' = Plot_save_pdf, 'view' = Plot_view, 'show' = Plot_show);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -35609,21 +38641,76 @@ setMethod('$', '_p_datamunge__plot__Plot', function(x, name)
 
 
 );
-# end of accessor method for datamunge::plot::Plot
-setMethod('delete', '_p_datamunge__plot__Plot', function(obj) {delete_datamunge__plot__Plot(obj)})
+# end of accessor method for datamunge::graphics::Plot
+setMethod('delete', '_p_datamunge__graphics__Plot', function(obj) {delete_datamunge__graphics__Plot(obj)})
+# Start of new_RPlot
+
+`RPlot__SWIG_0` = function()
+{
+  ;ans = .Call('R_swig_new_RPlot__SWIG_0', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RPlot);
+  ans
+  
+}
+
+attr(`RPlot__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+class(`RPlot__SWIG_0`) = c("SWIGFunction", class('RPlot__SWIG_0'))
+
+# Start of new_RPlot
+
+`RPlot__SWIG_1` = function(x, y)
+{
+  x = as.numeric(x);
+  y = as.numeric(y);
+  ;ans = .Call('R_swig_new_RPlot__SWIG_1', x, y, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RPlot);
+  ans
+  
+}
+
+attr(`RPlot__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot__SWIG_1`, "inputTypes") = c('numeric', 'numeric')
+class(`RPlot__SWIG_1`) = c("SWIGFunction", class('RPlot__SWIG_1'))
+
+`RPlot` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- RPlot__SWIG_0; 
+  } else if (argc == 2) {
+    if (( is.numeric(argv[[1]]) ) && ( is.numeric(argv[[2]]) )) {
+      f <- RPlot__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RPlot with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of RPlot_create
 
 `RPlot_create` = function(.copy = FALSE)
 {
   ;ans = .Call('R_swig_RPlot_create', as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_create`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_create`, 'returnType') = '_p_datamunge__graphics__RPlot'
 class(`RPlot_create`) = c("SWIGFunction", class('RPlot_create'))
 
 # Start of RPlot_size
@@ -35645,14 +38732,14 @@ class(`RPlot_create`) = c("SWIGFunction", class('RPlot_create'))
   
   ;ans = .Call('R_swig_RPlot_size', self, width, height, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_size`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_size`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'integer', 'integer')
+attr(`RPlot_size`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_size`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'integer', 'integer')
 class(`RPlot_size`) = c("SWIGFunction", class('RPlot_size'))
 
 # Start of RPlot_title
@@ -35663,15 +38750,33 @@ class(`RPlot_size`) = c("SWIGFunction", class('RPlot_size'))
   value = as(value, "character"); 
   ;ans = .Call('R_swig_RPlot_title', self, value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_title`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_title`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'character')
+attr(`RPlot_title`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_title`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
 class(`RPlot_title`) = c("SWIGFunction", class('RPlot_title'))
+
+# Start of RPlot_subtitle
+
+`RPlot_subtitle` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  value = as(value, "character"); 
+  ;ans = .Call('R_swig_RPlot_subtitle', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_subtitle`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_subtitle`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
+class(`RPlot_subtitle`) = c("SWIGFunction", class('RPlot_subtitle'))
 
 # Start of RPlot_x_label
 
@@ -35681,14 +38786,14 @@ class(`RPlot_title`) = c("SWIGFunction", class('RPlot_title'))
   value = as(value, "character"); 
   ;ans = .Call('R_swig_RPlot_x_label', self, value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_x_label`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_x_label`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'character')
+attr(`RPlot_x_label`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_x_label`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
 class(`RPlot_x_label`) = c("SWIGFunction", class('RPlot_x_label'))
 
 # Start of RPlot_y_label
@@ -35699,14 +38804,14 @@ class(`RPlot_x_label`) = c("SWIGFunction", class('RPlot_x_label'))
   value = as(value, "character"); 
   ;ans = .Call('R_swig_RPlot_y_label', self, value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_y_label`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_y_label`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'character')
+attr(`RPlot_y_label`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_y_label`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
 class(`RPlot_y_label`) = c("SWIGFunction", class('RPlot_y_label'))
 
 # Start of RPlot_xlab
@@ -35717,14 +38822,14 @@ class(`RPlot_y_label`) = c("SWIGFunction", class('RPlot_y_label'))
   value = as(value, "character"); 
   ;ans = .Call('R_swig_RPlot_xlab', self, value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_xlab`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_xlab`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'character')
+attr(`RPlot_xlab`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_xlab`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
 class(`RPlot_xlab`) = c("SWIGFunction", class('RPlot_xlab'))
 
 # Start of RPlot_ylab
@@ -35735,16 +38840,145 @@ class(`RPlot_xlab`) = c("SWIGFunction", class('RPlot_xlab'))
   value = as(value, "character"); 
   ;ans = .Call('R_swig_RPlot_ylab', self, value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_ylab`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_ylab`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'character')
+attr(`RPlot_ylab`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_ylab`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
 class(`RPlot_ylab`) = c("SWIGFunction", class('RPlot_ylab'))
 
+# Start of RPlot_set_title
+
+`RPlot_set_title` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  value = as(value, "character"); 
+  ;ans = .Call('R_swig_RPlot_set_title', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_set_title`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_set_title`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
+class(`RPlot_set_title`) = c("SWIGFunction", class('RPlot_set_title'))
+
+# Start of RPlot_set_subtitle
+
+`RPlot_set_subtitle` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  value = as(value, "character"); 
+  ;ans = .Call('R_swig_RPlot_set_subtitle', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_set_subtitle`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_set_subtitle`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
+class(`RPlot_set_subtitle`) = c("SWIGFunction", class('RPlot_set_subtitle'))
+
+# Start of RPlot_set_xlab
+
+`RPlot_set_xlab` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  value = as(value, "character"); 
+  ;ans = .Call('R_swig_RPlot_set_xlab', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_set_xlab`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_set_xlab`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
+class(`RPlot_set_xlab`) = c("SWIGFunction", class('RPlot_set_xlab'))
+
+# Start of RPlot_set_ylab
+
+`RPlot_set_ylab` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  value = as(value, "character"); 
+  ;ans = .Call('R_swig_RPlot_set_ylab', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_set_ylab`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_set_ylab`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
+class(`RPlot_set_ylab`) = c("SWIGFunction", class('RPlot_set_ylab'))
+
+# Start of RPlot_set_col
+
+`RPlot_set_col__SWIG_0` = function(self, color, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
+  ;ans = .Call('R_swig_RPlot_set_col__SWIG_0', self, color, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_set_col__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_set_col__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', '_p_datamunge__graphics__RGB')
+class(`RPlot_set_col__SWIG_0`) = c("SWIGFunction", class('RPlot_set_col__SWIG_0'))
+
+# Start of RPlot_set_col
+
+`RPlot_set_col__SWIG_1` = function(self, color, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  color = as(color, "character"); 
+  ;ans = .Call('R_swig_RPlot_set_col__SWIG_1', self, color, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_set_col__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_set_col__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
+class(`RPlot_set_col__SWIG_1`) = c("SWIGFunction", class('RPlot_set_col__SWIG_1'))
+
+`RPlot_set_col` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
+      f <- RPlot_set_col__SWIG_0; 
+    }
+    else if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- RPlot_set_col__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RPlot_set_col with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of RPlot_background
 
 `RPlot_background` = function(self, color, .copy = FALSE)
@@ -35753,14 +38987,14 @@ class(`RPlot_ylab`) = c("SWIGFunction", class('RPlot_ylab'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_background', self, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_background`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_background`, "inputTypes") = c('_p_datamunge__plot__RPlot', '_p_datamunge__plot__RGB')
+attr(`RPlot_background`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_background`, "inputTypes") = c('_p_datamunge__graphics__RPlot', '_p_datamunge__graphics__RGB')
 class(`RPlot_background`) = c("SWIGFunction", class('RPlot_background'))
 
 # Start of RPlot_axis_color
@@ -35771,14 +39005,14 @@ class(`RPlot_background`) = c("SWIGFunction", class('RPlot_background'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_axis_color', self, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_axis_color`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_axis_color`, "inputTypes") = c('_p_datamunge__plot__RPlot', '_p_datamunge__plot__RGB')
+attr(`RPlot_axis_color`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_axis_color`, "inputTypes") = c('_p_datamunge__graphics__RPlot', '_p_datamunge__graphics__RGB')
 class(`RPlot_axis_color`) = c("SWIGFunction", class('RPlot_axis_color'))
 
 # Start of RPlot_grid_color
@@ -35789,14 +39023,14 @@ class(`RPlot_axis_color`) = c("SWIGFunction", class('RPlot_axis_color'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_grid_color', self, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_grid_color`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_grid_color`, "inputTypes") = c('_p_datamunge__plot__RPlot', '_p_datamunge__plot__RGB')
+attr(`RPlot_grid_color`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_grid_color`, "inputTypes") = c('_p_datamunge__graphics__RPlot', '_p_datamunge__graphics__RGB')
 class(`RPlot_grid_color`) = c("SWIGFunction", class('RPlot_grid_color'))
 
 # Start of RPlot_show_grid
@@ -35807,14 +39041,14 @@ class(`RPlot_grid_color`) = c("SWIGFunction", class('RPlot_grid_color'))
   enabled = as.logical(enabled);
   ;ans = .Call('R_swig_RPlot_show_grid__SWIG_0', self, enabled, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_show_grid__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_show_grid__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'logical')
+attr(`RPlot_show_grid__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_show_grid__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'logical')
 class(`RPlot_show_grid__SWIG_0`) = c("SWIGFunction", class('RPlot_show_grid__SWIG_0'))
 
 # Start of RPlot_show_grid
@@ -35824,14 +39058,14 @@ class(`RPlot_show_grid__SWIG_0`) = c("SWIGFunction", class('RPlot_show_grid__SWI
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_RPlot_show_grid__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_show_grid__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_show_grid__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot')
+attr(`RPlot_show_grid__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_show_grid__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot')
 class(`RPlot_show_grid__SWIG_1`) = c("SWIGFunction", class('RPlot_show_grid__SWIG_1'))
 
 `RPlot_show_grid` <- function(...) {
@@ -35841,11 +39075,11 @@ class(`RPlot_show_grid__SWIG_1`) = c("SWIGFunction", class('RPlot_show_grid__SWI
   f <- NULL;
 # dispatch functions 2
   if (argc == 1) {
-    if ( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) {
       f <- RPlot_show_grid__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
       f <- RPlot_show_grid__SWIG_0; 
     }
   };
@@ -35865,14 +39099,14 @@ class(`RPlot_show_grid__SWIG_1`) = c("SWIGFunction", class('RPlot_show_grid__SWI
   
   ;ans = .Call('R_swig_RPlot_x_limits', self, min_x, max_x, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_x_limits`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_x_limits`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric')
+attr(`RPlot_x_limits`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_x_limits`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
 class(`RPlot_x_limits`) = c("SWIGFunction", class('RPlot_x_limits'))
 
 # Start of RPlot_y_limits
@@ -35884,14 +39118,14 @@ class(`RPlot_x_limits`) = c("SWIGFunction", class('RPlot_x_limits'))
   
   ;ans = .Call('R_swig_RPlot_y_limits', self, min_y, max_y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_y_limits`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_y_limits`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric')
+attr(`RPlot_y_limits`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_y_limits`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
 class(`RPlot_y_limits`) = c("SWIGFunction", class('RPlot_y_limits'))
 
 # Start of RPlot_hide_axes
@@ -35902,14 +39136,14 @@ class(`RPlot_y_limits`) = c("SWIGFunction", class('RPlot_y_limits'))
   enabled = as.logical(enabled);
   ;ans = .Call('R_swig_RPlot_hide_axes__SWIG_0', self, enabled, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_hide_axes__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_hide_axes__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'logical')
+attr(`RPlot_hide_axes__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_hide_axes__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'logical')
 class(`RPlot_hide_axes__SWIG_0`) = c("SWIGFunction", class('RPlot_hide_axes__SWIG_0'))
 
 # Start of RPlot_hide_axes
@@ -35919,14 +39153,14 @@ class(`RPlot_hide_axes__SWIG_0`) = c("SWIGFunction", class('RPlot_hide_axes__SWI
   if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
   ;ans = .Call('R_swig_RPlot_hide_axes__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_hide_axes__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_hide_axes__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot')
+attr(`RPlot_hide_axes__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_hide_axes__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot')
 class(`RPlot_hide_axes__SWIG_1`) = c("SWIGFunction", class('RPlot_hide_axes__SWIG_1'))
 
 `RPlot_hide_axes` <- function(...) {
@@ -35936,11 +39170,11 @@ class(`RPlot_hide_axes__SWIG_1`) = c("SWIGFunction", class('RPlot_hide_axes__SWI
   f <- NULL;
 # dispatch functions 2
   if (argc == 1) {
-    if ( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) {
       f <- RPlot_hide_axes__SWIG_1; 
     }
   } else if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
       f <- RPlot_hide_axes__SWIG_0; 
     }
   };
@@ -35959,16 +39193,168 @@ class(`RPlot_hide_axes__SWIG_1`) = c("SWIGFunction", class('RPlot_hide_axes__SWI
   labels = as.character(labels);
   ;ans = .Call('R_swig_RPlot_x_tick_labels', self, labels, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_x_tick_labels`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_x_tick_labels`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'character')
+attr(`RPlot_x_tick_labels`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_x_tick_labels`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
 class(`RPlot_x_tick_labels`) = c("SWIGFunction", class('RPlot_x_tick_labels'))
 
+# Start of RPlot_x_ticks
+
+`RPlot_x_ticks` = function(self, positions, labels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  positions = as.numeric(positions);
+  labels = as.character(labels);
+  ;ans = .Call('R_swig_RPlot_x_ticks', self, positions, labels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_x_ticks`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_x_ticks`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'character')
+class(`RPlot_x_ticks`) = c("SWIGFunction", class('RPlot_x_ticks'))
+
+# Start of RPlot_y_tick_labels
+
+`RPlot_y_tick_labels` = function(self, labels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  labels = as.character(labels);
+  ;ans = .Call('R_swig_RPlot_y_tick_labels', self, labels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_y_tick_labels`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_y_tick_labels`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character')
+class(`RPlot_y_tick_labels`) = c("SWIGFunction", class('RPlot_y_tick_labels'))
+
+# Start of RPlot_y_ticks
+
+`RPlot_y_ticks` = function(self, positions, labels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  positions = as.numeric(positions);
+  labels = as.character(labels);
+  ;ans = .Call('R_swig_RPlot_y_ticks', self, positions, labels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_y_ticks`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_y_ticks`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'character')
+class(`RPlot_y_ticks`) = c("SWIGFunction", class('RPlot_y_ticks'))
+
+# Start of RPlot_margins
+
+`RPlot_margins` = function(self, left, right, top, bottom, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  
+  
+  ;ans = .Call('R_swig_RPlot_margins', self, left, right, top, bottom, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_margins`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_margins`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'numeric', 'numeric')
+class(`RPlot_margins`) = c("SWIGFunction", class('RPlot_margins'))
+
+# Start of RPlot_tick_font_size
+
+`RPlot_tick_font_size` = function(self, pixels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;ans = .Call('R_swig_RPlot_tick_font_size', self, pixels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_tick_font_size`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_tick_font_size`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric')
+class(`RPlot_tick_font_size`) = c("SWIGFunction", class('RPlot_tick_font_size'))
+
+# Start of RPlot_pretty_ticks
+
+`RPlot_pretty_ticks__SWIG_0` = function(self, enabled, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  enabled = as.logical(enabled);
+  ;ans = .Call('R_swig_RPlot_pretty_ticks__SWIG_0', self, enabled, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_pretty_ticks__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_pretty_ticks__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'logical')
+class(`RPlot_pretty_ticks__SWIG_0`) = c("SWIGFunction", class('RPlot_pretty_ticks__SWIG_0'))
+
+# Start of RPlot_pretty_ticks
+
+`RPlot_pretty_ticks__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_RPlot_pretty_ticks__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_pretty_ticks__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_pretty_ticks__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot')
+class(`RPlot_pretty_ticks__SWIG_1`) = c("SWIGFunction", class('RPlot_pretty_ticks__SWIG_1'))
+
+`RPlot_pretty_ticks` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) {
+      f <- RPlot_pretty_ticks__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- RPlot_pretty_ticks__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RPlot_pretty_ticks with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of RPlot_plot
 
 `RPlot_plot__SWIG_0` = function(x, y, type, label, color, .copy = FALSE)
@@ -35980,14 +39366,14 @@ class(`RPlot_x_tick_labels`) = c("SWIGFunction", class('RPlot_x_tick_labels'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_plot__SWIG_0', x, y, type, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_plot__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_plot__SWIG_0`, "inputTypes") = c('numeric', 'numeric', 'character', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_plot__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_plot__SWIG_0`, "inputTypes") = c('numeric', 'numeric', 'character', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_plot__SWIG_0`) = c("SWIGFunction", class('RPlot_plot__SWIG_0'))
 
 # Start of RPlot_plot
@@ -36000,13 +39386,13 @@ class(`RPlot_plot__SWIG_0`) = c("SWIGFunction", class('RPlot_plot__SWIG_0'))
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_plot__SWIG_1', x, y, type, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_plot__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_plot__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_plot__SWIG_1`, "inputTypes") = c('numeric', 'numeric', 'character', 'character')
 class(`RPlot_plot__SWIG_1`) = c("SWIGFunction", class('RPlot_plot__SWIG_1'))
 
@@ -36019,13 +39405,13 @@ class(`RPlot_plot__SWIG_1`) = c("SWIGFunction", class('RPlot_plot__SWIG_1'))
   type = as(type, "character"); 
   ;ans = .Call('R_swig_RPlot_plot__SWIG_2', x, y, type, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_plot__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_plot__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_plot__SWIG_2`, "inputTypes") = c('numeric', 'numeric', 'character')
 class(`RPlot_plot__SWIG_2`) = c("SWIGFunction", class('RPlot_plot__SWIG_2'))
 
@@ -36037,13 +39423,13 @@ class(`RPlot_plot__SWIG_2`) = c("SWIGFunction", class('RPlot_plot__SWIG_2'))
   y = as.numeric(y);
   ;ans = .Call('R_swig_RPlot_plot__SWIG_3', x, y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_plot__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_plot__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_plot__SWIG_3`, "inputTypes") = c('numeric', 'numeric')
 class(`RPlot_plot__SWIG_3`) = c("SWIGFunction", class('RPlot_plot__SWIG_3'))
 
@@ -36066,7 +39452,7 @@ class(`RPlot_plot__SWIG_3`) = c("SWIGFunction", class('RPlot_plot__SWIG_3'))
       f <- RPlot_plot__SWIG_1; 
     }
   } else if (argc == 5) {
-    if (( is.numeric(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 )) {
+    if (( is.numeric(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 )) {
       f <- RPlot_plot__SWIG_0; 
     }
   };
@@ -36092,14 +39478,14 @@ class(`RPlot_plot__SWIG_3`) = c("SWIGFunction", class('RPlot_plot__SWIG_3'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_hist__SWIG_0', data, bins, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_hist__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_hist__SWIG_0`, "inputTypes") = c('numeric', 'integer', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_hist__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_hist__SWIG_0`, "inputTypes") = c('numeric', 'integer', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_hist__SWIG_0`) = c("SWIGFunction", class('RPlot_hist__SWIG_0'))
 
 # Start of RPlot_hist
@@ -36116,13 +39502,13 @@ class(`RPlot_hist__SWIG_0`) = c("SWIGFunction", class('RPlot_hist__SWIG_0'))
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_hist__SWIG_1', data, bins, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_hist__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_hist__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_hist__SWIG_1`, "inputTypes") = c('numeric', 'integer', 'character')
 class(`RPlot_hist__SWIG_1`) = c("SWIGFunction", class('RPlot_hist__SWIG_1'))
 
@@ -36139,13 +39525,13 @@ class(`RPlot_hist__SWIG_1`) = c("SWIGFunction", class('RPlot_hist__SWIG_1'))
   
   ;ans = .Call('R_swig_RPlot_hist__SWIG_2', data, bins, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_hist__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_hist__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_hist__SWIG_2`, "inputTypes") = c('numeric', 'integer')
 class(`RPlot_hist__SWIG_2`) = c("SWIGFunction", class('RPlot_hist__SWIG_2'))
 
@@ -36156,13 +39542,13 @@ class(`RPlot_hist__SWIG_2`) = c("SWIGFunction", class('RPlot_hist__SWIG_2'))
   data = as.numeric(data);
   ;ans = .Call('R_swig_RPlot_hist__SWIG_3', data, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_hist__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_hist__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_hist__SWIG_3`, "inputTypes") = c('numeric')
 class(`RPlot_hist__SWIG_3`) = c("SWIGFunction", class('RPlot_hist__SWIG_3'))
 
@@ -36185,7 +39571,7 @@ class(`RPlot_hist__SWIG_3`) = c("SWIGFunction", class('RPlot_hist__SWIG_3'))
       f <- RPlot_hist__SWIG_1; 
     }
   } else if (argc == 4) {
-    if (( is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 )) {
+    if (( is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 )) {
       f <- RPlot_hist__SWIG_0; 
     }
   };
@@ -36206,14 +39592,14 @@ class(`RPlot_hist__SWIG_3`) = c("SWIGFunction", class('RPlot_hist__SWIG_3'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_barplot__SWIG_0', heights, names, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_barplot__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_barplot__SWIG_0`, "inputTypes") = c('numeric', 'character', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_barplot__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_barplot__SWIG_0`, "inputTypes") = c('numeric', 'character', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_barplot__SWIG_0`) = c("SWIGFunction", class('RPlot_barplot__SWIG_0'))
 
 # Start of RPlot_barplot
@@ -36225,13 +39611,13 @@ class(`RPlot_barplot__SWIG_0`) = c("SWIGFunction", class('RPlot_barplot__SWIG_0'
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_barplot__SWIG_1', heights, names, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_barplot__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_barplot__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_barplot__SWIG_1`, "inputTypes") = c('numeric', 'character', 'character')
 class(`RPlot_barplot__SWIG_1`) = c("SWIGFunction", class('RPlot_barplot__SWIG_1'))
 
@@ -36243,13 +39629,13 @@ class(`RPlot_barplot__SWIG_1`) = c("SWIGFunction", class('RPlot_barplot__SWIG_1'
   names = as.character(names);
   ;ans = .Call('R_swig_RPlot_barplot__SWIG_2', heights, names, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_barplot__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_barplot__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_barplot__SWIG_2`, "inputTypes") = c('numeric', 'character')
 class(`RPlot_barplot__SWIG_2`) = c("SWIGFunction", class('RPlot_barplot__SWIG_2'))
 
@@ -36260,13 +39646,13 @@ class(`RPlot_barplot__SWIG_2`) = c("SWIGFunction", class('RPlot_barplot__SWIG_2'
   heights = as.numeric(heights);
   ;ans = .Call('R_swig_RPlot_barplot__SWIG_3', heights, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_barplot__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_barplot__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_barplot__SWIG_3`, "inputTypes") = c('numeric')
 class(`RPlot_barplot__SWIG_3`) = c("SWIGFunction", class('RPlot_barplot__SWIG_3'))
 
@@ -36289,7 +39675,7 @@ class(`RPlot_barplot__SWIG_3`) = c("SWIGFunction", class('RPlot_barplot__SWIG_3'
       f <- RPlot_barplot__SWIG_1; 
     }
   } else if (argc == 4) {
-    if (( is.numeric(argv[[1]]) ) && ( is.character(argv[[2]]) ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 )) {
+    if (( is.numeric(argv[[1]]) ) && ( is.character(argv[[2]]) ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 )) {
       f <- RPlot_barplot__SWIG_0; 
     }
   };
@@ -36309,14 +39695,14 @@ class(`RPlot_barplot__SWIG_3`) = c("SWIGFunction", class('RPlot_barplot__SWIG_3'
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_boxplot__SWIG_0', groups, names, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_boxplot__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_boxplot__SWIG_0`, "inputTypes") = c('list', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_boxplot__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_boxplot__SWIG_0`, "inputTypes") = c('list', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_boxplot__SWIG_0`) = c("SWIGFunction", class('RPlot_boxplot__SWIG_0'))
 
 # Start of RPlot_boxplot
@@ -36327,13 +39713,13 @@ class(`RPlot_boxplot__SWIG_0`) = c("SWIGFunction", class('RPlot_boxplot__SWIG_0'
   names = as.character(names);
   ;ans = .Call('R_swig_RPlot_boxplot__SWIG_1', groups, names, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_boxplot__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_boxplot__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_boxplot__SWIG_1`, "inputTypes") = c('list', 'character')
 class(`RPlot_boxplot__SWIG_1`) = c("SWIGFunction", class('RPlot_boxplot__SWIG_1'))
 
@@ -36344,22 +39730,41 @@ class(`RPlot_boxplot__SWIG_1`) = c("SWIGFunction", class('RPlot_boxplot__SWIG_1'
   groups = lapply(groups, as.numeric);
   ;ans = .Call('R_swig_RPlot_boxplot__SWIG_2', groups, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_boxplot__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_boxplot__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_boxplot__SWIG_2`, "inputTypes") = c('list')
 class(`RPlot_boxplot__SWIG_2`) = c("SWIGFunction", class('RPlot_boxplot__SWIG_2'))
+
+# Start of RPlot_boxplot
+
+`RPlot_boxplot__SWIG_3` = function(groups, names, colors, .copy = FALSE)
+{
+  groups = lapply(groups, as.numeric);
+  names = as.character(names);
+  if (inherits(colors, "ExternalReference")) colors = slot(colors,"ref"); 
+  ;ans = .Call('R_swig_RPlot_boxplot__SWIG_3', groups, names, colors, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_boxplot__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_boxplot__SWIG_3`, "inputTypes") = c('list', 'character', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RPlot_boxplot__SWIG_3`) = c("SWIGFunction", class('RPlot_boxplot__SWIG_3'))
 
 `RPlot_boxplot` <- function(...) {
   argtypes <- mapply(class, list(...));
   argv <- list(...);
   argc <- length(argtypes);
   f <- NULL;
-# dispatch functions 3
+# dispatch functions 4
   if (argc == 1) {
     if ( is.list(argv[[1]]) && all(vapply(argv[[1]], is.numeric, logical(1))) ) {
       f <- RPlot_boxplot__SWIG_2; 
@@ -36369,8 +39774,11 @@ class(`RPlot_boxplot__SWIG_2`) = c("SWIGFunction", class('RPlot_boxplot__SWIG_2'
       f <- RPlot_boxplot__SWIG_1; 
     }
   } else if (argc == 3) {
-    if (( is.list(argv[[1]]) && all(vapply(argv[[1]], is.numeric, logical(1))) ) && ( is.character(argv[[2]]) ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 )) {
+    if (( is.list(argv[[1]]) && all(vapply(argv[[1]], is.numeric, logical(1))) ) && ( is.character(argv[[2]]) ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 )) {
       f <- RPlot_boxplot__SWIG_0; 
+    }
+    else if (( is.list(argv[[1]]) && all(vapply(argv[[1]], is.numeric, logical(1))) ) && ( is.character(argv[[2]]) ) && ( extends(argtypes[3], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[3]]) == 1 )) {
+      f <- RPlot_boxplot__SWIG_3; 
     }
   };
   if (is.null(f)) {
@@ -36389,14 +39797,14 @@ class(`RPlot_boxplot__SWIG_2`) = c("SWIGFunction", class('RPlot_boxplot__SWIG_2'
   if (inherits(colors, "ExternalReference")) colors = slot(colors,"ref"); 
   ;ans = .Call('R_swig_RPlot_pie__SWIG_0', values, names, colors, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_pie__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_pie__SWIG_0`, "inputTypes") = c('numeric', 'character', '_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t')
+attr(`RPlot_pie__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_pie__SWIG_0`, "inputTypes") = c('numeric', 'character', '_p_std__vectorT_datamunge__graphics__RGB_t')
 class(`RPlot_pie__SWIG_0`) = c("SWIGFunction", class('RPlot_pie__SWIG_0'))
 
 # Start of RPlot_pie
@@ -36407,13 +39815,13 @@ class(`RPlot_pie__SWIG_0`) = c("SWIGFunction", class('RPlot_pie__SWIG_0'))
   names = as.character(names);
   ;ans = .Call('R_swig_RPlot_pie__SWIG_1', values, names, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_pie__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_pie__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_pie__SWIG_1`, "inputTypes") = c('numeric', 'character')
 class(`RPlot_pie__SWIG_1`) = c("SWIGFunction", class('RPlot_pie__SWIG_1'))
 
@@ -36424,13 +39832,13 @@ class(`RPlot_pie__SWIG_1`) = c("SWIGFunction", class('RPlot_pie__SWIG_1'))
   values = as.numeric(values);
   ;ans = .Call('R_swig_RPlot_pie__SWIG_2', values, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_pie__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_pie__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_pie__SWIG_2`, "inputTypes") = c('numeric')
 class(`RPlot_pie__SWIG_2`) = c("SWIGFunction", class('RPlot_pie__SWIG_2'))
 
@@ -36449,7 +39857,7 @@ class(`RPlot_pie__SWIG_2`) = c("SWIGFunction", class('RPlot_pie__SWIG_2'))
       f <- RPlot_pie__SWIG_1; 
     }
   } else if (argc == 3) {
-    if (( is.numeric(argv[[1]]) ) && ( is.character(argv[[2]]) ) && ( extends(argtypes[3], '_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t') && length(argv[[3]]) == 1 )) {
+    if (( is.numeric(argv[[1]]) ) && ( is.character(argv[[2]]) ) && ( extends(argtypes[3], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[3]]) == 1 )) {
       f <- RPlot_pie__SWIG_0; 
     }
   };
@@ -36477,14 +39885,14 @@ class(`RPlot_pie__SWIG_2`) = c("SWIGFunction", class('RPlot_pie__SWIG_2'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_curve__SWIG_0', f, from, to, n, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_curve__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_curve__SWIG_0`, "inputTypes") = c('_p_datamunge__Callback', 'numeric', 'numeric', 'integer', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_curve__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_curve__SWIG_0`, "inputTypes") = c('_p_datamunge__Callback', 'numeric', 'numeric', 'integer', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_curve__SWIG_0`) = c("SWIGFunction", class('RPlot_curve__SWIG_0'))
 
 # Start of RPlot_curve
@@ -36503,13 +39911,13 @@ class(`RPlot_curve__SWIG_0`) = c("SWIGFunction", class('RPlot_curve__SWIG_0'))
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_curve__SWIG_1', f, from, to, n, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_curve__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_curve__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_curve__SWIG_1`, "inputTypes") = c('_p_datamunge__Callback', 'numeric', 'numeric', 'integer', 'character')
 class(`RPlot_curve__SWIG_1`) = c("SWIGFunction", class('RPlot_curve__SWIG_1'))
 
@@ -36528,13 +39936,13 @@ class(`RPlot_curve__SWIG_1`) = c("SWIGFunction", class('RPlot_curve__SWIG_1'))
   
   ;ans = .Call('R_swig_RPlot_curve__SWIG_2', f, from, to, n, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_curve__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_curve__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_curve__SWIG_2`, "inputTypes") = c('_p_datamunge__Callback', 'numeric', 'numeric', 'integer')
 class(`RPlot_curve__SWIG_2`) = c("SWIGFunction", class('RPlot_curve__SWIG_2'))
 
@@ -36547,13 +39955,13 @@ class(`RPlot_curve__SWIG_2`) = c("SWIGFunction", class('RPlot_curve__SWIG_2'))
   
   ;ans = .Call('R_swig_RPlot_curve__SWIG_3', f, from, to, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_curve__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_curve__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_curve__SWIG_3`, "inputTypes") = c('_p_datamunge__Callback', 'numeric', 'numeric')
 class(`RPlot_curve__SWIG_3`) = c("SWIGFunction", class('RPlot_curve__SWIG_3'))
 
@@ -36576,7 +39984,7 @@ class(`RPlot_curve__SWIG_3`) = c("SWIGFunction", class('RPlot_curve__SWIG_3'))
       f <- RPlot_curve__SWIG_1; 
     }
   } else if (argc == 6) {
-    if (( extends(argtypes[1], '_p_datamunge__Callback') && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 ) && ( is.character(argv[[5]]) && length(argv[[5]]) == 1 ) && ( extends(argtypes[6], '_p_datamunge__plot__RGB') && length(argv[[6]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__Callback') && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 ) && ( is.character(argv[[5]]) && length(argv[[5]]) == 1 ) && ( extends(argtypes[6], '_p_datamunge__graphics__RGB') && length(argv[[6]]) == 1 )) {
       f <- RPlot_curve__SWIG_0; 
     }
   };
@@ -36596,14 +40004,14 @@ class(`RPlot_curve__SWIG_3`) = c("SWIGFunction", class('RPlot_curve__SWIG_3'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_qqnorm__SWIG_0', data, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_qqnorm__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_qqnorm__SWIG_0`, "inputTypes") = c('numeric', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_qqnorm__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_qqnorm__SWIG_0`, "inputTypes") = c('numeric', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_qqnorm__SWIG_0`) = c("SWIGFunction", class('RPlot_qqnorm__SWIG_0'))
 
 # Start of RPlot_qqnorm
@@ -36614,13 +40022,13 @@ class(`RPlot_qqnorm__SWIG_0`) = c("SWIGFunction", class('RPlot_qqnorm__SWIG_0'))
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_qqnorm__SWIG_1', data, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_qqnorm__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_qqnorm__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_qqnorm__SWIG_1`, "inputTypes") = c('numeric', 'character')
 class(`RPlot_qqnorm__SWIG_1`) = c("SWIGFunction", class('RPlot_qqnorm__SWIG_1'))
 
@@ -36631,13 +40039,13 @@ class(`RPlot_qqnorm__SWIG_1`) = c("SWIGFunction", class('RPlot_qqnorm__SWIG_1'))
   data = as.numeric(data);
   ;ans = .Call('R_swig_RPlot_qqnorm__SWIG_2', data, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_qqnorm__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`RPlot_qqnorm__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_qqnorm__SWIG_2`, "inputTypes") = c('numeric')
 class(`RPlot_qqnorm__SWIG_2`) = c("SWIGFunction", class('RPlot_qqnorm__SWIG_2'))
 
@@ -36656,7 +40064,7 @@ class(`RPlot_qqnorm__SWIG_2`) = c("SWIGFunction", class('RPlot_qqnorm__SWIG_2'))
       f <- RPlot_qqnorm__SWIG_1; 
     }
   } else if (argc == 3) {
-    if (( is.numeric(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 )) {
+    if (( is.numeric(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 )) {
       f <- RPlot_qqnorm__SWIG_0; 
     }
   };
@@ -36679,14 +40087,14 @@ class(`RPlot_qqnorm__SWIG_2`) = c("SWIGFunction", class('RPlot_qqnorm__SWIG_2'))
   
   ;ans = .Call('R_swig_RPlot_points__SWIG_0', self, x, y, label, color, marker_size, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_points__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_points__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_points__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_points__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_points__SWIG_0`) = c("SWIGFunction", class('RPlot_points__SWIG_0'))
 
 # Start of RPlot_points
@@ -36700,14 +40108,14 @@ class(`RPlot_points__SWIG_0`) = c("SWIGFunction", class('RPlot_points__SWIG_0'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_points__SWIG_1', self, x, y, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_points__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_points__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_points__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_points__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_points__SWIG_1`) = c("SWIGFunction", class('RPlot_points__SWIG_1'))
 
 # Start of RPlot_points
@@ -36720,14 +40128,14 @@ class(`RPlot_points__SWIG_1`) = c("SWIGFunction", class('RPlot_points__SWIG_1'))
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_points__SWIG_2', self, x, y, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_points__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_points__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character')
+attr(`RPlot_points__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_points__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character')
 class(`RPlot_points__SWIG_2`) = c("SWIGFunction", class('RPlot_points__SWIG_2'))
 
 # Start of RPlot_points
@@ -36739,16 +40147,79 @@ class(`RPlot_points__SWIG_2`) = c("SWIGFunction", class('RPlot_points__SWIG_2'))
   y = as.numeric(y);
   ;ans = .Call('R_swig_RPlot_points__SWIG_3', self, x, y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_points__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_points__SWIG_3`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric')
+attr(`RPlot_points__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_points__SWIG_3`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
 class(`RPlot_points__SWIG_3`) = c("SWIGFunction", class('RPlot_points__SWIG_3'))
 
+# Start of RPlot_points_colored
+
+`RPlot_points_colored__SWIG_0` = function(self, x, y, colors, marker_size, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  x = as.numeric(x);
+  y = as.numeric(y);
+  if (inherits(colors, "ExternalReference")) colors = slot(colors,"ref"); 
+  
+  ;ans = .Call('R_swig_RPlot_points_colored__SWIG_0', self, x, y, colors, marker_size, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_points_colored__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_points_colored__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_std__vectorT_datamunge__graphics__RGB_t', 'numeric')
+class(`RPlot_points_colored__SWIG_0`) = c("SWIGFunction", class('RPlot_points_colored__SWIG_0'))
+
+# Start of RPlot_points_colored
+
+`RPlot_points_colored__SWIG_1` = function(self, x, y, colors, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  x = as.numeric(x);
+  y = as.numeric(y);
+  if (inherits(colors, "ExternalReference")) colors = slot(colors,"ref"); 
+  ;ans = .Call('R_swig_RPlot_points_colored__SWIG_1', self, x, y, colors, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_points_colored__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_points_colored__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RPlot_points_colored__SWIG_1`) = c("SWIGFunction", class('RPlot_points_colored__SWIG_1'))
+
+`RPlot_points_colored` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[4]]) == 1 )) {
+      f <- RPlot_points_colored__SWIG_1; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 )) {
+      f <- RPlot_points_colored__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RPlot_points_colored with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of RPlot_line
 
 `RPlot_line__SWIG_0` = function(self, x, y, label, color, stroke_width, .copy = FALSE)
@@ -36761,14 +40232,14 @@ class(`RPlot_points__SWIG_3`) = c("SWIGFunction", class('RPlot_points__SWIG_3'))
   
   ;ans = .Call('R_swig_RPlot_line__SWIG_0', self, x, y, label, color, stroke_width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_line__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_line__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_line__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_line__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_line__SWIG_0`) = c("SWIGFunction", class('RPlot_line__SWIG_0'))
 
 # Start of RPlot_line
@@ -36782,14 +40253,14 @@ class(`RPlot_line__SWIG_0`) = c("SWIGFunction", class('RPlot_line__SWIG_0'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_line__SWIG_1', self, x, y, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_line__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_line__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_line__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_line__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_line__SWIG_1`) = c("SWIGFunction", class('RPlot_line__SWIG_1'))
 
 # Start of RPlot_line
@@ -36802,14 +40273,14 @@ class(`RPlot_line__SWIG_1`) = c("SWIGFunction", class('RPlot_line__SWIG_1'))
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_line__SWIG_2', self, x, y, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_line__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_line__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character')
+attr(`RPlot_line__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_line__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character')
 class(`RPlot_line__SWIG_2`) = c("SWIGFunction", class('RPlot_line__SWIG_2'))
 
 # Start of RPlot_line
@@ -36821,14 +40292,14 @@ class(`RPlot_line__SWIG_2`) = c("SWIGFunction", class('RPlot_line__SWIG_2'))
   y = as.numeric(y);
   ;ans = .Call('R_swig_RPlot_line__SWIG_3', self, x, y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_line__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_line__SWIG_3`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric')
+attr(`RPlot_line__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_line__SWIG_3`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
 class(`RPlot_line__SWIG_3`) = c("SWIGFunction", class('RPlot_line__SWIG_3'))
 
 `RPlot_line` <- function(...) {
@@ -36838,19 +40309,19 @@ class(`RPlot_line__SWIG_3`) = c("SWIGFunction", class('RPlot_line__SWIG_3'))
   f <- NULL;
 # dispatch functions 4
   if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
       f <- RPlot_line__SWIG_3; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
       f <- RPlot_line__SWIG_2; 
     }
   } else if (argc == 5) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 )) {
       f <- RPlot_line__SWIG_1; 
     }
   } else if (argc == 6) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
       f <- RPlot_line__SWIG_0; 
     }
   };
@@ -36873,14 +40344,14 @@ class(`RPlot_line__SWIG_3`) = c("SWIGFunction", class('RPlot_line__SWIG_3'))
   
   ;ans = .Call('R_swig_RPlot_lines__SWIG_0', self, x, y, label, color, stroke_width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_lines__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_lines__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_lines__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_lines__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_lines__SWIG_0`) = c("SWIGFunction", class('RPlot_lines__SWIG_0'))
 
 # Start of RPlot_lines
@@ -36894,14 +40365,14 @@ class(`RPlot_lines__SWIG_0`) = c("SWIGFunction", class('RPlot_lines__SWIG_0'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_lines__SWIG_1', self, x, y, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_lines__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_lines__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_lines__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_lines__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_lines__SWIG_1`) = c("SWIGFunction", class('RPlot_lines__SWIG_1'))
 
 # Start of RPlot_lines
@@ -36914,14 +40385,14 @@ class(`RPlot_lines__SWIG_1`) = c("SWIGFunction", class('RPlot_lines__SWIG_1'))
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_lines__SWIG_2', self, x, y, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_lines__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_lines__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character')
+attr(`RPlot_lines__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_lines__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character')
 class(`RPlot_lines__SWIG_2`) = c("SWIGFunction", class('RPlot_lines__SWIG_2'))
 
 # Start of RPlot_lines
@@ -36933,14 +40404,14 @@ class(`RPlot_lines__SWIG_2`) = c("SWIGFunction", class('RPlot_lines__SWIG_2'))
   y = as.numeric(y);
   ;ans = .Call('R_swig_RPlot_lines__SWIG_3', self, x, y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_lines__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_lines__SWIG_3`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric')
+attr(`RPlot_lines__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_lines__SWIG_3`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
 class(`RPlot_lines__SWIG_3`) = c("SWIGFunction", class('RPlot_lines__SWIG_3'))
 
 # Start of RPlot_points
@@ -36954,14 +40425,14 @@ class(`RPlot_lines__SWIG_3`) = c("SWIGFunction", class('RPlot_lines__SWIG_3'))
   
   ;ans = .Call('R_swig_RPlot_points__SWIG_4', self, x, y, color, marker_size, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_points__SWIG_4`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_points__SWIG_4`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_points__SWIG_4`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_points__SWIG_4`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_points__SWIG_4`) = c("SWIGFunction", class('RPlot_points__SWIG_4'))
 
 # Start of RPlot_points
@@ -36974,14 +40445,14 @@ class(`RPlot_points__SWIG_4`) = c("SWIGFunction", class('RPlot_points__SWIG_4'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_points__SWIG_5', self, x, y, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_points__SWIG_5`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_points__SWIG_5`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', '_p_datamunge__plot__RGB')
+attr(`RPlot_points__SWIG_5`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_points__SWIG_5`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_datamunge__graphics__RGB')
 class(`RPlot_points__SWIG_5`) = c("SWIGFunction", class('RPlot_points__SWIG_5'))
 
 `RPlot_points` <- function(...) {
@@ -36991,25 +40462,25 @@ class(`RPlot_points__SWIG_5`) = c("SWIGFunction", class('RPlot_points__SWIG_5'))
   f <- NULL;
 # dispatch functions 6
   if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
       f <- RPlot_points__SWIG_3; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 )) {
       f <- RPlot_points__SWIG_5; 
     }
-    else if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+    else if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
       f <- RPlot_points__SWIG_2; 
     }
   } else if (argc == 5) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 )) {
       f <- RPlot_points__SWIG_4; 
     }
-    else if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 )) {
+    else if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 )) {
       f <- RPlot_points__SWIG_1; 
     }
   } else if (argc == 6) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
       f <- RPlot_points__SWIG_0; 
     }
   };
@@ -37031,14 +40502,14 @@ class(`RPlot_points__SWIG_5`) = c("SWIGFunction", class('RPlot_points__SWIG_5'))
   
   ;ans = .Call('R_swig_RPlot_lines__SWIG_4', self, x, y, color, stroke_width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_lines__SWIG_4`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_lines__SWIG_4`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_lines__SWIG_4`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_lines__SWIG_4`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_lines__SWIG_4`) = c("SWIGFunction", class('RPlot_lines__SWIG_4'))
 
 # Start of RPlot_lines
@@ -37051,14 +40522,14 @@ class(`RPlot_lines__SWIG_4`) = c("SWIGFunction", class('RPlot_lines__SWIG_4'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_lines__SWIG_5', self, x, y, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_lines__SWIG_5`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_lines__SWIG_5`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', '_p_datamunge__plot__RGB')
+attr(`RPlot_lines__SWIG_5`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_lines__SWIG_5`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_datamunge__graphics__RGB')
 class(`RPlot_lines__SWIG_5`) = c("SWIGFunction", class('RPlot_lines__SWIG_5'))
 
 `RPlot_lines` <- function(...) {
@@ -37068,25 +40539,25 @@ class(`RPlot_lines__SWIG_5`) = c("SWIGFunction", class('RPlot_lines__SWIG_5'))
   f <- NULL;
 # dispatch functions 6
   if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
       f <- RPlot_lines__SWIG_3; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 )) {
       f <- RPlot_lines__SWIG_5; 
     }
-    else if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+    else if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
       f <- RPlot_lines__SWIG_2; 
     }
   } else if (argc == 5) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 )) {
       f <- RPlot_lines__SWIG_4; 
     }
-    else if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 )) {
+    else if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 )) {
       f <- RPlot_lines__SWIG_1; 
     }
   } else if (argc == 6) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
       f <- RPlot_lines__SWIG_0; 
     }
   };
@@ -37109,14 +40580,14 @@ class(`RPlot_lines__SWIG_5`) = c("SWIGFunction", class('RPlot_lines__SWIG_5'))
   
   ;ans = .Call('R_swig_RPlot_bars__SWIG_0', self, x, y, label, color, bar_width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_bars__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_bars__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_bars__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_bars__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_bars__SWIG_0`) = c("SWIGFunction", class('RPlot_bars__SWIG_0'))
 
 # Start of RPlot_bars
@@ -37130,14 +40601,14 @@ class(`RPlot_bars__SWIG_0`) = c("SWIGFunction", class('RPlot_bars__SWIG_0'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_bars__SWIG_1', self, x, y, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_bars__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_bars__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_bars__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_bars__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_bars__SWIG_1`) = c("SWIGFunction", class('RPlot_bars__SWIG_1'))
 
 # Start of RPlot_bars
@@ -37150,14 +40621,14 @@ class(`RPlot_bars__SWIG_1`) = c("SWIGFunction", class('RPlot_bars__SWIG_1'))
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_bars__SWIG_2', self, x, y, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_bars__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_bars__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character')
+attr(`RPlot_bars__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_bars__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character')
 class(`RPlot_bars__SWIG_2`) = c("SWIGFunction", class('RPlot_bars__SWIG_2'))
 
 # Start of RPlot_bars
@@ -37169,14 +40640,14 @@ class(`RPlot_bars__SWIG_2`) = c("SWIGFunction", class('RPlot_bars__SWIG_2'))
   y = as.numeric(y);
   ;ans = .Call('R_swig_RPlot_bars__SWIG_3', self, x, y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_bars__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_bars__SWIG_3`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric')
+attr(`RPlot_bars__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_bars__SWIG_3`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
 class(`RPlot_bars__SWIG_3`) = c("SWIGFunction", class('RPlot_bars__SWIG_3'))
 
 `RPlot_bars` <- function(...) {
@@ -37186,19 +40657,19 @@ class(`RPlot_bars__SWIG_3`) = c("SWIGFunction", class('RPlot_bars__SWIG_3'))
   f <- NULL;
 # dispatch functions 4
   if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
       f <- RPlot_bars__SWIG_3; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
       f <- RPlot_bars__SWIG_2; 
     }
   } else if (argc == 5) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 )) {
       f <- RPlot_bars__SWIG_1; 
     }
   } else if (argc == 6) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
       f <- RPlot_bars__SWIG_0; 
     }
   };
@@ -37225,14 +40696,14 @@ class(`RPlot_bars__SWIG_3`) = c("SWIGFunction", class('RPlot_bars__SWIG_3'))
   
   ;ans = .Call('R_swig_RPlot_box__SWIG_0', self, position, whisker_lo, q1, median, q3, whisker_hi, outliers, color, width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_box__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_box__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_box__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_box__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_box__SWIG_0`) = c("SWIGFunction", class('RPlot_box__SWIG_0'))
 
 # Start of RPlot_box
@@ -37250,14 +40721,14 @@ class(`RPlot_box__SWIG_0`) = c("SWIGFunction", class('RPlot_box__SWIG_0'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_box__SWIG_1', self, position, whisker_lo, q1, median, q3, whisker_hi, outliers, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_box__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_box__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', '_p_datamunge__plot__RGB')
+attr(`RPlot_box__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_box__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', '_p_datamunge__graphics__RGB')
 class(`RPlot_box__SWIG_1`) = c("SWIGFunction", class('RPlot_box__SWIG_1'))
 
 # Start of RPlot_box
@@ -37274,14 +40745,14 @@ class(`RPlot_box__SWIG_1`) = c("SWIGFunction", class('RPlot_box__SWIG_1'))
   outliers = as.numeric(outliers);
   ;ans = .Call('R_swig_RPlot_box__SWIG_2', self, position, whisker_lo, q1, median, q3, whisker_hi, outliers, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_box__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_box__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric')
+attr(`RPlot_box__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_box__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric')
 class(`RPlot_box__SWIG_2`) = c("SWIGFunction", class('RPlot_box__SWIG_2'))
 
 # Start of RPlot_box
@@ -37297,14 +40768,14 @@ class(`RPlot_box__SWIG_2`) = c("SWIGFunction", class('RPlot_box__SWIG_2'))
   
   ;ans = .Call('R_swig_RPlot_box__SWIG_3', self, position, whisker_lo, q1, median, q3, whisker_hi, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_box__SWIG_3`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_box__SWIG_3`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric')
+attr(`RPlot_box__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_box__SWIG_3`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric')
 class(`RPlot_box__SWIG_3`) = c("SWIGFunction", class('RPlot_box__SWIG_3'))
 
 `RPlot_box` <- function(...) {
@@ -37314,19 +40785,19 @@ class(`RPlot_box__SWIG_3`) = c("SWIGFunction", class('RPlot_box__SWIG_3'))
   f <- NULL;
 # dispatch functions 4
   if (argc == 7) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 )) {
       f <- RPlot_box__SWIG_3; 
     }
   } else if (argc == 8) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 ) && ( is.numeric(argv[[8]]) )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 ) && ( is.numeric(argv[[8]]) )) {
       f <- RPlot_box__SWIG_2; 
     }
   } else if (argc == 9) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 ) && ( is.numeric(argv[[8]]) ) && ( extends(argtypes[9], '_p_datamunge__plot__RGB') && length(argv[[9]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 ) && ( is.numeric(argv[[8]]) ) && ( extends(argtypes[9], '_p_datamunge__graphics__RGB') && length(argv[[9]]) == 1 )) {
       f <- RPlot_box__SWIG_1; 
     }
   } else if (argc == 10) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 ) && ( is.numeric(argv[[8]]) ) && ( extends(argtypes[9], '_p_datamunge__plot__RGB') && length(argv[[9]]) == 1 ) && ( is.numeric(argv[[10]]) && length(argv[[10]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 ) && ( is.numeric(argv[[8]]) ) && ( extends(argtypes[9], '_p_datamunge__graphics__RGB') && length(argv[[9]]) == 1 ) && ( is.numeric(argv[[10]]) && length(argv[[10]]) == 1 )) {
       f <- RPlot_box__SWIG_0; 
     }
   };
@@ -37348,14 +40819,14 @@ class(`RPlot_box__SWIG_3`) = c("SWIGFunction", class('RPlot_box__SWIG_3'))
   
   ;ans = .Call('R_swig_RPlot_abline__SWIG_0', self, intercept, slope, color, stroke_width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_abline__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_abline__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_abline__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_abline__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_abline__SWIG_0`) = c("SWIGFunction", class('RPlot_abline__SWIG_0'))
 
 # Start of RPlot_abline
@@ -37368,14 +40839,14 @@ class(`RPlot_abline__SWIG_0`) = c("SWIGFunction", class('RPlot_abline__SWIG_0'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_abline__SWIG_1', self, intercept, slope, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_abline__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_abline__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', '_p_datamunge__plot__RGB')
+attr(`RPlot_abline__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_abline__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_datamunge__graphics__RGB')
 class(`RPlot_abline__SWIG_1`) = c("SWIGFunction", class('RPlot_abline__SWIG_1'))
 
 # Start of RPlot_abline
@@ -37387,14 +40858,14 @@ class(`RPlot_abline__SWIG_1`) = c("SWIGFunction", class('RPlot_abline__SWIG_1'))
   
   ;ans = .Call('R_swig_RPlot_abline__SWIG_2', self, intercept, slope, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_abline__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_abline__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric')
+attr(`RPlot_abline__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_abline__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
 class(`RPlot_abline__SWIG_2`) = c("SWIGFunction", class('RPlot_abline__SWIG_2'))
 
 `RPlot_abline` <- function(...) {
@@ -37404,15 +40875,15 @@ class(`RPlot_abline__SWIG_2`) = c("SWIGFunction", class('RPlot_abline__SWIG_2'))
   f <- NULL;
 # dispatch functions 3
   if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
       f <- RPlot_abline__SWIG_2; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 )) {
       f <- RPlot_abline__SWIG_1; 
     }
   } else if (argc == 5) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 )) {
       f <- RPlot_abline__SWIG_0; 
     }
   };
@@ -37433,14 +40904,14 @@ class(`RPlot_abline__SWIG_2`) = c("SWIGFunction", class('RPlot_abline__SWIG_2'))
   
   ;ans = .Call('R_swig_RPlot_abline_h__SWIG_0', self, y_value, color, stroke_width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_abline_h__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_abline_h__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_abline_h__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_abline_h__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_abline_h__SWIG_0`) = c("SWIGFunction", class('RPlot_abline_h__SWIG_0'))
 
 # Start of RPlot_abline_h
@@ -37452,14 +40923,14 @@ class(`RPlot_abline_h__SWIG_0`) = c("SWIGFunction", class('RPlot_abline_h__SWIG_
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_abline_h__SWIG_1', self, y_value, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_abline_h__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_abline_h__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', '_p_datamunge__plot__RGB')
+attr(`RPlot_abline_h__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_abline_h__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', '_p_datamunge__graphics__RGB')
 class(`RPlot_abline_h__SWIG_1`) = c("SWIGFunction", class('RPlot_abline_h__SWIG_1'))
 
 # Start of RPlot_abline_h
@@ -37470,14 +40941,14 @@ class(`RPlot_abline_h__SWIG_1`) = c("SWIGFunction", class('RPlot_abline_h__SWIG_
   
   ;ans = .Call('R_swig_RPlot_abline_h__SWIG_2', self, y_value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_abline_h__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_abline_h__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric')
+attr(`RPlot_abline_h__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_abline_h__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric')
 class(`RPlot_abline_h__SWIG_2`) = c("SWIGFunction", class('RPlot_abline_h__SWIG_2'))
 
 `RPlot_abline_h` <- function(...) {
@@ -37487,15 +40958,15 @@ class(`RPlot_abline_h__SWIG_2`) = c("SWIGFunction", class('RPlot_abline_h__SWIG_
   f <- NULL;
 # dispatch functions 3
   if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
       f <- RPlot_abline_h__SWIG_2; 
     }
   } else if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 )) {
       f <- RPlot_abline_h__SWIG_1; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
       f <- RPlot_abline_h__SWIG_0; 
     }
   };
@@ -37516,14 +40987,14 @@ class(`RPlot_abline_h__SWIG_2`) = c("SWIGFunction", class('RPlot_abline_h__SWIG_
   
   ;ans = .Call('R_swig_RPlot_abline_v__SWIG_0', self, x_value, color, stroke_width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_abline_v__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_abline_v__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_abline_v__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_abline_v__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_abline_v__SWIG_0`) = c("SWIGFunction", class('RPlot_abline_v__SWIG_0'))
 
 # Start of RPlot_abline_v
@@ -37535,14 +41006,14 @@ class(`RPlot_abline_v__SWIG_0`) = c("SWIGFunction", class('RPlot_abline_v__SWIG_
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_abline_v__SWIG_1', self, x_value, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_abline_v__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_abline_v__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', '_p_datamunge__plot__RGB')
+attr(`RPlot_abline_v__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_abline_v__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', '_p_datamunge__graphics__RGB')
 class(`RPlot_abline_v__SWIG_1`) = c("SWIGFunction", class('RPlot_abline_v__SWIG_1'))
 
 # Start of RPlot_abline_v
@@ -37553,14 +41024,14 @@ class(`RPlot_abline_v__SWIG_1`) = c("SWIGFunction", class('RPlot_abline_v__SWIG_
   
   ;ans = .Call('R_swig_RPlot_abline_v__SWIG_2', self, x_value, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_abline_v__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_abline_v__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric')
+attr(`RPlot_abline_v__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_abline_v__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric')
 class(`RPlot_abline_v__SWIG_2`) = c("SWIGFunction", class('RPlot_abline_v__SWIG_2'))
 
 `RPlot_abline_v` <- function(...) {
@@ -37570,15 +41041,15 @@ class(`RPlot_abline_v__SWIG_2`) = c("SWIGFunction", class('RPlot_abline_v__SWIG_
   f <- NULL;
 # dispatch functions 3
   if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
       f <- RPlot_abline_v__SWIG_2; 
     }
   } else if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 )) {
       f <- RPlot_abline_v__SWIG_1; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
       f <- RPlot_abline_v__SWIG_0; 
     }
   };
@@ -37599,14 +41070,14 @@ class(`RPlot_abline_v__SWIG_2`) = c("SWIGFunction", class('RPlot_abline_v__SWIG_
   
   ;ans = .Call('R_swig_RPlot_qqline__SWIG_0', self, data, color, stroke_width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_qqline__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_qqline__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_qqline__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_qqline__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_qqline__SWIG_0`) = c("SWIGFunction", class('RPlot_qqline__SWIG_0'))
 
 # Start of RPlot_qqline
@@ -37618,14 +41089,14 @@ class(`RPlot_qqline__SWIG_0`) = c("SWIGFunction", class('RPlot_qqline__SWIG_0'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_qqline__SWIG_1', self, data, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_qqline__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_qqline__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', '_p_datamunge__plot__RGB')
+attr(`RPlot_qqline__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_qqline__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', '_p_datamunge__graphics__RGB')
 class(`RPlot_qqline__SWIG_1`) = c("SWIGFunction", class('RPlot_qqline__SWIG_1'))
 
 # Start of RPlot_qqline
@@ -37636,14 +41107,14 @@ class(`RPlot_qqline__SWIG_1`) = c("SWIGFunction", class('RPlot_qqline__SWIG_1'))
   data = as.numeric(data);
   ;ans = .Call('R_swig_RPlot_qqline__SWIG_2', self, data, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_qqline__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_qqline__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric')
+attr(`RPlot_qqline__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_qqline__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric')
 class(`RPlot_qqline__SWIG_2`) = c("SWIGFunction", class('RPlot_qqline__SWIG_2'))
 
 `RPlot_qqline` <- function(...) {
@@ -37653,15 +41124,15 @@ class(`RPlot_qqline__SWIG_2`) = c("SWIGFunction", class('RPlot_qqline__SWIG_2'))
   f <- NULL;
 # dispatch functions 3
   if (argc == 2) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) )) {
       f <- RPlot_qqline__SWIG_2; 
     }
   } else if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 )) {
       f <- RPlot_qqline__SWIG_1; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( extends(argtypes[3], '_p_datamunge__plot__RGB') && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
       f <- RPlot_qqline__SWIG_0; 
     }
   };
@@ -37681,14 +41152,14 @@ class(`RPlot_qqline__SWIG_2`) = c("SWIGFunction", class('RPlot_qqline__SWIG_2'))
   if (inherits(colors, "ExternalReference")) colors = slot(colors,"ref"); 
   ;ans = .Call('R_swig_RPlot_legend', self, labels, colors, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_legend`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_legend`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'character', '_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t')
+attr(`RPlot_legend`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_legend`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'character', '_p_std__vectorT_datamunge__graphics__RGB_t')
 class(`RPlot_legend`) = c("SWIGFunction", class('RPlot_legend'))
 
 # Start of RPlot_text
@@ -37703,14 +41174,14 @@ class(`RPlot_legend`) = c("SWIGFunction", class('RPlot_legend'))
   
   ;ans = .Call('R_swig_RPlot_text__SWIG_0', self, x, y, label, color, font_size, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_text__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_text__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_text__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_text__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_text__SWIG_0`) = c("SWIGFunction", class('RPlot_text__SWIG_0'))
 
 # Start of RPlot_text
@@ -37724,14 +41195,14 @@ class(`RPlot_text__SWIG_0`) = c("SWIGFunction", class('RPlot_text__SWIG_0'))
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_text__SWIG_1', self, x, y, label, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_text__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_text__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__plot__RGB')
+attr(`RPlot_text__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_text__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character', '_p_datamunge__graphics__RGB')
 class(`RPlot_text__SWIG_1`) = c("SWIGFunction", class('RPlot_text__SWIG_1'))
 
 # Start of RPlot_text
@@ -37744,14 +41215,14 @@ class(`RPlot_text__SWIG_1`) = c("SWIGFunction", class('RPlot_text__SWIG_1'))
   label = as(label, "character"); 
   ;ans = .Call('R_swig_RPlot_text__SWIG_2', self, x, y, label, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_text__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_text__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'character')
+attr(`RPlot_text__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_text__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'character')
 class(`RPlot_text__SWIG_2`) = c("SWIGFunction", class('RPlot_text__SWIG_2'))
 
 `RPlot_text` <- function(...) {
@@ -37761,15 +41232,15 @@ class(`RPlot_text__SWIG_2`) = c("SWIGFunction", class('RPlot_text__SWIG_2'))
   f <- NULL;
 # dispatch functions 3
   if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
       f <- RPlot_text__SWIG_2; 
     }
   } else if (argc == 5) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 )) {
       f <- RPlot_text__SWIG_1; 
     }
   } else if (argc == 6) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__plot__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( extends(argtypes[5], '_p_datamunge__graphics__RGB') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
       f <- RPlot_text__SWIG_0; 
     }
   };
@@ -37791,14 +41262,14 @@ class(`RPlot_text__SWIG_2`) = c("SWIGFunction", class('RPlot_text__SWIG_2'))
   filled = as.logical(filled);
   ;ans = .Call('R_swig_RPlot_polygon__SWIG_0', self, x, y, color, filled, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_polygon__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_polygon__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', '_p_datamunge__plot__RGB', 'logical')
+attr(`RPlot_polygon__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_polygon__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_datamunge__graphics__RGB', 'logical')
 class(`RPlot_polygon__SWIG_0`) = c("SWIGFunction", class('RPlot_polygon__SWIG_0'))
 
 # Start of RPlot_polygon
@@ -37811,14 +41282,14 @@ class(`RPlot_polygon__SWIG_0`) = c("SWIGFunction", class('RPlot_polygon__SWIG_0'
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_polygon__SWIG_1', self, x, y, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_polygon__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_polygon__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', '_p_datamunge__plot__RGB')
+attr(`RPlot_polygon__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_polygon__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', '_p_datamunge__graphics__RGB')
 class(`RPlot_polygon__SWIG_1`) = c("SWIGFunction", class('RPlot_polygon__SWIG_1'))
 
 # Start of RPlot_polygon
@@ -37830,14 +41301,14 @@ class(`RPlot_polygon__SWIG_1`) = c("SWIGFunction", class('RPlot_polygon__SWIG_1'
   y = as.numeric(y);
   ;ans = .Call('R_swig_RPlot_polygon__SWIG_2', self, x, y, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_polygon__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_polygon__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric')
+attr(`RPlot_polygon__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_polygon__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
 class(`RPlot_polygon__SWIG_2`) = c("SWIGFunction", class('RPlot_polygon__SWIG_2'))
 
 `RPlot_polygon` <- function(...) {
@@ -37847,20 +41318,136 @@ class(`RPlot_polygon__SWIG_2`) = c("SWIGFunction", class('RPlot_polygon__SWIG_2'
   f <- NULL;
 # dispatch functions 3
   if (argc == 3) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) )) {
       f <- RPlot_polygon__SWIG_2; 
     }
   } else if (argc == 4) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 )) {
       f <- RPlot_polygon__SWIG_1; 
     }
   } else if (argc == 5) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__plot__RGB') && length(argv[[4]]) == 1 ) && ( is.logical(argv[[5]]) && length(argv[[5]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__graphics__RGB') && length(argv[[4]]) == 1 ) && ( is.logical(argv[[5]]) && length(argv[[5]]) == 1 )) {
       f <- RPlot_polygon__SWIG_0; 
     }
   };
   if (is.null(f)) {
     stop("cannot find overloaded function for RPlot_polygon with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of RPlot_image
+
+`RPlot_image__SWIG_0` = function(self, x, y, z, palette, z_min, z_max, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  x = as.numeric(x);
+  y = as.numeric(y);
+  z = lapply(z, as.numeric);
+  if (inherits(palette, "ExternalReference")) palette = slot(palette,"ref"); 
+  
+  
+  ;ans = .Call('R_swig_RPlot_image__SWIG_0', self, x, y, z, palette, z_min, z_max, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_image__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_image__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'list', '_p_std__vectorT_datamunge__graphics__RGB_t', 'numeric', 'numeric')
+class(`RPlot_image__SWIG_0`) = c("SWIGFunction", class('RPlot_image__SWIG_0'))
+
+# Start of RPlot_image
+
+`RPlot_image__SWIG_1` = function(self, x, y, z, palette, z_min, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  x = as.numeric(x);
+  y = as.numeric(y);
+  z = lapply(z, as.numeric);
+  if (inherits(palette, "ExternalReference")) palette = slot(palette,"ref"); 
+  
+  ;ans = .Call('R_swig_RPlot_image__SWIG_1', self, x, y, z, palette, z_min, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_image__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_image__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'list', '_p_std__vectorT_datamunge__graphics__RGB_t', 'numeric')
+class(`RPlot_image__SWIG_1`) = c("SWIGFunction", class('RPlot_image__SWIG_1'))
+
+# Start of RPlot_image
+
+`RPlot_image__SWIG_2` = function(self, x, y, z, palette, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  x = as.numeric(x);
+  y = as.numeric(y);
+  z = lapply(z, as.numeric);
+  if (inherits(palette, "ExternalReference")) palette = slot(palette,"ref"); 
+  ;ans = .Call('R_swig_RPlot_image__SWIG_2', self, x, y, z, palette, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_image__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_image__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'list', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RPlot_image__SWIG_2`) = c("SWIGFunction", class('RPlot_image__SWIG_2'))
+
+# Start of RPlot_image
+
+`RPlot_image__SWIG_3` = function(self, x, y, z, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  x = as.numeric(x);
+  y = as.numeric(y);
+  z = lapply(z, as.numeric);
+  ;ans = .Call('R_swig_RPlot_image__SWIG_3', self, x, y, z, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_image__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_image__SWIG_3`, "inputTypes") = c('_p_datamunge__graphics__RPlot', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'list')
+class(`RPlot_image__SWIG_3`) = c("SWIGFunction", class('RPlot_image__SWIG_3'))
+
+`RPlot_image` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.list(argv[[4]]) && all(vapply(argv[[4]], is.numeric, logical(1))) )) {
+      f <- RPlot_image__SWIG_3; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.list(argv[[4]]) && all(vapply(argv[[4]], is.numeric, logical(1))) ) && ( extends(argtypes[5], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[5]]) == 1 )) {
+      f <- RPlot_image__SWIG_2; 
+    }
+  } else if (argc == 6) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.list(argv[[4]]) && all(vapply(argv[[4]], is.numeric, logical(1))) ) && ( extends(argtypes[5], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
+      f <- RPlot_image__SWIG_1; 
+    }
+  } else if (argc == 7) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.list(argv[[4]]) && all(vapply(argv[[4]], is.numeric, logical(1))) ) && ( extends(argtypes[5], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 )) {
+      f <- RPlot_image__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RPlot_image with argtypes (",toString(argtypes),")");
   };
   f(...);
 }
@@ -37879,14 +41466,14 @@ class(`RPlot_polygon__SWIG_2`) = c("SWIGFunction", class('RPlot_polygon__SWIG_2'
   
   ;ans = .Call('R_swig_RPlot_segments__SWIG_0', self, x0, y0, x1, y1, color, stroke_width, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_segments__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_segments__SWIG_0`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', '_p_datamunge__plot__RGB', 'numeric')
+attr(`RPlot_segments__SWIG_0`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_segments__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', '_p_datamunge__graphics__RGB', 'numeric')
 class(`RPlot_segments__SWIG_0`) = c("SWIGFunction", class('RPlot_segments__SWIG_0'))
 
 # Start of RPlot_segments
@@ -37901,14 +41488,14 @@ class(`RPlot_segments__SWIG_0`) = c("SWIGFunction", class('RPlot_segments__SWIG_
   if (inherits(color, "ExternalReference")) color = slot(color,"ref"); 
   ;ans = .Call('R_swig_RPlot_segments__SWIG_1', self, x0, y0, x1, y1, color, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_segments__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_segments__SWIG_1`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', '_p_datamunge__plot__RGB')
+attr(`RPlot_segments__SWIG_1`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_segments__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'numeric', 'numeric', '_p_datamunge__graphics__RGB')
 class(`RPlot_segments__SWIG_1`) = c("SWIGFunction", class('RPlot_segments__SWIG_1'))
 
 # Start of RPlot_segments
@@ -37922,14 +41509,14 @@ class(`RPlot_segments__SWIG_1`) = c("SWIGFunction", class('RPlot_segments__SWIG_
   y1 = as.numeric(y1);
   ;ans = .Call('R_swig_RPlot_segments__SWIG_2', self, x0, y0, x1, y1, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
   
   ans
   
 }
 
-attr(`RPlot_segments__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
-attr(`RPlot_segments__SWIG_2`, "inputTypes") = c('_p_datamunge__plot__RPlot', 'numeric', 'numeric', 'numeric', 'numeric')
+attr(`RPlot_segments__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_segments__SWIG_2`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric', 'numeric', 'numeric')
 class(`RPlot_segments__SWIG_2`) = c("SWIGFunction", class('RPlot_segments__SWIG_2'))
 
 `RPlot_segments` <- function(...) {
@@ -37939,15 +41526,15 @@ class(`RPlot_segments__SWIG_2`) = c("SWIGFunction", class('RPlot_segments__SWIG_
   f <- NULL;
 # dispatch functions 3
   if (argc == 5) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( is.numeric(argv[[5]]) )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( is.numeric(argv[[5]]) )) {
       f <- RPlot_segments__SWIG_2; 
     }
   } else if (argc == 6) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( is.numeric(argv[[5]]) ) && ( extends(argtypes[6], '_p_datamunge__plot__RGB') && length(argv[[6]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( is.numeric(argv[[5]]) ) && ( extends(argtypes[6], '_p_datamunge__graphics__RGB') && length(argv[[6]]) == 1 )) {
       f <- RPlot_segments__SWIG_1; 
     }
   } else if (argc == 7) {
-    if (( extends(argtypes[1], '_p_datamunge__plot__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( is.numeric(argv[[5]]) ) && ( extends(argtypes[6], '_p_datamunge__plot__RGB') && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 )) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RPlot') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( is.numeric(argv[[5]]) ) && ( extends(argtypes[6], '_p_datamunge__graphics__RGB') && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 )) {
       f <- RPlot_segments__SWIG_0; 
     }
   };
@@ -37958,22 +41545,6 @@ class(`RPlot_segments__SWIG_2`) = c("SWIGFunction", class('RPlot_segments__SWIG_
 }
 
 # Dispatch function
-# Start of new_RPlot
-
-`RPlot` = function()
-{
-  ;ans = .Call('R_swig_new_RPlot', PACKAGE='datamunger');
-  ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RPlot", ref=ans);
-  
-  reg.finalizer(ans@ref, delete_RPlot);
-  ans
-  
-}
-
-attr(`RPlot`, 'returnType') = '_p_datamunge__plot__RPlot'
-class(`RPlot`) = c("SWIGFunction", class('RPlot'))
-
 # Start of delete_RPlot
 
 `delete_RPlot` = function(self)
@@ -37984,14 +41555,14 @@ class(`RPlot`) = c("SWIGFunction", class('RPlot'))
 }
 
 attr(`delete_RPlot`, 'returnType') = 'void'
-attr(`delete_RPlot`, "inputTypes") = c('_p_datamunge__plot__RPlot')
+attr(`delete_RPlot`, "inputTypes") = c('_p_datamunge__graphics__RPlot')
 class(`delete_RPlot`) = c("SWIGFunction", class('delete_RPlot'))
 
-# Start of accessor method for datamunge::plot::RPlot
-setMethod('$', '_p_datamunge__plot__RPlot', function(x, name)
+# Start of accessor method for datamunge::graphics::RPlot
+setMethod('$', '_p_datamunge__graphics__RPlot', function(x, name)
 
 {
-  accessorFuns = list('size' = RPlot_size, 'title' = RPlot_title, 'x_label' = RPlot_x_label, 'y_label' = RPlot_y_label, 'xlab' = RPlot_xlab, 'ylab' = RPlot_ylab, 'background' = RPlot_background, 'axis_color' = RPlot_axis_color, 'grid_color' = RPlot_grid_color, 'show_grid' = RPlot_show_grid, 'x_limits' = RPlot_x_limits, 'y_limits' = RPlot_y_limits, 'hide_axes' = RPlot_hide_axes, 'x_tick_labels' = RPlot_x_tick_labels, 'points' = RPlot_points, 'line' = RPlot_line, 'lines' = RPlot_lines, 'bars' = RPlot_bars, 'box' = RPlot_box, 'abline' = RPlot_abline, 'abline_h' = RPlot_abline_h, 'abline_v' = RPlot_abline_v, 'qqline' = RPlot_qqline, 'legend' = RPlot_legend, 'text' = RPlot_text, 'polygon' = RPlot_polygon, 'segments' = RPlot_segments);
+  accessorFuns = list('size' = RPlot_size, 'title' = RPlot_title, 'subtitle' = RPlot_subtitle, 'x_label' = RPlot_x_label, 'y_label' = RPlot_y_label, 'xlab' = RPlot_xlab, 'ylab' = RPlot_ylab, 'set_title' = RPlot_set_title, 'set_subtitle' = RPlot_set_subtitle, 'set_xlab' = RPlot_set_xlab, 'set_ylab' = RPlot_set_ylab, 'set_col' = RPlot_set_col, 'background' = RPlot_background, 'axis_color' = RPlot_axis_color, 'grid_color' = RPlot_grid_color, 'show_grid' = RPlot_show_grid, 'x_limits' = RPlot_x_limits, 'y_limits' = RPlot_y_limits, 'hide_axes' = RPlot_hide_axes, 'x_tick_labels' = RPlot_x_tick_labels, 'x_ticks' = RPlot_x_ticks, 'y_tick_labels' = RPlot_y_tick_labels, 'y_ticks' = RPlot_y_ticks, 'margins' = RPlot_margins, 'tick_font_size' = RPlot_tick_font_size, 'pretty_ticks' = RPlot_pretty_ticks, 'points' = RPlot_points, 'points_colored' = RPlot_points_colored, 'line' = RPlot_line, 'lines' = RPlot_lines, 'bars' = RPlot_bars, 'box' = RPlot_box, 'abline' = RPlot_abline, 'abline_h' = RPlot_abline_h, 'abline_v' = RPlot_abline_v, 'qqline' = RPlot_qqline, 'legend' = RPlot_legend, 'text' = RPlot_text, 'polygon' = RPlot_polygon, 'image' = RPlot_image, 'segments' = RPlot_segments);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -38003,8 +41574,8 @@ setMethod('$', '_p_datamunge__plot__RPlot', function(x, name)
 
 
 );
-# end of accessor method for datamunge::plot::RPlot
-setMethod('delete', '_p_datamunge__plot__RPlot', function(obj) {delete_datamunge__plot__RPlot(obj)})
+# end of accessor method for datamunge::graphics::RPlot
+setMethod('delete', '_p_datamunge__graphics__RPlot', function(obj) {delete_datamunge__graphics__RPlot(obj)})
 # Start of RLayout_create
 
 `RLayout_create` = function(rows, cols, .copy = FALSE)
@@ -38023,13 +41594,13 @@ setMethod('delete', '_p_datamunge__plot__RPlot', function(obj) {delete_datamunge
   
   ;ans = .Call('R_swig_RLayout_create', rows, cols, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RLayout", ref=ans);
+  else new("_p_datamunge__graphics__RLayout", ref=ans);
   
   ans
   
 }
 
-attr(`RLayout_create`, 'returnType') = '_p_datamunge__plot__RLayout'
+attr(`RLayout_create`, 'returnType') = '_p_datamunge__graphics__RLayout'
 attr(`RLayout_create`, "inputTypes") = c('integer', 'integer')
 class(`RLayout_create`) = c("SWIGFunction", class('RLayout_create'))
 
@@ -38041,14 +41612,14 @@ class(`RLayout_create`) = c("SWIGFunction", class('RLayout_create'))
   if (inherits(panel, "ExternalReference")) panel = slot(panel,"ref"); 
   ;ans = .Call('R_swig_RLayout_add', self, panel, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RLayout", ref=ans);
+  else new("_p_datamunge__graphics__RLayout", ref=ans);
   
   ans
   
 }
 
-attr(`RLayout_add`, 'returnType') = '_p_datamunge__plot__RLayout'
-attr(`RLayout_add`, "inputTypes") = c('_p_datamunge__plot__RLayout', '_p_datamunge__plot__Plot')
+attr(`RLayout_add`, 'returnType') = '_p_datamunge__graphics__RLayout'
+attr(`RLayout_add`, "inputTypes") = c('_p_datamunge__graphics__RLayout', '_p_datamunge__graphics__Plot')
 class(`RLayout_add`) = c("SWIGFunction", class('RLayout_add'))
 
 # Start of RLayout_size
@@ -38070,15 +41641,134 @@ class(`RLayout_add`) = c("SWIGFunction", class('RLayout_add'))
   
   ;ans = .Call('R_swig_RLayout_size', self, width, height, as.logical(.copy), PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RLayout", ref=ans);
+  else new("_p_datamunge__graphics__RLayout", ref=ans);
   
   ans
   
 }
 
-attr(`RLayout_size`, 'returnType') = '_p_datamunge__plot__RLayout'
-attr(`RLayout_size`, "inputTypes") = c('_p_datamunge__plot__RLayout', 'integer', 'integer')
+attr(`RLayout_size`, 'returnType') = '_p_datamunge__graphics__RLayout'
+attr(`RLayout_size`, "inputTypes") = c('_p_datamunge__graphics__RLayout', 'integer', 'integer')
 class(`RLayout_size`) = c("SWIGFunction", class('RLayout_size'))
+
+# Start of RLayout_title
+
+`RLayout_title` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  value = as(value, "character"); 
+  ;ans = .Call('R_swig_RLayout_title', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RLayout", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RLayout_title`, 'returnType') = '_p_datamunge__graphics__RLayout'
+attr(`RLayout_title`, "inputTypes") = c('_p_datamunge__graphics__RLayout', 'character')
+class(`RLayout_title`) = c("SWIGFunction", class('RLayout_title'))
+
+# Start of RLayout_rows
+
+`RLayout_rows` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_rows', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_rows`, 'returnType') = 'integer'
+attr(`RLayout_rows`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_rows`) = c("SWIGFunction", class('RLayout_rows'))
+
+# Start of RLayout_cols
+
+`RLayout_cols` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_cols', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_cols`, 'returnType') = 'integer'
+attr(`RLayout_cols`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_cols`) = c("SWIGFunction", class('RLayout_cols'))
+
+# Start of RLayout_width
+
+`RLayout_width` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_width', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_width`, 'returnType') = 'integer'
+attr(`RLayout_width`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_width`) = c("SWIGFunction", class('RLayout_width'))
+
+# Start of RLayout_height
+
+`RLayout_height` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_height', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_height`, 'returnType') = 'integer'
+attr(`RLayout_height`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_height`) = c("SWIGFunction", class('RLayout_height'))
+
+# Start of RLayout_panel_count
+
+`RLayout_panel_count` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_panel_count', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_panel_count`, 'returnType') = 'integer'
+attr(`RLayout_panel_count`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_panel_count`) = c("SWIGFunction", class('RLayout_panel_count'))
+
+# Start of RLayout_title_text
+
+`RLayout_title_text` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_title_text', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_title_text`, 'returnType') = 'character'
+attr(`RLayout_title_text`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_title_text`) = c("SWIGFunction", class('RLayout_title_text'))
+
+# Start of RLayout_panel
+
+`RLayout_panel` = function(self, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  index = as.integer(index);
+  
+  if(length(index) > 1) {
+    warning("using only the first element of index");
+  };
+  
+  ;ans = .Call('R_swig_RLayout_panel', self, index, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__Plot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RLayout_panel`, 'returnType') = '_p_datamunge__graphics__Plot'
+attr(`RLayout_panel`, "inputTypes") = c('_p_datamunge__graphics__RLayout', 'integer')
+class(`RLayout_panel`) = c("SWIGFunction", class('RLayout_panel'))
 
 # Start of RLayout_to_svg
 
@@ -38090,7 +41780,7 @@ class(`RLayout_size`) = c("SWIGFunction", class('RLayout_size'))
 }
 
 attr(`RLayout_to_svg`, 'returnType') = 'character'
-attr(`RLayout_to_svg`, "inputTypes") = c('_p_datamunge__plot__RLayout')
+attr(`RLayout_to_svg`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
 class(`RLayout_to_svg`) = c("SWIGFunction", class('RLayout_to_svg'))
 
 # Start of RLayout_save
@@ -38104,7 +41794,7 @@ class(`RLayout_to_svg`) = c("SWIGFunction", class('RLayout_to_svg'))
 }
 
 attr(`RLayout_save`, 'returnType') = 'void'
-attr(`RLayout_save`, "inputTypes") = c('_p_datamunge__plot__RLayout', 'character')
+attr(`RLayout_save`, "inputTypes") = c('_p_datamunge__graphics__RLayout', 'character')
 class(`RLayout_save`) = c("SWIGFunction", class('RLayout_save'))
 
 # Start of RLayout_save_svg
@@ -38118,23 +41808,192 @@ class(`RLayout_save`) = c("SWIGFunction", class('RLayout_save'))
 }
 
 attr(`RLayout_save_svg`, 'returnType') = 'void'
-attr(`RLayout_save_svg`, "inputTypes") = c('_p_datamunge__plot__RLayout', 'character')
+attr(`RLayout_save_svg`, "inputTypes") = c('_p_datamunge__graphics__RLayout', 'character')
 class(`RLayout_save_svg`) = c("SWIGFunction", class('RLayout_save_svg'))
 
+# Start of RLayout_to_png
+
+`RLayout_to_png` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_to_png', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_to_png`, 'returnType') = 'integer'
+attr(`RLayout_to_png`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_to_png`) = c("SWIGFunction", class('RLayout_to_png'))
+
+# Start of RLayout_to_pdf
+
+`RLayout_to_pdf` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_to_pdf', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_to_pdf`, 'returnType') = 'integer'
+attr(`RLayout_to_pdf`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_to_pdf`) = c("SWIGFunction", class('RLayout_to_pdf'))
+
+# Start of RLayout_save_png
+
+`RLayout_save_png` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_RLayout_save_png', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_save_png`, 'returnType') = 'void'
+attr(`RLayout_save_png`, "inputTypes") = c('_p_datamunge__graphics__RLayout', 'character')
+class(`RLayout_save_png`) = c("SWIGFunction", class('RLayout_save_png'))
+
+# Start of RLayout_save_pdf
+
+`RLayout_save_pdf` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_RLayout_save_pdf', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_save_pdf`, 'returnType') = 'void'
+attr(`RLayout_save_pdf`, "inputTypes") = c('_p_datamunge__graphics__RLayout', 'character')
+class(`RLayout_save_pdf`) = c("SWIGFunction", class('RLayout_save_pdf'))
+
+# Start of RLayout_fit_panels
+
+`RLayout_fit_panels` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_RLayout_fit_panels', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RLayout", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RLayout_fit_panels`, 'returnType') = '_p_datamunge__graphics__RLayout'
+attr(`RLayout_fit_panels`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_fit_panels`) = c("SWIGFunction", class('RLayout_fit_panels'))
+
+# Start of RLayout_show
+
+`RLayout_show__SWIG_0` = function(self, title_hint)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  title_hint = as(title_hint, "character"); 
+  ;.Call('R_swig_RLayout_show__SWIG_0', self, title_hint, PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_show__SWIG_0`, 'returnType') = 'void'
+attr(`RLayout_show__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RLayout', 'character')
+class(`RLayout_show__SWIG_0`) = c("SWIGFunction", class('RLayout_show__SWIG_0'))
+
+# Start of RLayout_show
+
+`RLayout_show__SWIG_1` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_show__SWIG_1', self, PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_show__SWIG_1`, 'returnType') = 'void'
+attr(`RLayout_show__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_show__SWIG_1`) = c("SWIGFunction", class('RLayout_show__SWIG_1'))
+
+`RLayout_show` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__RLayout') || is.null(argv[[1]]) ) {
+      f <- RLayout_show__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RLayout') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- RLayout_show__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RLayout_show with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of RLayout_view
+
+`RLayout_view__SWIG_0` = function(self, title_hint)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  title_hint = as(title_hint, "character"); 
+  ;.Call('R_swig_RLayout_view__SWIG_0', self, title_hint, PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_view__SWIG_0`, 'returnType') = 'void'
+attr(`RLayout_view__SWIG_0`, "inputTypes") = c('_p_datamunge__graphics__RLayout', 'character')
+class(`RLayout_view__SWIG_0`) = c("SWIGFunction", class('RLayout_view__SWIG_0'))
+
+# Start of RLayout_view
+
+`RLayout_view__SWIG_1` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RLayout_view__SWIG_1', self, PACKAGE='datamunger');
+  
+}
+
+attr(`RLayout_view__SWIG_1`, 'returnType') = 'void'
+attr(`RLayout_view__SWIG_1`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
+class(`RLayout_view__SWIG_1`) = c("SWIGFunction", class('RLayout_view__SWIG_1'))
+
+`RLayout_view` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__graphics__RLayout') || is.null(argv[[1]]) ) {
+      f <- RLayout_view__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__graphics__RLayout') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- RLayout_view__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RLayout_view with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of new_RLayout
 
 `RLayout` = function()
 {
   ;ans = .Call('R_swig_new_RLayout', PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
-  else new("_p_datamunge__plot__RLayout", ref=ans);
+  else new("_p_datamunge__graphics__RLayout", ref=ans);
   
   reg.finalizer(ans@ref, delete_RLayout);
   ans
   
 }
 
-attr(`RLayout`, 'returnType') = '_p_datamunge__plot__RLayout'
+attr(`RLayout`, 'returnType') = '_p_datamunge__graphics__RLayout'
 class(`RLayout`) = c("SWIGFunction", class('RLayout'))
 
 # Start of delete_RLayout
@@ -38147,14 +42006,14 @@ class(`RLayout`) = c("SWIGFunction", class('RLayout'))
 }
 
 attr(`delete_RLayout`, 'returnType') = 'void'
-attr(`delete_RLayout`, "inputTypes") = c('_p_datamunge__plot__RLayout')
+attr(`delete_RLayout`, "inputTypes") = c('_p_datamunge__graphics__RLayout')
 class(`delete_RLayout`) = c("SWIGFunction", class('delete_RLayout'))
 
-# Start of accessor method for datamunge::plot::RLayout
-setMethod('$', '_p_datamunge__plot__RLayout', function(x, name)
+# Start of accessor method for datamunge::graphics::RLayout
+setMethod('$', '_p_datamunge__graphics__RLayout', function(x, name)
 
 {
-  accessorFuns = list('add' = RLayout_add, 'size' = RLayout_size, 'to_svg' = RLayout_to_svg, 'save' = RLayout_save, 'save_svg' = RLayout_save_svg);
+  accessorFuns = list('add' = RLayout_add, 'size' = RLayout_size, 'title' = RLayout_title, 'rows' = RLayout_rows, 'cols' = RLayout_cols, 'width' = RLayout_width, 'height' = RLayout_height, 'panel_count' = RLayout_panel_count, 'title_text' = RLayout_title_text, 'panel' = RLayout_panel, 'to_svg' = RLayout_to_svg, 'save' = RLayout_save, 'save_svg' = RLayout_save_svg, 'to_png' = RLayout_to_png, 'to_pdf' = RLayout_to_pdf, 'save_png' = RLayout_save_png, 'save_pdf' = RLayout_save_pdf, 'fit_panels' = RLayout_fit_panels, 'show' = RLayout_show, 'view' = RLayout_view);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -38166,8 +42025,760 @@ setMethod('$', '_p_datamunge__plot__RLayout', function(x, name)
 
 
 );
-# end of accessor method for datamunge::plot::RLayout
-setMethod('delete', '_p_datamunge__plot__RLayout', function(obj) {delete_datamunge__plot__RLayout(obj)})
+# end of accessor method for datamunge::graphics::RLayout
+setMethod('delete', '_p_datamunge__graphics__RLayout', function(obj) {delete_datamunge__graphics__RLayout(obj)})
+# Start of terrain_colors
+
+`terrain_colors` = function(n, .copy = FALSE)
+{
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  ;ans = .Call('R_swig_terrain_colors', n, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`terrain_colors`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`terrain_colors`, "inputTypes") = c('integer')
+class(`terrain_colors`) = c("SWIGFunction", class('terrain_colors'))
+
+# Start of diverging_colors
+
+`diverging_colors` = function(n, .copy = FALSE)
+{
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  ;ans = .Call('R_swig_diverging_colors', n, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`diverging_colors`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`diverging_colors`, "inputTypes") = c('integer')
+class(`diverging_colors`) = c("SWIGFunction", class('diverging_colors'))
+
+# Start of viridis_colors
+
+`viridis_colors` = function(n, .copy = FALSE)
+{
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  ;ans = .Call('R_swig_viridis_colors', n, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`viridis_colors`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`viridis_colors`, "inputTypes") = c('integer')
+class(`viridis_colors`) = c("SWIGFunction", class('viridis_colors'))
+
+# Start of value_colors
+
+`value_colors__SWIG_0` = function(values, palette, z_min, z_max, .copy = FALSE)
+{
+  values = as.numeric(values);
+  if (inherits(palette, "ExternalReference")) palette = slot(palette,"ref"); 
+  
+  
+  ;ans = .Call('R_swig_value_colors__SWIG_0', values, palette, z_min, z_max, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`value_colors__SWIG_0`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`value_colors__SWIG_0`, "inputTypes") = c('_p_std__vectorT_double_t', '_p_std__vectorT_datamunge__graphics__RGB_t', 'numeric', 'numeric')
+class(`value_colors__SWIG_0`) = c("SWIGFunction", class('value_colors__SWIG_0'))
+
+# Start of value_colors
+
+`value_colors__SWIG_1` = function(values, palette, z_min, .copy = FALSE)
+{
+  values = as.numeric(values);
+  if (inherits(palette, "ExternalReference")) palette = slot(palette,"ref"); 
+  
+  ;ans = .Call('R_swig_value_colors__SWIG_1', values, palette, z_min, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`value_colors__SWIG_1`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`value_colors__SWIG_1`, "inputTypes") = c('_p_std__vectorT_double_t', '_p_std__vectorT_datamunge__graphics__RGB_t', 'numeric')
+class(`value_colors__SWIG_1`) = c("SWIGFunction", class('value_colors__SWIG_1'))
+
+# Start of value_colors
+
+`value_colors__SWIG_2` = function(values, palette, .copy = FALSE)
+{
+  values = as.numeric(values);
+  if (inherits(palette, "ExternalReference")) palette = slot(palette,"ref"); 
+  ;ans = .Call('R_swig_value_colors__SWIG_2', values, palette, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`value_colors__SWIG_2`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`value_colors__SWIG_2`, "inputTypes") = c('_p_std__vectorT_double_t', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`value_colors__SWIG_2`) = c("SWIGFunction", class('value_colors__SWIG_2'))
+
+# Start of value_colors
+
+`value_colors__SWIG_3` = function(values, .copy = FALSE)
+{
+  values = as.numeric(values);
+  ;ans = .Call('R_swig_value_colors__SWIG_3', values, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`value_colors__SWIG_3`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`value_colors__SWIG_3`, "inputTypes") = c('_p_std__vectorT_double_t')
+class(`value_colors__SWIG_3`) = c("SWIGFunction", class('value_colors__SWIG_3'))
+
+`value_colors` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 1) {
+    if ( is.numeric(argv[[1]]) ) {
+      f <- value_colors__SWIG_3; 
+    }
+  } else if (argc == 2) {
+    if (( is.numeric(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[2]]) == 1 )) {
+      f <- value_colors__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( is.numeric(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- value_colors__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( is.numeric(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- value_colors__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for value_colors with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of RGBVector___nonzero__
+
+`RGBVector___nonzero__` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RGBVector___nonzero__', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector___nonzero__`, 'returnType') = 'logical'
+attr(`RGBVector___nonzero__`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector___nonzero__`) = c("SWIGFunction", class('RGBVector___nonzero__'))
+
+# Start of RGBVector___len__
+
+`RGBVector___len__` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RGBVector___len__', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector___len__`, 'returnType') = 'integer'
+attr(`RGBVector___len__`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector___len__`) = c("SWIGFunction", class('RGBVector___len__'))
+
+# Start of RGBVector_pop
+
+`RGBVector_pop` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_RGBVector_pop', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RGB", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RGBVector_pop`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`RGBVector_pop`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_pop`) = c("SWIGFunction", class('RGBVector_pop'))
+
+# Start of RGBVector___getslice__
+
+`RGBVector___getslice__` = function(self, i, j)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  j = as.integer(j);
+  
+  if(length(j) > 1) {
+    warning("using only the first element of j");
+  };
+  
+  ;ans = .Call('R_swig_RGBVector___getslice__', self, i, j, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RGBVector___getslice__`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`RGBVector___getslice__`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer', 'integer')
+class(`RGBVector___getslice__`) = c("SWIGFunction", class('RGBVector___getslice__'))
+
+# Start of RGBVector___setslice__
+
+`RGBVector___setslice__` = function(self, i, j, is)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  j = as.integer(j);
+  
+  if(length(j) > 1) {
+    warning("using only the first element of j");
+  };
+  
+  if (inherits(is, "ExternalReference")) is = slot(is,"ref"); 
+  ;.Call('R_swig_RGBVector___setslice__', self, i, j, is, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector___setslice__`, 'returnType') = 'void'
+attr(`RGBVector___setslice__`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer', 'integer', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector___setslice__`) = c("SWIGFunction", class('RGBVector___setslice__'))
+
+# Start of RGBVector___delslice__
+
+`RGBVector___delslice__` = function(self, i, j)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  j = as.integer(j);
+  
+  if(length(j) > 1) {
+    warning("using only the first element of j");
+  };
+  
+  ;.Call('R_swig_RGBVector___delslice__', self, i, j, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector___delslice__`, 'returnType') = 'void'
+attr(`RGBVector___delslice__`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer', 'integer')
+class(`RGBVector___delslice__`) = c("SWIGFunction", class('RGBVector___delslice__'))
+
+# Start of RGBVector___delitem__
+
+`RGBVector___delitem__` = function(self, i)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  ;.Call('R_swig_RGBVector___delitem__', self, i, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector___delitem__`, 'returnType') = 'void'
+attr(`RGBVector___delitem__`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer')
+class(`RGBVector___delitem__`) = c("SWIGFunction", class('RGBVector___delitem__'))
+
+# Start of RGBVector___getitem__
+
+`RGBVector___getitem__` = function(self, i, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  ;ans = .Call('R_swig_RGBVector___getitem__', self, i, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RGB", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RGBVector___getitem__`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`RGBVector___getitem__`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer')
+class(`RGBVector___getitem__`) = c("SWIGFunction", class('RGBVector___getitem__'))
+
+# Start of RGBVector___setitem__
+
+`RGBVector___setitem__` = function(self, i, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_RGBVector___setitem__', self, i, x, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector___setitem__`, 'returnType') = 'void'
+attr(`RGBVector___setitem__`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer', '_p_datamunge__graphics__RGB')
+class(`RGBVector___setitem__`) = c("SWIGFunction", class('RGBVector___setitem__'))
+
+# Start of RGBVector_append
+
+`RGBVector_append` = function(self, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_RGBVector_append', self, x, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_append`, 'returnType') = 'void'
+attr(`RGBVector_append`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', '_p_datamunge__graphics__RGB')
+class(`RGBVector_append`) = c("SWIGFunction", class('RGBVector_append'))
+
+# Start of new_RGBVector
+
+`RGBVector__SWIG_0` = function()
+{
+  ;ans = .Call('R_swig_new_RGBVector__SWIG_0', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RGBVector);
+  ans
+  
+}
+
+attr(`RGBVector__SWIG_0`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+class(`RGBVector__SWIG_0`) = c("SWIGFunction", class('RGBVector__SWIG_0'))
+
+# Start of new_RGBVector
+
+`RGBVector__SWIG_1` = function(other)
+{
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_new_RGBVector__SWIG_1', other, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RGBVector);
+  ans
+  
+}
+
+attr(`RGBVector__SWIG_1`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`RGBVector__SWIG_1`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector__SWIG_1`) = c("SWIGFunction", class('RGBVector__SWIG_1'))
+
+# Start of RGBVector_empty
+
+`RGBVector_empty` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RGBVector_empty', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_empty`, 'returnType') = 'logical'
+attr(`RGBVector_empty`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_empty`) = c("SWIGFunction", class('RGBVector_empty'))
+
+# Start of RGBVector_size
+
+`RGBVector_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RGBVector_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_size`, 'returnType') = 'integer'
+attr(`RGBVector_size`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_size`) = c("SWIGFunction", class('RGBVector_size'))
+
+# Start of RGBVector_swap
+
+`RGBVector_swap` = function(self, v)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(v, "ExternalReference")) v = slot(v,"ref"); 
+  ;.Call('R_swig_RGBVector_swap', self, v, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_swap`, 'returnType') = 'void'
+attr(`RGBVector_swap`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', '_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_swap`) = c("SWIGFunction", class('RGBVector_swap'))
+
+# Start of RGBVector_clear
+
+`RGBVector_clear` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RGBVector_clear', self, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_clear`, 'returnType') = 'void'
+attr(`RGBVector_clear`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_clear`) = c("SWIGFunction", class('RGBVector_clear'))
+
+# Start of RGBVector_get_allocator
+
+`RGBVector_get_allocator` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_RGBVector_get_allocator', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__allocatorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RGBVector_get_allocator`, 'returnType') = '_p_std__allocatorT_datamunge__graphics__RGB_t'
+attr(`RGBVector_get_allocator`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_get_allocator`) = c("SWIGFunction", class('RGBVector_get_allocator'))
+
+# Start of new_RGBVector
+
+`RGBVector__SWIG_2` = function(size)
+{
+  size = as.integer(size);
+  
+  if(length(size) > 1) {
+    warning("using only the first element of size");
+  };
+  
+  ;ans = .Call('R_swig_new_RGBVector__SWIG_2', size, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RGBVector);
+  ans
+  
+}
+
+attr(`RGBVector__SWIG_2`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`RGBVector__SWIG_2`, "inputTypes") = c('integer')
+class(`RGBVector__SWIG_2`) = c("SWIGFunction", class('RGBVector__SWIG_2'))
+
+# Start of RGBVector_pop_back
+
+`RGBVector_pop_back` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RGBVector_pop_back', self, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_pop_back`, 'returnType') = 'void'
+attr(`RGBVector_pop_back`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_pop_back`) = c("SWIGFunction", class('RGBVector_pop_back'))
+
+# Start of RGBVector_resize
+
+`RGBVector_resize__SWIG_0` = function(self, new_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  new_size = as.integer(new_size);
+  
+  if(length(new_size) > 1) {
+    warning("using only the first element of new_size");
+  };
+  
+  ;.Call('R_swig_RGBVector_resize__SWIG_0', self, new_size, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_resize__SWIG_0`, 'returnType') = 'void'
+attr(`RGBVector_resize__SWIG_0`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer')
+class(`RGBVector_resize__SWIG_0`) = c("SWIGFunction", class('RGBVector_resize__SWIG_0'))
+
+# Start of new_RGBVector
+
+`RGBVector__SWIG_3` = function(size, value)
+{
+  size = as.integer(size);
+  
+  if(length(size) > 1) {
+    warning("using only the first element of size");
+  };
+  
+  if (inherits(value, "ExternalReference")) value = slot(value,"ref"); 
+  ;ans = .Call('R_swig_new_RGBVector__SWIG_3', size, value, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__graphics__RGB_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RGBVector);
+  ans
+  
+}
+
+attr(`RGBVector__SWIG_3`, 'returnType') = '_p_std__vectorT_datamunge__graphics__RGB_t'
+attr(`RGBVector__SWIG_3`, "inputTypes") = c('integer', '_p_datamunge__graphics__RGB')
+class(`RGBVector__SWIG_3`) = c("SWIGFunction", class('RGBVector__SWIG_3'))
+
+`RGBVector` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 0) {
+    f <- RGBVector__SWIG_0; 
+  } else if (argc == 1) {
+    if ( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) {
+      f <- RGBVector__SWIG_2; 
+    }
+    else if ( extends(argtypes[1], '_p_std__vectorT_datamunge__graphics__RGB_t') && length(argv[[1]]) == 1 ) {
+      f <- RGBVector__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_datamunge__graphics__RGB') && length(argv[[2]]) == 1 )) {
+      f <- RGBVector__SWIG_3; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RGBVector with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of RGBVector_push_back
+
+`RGBVector_push_back` = function(self, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_RGBVector_push_back', self, x, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_push_back`, 'returnType') = 'void'
+attr(`RGBVector_push_back`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', '_p_datamunge__graphics__RGB')
+class(`RGBVector_push_back`) = c("SWIGFunction", class('RGBVector_push_back'))
+
+# Start of RGBVector_front
+
+`RGBVector_front` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_RGBVector_front', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RGB", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RGBVector_front`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`RGBVector_front`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_front`) = c("SWIGFunction", class('RGBVector_front'))
+
+# Start of RGBVector_back
+
+`RGBVector_back` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_RGBVector_back', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RGB", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RGBVector_back`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`RGBVector_back`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_back`) = c("SWIGFunction", class('RGBVector_back'))
+
+# Start of RGBVector_assign
+
+`RGBVector_assign` = function(self, n, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_RGBVector_assign', self, n, x, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_assign`, 'returnType') = 'void'
+attr(`RGBVector_assign`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer', '_p_datamunge__graphics__RGB')
+class(`RGBVector_assign`) = c("SWIGFunction", class('RGBVector_assign'))
+
+# Start of RGBVector_resize
+
+`RGBVector_resize__SWIG_1` = function(self, new_size, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  new_size = as.integer(new_size);
+  
+  if(length(new_size) > 1) {
+    warning("using only the first element of new_size");
+  };
+  
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_RGBVector_resize__SWIG_1', self, new_size, x, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_resize__SWIG_1`, 'returnType') = 'void'
+attr(`RGBVector_resize__SWIG_1`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer', '_p_datamunge__graphics__RGB')
+class(`RGBVector_resize__SWIG_1`) = c("SWIGFunction", class('RGBVector_resize__SWIG_1'))
+
+`RGBVector_resize` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_std__vectorT_datamunge__graphics__RGB_t') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- RGBVector_resize__SWIG_0; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_std__vectorT_datamunge__graphics__RGB_t') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__graphics__RGB') && length(argv[[3]]) == 1 )) {
+      f <- RGBVector_resize__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RGBVector_resize with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of RGBVector_reserve
+
+`RGBVector_reserve` = function(self, n)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  ;.Call('R_swig_RGBVector_reserve', self, n, PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_reserve`, 'returnType') = 'void'
+attr(`RGBVector_reserve`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t', 'integer')
+class(`RGBVector_reserve`) = c("SWIGFunction", class('RGBVector_reserve'))
+
+# Start of RGBVector_capacity
+
+`RGBVector_capacity` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RGBVector_capacity', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RGBVector_capacity`, 'returnType') = 'integer'
+attr(`RGBVector_capacity`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`RGBVector_capacity`) = c("SWIGFunction", class('RGBVector_capacity'))
+
+# Start of delete_RGBVector
+
+`delete_RGBVector` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RGBVector', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RGBVector`, 'returnType') = 'void'
+attr(`delete_RGBVector`, "inputTypes") = c('_p_std__vectorT_datamunge__graphics__RGB_t')
+class(`delete_RGBVector`) = c("SWIGFunction", class('delete_RGBVector'))
+
+# Start of accessor method for std::vector< datamunge::graphics::RGB >
+setMethod('$', '_p_std__vectorT_datamunge__graphics__RGB_t', function(x, name)
+
+{
+  accessorFuns = list('__nonzero__' = RGBVector___nonzero__, '__len__' = RGBVector___len__, 'pop' = RGBVector_pop, '__getslice__' = RGBVector___getslice__, '__setslice__' = RGBVector___setslice__, '__delslice__' = RGBVector___delslice__, '__delitem__' = RGBVector___delitem__, '__getitem__' = RGBVector___getitem__, '__setitem__' = RGBVector___setitem__, 'append' = RGBVector_append, 'empty' = RGBVector_empty, 'size' = RGBVector_size, 'swap' = RGBVector_swap, 'clear' = RGBVector_clear, 'get_allocator' = RGBVector_get_allocator, 'pop_back' = RGBVector_pop_back, 'resize' = RGBVector_resize, 'push_back' = RGBVector_push_back, 'front' = RGBVector_front, 'back' = RGBVector_back, 'assign' = RGBVector_assign, 'reserve' = RGBVector_reserve, 'capacity' = RGBVector_capacity);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for std::vector< datamunge::graphics::RGB >
+setMethod('delete', '_p_std__vectorT_datamunge__graphics__RGB_t', function(obj) {delete_std__vectorT_datamunge__graphics__RGB_t(obj)})
 # Start of set_seed
 
 `set_seed` = function(seed)
@@ -39702,6 +44313,51 @@ attr(`ARIMA_forecast`, 'returnType') = 'numeric'
 attr(`ARIMA_forecast`, "inputTypes") = c('_p_datamunge__stats__ARIMA', 'integer')
 class(`ARIMA_forecast`) = c("SWIGFunction", class('ARIMA_forecast'))
 
+# Start of ARIMA_expanded_ar_coefficients
+
+`ARIMA_expanded_ar_coefficients` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ARIMA_expanded_ar_coefficients', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ARIMA_expanded_ar_coefficients`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`ARIMA_expanded_ar_coefficients`, "inputTypes") = c('_p_datamunge__stats__ARIMA')
+class(`ARIMA_expanded_ar_coefficients`) = c("SWIGFunction", class('ARIMA_expanded_ar_coefficients'))
+
+# Start of ARIMA_expanded_ma_coefficients
+
+`ARIMA_expanded_ma_coefficients` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ARIMA_expanded_ma_coefficients', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ARIMA_expanded_ma_coefficients`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`ARIMA_expanded_ma_coefficients`, "inputTypes") = c('_p_datamunge__stats__ARIMA')
+class(`ARIMA_expanded_ma_coefficients`) = c("SWIGFunction", class('ARIMA_expanded_ma_coefficients'))
+
+# Start of ARIMA_psi_weights
+
+`ARIMA_psi_weights` = function(self, count, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  count = as.integer(count);
+  
+  if(length(count) > 1) {
+    warning("using only the first element of count");
+  };
+  
+  ;.Call('R_swig_ARIMA_psi_weights', self, count, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ARIMA_psi_weights`, 'returnType') = 'numeric'
+attr(`ARIMA_psi_weights`, "inputTypes") = c('_p_datamunge__stats__ARIMA', 'integer')
+class(`ARIMA_psi_weights`) = c("SWIGFunction", class('ARIMA_psi_weights'))
+
 # Start of ARIMA_forecast_with_intervals
 
 `ARIMA_forecast_with_intervals` = function(self, horizon, .copy = FALSE)
@@ -39742,7 +44398,7 @@ class(`delete_ARIMA`) = c("SWIGFunction", class('delete_ARIMA'))
 setMethod('$', '_p_datamunge__stats__ARIMA', function(x, name)
 
 {
-  accessorFuns = list('options' = ARIMA_options, 'ar_coefficients' = ARIMA_ar_coefficients, 'ma_coefficients' = ARIMA_ma_coefficients, 'seasonal_ar_coefficients' = ARIMA_seasonal_ar_coefficients, 'seasonal_ma_coefficients' = ARIMA_seasonal_ma_coefficients, 'mean' = ARIMA_mean, 'observations' = ARIMA_observations, 'n_used' = ARIMA_n_used, 'sigma2' = ARIMA_sigma2, 'log_likelihood' = ARIMA_log_likelihood, 'aic' = ARIMA_aic, 'bic' = ARIMA_bic, 'fitted_values' = ARIMA_fitted_values, 'residuals' = ARIMA_residuals, 'forecast' = ARIMA_forecast, 'forecast_with_intervals' = ARIMA_forecast_with_intervals);
+  accessorFuns = list('options' = ARIMA_options, 'ar_coefficients' = ARIMA_ar_coefficients, 'ma_coefficients' = ARIMA_ma_coefficients, 'seasonal_ar_coefficients' = ARIMA_seasonal_ar_coefficients, 'seasonal_ma_coefficients' = ARIMA_seasonal_ma_coefficients, 'mean' = ARIMA_mean, 'observations' = ARIMA_observations, 'n_used' = ARIMA_n_used, 'sigma2' = ARIMA_sigma2, 'log_likelihood' = ARIMA_log_likelihood, 'aic' = ARIMA_aic, 'bic' = ARIMA_bic, 'fitted_values' = ARIMA_fitted_values, 'residuals' = ARIMA_residuals, 'forecast' = ARIMA_forecast, 'expanded_ar_coefficients' = ARIMA_expanded_ar_coefficients, 'expanded_ma_coefficients' = ARIMA_expanded_ma_coefficients, 'psi_weights' = ARIMA_psi_weights, 'forecast_with_intervals' = ARIMA_forecast_with_intervals);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -41600,6 +46256,115 @@ class(`ks_test_one_sample_normal__SWIG_3`) = c("SWIGFunction", class('ks_test_on
 }
 
 # Dispatch function
+# Start of ks_test_one_sample_uniform
+
+`ks_test_one_sample_uniform__SWIG_0` = function(x, lower, upper, alternative, .copy = FALSE)
+{
+  x = as.numeric(x);
+  
+  
+  alternative = enumToInteger(alternative, "_datamunge__stats__Alternative"); 
+  
+  if(length(alternative) > 1) {
+    warning("using only the first element of alternative");
+  };
+  
+  ;ans = .Call('R_swig_ks_test_one_sample_uniform__SWIG_0', x, lower, upper, alternative, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__stats__HypothesisTestResult", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ks_test_one_sample_uniform__SWIG_0`, 'returnType') = '_p_datamunge__stats__HypothesisTestResult'
+attr(`ks_test_one_sample_uniform__SWIG_0`, "inputTypes") = c('_p_std__vectorT_double_t', 'numeric', 'numeric', 'character')
+class(`ks_test_one_sample_uniform__SWIG_0`) = c("SWIGFunction", class('ks_test_one_sample_uniform__SWIG_0'))
+
+# Start of ks_test_one_sample_uniform
+
+`ks_test_one_sample_uniform__SWIG_1` = function(x, lower, upper, .copy = FALSE)
+{
+  x = as.numeric(x);
+  
+  
+  ;ans = .Call('R_swig_ks_test_one_sample_uniform__SWIG_1', x, lower, upper, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__stats__HypothesisTestResult", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ks_test_one_sample_uniform__SWIG_1`, 'returnType') = '_p_datamunge__stats__HypothesisTestResult'
+attr(`ks_test_one_sample_uniform__SWIG_1`, "inputTypes") = c('_p_std__vectorT_double_t', 'numeric', 'numeric')
+class(`ks_test_one_sample_uniform__SWIG_1`) = c("SWIGFunction", class('ks_test_one_sample_uniform__SWIG_1'))
+
+# Start of ks_test_one_sample_uniform
+
+`ks_test_one_sample_uniform__SWIG_2` = function(x, lower, .copy = FALSE)
+{
+  x = as.numeric(x);
+  
+  ;ans = .Call('R_swig_ks_test_one_sample_uniform__SWIG_2', x, lower, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__stats__HypothesisTestResult", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ks_test_one_sample_uniform__SWIG_2`, 'returnType') = '_p_datamunge__stats__HypothesisTestResult'
+attr(`ks_test_one_sample_uniform__SWIG_2`, "inputTypes") = c('_p_std__vectorT_double_t', 'numeric')
+class(`ks_test_one_sample_uniform__SWIG_2`) = c("SWIGFunction", class('ks_test_one_sample_uniform__SWIG_2'))
+
+# Start of ks_test_one_sample_uniform
+
+`ks_test_one_sample_uniform__SWIG_3` = function(x, .copy = FALSE)
+{
+  x = as.numeric(x);
+  ;ans = .Call('R_swig_ks_test_one_sample_uniform__SWIG_3', x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__stats__HypothesisTestResult", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ks_test_one_sample_uniform__SWIG_3`, 'returnType') = '_p_datamunge__stats__HypothesisTestResult'
+attr(`ks_test_one_sample_uniform__SWIG_3`, "inputTypes") = c('_p_std__vectorT_double_t')
+class(`ks_test_one_sample_uniform__SWIG_3`) = c("SWIGFunction", class('ks_test_one_sample_uniform__SWIG_3'))
+
+`ks_test_one_sample_uniform` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 1) {
+    if ( is.numeric(argv[[1]]) ) {
+      f <- ks_test_one_sample_uniform__SWIG_3; 
+    }
+  } else if (argc == 2) {
+    if (( is.numeric(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- ks_test_one_sample_uniform__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( is.numeric(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- ks_test_one_sample_uniform__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( is.numeric(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- ks_test_one_sample_uniform__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for ks_test_one_sample_uniform with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of ks_test_two_sample
 
 `ks_test_two_sample__SWIG_0` = function(x, y, alternative, .copy = FALSE)
@@ -41995,6 +46760,352 @@ class(`spearman_correlation_test__SWIG_1`) = c("SWIGFunction", class('spearman_c
 }
 
 # Dispatch function
+# Start of KendallTau_concordant_set
+
+`KendallTau_concordant_set` = function(self, s_concordant)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_concordant = as.integer(s_concordant);
+  
+  if(length(s_concordant) > 1) {
+    warning("using only the first element of s_concordant");
+  };
+  
+  ;.Call('R_swig_KendallTau_concordant_set', self, s_concordant, PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_concordant_set`, 'returnType') = 'void'
+attr(`KendallTau_concordant_set`, "inputTypes") = c('_p_datamunge__stats__KendallTau', 'integer')
+class(`KendallTau_concordant_set`) = c("SWIGFunction", class('KendallTau_concordant_set'))
+
+# Start of KendallTau_concordant_get
+
+`KendallTau_concordant_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_KendallTau_concordant_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_concordant_get`, 'returnType') = 'integer'
+attr(`KendallTau_concordant_get`, "inputTypes") = c('_p_datamunge__stats__KendallTau')
+class(`KendallTau_concordant_get`) = c("SWIGFunction", class('KendallTau_concordant_get'))
+
+# Start of KendallTau_discordant_set
+
+`KendallTau_discordant_set` = function(self, s_discordant)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_discordant = as.integer(s_discordant);
+  
+  if(length(s_discordant) > 1) {
+    warning("using only the first element of s_discordant");
+  };
+  
+  ;.Call('R_swig_KendallTau_discordant_set', self, s_discordant, PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_discordant_set`, 'returnType') = 'void'
+attr(`KendallTau_discordant_set`, "inputTypes") = c('_p_datamunge__stats__KendallTau', 'integer')
+class(`KendallTau_discordant_set`) = c("SWIGFunction", class('KendallTau_discordant_set'))
+
+# Start of KendallTau_discordant_get
+
+`KendallTau_discordant_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_KendallTau_discordant_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_discordant_get`, 'returnType') = 'integer'
+attr(`KendallTau_discordant_get`, "inputTypes") = c('_p_datamunge__stats__KendallTau')
+class(`KendallTau_discordant_get`) = c("SWIGFunction", class('KendallTau_discordant_get'))
+
+# Start of KendallTau_ties_x_set
+
+`KendallTau_ties_x_set` = function(self, s_ties_x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_ties_x = as.integer(s_ties_x);
+  
+  if(length(s_ties_x) > 1) {
+    warning("using only the first element of s_ties_x");
+  };
+  
+  ;.Call('R_swig_KendallTau_ties_x_set', self, s_ties_x, PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_ties_x_set`, 'returnType') = 'void'
+attr(`KendallTau_ties_x_set`, "inputTypes") = c('_p_datamunge__stats__KendallTau', 'integer')
+class(`KendallTau_ties_x_set`) = c("SWIGFunction", class('KendallTau_ties_x_set'))
+
+# Start of KendallTau_ties_x_get
+
+`KendallTau_ties_x_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_KendallTau_ties_x_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_ties_x_get`, 'returnType') = 'integer'
+attr(`KendallTau_ties_x_get`, "inputTypes") = c('_p_datamunge__stats__KendallTau')
+class(`KendallTau_ties_x_get`) = c("SWIGFunction", class('KendallTau_ties_x_get'))
+
+# Start of KendallTau_ties_y_set
+
+`KendallTau_ties_y_set` = function(self, s_ties_y)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_ties_y = as.integer(s_ties_y);
+  
+  if(length(s_ties_y) > 1) {
+    warning("using only the first element of s_ties_y");
+  };
+  
+  ;.Call('R_swig_KendallTau_ties_y_set', self, s_ties_y, PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_ties_y_set`, 'returnType') = 'void'
+attr(`KendallTau_ties_y_set`, "inputTypes") = c('_p_datamunge__stats__KendallTau', 'integer')
+class(`KendallTau_ties_y_set`) = c("SWIGFunction", class('KendallTau_ties_y_set'))
+
+# Start of KendallTau_ties_y_get
+
+`KendallTau_ties_y_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_KendallTau_ties_y_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_ties_y_get`, 'returnType') = 'integer'
+attr(`KendallTau_ties_y_get`, "inputTypes") = c('_p_datamunge__stats__KendallTau')
+class(`KendallTau_ties_y_get`) = c("SWIGFunction", class('KendallTau_ties_y_get'))
+
+# Start of KendallTau_ties_xy_set
+
+`KendallTau_ties_xy_set` = function(self, s_ties_xy)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_ties_xy = as.integer(s_ties_xy);
+  
+  if(length(s_ties_xy) > 1) {
+    warning("using only the first element of s_ties_xy");
+  };
+  
+  ;.Call('R_swig_KendallTau_ties_xy_set', self, s_ties_xy, PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_ties_xy_set`, 'returnType') = 'void'
+attr(`KendallTau_ties_xy_set`, "inputTypes") = c('_p_datamunge__stats__KendallTau', 'integer')
+class(`KendallTau_ties_xy_set`) = c("SWIGFunction", class('KendallTau_ties_xy_set'))
+
+# Start of KendallTau_ties_xy_get
+
+`KendallTau_ties_xy_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_KendallTau_ties_xy_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_ties_xy_get`, 'returnType') = 'integer'
+attr(`KendallTau_ties_xy_get`, "inputTypes") = c('_p_datamunge__stats__KendallTau')
+class(`KendallTau_ties_xy_get`) = c("SWIGFunction", class('KendallTau_ties_xy_get'))
+
+# Start of KendallTau_tau_a_set
+
+`KendallTau_tau_a_set` = function(self, s_tau_a)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_KendallTau_tau_a_set', self, s_tau_a, PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_tau_a_set`, 'returnType') = 'void'
+attr(`KendallTau_tau_a_set`, "inputTypes") = c('_p_datamunge__stats__KendallTau', 'numeric')
+class(`KendallTau_tau_a_set`) = c("SWIGFunction", class('KendallTau_tau_a_set'))
+
+# Start of KendallTau_tau_a_get
+
+`KendallTau_tau_a_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_KendallTau_tau_a_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_tau_a_get`, 'returnType') = 'numeric'
+attr(`KendallTau_tau_a_get`, "inputTypes") = c('_p_datamunge__stats__KendallTau')
+class(`KendallTau_tau_a_get`) = c("SWIGFunction", class('KendallTau_tau_a_get'))
+
+# Start of KendallTau_tau_b_set
+
+`KendallTau_tau_b_set` = function(self, s_tau_b)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_KendallTau_tau_b_set', self, s_tau_b, PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_tau_b_set`, 'returnType') = 'void'
+attr(`KendallTau_tau_b_set`, "inputTypes") = c('_p_datamunge__stats__KendallTau', 'numeric')
+class(`KendallTau_tau_b_set`) = c("SWIGFunction", class('KendallTau_tau_b_set'))
+
+# Start of KendallTau_tau_b_get
+
+`KendallTau_tau_b_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_KendallTau_tau_b_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`KendallTau_tau_b_get`, 'returnType') = 'numeric'
+attr(`KendallTau_tau_b_get`, "inputTypes") = c('_p_datamunge__stats__KendallTau')
+class(`KendallTau_tau_b_get`) = c("SWIGFunction", class('KendallTau_tau_b_get'))
+
+# Start of new_KendallTau
+
+`KendallTau` = function()
+{
+  ;ans = .Call('R_swig_new_KendallTau', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__stats__KendallTau", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_KendallTau);
+  ans
+  
+}
+
+attr(`KendallTau`, 'returnType') = '_p_datamunge__stats__KendallTau'
+class(`KendallTau`) = c("SWIGFunction", class('KendallTau'))
+
+# Start of delete_KendallTau
+
+`delete_KendallTau` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_KendallTau', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_KendallTau`, 'returnType') = 'void'
+attr(`delete_KendallTau`, "inputTypes") = c('_p_datamunge__stats__KendallTau')
+class(`delete_KendallTau`) = c("SWIGFunction", class('delete_KendallTau'))
+
+# Start of accessor method for datamunge::stats::KendallTau
+setMethod('$', '_p_datamunge__stats__KendallTau', function(x, name)
+
+{
+  accessorFuns = list('concordant' = KendallTau_concordant_get, 'discordant' = KendallTau_discordant_get, 'ties_x' = KendallTau_ties_x_get, 'ties_y' = KendallTau_ties_y_get, 'ties_xy' = KendallTau_ties_xy_get, 'tau_a' = KendallTau_tau_a_get, 'tau_b' = KendallTau_tau_b_get);
+  vaccessors = c('concordant', 'discordant', 'ties_x', 'ties_y', 'ties_xy', 'tau_a', 'tau_b');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::stats::KendallTau
+# Start of accessor method for datamunge::stats::KendallTau
+setMethod('$<-', '_p_datamunge__stats__KendallTau', function(x, name, value)
+
+{
+  accessorFuns = list('concordant' = KendallTau_concordant_set, 'discordant' = KendallTau_discordant_set, 'ties_x' = KendallTau_ties_x_set, 'ties_y' = KendallTau_ties_y_set, 'ties_xy' = KendallTau_ties_xy_set, 'tau_a' = KendallTau_tau_a_set, 'tau_b' = KendallTau_tau_b_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__stats__KendallTau', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('concordant' = KendallTau_concordant_set, 'discordant' = KendallTau_discordant_set, 'ties_x' = KendallTau_ties_x_set, 'ties_y' = KendallTau_ties_y_set, 'ties_xy' = KendallTau_ties_xy_set, 'tau_a' = KendallTau_tau_a_set, 'tau_b' = KendallTau_tau_b_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::stats::KendallTau
+setMethod('delete', '_p_datamunge__stats__KendallTau', function(obj) {delete_datamunge__stats__KendallTau(obj)})
+# Start definition of copy functions & methods for datamunge::stats::KendallTau
+CopyToR_datamunge__stats__KendallTau = function(value, obj = new("datamunge::stats::KendallTau"))
+{
+  obj@concordant = value$concordant;
+  obj@discordant = value$discordant;
+  obj@ties_x = value$ties_x;
+  obj@ties_y = value$ties_y;
+  obj@ties_xy = value$ties_xy;
+  obj@tau_a = value$tau_a;
+  obj@tau_b = value$tau_b;
+  obj;
+}
+
+
+
+CopyToC_datamunge__stats__KendallTau = function(value, obj)
+{
+  obj$concordant = value@concordant;
+  obj$discordant = value@discordant;
+  obj$ties_x = value@ties_x;
+  obj$ties_y = value@ties_y;
+  obj$ties_xy = value@ties_xy;
+  obj$tau_a = value@tau_a;
+  obj$tau_b = value@tau_b;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::stats::KendallTau
+setMethod('copyToR', '_p_datamunge__stats__KendallTau', CopyToR_datamunge__stats__KendallTau);
+setMethod('copyToC', "datamunge::stats::KendallTau", CopyToC_datamunge__stats__KendallTau);
+
+# End definition of copy methods for datamunge::stats::KendallTau
+# End definition of copy functions & methods for datamunge::stats::KendallTau
+# Start of kendall_tau
+
+`kendall_tau` = function(x, y, .copy = FALSE)
+{
+  x = as.numeric(x);
+  y = as.numeric(y);
+  ;ans = .Call('R_swig_kendall_tau', x, y, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__stats__KendallTau", ref=ans);
+  
+  ans
+  
+}
+
+attr(`kendall_tau`, 'returnType') = '_p_datamunge__stats__KendallTau'
+attr(`kendall_tau`, "inputTypes") = c('_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`kendall_tau`) = c("SWIGFunction", class('kendall_tau'))
+
 # Start of f_test_variance
 
 `f_test_variance__SWIG_0` = function(x, y, alternative, conf_level, .copy = FALSE)
@@ -43799,6 +48910,23 @@ attr(`GradientDescent_optimize`, 'returnType') = 'numeric'
 attr(`GradientDescent_optimize`, "inputTypes") = c('_p_datamunge__optim__GradientDescent', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`GradientDescent_optimize`) = c("SWIGFunction", class('GradientDescent_optimize'))
 
+# Start of GradientDescent_options
+
+`GradientDescent_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_GradientDescent_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__GradientDescentOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`GradientDescent_options`, 'returnType') = '_p_datamunge__optim__GradientDescentOptions'
+attr(`GradientDescent_options`, "inputTypes") = c('_p_datamunge__optim__GradientDescent')
+class(`GradientDescent_options`) = c("SWIGFunction", class('GradientDescent_options'))
+
 # Start of delete_GradientDescent
 
 `delete_GradientDescent` = function(self)
@@ -43816,7 +48944,7 @@ class(`delete_GradientDescent`) = c("SWIGFunction", class('delete_GradientDescen
 setMethod('$', '_p_datamunge__optim__GradientDescent', function(x, name)
 
 {
-  accessorFuns = list('optimize' = GradientDescent_optimize);
+  accessorFuns = list('optimize' = GradientDescent_optimize, 'options' = GradientDescent_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -44178,6 +49306,23 @@ attr(`Adam_optimize`, 'returnType') = 'numeric'
 attr(`Adam_optimize`, "inputTypes") = c('_p_datamunge__optim__Adam', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`Adam_optimize`) = c("SWIGFunction", class('Adam_optimize'))
 
+# Start of Adam_options
+
+`Adam_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Adam_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AdamOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Adam_options`, 'returnType') = '_p_datamunge__optim__AdamOptions'
+attr(`Adam_options`, "inputTypes") = c('_p_datamunge__optim__Adam')
+class(`Adam_options`) = c("SWIGFunction", class('Adam_options'))
+
 # Start of delete_Adam
 
 `delete_Adam` = function(self)
@@ -44195,7 +49340,7 @@ class(`delete_Adam`) = c("SWIGFunction", class('delete_Adam'))
 setMethod('$', '_p_datamunge__optim__Adam', function(x, name)
 
 {
-  accessorFuns = list('optimize' = Adam_optimize);
+  accessorFuns = list('optimize' = Adam_optimize, 'options' = Adam_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -44499,6 +49644,23 @@ attr(`AdaGrad_optimize`, 'returnType') = 'numeric'
 attr(`AdaGrad_optimize`, "inputTypes") = c('_p_datamunge__optim__AdaGrad', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`AdaGrad_optimize`) = c("SWIGFunction", class('AdaGrad_optimize'))
 
+# Start of AdaGrad_options
+
+`AdaGrad_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_AdaGrad_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AdaGradOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`AdaGrad_options`, 'returnType') = '_p_datamunge__optim__AdaGradOptions'
+attr(`AdaGrad_options`, "inputTypes") = c('_p_datamunge__optim__AdaGrad')
+class(`AdaGrad_options`) = c("SWIGFunction", class('AdaGrad_options'))
+
 # Start of delete_AdaGrad
 
 `delete_AdaGrad` = function(self)
@@ -44516,7 +49678,7 @@ class(`delete_AdaGrad`) = c("SWIGFunction", class('delete_AdaGrad'))
 setMethod('$', '_p_datamunge__optim__AdaGrad', function(x, name)
 
 {
-  accessorFuns = list('optimize' = AdaGrad_optimize);
+  accessorFuns = list('optimize' = AdaGrad_optimize, 'options' = AdaGrad_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -44820,6 +49982,23 @@ attr(`AdaDelta_optimize`, 'returnType') = 'numeric'
 attr(`AdaDelta_optimize`, "inputTypes") = c('_p_datamunge__optim__AdaDelta', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`AdaDelta_optimize`) = c("SWIGFunction", class('AdaDelta_optimize'))
 
+# Start of AdaDelta_options
+
+`AdaDelta_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_AdaDelta_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AdaDeltaOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`AdaDelta_options`, 'returnType') = '_p_datamunge__optim__AdaDeltaOptions'
+attr(`AdaDelta_options`, "inputTypes") = c('_p_datamunge__optim__AdaDelta')
+class(`AdaDelta_options`) = c("SWIGFunction", class('AdaDelta_options'))
+
 # Start of delete_AdaDelta
 
 `delete_AdaDelta` = function(self)
@@ -44837,7 +50016,7 @@ class(`delete_AdaDelta`) = c("SWIGFunction", class('delete_AdaDelta'))
 setMethod('$', '_p_datamunge__optim__AdaDelta', function(x, name)
 
 {
-  accessorFuns = list('optimize' = AdaDelta_optimize);
+  accessorFuns = list('optimize' = AdaDelta_optimize, 'options' = AdaDelta_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -45199,6 +50378,23 @@ attr(`AMSGrad_optimize`, 'returnType') = 'numeric'
 attr(`AMSGrad_optimize`, "inputTypes") = c('_p_datamunge__optim__AMSGrad', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`AMSGrad_optimize`) = c("SWIGFunction", class('AMSGrad_optimize'))
 
+# Start of AMSGrad_options
+
+`AMSGrad_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_AMSGrad_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AMSGradOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`AMSGrad_options`, 'returnType') = '_p_datamunge__optim__AMSGradOptions'
+attr(`AMSGrad_options`, "inputTypes") = c('_p_datamunge__optim__AMSGrad')
+class(`AMSGrad_options`) = c("SWIGFunction", class('AMSGrad_options'))
+
 # Start of delete_AMSGrad
 
 `delete_AMSGrad` = function(self)
@@ -45216,7 +50412,7 @@ class(`delete_AMSGrad`) = c("SWIGFunction", class('delete_AMSGrad'))
 setMethod('$', '_p_datamunge__optim__AMSGrad', function(x, name)
 
 {
-  accessorFuns = list('optimize' = AMSGrad_optimize);
+  accessorFuns = list('optimize' = AMSGrad_optimize, 'options' = AMSGrad_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -45578,6 +50774,23 @@ attr(`Nadam_optimize`, 'returnType') = 'numeric'
 attr(`Nadam_optimize`, "inputTypes") = c('_p_datamunge__optim__Nadam', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`Nadam_optimize`) = c("SWIGFunction", class('Nadam_optimize'))
 
+# Start of Nadam_options
+
+`Nadam_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Nadam_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NadamOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Nadam_options`, 'returnType') = '_p_datamunge__optim__NadamOptions'
+attr(`Nadam_options`, "inputTypes") = c('_p_datamunge__optim__Nadam')
+class(`Nadam_options`) = c("SWIGFunction", class('Nadam_options'))
+
 # Start of delete_Nadam
 
 `delete_Nadam` = function(self)
@@ -45595,7 +50808,7 @@ class(`delete_Nadam`) = c("SWIGFunction", class('delete_Nadam'))
 setMethod('$', '_p_datamunge__optim__Nadam', function(x, name)
 
 {
-  accessorFuns = list('optimize' = Nadam_optimize);
+  accessorFuns = list('optimize' = Nadam_optimize, 'options' = Nadam_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -45928,6 +51141,23 @@ attr(`RMSProp_optimize`, 'returnType') = 'numeric'
 attr(`RMSProp_optimize`, "inputTypes") = c('_p_datamunge__optim__RMSProp', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`RMSProp_optimize`) = c("SWIGFunction", class('RMSProp_optimize'))
 
+# Start of RMSProp_options
+
+`RMSProp_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_RMSProp_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RMSPropOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RMSProp_options`, 'returnType') = '_p_datamunge__optim__RMSPropOptions'
+attr(`RMSProp_options`, "inputTypes") = c('_p_datamunge__optim__RMSProp')
+class(`RMSProp_options`) = c("SWIGFunction", class('RMSProp_options'))
+
 # Start of delete_RMSProp
 
 `delete_RMSProp` = function(self)
@@ -45945,7 +51175,7 @@ class(`delete_RMSProp`) = c("SWIGFunction", class('delete_RMSProp'))
 setMethod('$', '_p_datamunge__optim__RMSProp', function(x, name)
 
 {
-  accessorFuns = list('optimize' = RMSProp_optimize);
+  accessorFuns = list('optimize' = RMSProp_optimize, 'options' = RMSProp_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -46317,6 +51547,23 @@ attr(`LBFGS_optimize`, 'returnType') = 'numeric'
 attr(`LBFGS_optimize`, "inputTypes") = c('_p_datamunge__optim__LBFGS', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`LBFGS_optimize`) = c("SWIGFunction", class('LBFGS_optimize'))
 
+# Start of LBFGS_options
+
+`LBFGS_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LBFGS_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__LBFGSOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LBFGS_options`, 'returnType') = '_p_datamunge__optim__LBFGSOptions'
+attr(`LBFGS_options`, "inputTypes") = c('_p_datamunge__optim__LBFGS')
+class(`LBFGS_options`) = c("SWIGFunction", class('LBFGS_options'))
+
 # Start of delete_LBFGS
 
 `delete_LBFGS` = function(self)
@@ -46334,7 +51581,7 @@ class(`delete_LBFGS`) = c("SWIGFunction", class('delete_LBFGS'))
 setMethod('$', '_p_datamunge__optim__LBFGS', function(x, name)
 
 {
-  accessorFuns = list('optimize' = LBFGS_optimize);
+  accessorFuns = list('optimize' = LBFGS_optimize, 'options' = LBFGS_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -46725,6 +51972,23 @@ attr(`NelderMead_optimize`, 'returnType') = 'numeric'
 attr(`NelderMead_optimize`, "inputTypes") = c('_p_datamunge__optim__NelderMead', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
 class(`NelderMead_optimize`) = c("SWIGFunction", class('NelderMead_optimize'))
 
+# Start of NelderMead_options
+
+`NelderMead_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NelderMead_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NelderMeadOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NelderMead_options`, 'returnType') = '_p_datamunge__optim__NelderMeadOptions'
+attr(`NelderMead_options`, "inputTypes") = c('_p_datamunge__optim__NelderMead')
+class(`NelderMead_options`) = c("SWIGFunction", class('NelderMead_options'))
+
 # Start of delete_NelderMead
 
 `delete_NelderMead` = function(self)
@@ -46742,7 +52006,7 @@ class(`delete_NelderMead`) = c("SWIGFunction", class('delete_NelderMead'))
 setMethod('$', '_p_datamunge__optim__NelderMead', function(x, name)
 
 {
-  accessorFuns = list('optimize' = NelderMead_optimize);
+  accessorFuns = list('optimize' = NelderMead_optimize, 'options' = NelderMead_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -47114,6 +52378,23 @@ attr(`SGD_optimize`, 'returnType') = 'numeric'
 attr(`SGD_optimize`, "inputTypes") = c('_p_datamunge__optim__SGD', '_p_datamunge__optim__DifferentiableSeparableFunction', '_p_std__vectorT_double_t')
 class(`SGD_optimize`) = c("SWIGFunction", class('SGD_optimize'))
 
+# Start of SGD_options
+
+`SGD_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_SGD_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SGDOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`SGD_options`, 'returnType') = '_p_datamunge__optim__SGDOptions'
+attr(`SGD_options`, "inputTypes") = c('_p_datamunge__optim__SGD')
+class(`SGD_options`) = c("SWIGFunction", class('SGD_options'))
+
 # Start of delete_SGD
 
 `delete_SGD` = function(self)
@@ -47131,7 +52412,7 @@ class(`delete_SGD`) = c("SWIGFunction", class('delete_SGD'))
 setMethod('$', '_p_datamunge__optim__SGD', function(x, name)
 
 {
-  accessorFuns = list('optimize' = SGD_optimize);
+  accessorFuns = list('optimize' = SGD_optimize, 'options' = SGD_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -47474,6 +52755,23 @@ attr(`SVRG_optimize`, 'returnType') = 'numeric'
 attr(`SVRG_optimize`, "inputTypes") = c('_p_datamunge__optim__SVRG', '_p_datamunge__optim__DifferentiableSeparableFunction', '_p_std__vectorT_double_t')
 class(`SVRG_optimize`) = c("SWIGFunction", class('SVRG_optimize'))
 
+# Start of SVRG_options
+
+`SVRG_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_SVRG_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SVRGOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`SVRG_options`, 'returnType') = '_p_datamunge__optim__SVRGOptions'
+attr(`SVRG_options`, "inputTypes") = c('_p_datamunge__optim__SVRG')
+class(`SVRG_options`) = c("SWIGFunction", class('SVRG_options'))
+
 # Start of delete_SVRG
 
 `delete_SVRG` = function(self)
@@ -47491,7 +52789,7 @@ class(`delete_SVRG`) = c("SWIGFunction", class('delete_SVRG'))
 setMethod('$', '_p_datamunge__optim__SVRG', function(x, name)
 
 {
-  accessorFuns = list('optimize' = SVRG_optimize);
+  accessorFuns = list('optimize' = SVRG_optimize, 'options' = SVRG_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -47800,6 +53098,23 @@ attr(`SAGA_optimize`, 'returnType') = 'numeric'
 attr(`SAGA_optimize`, "inputTypes") = c('_p_datamunge__optim__SAGA', '_p_datamunge__optim__DifferentiableSeparableFunction', '_p_std__vectorT_double_t')
 class(`SAGA_optimize`) = c("SWIGFunction", class('SAGA_optimize'))
 
+# Start of SAGA_options
+
+`SAGA_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_SAGA_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SAGAOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`SAGA_options`, 'returnType') = '_p_datamunge__optim__SAGAOptions'
+attr(`SAGA_options`, "inputTypes") = c('_p_datamunge__optim__SAGA')
+class(`SAGA_options`) = c("SWIGFunction", class('SAGA_options'))
+
 # Start of delete_SAGA
 
 `delete_SAGA` = function(self)
@@ -47817,7 +53132,7 @@ class(`delete_SAGA`) = c("SWIGFunction", class('delete_SAGA'))
 setMethod('$', '_p_datamunge__optim__SAGA', function(x, name)
 
 {
-  accessorFuns = list('optimize' = SAGA_optimize);
+  accessorFuns = list('optimize' = SAGA_optimize, 'options' = SAGA_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -48184,6 +53499,23 @@ attr(`CoordinateDescent_optimize`, 'returnType') = 'numeric'
 attr(`CoordinateDescent_optimize`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescent', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`CoordinateDescent_optimize`) = c("SWIGFunction", class('CoordinateDescent_optimize'))
 
+# Start of CoordinateDescent_options
+
+`CoordinateDescent_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_CoordinateDescent_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CoordinateDescentOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CoordinateDescent_options`, 'returnType') = '_p_datamunge__optim__CoordinateDescentOptions'
+attr(`CoordinateDescent_options`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescent')
+class(`CoordinateDescent_options`) = c("SWIGFunction", class('CoordinateDescent_options'))
+
 # Start of delete_CoordinateDescent
 
 `delete_CoordinateDescent` = function(self)
@@ -48201,7 +53533,7 @@ class(`delete_CoordinateDescent`) = c("SWIGFunction", class('delete_CoordinateDe
 setMethod('$', '_p_datamunge__optim__CoordinateDescent', function(x, name)
 
 {
-  accessorFuns = list('optimize' = CoordinateDescent_optimize);
+  accessorFuns = list('optimize' = CoordinateDescent_optimize, 'options' = CoordinateDescent_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -48636,6 +53968,23 @@ attr(`RandomizedBlockCoordinateDescent_optimize`, 'returnType') = 'numeric'
 attr(`RandomizedBlockCoordinateDescent_optimize`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescent', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`RandomizedBlockCoordinateDescent_optimize`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescent_optimize'))
 
+# Start of RandomizedBlockCoordinateDescent_options
+
+`RandomizedBlockCoordinateDescent_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_RandomizedBlockCoordinateDescent_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RandomizedBlockCoordinateDescent_options`, 'returnType') = '_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions'
+attr(`RandomizedBlockCoordinateDescent_options`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescent')
+class(`RandomizedBlockCoordinateDescent_options`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescent_options'))
+
 # Start of delete_RandomizedBlockCoordinateDescent
 
 `delete_RandomizedBlockCoordinateDescent` = function(self)
@@ -48653,7 +54002,7 @@ class(`delete_RandomizedBlockCoordinateDescent`) = c("SWIGFunction", class('dele
 setMethod('$', '_p_datamunge__optim__RandomizedBlockCoordinateDescent', function(x, name)
 
 {
-  accessorFuns = list('optimize' = RandomizedBlockCoordinateDescent_optimize);
+  accessorFuns = list('optimize' = RandomizedBlockCoordinateDescent_optimize, 'options' = RandomizedBlockCoordinateDescent_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -48957,6 +54306,23 @@ attr(`NesterovAcceleratedGradient_optimize`, 'returnType') = 'numeric'
 attr(`NesterovAcceleratedGradient_optimize`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradient', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`NesterovAcceleratedGradient_optimize`) = c("SWIGFunction", class('NesterovAcceleratedGradient_optimize'))
 
+# Start of NesterovAcceleratedGradient_options
+
+`NesterovAcceleratedGradient_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NesterovAcceleratedGradient_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NesterovAcceleratedGradientOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NesterovAcceleratedGradient_options`, 'returnType') = '_p_datamunge__optim__NesterovAcceleratedGradientOptions'
+attr(`NesterovAcceleratedGradient_options`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradient')
+class(`NesterovAcceleratedGradient_options`) = c("SWIGFunction", class('NesterovAcceleratedGradient_options'))
+
 # Start of delete_NesterovAcceleratedGradient
 
 `delete_NesterovAcceleratedGradient` = function(self)
@@ -48974,7 +54340,7 @@ class(`delete_NesterovAcceleratedGradient`) = c("SWIGFunction", class('delete_Ne
 setMethod('$', '_p_datamunge__optim__NesterovAcceleratedGradient', function(x, name)
 
 {
-  accessorFuns = list('optimize' = NesterovAcceleratedGradient_optimize);
+  accessorFuns = list('optimize' = NesterovAcceleratedGradient_optimize, 'options' = NesterovAcceleratedGradient_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -49312,6 +54678,23 @@ attr(`ConjugateGradient_optimize`, 'returnType') = 'numeric'
 attr(`ConjugateGradient_optimize`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradient', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`ConjugateGradient_optimize`) = c("SWIGFunction", class('ConjugateGradient_optimize'))
 
+# Start of ConjugateGradient_options
+
+`ConjugateGradient_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ConjugateGradient_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ConjugateGradientOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ConjugateGradient_options`, 'returnType') = '_p_datamunge__optim__ConjugateGradientOptions'
+attr(`ConjugateGradient_options`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradient')
+class(`ConjugateGradient_options`) = c("SWIGFunction", class('ConjugateGradient_options'))
+
 # Start of delete_ConjugateGradient
 
 `delete_ConjugateGradient` = function(self)
@@ -49329,7 +54712,7 @@ class(`delete_ConjugateGradient`) = c("SWIGFunction", class('delete_ConjugateGra
 setMethod('$', '_p_datamunge__optim__ConjugateGradient', function(x, name)
 
 {
-  accessorFuns = list('optimize' = ConjugateGradient_optimize);
+  accessorFuns = list('optimize' = ConjugateGradient_optimize, 'options' = ConjugateGradient_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -49672,6 +55055,23 @@ attr(`CMAES_optimize`, 'returnType') = 'numeric'
 attr(`CMAES_optimize`, "inputTypes") = c('_p_datamunge__optim__CMAES', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
 class(`CMAES_optimize`) = c("SWIGFunction", class('CMAES_optimize'))
 
+# Start of CMAES_options
+
+`CMAES_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_CMAES_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CMAESOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CMAES_options`, 'returnType') = '_p_datamunge__optim__CMAESOptions'
+attr(`CMAES_options`, "inputTypes") = c('_p_datamunge__optim__CMAES')
+class(`CMAES_options`) = c("SWIGFunction", class('CMAES_options'))
+
 # Start of delete_CMAES
 
 `delete_CMAES` = function(self)
@@ -49689,7 +55089,7 @@ class(`delete_CMAES`) = c("SWIGFunction", class('delete_CMAES'))
 setMethod('$', '_p_datamunge__optim__CMAES', function(x, name)
 
 {
-  accessorFuns = list('optimize' = CMAES_optimize);
+  accessorFuns = list('optimize' = CMAES_optimize, 'options' = CMAES_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -50027,6 +55427,23 @@ attr(`SimulatedAnnealing_optimize`, 'returnType') = 'numeric'
 attr(`SimulatedAnnealing_optimize`, "inputTypes") = c('_p_datamunge__optim__SimulatedAnnealing', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
 class(`SimulatedAnnealing_optimize`) = c("SWIGFunction", class('SimulatedAnnealing_optimize'))
 
+# Start of SimulatedAnnealing_options
+
+`SimulatedAnnealing_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_SimulatedAnnealing_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SimulatedAnnealingOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`SimulatedAnnealing_options`, 'returnType') = '_p_datamunge__optim__SimulatedAnnealingOptions'
+attr(`SimulatedAnnealing_options`, "inputTypes") = c('_p_datamunge__optim__SimulatedAnnealing')
+class(`SimulatedAnnealing_options`) = c("SWIGFunction", class('SimulatedAnnealing_options'))
+
 # Start of delete_SimulatedAnnealing
 
 `delete_SimulatedAnnealing` = function(self)
@@ -50044,7 +55461,7 @@ class(`delete_SimulatedAnnealing`) = c("SWIGFunction", class('delete_SimulatedAn
 setMethod('$', '_p_datamunge__optim__SimulatedAnnealing', function(x, name)
 
 {
-  accessorFuns = list('optimize' = SimulatedAnnealing_optimize);
+  accessorFuns = list('optimize' = SimulatedAnnealing_optimize, 'options' = SimulatedAnnealing_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -50568,6 +55985,23 @@ attr(`PSO_optimize`, 'returnType') = 'numeric'
 attr(`PSO_optimize`, "inputTypes") = c('_p_datamunge__optim__PSO', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`PSO_optimize`) = c("SWIGFunction", class('PSO_optimize'))
 
+# Start of PSO_options
+
+`PSO_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_PSO_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__PSOOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PSO_options`, 'returnType') = '_p_datamunge__optim__PSOOptions'
+attr(`PSO_options`, "inputTypes") = c('_p_datamunge__optim__PSO')
+class(`PSO_options`) = c("SWIGFunction", class('PSO_options'))
+
 # Start of delete_PSO
 
 `delete_PSO` = function(self)
@@ -50585,7 +56019,7 @@ class(`delete_PSO`) = c("SWIGFunction", class('delete_PSO'))
 setMethod('$', '_p_datamunge__optim__PSO', function(x, name)
 
 {
-  accessorFuns = list('optimize' = PSO_optimize);
+  accessorFuns = list('optimize' = PSO_optimize, 'options' = PSO_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -51017,6 +56451,23 @@ attr(`DifferentialEvolution_optimize`, 'returnType') = 'numeric'
 attr(`DifferentialEvolution_optimize`, "inputTypes") = c('_p_datamunge__optim__DifferentialEvolution', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`DifferentialEvolution_optimize`) = c("SWIGFunction", class('DifferentialEvolution_optimize'))
 
+# Start of DifferentialEvolution_options
+
+`DifferentialEvolution_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_DifferentialEvolution_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__DEOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DifferentialEvolution_options`, 'returnType') = '_p_datamunge__optim__DEOptions'
+attr(`DifferentialEvolution_options`, "inputTypes") = c('_p_datamunge__optim__DifferentialEvolution')
+class(`DifferentialEvolution_options`) = c("SWIGFunction", class('DifferentialEvolution_options'))
+
 # Start of delete_DifferentialEvolution
 
 `delete_DifferentialEvolution` = function(self)
@@ -51034,7 +56485,7 @@ class(`delete_DifferentialEvolution`) = c("SWIGFunction", class('delete_Differen
 setMethod('$', '_p_datamunge__optim__DifferentialEvolution', function(x, name)
 
 {
-  accessorFuns = list('optimize' = DifferentialEvolution_optimize);
+  accessorFuns = list('optimize' = DifferentialEvolution_optimize, 'options' = DifferentialEvolution_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -51621,6 +57072,23 @@ attr(`GeneticAlgorithm_optimize`, 'returnType') = 'numeric'
 attr(`GeneticAlgorithm_optimize`, "inputTypes") = c('_p_datamunge__optim__GeneticAlgorithm', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`GeneticAlgorithm_optimize`) = c("SWIGFunction", class('GeneticAlgorithm_optimize'))
 
+# Start of GeneticAlgorithm_options
+
+`GeneticAlgorithm_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_GeneticAlgorithm_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__GAOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`GeneticAlgorithm_options`, 'returnType') = '_p_datamunge__optim__GAOptions'
+attr(`GeneticAlgorithm_options`, "inputTypes") = c('_p_datamunge__optim__GeneticAlgorithm')
+class(`GeneticAlgorithm_options`) = c("SWIGFunction", class('GeneticAlgorithm_options'))
+
 # Start of delete_GeneticAlgorithm
 
 `delete_GeneticAlgorithm` = function(self)
@@ -51638,7 +57106,7 @@ class(`delete_GeneticAlgorithm`) = c("SWIGFunction", class('delete_GeneticAlgori
 setMethod('$', '_p_datamunge__optim__GeneticAlgorithm', function(x, name)
 
 {
-  accessorFuns = list('optimize' = GeneticAlgorithm_optimize);
+  accessorFuns = list('optimize' = GeneticAlgorithm_optimize, 'options' = GeneticAlgorithm_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -52046,6 +57514,23 @@ attr(`ACOR_optimize`, 'returnType') = 'numeric'
 attr(`ACOR_optimize`, "inputTypes") = c('_p_datamunge__optim__ACOR', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`ACOR_optimize`) = c("SWIGFunction", class('ACOR_optimize'))
 
+# Start of ACOR_options
+
+`ACOR_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ACOR_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ACOROptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ACOR_options`, 'returnType') = '_p_datamunge__optim__ACOROptions'
+attr(`ACOR_options`, "inputTypes") = c('_p_datamunge__optim__ACOR')
+class(`ACOR_options`) = c("SWIGFunction", class('ACOR_options'))
+
 # Start of delete_ACOR
 
 `delete_ACOR` = function(self)
@@ -52063,7 +57548,7 @@ class(`delete_ACOR`) = c("SWIGFunction", class('delete_ACOR'))
 setMethod('$', '_p_datamunge__optim__ACOR', function(x, name)
 
 {
-  accessorFuns = list('optimize' = ACOR_optimize);
+  accessorFuns = list('optimize' = ACOR_optimize, 'options' = ACOR_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -52413,6 +57898,23 @@ attr(`ArtificialBeeColony_optimize`, 'returnType') = 'numeric'
 attr(`ArtificialBeeColony_optimize`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColony', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`ArtificialBeeColony_optimize`) = c("SWIGFunction", class('ArtificialBeeColony_optimize'))
 
+# Start of ArtificialBeeColony_options
+
+`ArtificialBeeColony_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ArtificialBeeColony_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ArtificialBeeColonyOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ArtificialBeeColony_options`, 'returnType') = '_p_datamunge__optim__ArtificialBeeColonyOptions'
+attr(`ArtificialBeeColony_options`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColony')
+class(`ArtificialBeeColony_options`) = c("SWIGFunction", class('ArtificialBeeColony_options'))
+
 # Start of delete_ArtificialBeeColony
 
 `delete_ArtificialBeeColony` = function(self)
@@ -52430,7 +57932,7 @@ class(`delete_ArtificialBeeColony`) = c("SWIGFunction", class('delete_Artificial
 setMethod('$', '_p_datamunge__optim__ArtificialBeeColony', function(x, name)
 
 {
-  accessorFuns = list('optimize' = ArtificialBeeColony_optimize);
+  accessorFuns = list('optimize' = ArtificialBeeColony_optimize, 'options' = ArtificialBeeColony_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -52833,6 +58335,23 @@ attr(`CrossEntropyMethod_optimize`, 'returnType') = 'numeric'
 attr(`CrossEntropyMethod_optimize`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethod', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`CrossEntropyMethod_optimize`) = c("SWIGFunction", class('CrossEntropyMethod_optimize'))
 
+# Start of CrossEntropyMethod_options
+
+`CrossEntropyMethod_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_CrossEntropyMethod_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CrossEntropyMethodOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CrossEntropyMethod_options`, 'returnType') = '_p_datamunge__optim__CrossEntropyMethodOptions'
+attr(`CrossEntropyMethod_options`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethod')
+class(`CrossEntropyMethod_options`) = c("SWIGFunction", class('CrossEntropyMethod_options'))
+
 # Start of delete_CrossEntropyMethod
 
 `delete_CrossEntropyMethod` = function(self)
@@ -52850,7 +58369,7 @@ class(`delete_CrossEntropyMethod`) = c("SWIGFunction", class('delete_CrossEntrop
 setMethod('$', '_p_datamunge__optim__CrossEntropyMethod', function(x, name)
 
 {
-  accessorFuns = list('optimize' = CrossEntropyMethod_optimize);
+  accessorFuns = list('optimize' = CrossEntropyMethod_optimize, 'options' = CrossEntropyMethod_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -53253,6 +58772,23 @@ attr(`CuckooSearch_optimize`, 'returnType') = 'numeric'
 attr(`CuckooSearch_optimize`, "inputTypes") = c('_p_datamunge__optim__CuckooSearch', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`CuckooSearch_optimize`) = c("SWIGFunction", class('CuckooSearch_optimize'))
 
+# Start of CuckooSearch_options
+
+`CuckooSearch_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_CuckooSearch_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CuckooSearchOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CuckooSearch_options`, 'returnType') = '_p_datamunge__optim__CuckooSearchOptions'
+attr(`CuckooSearch_options`, "inputTypes") = c('_p_datamunge__optim__CuckooSearch')
+class(`CuckooSearch_options`) = c("SWIGFunction", class('CuckooSearch_options'))
+
 # Start of delete_CuckooSearch
 
 `delete_CuckooSearch` = function(self)
@@ -53270,7 +58806,7 @@ class(`delete_CuckooSearch`) = c("SWIGFunction", class('delete_CuckooSearch'))
 setMethod('$', '_p_datamunge__optim__CuckooSearch', function(x, name)
 
 {
-  accessorFuns = list('optimize' = CuckooSearch_optimize);
+  accessorFuns = list('optimize' = CuckooSearch_optimize, 'options' = CuckooSearch_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -53673,6 +59209,23 @@ attr(`EstimationOfDistribution_optimize`, 'returnType') = 'numeric'
 attr(`EstimationOfDistribution_optimize`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistribution', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`EstimationOfDistribution_optimize`) = c("SWIGFunction", class('EstimationOfDistribution_optimize'))
 
+# Start of EstimationOfDistribution_options
+
+`EstimationOfDistribution_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_EstimationOfDistribution_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__EstimationOfDistributionOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`EstimationOfDistribution_options`, 'returnType') = '_p_datamunge__optim__EstimationOfDistributionOptions'
+attr(`EstimationOfDistribution_options`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistribution')
+class(`EstimationOfDistribution_options`) = c("SWIGFunction", class('EstimationOfDistribution_options'))
+
 # Start of delete_EstimationOfDistribution
 
 `delete_EstimationOfDistribution` = function(self)
@@ -53690,7 +59243,7 @@ class(`delete_EstimationOfDistribution`) = c("SWIGFunction", class('delete_Estim
 setMethod('$', '_p_datamunge__optim__EstimationOfDistribution', function(x, name)
 
 {
-  accessorFuns = list('optimize' = EstimationOfDistribution_optimize);
+  accessorFuns = list('optimize' = EstimationOfDistribution_optimize, 'options' = EstimationOfDistribution_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -54098,6 +59651,23 @@ attr(`EvolutionStrategy_optimize`, 'returnType') = 'numeric'
 attr(`EvolutionStrategy_optimize`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategy', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`EvolutionStrategy_optimize`) = c("SWIGFunction", class('EvolutionStrategy_optimize'))
 
+# Start of EvolutionStrategy_options
+
+`EvolutionStrategy_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_EvolutionStrategy_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__EvolutionStrategyOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`EvolutionStrategy_options`, 'returnType') = '_p_datamunge__optim__EvolutionStrategyOptions'
+attr(`EvolutionStrategy_options`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategy')
+class(`EvolutionStrategy_options`) = c("SWIGFunction", class('EvolutionStrategy_options'))
+
 # Start of delete_EvolutionStrategy
 
 `delete_EvolutionStrategy` = function(self)
@@ -54115,7 +59685,7 @@ class(`delete_EvolutionStrategy`) = c("SWIGFunction", class('delete_EvolutionStr
 setMethod('$', '_p_datamunge__optim__EvolutionStrategy', function(x, name)
 
 {
-  accessorFuns = list('optimize' = EvolutionStrategy_optimize);
+  accessorFuns = list('optimize' = EvolutionStrategy_optimize, 'options' = EvolutionStrategy_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -54547,6 +60117,23 @@ attr(`FireflyAlgorithm_optimize`, 'returnType') = 'numeric'
 attr(`FireflyAlgorithm_optimize`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithm', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`FireflyAlgorithm_optimize`) = c("SWIGFunction", class('FireflyAlgorithm_optimize'))
 
+# Start of FireflyAlgorithm_options
+
+`FireflyAlgorithm_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_FireflyAlgorithm_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__FireflyAlgorithmOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`FireflyAlgorithm_options`, 'returnType') = '_p_datamunge__optim__FireflyAlgorithmOptions'
+attr(`FireflyAlgorithm_options`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithm')
+class(`FireflyAlgorithm_options`) = c("SWIGFunction", class('FireflyAlgorithm_options'))
+
 # Start of delete_FireflyAlgorithm
 
 `delete_FireflyAlgorithm` = function(self)
@@ -54564,7 +60151,7 @@ class(`delete_FireflyAlgorithm`) = c("SWIGFunction", class('delete_FireflyAlgori
 setMethod('$', '_p_datamunge__optim__FireflyAlgorithm', function(x, name)
 
 {
-  accessorFuns = list('optimize' = FireflyAlgorithm_optimize);
+  accessorFuns = list('optimize' = FireflyAlgorithm_optimize, 'options' = FireflyAlgorithm_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -54880,6 +60467,23 @@ attr(`GreyWolfOptimizer_optimize`, 'returnType') = 'numeric'
 attr(`GreyWolfOptimizer_optimize`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizer', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`GreyWolfOptimizer_optimize`) = c("SWIGFunction", class('GreyWolfOptimizer_optimize'))
 
+# Start of GreyWolfOptimizer_options
+
+`GreyWolfOptimizer_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_GreyWolfOptimizer_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__GreyWolfOptimizerOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`GreyWolfOptimizer_options`, 'returnType') = '_p_datamunge__optim__GreyWolfOptimizerOptions'
+attr(`GreyWolfOptimizer_options`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizer')
+class(`GreyWolfOptimizer_options`) = c("SWIGFunction", class('GreyWolfOptimizer_options'))
+
 # Start of delete_GreyWolfOptimizer
 
 `delete_GreyWolfOptimizer` = function(self)
@@ -54897,7 +60501,7 @@ class(`delete_GreyWolfOptimizer`) = c("SWIGFunction", class('delete_GreyWolfOpti
 setMethod('$', '_p_datamunge__optim__GreyWolfOptimizer', function(x, name)
 
 {
-  accessorFuns = list('optimize' = GreyWolfOptimizer_optimize);
+  accessorFuns = list('optimize' = GreyWolfOptimizer_optimize, 'options' = GreyWolfOptimizer_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -55300,6 +60904,23 @@ attr(`HarmonySearch_optimize`, 'returnType') = 'numeric'
 attr(`HarmonySearch_optimize`, "inputTypes") = c('_p_datamunge__optim__HarmonySearch', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`HarmonySearch_optimize`) = c("SWIGFunction", class('HarmonySearch_optimize'))
 
+# Start of HarmonySearch_options
+
+`HarmonySearch_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_HarmonySearch_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__HarmonySearchOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`HarmonySearch_options`, 'returnType') = '_p_datamunge__optim__HarmonySearchOptions'
+attr(`HarmonySearch_options`, "inputTypes") = c('_p_datamunge__optim__HarmonySearch')
+class(`HarmonySearch_options`) = c("SWIGFunction", class('HarmonySearch_options'))
+
 # Start of delete_HarmonySearch
 
 `delete_HarmonySearch` = function(self)
@@ -55317,7 +60938,7 @@ class(`delete_HarmonySearch`) = c("SWIGFunction", class('delete_HarmonySearch'))
 setMethod('$', '_p_datamunge__optim__HarmonySearch', function(x, name)
 
 {
-  accessorFuns = list('optimize' = HarmonySearch_optimize);
+  accessorFuns = list('optimize' = HarmonySearch_optimize, 'options' = HarmonySearch_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -55723,6 +61344,23 @@ attr(`ParallelTempering_optimize`, 'returnType') = 'numeric'
 attr(`ParallelTempering_optimize`, "inputTypes") = c('_p_datamunge__optim__ParallelTempering', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
 class(`ParallelTempering_optimize`) = c("SWIGFunction", class('ParallelTempering_optimize'))
 
+# Start of ParallelTempering_options
+
+`ParallelTempering_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ParallelTempering_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ParallelTemperingOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ParallelTempering_options`, 'returnType') = '_p_datamunge__optim__ParallelTemperingOptions'
+attr(`ParallelTempering_options`, "inputTypes") = c('_p_datamunge__optim__ParallelTempering')
+class(`ParallelTempering_options`) = c("SWIGFunction", class('ParallelTempering_options'))
+
 # Start of delete_ParallelTempering
 
 `delete_ParallelTempering` = function(self)
@@ -55740,7 +61378,7 @@ class(`delete_ParallelTempering`) = c("SWIGFunction", class('delete_ParallelTemp
 setMethod('$', '_p_datamunge__optim__ParallelTempering', function(x, name)
 
 {
-  accessorFuns = list('optimize' = ParallelTempering_optimize);
+  accessorFuns = list('optimize' = ParallelTempering_optimize, 'options' = ParallelTempering_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -56085,6 +61723,23 @@ attr(`WhaleOptimization_optimize`, 'returnType') = 'numeric'
 attr(`WhaleOptimization_optimize`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimization', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`WhaleOptimization_optimize`) = c("SWIGFunction", class('WhaleOptimization_optimize'))
 
+# Start of WhaleOptimization_options
+
+`WhaleOptimization_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_WhaleOptimization_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__WhaleOptimizationOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`WhaleOptimization_options`, 'returnType') = '_p_datamunge__optim__WhaleOptimizationOptions'
+attr(`WhaleOptimization_options`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimization')
+class(`WhaleOptimization_options`) = c("SWIGFunction", class('WhaleOptimization_options'))
+
 # Start of delete_WhaleOptimization
 
 `delete_WhaleOptimization` = function(self)
@@ -56102,7 +61757,7 @@ class(`delete_WhaleOptimization`) = c("SWIGFunction", class('delete_WhaleOptimiz
 setMethod('$', '_p_datamunge__optim__WhaleOptimization', function(x, name)
 
 {
-  accessorFuns = list('optimize' = WhaleOptimization_optimize);
+  accessorFuns = list('optimize' = WhaleOptimization_optimize, 'options' = WhaleOptimization_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -56377,6 +62032,23 @@ attr(`FISTA_optimize`, 'returnType') = 'numeric'
 attr(`FISTA_optimize`, "inputTypes") = c('_p_datamunge__optim__FISTA', '_p_datamunge__optim__ProximalFunction', '_p_std__vectorT_double_t')
 class(`FISTA_optimize`) = c("SWIGFunction", class('FISTA_optimize'))
 
+# Start of FISTA_options
+
+`FISTA_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_FISTA_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__FISTAOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`FISTA_options`, 'returnType') = '_p_datamunge__optim__FISTAOptions'
+attr(`FISTA_options`, "inputTypes") = c('_p_datamunge__optim__FISTA')
+class(`FISTA_options`) = c("SWIGFunction", class('FISTA_options'))
+
 # Start of delete_FISTA
 
 `delete_FISTA` = function(self)
@@ -56394,7 +62066,7 @@ class(`delete_FISTA`) = c("SWIGFunction", class('delete_FISTA'))
 setMethod('$', '_p_datamunge__optim__FISTA', function(x, name)
 
 {
-  accessorFuns = list('optimize' = FISTA_optimize);
+  accessorFuns = list('optimize' = FISTA_optimize, 'options' = FISTA_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -56669,6 +62341,23 @@ attr(`ProximalGradient_optimize`, 'returnType') = 'numeric'
 attr(`ProximalGradient_optimize`, "inputTypes") = c('_p_datamunge__optim__ProximalGradient', '_p_datamunge__optim__ProximalFunction', '_p_std__vectorT_double_t')
 class(`ProximalGradient_optimize`) = c("SWIGFunction", class('ProximalGradient_optimize'))
 
+# Start of ProximalGradient_options
+
+`ProximalGradient_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ProximalGradient_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ProximalGradientOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ProximalGradient_options`, 'returnType') = '_p_datamunge__optim__ProximalGradientOptions'
+attr(`ProximalGradient_options`, "inputTypes") = c('_p_datamunge__optim__ProximalGradient')
+class(`ProximalGradient_options`) = c("SWIGFunction", class('ProximalGradient_options'))
+
 # Start of delete_ProximalGradient
 
 `delete_ProximalGradient` = function(self)
@@ -56686,7 +62375,7 @@ class(`delete_ProximalGradient`) = c("SWIGFunction", class('delete_ProximalGradi
 setMethod('$', '_p_datamunge__optim__ProximalGradient', function(x, name)
 
 {
-  accessorFuns = list('optimize' = ProximalGradient_optimize);
+  accessorFuns = list('optimize' = ProximalGradient_optimize, 'options' = ProximalGradient_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -56961,6 +62650,23 @@ attr(`LevenbergMarquardt_optimize`, 'returnType') = 'numeric'
 attr(`LevenbergMarquardt_optimize`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardt', '_p_datamunge__optim__ResidualFunction', '_p_std__vectorT_double_t')
 class(`LevenbergMarquardt_optimize`) = c("SWIGFunction", class('LevenbergMarquardt_optimize'))
 
+# Start of LevenbergMarquardt_options
+
+`LevenbergMarquardt_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LevenbergMarquardt_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__LevenbergMarquardtOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LevenbergMarquardt_options`, 'returnType') = '_p_datamunge__optim__LevenbergMarquardtOptions'
+attr(`LevenbergMarquardt_options`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardt')
+class(`LevenbergMarquardt_options`) = c("SWIGFunction", class('LevenbergMarquardt_options'))
+
 # Start of delete_LevenbergMarquardt
 
 `delete_LevenbergMarquardt` = function(self)
@@ -56978,7 +62684,7 @@ class(`delete_LevenbergMarquardt`) = c("SWIGFunction", class('delete_LevenbergMa
 setMethod('$', '_p_datamunge__optim__LevenbergMarquardt', function(x, name)
 
 {
-  accessorFuns = list('optimize' = LevenbergMarquardt_optimize);
+  accessorFuns = list('optimize' = LevenbergMarquardt_optimize, 'options' = LevenbergMarquardt_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -57253,6 +62959,23 @@ attr(`Newton_optimize`, 'returnType') = 'numeric'
 attr(`Newton_optimize`, "inputTypes") = c('_p_datamunge__optim__Newton', '_p_datamunge__optim__HessianFunction', '_p_std__vectorT_double_t')
 class(`Newton_optimize`) = c("SWIGFunction", class('Newton_optimize'))
 
+# Start of Newton_options
+
+`Newton_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Newton_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NewtonOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Newton_options`, 'returnType') = '_p_datamunge__optim__NewtonOptions'
+attr(`Newton_options`, "inputTypes") = c('_p_datamunge__optim__Newton')
+class(`Newton_options`) = c("SWIGFunction", class('Newton_options'))
+
 # Start of delete_Newton
 
 `delete_Newton` = function(self)
@@ -57270,7 +62993,7 @@ class(`delete_Newton`) = c("SWIGFunction", class('delete_Newton'))
 setMethod('$', '_p_datamunge__optim__Newton', function(x, name)
 
 {
-  accessorFuns = list('optimize' = Newton_optimize);
+  accessorFuns = list('optimize' = Newton_optimize, 'options' = Newton_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -57574,6 +63297,23 @@ attr(`TrustRegionNewton_optimize`, 'returnType') = 'numeric'
 attr(`TrustRegionNewton_optimize`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewton', '_p_datamunge__optim__HessianFunction', '_p_std__vectorT_double_t')
 class(`TrustRegionNewton_optimize`) = c("SWIGFunction", class('TrustRegionNewton_optimize'))
 
+# Start of TrustRegionNewton_options
+
+`TrustRegionNewton_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_TrustRegionNewton_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__TrustRegionNewtonOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TrustRegionNewton_options`, 'returnType') = '_p_datamunge__optim__TrustRegionNewtonOptions'
+attr(`TrustRegionNewton_options`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewton')
+class(`TrustRegionNewton_options`) = c("SWIGFunction", class('TrustRegionNewton_options'))
+
 # Start of delete_TrustRegionNewton
 
 `delete_TrustRegionNewton` = function(self)
@@ -57591,7 +63331,7 @@ class(`delete_TrustRegionNewton`) = c("SWIGFunction", class('delete_TrustRegionN
 setMethod('$', '_p_datamunge__optim__TrustRegionNewton', function(x, name)
 
 {
-  accessorFuns = list('optimize' = TrustRegionNewton_optimize);
+  accessorFuns = list('optimize' = TrustRegionNewton_optimize, 'options' = TrustRegionNewton_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -57929,6 +63669,23 @@ attr(`AugmentedLagrangian_optimize`, 'returnType') = 'numeric'
 attr(`AugmentedLagrangian_optimize`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangian', '_p_datamunge__optim__EqualityConstrainedFunction', '_p_std__vectorT_double_t')
 class(`AugmentedLagrangian_optimize`) = c("SWIGFunction", class('AugmentedLagrangian_optimize'))
 
+# Start of AugmentedLagrangian_options
+
+`AugmentedLagrangian_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_AugmentedLagrangian_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AugmentedLagrangianOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`AugmentedLagrangian_options`, 'returnType') = '_p_datamunge__optim__AugmentedLagrangianOptions'
+attr(`AugmentedLagrangian_options`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangian')
+class(`AugmentedLagrangian_options`) = c("SWIGFunction", class('AugmentedLagrangian_options'))
+
 # Start of delete_AugmentedLagrangian
 
 `delete_AugmentedLagrangian` = function(self)
@@ -57946,7 +63703,7 @@ class(`delete_AugmentedLagrangian`) = c("SWIGFunction", class('delete_AugmentedL
 setMethod('$', '_p_datamunge__optim__AugmentedLagrangian', function(x, name)
 
 {
-  accessorFuns = list('optimize' = AugmentedLagrangian_optimize);
+  accessorFuns = list('optimize' = AugmentedLagrangian_optimize, 'options' = AugmentedLagrangian_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -58250,6 +64007,23 @@ attr(`SQP_optimize`, 'returnType') = 'numeric'
 attr(`SQP_optimize`, "inputTypes") = c('_p_datamunge__optim__SQP', '_p_datamunge__optim__EqualityConstrainedFunction', '_p_std__vectorT_double_t')
 class(`SQP_optimize`) = c("SWIGFunction", class('SQP_optimize'))
 
+# Start of SQP_options
+
+`SQP_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_SQP_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SQPOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`SQP_options`, 'returnType') = '_p_datamunge__optim__SQPOptions'
+attr(`SQP_options`, "inputTypes") = c('_p_datamunge__optim__SQP')
+class(`SQP_options`) = c("SWIGFunction", class('SQP_options'))
+
 # Start of delete_SQP
 
 `delete_SQP` = function(self)
@@ -58267,7 +64041,7 @@ class(`delete_SQP`) = c("SWIGFunction", class('delete_SQP'))
 setMethod('$', '_p_datamunge__optim__SQP', function(x, name)
 
 {
-  accessorFuns = list('optimize' = SQP_optimize);
+  accessorFuns = list('optimize' = SQP_optimize, 'options' = SQP_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -58605,6 +64379,23 @@ attr(`InteriorPoint_optimize`, 'returnType') = 'numeric'
 attr(`InteriorPoint_optimize`, "inputTypes") = c('_p_datamunge__optim__InteriorPoint', '_p_datamunge__optim__InequalityConstrainedFunction', '_p_std__vectorT_double_t')
 class(`InteriorPoint_optimize`) = c("SWIGFunction", class('InteriorPoint_optimize'))
 
+# Start of InteriorPoint_options
+
+`InteriorPoint_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_InteriorPoint_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__InteriorPointOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`InteriorPoint_options`, 'returnType') = '_p_datamunge__optim__InteriorPointOptions'
+attr(`InteriorPoint_options`, "inputTypes") = c('_p_datamunge__optim__InteriorPoint')
+class(`InteriorPoint_options`) = c("SWIGFunction", class('InteriorPoint_options'))
+
 # Start of delete_InteriorPoint
 
 `delete_InteriorPoint` = function(self)
@@ -58622,7 +64413,7 @@ class(`delete_InteriorPoint`) = c("SWIGFunction", class('delete_InteriorPoint'))
 setMethod('$', '_p_datamunge__optim__InteriorPoint', function(x, name)
 
 {
-  accessorFuns = list('optimize' = InteriorPoint_optimize);
+  accessorFuns = list('optimize' = InteriorPoint_optimize, 'options' = InteriorPoint_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -58793,6 +64584,70 @@ attr(`BayesianOptimizationOptions_seed_get`, 'returnType') = 'integer'
 attr(`BayesianOptimizationOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions')
 class(`BayesianOptimizationOptions_seed_get`) = c("SWIGFunction", class('BayesianOptimizationOptions_seed_get'))
 
+# Start of BayesianOptimizationOptions_candidates_set
+
+`BayesianOptimizationOptions_candidates_set` = function(self, s_candidates)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_candidates = as.integer(s_candidates);
+  
+  if(length(s_candidates) > 1) {
+    warning("using only the first element of s_candidates");
+  };
+  
+  ;.Call('R_swig_BayesianOptimizationOptions_candidates_set', self, s_candidates, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_candidates_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationOptions_candidates_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions', 'integer')
+class(`BayesianOptimizationOptions_candidates_set`) = c("SWIGFunction", class('BayesianOptimizationOptions_candidates_set'))
+
+# Start of BayesianOptimizationOptions_candidates_get
+
+`BayesianOptimizationOptions_candidates_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationOptions_candidates_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_candidates_get`, 'returnType') = 'integer'
+attr(`BayesianOptimizationOptions_candidates_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions')
+class(`BayesianOptimizationOptions_candidates_get`) = c("SWIGFunction", class('BayesianOptimizationOptions_candidates_get'))
+
+# Start of BayesianOptimizationOptions_refine_iterations_set
+
+`BayesianOptimizationOptions_refine_iterations_set` = function(self, s_refine_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_refine_iterations = as.integer(s_refine_iterations);
+  
+  if(length(s_refine_iterations) > 1) {
+    warning("using only the first element of s_refine_iterations");
+  };
+  
+  ;.Call('R_swig_BayesianOptimizationOptions_refine_iterations_set', self, s_refine_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_refine_iterations_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationOptions_refine_iterations_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions', 'integer')
+class(`BayesianOptimizationOptions_refine_iterations_set`) = c("SWIGFunction", class('BayesianOptimizationOptions_refine_iterations_set'))
+
+# Start of BayesianOptimizationOptions_refine_iterations_get
+
+`BayesianOptimizationOptions_refine_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationOptions_refine_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_refine_iterations_get`, 'returnType') = 'integer'
+attr(`BayesianOptimizationOptions_refine_iterations_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions')
+class(`BayesianOptimizationOptions_refine_iterations_get`) = c("SWIGFunction", class('BayesianOptimizationOptions_refine_iterations_get'))
+
 # Start of new_BayesianOptimizationOptions
 
 `BayesianOptimizationOptions` = function()
@@ -58826,8 +64681,8 @@ class(`delete_BayesianOptimizationOptions`) = c("SWIGFunction", class('delete_Ba
 setMethod('$', '_p_datamunge__optim__BayesianOptimizationOptions', function(x, name)
 
 {
-  accessorFuns = list('initial_samples' = BayesianOptimizationOptions_initial_samples_get, 'max_iterations' = BayesianOptimizationOptions_max_iterations_get, 'seed' = BayesianOptimizationOptions_seed_get);
-  vaccessors = c('initial_samples', 'max_iterations', 'seed');
+  accessorFuns = list('initial_samples' = BayesianOptimizationOptions_initial_samples_get, 'max_iterations' = BayesianOptimizationOptions_max_iterations_get, 'seed' = BayesianOptimizationOptions_seed_get, 'candidates' = BayesianOptimizationOptions_candidates_get, 'refine_iterations' = BayesianOptimizationOptions_refine_iterations_get);
+  vaccessors = c('initial_samples', 'max_iterations', 'seed', 'candidates', 'refine_iterations');
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -58844,7 +64699,7 @@ setMethod('$', '_p_datamunge__optim__BayesianOptimizationOptions', function(x, n
 setMethod('$<-', '_p_datamunge__optim__BayesianOptimizationOptions', function(x, name, value)
 
 {
-  accessorFuns = list('initial_samples' = BayesianOptimizationOptions_initial_samples_set, 'max_iterations' = BayesianOptimizationOptions_max_iterations_set, 'seed' = BayesianOptimizationOptions_seed_set);
+  accessorFuns = list('initial_samples' = BayesianOptimizationOptions_initial_samples_set, 'max_iterations' = BayesianOptimizationOptions_max_iterations_set, 'seed' = BayesianOptimizationOptions_seed_set, 'candidates' = BayesianOptimizationOptions_candidates_set, 'refine_iterations' = BayesianOptimizationOptions_refine_iterations_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -58859,7 +64714,7 @@ setMethod('[[<-', c('_p_datamunge__optim__BayesianOptimizationOptions', 'charact
 
 {
   name = i;
-  accessorFuns = list('initial_samples' = BayesianOptimizationOptions_initial_samples_set, 'max_iterations' = BayesianOptimizationOptions_max_iterations_set, 'seed' = BayesianOptimizationOptions_seed_set);
+  accessorFuns = list('initial_samples' = BayesianOptimizationOptions_initial_samples_set, 'max_iterations' = BayesianOptimizationOptions_max_iterations_set, 'seed' = BayesianOptimizationOptions_seed_set, 'candidates' = BayesianOptimizationOptions_candidates_set, 'refine_iterations' = BayesianOptimizationOptions_refine_iterations_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -58878,6 +64733,8 @@ CopyToR_datamunge__optim__BayesianOptimizationOptions = function(value, obj = ne
   obj@initial_samples = value$initial_samples;
   obj@max_iterations = value$max_iterations;
   obj@seed = value$seed;
+  obj@candidates = value$candidates;
+  obj@refine_iterations = value$refine_iterations;
   obj;
 }
 
@@ -58888,6 +64745,8 @@ CopyToC_datamunge__optim__BayesianOptimizationOptions = function(value, obj)
   obj$initial_samples = value@initial_samples;
   obj$max_iterations = value@max_iterations;
   obj$seed = value@seed;
+  obj$candidates = value@candidates;
+  obj$refine_iterations = value@refine_iterations;
   obj
 }
 
@@ -58899,6 +64758,280 @@ setMethod('copyToC', "datamunge::optim::BayesianOptimizationOptions", CopyToC_da
 
 # End definition of copy methods for datamunge::optim::BayesianOptimizationOptions
 # End definition of copy functions & methods for datamunge::optim::BayesianOptimizationOptions
+# Start of BayesianOptimizationResult_best_point_set
+
+`BayesianOptimizationResult_best_point_set` = function(self, s_best_point)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_best_point = as.numeric(s_best_point);
+  ;.Call('R_swig_BayesianOptimizationResult_best_point_set', self, s_best_point, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_best_point_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationResult_best_point_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult', '_p_std__vectorT_double_t')
+class(`BayesianOptimizationResult_best_point_set`) = c("SWIGFunction", class('BayesianOptimizationResult_best_point_set'))
+
+# Start of BayesianOptimizationResult_best_point_get
+
+`BayesianOptimizationResult_best_point_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationResult_best_point_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_best_point_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`BayesianOptimizationResult_best_point_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult')
+class(`BayesianOptimizationResult_best_point_get`) = c("SWIGFunction", class('BayesianOptimizationResult_best_point_get'))
+
+# Start of BayesianOptimizationResult_best_value_set
+
+`BayesianOptimizationResult_best_value_set` = function(self, s_best_value)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_BayesianOptimizationResult_best_value_set', self, s_best_value, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_best_value_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationResult_best_value_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult', 'numeric')
+class(`BayesianOptimizationResult_best_value_set`) = c("SWIGFunction", class('BayesianOptimizationResult_best_value_set'))
+
+# Start of BayesianOptimizationResult_best_value_get
+
+`BayesianOptimizationResult_best_value_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationResult_best_value_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_best_value_get`, 'returnType') = 'numeric'
+attr(`BayesianOptimizationResult_best_value_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult')
+class(`BayesianOptimizationResult_best_value_get`) = c("SWIGFunction", class('BayesianOptimizationResult_best_value_get'))
+
+# Start of BayesianOptimizationResult_points_set
+
+`BayesianOptimizationResult_points_set` = function(self, s_points)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_points = lapply(s_points, as.numeric);
+  ;.Call('R_swig_BayesianOptimizationResult_points_set', self, s_points, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_points_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationResult_points_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult', 'list')
+class(`BayesianOptimizationResult_points_set`) = c("SWIGFunction", class('BayesianOptimizationResult_points_set'))
+
+# Start of BayesianOptimizationResult_points_get
+
+`BayesianOptimizationResult_points_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationResult_points_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_points_get`, 'returnType') = 'list'
+attr(`BayesianOptimizationResult_points_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult')
+class(`BayesianOptimizationResult_points_get`) = c("SWIGFunction", class('BayesianOptimizationResult_points_get'))
+
+# Start of BayesianOptimizationResult_values_set
+
+`BayesianOptimizationResult_values_set` = function(self, s_values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_values = as.numeric(s_values);
+  ;.Call('R_swig_BayesianOptimizationResult_values_set', self, s_values, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_values_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationResult_values_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult', '_p_std__vectorT_double_t')
+class(`BayesianOptimizationResult_values_set`) = c("SWIGFunction", class('BayesianOptimizationResult_values_set'))
+
+# Start of BayesianOptimizationResult_values_get
+
+`BayesianOptimizationResult_values_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationResult_values_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_values_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`BayesianOptimizationResult_values_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult')
+class(`BayesianOptimizationResult_values_get`) = c("SWIGFunction", class('BayesianOptimizationResult_values_get'))
+
+# Start of BayesianOptimizationResult_best_values_set
+
+`BayesianOptimizationResult_best_values_set` = function(self, s_best_values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_best_values = as.numeric(s_best_values);
+  ;.Call('R_swig_BayesianOptimizationResult_best_values_set', self, s_best_values, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_best_values_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationResult_best_values_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult', '_p_std__vectorT_double_t')
+class(`BayesianOptimizationResult_best_values_set`) = c("SWIGFunction", class('BayesianOptimizationResult_best_values_set'))
+
+# Start of BayesianOptimizationResult_best_values_get
+
+`BayesianOptimizationResult_best_values_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationResult_best_values_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_best_values_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`BayesianOptimizationResult_best_values_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult')
+class(`BayesianOptimizationResult_best_values_get`) = c("SWIGFunction", class('BayesianOptimizationResult_best_values_get'))
+
+# Start of BayesianOptimizationResult_acquisition_values_set
+
+`BayesianOptimizationResult_acquisition_values_set` = function(self, s_acquisition_values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_acquisition_values = as.numeric(s_acquisition_values);
+  ;.Call('R_swig_BayesianOptimizationResult_acquisition_values_set', self, s_acquisition_values, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_acquisition_values_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationResult_acquisition_values_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult', '_p_std__vectorT_double_t')
+class(`BayesianOptimizationResult_acquisition_values_set`) = c("SWIGFunction", class('BayesianOptimizationResult_acquisition_values_set'))
+
+# Start of BayesianOptimizationResult_acquisition_values_get
+
+`BayesianOptimizationResult_acquisition_values_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationResult_acquisition_values_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationResult_acquisition_values_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`BayesianOptimizationResult_acquisition_values_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult')
+class(`BayesianOptimizationResult_acquisition_values_get`) = c("SWIGFunction", class('BayesianOptimizationResult_acquisition_values_get'))
+
+# Start of new_BayesianOptimizationResult
+
+`BayesianOptimizationResult` = function()
+{
+  ;ans = .Call('R_swig_new_BayesianOptimizationResult', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__BayesianOptimizationResult", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BayesianOptimizationResult);
+  ans
+  
+}
+
+attr(`BayesianOptimizationResult`, 'returnType') = '_p_datamunge__optim__BayesianOptimizationResult'
+class(`BayesianOptimizationResult`) = c("SWIGFunction", class('BayesianOptimizationResult'))
+
+# Start of delete_BayesianOptimizationResult
+
+`delete_BayesianOptimizationResult` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_BayesianOptimizationResult', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_BayesianOptimizationResult`, 'returnType') = 'void'
+attr(`delete_BayesianOptimizationResult`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationResult')
+class(`delete_BayesianOptimizationResult`) = c("SWIGFunction", class('delete_BayesianOptimizationResult'))
+
+# Start of accessor method for datamunge::optim::BayesianOptimizationResult
+setMethod('$', '_p_datamunge__optim__BayesianOptimizationResult', function(x, name)
+
+{
+  accessorFuns = list('best_point' = BayesianOptimizationResult_best_point_get, 'best_value' = BayesianOptimizationResult_best_value_get, 'points' = BayesianOptimizationResult_points_get, 'values' = BayesianOptimizationResult_values_get, 'best_values' = BayesianOptimizationResult_best_values_get, 'acquisition_values' = BayesianOptimizationResult_acquisition_values_get);
+  vaccessors = c('best_point', 'best_value', 'points', 'values', 'best_values', 'acquisition_values');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::BayesianOptimizationResult
+# Start of accessor method for datamunge::optim::BayesianOptimizationResult
+setMethod('$<-', '_p_datamunge__optim__BayesianOptimizationResult', function(x, name, value)
+
+{
+  accessorFuns = list('best_point' = BayesianOptimizationResult_best_point_set, 'best_value' = BayesianOptimizationResult_best_value_set, 'points' = BayesianOptimizationResult_points_set, 'values' = BayesianOptimizationResult_values_set, 'best_values' = BayesianOptimizationResult_best_values_set, 'acquisition_values' = BayesianOptimizationResult_acquisition_values_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__BayesianOptimizationResult', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('best_point' = BayesianOptimizationResult_best_point_set, 'best_value' = BayesianOptimizationResult_best_value_set, 'points' = BayesianOptimizationResult_points_set, 'values' = BayesianOptimizationResult_values_set, 'best_values' = BayesianOptimizationResult_best_values_set, 'acquisition_values' = BayesianOptimizationResult_acquisition_values_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::BayesianOptimizationResult
+setMethod('delete', '_p_datamunge__optim__BayesianOptimizationResult', function(obj) {delete_datamunge__optim__BayesianOptimizationResult(obj)})
+# Start definition of copy functions & methods for datamunge::optim::BayesianOptimizationResult
+CopyToR_datamunge__optim__BayesianOptimizationResult = function(value, obj = new("datamunge::optim::BayesianOptimizationResult"))
+{
+  obj@best_point = value$best_point;
+  obj@best_value = value$best_value;
+  obj@points = value$points;
+  obj@values = value$values;
+  obj@best_values = value$best_values;
+  obj@acquisition_values = value$acquisition_values;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__BayesianOptimizationResult = function(value, obj)
+{
+  obj$best_point = value@best_point;
+  obj$best_value = value@best_value;
+  obj$points = value@points;
+  obj$values = value@values;
+  obj$best_values = value@best_values;
+  obj$acquisition_values = value@acquisition_values;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::BayesianOptimizationResult
+setMethod('copyToR', '_p_datamunge__optim__BayesianOptimizationResult', CopyToR_datamunge__optim__BayesianOptimizationResult);
+setMethod('copyToC', "datamunge::optim::BayesianOptimizationResult", CopyToC_datamunge__optim__BayesianOptimizationResult);
+
+# End definition of copy methods for datamunge::optim::BayesianOptimizationResult
+# End definition of copy functions & methods for datamunge::optim::BayesianOptimizationResult
 # Start of new_BayesianOptimization
 
 `BayesianOptimization__SWIG_0` = function(options)
@@ -58953,6 +65086,27 @@ class(`BayesianOptimization__SWIG_1`) = c("SWIGFunction", class('BayesianOptimiz
 }
 
 # Dispatch function
+# Start of BayesianOptimization_run
+
+`BayesianOptimization_run` = function(self, s_function, lower, upper, surrogate, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  lower = as.numeric(lower);
+  upper = as.numeric(upper);
+  if (inherits(surrogate, "ExternalReference")) surrogate = slot(surrogate,"ref"); 
+  ;ans = .Call('R_swig_BayesianOptimization_run', self, s_function, lower, upper, surrogate, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__BayesianOptimizationResult", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BayesianOptimization_run`, 'returnType') = '_p_datamunge__optim__BayesianOptimizationResult'
+attr(`BayesianOptimization_run`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimization', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_datamunge__optim__BayesianSurrogate')
+class(`BayesianOptimization_run`) = c("SWIGFunction", class('BayesianOptimization_run'))
+
 # Start of BayesianOptimization_optimize
 
 `BayesianOptimization_optimize` = function(self, s_function, coordinates, lower, upper, surrogate, .copy = FALSE)
@@ -58971,6 +65125,23 @@ attr(`BayesianOptimization_optimize`, 'returnType') = 'numeric'
 attr(`BayesianOptimization_optimize`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimization', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_datamunge__optim__BayesianSurrogate')
 class(`BayesianOptimization_optimize`) = c("SWIGFunction", class('BayesianOptimization_optimize'))
 
+# Start of BayesianOptimization_options
+
+`BayesianOptimization_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_BayesianOptimization_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__BayesianOptimizationOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BayesianOptimization_options`, 'returnType') = '_p_datamunge__optim__BayesianOptimizationOptions'
+attr(`BayesianOptimization_options`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimization')
+class(`BayesianOptimization_options`) = c("SWIGFunction", class('BayesianOptimization_options'))
+
 # Start of delete_BayesianOptimization
 
 `delete_BayesianOptimization` = function(self)
@@ -58988,7 +65159,7 @@ class(`delete_BayesianOptimization`) = c("SWIGFunction", class('delete_BayesianO
 setMethod('$', '_p_datamunge__optim__BayesianOptimization', function(x, name)
 
 {
-  accessorFuns = list('optimize' = BayesianOptimization_optimize);
+  accessorFuns = list('run' = BayesianOptimization_run, 'optimize' = BayesianOptimization_optimize, 'options' = BayesianOptimization_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -59002,6 +65173,256 @@ setMethod('$', '_p_datamunge__optim__BayesianOptimization', function(x, name)
 );
 # end of accessor method for datamunge::optim::BayesianOptimization
 setMethod('delete', '_p_datamunge__optim__BayesianOptimization', function(obj) {delete_datamunge__optim__BayesianOptimization(obj)})
+# Start of expected_improvement
+
+`expected_improvement__SWIG_0` = function(mean, sd, incumbent, exploration, .copy = FALSE)
+{
+  ;.Call('R_swig_expected_improvement__SWIG_0', mean, sd, incumbent, exploration, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`expected_improvement__SWIG_0`, 'returnType') = 'numeric'
+attr(`expected_improvement__SWIG_0`, "inputTypes") = c('numeric', 'numeric', 'numeric', 'numeric')
+class(`expected_improvement__SWIG_0`) = c("SWIGFunction", class('expected_improvement__SWIG_0'))
+
+# Start of expected_improvement
+
+`expected_improvement__SWIG_1` = function(mean, sd, incumbent, .copy = FALSE)
+{
+  ;.Call('R_swig_expected_improvement__SWIG_1', mean, sd, incumbent, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`expected_improvement__SWIG_1`, 'returnType') = 'numeric'
+attr(`expected_improvement__SWIG_1`, "inputTypes") = c('numeric', 'numeric', 'numeric')
+class(`expected_improvement__SWIG_1`) = c("SWIGFunction", class('expected_improvement__SWIG_1'))
+
+`expected_improvement` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- expected_improvement__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- expected_improvement__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for expected_improvement with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of probability_of_improvement
+
+`probability_of_improvement__SWIG_0` = function(mean, sd, incumbent, exploration, .copy = FALSE)
+{
+  ;.Call('R_swig_probability_of_improvement__SWIG_0', mean, sd, incumbent, exploration, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`probability_of_improvement__SWIG_0`, 'returnType') = 'numeric'
+attr(`probability_of_improvement__SWIG_0`, "inputTypes") = c('numeric', 'numeric', 'numeric', 'numeric')
+class(`probability_of_improvement__SWIG_0`) = c("SWIGFunction", class('probability_of_improvement__SWIG_0'))
+
+# Start of probability_of_improvement
+
+`probability_of_improvement__SWIG_1` = function(mean, sd, incumbent, .copy = FALSE)
+{
+  ;.Call('R_swig_probability_of_improvement__SWIG_1', mean, sd, incumbent, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`probability_of_improvement__SWIG_1`, 'returnType') = 'numeric'
+attr(`probability_of_improvement__SWIG_1`, "inputTypes") = c('numeric', 'numeric', 'numeric')
+class(`probability_of_improvement__SWIG_1`) = c("SWIGFunction", class('probability_of_improvement__SWIG_1'))
+
+`probability_of_improvement` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- probability_of_improvement__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- probability_of_improvement__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for probability_of_improvement with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of SurrogatePrediction_mean_set
+
+`SurrogatePrediction_mean_set` = function(self, s_mean)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SurrogatePrediction_mean_set', self, s_mean, PACKAGE='datamunger');
+  
+}
+
+attr(`SurrogatePrediction_mean_set`, 'returnType') = 'void'
+attr(`SurrogatePrediction_mean_set`, "inputTypes") = c('_p_datamunge__optim__SurrogatePrediction', 'numeric')
+class(`SurrogatePrediction_mean_set`) = c("SWIGFunction", class('SurrogatePrediction_mean_set'))
+
+# Start of SurrogatePrediction_mean_get
+
+`SurrogatePrediction_mean_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SurrogatePrediction_mean_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SurrogatePrediction_mean_get`, 'returnType') = 'numeric'
+attr(`SurrogatePrediction_mean_get`, "inputTypes") = c('_p_datamunge__optim__SurrogatePrediction')
+class(`SurrogatePrediction_mean_get`) = c("SWIGFunction", class('SurrogatePrediction_mean_get'))
+
+# Start of SurrogatePrediction_sd_set
+
+`SurrogatePrediction_sd_set` = function(self, s_sd)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SurrogatePrediction_sd_set', self, s_sd, PACKAGE='datamunger');
+  
+}
+
+attr(`SurrogatePrediction_sd_set`, 'returnType') = 'void'
+attr(`SurrogatePrediction_sd_set`, "inputTypes") = c('_p_datamunge__optim__SurrogatePrediction', 'numeric')
+class(`SurrogatePrediction_sd_set`) = c("SWIGFunction", class('SurrogatePrediction_sd_set'))
+
+# Start of SurrogatePrediction_sd_get
+
+`SurrogatePrediction_sd_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SurrogatePrediction_sd_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SurrogatePrediction_sd_get`, 'returnType') = 'numeric'
+attr(`SurrogatePrediction_sd_get`, "inputTypes") = c('_p_datamunge__optim__SurrogatePrediction')
+class(`SurrogatePrediction_sd_get`) = c("SWIGFunction", class('SurrogatePrediction_sd_get'))
+
+# Start of new_SurrogatePrediction
+
+`SurrogatePrediction` = function()
+{
+  ;ans = .Call('R_swig_new_SurrogatePrediction', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SurrogatePrediction", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SurrogatePrediction);
+  ans
+  
+}
+
+attr(`SurrogatePrediction`, 'returnType') = '_p_datamunge__optim__SurrogatePrediction'
+class(`SurrogatePrediction`) = c("SWIGFunction", class('SurrogatePrediction'))
+
+# Start of delete_SurrogatePrediction
+
+`delete_SurrogatePrediction` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_SurrogatePrediction', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_SurrogatePrediction`, 'returnType') = 'void'
+attr(`delete_SurrogatePrediction`, "inputTypes") = c('_p_datamunge__optim__SurrogatePrediction')
+class(`delete_SurrogatePrediction`) = c("SWIGFunction", class('delete_SurrogatePrediction'))
+
+# Start of accessor method for datamunge::optim::SurrogatePrediction
+setMethod('$', '_p_datamunge__optim__SurrogatePrediction', function(x, name)
+
+{
+  accessorFuns = list('mean' = SurrogatePrediction_mean_get, 'sd' = SurrogatePrediction_sd_get);
+  vaccessors = c('mean', 'sd');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::SurrogatePrediction
+# Start of accessor method for datamunge::optim::SurrogatePrediction
+setMethod('$<-', '_p_datamunge__optim__SurrogatePrediction', function(x, name, value)
+
+{
+  accessorFuns = list('mean' = SurrogatePrediction_mean_set, 'sd' = SurrogatePrediction_sd_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__SurrogatePrediction', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('mean' = SurrogatePrediction_mean_set, 'sd' = SurrogatePrediction_sd_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::SurrogatePrediction
+setMethod('delete', '_p_datamunge__optim__SurrogatePrediction', function(obj) {delete_datamunge__optim__SurrogatePrediction(obj)})
+# Start definition of copy functions & methods for datamunge::optim::SurrogatePrediction
+CopyToR_datamunge__optim__SurrogatePrediction = function(value, obj = new("datamunge::optim::SurrogatePrediction"))
+{
+  obj@mean = value$mean;
+  obj@sd = value$sd;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__SurrogatePrediction = function(value, obj)
+{
+  obj$mean = value@mean;
+  obj$sd = value@sd;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::SurrogatePrediction
+setMethod('copyToR', '_p_datamunge__optim__SurrogatePrediction', CopyToR_datamunge__optim__SurrogatePrediction);
+setMethod('copyToC', "datamunge::optim::SurrogatePrediction", CopyToC_datamunge__optim__SurrogatePrediction);
+
+# End definition of copy methods for datamunge::optim::SurrogatePrediction
+# End definition of copy functions & methods for datamunge::optim::SurrogatePrediction
 # Start of new_RBFGaussianProcessSurrogate
 
 `RBFGaussianProcessSurrogate__SWIG_0` = function(length_scale, noise)
@@ -59106,6 +65527,128 @@ attr(`RBFGaussianProcessSurrogate_acquisition`, 'returnType') = 'numeric'
 attr(`RBFGaussianProcessSurrogate_acquisition`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate', '_p_std__vectorT_double_t', 'numeric')
 class(`RBFGaussianProcessSurrogate_acquisition`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_acquisition'))
 
+# Start of RBFGaussianProcessSurrogate_predict
+
+`RBFGaussianProcessSurrogate_predict` = function(self, point, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  point = as.numeric(point);
+  ;ans = .Call('R_swig_RBFGaussianProcessSurrogate_predict', self, point, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SurrogatePrediction", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_predict`, 'returnType') = '_p_datamunge__optim__SurrogatePrediction'
+attr(`RBFGaussianProcessSurrogate_predict`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate', '_p_std__vectorT_double_t')
+class(`RBFGaussianProcessSurrogate_predict`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_predict'))
+
+# Start of RBFGaussianProcessSurrogate_log_marginal_likelihood
+
+`RBFGaussianProcessSurrogate_log_marginal_likelihood` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_log_marginal_likelihood', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_log_marginal_likelihood`, 'returnType') = 'numeric'
+attr(`RBFGaussianProcessSurrogate_log_marginal_likelihood`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate')
+class(`RBFGaussianProcessSurrogate_log_marginal_likelihood`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_log_marginal_likelihood'))
+
+# Start of RBFGaussianProcessSurrogate_length_scale
+
+`RBFGaussianProcessSurrogate_length_scale` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_length_scale', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_length_scale`, 'returnType') = 'numeric'
+attr(`RBFGaussianProcessSurrogate_length_scale`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate')
+class(`RBFGaussianProcessSurrogate_length_scale`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_length_scale'))
+
+# Start of RBFGaussianProcessSurrogate_noise
+
+`RBFGaussianProcessSurrogate_noise` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_noise', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_noise`, 'returnType') = 'numeric'
+attr(`RBFGaussianProcessSurrogate_noise`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate')
+class(`RBFGaussianProcessSurrogate_noise`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_noise'))
+
+# Start of RBFGaussianProcessSurrogate_signal_variance
+
+`RBFGaussianProcessSurrogate_signal_variance` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_signal_variance', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_signal_variance`, 'returnType') = 'numeric'
+attr(`RBFGaussianProcessSurrogate_signal_variance`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate')
+class(`RBFGaussianProcessSurrogate_signal_variance`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_signal_variance'))
+
+# Start of RBFGaussianProcessSurrogate_prior_mean
+
+`RBFGaussianProcessSurrogate_prior_mean` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_prior_mean', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_prior_mean`, 'returnType') = 'numeric'
+attr(`RBFGaussianProcessSurrogate_prior_mean`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate')
+class(`RBFGaussianProcessSurrogate_prior_mean`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_prior_mean'))
+
+# Start of RBFGaussianProcessSurrogate_value_scale
+
+`RBFGaussianProcessSurrogate_value_scale` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_value_scale', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_value_scale`, 'returnType') = 'numeric'
+attr(`RBFGaussianProcessSurrogate_value_scale`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate')
+class(`RBFGaussianProcessSurrogate_value_scale`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_value_scale'))
+
+# Start of RBFGaussianProcessSurrogate_points
+
+`RBFGaussianProcessSurrogate_points` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_points', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_points`, 'returnType') = 'list'
+attr(`RBFGaussianProcessSurrogate_points`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate')
+class(`RBFGaussianProcessSurrogate_points`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_points'))
+
+# Start of RBFGaussianProcessSurrogate_values
+
+`RBFGaussianProcessSurrogate_values` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_values', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_values`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`RBFGaussianProcessSurrogate_values`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate')
+class(`RBFGaussianProcessSurrogate_values`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_values'))
+
 # Start of delete_RBFGaussianProcessSurrogate
 
 `delete_RBFGaussianProcessSurrogate` = function(self)
@@ -59123,7 +65666,7 @@ class(`delete_RBFGaussianProcessSurrogate`) = c("SWIGFunction", class('delete_RB
 setMethod('$', '_p_datamunge__optim__RBFGaussianProcessSurrogate', function(x, name)
 
 {
-  accessorFuns = list('fit' = RBFGaussianProcessSurrogate_fit, 'acquisition' = RBFGaussianProcessSurrogate_acquisition);
+  accessorFuns = list('fit' = RBFGaussianProcessSurrogate_fit, 'acquisition' = RBFGaussianProcessSurrogate_acquisition, 'predict' = RBFGaussianProcessSurrogate_predict, 'log_marginal_likelihood' = RBFGaussianProcessSurrogate_log_marginal_likelihood, 'length_scale' = RBFGaussianProcessSurrogate_length_scale, 'noise' = RBFGaussianProcessSurrogate_noise, 'signal_variance' = RBFGaussianProcessSurrogate_signal_variance, 'prior_mean' = RBFGaussianProcessSurrogate_prior_mean, 'value_scale' = RBFGaussianProcessSurrogate_value_scale, 'points' = RBFGaussianProcessSurrogate_points, 'values' = RBFGaussianProcessSurrogate_values);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -59403,6 +65946,23 @@ attr(`MAP_optimize`, 'returnType') = 'numeric'
 attr(`MAP_optimize`, "inputTypes") = c('_p_datamunge__bayes__MAP', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`MAP_optimize`) = c("SWIGFunction", class('MAP_optimize'))
 
+# Start of MAP_options
+
+`MAP_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_MAP_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__MAPOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`MAP_options`, 'returnType') = '_p_datamunge__bayes__MAPOptions'
+attr(`MAP_options`, "inputTypes") = c('_p_datamunge__bayes__MAP')
+class(`MAP_options`) = c("SWIGFunction", class('MAP_options'))
+
 # Start of delete_MAP
 
 `delete_MAP` = function(self)
@@ -59420,7 +65980,7 @@ class(`delete_MAP`) = c("SWIGFunction", class('delete_MAP'))
 setMethod('$', '_p_datamunge__bayes__MAP', function(x, name)
 
 {
-  accessorFuns = list('optimize' = MAP_optimize);
+  accessorFuns = list('optimize' = MAP_optimize, 'options' = MAP_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -59988,6 +66548,23 @@ attr(`HMC_sample`, 'returnType') = '_p_datamunge__bayes__HMCResult'
 attr(`HMC_sample`, "inputTypes") = c('_p_datamunge__bayes__HMC', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`HMC_sample`) = c("SWIGFunction", class('HMC_sample'))
 
+# Start of HMC_options
+
+`HMC_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_HMC_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__HMCOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`HMC_options`, 'returnType') = '_p_datamunge__bayes__HMCOptions'
+attr(`HMC_options`, "inputTypes") = c('_p_datamunge__bayes__HMC')
+class(`HMC_options`) = c("SWIGFunction", class('HMC_options'))
+
 # Start of delete_HMC
 
 `delete_HMC` = function(self)
@@ -60005,7 +66582,7 @@ class(`delete_HMC`) = c("SWIGFunction", class('delete_HMC'))
 setMethod('$', '_p_datamunge__bayes__HMC', function(x, name)
 
 {
-  accessorFuns = list('sample' = HMC_sample);
+  accessorFuns = list('sample' = HMC_sample, 'options' = HMC_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -60019,6 +66596,72 @@ setMethod('$', '_p_datamunge__bayes__HMC', function(x, name)
 );
 # end of accessor method for datamunge::bayes::HMC
 setMethod('delete', '_p_datamunge__bayes__HMC', function(obj) {delete_datamunge__bayes__HMC(obj)})
+# Start of leapfrog_gaussian_acceptance
+
+`leapfrog_gaussian_acceptance__SWIG_0` = function(step_size, num_steps, sd, angles, .copy = FALSE)
+{
+  num_steps = as.integer(num_steps);
+  
+  if(length(num_steps) > 1) {
+    warning("using only the first element of num_steps");
+  };
+  
+  
+  angles = as.integer(angles);
+  
+  if(length(angles) > 1) {
+    warning("using only the first element of angles");
+  };
+  
+  ;.Call('R_swig_leapfrog_gaussian_acceptance__SWIG_0', step_size, num_steps, sd, angles, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`leapfrog_gaussian_acceptance__SWIG_0`, 'returnType') = 'numeric'
+attr(`leapfrog_gaussian_acceptance__SWIG_0`, "inputTypes") = c('numeric', 'integer', 'numeric', 'integer')
+class(`leapfrog_gaussian_acceptance__SWIG_0`) = c("SWIGFunction", class('leapfrog_gaussian_acceptance__SWIG_0'))
+
+# Start of leapfrog_gaussian_acceptance
+
+`leapfrog_gaussian_acceptance__SWIG_1` = function(step_size, num_steps, sd, .copy = FALSE)
+{
+  num_steps = as.integer(num_steps);
+  
+  if(length(num_steps) > 1) {
+    warning("using only the first element of num_steps");
+  };
+  
+  
+  ;.Call('R_swig_leapfrog_gaussian_acceptance__SWIG_1', step_size, num_steps, sd, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`leapfrog_gaussian_acceptance__SWIG_1`, 'returnType') = 'numeric'
+attr(`leapfrog_gaussian_acceptance__SWIG_1`, "inputTypes") = c('numeric', 'integer', 'numeric')
+class(`leapfrog_gaussian_acceptance__SWIG_1`) = c("SWIGFunction", class('leapfrog_gaussian_acceptance__SWIG_1'))
+
+`leapfrog_gaussian_acceptance` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- leapfrog_gaussian_acceptance__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 )) {
+      f <- leapfrog_gaussian_acceptance__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for leapfrog_gaussian_acceptance with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of NUTSOptions_num_samples_set
 
 `NUTSOptions_num_samples_set` = function(self, s_num_samples)
@@ -60455,6 +67098,114 @@ attr(`NUTSResult_num_divergences_get`, 'returnType') = 'integer'
 attr(`NUTSResult_num_divergences_get`, "inputTypes") = c('_p_datamunge__bayes__NUTSResult')
 class(`NUTSResult_num_divergences_get`) = c("SWIGFunction", class('NUTSResult_num_divergences_get'))
 
+# Start of NUTSResult_divergent_set
+
+`NUTSResult_divergent_set` = function(self, s_divergent)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_divergent = as.integer(s_divergent);
+  ;.Call('R_swig_NUTSResult_divergent_set', self, s_divergent, PACKAGE='datamunger');
+  
+}
+
+attr(`NUTSResult_divergent_set`, 'returnType') = 'void'
+attr(`NUTSResult_divergent_set`, "inputTypes") = c('_p_datamunge__bayes__NUTSResult', '_p_std__vectorT_int_t')
+class(`NUTSResult_divergent_set`) = c("SWIGFunction", class('NUTSResult_divergent_set'))
+
+# Start of NUTSResult_divergent_get
+
+`NUTSResult_divergent_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NUTSResult_divergent_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NUTSResult_divergent_get`, 'returnType') = '_p_std__vectorT_int_t'
+attr(`NUTSResult_divergent_get`, "inputTypes") = c('_p_datamunge__bayes__NUTSResult')
+class(`NUTSResult_divergent_get`) = c("SWIGFunction", class('NUTSResult_divergent_get'))
+
+# Start of NUTSResult_tree_depth_set
+
+`NUTSResult_tree_depth_set` = function(self, s_tree_depth)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_tree_depth = as.integer(s_tree_depth);
+  ;.Call('R_swig_NUTSResult_tree_depth_set', self, s_tree_depth, PACKAGE='datamunger');
+  
+}
+
+attr(`NUTSResult_tree_depth_set`, 'returnType') = 'void'
+attr(`NUTSResult_tree_depth_set`, "inputTypes") = c('_p_datamunge__bayes__NUTSResult', '_p_std__vectorT_int_t')
+class(`NUTSResult_tree_depth_set`) = c("SWIGFunction", class('NUTSResult_tree_depth_set'))
+
+# Start of NUTSResult_tree_depth_get
+
+`NUTSResult_tree_depth_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NUTSResult_tree_depth_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NUTSResult_tree_depth_get`, 'returnType') = '_p_std__vectorT_int_t'
+attr(`NUTSResult_tree_depth_get`, "inputTypes") = c('_p_datamunge__bayes__NUTSResult')
+class(`NUTSResult_tree_depth_get`) = c("SWIGFunction", class('NUTSResult_tree_depth_get'))
+
+# Start of NUTSResult_n_leapfrog_set
+
+`NUTSResult_n_leapfrog_set` = function(self, s_n_leapfrog)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_n_leapfrog = as.integer(s_n_leapfrog);
+  ;.Call('R_swig_NUTSResult_n_leapfrog_set', self, s_n_leapfrog, PACKAGE='datamunger');
+  
+}
+
+attr(`NUTSResult_n_leapfrog_set`, 'returnType') = 'void'
+attr(`NUTSResult_n_leapfrog_set`, "inputTypes") = c('_p_datamunge__bayes__NUTSResult', '_p_std__vectorT_int_t')
+class(`NUTSResult_n_leapfrog_set`) = c("SWIGFunction", class('NUTSResult_n_leapfrog_set'))
+
+# Start of NUTSResult_n_leapfrog_get
+
+`NUTSResult_n_leapfrog_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NUTSResult_n_leapfrog_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NUTSResult_n_leapfrog_get`, 'returnType') = '_p_std__vectorT_int_t'
+attr(`NUTSResult_n_leapfrog_get`, "inputTypes") = c('_p_datamunge__bayes__NUTSResult')
+class(`NUTSResult_n_leapfrog_get`) = c("SWIGFunction", class('NUTSResult_n_leapfrog_get'))
+
+# Start of NUTSResult_energy_set
+
+`NUTSResult_energy_set` = function(self, s_energy)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_energy = as.numeric(s_energy);
+  ;.Call('R_swig_NUTSResult_energy_set', self, s_energy, PACKAGE='datamunger');
+  
+}
+
+attr(`NUTSResult_energy_set`, 'returnType') = 'void'
+attr(`NUTSResult_energy_set`, "inputTypes") = c('_p_datamunge__bayes__NUTSResult', '_p_std__vectorT_double_t')
+class(`NUTSResult_energy_set`) = c("SWIGFunction", class('NUTSResult_energy_set'))
+
+# Start of NUTSResult_energy_get
+
+`NUTSResult_energy_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NUTSResult_energy_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NUTSResult_energy_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`NUTSResult_energy_get`, "inputTypes") = c('_p_datamunge__bayes__NUTSResult')
+class(`NUTSResult_energy_get`) = c("SWIGFunction", class('NUTSResult_energy_get'))
+
 # Start of new_NUTSResult
 
 `NUTSResult` = function()
@@ -60488,8 +67239,8 @@ class(`delete_NUTSResult`) = c("SWIGFunction", class('delete_NUTSResult'))
 setMethod('$', '_p_datamunge__bayes__NUTSResult', function(x, name)
 
 {
-  accessorFuns = list('samples' = NUTSResult_samples_get, 'accept_rate' = NUTSResult_accept_rate_get, 'final_step_size' = NUTSResult_final_step_size_get, 'num_divergences' = NUTSResult_num_divergences_get);
-  vaccessors = c('samples', 'accept_rate', 'final_step_size', 'num_divergences');
+  accessorFuns = list('samples' = NUTSResult_samples_get, 'accept_rate' = NUTSResult_accept_rate_get, 'final_step_size' = NUTSResult_final_step_size_get, 'num_divergences' = NUTSResult_num_divergences_get, 'divergent' = NUTSResult_divergent_get, 'tree_depth' = NUTSResult_tree_depth_get, 'n_leapfrog' = NUTSResult_n_leapfrog_get, 'energy' = NUTSResult_energy_get);
+  vaccessors = c('samples', 'accept_rate', 'final_step_size', 'num_divergences', 'divergent', 'tree_depth', 'n_leapfrog', 'energy');
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -60506,7 +67257,7 @@ setMethod('$', '_p_datamunge__bayes__NUTSResult', function(x, name)
 setMethod('$<-', '_p_datamunge__bayes__NUTSResult', function(x, name, value)
 
 {
-  accessorFuns = list('samples' = NUTSResult_samples_set, 'accept_rate' = NUTSResult_accept_rate_set, 'final_step_size' = NUTSResult_final_step_size_set, 'num_divergences' = NUTSResult_num_divergences_set);
+  accessorFuns = list('samples' = NUTSResult_samples_set, 'accept_rate' = NUTSResult_accept_rate_set, 'final_step_size' = NUTSResult_final_step_size_set, 'num_divergences' = NUTSResult_num_divergences_set, 'divergent' = NUTSResult_divergent_set, 'tree_depth' = NUTSResult_tree_depth_set, 'n_leapfrog' = NUTSResult_n_leapfrog_set, 'energy' = NUTSResult_energy_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -60521,7 +67272,7 @@ setMethod('[[<-', c('_p_datamunge__bayes__NUTSResult', 'character'),function(x, 
 
 {
   name = i;
-  accessorFuns = list('samples' = NUTSResult_samples_set, 'accept_rate' = NUTSResult_accept_rate_set, 'final_step_size' = NUTSResult_final_step_size_set, 'num_divergences' = NUTSResult_num_divergences_set);
+  accessorFuns = list('samples' = NUTSResult_samples_set, 'accept_rate' = NUTSResult_accept_rate_set, 'final_step_size' = NUTSResult_final_step_size_set, 'num_divergences' = NUTSResult_num_divergences_set, 'divergent' = NUTSResult_divergent_set, 'tree_depth' = NUTSResult_tree_depth_set, 'n_leapfrog' = NUTSResult_n_leapfrog_set, 'energy' = NUTSResult_energy_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -60541,6 +67292,10 @@ CopyToR_datamunge__bayes__NUTSResult = function(value, obj = new("datamunge::bay
   obj@accept_rate = value$accept_rate;
   obj@final_step_size = value$final_step_size;
   obj@num_divergences = value$num_divergences;
+  obj@divergent = value$divergent;
+  obj@tree_depth = value$tree_depth;
+  obj@n_leapfrog = value$n_leapfrog;
+  obj@energy = value$energy;
   obj;
 }
 
@@ -60552,6 +67307,10 @@ CopyToC_datamunge__bayes__NUTSResult = function(value, obj)
   obj$accept_rate = value@accept_rate;
   obj$final_step_size = value@final_step_size;
   obj$num_divergences = value@num_divergences;
+  obj$divergent = value@divergent;
+  obj$tree_depth = value@tree_depth;
+  obj$n_leapfrog = value@n_leapfrog;
+  obj$energy = value@energy;
   obj
 }
 
@@ -60636,6 +67395,23 @@ attr(`NUTS_sample`, 'returnType') = '_p_datamunge__bayes__NUTSResult'
 attr(`NUTS_sample`, "inputTypes") = c('_p_datamunge__bayes__NUTS', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
 class(`NUTS_sample`) = c("SWIGFunction", class('NUTS_sample'))
 
+# Start of NUTS_options
+
+`NUTS_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NUTS_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__NUTSOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NUTS_options`, 'returnType') = '_p_datamunge__bayes__NUTSOptions'
+attr(`NUTS_options`, "inputTypes") = c('_p_datamunge__bayes__NUTS')
+class(`NUTS_options`) = c("SWIGFunction", class('NUTS_options'))
+
 # Start of delete_NUTS
 
 `delete_NUTS` = function(self)
@@ -60653,7 +67429,7 @@ class(`delete_NUTS`) = c("SWIGFunction", class('delete_NUTS'))
 setMethod('$', '_p_datamunge__bayes__NUTS', function(x, name)
 
 {
-  accessorFuns = list('sample' = NUTS_sample);
+  accessorFuns = list('sample' = NUTS_sample, 'options' = NUTS_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -60817,6 +67593,33 @@ attr(`RWMOptions_seed_get`, 'returnType') = 'integer'
 attr(`RWMOptions_seed_get`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions')
 class(`RWMOptions_seed_get`) = c("SWIGFunction", class('RWMOptions_seed_get'))
 
+# Start of RWMOptions_adapt_covariance_set
+
+`RWMOptions_adapt_covariance_set` = function(self, s_adapt_covariance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_adapt_covariance = as.logical(s_adapt_covariance);
+  ;.Call('R_swig_RWMOptions_adapt_covariance_set', self, s_adapt_covariance, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_adapt_covariance_set`, 'returnType') = 'void'
+attr(`RWMOptions_adapt_covariance_set`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions', 'logical')
+class(`RWMOptions_adapt_covariance_set`) = c("SWIGFunction", class('RWMOptions_adapt_covariance_set'))
+
+# Start of RWMOptions_adapt_covariance_get
+
+`RWMOptions_adapt_covariance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMOptions_adapt_covariance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_adapt_covariance_get`, 'returnType') = 'logical'
+attr(`RWMOptions_adapt_covariance_get`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions')
+class(`RWMOptions_adapt_covariance_get`) = c("SWIGFunction", class('RWMOptions_adapt_covariance_get'))
+
 # Start of new_RWMOptions
 
 `RWMOptions` = function()
@@ -60850,8 +67653,8 @@ class(`delete_RWMOptions`) = c("SWIGFunction", class('delete_RWMOptions'))
 setMethod('$', '_p_datamunge__bayes__RWMOptions', function(x, name)
 
 {
-  accessorFuns = list('num_samples' = RWMOptions_num_samples_get, 'num_warmup' = RWMOptions_num_warmup_get, 'initial_step_size' = RWMOptions_initial_step_size_get, 'target_accept_rate' = RWMOptions_target_accept_rate_get, 'seed' = RWMOptions_seed_get);
-  vaccessors = c('num_samples', 'num_warmup', 'initial_step_size', 'target_accept_rate', 'seed');
+  accessorFuns = list('num_samples' = RWMOptions_num_samples_get, 'num_warmup' = RWMOptions_num_warmup_get, 'initial_step_size' = RWMOptions_initial_step_size_get, 'target_accept_rate' = RWMOptions_target_accept_rate_get, 'seed' = RWMOptions_seed_get, 'adapt_covariance' = RWMOptions_adapt_covariance_get);
+  vaccessors = c('num_samples', 'num_warmup', 'initial_step_size', 'target_accept_rate', 'seed', 'adapt_covariance');
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -60868,7 +67671,7 @@ setMethod('$', '_p_datamunge__bayes__RWMOptions', function(x, name)
 setMethod('$<-', '_p_datamunge__bayes__RWMOptions', function(x, name, value)
 
 {
-  accessorFuns = list('num_samples' = RWMOptions_num_samples_set, 'num_warmup' = RWMOptions_num_warmup_set, 'initial_step_size' = RWMOptions_initial_step_size_set, 'target_accept_rate' = RWMOptions_target_accept_rate_set, 'seed' = RWMOptions_seed_set);
+  accessorFuns = list('num_samples' = RWMOptions_num_samples_set, 'num_warmup' = RWMOptions_num_warmup_set, 'initial_step_size' = RWMOptions_initial_step_size_set, 'target_accept_rate' = RWMOptions_target_accept_rate_set, 'seed' = RWMOptions_seed_set, 'adapt_covariance' = RWMOptions_adapt_covariance_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -60883,7 +67686,7 @@ setMethod('[[<-', c('_p_datamunge__bayes__RWMOptions', 'character'),function(x, 
 
 {
   name = i;
-  accessorFuns = list('num_samples' = RWMOptions_num_samples_set, 'num_warmup' = RWMOptions_num_warmup_set, 'initial_step_size' = RWMOptions_initial_step_size_set, 'target_accept_rate' = RWMOptions_target_accept_rate_set, 'seed' = RWMOptions_seed_set);
+  accessorFuns = list('num_samples' = RWMOptions_num_samples_set, 'num_warmup' = RWMOptions_num_warmup_set, 'initial_step_size' = RWMOptions_initial_step_size_set, 'target_accept_rate' = RWMOptions_target_accept_rate_set, 'seed' = RWMOptions_seed_set, 'adapt_covariance' = RWMOptions_adapt_covariance_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -60904,6 +67707,7 @@ CopyToR_datamunge__bayes__RWMOptions = function(value, obj = new("datamunge::bay
   obj@initial_step_size = value$initial_step_size;
   obj@target_accept_rate = value$target_accept_rate;
   obj@seed = value$seed;
+  obj@adapt_covariance = value$adapt_covariance;
   obj;
 }
 
@@ -60916,6 +67720,7 @@ CopyToC_datamunge__bayes__RWMOptions = function(value, obj)
   obj$initial_step_size = value@initial_step_size;
   obj$target_accept_rate = value@target_accept_rate;
   obj$seed = value@seed;
+  obj$adapt_covariance = value@adapt_covariance;
   obj
 }
 
@@ -61008,6 +67813,33 @@ attr(`RWMResult_final_step_size_get`, 'returnType') = 'numeric'
 attr(`RWMResult_final_step_size_get`, "inputTypes") = c('_p_datamunge__bayes__RWMResult')
 class(`RWMResult_final_step_size_get`) = c("SWIGFunction", class('RWMResult_final_step_size_get'))
 
+# Start of RWMResult_proposal_covariance_set
+
+`RWMResult_proposal_covariance_set` = function(self, s_proposal_covariance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_proposal_covariance = lapply(s_proposal_covariance, as.numeric);
+  ;.Call('R_swig_RWMResult_proposal_covariance_set', self, s_proposal_covariance, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMResult_proposal_covariance_set`, 'returnType') = 'void'
+attr(`RWMResult_proposal_covariance_set`, "inputTypes") = c('_p_datamunge__bayes__RWMResult', 'list')
+class(`RWMResult_proposal_covariance_set`) = c("SWIGFunction", class('RWMResult_proposal_covariance_set'))
+
+# Start of RWMResult_proposal_covariance_get
+
+`RWMResult_proposal_covariance_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMResult_proposal_covariance_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMResult_proposal_covariance_get`, 'returnType') = 'list'
+attr(`RWMResult_proposal_covariance_get`, "inputTypes") = c('_p_datamunge__bayes__RWMResult')
+class(`RWMResult_proposal_covariance_get`) = c("SWIGFunction", class('RWMResult_proposal_covariance_get'))
+
 # Start of new_RWMResult
 
 `RWMResult` = function()
@@ -61041,8 +67873,8 @@ class(`delete_RWMResult`) = c("SWIGFunction", class('delete_RWMResult'))
 setMethod('$', '_p_datamunge__bayes__RWMResult', function(x, name)
 
 {
-  accessorFuns = list('samples' = RWMResult_samples_get, 'accept_rate' = RWMResult_accept_rate_get, 'final_step_size' = RWMResult_final_step_size_get);
-  vaccessors = c('samples', 'accept_rate', 'final_step_size');
+  accessorFuns = list('samples' = RWMResult_samples_get, 'accept_rate' = RWMResult_accept_rate_get, 'final_step_size' = RWMResult_final_step_size_get, 'proposal_covariance' = RWMResult_proposal_covariance_get);
+  vaccessors = c('samples', 'accept_rate', 'final_step_size', 'proposal_covariance');
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -61059,7 +67891,7 @@ setMethod('$', '_p_datamunge__bayes__RWMResult', function(x, name)
 setMethod('$<-', '_p_datamunge__bayes__RWMResult', function(x, name, value)
 
 {
-  accessorFuns = list('samples' = RWMResult_samples_set, 'accept_rate' = RWMResult_accept_rate_set, 'final_step_size' = RWMResult_final_step_size_set);
+  accessorFuns = list('samples' = RWMResult_samples_set, 'accept_rate' = RWMResult_accept_rate_set, 'final_step_size' = RWMResult_final_step_size_set, 'proposal_covariance' = RWMResult_proposal_covariance_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -61074,7 +67906,7 @@ setMethod('[[<-', c('_p_datamunge__bayes__RWMResult', 'character'),function(x, i
 
 {
   name = i;
-  accessorFuns = list('samples' = RWMResult_samples_set, 'accept_rate' = RWMResult_accept_rate_set, 'final_step_size' = RWMResult_final_step_size_set);
+  accessorFuns = list('samples' = RWMResult_samples_set, 'accept_rate' = RWMResult_accept_rate_set, 'final_step_size' = RWMResult_final_step_size_set, 'proposal_covariance' = RWMResult_proposal_covariance_set);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name, value));
@@ -61093,6 +67925,7 @@ CopyToR_datamunge__bayes__RWMResult = function(value, obj = new("datamunge::baye
   obj@samples = value$samples;
   obj@accept_rate = value$accept_rate;
   obj@final_step_size = value$final_step_size;
+  obj@proposal_covariance = value$proposal_covariance;
   obj;
 }
 
@@ -61103,6 +67936,7 @@ CopyToC_datamunge__bayes__RWMResult = function(value, obj)
   obj$samples = value@samples;
   obj$accept_rate = value@accept_rate;
   obj$final_step_size = value@final_step_size;
+  obj$proposal_covariance = value@proposal_covariance;
   obj
 }
 
@@ -61187,6 +68021,23 @@ attr(`RandomWalkMetropolis_sample`, 'returnType') = '_p_datamunge__bayes__RWMRes
 attr(`RandomWalkMetropolis_sample`, "inputTypes") = c('_p_datamunge__bayes__RandomWalkMetropolis', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
 class(`RandomWalkMetropolis_sample`) = c("SWIGFunction", class('RandomWalkMetropolis_sample'))
 
+# Start of RandomWalkMetropolis_options
+
+`RandomWalkMetropolis_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_RandomWalkMetropolis_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__RWMOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RandomWalkMetropolis_options`, 'returnType') = '_p_datamunge__bayes__RWMOptions'
+attr(`RandomWalkMetropolis_options`, "inputTypes") = c('_p_datamunge__bayes__RandomWalkMetropolis')
+class(`RandomWalkMetropolis_options`) = c("SWIGFunction", class('RandomWalkMetropolis_options'))
+
 # Start of delete_RandomWalkMetropolis
 
 `delete_RandomWalkMetropolis` = function(self)
@@ -61204,7 +68055,7 @@ class(`delete_RandomWalkMetropolis`) = c("SWIGFunction", class('delete_RandomWal
 setMethod('$', '_p_datamunge__bayes__RandomWalkMetropolis', function(x, name)
 
 {
-  accessorFuns = list('sample' = RandomWalkMetropolis_sample);
+  accessorFuns = list('sample' = RandomWalkMetropolis_sample, 'options' = RandomWalkMetropolis_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -61738,6 +68589,23 @@ attr(`GibbsSampler_sample`, 'returnType') = '_p_datamunge__bayes__GibbsResult'
 attr(`GibbsSampler_sample`, "inputTypes") = c('_p_datamunge__bayes__GibbsSampler', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
 class(`GibbsSampler_sample`) = c("SWIGFunction", class('GibbsSampler_sample'))
 
+# Start of GibbsSampler_options
+
+`GibbsSampler_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_GibbsSampler_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__GibbsOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`GibbsSampler_options`, 'returnType') = '_p_datamunge__bayes__GibbsOptions'
+attr(`GibbsSampler_options`, "inputTypes") = c('_p_datamunge__bayes__GibbsSampler')
+class(`GibbsSampler_options`) = c("SWIGFunction", class('GibbsSampler_options'))
+
 # Start of delete_GibbsSampler
 
 `delete_GibbsSampler` = function(self)
@@ -61755,7 +68623,7 @@ class(`delete_GibbsSampler`) = c("SWIGFunction", class('delete_GibbsSampler'))
 setMethod('$', '_p_datamunge__bayes__GibbsSampler', function(x, name)
 
 {
-  accessorFuns = list('sample' = GibbsSampler_sample);
+  accessorFuns = list('sample' = GibbsSampler_sample, 'options' = GibbsSampler_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -62227,6 +69095,23 @@ attr(`ImportanceSampling_sample`, 'returnType') = '_p_datamunge__bayes__Importan
 attr(`ImportanceSampling_sample`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSampling', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', 'list')
 class(`ImportanceSampling_sample`) = c("SWIGFunction", class('ImportanceSampling_sample'))
 
+# Start of ImportanceSampling_options
+
+`ImportanceSampling_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ImportanceSampling_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__ImportanceSamplingOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImportanceSampling_options`, 'returnType') = '_p_datamunge__bayes__ImportanceSamplingOptions'
+attr(`ImportanceSampling_options`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSampling')
+class(`ImportanceSampling_options`) = c("SWIGFunction", class('ImportanceSampling_options'))
+
 # Start of delete_ImportanceSampling
 
 `delete_ImportanceSampling` = function(self)
@@ -62244,7 +69129,7 @@ class(`delete_ImportanceSampling`) = c("SWIGFunction", class('delete_ImportanceS
 setMethod('$', '_p_datamunge__bayes__ImportanceSampling', function(x, name)
 
 {
-  accessorFuns = list('sample' = ImportanceSampling_sample);
+  accessorFuns = list('sample' = ImportanceSampling_sample, 'options' = ImportanceSampling_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -62258,6 +69143,24 @@ setMethod('$', '_p_datamunge__bayes__ImportanceSampling', function(x, name)
 );
 # end of accessor method for datamunge::bayes::ImportanceSampling
 setMethod('delete', '_p_datamunge__bayes__ImportanceSampling', function(obj) {delete_datamunge__bayes__ImportanceSampling(obj)})
+# Start of gaussian_importance_efficiency
+
+`gaussian_importance_efficiency` = function(scale, dimension, .copy = FALSE)
+{
+  dimension = as.integer(dimension);
+  
+  if(length(dimension) > 1) {
+    warning("using only the first element of dimension");
+  };
+  
+  ;.Call('R_swig_gaussian_importance_efficiency', scale, dimension, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`gaussian_importance_efficiency`, 'returnType') = 'numeric'
+attr(`gaussian_importance_efficiency`, "inputTypes") = c('numeric', 'integer')
+class(`gaussian_importance_efficiency`) = c("SWIGFunction", class('gaussian_importance_efficiency'))
+
 # Start of delete_RHS
 
 `delete_RHS` = function(self)
@@ -62995,6 +69898,23 @@ attr(`ODESolver_solve_builtin`, 'returnType') = '_p_datamunge__ode__ODESolution'
 attr(`ODESolver_solve_builtin`, "inputTypes") = c('_p_datamunge__ode__ODESolver', 'character', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'numeric', 'numeric')
 class(`ODESolver_solve_builtin`) = c("SWIGFunction", class('ODESolver_solve_builtin'))
 
+# Start of ODESolver_options
+
+`ODESolver_options` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ODESolver_options', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__ode__ODEOptions", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ODESolver_options`, 'returnType') = '_p_datamunge__ode__ODEOptions'
+attr(`ODESolver_options`, "inputTypes") = c('_p_datamunge__ode__ODESolver')
+class(`ODESolver_options`) = c("SWIGFunction", class('ODESolver_options'))
+
 # Start of delete_ODESolver
 
 `delete_ODESolver` = function(self)
@@ -63012,7 +69932,7 @@ class(`delete_ODESolver`) = c("SWIGFunction", class('delete_ODESolver'))
 setMethod('$', '_p_datamunge__ode__ODESolver', function(x, name)
 
 {
-  accessorFuns = list('solve' = ODESolver_solve, 'solve_builtin' = ODESolver_solve_builtin);
+  accessorFuns = list('solve' = ODESolver_solve, 'solve_builtin' = ODESolver_solve_builtin, 'options' = ODESolver_options);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -65785,6 +72705,91 @@ attr(`crt`, 'returnType') = 'numeric'
 attr(`crt`, "inputTypes") = c('_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
 class(`crt`) = c("SWIGFunction", class('crt'))
 
+# Start of gf_mul
+
+`gf_mul` = function(a, b, p, .copy = FALSE)
+{
+  a = as.integer(a);
+  b = as.integer(b);
+  p = as.integer(p);
+  
+  if(length(p) > 1) {
+    warning("using only the first element of p");
+  };
+  
+  ;.Call('R_swig_gf_mul', a, b, p, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`gf_mul`, 'returnType') = 'integer'
+attr(`gf_mul`, "inputTypes") = c('integer', 'integer', 'integer')
+class(`gf_mul`) = c("SWIGFunction", class('gf_mul'))
+
+# Start of gf_derivative
+
+`gf_derivative` = function(a, p, .copy = FALSE)
+{
+  a = as.integer(a);
+  p = as.integer(p);
+  
+  if(length(p) > 1) {
+    warning("using only the first element of p");
+  };
+  
+  ;.Call('R_swig_gf_derivative', a, p, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`gf_derivative`, 'returnType') = 'integer'
+attr(`gf_derivative`, "inputTypes") = c('integer', 'integer')
+class(`gf_derivative`) = c("SWIGFunction", class('gf_derivative'))
+
+# Start of gf_square_free
+
+`gf_square_free` = function(f, p, .copy = FALSE)
+{
+  f = as.integer(f);
+  p = as.integer(p);
+  
+  if(length(p) > 1) {
+    warning("using only the first element of p");
+  };
+  
+  ;ans = .Call('R_swig_gf_square_free', f, p, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`gf_square_free`, 'returnType') = '_p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t'
+attr(`gf_square_free`, "inputTypes") = c('integer', 'integer')
+class(`gf_square_free`) = c("SWIGFunction", class('gf_square_free'))
+
+# Start of berlekamp_null_space
+
+`berlekamp_null_space` = function(f, p, .copy = FALSE)
+{
+  f = as.integer(f);
+  p = as.integer(p);
+  
+  if(length(p) > 1) {
+    warning("using only the first element of p");
+  };
+  
+  ;ans = .Call('R_swig_berlekamp_null_space', f, p, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_std__allocatorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_t_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`berlekamp_null_space`, 'returnType') = '_p_std__vectorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_std__allocatorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_t_t'
+attr(`berlekamp_null_space`, "inputTypes") = c('integer', 'integer')
+class(`berlekamp_null_space`) = c("SWIGFunction", class('berlekamp_null_space'))
+
 # Start of berlekamp_factor_mod
 
 `berlekamp_factor_mod` = function(poly, prime, .copy = FALSE)
@@ -65798,6 +72803,290 @@ class(`crt`) = c("SWIGFunction", class('crt'))
 attr(`berlekamp_factor_mod`, 'returnType') = 'list'
 attr(`berlekamp_factor_mod`, "inputTypes") = c('_p_std__vectorT_double_t', 'numeric')
 class(`berlekamp_factor_mod`) = c("SWIGFunction", class('berlekamp_factor_mod'))
+
+# Start of GfFactorization_leading_set
+
+`GfFactorization_leading_set` = function(self, s_leading)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_leading = as.integer(s_leading);
+  
+  if(length(s_leading) > 1) {
+    warning("using only the first element of s_leading");
+  };
+  
+  ;.Call('R_swig_GfFactorization_leading_set', self, s_leading, PACKAGE='datamunger');
+  
+}
+
+attr(`GfFactorization_leading_set`, 'returnType') = 'void'
+attr(`GfFactorization_leading_set`, "inputTypes") = c('_p_datamunge__algebra__GfFactorization', 'integer')
+class(`GfFactorization_leading_set`) = c("SWIGFunction", class('GfFactorization_leading_set'))
+
+# Start of GfFactorization_leading_get
+
+`GfFactorization_leading_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GfFactorization_leading_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GfFactorization_leading_get`, 'returnType') = 'integer'
+attr(`GfFactorization_leading_get`, "inputTypes") = c('_p_datamunge__algebra__GfFactorization')
+class(`GfFactorization_leading_get`) = c("SWIGFunction", class('GfFactorization_leading_get'))
+
+# Start of GfFactorization_factors_set
+
+`GfFactorization_factors_set` = function(self, s_factors)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_factors, "ExternalReference")) s_factors = slot(s_factors,"ref"); 
+  ;.Call('R_swig_GfFactorization_factors_set', self, s_factors, PACKAGE='datamunger');
+  
+}
+
+attr(`GfFactorization_factors_set`, 'returnType') = 'void'
+attr(`GfFactorization_factors_set`, "inputTypes") = c('_p_datamunge__algebra__GfFactorization', '_p_std__vectorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_std__allocatorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_t_t')
+class(`GfFactorization_factors_set`) = c("SWIGFunction", class('GfFactorization_factors_set'))
+
+# Start of GfFactorization_factors_get
+
+`GfFactorization_factors_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_GfFactorization_factors_get', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_std__allocatorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_t_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`GfFactorization_factors_get`, 'returnType') = '_p_std__vectorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_std__allocatorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_t_t'
+attr(`GfFactorization_factors_get`, "inputTypes") = c('_p_datamunge__algebra__GfFactorization')
+class(`GfFactorization_factors_get`) = c("SWIGFunction", class('GfFactorization_factors_get'))
+
+# Start of GfFactorization_multiplicities_set
+
+`GfFactorization_multiplicities_set` = function(self, s_multiplicities)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_multiplicities = as.integer(s_multiplicities);
+  ;.Call('R_swig_GfFactorization_multiplicities_set', self, s_multiplicities, PACKAGE='datamunger');
+  
+}
+
+attr(`GfFactorization_multiplicities_set`, 'returnType') = 'void'
+attr(`GfFactorization_multiplicities_set`, "inputTypes") = c('_p_datamunge__algebra__GfFactorization', '_p_std__vectorT_int_t')
+class(`GfFactorization_multiplicities_set`) = c("SWIGFunction", class('GfFactorization_multiplicities_set'))
+
+# Start of GfFactorization_multiplicities_get
+
+`GfFactorization_multiplicities_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GfFactorization_multiplicities_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`GfFactorization_multiplicities_get`, 'returnType') = '_p_std__vectorT_int_t'
+attr(`GfFactorization_multiplicities_get`, "inputTypes") = c('_p_datamunge__algebra__GfFactorization')
+class(`GfFactorization_multiplicities_get`) = c("SWIGFunction", class('GfFactorization_multiplicities_get'))
+
+# Start of new_GfFactorization
+
+`GfFactorization` = function()
+{
+  ;ans = .Call('R_swig_new_GfFactorization', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__algebra__GfFactorization", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_GfFactorization);
+  ans
+  
+}
+
+attr(`GfFactorization`, 'returnType') = '_p_datamunge__algebra__GfFactorization'
+class(`GfFactorization`) = c("SWIGFunction", class('GfFactorization'))
+
+# Start of delete_GfFactorization
+
+`delete_GfFactorization` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_GfFactorization', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_GfFactorization`, 'returnType') = 'void'
+attr(`delete_GfFactorization`, "inputTypes") = c('_p_datamunge__algebra__GfFactorization')
+class(`delete_GfFactorization`) = c("SWIGFunction", class('delete_GfFactorization'))
+
+# Start of accessor method for datamunge::algebra::GfFactorization
+setMethod('$', '_p_datamunge__algebra__GfFactorization', function(x, name)
+
+{
+  accessorFuns = list('leading' = GfFactorization_leading_get, 'factors' = GfFactorization_factors_get, 'multiplicities' = GfFactorization_multiplicities_get);
+  vaccessors = c('leading', 'factors', 'multiplicities');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::algebra::GfFactorization
+# Start of accessor method for datamunge::algebra::GfFactorization
+setMethod('$<-', '_p_datamunge__algebra__GfFactorization', function(x, name, value)
+
+{
+  accessorFuns = list('leading' = GfFactorization_leading_set, 'factors' = GfFactorization_factors_set, 'multiplicities' = GfFactorization_multiplicities_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__algebra__GfFactorization', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('leading' = GfFactorization_leading_set, 'factors' = GfFactorization_factors_set, 'multiplicities' = GfFactorization_multiplicities_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::algebra::GfFactorization
+setMethod('delete', '_p_datamunge__algebra__GfFactorization', function(obj) {delete_datamunge__algebra__GfFactorization(obj)})
+# Start definition of copy functions & methods for datamunge::algebra::GfFactorization
+CopyToR_datamunge__algebra__GfFactorization = function(value, obj = new("datamunge::algebra::GfFactorization"))
+{
+  obj@leading = value$leading;
+  obj@multiplicities = value$multiplicities;
+  obj;
+}
+
+
+
+CopyToC_datamunge__algebra__GfFactorization = function(value, obj)
+{
+  obj$leading = value@leading;
+  obj$multiplicities = value@multiplicities;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::algebra::GfFactorization
+setMethod('copyToR', '_p_datamunge__algebra__GfFactorization', CopyToR_datamunge__algebra__GfFactorization);
+setMethod('copyToC', "datamunge::algebra::GfFactorization", CopyToC_datamunge__algebra__GfFactorization);
+
+# End definition of copy methods for datamunge::algebra::GfFactorization
+# End definition of copy functions & methods for datamunge::algebra::GfFactorization
+# Start of berlekamp_factor_count
+
+`berlekamp_factor_count` = function(poly, p, .copy = FALSE)
+{
+  poly = as.integer(poly);
+  p = as.integer(p);
+  
+  if(length(p) > 1) {
+    warning("using only the first element of p");
+  };
+  
+  ;.Call('R_swig_berlekamp_factor_count', poly, p, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`berlekamp_factor_count`, 'returnType') = 'integer'
+attr(`berlekamp_factor_count`, "inputTypes") = c('integer', 'integer')
+class(`berlekamp_factor_count`) = c("SWIGFunction", class('berlekamp_factor_count'))
+
+# Start of factor_gf_p
+
+`factor_gf_p` = function(poly, p, .copy = FALSE)
+{
+  poly = as.integer(poly);
+  p = as.integer(p);
+  
+  if(length(p) > 1) {
+    warning("using only the first element of p");
+  };
+  
+  ;ans = .Call('R_swig_factor_gf_p', poly, p, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__algebra__GfFactorization", ref=ans);
+  
+  ans
+  
+}
+
+attr(`factor_gf_p`, 'returnType') = '_p_datamunge__algebra__GfFactorization'
+attr(`factor_gf_p`, "inputTypes") = c('integer', 'integer')
+class(`factor_gf_p`) = c("SWIGFunction", class('factor_gf_p'))
+
+# Start of count_monic_irreducibles
+
+`count_monic_irreducibles` = function(p, d, .copy = FALSE)
+{
+  p = as.integer(p);
+  
+  if(length(p) > 1) {
+    warning("using only the first element of p");
+  };
+  
+  d = as.integer(d);
+  
+  if(length(d) > 1) {
+    warning("using only the first element of d");
+  };
+  
+  ;.Call('R_swig_count_monic_irreducibles', p, d, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`count_monic_irreducibles`, 'returnType') = 'numeric'
+attr(`count_monic_irreducibles`, "inputTypes") = c('integer', 'integer')
+class(`count_monic_irreducibles`) = c("SWIGFunction", class('count_monic_irreducibles'))
+
+# Start of expected_distinct_irreducible_factors
+
+`expected_distinct_irreducible_factors` = function(p, n, .copy = FALSE)
+{
+  p = as.integer(p);
+  
+  if(length(p) > 1) {
+    warning("using only the first element of p");
+  };
+  
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  ;.Call('R_swig_expected_distinct_irreducible_factors', p, n, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`expected_distinct_irreducible_factors`, 'returnType') = 'numeric'
+attr(`expected_distinct_irreducible_factors`, "inputTypes") = c('integer', 'integer')
+class(`expected_distinct_irreducible_factors`) = c("SWIGFunction", class('expected_distinct_irreducible_factors'))
 
 # Start of MonomialOrder_Lex_get
 
@@ -70830,8 +78119,595 @@ attr(`nn_set_num_threads`, 'returnType') = 'void'
 attr(`nn_set_num_threads`, "inputTypes") = c('integer')
 class(`nn_set_num_threads`) = c("SWIGFunction", class('nn_set_num_threads'))
 
+# Start of Task_InvertedPendulum_get
 
-defineEnumeration("_datamunge__plot__DataSeries__Kind",
+`Task_InvertedPendulum_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_Task_InvertedPendulum_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__sim__Task");
+  
+  ans
+  
+}
+
+attr(`Task_InvertedPendulum_get`, 'returnType') = 'character'
+class(`Task_InvertedPendulum_get`) = c("SWIGFunction", class('Task_InvertedPendulum_get'))
+
+# Start of Task_Hopper_get
+
+`Task_Hopper_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_Task_Hopper_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__sim__Task");
+  
+  ans
+  
+}
+
+attr(`Task_Hopper_get`, 'returnType') = 'character'
+class(`Task_Hopper_get`) = c("SWIGFunction", class('Task_Hopper_get'))
+
+# Start of TaskOutput_observations_get
+
+`TaskOutput_observations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TaskOutput_observations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TaskOutput_observations_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`TaskOutput_observations_get`, "inputTypes") = c('_p_datamunge__sim__TaskOutput')
+class(`TaskOutput_observations_get`) = c("SWIGFunction", class('TaskOutput_observations_get'))
+
+# Start of TaskOutput_rewards_get
+
+`TaskOutput_rewards_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TaskOutput_rewards_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TaskOutput_rewards_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`TaskOutput_rewards_get`, "inputTypes") = c('_p_datamunge__sim__TaskOutput')
+class(`TaskOutput_rewards_get`) = c("SWIGFunction", class('TaskOutput_rewards_get'))
+
+# Start of TaskOutput_terminated_get
+
+`TaskOutput_terminated_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TaskOutput_terminated_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TaskOutput_terminated_get`, 'returnType') = 'integer'
+attr(`TaskOutput_terminated_get`, "inputTypes") = c('_p_datamunge__sim__TaskOutput')
+class(`TaskOutput_terminated_get`) = c("SWIGFunction", class('TaskOutput_terminated_get'))
+
+# Start of TaskOutput_truncated_get
+
+`TaskOutput_truncated_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TaskOutput_truncated_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TaskOutput_truncated_get`, 'returnType') = 'integer'
+attr(`TaskOutput_truncated_get`, "inputTypes") = c('_p_datamunge__sim__TaskOutput')
+class(`TaskOutput_truncated_get`) = c("SWIGFunction", class('TaskOutput_truncated_get'))
+
+# Start of TaskOutput_final_observations_get
+
+`TaskOutput_final_observations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TaskOutput_final_observations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TaskOutput_final_observations_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`TaskOutput_final_observations_get`, "inputTypes") = c('_p_datamunge__sim__TaskOutput')
+class(`TaskOutput_final_observations_get`) = c("SWIGFunction", class('TaskOutput_final_observations_get'))
+
+# Start of TaskOutput_final_valid_get
+
+`TaskOutput_final_valid_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TaskOutput_final_valid_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TaskOutput_final_valid_get`, 'returnType') = 'integer'
+attr(`TaskOutput_final_valid_get`, "inputTypes") = c('_p_datamunge__sim__TaskOutput')
+class(`TaskOutput_final_valid_get`) = c("SWIGFunction", class('TaskOutput_final_valid_get'))
+
+# Start of new_TaskOutput
+
+`TaskOutput` = function()
+{
+  ;ans = .Call('R_swig_new_TaskOutput', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskOutput", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_TaskOutput);
+  ans
+  
+}
+
+attr(`TaskOutput`, 'returnType') = '_p_datamunge__sim__TaskOutput'
+class(`TaskOutput`) = c("SWIGFunction", class('TaskOutput'))
+
+# Start of delete_TaskOutput
+
+`delete_TaskOutput` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_TaskOutput', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_TaskOutput`, 'returnType') = 'void'
+attr(`delete_TaskOutput`, "inputTypes") = c('_p_datamunge__sim__TaskOutput')
+class(`delete_TaskOutput`) = c("SWIGFunction", class('delete_TaskOutput'))
+
+# Start of accessor method for datamunge::sim::TaskOutput
+setMethod('$', '_p_datamunge__sim__TaskOutput', function(x, name)
+
+{
+  accessorFuns = list('observations' = TaskOutput_observations_get, 'rewards' = TaskOutput_rewards_get, 'terminated' = TaskOutput_terminated_get, 'truncated' = TaskOutput_truncated_get, 'final_observations' = TaskOutput_final_observations_get, 'final_valid' = TaskOutput_final_valid_get);
+  vaccessors = c('observations', 'rewards', 'terminated', 'truncated', 'final_observations', 'final_valid');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::sim::TaskOutput
+setMethod('delete', '_p_datamunge__sim__TaskOutput', function(obj) {delete_datamunge__sim__TaskOutput(obj)})
+# Start definition of copy functions & methods for datamunge::sim::TaskOutput
+CopyToR_datamunge__sim__TaskOutput = function(value, obj = new("datamunge::sim::TaskOutput"))
+{
+  obj@observations = value$observations;
+  obj@rewards = value$rewards;
+  obj@terminated = value$terminated;
+  obj@truncated = value$truncated;
+  obj@final_observations = value$final_observations;
+  obj@final_valid = value$final_valid;
+  obj;
+}
+
+
+
+CopyToC_datamunge__sim__TaskOutput = function(value, obj)
+{
+  obj$observations = value@observations;
+  obj$rewards = value@rewards;
+  obj$terminated = value@terminated;
+  obj$truncated = value@truncated;
+  obj$final_observations = value@final_observations;
+  obj$final_valid = value@final_valid;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::sim::TaskOutput
+setMethod('copyToR', '_p_datamunge__sim__TaskOutput', CopyToR_datamunge__sim__TaskOutput);
+setMethod('copyToC', "datamunge::sim::TaskOutput", CopyToC_datamunge__sim__TaskOutput);
+
+# End definition of copy methods for datamunge::sim::TaskOutput
+# End definition of copy functions & methods for datamunge::sim::TaskOutput
+# Start of TaskBatch_size
+
+`TaskBatch_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TaskBatch_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TaskBatch_size`, 'returnType') = 'integer'
+attr(`TaskBatch_size`, "inputTypes") = c('_p_datamunge__sim__TaskBatch')
+class(`TaskBatch_size`) = c("SWIGFunction", class('TaskBatch_size'))
+
+# Start of TaskBatch_observation_size
+
+`TaskBatch_observation_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TaskBatch_observation_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TaskBatch_observation_size`, 'returnType') = 'integer'
+attr(`TaskBatch_observation_size`, "inputTypes") = c('_p_datamunge__sim__TaskBatch')
+class(`TaskBatch_observation_size`) = c("SWIGFunction", class('TaskBatch_observation_size'))
+
+# Start of TaskBatch_action_size
+
+`TaskBatch_action_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TaskBatch_action_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TaskBatch_action_size`, 'returnType') = 'integer'
+attr(`TaskBatch_action_size`, "inputTypes") = c('_p_datamunge__sim__TaskBatch')
+class(`TaskBatch_action_size`) = c("SWIGFunction", class('TaskBatch_action_size'))
+
+# Start of TaskBatch_output
+
+`TaskBatch_output` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_TaskBatch_output', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskOutput", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TaskBatch_output`, 'returnType') = '_p_datamunge__sim__TaskOutput'
+attr(`TaskBatch_output`, "inputTypes") = c('_p_datamunge__sim__TaskBatch')
+class(`TaskBatch_output`) = c("SWIGFunction", class('TaskBatch_output'))
+
+# Start of TaskBatch_step
+
+`TaskBatch_step__SWIG_0` = function(self, actions, mask, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  actions = as.numeric(actions);
+  mask=as.integer(mask);
+  ;ans = .Call('R_swig_TaskBatch_step__SWIG_0', self, actions, mask, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskOutput", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TaskBatch_step__SWIG_0`, 'returnType') = '_p_datamunge__sim__TaskOutput'
+attr(`TaskBatch_step__SWIG_0`, "inputTypes") = c('_p_datamunge__sim__TaskBatch', '_p_std__vectorT_double_t', 'integer')
+class(`TaskBatch_step__SWIG_0`) = c("SWIGFunction", class('TaskBatch_step__SWIG_0'))
+
+# Start of TaskBatch_step
+
+`TaskBatch_step__SWIG_1` = function(self, actions, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  actions = as.numeric(actions);
+  ;ans = .Call('R_swig_TaskBatch_step__SWIG_1', self, actions, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskOutput", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TaskBatch_step__SWIG_1`, 'returnType') = '_p_datamunge__sim__TaskOutput'
+attr(`TaskBatch_step__SWIG_1`, "inputTypes") = c('_p_datamunge__sim__TaskBatch', '_p_std__vectorT_double_t')
+class(`TaskBatch_step__SWIG_1`) = c("SWIGFunction", class('TaskBatch_step__SWIG_1'))
+
+`TaskBatch_step` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__sim__TaskBatch') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) )) {
+      f <- TaskBatch_step__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__sim__TaskBatch') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) ) && (is.numeric(argv[[3]]))) {
+      f <- TaskBatch_step__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TaskBatch_step with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of TaskBatch_reset
+
+`TaskBatch_reset__SWIG_0` = function(self, mask, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  mask=as.integer(mask);
+  ;ans = .Call('R_swig_TaskBatch_reset__SWIG_0', self, mask, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskOutput", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TaskBatch_reset__SWIG_0`, 'returnType') = '_p_datamunge__sim__TaskOutput'
+attr(`TaskBatch_reset__SWIG_0`, "inputTypes") = c('_p_datamunge__sim__TaskBatch', 'integer')
+class(`TaskBatch_reset__SWIG_0`) = c("SWIGFunction", class('TaskBatch_reset__SWIG_0'))
+
+# Start of TaskBatch_reset
+
+`TaskBatch_reset__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_TaskBatch_reset__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskOutput", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TaskBatch_reset__SWIG_1`, 'returnType') = '_p_datamunge__sim__TaskOutput'
+attr(`TaskBatch_reset__SWIG_1`, "inputTypes") = c('_p_datamunge__sim__TaskBatch')
+class(`TaskBatch_reset__SWIG_1`) = c("SWIGFunction", class('TaskBatch_reset__SWIG_1'))
+
+`TaskBatch_reset` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__sim__TaskBatch') || is.null(argv[[1]]) ) {
+      f <- TaskBatch_reset__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__sim__TaskBatch') || is.null(argv[[1]]) ) && (is.numeric(argv[[2]]))) {
+      f <- TaskBatch_reset__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TaskBatch_reset with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of TaskBatch_seed
+
+`TaskBatch_seed` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_TaskBatch_seed', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`TaskBatch_seed`, 'returnType') = 'void'
+attr(`TaskBatch_seed`, "inputTypes") = c('_p_datamunge__sim__TaskBatch', 'integer')
+class(`TaskBatch_seed`) = c("SWIGFunction", class('TaskBatch_seed'))
+
+# Start of TaskBatch_create
+
+`TaskBatch_create__SWIG_0` = function(task, count, workers, seed, time_limit)
+{
+  task = enumToInteger(task, "_datamunge__sim__Task"); 
+  
+  if(length(task) > 1) {
+    warning("using only the first element of task");
+  };
+  
+  count = as.integer(count);
+  
+  if(length(count) > 1) {
+    warning("using only the first element of count");
+  };
+  
+  workers = as.integer(workers);
+  
+  if(length(workers) > 1) {
+    warning("using only the first element of workers");
+  };
+  
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  time_limit = as.integer(time_limit);
+  
+  if(length(time_limit) > 1) {
+    warning("using only the first element of time_limit");
+  };
+  
+  ;ans = .Call('R_swig_TaskBatch_create__SWIG_0', task, count, workers, seed, time_limit, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskBatch", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TaskBatch_create__SWIG_0`, 'returnType') = '_p_datamunge__sim__TaskBatch'
+attr(`TaskBatch_create__SWIG_0`, "inputTypes") = c('character', 'integer', 'integer', 'integer', 'integer')
+class(`TaskBatch_create__SWIG_0`) = c("SWIGFunction", class('TaskBatch_create__SWIG_0'))
+
+# Start of TaskBatch_create
+
+`TaskBatch_create__SWIG_1` = function(task, count, workers, seed)
+{
+  task = enumToInteger(task, "_datamunge__sim__Task"); 
+  
+  if(length(task) > 1) {
+    warning("using only the first element of task");
+  };
+  
+  count = as.integer(count);
+  
+  if(length(count) > 1) {
+    warning("using only the first element of count");
+  };
+  
+  workers = as.integer(workers);
+  
+  if(length(workers) > 1) {
+    warning("using only the first element of workers");
+  };
+  
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  ;ans = .Call('R_swig_TaskBatch_create__SWIG_1', task, count, workers, seed, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskBatch", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TaskBatch_create__SWIG_1`, 'returnType') = '_p_datamunge__sim__TaskBatch'
+attr(`TaskBatch_create__SWIG_1`, "inputTypes") = c('character', 'integer', 'integer', 'integer')
+class(`TaskBatch_create__SWIG_1`) = c("SWIGFunction", class('TaskBatch_create__SWIG_1'))
+
+# Start of TaskBatch_create
+
+`TaskBatch_create__SWIG_2` = function(task, count, workers)
+{
+  task = enumToInteger(task, "_datamunge__sim__Task"); 
+  
+  if(length(task) > 1) {
+    warning("using only the first element of task");
+  };
+  
+  count = as.integer(count);
+  
+  if(length(count) > 1) {
+    warning("using only the first element of count");
+  };
+  
+  workers = as.integer(workers);
+  
+  if(length(workers) > 1) {
+    warning("using only the first element of workers");
+  };
+  
+  ;ans = .Call('R_swig_TaskBatch_create__SWIG_2', task, count, workers, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskBatch", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TaskBatch_create__SWIG_2`, 'returnType') = '_p_datamunge__sim__TaskBatch'
+attr(`TaskBatch_create__SWIG_2`, "inputTypes") = c('character', 'integer', 'integer')
+class(`TaskBatch_create__SWIG_2`) = c("SWIGFunction", class('TaskBatch_create__SWIG_2'))
+
+# Start of TaskBatch_create
+
+`TaskBatch_create__SWIG_3` = function(task, count)
+{
+  task = enumToInteger(task, "_datamunge__sim__Task"); 
+  
+  if(length(task) > 1) {
+    warning("using only the first element of task");
+  };
+  
+  count = as.integer(count);
+  
+  if(length(count) > 1) {
+    warning("using only the first element of count");
+  };
+  
+  ;ans = .Call('R_swig_TaskBatch_create__SWIG_3', task, count, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__sim__TaskBatch", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TaskBatch_create__SWIG_3`, 'returnType') = '_p_datamunge__sim__TaskBatch'
+attr(`TaskBatch_create__SWIG_3`, "inputTypes") = c('character', 'integer')
+class(`TaskBatch_create__SWIG_3`) = c("SWIGFunction", class('TaskBatch_create__SWIG_3'))
+
+`TaskBatch_create` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 2) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- TaskBatch_create__SWIG_3; 
+    }
+  } else if (argc == 3) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- TaskBatch_create__SWIG_2; 
+    }
+  } else if (argc == 4) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 )) {
+      f <- TaskBatch_create__SWIG_1; 
+    }
+  } else if (argc == 5) {
+    if (( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 ) && ( (is.integer(argv[[5]]) || is.numeric(argv[[5]])) && length(argv[[5]]) == 1 )) {
+      f <- TaskBatch_create__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TaskBatch_create with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of delete_TaskBatch
+
+`delete_TaskBatch` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_TaskBatch', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_TaskBatch`, 'returnType') = 'void'
+attr(`delete_TaskBatch`, "inputTypes") = c('_p_datamunge__sim__TaskBatch')
+class(`delete_TaskBatch`) = c("SWIGFunction", class('delete_TaskBatch'))
+
+# Start of accessor method for datamunge::sim::TaskBatch
+setMethod('$', '_p_datamunge__sim__TaskBatch', function(x, name)
+
+{
+  accessorFuns = list('size' = TaskBatch_size, 'observation_size' = TaskBatch_observation_size, 'action_size' = TaskBatch_action_size, 'output' = TaskBatch_output, 'step' = TaskBatch_step, 'reset' = TaskBatch_reset, 'seed' = TaskBatch_seed);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::sim::TaskBatch
+setMethod('delete', '_p_datamunge__sim__TaskBatch', function(obj) {delete_datamunge__sim__TaskBatch(obj)})
+
+defineEnumeration("_datamunge__graphics__DataSeries__Kind",
  .values=c("Scatter" = .Call('R_swig_DataSeries_Kind_Scatter_get',FALSE, PACKAGE='datamunger'),
 "Line" = .Call('R_swig_DataSeries_Kind_Line_get',FALSE, PACKAGE='datamunger'),
 "Bar" = .Call('R_swig_DataSeries_Kind_Bar_get',FALSE, PACKAGE='datamunger'),
@@ -70876,5 +78752,9 @@ defineEnumeration("_datamunge__algebra__MonomialOrder",
  .values=c("Lex" = .Call('R_swig_MonomialOrder_Lex_get',FALSE, PACKAGE='datamunger'),
 "Grlex" = .Call('R_swig_MonomialOrder_Grlex_get',FALSE, PACKAGE='datamunger'),
 "Grevlex" = .Call('R_swig_MonomialOrder_Grevlex_get',FALSE, PACKAGE='datamunger')))
+
+defineEnumeration("_datamunge__sim__Task",
+ .values=c("InvertedPendulum" = .Call('R_swig_Task_InvertedPendulum_get',FALSE, PACKAGE='datamunger'),
+"Hopper" = .Call('R_swig_Task_Hopper_get',FALSE, PACKAGE='datamunger')))
 
 

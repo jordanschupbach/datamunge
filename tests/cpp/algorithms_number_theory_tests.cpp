@@ -161,3 +161,45 @@ TEST(BabyStepGiantStep, RejectsNonMembers) {
     EXPECT_TRUE(baby_step_giant_step(2, 4, 7).exists); // 2^2 = 4
     EXPECT_EQ(baby_step_giant_step(2, 1, 7).exponent, 0u); // 2^0 = 1
 }
+
+TEST(BabyStepGiantStep, TraceCountsAndSmallestExponent) {
+    using datamunge::algorithms::baby_step_giant_step_trace;
+    using datamunge::algorithms::element_order;
+    using datamunge::algorithms::primitive_root;
+    const auto t = baby_step_giant_step_trace(2, 17, 101, 0, 0, true);
+    ASSERT_TRUE(t.exists);
+    EXPECT_EQ(powmod(2, t.exponent, 101), 17u);
+    EXPECT_EQ(t.table_size, 10u);
+    EXPECT_EQ(t.baby.size(), 10u);
+    EXPECT_EQ(t.giant.size(), t.giant_steps);
+    EXPECT_EQ(t.exponent, t.giant_index * 10 + t.baby_index);
+    // Brute-force smallest exponent for comparison.
+    std::uint64_t x = 0, v = 1;
+    while (v != 17) { v = v * 2 % 101; ++x; }
+    EXPECT_EQ(t.exponent, x);
+    EXPECT_EQ(t.giant_steps, x / 10 + 1);
+
+    // Any table size works; worst case uses ceil(n/m) giant steps.
+    for (std::uint64_t m : {1u, 3u, 7u, 50u, 100u}) {
+        const auto u = baby_step_giant_step_trace(2, 17, 101, 0, m);
+        EXPECT_TRUE(u.exists);
+        EXPECT_EQ(u.exponent, x);
+    }
+    const auto none = baby_step_giant_step_trace(2, 3, 7);
+    EXPECT_FALSE(none.exists);
+    EXPECT_EQ(none.giant_steps, 2u);  // n = 6, m = 3
+
+    EXPECT_EQ(element_order(2, 7), 3u);
+    EXPECT_EQ(element_order(3, 7), 6u);
+    EXPECT_EQ(primitive_root(7), 3u);
+    EXPECT_EQ(primitive_root(101), 2u);
+    const std::uint64_t p = 1000003, g = primitive_root(p);
+    EXPECT_EQ(element_order(g, p), p - 1);
+    // Searching in the subgroup of order q: g^((p-1)/q) has order q.
+    const std::uint64_t q = 3, gq = powmod(g, (p - 1) / q, p);
+    EXPECT_EQ(element_order(gq, p), q);
+    const auto sub = baby_step_giant_step_trace(gq, powmod(gq, 2, p), p, q);
+    EXPECT_TRUE(sub.exists);
+    EXPECT_EQ(sub.exponent, 2u);
+    EXPECT_THROW(baby_step_giant_step_trace(0, 1, 7), std::invalid_argument);
+}

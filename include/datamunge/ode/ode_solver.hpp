@@ -71,6 +71,10 @@ class ODESolver {
   [[nodiscard]] ODESolution solve_builtin(const std::string& system, const std::vector<double>& params,
                                           const std::vector<double>& y0, double t_start, double t_end) const;
 
+  /// @brief The options this ODESolver was configured with.
+  /// @return The stored options.
+  [[nodiscard]] const ODEOptions& options() const noexcept { return options_; }
+
  private:
   ODEOptions options_;
 };

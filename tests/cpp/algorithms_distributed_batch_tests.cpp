@@ -85,3 +85,38 @@ TEST(ClockSync, CristianAndBerkeley) {
     auto                r2          = berkeley_sync(withOutlier, 50.0, 0);
     EXPECT_DOUBLE_EQ(r2.synchronized_time, 100.0);  // 500 excluded -> mean of {100,101,99}
 }
+
+TEST(ClockSync, FaultTolerantWindowAndDriftLaw) {
+    // Largest group within 2 s: {10, 11, 11.5}; the two outliers are rejected but still adjusted.
+    const auto r = berkeley_sync_window({10.0, 30.0, 11.0, 11.5, -40.0}, 2.0);
+    EXPECT_NEAR(r.synchronized_time, 32.5 / 3.0, 1e-12);
+    EXPECT_EQ(r.included, (std::vector<int>{1, 0, 1, 1, 0}));
+    EXPECT_NEAR(r.adjustments[1], 32.5 / 3.0 - 30.0, 1e-12);
+    EXPECT_NEAR(berkeley_sync_window({1.0, 3.0}, 0.0).synchronized_time, 2.0, 1e-12);
+    EXPECT_DOUBLE_EQ(crystal_drift_ppm(25.0), 0.0);
+    EXPECT_NEAR(crystal_drift_ppm(15.0), -3.4, 1e-12);
+    EXPECT_NEAR(crystal_drift_ppm(35.0), -3.4, 1e-12);
+}
+
+TEST(ClockSync, NetworkSkewStaysWithinTheBound) {
+    // Four good clocks with different steady drifts and one broken clock 200 ppm fast.
+    const std::vector<std::vector<double>> drift = {
+        std::vector<double>(10, -1.0), std::vector<double>(10, 3.0), std::vector<double>(10, -4.0),
+        std::vector<double>(10, 0.5), std::vector<double>(10, 200.0)};
+    BerkeleyNetworkOptions o;
+    o.round_interval = 3600.0;
+    o.window         = 0.2;
+    const auto t = simulate_berkeley_network(drift, o);
+    ASSERT_EQ(t.time_days.size(), 240u);
+    const double eps2 = o.max_delay - o.min_delay;  // spread right after a round
+    const double grow = (3.0 - (-4.0)) * 1e-6 * o.round_interval;
+    for (std::size_t k = 0; k < t.time_days.size(); ++k) {
+        EXPECT_EQ(t.rejected[k], 1u) << k;  // the broken clock
+        EXPECT_LE(t.skew_after[k], eps2 + 1e-12);
+        if (k > 0) EXPECT_LE(t.skew_before[k], eps2 + grow + 1e-12);
+    }
+    // Without synchronization the clocks drift apart linearly.
+    o.synchronize = false;
+    const auto free = simulate_berkeley_network(drift, o);
+    EXPECT_NEAR(free.before[1].back() - free.before[2].back(), 7e-6 * 10 * 86400.0, 1e-9);
+}

@@ -43,7 +43,7 @@ day \(t\), given all fourteen days of symptoms?"
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Forward and backward variables
@@ -184,7 +184,7 @@ Viterbi decode for comparison.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

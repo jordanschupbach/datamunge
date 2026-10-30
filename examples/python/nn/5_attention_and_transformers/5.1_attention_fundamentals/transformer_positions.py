@@ -1,4 +1,5 @@
 # Native Python NN example. Absolute, rotary, ALiBi and T5 positions with full derivatives.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/transformer_positions.py
 """Five position mechanisms, cache invariants and 200 independent derivative probes."""
 import math
 from pathlib import Path

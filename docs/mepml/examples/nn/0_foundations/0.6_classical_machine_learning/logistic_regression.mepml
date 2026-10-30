@@ -1,0 +1,150 @@
+//? Title: Logistic Regression: Stable Likelihoods and Probabilities
+//? Subtitle: Fit logits, then distinguish calibration from classification
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Binary observations need probabilities rather than unrestricted linear predictions. We fit a
+small frequency table with an exact logistic optimum, inspect extreme-logit losses and check
+the gradient at zero. A multinomial example connects the binary score to softmax without
+claiming that a small training loss alone establishes calibration.
+)
+\toc
+
+> The method
+
+With logit z=xᵀw, probability p=sigmoid(z), the Bernoulli negative log likelihood is
+
+$$
+\ell(z,y)=\max(z,0)-yz+\log(1+e^{-|z|}),\qquad \partial_z\ell=\sigma(z)-y.
+$$
+\alttext(The stable binary loss avoids exponentiating a large positive logit; its score is predicted probability minus the observed binary label.)
+
+The formula follows from -y log p-(1-y)log(1-p), rearranged to avoid overflow. The implementation
+uses a derivative at zero consistent with sigmoid(z)-y, avoiding a spurious max/abs kink.
+For grouped observations with common features, the optimum probability is the group's success
+fraction whenever the logits can represent those fractions. Complete separation can send the
+unpenalised optimum to infinite coefficients; finite iterations do not prove a finite MLE.
+Classification thresholds encode a decision rule, while calibration compares probabilities
+with event frequencies. A dense gradient step costs O(Np).
+
+The concept diagram has a retained TikZ source in `diagrams/logistic_regression_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/logistic_regression_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/logistic_regression_concept.tikz > build/logistic_regression_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/logistic_regression_concept.svg build/logistic_regression_concept.dvi > build/logistic_regression_concept.render.log 2>&1
+printf 'Rendered build/logistic_regression_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/logistic_regression_concept.svg from local TikZ source.
+// \image(figures/logistic_regression_concept.svg)
+// result_end
+\caption(Fit logits, then distinguish calibration from classification)
+\alttext(Linear logit; z=x^Tw Then Stable Bernoulli NLL; gradient p-y Then Probabilities + decisions; calibration needs evaluation.)
+
+> Simple examples
+
+At x=-1 one of three labels is positive; at x=1 two of three are positive. Intercept zero and slope log(2) give the exact fitted probabilities 1/3 and 2/3.
+
+```{cpp, results="markdown", file="figures/logistic_regression_groups.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto x = n::tensor({-1, -1, -1, 1, 1, 1}, {6, 1}, dtype),
+             X = n::concat({n::ones_like(x), x}, 1),
+             y = n::tensor({0, 0, 1, 0, 1, 1}, {6, 1}, dtype);
+  auto w = n::zeros({2, 1}, dtype).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer({w}, .05, config);
+  for (int i = 0; i < 500; ++i)
+    optimizer.minimize(n::sigmoid_cross_entropy(n::matmul(X, w), y));
+  const auto q = n::linspace(-2, 2, 81, dtype).reshape({81, 1}),
+             p = n::sigmoid(n::matmul(n::concat({n::ones_like(q), q}, 1), w));
+  if (std::abs(w.at({0, 0})) > 1e-7 || std::abs(w.at({1, 0}) - std::log(2.)) > 1e-7)
+    return 1;
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(q.to_vector<double>(), p.to_vector<double>(), "fitted probability")
+      .points({-1, 1}, {1. / 3, 2. / 3}, "group rates")
+      .title("Logistic probabilities match observed group rates")
+      .x_label("x")
+      .y_label("P(y=1)")
+      .y_limits(0, 1.1);
+  std::filesystem::create_directories("build");
+  plot.size(850, 420).save_svg("build/logistic_regression_groups.svg");
+  std::print("Intercept {:.9f}; slope {:.9f}; expected slope {:.9f}.\n", w.at({0, 0}),
+             w.at({1, 0}), std::log(2.));
+}
+```
+// result_begin: markdown
+Intercept 0.000000000; slope 0.693147181; expected slope 0.693147181.
+\image(figures/logistic_regression_groups.svg)
+// result_end
+\caption(Two empirical frequencies determine the intercept and slope of this tiny fit.)
+\alttext(Two empirical frequencies determine the intercept and slope of this tiny fit.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  auto z =
+      n::tensor({-1000, -1000, 0, 0, 1000, 1000}, {6}, n::DType::Float64).requires_grad_();
+  const auto y = n::tensor({0, 1, 0, 1, 0, 1}, {6}, n::DType::Float64),
+             loss = n::sigmoid_cross_entropy(z, y, n::Reduction::None),
+             g = n::grad(n::sum(loss), {z})[0];
+  const std::vector<double> expected{0, -1, .5, -.5, 1, 0};
+  for (int i = 0; i < 6; ++i)
+    if (!std::isfinite(loss.at({i})) || std::abs(g.at({i}) - expected[i]) > 1e-12)
+      return 1;
+  dm::dstruct::DataFrame t;
+  t.add_column("logit", z.to_vector<double>());
+  t.add_column("label", y.to_vector<double>());
+  t.add_column("NLL", loss.to_vector<double>());
+  t.add_column("score", g.to_vector<double>());
+  std::print("{}\n", t.to_md(8));
+}
+```
+// result_begin: markdown
+| logit | label | NLL | score |
+| ---: | ---: | ---: | ---: |
+| -1000 | 0 | 0.00000000 | 0.0 |
+| -1000 | 1 | 1000.00000000 | -1.0 |
+| 0 | 0 | 0.69314718 | 0.5 |
+| 0 | 1 | 0.69314718 | -0.5 |
+| 1000 | 0 | 1000.00000000 | 1.0 |
+| 1000 | 1 | 0.00000000 | 0.0 |
+// result_end
+
+>> Multinomial normalization
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  const auto z = n::tensor({0, std::log(2.), std::log(3.)}, {1, 3}, n::DType::Float64),
+             p = n::softmax(z, 1);
+  if (std::abs(n::sum(p).item() - 1) > 1e-12)
+    return 1;
+  std::print("Three-class probabilities: {}.\n", p.to_vector<double>());
+}
+```
+// result_begin: markdown
+Three-class probabilities: [0.16666666666666666, 0.3333333333333333, 0.5].
+// result_end
+
+
+> Conclusion
+
+The fitted grouped frequencies agree with the exact finite optimum, and extreme logits retain
+finite losses and correct scores. Probability normalization is necessary but does not establish
+calibration or decision utility on new observations.
+
+> References
+
+- [TensorFlow sigmoid cross entropy with logits: stable formulation](https://www.tensorflow.org/api_docs/python/tf/nn/sigmoid_cross_entropy_with_logits).

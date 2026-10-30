@@ -4,6 +4,7 @@
 #include <datamunge/dstruct/dstruct.hpp>
 #include <datamunge/stats/stats.hpp>
 
+#include <algorithm>
 #include <cmath>
 
 using datamunge::dstruct::DataFrame;
@@ -161,4 +162,84 @@ TEST(LDA, CategoricalPredictorAndUnseenLevelHandling) {
     bad.add_column("bill_depth_mm", std::vector<double>{18.0});
     bad.add_column("island", std::vector<std::string>{"Atlantis"});
     EXPECT_THROW((void)model.predict(bad), std::runtime_error);
+}
+
+namespace {
+
+// True when (x, y) is inside or on the convex polygon (either winding).
+bool inside_convex(const std::vector<double>& xs, const std::vector<double>& ys, double x, double y) {
+    bool pos = false, neg = false;
+    for (std::size_t i = 0; i < xs.size(); ++i) {
+        const std::size_t j = (i + 1) % xs.size();
+        const double cross = (xs[j] - xs[i]) * (y - ys[i]) - (ys[j] - ys[i]) * (x - xs[i]);
+        if (cross > 1e-9) pos = true;
+        if (cross < -1e-9) neg = true;
+    }
+    return !(pos && neg);
+}
+
+// Region polygons of a decision-region plot, in class order.
+std::vector<const datamunge::graphics::DataSeries*> regions_of(const datamunge::graphics::RPlot& plot) {
+    std::vector<const datamunge::graphics::DataSeries*> out;
+    for (const auto& s : plot.series())
+        if (s.kind == datamunge::graphics::DataSeries::Kind::Polygon) out.push_back(&s);
+    return out;
+}
+
+} // namespace
+
+TEST(LDA, FramesMatchTheFittedModel) {
+    LDA model(datamunge::datasets::iris(), "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");
+    const auto means = model.group_means_frame();
+    EXPECT_EQ(means.columns(), (std::vector<std::string>{"class", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"}));
+    EXPECT_DOUBLE_EQ(means.double_at("Petal.Length", 2), model.group_means()[2][2]);
+
+    const auto coef = model.coefficients_frame();
+    EXPECT_EQ(coef.columns(), (std::vector<std::string>{"predictor", "LD1", "LD2"}));
+    EXPECT_DOUBLE_EQ(coef.double_at("LD2", 3), model.scaling()(3, 1));
+
+    const auto confusion = model.confusion_frame();
+    const auto matrix = model.confusion_matrix();
+    EXPECT_EQ(confusion.columns(), (std::vector<std::string>{"actual", "setosa", "versicolor", "virginica"}));
+    EXPECT_DOUBLE_EQ(confusion.double_at("virginica", 1), matrix(1, 2));
+
+    const auto md = model.to_md();
+    EXPECT_NE(md.find("| class | Sepal.Length |"), std::string::npos);
+    EXPECT_NE(md.find("| predictor | LD1 | LD2 |"), std::string::npos);
+    EXPECT_NE(md.find("| 0.9912 | 0.0088 |"), std::string::npos);
+}
+
+TEST(LDA, DiscriminantRegionsAgreeWithPredictions) {
+    const auto iris = datamunge::datasets::iris();
+    LDA model(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");
+    const auto plot = model.plot_discriminants();
+    const auto regions = regions_of(plot);
+    ASSERT_EQ(regions.size(), 3u);
+    const auto detail = model.predict_detail(iris);
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        const auto& z = detail.discriminants[i];
+        const auto c = static_cast<std::size_t>(
+            std::find(model.classes().begin(), model.classes().end(), detail.class_label[i]) - model.classes().begin());
+        EXPECT_TRUE(inside_convex(regions[c]->x, regions[c]->y, z[0], z[1])) << "row " << i;
+    }
+    EXPECT_TRUE(regions_of(model.plot_discriminants(false)).empty());
+}
+
+TEST(LDA, PredictorRegionsAgreeWithPredictions) {
+    const auto iris = datamunge::datasets::iris();
+    LDA model(iris, "Species ~ Petal.Length + Petal.Width");
+    const auto plot = model.plot_decision_regions();
+    const auto regions = regions_of(plot);
+    ASSERT_EQ(regions.size(), 3u);
+    const auto predicted = model.predict(iris);
+    const auto& length = iris.numeric_column("Petal.Length").values();
+    const auto& width = iris.numeric_column("Petal.Width").values();
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        const auto c = static_cast<std::size_t>(
+            std::find(model.classes().begin(), model.classes().end(), predicted[i]) - model.classes().begin());
+        EXPECT_TRUE(inside_convex(regions[c]->x, regions[c]->y, length[i], width[i])) << "row " << i;
+    }
+
+    LDA four(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");
+    EXPECT_THROW((void)four.plot_decision_regions(), std::logic_error);
 }

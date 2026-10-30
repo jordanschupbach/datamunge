@@ -46,7 +46,7 @@ so the whole decomposition is \(O(V+E)\) \-\- the same bound as Kosaraju, in a s
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -108,7 +108,7 @@ We decompose the same directed graph Kosaraju handled and confirm the two algori
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

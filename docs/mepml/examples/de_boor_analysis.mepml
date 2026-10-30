@@ -1,0 +1,496 @@
+//? Title: De Boor's Algorithm: From a Control Polygon to a B-Spline Point
+//? Subtitle: Interpolation triangles, nonuniform knots, continuity, local control and exact endpoint evaluation
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a knot sequence and a polygon of control points, we want to evaluate a smooth
+parametric curve without expanding its pieces into powers or repeatedly computing
+basis functions that contribute nothing. De Boor's algorithm reduces a small active
+control net through knot-weighted linear interpolation. We derive that reduction from
+the B-spline basis recursion, calculate two quadratic examples by hand, and expose
+every intermediate point and weight through datamunge's DeBoorSpline. Repeated knots
+show the difference between a corner and a jump. Generated Bezier families check the
+curve against a closed form and verify the quadratic interpolation count. A control-point
+perturbation demonstrates exact local support, and the original six-control cubic
+provides a larger construction. Both endpoints are evaluated directly, including on
+parameter domains much smaller than an arbitrary fixed epsilon.
+)
+
+\toc
+
+> The method
+
+>> A parametric curve, rather than a fit through observations
+
+Choose degree \(p\geq0\), \(N\geq p+1\) planar controls \(P_i\), and \(N+p+1\)
+nondecreasing knots \(u_i\). The curve is
+
+$$
+C(t)=\sum_{i=0}^{N-1}P_i B_{i,p}(t),\qquad t\in[u_p,u_N].
+$$
+\alttext(A B-spline curve is a weighted sum of N planar control points, with degree-p B-spline basis weights, evaluated on the base interval from knot p to knot N.)
+
+The parameter \(t\) is not generally the curve's horizontal coordinate or its arc
+length. Interior controls guide the curve; they are not interpolation targets.
+Fitting coefficients from noisy measurements is a separate problem, covered by the
+P-spline report. No empirical dataset is needed here: prescribed control nets let us
+check the evaluator against exact answers.
+
+On a nonempty knot span \([u_k,u_{k+1})\), only the \(p+1\) basis functions with
+indices \(k-p,\ldots,k\) can contribute. Normalized B-splines are nonnegative and
+sum to one on the base interval. This representation therefore gives both local
+control and a convex-hull constraint.
+
+>> Deriving the interpolation triangle
+
+The degree-zero basis indicates a knot interval. Higher degrees obey the recursion
+
+$$
+B_{i,q}(t)=\frac{t-u_i}{u_{i+q}-u_i}B_{i,q-1}(t)
+ +\frac{u_{i+q+1}-t}{u_{i+q+1}-u_{i+1}}B_{i+1,q-1}(t).
+$$
+\alttext(A degree-q basis function is a knot-weighted combination of two neighbouring degree-q-minus-one functions. A term with a zero denominator contributes zero.)
+
+Substitute this into a sum \(\sum_i Q_i B_{i,q}(t)\) and collect the coefficient
+of each \(B_{i,q-1}\). It becomes
+\((1-\alpha_i)Q_{i-1}+\alpha_i Q_i\), with
+\(\alpha_i=(t-u_i)/(u_{i+q}-u_i)\). Repeating this degree reduction leaves one
+nonzero degree-zero basis value, equal to one on the chosen span. Thus the final
+coefficient is the curve point.
+
+In local work-vector indices, initialise \(d_j^{(0)}=P_{k-p+j}\) for
+\(j=0,\ldots,p\). At round \(r=1,\ldots,p\), put \(i=k-p+j\) and compute
+
+$$
+\alpha_j^{(r)}=\frac{t-u_i}{u_{i+p-r+1}-u_i},\qquad
+ d_j^{(r)}=(1-\alpha_j^{(r)})d_{j-1}^{(r-1)}+\alpha_j^{(r)}d_j^{(r-1)},
+ \quad j=r,\ldots,p.
+$$
+\alttext(Each round blends adjacent points using a weight determined by two knots. The knot interval shortens as the round number increases. The final surviving point is d p at round p.)
+
+The answer is \(d_p^{(p)}\). Updating \(j\) from \(p\) *down* to \(r\) lets the
+same work vector hold successive rounds: the left parent still belongs to the old
+round when it is read. An ascending update would consume a modified parent and
+usually give a different answer. Trace tables retain the actual descending update order.
+The method follows [de Boor's original work|https://doi.org/10.1016/0021-9045(72)90080-9].
+
+Each active denominator spans the selected nonempty interval, so it is positive even
+when other knots coincide. On that span all weights lie in \([0,1]\). The curve
+therefore stays inside the convex hull of the active controls and reproduces a constant
+control net. For an affine map \(F(P)=AP+b\), interpolation commutes with \(F\):
+transforming the controls transforms the curve by exactly the same map in exact arithmetic.
+
+>> Endpoints, repeated knots and what stability means
+
+The library selects the right-hand span at an interior knot. At the final domain endpoint
+it evaluates the last span's left limit directly. Repeating each boundary knot \(p+1\)
+times makes the endpoints equal to the first and last controls. Unclamped splines need
+not interpolate either control. There is no extrapolation in `DeBoorSpline`.
+
+An interior knot of multiplicity \(m\leq p\) guarantees at least \(C^{p-m}\)
+continuity; special controls can make it smoother. Multiplicity \(p+1\) allows a jump.
+A curve with such knots should not be drawn as one polyline across all sampled values.
+`plot_curve()` draws separate polynomial spans, including their individual left-limit
+endpoints, so no line is invented across a discontinuity.
+
+For fixed knots and parameter, write \(w_i=B_{i,p}(t)\). If each control is perturbed
+by at most \(\varepsilon\) in a chosen norm, then
+
+$$
+\|\Delta C(t)\|=\left\|\sum_iw_i\Delta P_i\right\|
+ \leq\sum_iw_i\|\Delta P_i\|\leq\varepsilon.
+$$
+\alttext(Nonnegative weights summing to one bound the curve perturbation by the largest control-point perturbation.)
+
+This is an absolute conditioning statement with respect to controls. It does not promise
+small relative error when a coordinate nearly cancels to zero, or insensitivity to
+perturbing very close knots. Floating-point evaluation also rounds the knot ratios and
+interpolations. The implementation uses bounded blends and scales a knot ratio if its
+full interval width would overflow; it cannot recover distinctions already lost when
+knots are rounded to the same floating-point number.
+
+>> Work and library interfaces
+
+There are \(p+(p-1)+\cdots+1=p(p+1)/2\) point interpolations per evaluation.
+A validated `DeBoorSpline` locates the span by binary search, then evaluates in
+\(O(\log N+p^2)\) work with \(O(p)\) scratch. Construction validates and owns the
+inputs in \(O(N+p)\). A full trace stores \((p+1)(p+2)/2\) initial/intermediate
+points and takes \(O(p^2)\) space. The compatibility function `de_boor()` constructs
+a validated object for every call, so repeated work should use `DeBoorSpline`.
+
+Inputs must be finite, knots must have the stated count and order, multiplicity must
+not exceed \(p+1\), and both domain-end spans must be nonempty. Out-of-domain parameters
+and sample counts below two are rejected. `sample()` includes both exact endpoints
+and is uniform in parameter, not arc length. No fixed epsilon is subtracted from the
+right endpoint; on a domain such as \([0,10^{-15}]\), subtracting \(10^{-12}\) would
+move the last sample outside the domain altogether.
+
+> Simple worked examples
+
+>> A quadratic Bezier: all weights equal one quarter
+
+Use degree two, controls \((0,0),(2,4),(4,0)\), and knots
+\((0,0,0,1,1,1)\). There is one polynomial piece, a quadratic Bezier curve.
+At \(t=1/4\), the first round produces
+
+$$
+ d_1^{(1)}=(1/2,1),\qquad d_2^{(1)}=(5/2,3),\qquad
+ C(1/4)=\tfrac34(1/2,1)+\tfrac14(5/2,3)=(1,3/2).
+$$
+\alttext(The first round gives one half, one and five halves, three. Blending these again with right weight one quarter gives the curve point one, three halves.)
+
+All three interpolation weights are one quarter, so de Boor reduces to de Casteljau.
+The trace includes the three original controls, the two first-round points and the final
+point. Initial rows have undefined weights, shown as NaN rather than as artificial zeros.
+
+```{cpp, results="markdown", file="figures/de_boor_quadratic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::geometry::DeBoorSpline spline(2,{0,0,0,1,1,1},{{0,0},{2,4},{4,0}});
+  const auto trace=spline.trace(.25);
+  auto construction=trace.plot(), curve=spline.plot_curve();
+  construction.title("Three controls, two rounds, one point").y_limits(-.4,6.5);
+  curve.title("A single quadratic Bezier piece").y_limits(-.4,6.5)
+    .points({trace.point.x},{trace.point.y},"t = 1/4",{220,90,35},6);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(construction).add(curve);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/de_boor_quadratic.svg");
+  std::print("{}\n",trace.table().select({"round","local","alpha","x","y"}).to_md(6));
+}
+```
+// result_begin: markdown
+| round | local | alpha | x | y |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | nan | 0.0 | 0.0 |
+| 0 | 1 | nan | 2.0 | 4.0 |
+| 0 | 2 | nan | 4.0 | 0.0 |
+| 1 | 2 | 0.25 | 2.5 | 3.0 |
+| 1 | 1 | 0.25 | 0.5 | 1.0 |
+| 2 | 2 | 0.25 | 1.0 | 1.5 |
+
+\image(figures/de_boor_quadratic.svg)
+// result_end
+\caption(The exact quadratic construction at one quarter. The final point lies on the first-round segment and inside the active control triangle. Coordinate aspect ratios are illustrative, not a distance scale.)
+\alttext(Left: a grey triangle joins the three controls, an orange segment joins the first-round points, and a green point marks the answer at one, one and a half. Right: the same point is marked on the quadratic curve below the control polygon.)
+
+>> Nonuniform knots: the weights depend on the round and index
+
+Add control \((6,2)\) and use knots \((0,0,0,1,3,3,3)\). At \(t=1/2\), span
+\(k=2\) still uses only the first three controls, but the first-round weights now differ:
+
+$$
+\alpha_1^{(1)}=1/2,\quad \alpha_2^{(1)}=1/6,\quad
+ d_1^{(1)}=(1,2),\quad d_2^{(1)}=(7/3,10/3),\quad
+\alpha_2^{(2)}=1/2,\quad C(1/2)=(5/3,8/3).
+$$
+\alttext(The first two weights are one half and one sixth, producing points one, two and seven thirds, ten thirds. The final weight is one half, giving five thirds, eight thirds.)
+
+Using the parameter itself as every interpolation weight would be wrong on this knot
+sequence. The table shows the actual lower and upper knots used at each step.
+
+```{cpp, results="markdown", file="figures/de_boor_nonuniform.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::geometry::DeBoorSpline spline(2,{0,0,0,1,3,3,3},{{0,0},{2,4},{4,0},{6,2}});
+  const auto trace=spline.trace(.5);
+  auto construction=trace.plot(), curve=spline.plot_curve();
+  construction.title("Knot weights: 1/6, 1/2, then 1/2").y_limits(-.4,6.5);
+  curve.title("Two spans of unequal parameter width").y_limits(-.4,6.5)
+    .points({trace.point.x},{trace.point.y},"t = 1/2",{220,90,35},6);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(construction).add(curve);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/de_boor_nonuniform.svg");
+  std::print("{}\n",trace.table().to_md(6));
+}
+```
+// result_begin: markdown
+| round | local | control | left_knot | right_knot | alpha | x | y |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | nan | nan | nan | 0.000000 | 0.000000 |
+| 0 | 1 | 1 | nan | nan | nan | 2.000000 | 4.000000 |
+| 0 | 2 | 2 | nan | nan | nan | 4.000000 | 0.000000 |
+| 1 | 2 | 2 | 0 | 3 | 0.166667 | 2.333333 | 3.333333 |
+| 1 | 1 | 1 | 0 | 1 | 0.500000 | 1.000000 | 2.000000 |
+| 2 | 2 | 2 | 0 | 1 | 0.500000 | 1.666667 | 2.666667 |
+
+\image(figures/de_boor_nonuniform.svg)
+// result_end
+\caption(A nonuniform quadratic construction. Control index three is inactive at this parameter. Descending update order explains why local index two is listed before local index one in the first round.)
+\alttext(Left: interpolation points use unequal first-round knot weights, with the final point at five thirds, eight thirds. Right: the two-piece curve approaches the fourth control after passing its interior knot; the evaluated point is highlighted.)
+
+>> Repeated knots: a corner and a discontinuity
+
+For the quadratic with controls \((0,0),(1,2),(2,0),(3,2),(4,0)\) and knots
+\((0,0,0,1,1,2,2,2)\), the double interior knot at one allows a corner. Both
+pieces meet at \(P_2=(2,0)\), but their one-sided parameter derivatives are
+\(2(P_2-P_1)=(2,-4)\) and \(2(P_3-P_2)=(2,4)\).
+
+A degree-one spline with controls \((0,0),(1,1),(2,3),(3,2)\) and knots
+\((0,0,1,1,2,2)\) has full multiplicity at one. Its two straight pieces need not meet:
+
+$$
+ C(1^-)=(1,1),\qquad C(1) = C(1^+)=(2,3).
+$$
+\alttext(The discontinuous linear curve approaches one, one from the left and takes the right-hand value two, three at the repeated knot.)
+
+`nextafter(1,0)` and `nextafter(1,2)` select the adjacent representable parameters.
+The displayed rounding makes both look like one; their distinct span indices reveal
+the side convention. The curve helper leaves the jump visibly disconnected.
+
+```{cpp, results="markdown", file="figures/de_boor_repeated.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::geometry::DeBoorSpline corner(2,{0,0,0,1,1,2,2,2},{{0,0},{1,2},{2,0},{3,2},{4,0}});
+  const dm::geometry::DeBoorSpline jump(1,{0,0,1,1,2,2},{{0,0},{1,1},{2,3},{3,2}});
+  auto continuous=corner.plot_curve(), discontinuous=jump.plot_curve();
+  continuous.title("Double quadratic knot: a corner").y_limits(-.3,4)
+    .points({2},{0},"t = 1",{220,90,35},6);
+  discontinuous.title("Double linear knot: a jump").y_limits(-.3,5)
+    .points({jump.evaluate(1).x},{jump.evaluate(1).y},"Right value",{220,90,35},6);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(continuous).add(discontinuous);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/de_boor_repeated.svg");
+  std::print("{}\n",jump.sample_table({std::nextafter(1.0,0.0),1,std::nextafter(1.0,2.0)}).to_md(9));
+}
+```
+// result_begin: markdown
+| t | span | first_control | last_control | x | y |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 0 | 1 | 1 | 1 |
+| 1 | 3 | 2 | 3 | 2 | 3 |
+| 1 | 3 | 2 | 3 | 2 | 3 |
+
+\image(figures/de_boor_repeated.svg)
+// result_end
+\caption(The same multiplicity has different consequences at different degrees. Grey lines are control polygons; the blue spline pieces have no connecting segment across the jump.)
+\alttext(Left: two quadratic arches meet at a sharp corner at two, zero. Right: one blue line ends at one, one, and another starts at two, three, with a gap between them. Only the grey control polygon spans that gap.)
+
+> Checking the theory
+
+>> Closed-form Bezier families and exact operation counts
+
+For degree \(p\geq1\), take \(P_j=(j/p,(j/p)^2)\), with zero and one each repeated
+\(p+1\) times. The weights are binomial probabilities for \(J\sim\mathrm{Binomial}(p,t)\).
+Using \(E[J]=pt\) and \(E[J^2]=p^2t^2+pt(1-t)\) gives the exact curve
+
+$$
+ C_p(t)=\left(t,t^2+\frac{t(1-t)}p\right),\qquad
+ \#\text{point interpolations}=\frac{p(p+1)}2.
+$$
+\alttext(The generated Bezier family has horizontal coordinate t and vertical coordinate t squared plus t times one minus t divided by p. Evaluation uses p times p plus one over two point blends.)
+
+The curve is not exactly the parabola through the controls; for finite degree the
+second coordinate lies above it in the interior. We check degrees one through twelve
+at 101 parameters, and count actual recorded updates after the initial controls.
+For every degree we also scale the knot domain to [0, 1e-15], sample three points,
+and check the last sample against the exact endpoint control.
+The count measures the recurrence, not validation, span-search time or wall-clock speed.
+
+```{cpp, results="markdown", file="figures/de_boor_theory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto grid=dm::seql(0,1,101);
+  std::vector<double> degrees,updates,exact_counts,endpoint_errors;
+  std::vector<std::string> errors;
+  auto family=dm::graphics::RPlot::create(), cost=dm::graphics::RPlot::create();
+  const std::vector<dm::RGB> colours{{37,99,235},{220,90,35},{25,145,105},{150,70,180}};
+  std::size_t colour=0;
+  for (int p=1;p<=12;++p) {
+    std::vector<double> knots(p+1,0); knots.insert(knots.end(),p+1,1);
+    std::vector<dm::geometry::Point2D> control;
+    for (int j=0;j<=p;++j) {const double x=static_cast<double>(j)/p; control.push_back({x,x*x});}
+    const dm::geometry::DeBoorSpline spline(p,knots,control);
+    const auto samples=spline.sample_table(grid.values());
+    const dm::Vector<> actual=samples.numeric_column("y").values();
+    const auto error=dm::abs(actual-(grid*grid+grid*(1-grid)/p));
+    degrees.push_back(p); updates.push_back(spline.trace(.375).steps.size()-(p+1));
+    exact_counts.push_back(p*(p+1)/2); errors.push_back(std::format("{:.3e}",*std::max_element(error.begin(),error.end())));
+    auto tiny_knots=knots; for (auto& u : tiny_knots) u*=1e-15;
+    const auto tiny=dm::geometry::DeBoorSpline(p,tiny_knots,control).sample(3);
+    endpoint_errors.push_back(dm::geometry::distance(tiny.back(),control.back()));
+    if (p==1 || p==2 || p==4 || p==12) family.lines(grid.values(),actual.values(),std::format("p = {}",p),colours[colour++]);
+  }
+  family.title("A closed-form family of Bezier curves").x_label("t = C_x(t)").y_label("C_y(t)").y_limits(0,1.7);
+  cost.lines(degrees,exact_counts,"p(p+1)/2",{80,80,80},3).points(degrees,updates,"Trace count",{37,99,235},4)
+    .title("Quadratic work in the spline degree").x_label("Degree p").y_label("Point interpolations").y_limits(0,105);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(family).add(cost);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/de_boor_theory.svg");
+  dm::dstruct::DataFrame checks; checks.add_column("degree",degrees); checks.add_column("updates",updates);
+  checks.add_column("exact_updates",exact_counts); checks.add_column("max_abs_y_error",errors);
+  checks.add_column("tiny_endpoint_error",endpoint_errors);
+  std::print("{}\n",checks.to_md(3));
+}
+```
+// result_begin: markdown
+| degree | updates | exact_updates | max_abs_y_error | tiny_endpoint_error |
+| ---: | ---: | ---: | :--- | ---: |
+| 1 | 1 | 1 | 1.110e-16 | 0 |
+| 2 | 3 | 3 | 2.220e-16 | 0 |
+| 3 | 6 | 6 | 2.220e-16 | 0 |
+| 4 | 10 | 10 | 2.220e-16 | 0 |
+| 5 | 15 | 15 | 2.220e-16 | 0 |
+| 6 | 21 | 21 | 2.220e-16 | 0 |
+| 7 | 28 | 28 | 2.220e-16 | 0 |
+| 8 | 36 | 36 | 3.331e-16 | 0 |
+| 9 | 45 | 45 | 2.220e-16 | 0 |
+| 10 | 55 | 55 | 2.220e-16 | 0 |
+| 11 | 66 | 66 | 2.220e-16 | 0 |
+| 12 | 78 | 78 | 2.220e-16 | 0 |
+
+\image(figures/de_boor_theory.svg)
+// result_end
+\caption(Analytic curve values and actual update counts for twelve degrees. Very small absolute coordinate errors are printed with enough digits to distinguish rounding from exact equality.)
+\alttext(Left: curves for degrees one, two, four and twelve approach the parabola as degree increases. Right: recorded interpolation counts lie on p times p plus one divided by two.)
+
+The largest closed-form coordinate error is 3.331e-16, and the tiny-domain endpoint
+error is exactly zero at all twelve degrees. Separate independent checks use R
+`splineDesign` and SciPy `BSpline` on 29 curves and 3668 sample parameters, including
+nonuniform, repeated, unclamped, tiny and translated knot sequences. Both agree
+within 1.8e-15; 509 recorded interpolation steps also agree with exact rational
+calculations on the stored binary inputs within 4.5e-16 in their coordinates.
+These are numerical checks of the
+evaluator, not error bounds for an arbitrary curve or knot sequence.
+
+>> Local control: move one coefficient, change four cubic spans
+
+Use ten cubic controls on knots \((0,0,0,0,1,2,3,4,5,6,7,7,7,7)\), then move
+only \(P_4\) upwards by two. Linearity gives a stronger prediction than a visual comparison:
+
+$$
+ \Delta C(t)=B_{4,3}(t)(0,2),\qquad
+ \Delta C(t)=0\quad\text{outside }[u_4,u_8]=[1,5].
+$$
+\alttext(Moving control four upward by two moves the curve upward by twice its cubic basis weight. The change vanishes outside the four-span support from parameter one to five.)
+
+For this simple-knot interior basis, the weight also vanishes at both support endpoints.
+The right panel compares the observed displacement with an independent basis evaluation
+through `fda::BSplineBasis`; it is not merely a second call to the same curve evaluator.
+
+```{cpp, results="markdown", file="figures/de_boor_local_control.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::vector<double> knots{0,0,0,0,1,2,3,4,5,6,7,7,7,7};
+  std::vector<dm::geometry::Point2D> control{{0,0},{1,2},{2,-1},{3,3},{4,1},{5,4},{6,0},{7,2},{8,1},{9,0}};
+  const dm::geometry::DeBoorSpline original(3,knots,control);
+  control[4].y+=2; const dm::geometry::DeBoorSpline changed(3,knots,control);
+  const auto t=dm::seql(0,7,281); const auto before=original.sample_table(t.values()), after=changed.sample_table(t.values());
+  const dm::Vector<> displacement=dm::Vector<>(after.numeric_column("y").values())-dm::Vector<>(before.numeric_column("y").values());
+  const auto B=dm::fda::BSplineBasis(3,knots).evaluate_dense(t.values());
+  auto curves=original.plot_curve(), influence=dm::graphics::RPlot::create();
+  curves.lines(after.numeric_column("x").values(),after.numeric_column("y").values(),"Moved P4",{220,90,35},3)
+    .title("Moving one control has local influence").y_limits(-1.5,6.5);
+  influence.lines(t.values(),(2*dm::Vector<>(B.col(4))).values(),"2 B4(t)",{80,80,80},3)
+    .points(t.values(),displacement.values(),"Observed delta",{37,99,235},2)
+    .abline_v(1,{150,150,150}).abline_v(5,{150,150,150})
+    .title("Displacement equals its basis weight").x_label("Parameter t").y_label("Change in curve y").y_limits(-.1,1.9);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(curves).add(influence);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/de_boor_local_control.svg");
+  auto checks=original.sample_table({0,1,2,3,4,5,6,7});
+  const auto moved=changed.sample_table({0,1,2,3,4,5,6,7});
+  checks.add_column("delta_y",(dm::Vector<>(moved.numeric_column("y").values())-dm::Vector<>(checks.numeric_column("y").values())).values());
+  std::print("{}\n",checks.select({"t","span","first_control","last_control","delta_y"}).to_md(6));
+}
+```
+// result_begin: markdown
+| t | span | first_control | last_control | delta_y |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 3 | 0 | 3 | 0.000000 |
+| 1 | 4 | 1 | 4 | 0.000000 |
+| 2 | 5 | 2 | 5 | 0.333333 |
+| 3 | 6 | 3 | 6 | 1.333333 |
+| 4 | 7 | 4 | 7 | 0.333333 |
+| 5 | 8 | 5 | 8 | 0.000000 |
+| 6 | 9 | 6 | 9 | 0.000000 |
+| 7 | 9 | 6 | 9 | 0.000000 |
+
+\image(figures/de_boor_local_control.svg)
+// result_end
+\caption(Only the support of control four responds to its displacement. The zero-based active-control indices are candidate contributors on the selected span; a weight can vanish at a span boundary.)
+\alttext(Left: the original cubic and the curve after moving control four upward differ only in the middle portion. Right: the observed vertical change overlays twice the independently evaluated cubic basis, is zero outside one to five, and peaks at four thirds near three.)
+
+> A larger construction: the original clamped cubic
+
+Return to the original six controls \((0,0),(1,4),(3,5),(5,1),(7,4),(8,0)\), with
+knots \((0,0,0,0,1,2,3,3,3,3)\). Simple interior knots give a \(C^2\) curve.
+At \(t=1.5\), span \(k=4\) uses controls one through four. Its first round has
+weights \((3/4,1/2,1/4)\) in increasing local-index order, its second has
+\((3/4,1/4)\), and its final weight is \(1/2\). The result is
+
+$$
+ C(1.5)=(4,49/16)=(4,3.0625),\qquad C(0)=(0,0),\qquad C(3)=(8,0).
+$$
+\alttext(The original cubic evaluates to four, 49 sixteenths at parameter one and a half, and exactly to its first and last controls at parameters zero and three.)
+
+The curve generally passes near interior controls rather than through them. The table
+also shows why uniformly spaced parameter values need not produce uniformly spaced
+points in the plane. Dense sampling approximates the shape; it does not certify a
+geometric error tolerance or yield an arc-length parameterisation.
+
+```{cpp, results="markdown", file="figures/de_boor_cubic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::geometry::DeBoorSpline spline(3,{0,0,0,0,1,2,3,3,3,3},{{0,0},{1,4},{3,5},{5,1},{7,4},{8,0}});
+  const auto trace=spline.trace(1.5);
+  auto curve=spline.plot_curve(), construction=trace.plot();
+  curve.points({trace.point.x},{trace.point.y},"t = 1.5",{220,90,35},6)
+    .title("Clamped cubic: exact endpoint controls").y_limits(-.5,8);
+  construction.title("Six interpolations from four controls").y_limits(-.5,8);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(curve).add(construction);
+  std::filesystem::create_directories("build");
+  layout.size(1100,490).fit_panels().save_svg("build/de_boor_cubic.svg");
+  std::print("{}\n\n{}\n",spline.sample_table({0,.5,1,1.5,2,2.5,3}).to_md(6),
+             trace.table().select({"round","local","alpha","x","y"}).to_md(6));
+}
+```
+// result_begin: markdown
+| t | span | first_control | last_control | x | y |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.0 | 3 | 0 | 3 | 0.000000 | 0.000000 |
+| 0.5 | 3 | 0 | 3 | 1.479167 | 3.697917 |
+| 1.0 | 4 | 1 | 4 | 2.833333 | 4.083333 |
+| 1.5 | 4 | 1 | 4 | 4.000000 | 3.062500 |
+| 2.0 | 5 | 2 | 5 | 5.166667 | 2.416667 |
+| 2.5 | 5 | 2 | 5 | 6.520833 | 2.739583 |
+| 3.0 | 5 | 2 | 5 | 8.000000 | 0.000000 |
+
+
+| round | local | alpha | x | y |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | nan | 1.000 | 4.0000 |
+| 0 | 1 | nan | 3.000 | 5.0000 |
+| 0 | 2 | nan | 5.000 | 1.0000 |
+| 0 | 3 | nan | 7.000 | 4.0000 |
+| 1 | 3 | 0.25 | 5.500 | 1.7500 |
+| 1 | 2 | 0.50 | 4.000 | 3.0000 |
+| 1 | 1 | 0.75 | 2.500 | 4.7500 |
+| 2 | 3 | 0.25 | 4.375 | 2.6875 |
+| 2 | 2 | 0.75 | 3.625 | 3.4375 |
+| 3 | 3 | 0.50 | 4.000 | 3.0625 |
+
+\image(figures/de_boor_cubic.svg)
+// result_end
+\caption(The original cubic, now evaluated at the actual right endpoint and accompanied by its complete construction triangle. Four active controls become three, two and one points.)
+\alttext(Left: a smooth cubic runs from zero, zero to eight, zero, guided by its six-control polygon; the parameter-one-and-a-half point is marked. Right: successive interpolation polygons converge to four, three point zero six two five.)
+
+> Conclusion
+
+The basis recursion explains both the algorithm and its geometric guarantees. A fixed
+span needs only a small control net, descending updates preserve the previous round,
+and convex weights give local control, affine equivariance and an absolute perturbation
+bound. The hand calculations distinguish Bezier weights from nonuniform knot weights.
+Repeated knots make the side convention and continuity guarantees essential.
+
+The generated families verify exact polynomial expectations and the \(p(p+1)/2\)
+interpolation count. The moved-control experiment verifies a whole support interval,
+not just one visually similar curve. Endpoint evaluation now uses the requested
+parameter directly. Uniform sampling remains a rendering choice, and stable evaluation
+does not solve fitting, knot selection or arc-length sampling.
+
+> References
+
+- C. de Boor (1972). *On calculating with B-splines.* Journal of Approximation Theory 6(1), 50–62. [Original paper|https://doi.org/10.1016/0021-9045(72)90080-9].
+- C. de Boor. [A Practical Guide to Splines: author's code|https://pages.cs.wisc.edu/~deboor/pgs/], including the basis and spline evaluators.
+- SciPy. [BSpline documentation|https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html], for base-interval and coefficient conventions and an independent numerical implementation.

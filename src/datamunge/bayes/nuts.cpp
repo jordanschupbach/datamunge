@@ -1,3 +1,6 @@
+/// @file nuts.cpp
+/// @brief The No-U-Turn Sampler (Hoffman and Gelman 2014, Algorithm 3) with per-draw diagnostics.
+
 #include <datamunge/bayes/nuts.hpp>
 
 #include <datamunge/bayes/detail/dual_averaging.hpp>
@@ -6,15 +9,18 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
+#include <stdexcept>
 
 namespace datamunge::bayes {
 
+/// @brief U-turn test and recursive trajectory doubling.
 namespace {
 
 using detail::hamiltonian;
 using detail::leapfrog_step;
 using detail::LeapfrogState;
 
+/// @brief True while the trajectory ends still move apart: (q+ - q-).r- >= 0 and (q+ - q-).r+ >= 0.
 bool no_u_turn(const std::vector<double>& theta_minus, const std::vector<double>& theta_plus,
                const std::vector<double>& r_minus, const std::vector<double>& r_plus) {
     double dot_minus = 0.0, dot_plus = 0.0;
@@ -26,20 +32,21 @@ bool no_u_turn(const std::vector<double>& theta_minus, const std::vector<double>
     return dot_minus >= 0.0 && dot_plus >= 0.0;
 }
 
+/// @brief Summary of one (sub)tree of the doubling procedure.
 struct TreeResult {
-    LeapfrogState minus;
-    LeapfrogState plus;
-    std::vector<double> proposal;
-    std::size_t n_valid{0};
-    bool valid{true};
-    bool diverged{false};
-    double alpha_sum{0.0};
-    std::size_t n_alpha{0};
+    LeapfrogState minus;              ///< Leftmost state.
+    LeapfrogState plus;               ///< Rightmost state.
+    std::vector<double> proposal;     ///< Position sampled from the subtree.
+    std::size_t n_valid{0};           ///< States inside the slice.
+    bool valid{true};                 ///< False once the subtree diverged or made a U-turn.
+    bool diverged{false};             ///< True if any leapfrog step diverged.
+    double alpha_sum{0.0};            ///< Sum of acceptance statistics over leaves.
+    std::size_t n_alpha{0};           ///< Number of leaves (leapfrog steps).
 };
 
-// Recursively doubles the trajectory in direction v from `state`, `j` levels deep (2^j
-// leapfrog steps), tracking the slice variable log_u and reporting whether the (sub)tree
-// stayed within the slice / hasn't diverged / hasn't made a U-turn.
+/// @brief Recursively doubles the trajectory in direction v from `state`, `j` levels deep (2^j
+/// leapfrog steps), tracking the slice variable log_u and reporting whether the (sub)tree
+/// stayed within the slice / hasn't diverged / hasn't made a U-turn.
 TreeResult build_tree(optim::DifferentiableFunction& log_posterior, const LeapfrogState& state, const double log_u,
                       const int v, const std::size_t j, const double step_size, const double h0,
                       const double max_delta_error, std::mt19937_64& rng) {
@@ -103,6 +110,10 @@ NUTSResult NUTS::sample(optim::DifferentiableFunction& log_posterior, const std:
 
     NUTSResult result;
     result.samples.reserve(options_.num_samples);
+    result.divergent.reserve(options_.num_samples);
+    result.tree_depth.reserve(options_.num_samples);
+    result.n_leapfrog.reserve(options_.num_samples);
+    result.energy.reserve(options_.num_samples);
     double accept_stat_sum = 0.0;
     const std::size_t total_iters = options_.num_warmup + options_.num_samples;
 
@@ -156,12 +167,30 @@ NUTSResult NUTS::sample(optim::DifferentiableFunction& log_posterior, const std:
             if (iter + 1 == options_.num_warmup) step_size = adaptation.finalized_step_size();
         } else {
             result.samples.push_back(q);
+            result.divergent.push_back(diverged ? 1 : 0);
+            result.tree_depth.push_back(static_cast<int>(j));
+            result.n_leapfrog.push_back(static_cast<int>(n_alpha));
+            result.energy.push_back(h0);
         }
     }
 
     result.accept_rate = accept_stat_sum / static_cast<double>(total_iters);
     result.final_step_size = step_size;
     return result;
+}
+
+std::vector<NUTSResult> NUTS::sample_chains(optim::DifferentiableFunction& log_posterior,
+                                            const std::vector<double>& initial_params,
+                                            const std::size_t num_chains) const {
+    if (num_chains == 0) throw std::invalid_argument("NUTS::sample_chains: num_chains must be at least 1");
+    std::vector<NUTSResult> chains;
+    chains.reserve(num_chains);
+    for (std::size_t k = 0; k < num_chains; ++k) {
+        NUTSOptions opts = options_;
+        opts.seed = options_.seed + k;
+        chains.push_back(NUTS(opts).sample(log_posterior, initial_params));
+    }
+    return chains;
 }
 
 } // namespace datamunge::bayes

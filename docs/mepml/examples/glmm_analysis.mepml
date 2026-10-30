@@ -1,0 +1,679 @@
+//? Title: Generalized Linear Mixed Models: Working Fits and Partial Pooling
+//? Subtitle: Hand calculations, PQL diagnostics, simulated counts and grouped penguin predictions with datamunge
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Binary outcomes and event counts often arrive in groups whose observations share
+unmeasured influences. We want response probabilities or count means that account for
+that dependence while sharing information across groups. A generalized linear mixed
+model adds Gaussian group effects on a link scale. This report derives a working-model
+PQL approximation, calculates two tiny updates by hand, profiles a four-count working
+variance, and checks recovery on simulated groups with known effects. A penguin analysis
+then separates species adjustment, prediction within observed islands and prediction
+on an omitted island. Numerical convergence, working-Gaussian criteria and original
+response likelihoods have different meanings throughout; setting a new group's effect
+to zero also differs from averaging over its unknown effect. On the prespecified
+100-penguin holdout, adding species increases accuracy from 81% to 89% and lowers
+Brier loss from 0.1446 to 0.0744. The full-data island SD changes from 1.180 to a
+zero-variance boundary after species adjustment.
+)
+
+\toc
+
+> The method
+
+>> Conditional observations and latent groups
+
+For row \(i\) in group \(g\), a conditional GLMM specifies
+
+$$
+ b_g\sim N_q(0,D),\qquad
+ \eta_i=x_i^\top\beta+z_i^\top b_g,\qquad
+ E(Y_i\mid b_g)=\mu_i=g^{-1}(\eta_i).
+$$
+\alttext(Each group has a q dimensional Gaussian effect with covariance D. Its linear contribution adds to the fixed predictor before the inverse link gives the conditional response mean.)
+
+`dm::stats::GLMM` supports Bernoulli zero/one observations with a logit link, and
+nonnegative integer Poisson counts with a log link. Conditional dispersion is fixed at
+one: \(V(\mu)=\mu(1-\mu)\) or \(\mu\). A random intercept multiplies a Poisson
+mean by \(e^{b_g}\) and shifts binomial log odds by \(b_g\). These are link-scale
+effects, not additive changes in counts or probabilities.
+
+A formula such as `y ~ x + (1 + x | group)` uses fixed intercept/slope and a correlated
+random intercept/slope. There is one grouping factor, and random slopes must be plain
+numeric column names. This implementation has no trial-count weights, exposure offsets,
+additional conditional dispersion, crossed groups or arbitrary links. Rows incomplete
+for the fixed design, random design or group are omitted jointly; `kept_rows()` preserves
+original indices. Retained numeric values must be finite. Null fixed predictors produce
+NaN predictions; null required random slopes also produce NaN for a known group.
+
+>> What the working fit approximates
+
+An exact marginal likelihood would integrate the conditional density over every group
+effect. For non-Gaussian observations, replacing that integral by a sequence of Gaussian
+working fits is a statistical approximation, even if every working fit is solved accurately.
+This differs from ordinary GLM IRLS, which can converge to the actual response-likelihood
+maximum without making a Gaussian approximation to a latent-effect integral.
+
+At the current conditional fit, linearizing the link gives a pseudo-response \(u\)
+and diagonal working precision \(W\):
+
+$$
+ u_i=\eta_i+(y_i-\mu_i)g'(\mu_i),\qquad
+ w_i=\frac1{V(\mu_i)g'(\mu_i)^2},\qquad
+ u\approx X\beta+Zb+e,\quad e\sim N(0,W^{-1}).
+$$
+\alttext(The working response is the current predictor plus response error times the link derivative. The working precision combines the variance function and squared link derivative. A Gaussian mixed model is then fitted to these frozen pseudo-data.)
+
+For logit, \(w_i=\mu_i(1-\mu_i)\); for Poisson log, \(w_i=\mu_i\).
+The library initializes random effects at zero and, when there is a fixed intercept,
+sets it to the link of the overall response mean. Training/working means are guarded
+at \(10^{-8}\), and at \(1-10^{-8}\) for binomial. These guards prevent zero
+working precision; they do not fix separation or certify a finite statistical optimum.
+
+Writing \(D=\Lambda\Lambda^\top\), each group has working covariance
+\(M_g=W_g^{-1}+Z_g D Z_g^\top\). Conditional on \(D\), Gaussian algebra gives
+
+$$
+ \widehat\beta=\left(\sum_gX_g^\top M_g^{-1}X_g\right)^{-1}
+                 \sum_gX_g^\top M_g^{-1}u_g,\qquad
+ \widehat b_g=D Z_g^\top M_g^{-1}(u_g-X_g\widehat\beta).
+$$
+\alttext(Profiled fixed effects solve generalized least squares across groups. Each group BLUP is its covariance times the random design transpose times the inverse-covariance-weighted working residual.)
+
+For each frozen \(u,W\), this implementation estimates \(\Lambda\) by Gaussian
+working ML, minimizing
+
+$$
+ Q(\Lambda;u,W)=n\log(2\pi)+\sum_g\log|M_g|
+       +\sum_g(u_g-X_g\widehat\beta)^\top M_g^{-1}(u_g-X_g\widehat\beta).
+$$
+\alttext(The working objective sums Gaussian normalization, group covariance log determinants and the profiled residual quadratic. It is evaluated on the current frozen working responses and precisions.)
+
+This is the implemented PQL variant: it uses profiled ML for working covariance, rather
+than the default working REML in R's `MASS::glmmPQL`. Bounded differential evolution is
+followed by a bounded local polish; the exact zero-variance candidate is also checked
+for random-intercept models. A user can instead condition on a known random-intercept SD.
+That option is used below to make the first updates hand-checkable.
+
+`working_data(k)` reconstructs the inputs to update \(k+1\), starting at zero.
+`iteration_history()` records completed updates. Its stopping flag requires changes
+in fixed coefficients, group effects and covariance-factor entries to satisfy the
+relative infinity-norm tolerance. A stationary fixed intercept alone is insufficient.
+At the iteration limit, a finite last iterate is returned with `converged()` false.
+
+>> Partial pooling and computation
+
+With only a random intercept of variance \(\tau^2\), define
+\(s_g=\sum_{i\in g}w_i\) and
+\(\bar r_g=\sum_{i\in g}w_i(u_i-x_i^\top\widehat\beta)/s_g\).
+The BLUP simplifies to
+
+$$
+ \widehat b_g=\frac{\tau^2s_g}{1+\tau^2s_g}\bar r_g.
+$$
+\alttext(The group effect equals its weighted working residual mean times a shrinkage factor between zero and one. More working information or larger group variance gives less shrinkage.)
+
+This shows why the number of rows alone does not determine pooling: logit observations
+near probabilities zero or one have little working information, whereas larger Poisson
+means give larger log-scale information. When \(\tau=0\), group effects vanish and
+the working fit reduces to ordinary GLM IRLS. Random-effect covariance boundaries deserve
+attention, especially with very few groups; `covariance_at_boundary()` is a numerical
+heuristic for singular-factor or search-box boundaries, not a variance-component test.
+
+The implementation uses Woodbury identities with \(U_g=Z_g\Lambda\):
+
+$$
+ M_g^{-1}=W_g-W_gU_g(I+U_g^\top W_gU_g)^{-1}U_g^\top W_g,
+ \qquad \log|M_g|=-\sum_{i\in g}\log w_i+\log|I+U_g^\top W_gU_g|.
+$$
+\alttext(A working covariance inverse and determinant are evaluated through a q by q system, avoiding a matrix factorization as large as the number of observations in a group.)
+
+The formulas also work when \(D\) is singular because they never invert \(D\).
+For \(n\) observations, \(G\) groups, \(p\) fixed and \(q\) random coordinates,
+one objective evaluation costs \(O(n(p^2+pq+q^2)+Gq^3+p^3)\). Fitting multiplies
+that work by all candidate evaluations across outer updates. Numerical normal equations
+for fixed effects still limit accuracy with badly scaled or collinear designs.
+
+>> Prediction targets and criteria
+
+`predict()` uses a known group's fitted effect. An unseen, null or absent group falls
+back to \(b=0\); `predict_fixed()` explicitly requests that zero-effect prediction.
+It is not, in general, a new-group marginal mean. For a Poisson random intercept,
+
+$$
+ \mu_{b=0}(x)=e^{x^\top\widehat\beta},\qquad
+ E_b[\mu(x,b)]=e^{x^\top\widehat\beta+\widehat\tau^2/2}.
+$$
+\alttext(Setting a Poisson group's effect to zero gives exp of the fixed predictor. Averaging over its Gaussian effect multiplies that value by exp of half the group variance.)
+
+For logistic models the corresponding logistic-normal integral has no elementary closed
+form, and the current prediction API does not evaluate it. No prediction intervals are
+provided. Group BLUPs and their plug-in predictions condition on fitted variance components;
+working-model fixed-effect Wald SEs do not propagate variance-component uncertainty.
+
+`working_criterion()` is \(Q\) on the final pseudo-data. The historical `deviance()`
+accessor returns that same quantity; historical `aic()` and `bic()` merely add parameter
+penalties to it. They are not marginal GLMM likelihood criteria. In particular, values
+of \(Q\) from different outer iterations or models use different pseudo-data and should
+not rank original-response models. The report uses observed-response test losses instead.
+PQL can be biased for binary data, especially with small clusters, and many rows in just
+three groups do not provide a precise group-variance estimate.
+
+> Simple examples
+
+>> Four counts, two groups and a known variance
+
+Take group A counts \((1,3)\), group B counts \((5,7)\), and fix \(\tau=1\).
+Initially \(\beta=\log4\), \(b_A=b_B=0\), \(w_i=4\), and
+\(u_i=\log4+(y_i-4)/4\). Both groups have \(s_g=8\), while their working
+residual means are \(-1/2\) and \(+1/2\). Symmetry keeps the first fixed intercept
+at \(\log4\), so
+
+$$
+ \widehat b_A^{(1)}=-\frac89\frac12=-\frac49,\qquad
+ \widehat b_B^{(1)}=\frac49.
+$$
+\alttext(Each group's initial information is eight. With unit random-intercept variance the shrinkage factor is eight ninths, giving first group effects minus and plus four ninths.)
+
+The figure shows the frozen working observations, their first fitted link values and the
+subsequent conditional count means. The unchanged first fixed intercept must not stop
+PQL: its group effects have moved substantially. The prediction table also contrasts
+known-group conditional means, the zero-effect fallback for a new group, and the
+Gaussian-averaged new-group mean. The latter ignores the query's group label and uses
+the known variance one; it is a different target, not a prediction interval.
+
+```{cpp, results="markdown", file="figures/glmm_four_counts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;d.add_column("y",std::vector<double>{1,3,5,7});
+  d.add_column("g",std::vector<std::string>{"A","A","B","B"});
+  dm::stats::GLMMOptions opt;opt.family=dm::stats::GLMMFamily::Poisson;opt.fixed_random_intercept_sd=1;
+  opt.max_iterations=1;const dm::stats::GLMM first(d,"y ~ 1 + (1|g)",opt);
+  opt.max_iterations=50;const dm::stats::GLMM full(d,"y ~ 1 + (1|g)",opt);
+  const auto w=first.working_data();auto working=dm::graphics::RPlot::create(),fit=dm::graphics::RPlot::create();
+  working.points(w.numeric_column("row").values(),w.numeric_column("z").values(),"working u");
+  working.lines(std::vector<double>{0,1,2,3},first.linear_predictors(),"first eta",dm::RGB{220,38,38});
+  working.title("First frozen Poisson working fit").x_label("row (zero-based)").y_label("link scale").y_limits(.5,2.7);
+  fit.points(w.numeric_column("row").values(),d.numeric_column("y").values(),"observed");
+  fit.lines(w.numeric_column("row").values(),first.fitted_values(),"first mean",dm::RGB{148,163,184});
+  fit.lines(w.numeric_column("row").values(),full.fitted_values(),"final mean",dm::RGB{220,38,38});
+  fit.title("Conditional count means").x_label("row (zero-based)").y_label("count or conditional mean").y_limits(0,9.5);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(working).add(fit).size(1100,490).fit_panels().save_svg("build/glmm_four_counts.svg");
+  dm::dstruct::DataFrame query;query.add_column("g",std::vector<std::string>{"A","B","new"});
+  auto targets=full.prediction_frame(query);targets.add_column("group",std::vector<std::string>{"A","B","new"});
+  targets.add_column("marginal_new_group",std::vector<double>(3,std::exp(full.coefficients()[0]+.5)));
+  std::print("Prediction targets at the same fixed design:\n\n{}\n\n",targets.select({"group","group_status","fit","fixed_fit","marginal_new_group"}).to_md(6));
+  std::print("Initial working data:\n\n{}\n\nFirst update:\n\n{}\n\nFinal group effects:\n\n{}\n\nStatus:\n\n{}\n",
+      w.to_md(6),first.random_effects_frame().to_md(6),full.random_effects_frame().to_md(6),
+      full.model_summary().select({"n","groups","iterations","converged"}).to_md());
+}
+```
+// result_begin: markdown
+Prediction targets at the same fixed design:
+
+| group | group_status | fit | fixed_fit | marginal_new_group |
+| :--- | :--- | ---: | ---: | ---: |
+| A | known | 2.236637 | 3.590341 | 5.919472 |
+| B | known | 5.763363 | 3.590341 | 5.919472 |
+| new | unseen | 3.590341 | 3.590341 | 5.919472 |
+
+
+Initial working data:
+
+| row | group | response | eta | mu | weight | z |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: |
+| 0 | A | 1 | 1.386294 | 4 | 4 | 0.636294 |
+| 1 | A | 3 | 1.386294 | 4 | 4 | 1.136294 |
+| 2 | B | 5 | 1.386294 | 4 | 4 | 1.636294 |
+| 3 | B | 7 | 1.386294 | 4 | 4 | 2.136294 |
+
+
+First update:
+
+| group | n | (Intercept) |
+| :--- | ---: | ---: |
+| A | 2 | -0.444444 |
+| B | 2 | 0.444444 |
+
+
+Final group effects:
+
+| group | n | (Intercept) |
+| :--- | ---: | ---: |
+| A | 2 | -0.473274 |
+| B | 2 | 0.473274 |
+
+
+Status:
+
+| n | groups | iterations | converged |
+| ---: | ---: | ---: | :--- |
+| 4 | 2 | 5 | yes |
+
+\image(figures/glmm_four_counts.svg)
+// result_end
+
+\caption(The first Poisson update has BLUPs exactly minus and plus four ninths. Continuing PQL relinearizes the response and weights; the final count means are not the raw group averages.)
+\alttext(Initial working responses increase with the four counts. The first fitted predictors have one value in each group. On the response scale the final two group means pool toward the common centre.)
+
+>> Eight binary responses and movement hidden by a fixed intercept
+
+Use group A \((0,0,0,1)\) and B \((0,1,1,1)\), again with \(\tau=1\).
+The overall proportion is one half: initial \(\beta=0\), \(w_i=1/4\), and
+\(u_i=-2\) for a zero or \(+2\) for a one. Group working residual means are
+\(-1,+1\), with \(s_g=1\), giving
+
+$$
+ \widehat\beta^{(1)}=0,\qquad
+ \widehat b_A^{(1)}=-\tfrac12,\quad \widehat b_B^{(1)}=\tfrac12,
+ \qquad \mu_A^{(1)}=\operatorname{logit}^{-1}(-1/2),\quad
+ \mu_B^{(1)}=\operatorname{logit}^{-1}(1/2).
+$$
+\alttext(The first fixed intercept stays zero, but the two group effects become minus and plus one half. Their fitted probabilities are inverse-logit of those effects.)
+
+The unpooled proportions are one quarter and three quarters. PQL with the known variance
+shrinks the conditional probabilities toward one half. The first-step status is false
+for convergence, correctly recording that the random effects changed.
+
+```{cpp, results="markdown", file="figures/glmm_binary_groups.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;d.add_column("y",std::vector<double>{0,0,0,1,0,1,1,1});
+  d.add_column("g",std::vector<std::string>{"A","A","A","A","B","B","B","B"});
+  dm::stats::GLMMOptions opt;opt.fixed_random_intercept_sd=1;opt.max_iterations=1;
+  const dm::stats::GLMM first(d,"y ~ 1 + (1|g)",opt);opt.max_iterations=50;
+  const dm::stats::GLMM full(d,"y ~ 1 + (1|g)",opt);const auto h=full.iteration_history();
+  auto means=dm::graphics::RPlot::create(),path=dm::graphics::RPlot::create();
+  means.points(std::vector<double>{0,1},std::vector<double>{.25,.75},"raw proportion",dm::RGB{148,163,184});
+  means.points(std::vector<double>{0,1},std::vector<double>{first.fitted_values()[0],first.fitted_values()[4]},"first fit",dm::RGB{37,99,235});
+  means.points(std::vector<double>{0,1},std::vector<double>{full.fitted_values()[0],full.fitted_values()[4]},"final fit",dm::RGB{220,38,38});
+  means.abline_h(.5).title("Partial pooling of two binary groups").x_label("group A = 0, B = 1").y_label("conditional P(Y=1)").y_limits(.1,1.1);
+  path.lines(h.numeric_column("iteration").values(),h.numeric_column("max_relative_change").values());
+  path.title("Changes include the group effects").x_label("completed PQL update").y_label("maximum relative state change");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(means).add(path).size(1100,490).fit_panels().save_svg("build/glmm_binary_groups.svg");
+  std::print("First update:\n\n{}\n\nWorking observations:\n\n{}\n\nFinal groups:\n\n{}\n",
+      first.model_summary().select({"n","iterations","converged"}).to_md(),first.working_data().to_md(4),full.random_effects_frame().to_md(6));
+}
+```
+// result_begin: markdown
+First update:
+
+| n | iterations | converged |
+| ---: | ---: | :--- |
+| 8 | 1 | no |
+
+
+Working observations:
+
+| row | group | response | eta | mu | weight | z |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: |
+| 0 | A | 0 | 0 | 0.5 | 0.25 | -2 |
+| 1 | A | 0 | 0 | 0.5 | 0.25 | -2 |
+| 2 | A | 0 | 0 | 0.5 | 0.25 | -2 |
+| 3 | A | 1 | 0 | 0.5 | 0.25 | 2 |
+| 4 | B | 0 | 0 | 0.5 | 0.25 | -2 |
+| 5 | B | 1 | 0 | 0.5 | 0.25 | 2 |
+| 6 | B | 1 | 0 | 0.5 | 0.25 | 2 |
+| 7 | B | 1 | 0 | 0.5 | 0.25 | 2 |
+
+
+Final groups:
+
+| group | n | (Intercept) |
+| :--- | ---: | ---: |
+| A | 4 | -0.505240 |
+| B | 4 | 0.505240 |
+
+\image(figures/glmm_binary_groups.svg)
+// result_end
+
+\caption(A fixed intercept can remain unchanged while group effects are still moving. The numerical stopping rule checks all three components of the PQL state.)
+\alttext(The raw binary group proportions one quarter and three quarters move closer to one half after pooling. A second panel shows state changes falling toward zero across repeated working fits.)
+
+> Checking the theory
+
+>> A working-variance profile with an exact minimum
+
+Return to the four counts and their first working state, now estimating \(\tau\).
+Each group's working mean has residual variance \(1/8\), and the two means lie
+\(1/2\) below or above \(\log4\). After profiling the common mean, the part of
+\(Q\) that depends on \(t=\tau^2\) is
+
+$$
+ Q(t)=C+2\log(t+1/8)+\frac{1/2}{t+1/8},\qquad
+ Q'(t)=\frac2{t+1/8}-\frac{1/2}{(t+1/8)^2},\qquad
+ \widehat t=\frac18.
+$$
+\alttext(The variance-dependent working criterion is twice log t plus one eighth, plus one half divided by t plus one eighth. Its derivative vanishes at t equals one eighth.)
+
+Thus the first estimated SD is \(\sqrt{1/8}\), the shrinkage factor is one half,
+and the first effects are \(-1/4,+1/4\). This is an ML result for a *single frozen
+Gaussian working dataset*, not an exact Poisson GLMM variance estimate.
+
+```{cpp, results="markdown", file="figures/glmm_working_profile.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;d.add_column("y",std::vector<double>{1,3,5,7});
+  d.add_column("g",std::vector<std::string>{"A","A","B","B"});
+  dm::stats::GLMMOptions opt;opt.family=dm::stats::GLMMFamily::Poisson;opt.max_iterations=1;
+  const dm::stats::GLMM m(d,"y ~ 1 + (1|g)",opt);
+  const auto tau=dm::seql(0,1.2,121);std::vector<double> criterion,shrink;
+  for(double t:tau.values()){criterion.push_back(m.working_criterion_at({t},0));shrink.push_back(8*t*t/(1+8*t*t));}
+  auto profile=dm::graphics::RPlot::create(),pool=dm::graphics::RPlot::create();
+  profile.lines(tau.values(),criterion).abline_v(std::sqrt(.125)).title("One frozen working-ML profile").x_label("random-intercept SD tau").y_label("working criterion Q");
+  pool.lines(tau.values(),shrink).abline_v(std::sqrt(.125)).abline_h(.5).title("Corresponding shrinkage factor").x_label("random-intercept SD tau").y_label("fraction of raw working effect");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(profile).add(pool).size(1100,490).fit_panels().save_svg("build/glmm_working_profile.svg");
+  dm::dstruct::DataFrame result;result.add_column("estimated_variance",std::vector<double>{m.random_effect_covariance()(0,0)});
+  result.add_column("exact_variance",std::vector<double>{.125});result.add_column("first_A_effect",std::vector<double>{m.random_effects()[0][0]});
+  std::print("{}\n",result.to_md(8));
+}
+```
+// result_begin: markdown
+| estimated_variance | exact_variance | first_A_effect |
+| ---: | ---: | ---: |
+| 0.12500000 | 0.125 | -0.25000000 |
+
+\image(figures/glmm_working_profile.svg)
+// result_end
+
+\caption(The exact first-working-fit variance optimum is one eighth. Its shrinkage factor is one half; the vertical line marks the corresponding SD.)
+\alttext(A working-criterion curve has its minimum at SD square root of one eighth. The shrinkage curve rises with SD and crosses one half at that same point.)
+
+>> More information within simulated groups
+
+The reusable generator makes 25 groups with Gaussian log-scale effects of SD 0.5,
+conditional intercept 1 and slope 0.4. Within each group, \(x\) spans minus one to
+one, and observations are Poisson. It draws all group effects before any responses,
+so the same seed retains exactly the same effects across cluster-size experiments.
+`true_effect` and `true_mean` are evaluation columns, never model predictors.
+
+We fit 6, 18 and 54 observations per group. The table compares recovered coefficients,
+estimated SD and group-effect RMSE against known truth. One realization can fluctuate;
+these are controlled examples of information and recovery, not a Monte Carlo proof
+of unbiasedness or a guarantee that every larger sample has smaller realized error.
+There are still only 25 independent group-effect draws: increasing rows within these
+groups cannot force their realized spread to equal the generating population SD.
+
+```{cpp, results="markdown", file="figures/glmm_simulated_counts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::vector<double> size,intercept,slope,sd,error;std::vector<std::string> converged;
+  auto recovery=dm::graphics::RPlot::create();
+  for(std::size_t count:{6,18,54}) {
+    const auto d=dm::stats::simulate_glmm_random_intercepts(dm::stats::GLMMFamily::Poisson,25,count,1,.4,.5,42);
+    dm::stats::GLMMOptions opt;opt.family=dm::stats::GLMMFamily::Poisson;opt.max_iterations=60;
+    const dm::stats::GLMM m(d,"y ~ x + (1|group)",opt);
+    std::vector<double> truth,estimate;double squared=0;
+    for(std::size_t g=0;g<m.num_groups();++g){truth.push_back(d.double_at("true_effect",g*count));estimate.push_back(m.random_effects()[g][0]);squared+=std::pow(estimate.back()-truth.back(),2);}
+    size.push_back(count);intercept.push_back(m.coefficients()[0]);slope.push_back(m.coefficients()[1]);sd.push_back(m.random_effect_std_devs()[0]);
+    error.push_back(std::sqrt(squared/m.num_groups()));converged.push_back(m.converged()?"yes":"no");
+    if(count==18) recovery.points(truth,estimate,"25 groups");
+  }
+  recovery.abline(0,1).title("Known effects versus fitted BLUPs").x_label("true group log effect").y_label("estimated group log effect").x_limits(-1.3,1.3).y_limits(-1.3,1.8);
+  auto information=dm::graphics::RPlot::create();information.lines(size,error,"effect RMSE",dm::RGB{220,38,38});
+  information.title("Realized group-effect recovery").x_label("observations per group").y_label("log-scale group-effect RMSE");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(recovery).add(information).size(1100,490).fit_panels().save_svg("build/glmm_simulated_counts.svg");
+  dm::dstruct::DataFrame out;out.add_column("rows_per_group",size);out.add_column("intercept_hat",intercept);out.add_column("slope_hat",slope);
+  out.add_column("group_SD_hat",sd);out.add_column("effect_RMSE",error);out.add_column("converged",converged);std::print("{}\n",out.to_md(6));
+}
+```
+// result_begin: markdown
+| rows_per_group | intercept_hat | slope_hat | group_SD_hat | effect_RMSE | converged |
+| ---: | ---: | ---: | ---: | ---: | :--- |
+| 6 | 1.043225 | 0.434685 | 0.459127 | 0.237110 | yes |
+| 18 | 1.035649 | 0.382242 | 0.553422 | 0.118174 | yes |
+| 54 | 1.026018 | 0.397940 | 0.553093 | 0.083543 | yes |
+
+\image(figures/glmm_simulated_counts.svg)
+// result_end
+
+\caption(Left: group BLUPs versus the actual generating effects for 18 observations per group, with the identity line. Right: realized group-effect RMSE across the three cluster sizes.)
+\alttext(Twenty-five estimated group effects scatter around their known values. A second panel and table compare effect-recovery errors and parameter estimates as observations per group increase.)
+
+> Penguins: a grouped binary response
+
+>> Data, units and group limitations
+
+`dm::datasets::penguins()` contains 344 penguins, with species, island, sex and four
+morphological measurements. Sex is missing for 11 rows. We omit incomplete sex/body-mass
+rows, encode male as one and use centred body mass in kilograms,
+`mass = body_mass_g/1000 - 4.2`. The binary response is natural; no thresholded or rounded
+measurement is invented to obtain it. The intercept refers to a 4.2 kg penguin.
+
+Only three islands are available. They are a small, geographically specific set, rather
+than a large random sample from an island population. Gentoo occurs on Biscoe only,
+Chinstrap on Dream only, while Adelie occurs on all three. Island effects from a model
+that omits species can therefore absorb species composition. We first summarize that
+composition, then compare the descriptive mass-only model to a species-adjusted fit.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::penguins().filter([](const auto& r){return !r.is_null("sex") && !r.is_null("body_mass_g");})
+      .mutate_with("male",[](const auto& r){return r.get_string("sex")=="male"?1.0:0.0;});
+  std::print("{}\n",d | dm::group_by("island","species") | dm::summarise(dm::agg::n("n"),dm::agg::mean("male","male_fraction"),dm::agg::mean("body_mass_g","mean_mass_g")) | dm::to_md(4));
+}
+```
+// result_begin: markdown
+| island | species | n | male_fraction | mean_mass_g |
+| :--- | :--- | ---: | ---: | ---: |
+| Torgersen | Adelie | 47 | 0.4894 | 3708.5106 |
+| Biscoe | Adelie | 44 | 0.5000 | 3709.6591 |
+| Dream | Adelie | 55 | 0.5091 | 3701.3636 |
+| Biscoe | Gentoo | 119 | 0.5126 | 5092.4370 |
+| Dream | Chinstrap | 68 | 0.5000 | 3733.0882 |
+// result_end
+
+\caption(Complete-case island/species composition and sex proportions. The grouping structure and species imbalance constrain what an island variance can mean.)
+
+>> Species adjustment changes the apparent island variation
+
+Both models below use the same 333 complete rows. They are descriptive fits, with
+working-model SEs conditional on the fitted covariance. Their working criteria are not
+used as marginal-likelihood AIC scores. Curves hold species at Adelie, the species present
+on all islands, rather than extrapolating Gentoo to islands where it was not observed.
+A zero estimated variance is a boundary solution, not evidence that every possible island
+population has exactly zero heterogeneity.
+
+```{cpp, results="markdown", file="figures/glmm_penguins_islands.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::penguins().filter([](const auto& r){return !r.is_null("sex") && !r.is_null("body_mass_g");})
+      .mutate_with("male",[](const auto& r){return r.get_string("sex")=="male"?1.0:0.0;})
+      .mutate_with("mass",[](const auto& r){return r.get_double("body_mass_g")/1000-4.2;});
+  dm::graphics::RLayout layout=dm::graphics::RLayout::create(1,2);dm::dstruct::DataFrame status;
+  for(int adjusted:{0,1}) {
+    dm::stats::GLMMOptions opt;opt.max_iterations=60;
+    const dm::stats::GLMM m(d,adjusted?"male ~ mass + species + (1|island)":"male ~ mass + (1|island)",opt);
+    const std::string label=adjusted?"species adjusted":"mass only";
+    auto row=m.model_summary().select({"n","groups","iterations","converged","covariance_boundary"});
+    row.add_column("model",std::vector<std::string>{label});row.add_column("island_SD",std::vector<double>{m.random_effect_std_devs()[0]});
+    status=adjusted?status.concat_rows(row):row;
+    auto plot=dm::graphics::RPlot::create();const auto mass=dm::seql(-1.5,.8,151);
+    const std::vector<dm::RGB> colors={{37,99,235},{220,38,38},{22,163,74}};
+    for(std::size_t g=0;g<m.num_groups();++g){dm::dstruct::DataFrame q;q.add_column("mass",mass.values());
+      q.add_column("island",std::vector<std::string>(151,m.group_labels()[g]));q.add_column("species",std::vector<std::string>(151,"Adelie"));
+      plot.lines((mass+4.2).values(),m.predict(q),m.group_labels()[g],colors[g]);}
+    plot.title(label+": conditional island curves").x_label("body mass (kg); Adelie if adjusted").y_label("conditional P(male)").y_limits(-.03,1.4);
+    layout.add(plot);std::print("{} coefficients:\n\n{}\n\n{} group effects:\n\n{}\n\n",label,m.coefficient_frame().to_md(5),label,m.random_effects_frame().to_md(5));
+  }
+  std::filesystem::create_directories("build");layout.size(1100,500).fit_panels().save_svg("build/glmm_penguins_islands.svg");
+  std::print("{}\n",status.select({"model","n","groups","island_SD","iterations","converged","covariance_boundary"}).to_md(6));
+}
+```
+// result_begin: markdown
+mass only coefficients:
+
+| term | estimate | std_error | z_value | p_value |
+| :--- | ---: | ---: | ---: | ---: |
+| (Intercept) | 0.34171 | 0.69722 | 0.49011 | 0.62406 |
+| mass | 2.45169 | 0.29418 | 8.33388 | 0.00000 |
+
+
+mass only group effects:
+
+| group | n | (Intercept) |
+| :--- | ---: | ---: |
+| Torgersen | 47 | 0.78012 |
+| Biscoe | 163 | -1.63199 |
+| Dream | 123 | 0.85188 |
+
+
+species adjusted coefficients:
+
+| term | estimate | std_error | z_value | p_value |
+| :--- | ---: | ---: | ---: | ---: |
+| (Intercept) | 3.83408 | 0.50559 | 7.58334 | 0.00000 |
+| mass | 7.37284 | 0.81415 | 9.05591 | 0.00000 |
+| speciesChinstrap | -0.25593 | 0.42931 | -0.59613 | 0.55109 |
+| speciesGentoo | -10.17781 | 1.19460 | -8.51982 | 0.00000 |
+
+
+species adjusted group effects:
+
+| group | n | (Intercept) |
+| :--- | ---: | ---: |
+| Torgersen | 47 | 0 |
+| Biscoe | 163 | 0 |
+| Dream | 123 | 0 |
+
+
+| model | n | groups | island_SD | iterations | converged | covariance_boundary |
+| :--- | ---: | ---: | ---: | ---: | :--- | :--- |
+| mass only | 333 | 3 | 1.179775 | 6 | yes | no |
+| species adjusted | 333 | 3 | 0.000000 | 7 | yes | yes |
+
+\image(figures/glmm_penguins_islands.svg)
+// result_end
+
+\caption(Descriptive mass-only and species-adjusted fits, including island BLUPs, working SEs and numerical status. Conditional curves are shown for each island; adjusted curves use Adelie throughout.)
+\alttext(Two panels compare island-specific fitted sex probabilities before and after species adjustment. Tables expose the fixed coefficients, island effects and any zero-variance boundary.)
+
+The mass-only fit estimates island SD 1.1798, while the species-adjusted fit reaches
+exactly zero and sets every island BLUP to zero. Its three Adelie curves coincide for
+that reason. This is consistent with species composition accounting for much of the
+apparent island variation in this specification; it does not identify a causal island
+effect or validate an island population variance from three locations.
+
+>> A prespecified holdout within the observed islands
+
+We split once with `train_test_split(...,0.3,42,"island")`. Island stratification retains
+training observations from each island, so these test predictions may legitimately use
+island effects learned from other penguins. Test labels never enter those effects.
+Two formulas are prespecified: mass only, and mass plus species. Brier loss averages
+\((\widehat p-y)^2\); log loss averages negative Bernoulli log probabilities. Lower is
+better for both. Accuracy uses the fixed threshold one half. A small single split is
+an illustration, not a calibrated uncertainty assessment or a model-selection guarantee.
+
+```{cpp, results="markdown", file="figures/glmm_penguins_holdout.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::penguins().filter([](const auto& r){return !r.is_null("sex") && !r.is_null("body_mass_g");})
+      .mutate_with("male",[](const auto& r){return r.get_string("sex")=="male"?1.0:0.0;})
+      .mutate_with("mass",[](const auto& r){return r.get_double("body_mass_g")/1000-4.2;});
+  const auto [train,test]=dm::stats::train_test_split(d,.3,42,"island");dm::dstruct::DataFrame scores;
+  auto layout=dm::graphics::RLayout::create(1,2);
+  for(int adjusted:{0,1}){
+    dm::stats::GLMMOptions opt;opt.max_iterations=60;
+    const dm::stats::GLMM m(train,adjusted?"male ~ mass + species + (1|island)":"male ~ mass + (1|island)",opt);
+    const std::string label=adjusted?"species adjusted":"mass only";
+    auto row=m.binomial_score(test);row.add_column("model",std::vector<std::string>{label});
+    row.add_column("converged",std::vector<std::string>{m.converged()?"yes":"no"});scores=adjusted?scores.concat_rows(row):row;
+    auto plot=dm::graphics::RPlot::create();
+    for(const auto& sex:{"female","male"}){const auto group=test.filter([&](const auto&r){return r.get_string("sex")==sex;});
+      plot.points((dm::Vector<>(group.numeric_column("mass").values())+4.2).values(),m.predict(group),sex,
+          std::string(sex)=="female"?dm::RGB{37,99,235}:dm::RGB{220,38,38});}
+    plot.abline_h(.5).title(label+": held-out predictions").x_label("body mass (kg)").y_label("conditional P(male)").y_limits(-.03,1.3);layout.add(plot);
+  }
+  std::filesystem::create_directories("build");layout.size(1100,490).fit_panels().save_svg("build/glmm_penguins_holdout.svg");
+  std::print("Training rows: {}; test rows: {}.\n\n{}\n",train.nrows(),test.nrows(),scores.select({"model","n","accuracy","brier","log_loss","converged"}).to_md(6));
+}
+```
+// result_begin: markdown
+Training rows: 233; test rows: 100.
+
+| model | n | accuracy | brier | log_loss | converged |
+| :--- | ---: | ---: | ---: | ---: | :--- |
+| mass only | 100 | 0.81 | 0.144562 | 0.453253 | yes |
+| species adjusted | 100 | 0.89 | 0.074401 | 0.244815 | yes |
+
+\image(figures/glmm_penguins_holdout.svg)
+// result_end
+
+\caption(Observed-island holdout predictions and probability losses. Every test island is represented in training. Points are coloured by observed sex; the horizontal line is the classification threshold.)
+\alttext(Two panels compare test probabilities from mass-only and species-adjusted mixed models, with observed male and female labels and a one-half threshold. The table gives row counts, accuracy and probability losses.)
+
+On this split, the adjusted fit correctly classifies 89 of 100 test penguins versus
+81 for mass only; Brier loss falls from 0.1446 to 0.0744 and log loss from 0.4533 to
+0.2448. The two prespecified candidates were not tuned on these test labels.
+
+>> Omit a whole island: a different prediction task
+
+Now fit on two islands and assess the third, using the mass-only formula in every fold.
+Species adjustment is deliberately excluded here: omitting Biscoe or Dream would also
+remove an entire species from training, so its fixed effect could not be estimated.
+The omitted island is unseen. `prediction_frame()` therefore uses the zero-random-effect
+baseline, not a BLUP learned from its test labels and not a logistic-normal marginal mean.
+These three folds are too few to estimate a reliable distribution of performance over
+new islands. Their species mixes and covariate distributions also differ, so scores should
+be interpreted fold by fold rather than as a direct ranking against the within-island split.
+
+```{cpp, results="markdown", file="figures/glmm_penguins_new_island.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::penguins().filter([](const auto& r){return !r.is_null("sex") && !r.is_null("body_mass_g");})
+      .mutate_with("male",[](const auto& r){return r.get_string("sex")=="male"?1.0:0.0;})
+      .mutate_with("mass",[](const auto& r){return r.get_double("body_mass_g")/1000-4.2;});
+  dm::dstruct::DataFrame scores;std::vector<double> index,brier;
+  const std::vector<std::string> islands={"Torgersen","Biscoe","Dream"};
+  for(std::size_t g=0;g<islands.size();++g){
+    const auto train=d.filter([&](const auto&r){return r.get_string("island")!=islands[g];});
+    const auto test=d.filter([&](const auto&r){return r.get_string("island")==islands[g];});
+    dm::stats::GLMMOptions opt;opt.max_iterations=60;
+    const dm::stats::GLMM m(train,"male ~ mass + (1|island)",opt);auto row=m.binomial_score(test);
+    row.add_column("omitted_island",std::vector<std::string>{islands[g]});row.add_column("prediction",std::vector<std::string>{m.prediction_frame(test).string_at("group_status",0)});
+    row.add_column("converged",std::vector<std::string>{m.converged()?"yes":"no"});scores=g?scores.concat_rows(row):row;
+    index.push_back(g);brier.push_back(row.double_at("brier",0));
+  }
+  auto plot=dm::graphics::RPlot::create();plot.points(index,brier,"Brier loss",dm::RGB{37,99,235});
+  plot.title("Zero-effect predictions on an omitted island").x_label("0 = Torgersen, 1 = Biscoe, 2 = Dream").y_label("Brier loss").y_limits(0,.5);
+  std::filesystem::create_directories("build");plot.size(850,490).save_svg("build/glmm_penguins_new_island.svg");
+  std::print("{}\n",scores.select({"omitted_island","n","prediction","accuracy","brier","log_loss","converged"}).to_md(6));
+}
+```
+// result_begin: markdown
+| omitted_island | n | prediction | accuracy | brier | log_loss | converged |
+| :--- | ---: | :--- | ---: | ---: | ---: | :--- |
+| Torgersen | 47 | unseen | 0.659574 | 0.199408 | 0.573055 | yes |
+| Biscoe | 163 | unseen | 0.588957 | 0.381249 | 2.296045 | yes |
+| Dream | 123 | unseen | 0.634146 | 0.218527 | 0.619016 | yes |
+
+\image(figures/glmm_penguins_new_island.svg)
+// result_end
+
+\caption(Whole-island holdouts use the zero-effect fallback for an unseen group. Reported probability scores concern that explicit prediction rule, not integration over a new island effect.)
+\alttext(Three points give separate Brier losses for Torgersen, Biscoe and Dream when each island is withheld from fitting. The table reports every fold as an unseen-group prediction task.)
+
+> Conclusion
+
+The tiny examples expose partial pooling and demonstrate that fixed coefficients can stop
+moving before group effects do. The first frozen Poisson variance profile has an exact
+minimum, while simulation checks recovery against actual generating effects. On penguins,
+island variation is sensitive to species composition and is supported by only three groups.
+Predictions within observed islands and on omitted islands use different information.
+PQL remains an approximation, its working criteria are not marginal GLMM likelihoods,
+and a zero-effect prediction is a conditional baseline rather than a population average.
+
+> References
+
+- Breslow, N. E. and Clayton, D. G. (1993). [Approximate Inference in Generalized Linear Mixed Models|https://doi.org/10.1080/01621459.1993.10594284]. ~Journal of the American Statistical Association~, 88(421), 9–25. PQL, variance estimation and approximation limitations.
+- R MASS documentation. [Fit Generalized Linear Mixed Models via PQL|https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/glmmPQL.html]. Working mixed-model fitting; the present implementation uses working ML.
+- Gorman, K. B., Williams, T. D. and Fraser, W. R. (2014). [Ecological Sexual Dimorphism and Environmental Variability within a Community of Antarctic Penguins (genus Pygoscelis)|https://doi.org/10.1371/journal.pone.0090081]. ~PLOS ONE~, 9(3), e90081. Source of the Palmer Archipelago measurements, used through `dm::datasets::penguins()`.
+- Horst, A. M., Hill, A. P. and Gorman, K. B. [palmerpenguins|https://allisonhorst.github.io/palmerpenguins/]. Dataset structure and species/island context.
+

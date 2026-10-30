@@ -1,0 +1,160 @@
+//? Title: K-Means: Tensor Distortion and SGD Restarts
+//? Subtitle: Cluster IDs are arbitrary; compare distances and centres
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Unlabelled points can be compressed into nearby representative centres, but different starts
+can produce different partitions. We cluster a six-point line whose two centroids are known,
+verify tensor distortion from assignments, and compare restart budgets on a fixed cloud.
+No class labels enter the fit.
+)
+\toc
+
+> The method
+
+For observations X and centres C, minimise the mean nearest-centre distortion
+
+$$
+J(C)=\frac1N\sum_i\min_k\|x_i-c_k\|^2,\qquad
+\nabla_{c_k}J=\frac2N\sum_{i:a_i=k}(c_k-x_i).
+$$
+\alttext(The mean nearest-centre squared error differentiates through the active cluster assignment.)
+
+Away from distance ties, assignments are locally constant, so ordinary tensor autograd gives
+the displayed gradient. The explicit SGD loop updates centres at rate .3. For fixed assignments,
+its update moves each centre towards its assigned mean; Lloyd's exact mean update is a different
+algorithm. A tie is nondifferentiable, and an empty cluster has zero gradient. Restarts reduce
+initialisation sensitivity. Retain the smallest final objective from the same seeded sequence
+of starts; extending that sequence cannot worsen its best value. Each step costs O(NKD) and
+materialises [N,K,D] differences. The plotted cloud shows every generated input observation.
+
+The concept diagram has a retained TikZ source in `diagrams/kmeans_clustering_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/kmeans_clustering_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/kmeans_clustering_concept.tikz > build/kmeans_clustering_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/kmeans_clustering_concept.svg build/kmeans_clustering_concept.dvi > build/kmeans_clustering_concept.render.log 2>&1
+printf 'Rendered build/kmeans_clustering_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/kmeans_clustering_concept.svg from local TikZ source.
+// \image(figures/kmeans_clustering_concept.svg)
+// result_end
+\caption(Cluster IDs are arbitrary; compare distances and centres)
+\alttext(Seeded initial centres; learnable tensor leaves. Then Nearest-centre distortion; piecewise quadratic loss. Then Autograd + SGD; compare retained restarts.)
+
+> Simple examples
+
+Points -3,-2,-1 and 1,2,3 form two clusters with centres -2 and 2 and inertia 4.
+
+```{cpp, results="markdown", file="figures/kmeans_clustering_six.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto x = n::tensor({-3, -2, -1, 1, 2, 3}, {6, 1}, n::DType::Float64);
+  auto centres = n::tensor({-1, 1}, {2, 1}, n::DType::Float64).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Sgd;
+  n::Optimizer optimizer({centres}, .3, config);
+  for (int step = 0; step < 250; ++step) {
+    const auto distance = n::sum(n::square(n::expand_dims(x, 1) - centres), {2});
+    // argmin assignments are piecewise constant; min routes the active gradient.
+    const auto loss = n::mean(n::min(distance, {1}));
+    optimizer.minimize(loss);
+  }
+  n::NoGradGuard guard;
+  const auto distance = n::sum(n::square(n::expand_dims(x, 1) - centres), {2});
+  const auto assignments = n::argmin(distance, 1);
+  const auto assigned = n::gather(centres, assignments);
+  const double inertia = n::sum(n::min(distance, {1})).item();
+  if (std::abs(inertia - 4) > 1e-10)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.points(x.to_vector<double>(), assignments.to_vector<double>(), "data", {37, 99, 235}, 5)
+      .points(assigned.to_vector<double>(), assignments.to_vector<double>(), "SGD centres",
+              {234, 88, 12}, 8)
+      .title("Tensor SGD recovers two exact cluster means")
+      .x_label("x")
+      .y_label("cluster ID")
+      .y_limits(-.3, 1.3);
+  std::filesystem::create_directories("build");
+  p.size(820, 420).save_svg("build/kmeans_clustering_six.svg");
+  std::print("Centres {}; inertia {:.9f}; {} SGD steps.\n", centres.to_vector<double>(),
+             inertia, optimizer.iterations());
+}
+```
+// result_begin: markdown
+Centres [-1.9999999999999998, 1.9999999999999998]; inertia 4.000000000; 250 SGD steps.
+\image(figures/kmeans_clustering_six.svg)
+// result_end
+\caption(The assignment IDs matter only through their associated centroids and distances.)
+\alttext(The assignment IDs matter only through their associated centroids and distances.)
+
+> Checking the theory
+
+```{cpp, results="markdown", file="figures/kmeans_clustering_cloud.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::Generator rng(19);
+  const auto i = n::linspace(0, 89, 90, n::DType::Float64).reshape({90, 1});
+  const auto group = i - 3 * n::floor(i / 3.);
+  const auto x = n::concat({2 * group + .7 * n::sin(1.7 * i), .8 * n::cos(2.1 * i)}, 1);
+  double first = 0, best = std::numeric_limits<double>::infinity();
+  n::Tensor retained;
+  for (int restart = 0; restart < 8; ++restart) {
+    auto centres = (n::normal({3, 2}, 0, 1, rng, n::DType::Float64) + n::mean(x, {0}, true))
+                       .detach()
+                       .requires_grad_();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Sgd;
+    n::Optimizer optimizer({centres}, .3, config);
+    for (int step = 0; step < 600; ++step) {
+      const auto distance = n::sum(n::square(n::expand_dims(x, 1) - centres), {2});
+      optimizer.minimize(n::mean(n::min(distance, {1})));
+    }
+    n::NoGradGuard guard;
+    const double inertia =
+        n::sum(n::min(n::sum(n::square(n::expand_dims(x, 1) - centres), {2}), {1})).item();
+    if (restart == 0)
+      first = inertia;
+    if (inertia < best) {
+      best = inertia;
+      retained = centres.detach().clone();
+    }
+  }
+  if (best > first + 1e-10)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.points(n::select(x, 1, 0).to_vector<double>(), n::select(x, 1, 1).to_vector<double>(),
+           "all 90 inputs", {37, 99, 235}, 4)
+      .points(n::select(retained, 1, 0).to_vector<double>(),
+              n::select(retained, 1, 1).to_vector<double>(), "best centres", {234, 88, 12}, 8)
+      .title("All input points and the retained tensor-SGD centres")
+      .x_label("x")
+      .y_label("y");
+  std::filesystem::create_directories("build");
+  p.size(850, 420).save_svg("build/kmeans_clustering_cloud.svg");
+  std::print("First-start inertia {:.9f}; best of eight {:.9f}.\n", first, best);
+}
+```
+// result_begin: markdown
+First-start inertia 22.400716390; best of eight 22.400716390.
+\image(figures/kmeans_clustering_cloud.svg)
+// result_end
+
+
+> Conclusion
+
+The tiny partition recovers the expected means and squared-distance total. Additional starts
+can improve the retained objective, while the optimum remains dependent on metric, K and
+initialization. Cluster IDs are not semantic labels or evidence of natural categories.
+
+> References
+
+- [Arthur and Vassilvitskii (2007), k-means++](https://theory.stanford.edu/~sergei/papers/kMeansPP-soda.pdf).

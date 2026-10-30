@@ -1,0 +1,379 @@
+//? Title: Levenberg–Marquardt: Residuals, Damping and Stopping
+//? Subtitle: A linear control before noisy exponential decay and logistic growth
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A nonlinear model is fit by reducing residuals between observations and model
+predictions. Linearising those residuals gives a useful local step, but weak
+curvature or a poor starting point can make an undamped update unreliable.
+We derive the library's Levenberg–Marquardt rule, check an exact rank-deficient
+linear control, and fit the original noisy offset-exponential and logistic curves.
+A deliberately overdamped run shows that a tiny proposed step need not imply
+stationarity.
+)
+\toc
+
+> The method
+
+Let r(theta)=model(theta)-y and F=.5*sum(r squared). Its gradient is J transpose r.
+Linearise r(theta+s) approximately by r+J*s and add a quadratic step penalty:
+
+$$
+ \min_s\ \tfrac12\|r+Js\|^2+\tfrac\mu2\|s\|^2,
+ \qquad (J^TJ+\mu I)s=-J^Tr.
+$$
+\alttext(Minimise the linearised residual sum of squares plus mu times half the squared step norm. Its normal equations add mu to the Gauss–Newton system diagonal.)
+
+For positive mu the mathematical matrix is positive definite even when J is rank
+deficient. This implementation solves its dense normal equations by unpivoted
+elimination, rather than a QR/SVD least-squares solve. Conditioning of J transpose J
+is therefore a practical limitation. Work per step is O(n*p squared+p cubed), with
+O(n*p+p squared) dense storage. Parameter positivity and box constraints are not
+imposed by this solver.
+
+The retained TikZ diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Normal documentation exports use its saved local SVG.
+
+```{bash, file="figures/opt_lm_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/opt_lm_mechanism.tikz > build/opt_lm_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/opt_lm_mechanism.svg build/opt_lm_mechanism.dvi > build/opt_lm_mechanism.render.log 2>&1
+printf 'Rendered the optimization mechanism diagram.\n'
+```
+// result_begin:
+// Rendered the optimization mechanism diagram.
+// \image(figures/opt_lm_mechanism.svg)
+// result_end
+\caption(A damped local residual solve proposes a step, which is assessed on the actual nonlinear loss.)
+\alttext(Residuals and their analytic Jacobian define a local linear model. Diagonal damping regularises its normal equations. Actual half-SSE decrease determines acceptance and the next damping scale.)
+
+The native rule accepts only strict loss reductions, multiplies damping by .3 on
+acceptance and by ten on rejection, then tests the *proposed step norm* against
+tolerance. A tiny rejected step can terminate with a nonzero J transpose r.
+This is not a full model-agreement trust-region rule. The recorder retains every
+residual request, including rejected candidates; these are not accepted iterations.
+Final half SSE and a separate J-transpose-r norm are checked after fitting.
+
+> Small worked example
+
+>> A constant curve supplies an exact damped step
+
+Use two observations at t=zero, y=(1,3), and the two-parameter exponential model
+A*exp(-k*t). The data identify A but not k: J has rows (1,0). Starting at (0,0),
+r=(-1,-3), J transpose r=(-4,0), and J transpose J=diag(2,0). With damping one,
+the step is (4/3,0), accepted because F falls from five to 13/9. The optimum
+has A=two, F=one, with arbitrary k. This explicitly separates a well-defined
+damped solve from identification of every parameter.
+
+```{cpp, results="markdown", file="figures/opt_lm_linear_control.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 0});
+  d.add_column("y", std::vector<double>{1, 3});
+  o::CurveResidual             f(d);
+  o::LevenbergMarquardtOptions opt;
+  opt.initial_damping = 1;
+  opt.max_iterations  = 1;
+  opt.tolerance       = 0;
+  const auto run    = o::trace_optimize<o::ResidualFunction>(f, o::LevenbergMarquardt(opt), {0, 0});
+  const auto values = run.trace.values();
+  std::vector<double> x = dm::seql(-.5, 4, 201).values(), loss;
+  for (double a : x)
+    loss.push_back((a - 2) * (a - 2) + 1);
+  auto plot =
+      dm::graphics::RPlot::create()
+          .line(x, loss, "exact F(A)", {130, 130, 130})
+          .points(
+              values.numeric_column("x0").values(),
+              values.numeric_column("value").values(),
+              "residual requests",
+              {40, 100, 190},
+              4)
+          .title("One damped step on a linear control")
+          .x_label("amplitude A (rate unidentifiable)")
+          .y_label("half residual SSE")
+          .x_limits(-.5, 4)
+          .y_limits(0, 10)
+          .legend({"exact quadratic", "requested values"}, {{130, 130, 130}, {40, 100, 190}});
+  plot.size(850, 490).save_svg("build/opt_lm_linear_control.svg");
+  std::print(
+      "{}\n\n{}\n\nFinal J-transpose-r norm: {:.8g}.\n",
+      run.summary().to_md(8),
+      values.to_md(8),
+      o::residual_gradient_norm(f, run.coordinates));
+}
+```
+// result_begin: markdown
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.44444 | 1.44444 | nan | 3 |  | 1.33333 | 0 |
+
+
+| event | value | gradient_norm | term_gradients | x0 | x1 |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 5.00000000 | nan | 0 | 0.00000000 | 0 |
+| 3 | 1.44444444 | nan | 0 | 1.33333333 | 0 |
+
+
+Final J-transpose-r norm: 1.3333333.
+\image(figures/opt_lm_linear_control.svg)
+// result_end
+\caption(The first damped update matches an exact normal-equation calculation despite an unidentifiable rate.)
+\alttext(A half-SSE parabola has minimum one at amplitude two. The initial request at zero has loss five, and the first damped candidate at four thirds has loss thirteen ninths.)
+
+> Noisy curve fits
+
+>> Offset-exponential decay: preserve the declared generating model
+
+Use 40 points t=.25*i, y=5*exp(-.7*t)+one plus normal noise SD .1, seed 42.
+The native data recipe owns a local mt19937_64; standard normal distribution
+implementations can differ across platforms. The parameter order is (A,k,c), with
+residual A*exp(-k*t)+c-y and Jacobian row (exp(-k*t),-A*t*exp(-k*t),one).
+Start at (1,.1,0), use default damping and a 200-step budget, and check the
+analytic Jacobian separately using scale-aware central differences. That check
+has truncation and rounding error; it is not the derivative used by the optimizer.
+Known generating parameters describe the simulation, not the exact optimum of
+a noisy sample. Training RMSE or small gradient does not certify model adequacy
+or out-of-sample prediction uncertainty.
+
+```{cpp, results="markdown", file="figures/opt_lm_exponential.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o           = dm::optim;
+  const auto       data = o::optimization_curve_data("exponential_offset", 40, 42);
+  o::CurveResidual f(data, "exponential_offset");
+  const auto run = o::trace_optimize<o::ResidualFunction>(f, o::LevenbergMarquardt(), {1, .1, 0});
+  const auto x   = data.numeric_column("x").values();
+  auto       fit =
+      dm::graphics::RPlot::create()
+          .points(x, data.numeric_column("y").values(), "observed", {130, 130, 130}, 3)
+          .line(x, data.numeric_column("truth").values(), "generating mean", {190, 100, 35})
+          .line(x, f.predict(run.coordinates), "LM fit", {40, 100, 190})
+          .title("Offset-exponential decay")
+          .x_label("time")
+          .y_label("response")
+          .x_limits(0, 9.75)
+          .y_limits(0, 8)
+          .legend({"observed", "mean", "fit"}, {{130, 130, 130}, {190, 100, 35}, {40, 100, 190}});
+  const auto          v = run.trace.values();
+  std::vector<double> logloss;
+  for (double z : v.numeric_column("value").values())
+    logloss.push_back(std::log10(std::max(1e-14, z)));
+  auto trials =
+      dm::graphics::RPlot::create()
+          .line(
+              v.numeric_column("event").values(), logloss, "all residual requests", {40, 100, 190})
+          .title("Trial losses, including rejected steps")
+          .x_label("callback request index")
+          .y_label("log10 half SSE");
+  dm::graphics::RLayout::create(1, 2).add(fit).add(trials).size(1100, 490).fit_panels().save_svg(
+      "build/opt_lm_exponential.svg");
+  std::print(
+      "{}\n\nJ-transpose-r norm: {:.8g}; training residual RMSE: {:.8g}.\n\n{}\n",
+      run.summary().to_md(8),
+      o::residual_gradient_norm(f, run.coordinates),
+      std::sqrt(2 * run.checked_value / data.nrows()),
+      o::check_residual_jacobian(f, {4.2, .6, .8}).to_md(10));
+}
+```
+// result_begin: markdown
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 0.285027 | 0.285027 | nan | 23 |  | 5.04642 | 0.718982 | 1.01816 |
+
+
+J-transpose-r norm: 6.0411564e-10; training residual RMSE: 0.11937892.
+
+| parameter | max_absolute_error |
+| ---: | ---: |
+| 0 | 0 |
+| 1 | 0 |
+| 2 | 0 |
+
+\image(figures/opt_lm_exponential.svg)
+// result_end
+\caption(The noisy sample optimum is checked numerically against analytic residual derivatives.)
+\alttext(Observed offset-exponential data, the generating mean and fitted curve are shown together. A separate callback-loss trace retains rejected trial evaluations instead of presenting them as accepted iterations.)
+
+>> Logistic growth: a different residual geometry
+
+Use 50 points t=.2*i, true (L,k,mid)=(10,1.5,5), normal noise SD .15 and seed 43.
+For p=logistic(k*(t-mid)), the Jacobian row is
+(p,L*(t-mid)*p*(1-p),-L*k*p*(1-p)). Stable logistic evaluation prevents avoidable
+exponential overflow in the inverse link, but does not solve parameter-identifiability
+or local-optimum problems. The deliberately poor start remains (1,.1,0). The same
+half-SSE convention, proposed-step caveat and independent derivative checks apply.
+No real dataset is forced: the original generated curves provide known means and
+exact derivative formulas for checking this optimizer.
+
+```{cpp, results="markdown", file="figures/opt_lm_logistic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o           = dm::optim;
+  const auto       data = o::optimization_curve_data("logistic", 50, 43);
+  o::CurveResidual f(data, "logistic");
+  const auto run = o::trace_optimize<o::ResidualFunction>(f, o::LevenbergMarquardt(), {1, .1, 0});
+  const auto x   = data.numeric_column("x").values();
+  auto       fit =
+      dm::graphics::RPlot::create()
+          .points(x, data.numeric_column("y").values(), "observed", {130, 130, 130}, 3)
+          .line(x, data.numeric_column("truth").values(), "generating mean", {190, 100, 35})
+          .line(x, f.predict(run.coordinates), "LM fit", {40, 100, 190})
+          .title("Logistic growth")
+          .x_label("time")
+          .y_label("response")
+          .x_limits(0, 9.8)
+          .y_limits(-.5, 14)
+          .legend({"observed", "mean", "fit"}, {{130, 130, 130}, {190, 100, 35}, {40, 100, 190}});
+  const auto          v = run.trace.values();
+  std::vector<double> logloss;
+  for (double z : v.numeric_column("value").values())
+    logloss.push_back(std::log10(std::max(1e-14, z)));
+  auto trials =
+      dm::graphics::RPlot::create()
+          .line(
+              v.numeric_column("event").values(), logloss, "all residual requests", {40, 100, 190})
+          .title("Trial losses, including rejected steps")
+          .x_label("callback request index")
+          .y_label("log10 half SSE");
+  dm::graphics::RLayout::create(1, 2).add(fit).add(trials).size(1100, 490).fit_panels().save_svg(
+      "build/opt_lm_logistic.svg");
+  std::print(
+      "{}\n\nJ-transpose-r norm: {:.8g}; training residual RMSE: {:.8g}.\n\n{}\n",
+      run.summary().to_md(8),
+      o::residual_gradient_norm(f, run.coordinates),
+      std::sqrt(2 * run.checked_value / data.nrows()),
+      o::check_residual_jacobian(f, {9, 1.2, 4.5}).to_md(10));
+}
+```
+// result_begin: markdown
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 0.494525 | 0.494525 | nan | 37 |  | 9.96664 | 1.58289 | 5.01341 |
+
+
+J-transpose-r norm: 4.5932382e-08; training residual RMSE: 0.140645.
+
+| parameter | max_absolute_error |
+| ---: | ---: |
+| 0 | 0.000000000 |
+| 1 | 0.000000001 |
+| 2 | 0.000000000 |
+
+\image(figures/opt_lm_logistic.svg)
+// result_end
+\caption(The logistic example checks the same native damping rule on a different nonlinear family.)
+\alttext(Noisy logistic observations, the known generating mean and fitted curve share a plot. All residual-request losses and final Jacobian-gradient checks remain visible.)
+
+>> A tiny rejected proposal is not a stationarity certificate
+
+Return to the constant-curve control and compare initial damping .001, one and
+1e20. At 1e20, the first amplitude proposal is only about 4e-20. Its loss rounds
+to the unchanged value five, so the strict-decrease test rejects it; the tiny-step
+test then ends the solve. The returned amplitude stays zero and J transpose r has
+norm four. This is an exact mechanism for premature stopping under excessive
+damping, rather than evidence that the residuals were minimised.
+
+```{cpp, results="markdown", file="figures/opt_lm_overdamping.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  dm::dstruct::DataFrame data;
+  data.add_column("x", std::vector<double>{0, 0});
+  data.add_column("y", std::vector<double>{1, 3});
+  o::CurveResidual                     f(data);
+  const std::vector<std::string>       labels{"mu .001", "mu 1", "mu 1e20"};
+  const std::vector<dm::graphics::RGB> colors{{40, 100, 190}, {190, 100, 35}, {140, 75, 160}};
+  auto                                 plot  = dm::graphics::RPlot::create();
+  std::size_t                          index = 0;
+  for (double damping : {.001, 1., 1e20}) {
+    o::LevenbergMarquardtOptions opt;
+    opt.initial_damping = damping;
+    const auto run = o::trace_optimize<o::ResidualFunction>(f, o::LevenbergMarquardt(opt), {0, 0});
+    const auto v   = run.trace.values();
+    plot.line(
+        v.numeric_column("event").values(),
+        v.numeric_column("value").values(),
+        labels[index],
+        colors[index]);
+    std::print(
+        "{}\n\n{}\n\nFinal J-transpose-r norm: {:.8g}.\n\n",
+        labels[index],
+        run.summary().to_md(8),
+        o::residual_gradient_norm(f, run.coordinates));
+    ++index;
+  }
+  plot.title("Overdamping and proposed-step stopping")
+      .x_label("callback request index")
+      .y_label("half residual SSE")
+      .y_limits(.8, 7.5)
+      .abline_h(1, {130, 130, 130}, 1)
+      .legend(labels, colors)
+      .size(850, 490)
+      .save_svg("build/opt_lm_overdamping.svg");
+}
+```
+// result_begin: markdown
+mu .001
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1 | 1 | nan | 9 |  | 2 | 0 |
+
+
+Final J-transpose-r norm: 1.3490542e-11.
+
+mu 1
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1 | 1 | nan | 15 |  | 2 | 0 |
+
+
+Final J-transpose-r norm: 4.8830051e-10.
+
+mu 1e20
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 5 | 5 | nan | 3 |  | 0 | 0 |
+
+
+Final J-transpose-r norm: 4.
+
+\image(figures/opt_lm_overdamping.svg)
+// result_end
+\caption(A small proposal caused by huge damping leaves a large objective gradient at the returned point.)
+\alttext(Ordinary damping runs approach the exact half-SSE minimum one. The extremely overdamped run stays at loss five and returns with gradient norm four, despite its tiny rejected proposal.)
+
+> Conclusions and references
+
+The linear control checks the sign, half-SSE convention and damping matrix exactly.
+Analytic Jacobian checks accompany the two original noisy curve families. The
+large-damping counterexample separates proposed-step stopping from stationarity.
+Normal equations, unconstrained parameters, local starts and the absence of a
+model-ratio acceptance rule qualify this compact implementation; fitting a curve
+does not supply predictive confidence intervals.
+
+- K. Levenberg (1944), [A Method for the Solution of Certain Non-Linear Problems in Least Squares](https://doi.org/10.1090/qam/10666).
+- D. W. Marquardt (1963), [An Algorithm for Least-Squares Estimation of Nonlinear Parameters](https://doi.org/10.1137/0111030).
+
+> Reading the numerical evidence
+
+`trace_optimize` calls the configured native optimizer through its stated abstract
+interface. It records callback requests without inserting fitting evaluations.
+Value calls can be rejected trials; gradient calls can be look-ahead points.
+`optimization_comparison` explicitly re-evaluates selected points afterwards on
+these pure objectives. Those diagnostic calls are excluded from fitting counts.
+Callback indices are neither accepted iterations nor wall time. The plotted gap
+uses the declared reference (minimum or stated lower bound) and a display floor of 1e-14; that floor does
+not modify any optimizer update. Returned coordinates, checked objective and
+appropriate stationarity/feasibility checks carry more information than a return
+from a finite iteration budget. Native APIs do not expose a uniform stop-status flag.
+The recorder retains exceptions and rejects nonfinite requested values/gradients;
+this makes failures visible rather than letting an instrumented run continue on NaN.
+

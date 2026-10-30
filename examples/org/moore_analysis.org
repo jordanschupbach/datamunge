@@ -37,7 +37,7 @@ minimal DFA's states.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // The six-state example DFA (alphabet {0,1}), accepting states {2,3,4}.
 inline DFA example_dfa() {

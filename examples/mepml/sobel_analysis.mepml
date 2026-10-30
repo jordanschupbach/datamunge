@@ -36,7 +36,7 @@ edges; the center-weighting (the 2's) is a mild smoothing that damps noise. The 
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -91,7 +91,7 @@ gradient magnitude exceeds a threshold \-\- which should trace the square's outl
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

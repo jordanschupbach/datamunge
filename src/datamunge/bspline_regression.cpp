@@ -9,7 +9,7 @@ namespace datamunge {
 
 namespace {
 
-fda::PSplineFitResult fit_ols(const Vector& x, const Vector& y, const fda::BSplineBasis& basis) {
+fda::PSplineFitResult fit_ols(const Vector<>& x, const Vector<>& y, const fda::BSplineBasis& basis) {
   fda::PSplineOptions ols;
   ols.lambda = 0.0;       // no roughness penalty: plain least squares
   ols.penalty_order = 1;  // unused at lambda = 0; the lowest order admits the smallest bases
@@ -23,7 +23,7 @@ fda::PSplineFitResult fit_ols(const Vector& x, const Vector& y, const fda::BSpli
   }
 }
 
-void check_xy(const Vector& x, const Vector& y) {
+void check_xy(const Vector<>& x, const Vector<>& y) {
   if (x.size() != y.size()) {
     throw std::invalid_argument("BSplineRegression: x and y must have the same length");
   }
@@ -32,14 +32,14 @@ void check_xy(const Vector& x, const Vector& y) {
   }
 }
 
-fda::BSplineBasis uniform_basis(const Vector& x, const Vector& y, std::size_t n_basis,
+fda::BSplineBasis uniform_basis(const Vector<>& x, const Vector<>& y, std::size_t n_basis,
                                 std::size_t degree) {
   check_xy(x, y);
   const auto [lo, hi] = std::minmax_element(x.begin(), x.end());
   return fda::BSplineBasis::open_uniform(degree, n_basis, *lo, *hi);
 }
 
-fda::BSplineBasis knot_basis(const Vector& x, const Vector& y, const Vector& knots,
+fda::BSplineBasis knot_basis(const Vector<>& x, const Vector<>& y, const Vector<>& knots,
                              std::size_t degree) {
   check_xy(x, y);
   if (knots.empty()) {
@@ -65,17 +65,17 @@ fda::BSplineBasis knot_basis(const Vector& x, const Vector& y, const Vector& kno
 
 } // namespace
 
-BSplineRegression::BSplineRegression(const Vector& x, const Vector& y, std::size_t n_basis,
+BSplineRegression::BSplineRegression(const Vector<>& x, const Vector<>& y, std::size_t n_basis,
                                      std::size_t degree)
     : fit_(fit_ols(x, y, uniform_basis(x, y, n_basis, degree))) {}
 
-BSplineRegression::BSplineRegression(const Vector& x, const Vector& y, const Vector& knots,
+BSplineRegression::BSplineRegression(const Vector<>& x, const Vector<>& y, const Vector<>& knots,
                                      std::size_t degree)
     : fit_(fit_ols(x, y, knot_basis(x, y, knots, degree))) {}
 
-Vector BSplineRegression::predict(const Vector& x) const {
+Vector<> BSplineRegression::predict(const Vector<>& x) const {
   const auto [lo, hi] = domain();
-  Vector clamped = x;
+  Vector<> clamped = x;
   for (double& v : clamped) v = std::clamp(v, lo, hi);
   return fit_.predict(clamped.values());
 }

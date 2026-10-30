@@ -1,7 +1,6 @@
 # Native Python NN example. Acrobot: a two-link underactuated swing-up.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/acrobot.py
 """Acrobot: a two-link underactuated swing-up.
-
-CMD: just python-example acrobot
 
 Port of tflow's acrobot. Gymnasium's Acrobot-v1, including its RK4
 integrator. Only the elbow is actuated, with torque -1, 0 or +1; the goal is

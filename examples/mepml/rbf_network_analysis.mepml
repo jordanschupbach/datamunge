@@ -41,7 +41,7 @@ widening \(\sigma\) makes it smoother.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Two-stage training
@@ -140,7 +140,7 @@ data, the true curve, the RBF fit, and the learned centers.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -37,7 +37,7 @@ shrinking the cell by roughly \(2^{2.5}\approx 5.7\times\) per side.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

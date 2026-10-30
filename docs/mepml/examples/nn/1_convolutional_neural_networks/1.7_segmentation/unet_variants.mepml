@@ -1,0 +1,586 @@
+//? Title: UNet++ dense skips and additive attention U-Net
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Combining coarse context with fine spatial features can require more than a single skip connection. This report checks densely nested supervision and additive skip gating,then visibly fits both complete compact tensor models and examines their held-out masks and learned gates.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segmentation/unet_variants.cpp`.
+
+> The method
+
+UNet++ refines dense nested skip pathways and supervises several full-resolution heads. Attention U-Net learns context-dependent sigmoid multipliers for encoder skips. Both mechanisms are checked with small examples and full graphs before explicit Adam fits.
+
+The editable concept diagram is `diagrams/unet_variants_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/unet_variants_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/unet_variants_concept.tikz > build/unet_variants_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/unet_variants_concept.svg build/unet_variants_concept.dvi > build/unet_variants_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/unet_variants_concept.svg)
+// result_end
+\caption(UNet++ dense skips and additive attention U-Net)
+\alttext(Dense nested skips; Four supervised heads; then Additive skip gates; Context coefficients; then Whole-model Adam; Held-out mask checks.)
+
+> Executed tensor architecture
+
+The figure selects the densely connected UNet++ path; the attention-gate variant is explained separately.
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/unet_variants_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore   p(17), state(18);
+  m::NestedUnetConfig c;
+  c.classes    = 4;
+  c.base_width = 8;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) { return m::NestedUnet(p, image, c).logits; },
+      "UNet++ dense skips and additive attention U-Net");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 3}), options);
+  diagram.save_svg("build/unet_variants_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+57 displayed nodes; 573132 reachable learned values.
+\image(figures/unet_variants_architecture.svg)
+// result_end
+\caption(Executed unet variants tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right unet variants architecture with rotated names and exact output shapes.)
+
+> An additive gate with hand-checkable derivatives
+
+An attention gate projects the encoder skip and decoder context into a hidden
+space,adds them,applies ReLU,then a1x1 projection and sigmoid. The coefficient
+multiplies every skip channel at that location. Both input paths receive
+gradients; the coefficient is not a hard crop or a ground-truth mask.
+
+This fixture sets all projections explicitly. With skip x and context g=.4,
+`z=2*x-g+.3`, `a=sigmoid(1.5*ReLU(z)-.2)` and output `x*a`.
+Its skip derivative is `a+x*a*(1-a)*3` when z>0,and a otherwise;
+its context derivative is `-1.5*x*a*(1-a)` when z>0,and zero otherwise.
+The following61 points avoid the ReLU kink; the native fixtures also check
+negative projections and sigmoid saturation.
+
+```{cpp, results="markdown", file="figures/unet_variants_gate.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type);
+  p.set("gate/x/W", n::full({1, 1, 1, 1}, 2., type));
+  p.set("gate/x/b", n::full({1}, .1, type));
+  p.set("gate/g/W", n::full({1, 1, 1, 1}, -1., type));
+  p.set("gate/g/b", n::full({1}, .2, type));
+  p.set("gate/psi/W", n::full({1, 1, 1, 1}, 1.5, type));
+  p.set("gate/psi/b", n::full({1}, -.2, type));
+  auto x = n::linspace(-3, 3, 61, type).reshape({1, 1, 61, 1}).requires_grad_(),
+       g = n::full({1, 1, 61, 1}, .4, type).requires_grad_();
+  const auto net = m::AttentionGate(p, "gate", x, g, 1);
+  const auto derivatives = n::grad(n::sum(net.output), {x, g});
+  double error = 0;
+  for (int i = 0; i < 61; ++i) {
+    const double value = x.reshape({61}).at({i}), z = 2 * value - .1,
+                 a = 1 / (1 + std::exp(-(1.5 * std::max(z, 0.) - .2))),
+                 dx = a + (z > 0 ? value * a * (1 - a) * 3 : 0),
+                 dg = z > 0 ? -1.5 * value * a * (1 - a) : 0;
+    error = std::max({error, std::abs(net.coefficients.reshape({61}).at({i}) - a),
+                      std::abs(net.output.reshape({61}).at({i}) - value * a),
+                      std::abs(derivatives[0].reshape({61}).at({i}) - dx),
+                      std::abs(derivatives[1].reshape({61}).at({i}) - dg)});
+  }
+  if (error > 1e-12)
+    return 1;
+  const auto axis = x.to_vector<double>();
+  auto a = dm::graphics::RPlot::create(), b = dm::graphics::RPlot::create();
+  a.lines(axis, net.coefficients.to_vector<double>(), "coefficient", {37, 99, 235})
+      .title("Explicit additive sigmoid gate")
+      .x_label("skip input")
+      .y_label("shared channel coefficient")
+      .y_limits(0, 1.3);
+  b.lines(axis, derivatives[0].to_vector<double>(), "skip derivative", {22, 163, 74})
+      .lines(axis, derivatives[1].to_vector<double>(), "context derivative", {220, 38, 38})
+      .title("Both gated-output derivatives")
+      .x_label("skip input")
+      .y_label("derivative of gated output")
+      .y_limits(-.5, 1.7);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1200, 550).fit_panels().save_svg(
+      "build/unet_variants_gate.svg");
+  std::print("All61 gate values,outputs and both input derivatives match independent "
+             "formulas,max error {:.12f}. Native tests additionally cover negative ReLU "
+             "branches and saturated sigmoid.\n",
+             error);
+}
+```
+// result_begin: markdown
+All61 gate values,outputs and both input derivatives match independent formulas,max error 0.000000000000. Native tests additionally cover negative ReLU branches and saturated sigmoid.
+\image(figures/unet_variants_gate.svg)
+// result_end
+\caption(Explicit scalar additive attention gate and derivatives of its gated output. Both positive and negative derivative ranges remain visible; no fitting occurs in this fixture.)
+\alttext(Explicit scalar additive attention gate and derivatives of its gated output. Both positive and negative derivative ranges remain visible; no fitting occurs in this fixture.)
+
+> Dense nested skips and complete model graphs
+
+UNet++ constructs x[i,j] by concatenating all earlier x[i,0..j-1] nodes with
+corner-aligned bilinear upsampling of x[i+1,j-1] to the actual encoder shape,
+then applying two3x3/ReLU convolutions. Four full-resolution learned heads
+provide deep supervision; evaluation uses the deepest head. At default base32,
+the deepest x[0,4] concatenates192 channels and the graph has15 nodes,
+9,156,264 learned scalars and68 learned tensor gradients.
+
+Attention U-Net uses learned2x2 stride2 up-convolutions,one additive gate for
+each cropped encoder skip,and concatenated decoder convolution pairs.
+At default base64,it has31,381,414 scalars and70 tensor gradients. The
+adaptation omits BN and dropout in both models. Full graphs execute below at
+32x32 with initialized weights,without a biomedical accuracy claim. Compact
+base8/four-class models retain every nested node/head or every attention gate.
+Native checks require every compact gradient to be nonzero and verify dense
+concatenation widths,odd nested alignment and rounded attention geometry.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  for (bool nested : {true, false}) {
+    n::ParameterStore p(17);
+    const auto x = n::sin(.13 * n::arange(0, 32 * 32 * 3)).reshape({1, 32, 32, 3});
+    n::Tensor loss;
+    std::size_t heads = 1, nodes = 0;
+    if (nested) {
+      const auto net = m::NestedUnet(p, x);
+      heads = net.heads.size();
+      nodes = net.nodes.size();
+      loss = n::mean(n::square(net.heads[0]));
+      for (std::size_t i = 1; i < heads; ++i)
+        loss = loss + n::mean(n::square(net.heads[i]));
+      if (p.at("x0_4/conv1/W").shape()[2] != 192 || heads != 4 || nodes != 15)
+        return 1;
+    } else {
+      const auto net = m::AttentionUnet(p, x);
+      loss = n::mean(n::square(net.logits));
+      if (net.coefficients.size() != 4)
+        return 1;
+    }
+    const auto g = n::grad(loss, p.parameters());
+    if (p.count() != (nested ? 9156264 : 31381414) || g.size() != (nested ? 68 : 70))
+      return 1;
+    for (const auto &v : g)
+      if (!v.defined() || !std::isfinite(n::sum(n::square(v.to(n::DType::Float64))).item()))
+        return 1;
+    std::print("Full{}:{} learned scalars,all{} finite defined gradients at32px,{} supervised "
+               "heads,{} nested nodes,no BN state.\n",
+               nested ? "UNet++" : "attention U-Net", p.count(), g.size(), heads, nodes);
+  }
+}
+```
+// result_begin: markdown
+FullUNet++:9156264 learned scalars,all68 finite defined gradients at32px,4 supervised heads,15 nested nodes,no BN state.
+Fullattention U-Net:31381414 learned scalars,all70 finite defined gradients at32px,1 supervised heads,0 nested nodes,no BN state.
+// result_end
+
+> Actual shape images and visible deep-supervised Adam fitting
+
+The tensor generator supplies32 fitting/16 validation/16 test48-pixel RGB
+shape scenes,seeds11/22/33,with class-independent brightness/noise/tint and
+occlusion. Tensor RNG changes the old mt19937 fixed-seed pixels; this is the
+same explicit procedural adaptation as the other segmentation reports.
+Palette: background dark,circle red,rectangle green,triangle blue.
+
+```{cpp, results="markdown", file="figures/unet_variants_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto data = m::TensorSegmentationShapes(32, 48, 11);
+  std::vector<n::Tensor> gallery;
+  const auto colored = m::ColorSegmentationLabels(n::slice_axis(data.labels, 0, 0, 4));
+  for (int i = 0; i < 4; ++i) {
+    gallery.push_back(n::slice_axis(data.images, 0, i, i + 1));
+    gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+  }
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::concat(gallery, 0), "build/unet_variants_data.png", 2, 0., 1., 3, 1.,
+                     2);
+  const auto weights = m::SegmentationClassWeights(data.labels, 4);
+  std::print(
+      "32 fitting RGB images48x48; classes0 background,1 circle,2 rectangle,3 triangle. "
+      "Fit-only inverse-square-root pseudocount weights {:.6f}/{:.6f}/{:.6f}/{:.6f}. "
+      "Noise,tint and brightness are class-independent; later objects occlude earlier masks. "
+      "Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.\n",
+      weights.at({0}), weights.at({1}), weights.at({2}), weights.at({3}));
+}
+```
+// result_begin: markdown
+32 fitting RGB images48x48; classes0 background,1 circle,2 rectangle,3 triangle. Fit-only inverse-square-root pseudocount weights 1.147737/4.012647/2.837215/4.279897. Noise,tint and brightness are class-independent; later objects occlude earlier masks. Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.
+\image(figures/unet_variants_data.png)
+// result_end
+\caption(Actual first four fitting image/mask pairs,with shared photometry distributions across classes and aligned occlusion labels.)
+\alttext(Actual first four fitting image/mask pairs,with shared photometry distributions across classes and aligned occlusion labels.)
+
+Every learned leaf and every nested head is created before Adam(.001).
+Both compact models separately fit24 epochs,batch4,192 visible updates using
+fit-only inverse-square-root pixel weights with pseudocount1. UNet++ averages
+weighted CE across all four heads; attention U-Net has one head. Explicit
+kernel L2 adds `.00005*sum(kernel²)` after that average. All learned leaves
+are optimized; no BN state exists. Strict validation mean IoU selects a learned
+checkpoint,restored and checked before test evaluation. Validation/test do
+not fit weights or choose augmentation. These are procedural demonstrations,
+not medical-image training or an architecture benchmark ranking.
+
+```{cpp, results="markdown", file="figures/unet_variants_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <print>
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  namespace m             = n::models;
+  n::set_num_threads(2);
+  const auto fit              = m::TensorSegmentationShapes(32, 48, 11),
+             validation       = m::TensorSegmentationShapes(16, 48, 22),
+             test             = m::TensorSegmentationShapes(16, 48, 33);
+  const auto          weights = m::SegmentationClassWeights(fit.labels, 4);
+  std::vector<double> epochs;
+  for (int epoch = 1; epoch <= 24; ++epoch)
+    epochs.push_back(epoch);
+  auto loss_plot = dm::graphics::RPlot::create(), score_plot = dm::graphics::RPlot::create();
+  const std::array<dm::graphics::RGB, 3> colors = {{{37, 99, 235}, {22, 163, 74}, {220, 38, 38}}};
+  int                                    color_index = 0;
+  double                                 max_loss    = 0;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  for (int variant : {0, 1}) {
+    n::ParameterStore   p(17);
+    m::NestedUnetConfig nested_config;
+    nested_config.classes    = 4;
+    nested_config.base_width = 8;
+    m::AttentionUnetConfig attention_config;
+    attention_config.classes    = 4;
+    attention_config.base_width = 8;
+    const auto forward          = [&](const n::Tensor& images, bool) {
+      if (variant == 0)
+        return m::NestedUnet(p, images, nested_config).heads;
+      return std::vector<n::Tensor>{m::AttentionUnet(p, images, attention_config).logits};
+    };
+    // Create every learnable convolution/score leaf before Adam captures the store.
+    {
+      n::NoGradGuard guard;
+      forward(n::slice_axis(fit.images, 0, 0, 1), false);
+    }
+    n::OptimizerConfig adam_config;
+    adam_config.kind = n::OptimizerKind::Adam;
+    n::Optimizer           adam(p, .001, adam_config);
+    n::BatchOrder          batches(32, 4, 29);
+    std::vector<n::Tensor> kernels;
+    for (const auto& leaf : p.parameters())
+      if (leaf.dim() > 1)
+        kernels.push_back(leaf);
+    const std::string   prefix   = "build/unet_variants_" + std::to_string(variant);
+    double              best     = -1;
+    int                 selected = 0, updates = 0;
+    std::vector<double> losses, miou;
+    const auto          evaluate = [&](const m::TensorSegmentationData& data) {
+      n::NoGradGuard guard;
+      auto           confusion = n::zeros({4, 4}, n::DType::Int64);
+      for (int first = 0; first < data.images.shape()[0]; first += 8) {
+        const auto end    = std::min<std::int64_t>(first + 8, data.images.shape()[0]);
+        const auto logits = forward(n::slice_axis(data.images, 0, first, end), false);
+        confusion         = confusion +
+                    m::SegmentationPredictionMetrics(
+                        n::argmax(logits.back(), 3), n::slice_axis(data.labels, 0, first, end), 4)
+                        .confusion;
+      }
+      return m::SegmentationConfusionMetrics(confusion);
+    };
+    std::print(
+        "Variant{}: {} learned scalars, no BN state. Fit-only weights "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}.\n",
+        variant,
+        p.count(),
+        weights.at({0}),
+        weights.at({1}),
+        weights.at({2}),
+        weights.at({3}));
+    std::print(
+        "| variant | epoch | weighted pixel CE | validation mIoU |\n|---:|---:|---:|---:|\n");
+    for (int epoch = 1; epoch <= 24; ++epoch) {
+      batches.begin_epoch();
+      double      total = 0;
+      std::size_t seen  = 0;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto batch  = m::TensorSegmentationBatch(fit, n::from_vector(rows));
+        const auto logits = forward(batch.first, true);
+        n::Tensor  ce     = n::zeros({});
+        for (const auto& head : logits)
+          ce = ce + m::SegmentationCrossEntropy(head, batch.second, 4, weights);
+        ce                = ce / double(logits.size());
+        n::Tensor penalty = n::zeros({});
+        for (const auto& kernel : kernels)
+          penalty = penalty + n::sum(n::square(kernel));
+        if (!std::isfinite(ce.item()))
+          return 1;
+        total += ce.item() * rows.size();
+        seen += rows.size();
+        adam.minimize(ce + .00005 * penalty);
+        ++updates;
+      }
+      const auto metric = evaluate(validation);
+      losses.push_back(total / double(seen));
+      miou.push_back(metric.mean_iou.item());
+      if (miou.back() > best) {
+        best     = miou.back();
+        selected = epoch;
+        p.save(prefix + "_best.npz");
+      }
+      std::print("| {} | {} | {:.6f} | {:.6f} |\n", variant, epoch, losses.back(), miou.back());
+    }
+    p.load(prefix + "_best.npz");
+    const auto restored = evaluate(validation), metric = evaluate(test);
+    const auto count_matrix = n::ConfusionMatrix::from_counts(metric.confusion);
+    const auto index        = std::to_string(rendered_confusions++);
+    count_matrix.save_svg(
+        "build/unet_variants_confusion_api_" + index + ".svg",
+        {.title = "Selected-checkpoint pixel counts"});
+    count_matrix.save_svg(
+        "build/unet_variants_confusion_api_" + index + "_normalized.svg",
+        {.title         = "Selected-checkpoint pixel recall",
+         .normalization = n::ConfusionMatrixNormalization::True});
+
+    if (std::abs(restored.mean_iou.item() - best) > 1e-12 || updates != 192)
+      return 1;
+    n::NoGradGuard         guard;
+    std::vector<n::Tensor> gallery;
+    const auto             prediction =
+        n::argmax(forward(n::slice_axis(test.images, 0, 0, 4), false).back(), 3);
+    const auto truth   = m::ColorSegmentationLabels(n::slice_axis(test.labels, 0, 0, 4)),
+               colored = m::ColorSegmentationLabels(prediction);
+    for (int i = 0; i < 4; ++i) {
+      gallery.push_back(n::slice_axis(test.images, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(truth, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+    }
+    const auto image_name = "unet_variants_predictions_" + std::to_string(variant) + ".png";
+    n::save_image_grid(n::concat(gallery, 0), "build/" + image_name, 3, 0., 1., 3, 1., 2);
+    std::filesystem::copy_file(
+        "build/" + image_name,
+        "figures/" + image_name,
+        std::filesystem::copy_options::overwrite_existing);
+    if (variant == 1) {
+      const auto gates =
+          m::AttentionUnet(p, n::slice_axis(test.images, 0, 0, 1), attention_config).coefficients;
+      std::vector<n::Tensor> maps;
+      for (std::size_t i = 0; i < gates.size(); ++i) {
+        maps.push_back(n::resize_nearest(gates[i], {48, 48}));
+        std::print(
+            "Restored attention gate{}:{}x{},coefficient range[{:.6f},{:.6f}].\n",
+            i + 1,
+            gates[i].shape()[1],
+            gates[i].shape()[2],
+            n::min(gates[i]).item(),
+            n::max(gates[i]).item());
+      }
+      n::save_image_grid(n::concat(maps, 0), "build/unet_variants_gates.png", 2, 0., 1., 3, 1., 2);
+      std::filesystem::copy_file(
+          "build/unet_variants_gates.png",
+          "figures/unet_variants_gates.png",
+          std::filesystem::copy_options::overwrite_existing);
+    }
+    const auto        color = colors[color_index++];
+    const std::string name  = variant == 0 ? "UNet++" : "attention";
+    loss_plot.lines(epochs, losses, name, color);
+    score_plot.lines(epochs, miou, name, color);
+    max_loss = std::max(max_loss, *std::max_element(losses.begin(), losses.end()));
+    std::print(
+        "Variant{} restored epoch{}: validation mIoU {:.6f}; test pixel accuracy "
+        "{:.6f}, mean IoU {:.6f}; per-class IoU(background,circle,rectangle,triangle) "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}. {} explicit Adam updates.\n",
+        variant,
+        selected,
+        best,
+        metric.pixel_accuracy.item(),
+        metric.mean_iou.item(),
+        metric.iou.at({0}),
+        metric.iou.at({1}),
+        metric.iou.at({2}),
+        metric.iou.at({3}),
+        updates);
+  }
+  loss_plot.title("Nested and attention field losses")
+      .x_label("epoch")
+      .y_label("unregularized weighted CE")
+      .y_limits(0, max_loss * 1.3);
+  score_plot.title("Validation mean IoU selection")
+      .x_label("epoch")
+      .y_label("present-class mIoU")
+      .y_limits(0, 1.3);
+  dm::graphics::RLayout::create(1, 2)
+      .add(loss_plot)
+      .add(score_plot)
+      .size(1200, 550)
+      .fit_panels()
+      .save_svg("build/unet_variants_training.svg");
+}
+```
+// result_begin: markdown
+Variant0: 573240 learned scalars, no BN state. Fit-only weights 1.147737/4.012647/2.837215/4.279897.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 0 | 1 | 1.369074 | 0.176849 |
+| 0 | 2 | 1.278012 | 0.186375 |
+| 0 | 3 | 1.116476 | 0.188449 |
+| 0 | 4 | 1.042689 | 0.211795 |
+| 0 | 5 | 0.996057 | 0.195127 |
+| 0 | 6 | 0.952422 | 0.311594 |
+| 0 | 7 | 0.902457 | 0.311542 |
+| 0 | 8 | 0.841784 | 0.312859 |
+| 0 | 9 | 0.806758 | 0.322672 |
+| 0 | 10 | 0.792323 | 0.325184 |
+| 0 | 11 | 0.771169 | 0.322069 |
+| 0 | 12 | 0.761814 | 0.323632 |
+| 0 | 13 | 0.748470 | 0.328936 |
+| 0 | 14 | 0.737719 | 0.323985 |
+| 0 | 15 | 0.735409 | 0.336252 |
+| 0 | 16 | 0.714433 | 0.416870 |
+| 0 | 17 | 0.687127 | 0.348534 |
+| 0 | 18 | 0.690940 | 0.367229 |
+| 0 | 19 | 0.676332 | 0.468073 |
+| 0 | 20 | 0.656493 | 0.411899 |
+| 0 | 21 | 0.665415 | 0.425705 |
+| 0 | 22 | 0.628595 | 0.574956 |
+| 0 | 23 | 0.605846 | 0.535836 |
+| 0 | 24 | 0.588795 | 0.598489 |
+Variant0 restored epoch24: validation mIoU 0.598489; test pixel accuracy 0.858588, mean IoU 0.526918; per-class IoU(background,circle,rectangle,triangle) 0.980017/0.253090/0.440412/0.434153. 192 explicit Adam updates.
+Variant1: 491468 learned scalars, no BN state. Fit-only weights 1.147737/4.012647/2.837215/4.279897.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 1 | 1 | 1.381308 | 0.268378 |
+| 1 | 2 | 1.354771 | 0.276740 |
+| 1 | 3 | 1.304151 | 0.272586 |
+| 1 | 4 | 1.165722 | 0.303112 |
+| 1 | 5 | 0.864329 | 0.291897 |
+| 1 | 6 | 0.726969 | 0.311084 |
+| 1 | 7 | 0.682053 | 0.313450 |
+| 1 | 8 | 0.656939 | 0.318197 |
+| 1 | 9 | 0.644578 | 0.320178 |
+| 1 | 10 | 0.627742 | 0.326699 |
+| 1 | 11 | 0.613290 | 0.327070 |
+| 1 | 12 | 0.600432 | 0.329714 |
+| 1 | 13 | 0.587939 | 0.341595 |
+| 1 | 14 | 0.578274 | 0.346060 |
+| 1 | 15 | 0.564820 | 0.354997 |
+| 1 | 16 | 0.557518 | 0.357366 |
+| 1 | 17 | 0.561232 | 0.373781 |
+| 1 | 18 | 0.537019 | 0.361983 |
+| 1 | 19 | 0.548728 | 0.367379 |
+| 1 | 20 | 0.532382 | 0.426049 |
+| 1 | 21 | 0.521740 | 0.423078 |
+| 1 | 22 | 0.503445 | 0.439815 |
+| 1 | 23 | 0.487343 | 0.450874 |
+| 1 | 24 | 0.467807 | 0.468296 |
+Restored attention gate1:6x6,coefficient range[0.424599,0.915859].
+Restored attention gate2:12x12,coefficient range[0.075759,0.824009].
+Restored attention gate3:24x24,coefficient range[0.651654,0.979612].
+Restored attention gate4:48x48,coefficient range[0.005739,0.989271].
+Variant1 restored epoch24: validation mIoU 0.468296; test pixel accuracy 0.856228, mean IoU 0.469080; per-class IoU(background,circle,rectangle,triangle) 0.989603/0.143314/0.492096/0.251307. 192 explicit Adam updates.
+\image(figures/unet_variants_training.svg)
+// result_end
+\caption(Two explicit whole-model192-update Adam fits. UNet++ CE averages all four learned heads; attention U-Net CE uses its final head. Validation chooses separate checkpoints before test evaluation.)
+\alttext(Two explicit whole-model192-update Adam fits. UNet++ CE averages all four learned heads; attention U-Net CE uses its final head. Validation chooses separate checkpoints before test evaluation.)
+
+Compact UNet++ has573,240 learned scalars and selects epoch24 with
+validation mean IoU.598489; test accuracy/mIoU are.858588/.526918.
+Compact attention U-Net has491,468 scalars and selects epoch24 with
+validation mean IoU.468296; test accuracy/mIoU are.856228/.469080.
+Both select their final epoch, so192 updates(kept short so the report
+builds quickly) leave the fits unconverged. Background is segmented well
+(.980017/.989603) and rectangles partly(.440412/.492096), while circle
+(.253090/.143314) and triangle(.434153/.251307) IoU remain weak.
+These are separately initialized bounded procedural fits,not evidence of a
+general architecture ranking.
+
+\image(figures/unet_variants_predictions_0.png)
+\caption(UNet++: actual test image,truth mask and restored prediction in each row. Errors remain in the evaluation and fixed-palette gallery.)
+\alttext(UNet++ held-out image/truth/prediction triples.)
+\image(figures/unet_variants_predictions_1.png)
+\caption(attention U-Net: actual test image,truth mask and restored prediction in each row. Errors remain in the evaluation and fixed-palette gallery.)
+\alttext(attention U-Net held-out image/truth/prediction triples.)
+\image(figures/unet_variants_gates.png)
+\caption(Restored attention U-Net coefficients for the first test image,deepest to shallowest in row-major order. Native6/12/24/48-pixel maps are nearest-expanded to48 for display with a shared fixed[0,1] grayscale range. These are learned skip multipliers,not segmentation probabilities or truth masks.)
+\alttext(Four actual restored attention coefficient maps,ordered deepest to shallowest.)
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/unet_variants_confusion_api_0.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/unet_variants_confusion_api_0_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+\image(figures/unet_variants_confusion_api_1.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 3. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/unet_variants_confusion_api_1_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Analytic gate derivatives and complete graph checks precede compact training. Every nested head contributes explicitly to the objective. Fit-only class weights,validation-selected restoration,actual predictions and fixed-range gate maps expose the results without a biomedical benchmark claim.
+
+> References
+
+- [Zhou et al.(2018), UNet++: A Nested U-Net Architecture for Medical Image Segmentation](https://arxiv.org/abs/1807.10165).
+- [Oktay et al.(2018), Attention U-Net: Learning Where to Look for the Pancreas](https://arxiv.org/abs/1804.03999).

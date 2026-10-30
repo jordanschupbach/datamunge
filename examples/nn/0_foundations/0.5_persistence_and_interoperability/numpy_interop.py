@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# CMD: nix develop .#python --command python examples/nn/0_foundations/0.5_persistence_and_interoperability/numpy_interop.py prepare
 """Prepare independent NumPy fixtures, or verify C++-written NPY/NPZ outputs.
 
 Companion of numpy_weights.cpp (a port of tflow's scripts/numpy_interop.py,

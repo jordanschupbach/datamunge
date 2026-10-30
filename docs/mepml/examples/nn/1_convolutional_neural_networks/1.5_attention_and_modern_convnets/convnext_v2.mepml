@@ -1,0 +1,555 @@
+//? Title: ConvNeXt V2: Global Response Normalization and Visible Atto Fitting
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Modern convolutional blocks combine large depthwise spatial filters with expanded channel
+processing. We check the normalization or layer-scale rule, distinguish analytic model budgets
+from executed forwards, then expose every tensor Adam update of a complete Atto classifier.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/convnext_v2.cpp`.
+
+> The method
+
+V2's response normalization uses G_c=sqrt(sum_H,W X_c²), N_c=G_c/(mean_channels G+1e-6),
+then Y=X+gamma*X*N+beta. Gamma and beta start at zero, making the layer exactly identity.
+Its safe square-root argument defines the norm derivative at zero as zero, avoiding 0*infinity
+NaNs for dead channels. At active affine values, gradients include normalized-response effects.
+Multiplying X by a positive scalar only APPROXIMATELY preserves N because epsilon stays fixed.
+The pictured fixture checks all-zero/single-dead-channel initialization and active affine values.
+V2's fully convolutional masked-autoencoder pretraining is not implemented by this classifier.
+
+Both versions use biased depthwise 7×7 filtering, channels-last LayerNorm (epsilon 1e-6),
+a pointwise expansion to 4C, exact erf GELU, pointwise projection and raw shortcut addition.
+V1 scales the projected branch by a learned channel vector initialized to 1e-6; V2 instead
+inserts GRN between expanded GELU and projection. Filters and classifier use untruncated
+N(0,.02), biases zero, an initialization adaptation from the released truncated normal.
+There is no BN or moving-statistics store. Per-example inverted branch dropout increases
+linearly from zero to drop_path at the LAST block, using i/(n−1), and is absent in inference.
+
+A biased 4×4/4 patchify convolution with LayerNorm starts the reference network. Three
+LayerNorm plus biased 2×2/2 joins connect four stages. Global mean, LayerNorm and a classifier
+finish it. The report prints analytical learned counts for every released table entry, checking
+those formulas against actual full-weight Atto/Tiny 64-pixel forwards and a Tiny 224-pixel
+forward. The other large designs are not allocated; Huge's count does not require allocating
+its roughly 2.6 GB Float32 weights. Exact reference MACs use 56/28/14/7 stage sides and exclude
+normalization/nonlinearity/GRN/addition/memory work. They are not latency measurements.
+
+The full-width Tiny backward probe retains all eighteen blocks at 64 pixels. It activates V1
+layer scales or V2 GRN affine entries to inspect learned-branch derivatives, separately from the
+near-identity initialization fixture. All parameter-tensor derivatives must be finite and above
+a relative diagnostic threshold; this fixture does not guarantee nonzero gradients for arbitrary
+inputs. All model computations, preprocessing, losses and updates use the tensor library.
+
+The visible fit retains the complete Atto layout, depths 2/2/6/2 and widths 40/80/160/320,
+with a 2×2/2 CIFAR patchify stem, ten classes and drop_path=.1. It uses 128 fit/64 validation/
+64 official-test images, 8 batch-eight epochs, explicit Adam(.001) and kernel L2=.0001/2,
+with padded crops/flips. Validation selects learned parameters; no moving state exists to save.
+The two versions have 3376290/3389170 learned scalars in this setting. These bounded runs do
+not reproduce the paper's AdamW, longer schedules, stronger augmentation or pretraining.
+
+The editable concept diagram is `diagrams/convnext_v2_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/convnext_v2_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/convnext_v2_concept.tikz > build/convnext_v2_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/convnext_v2_concept.svg build/convnext_v2_concept.dvi > build/convnext_v2_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/convnext_v2_concept.svg)
+// result_end
+\caption(ConvNeXt V2: Global Response Normalization and Visible Atto Fitting)
+\alttext(Spatial depthwise filter; Expanded channel MLP; then GRN response weights; Safe norm derivative; then Complete Atto fit; Explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/convnext_v2_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::ConvNeXtConfig cfg;
+  cfg.size       = "atto";
+  cfg.classes    = 10;
+  cfg.cifar_stem = true;
+  cfg.drop_path  = .1;
+  cfg.v2         = true;
+  n::ParameterStore p(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) { return n::models::ConvNeXt(p, image, cfg, false).logits; },
+      "ConvNeXt V2: Global Response Normalization and Visible Atto Fitting");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/convnext_v2_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+667 displayed nodes; 3389170 reachable learned values.
+\image(figures/convnext_v2_architecture.svg)
+// result_end
+\caption(Executed convnext v2 tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right convnext v2 architecture with rotated names and exact output shapes.)
+
+> Small block and derivatives
+
+```{cpp, results="markdown", file="figures/convnext_v2_grn.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type);
+  const auto x =
+      n::concat({n::zeros({2, 5, 5, 1}, type),
+                 n::sin(.17 * n::arange(0, 2 * 5 * 5 * 7).to(type)).reshape({2, 5, 5, 7})},
+                3)
+          .detach()
+          .requires_grad_();
+  const auto initial = n::models::GlobalResponseNorm(p, "g", x);
+  const auto derivative = n::grad(n::sum(initial.output), {x})[0];
+  if (n::max(n::abs(initial.output - x)).item() != 0 ||
+      n::max(n::abs(derivative - 1)).item() != 0)
+    return 1;
+  const auto scaled = n::models::GlobalResponseNorm(p, "g", 7 * x);
+  const double difference = n::max(n::abs(initial.response - scaled.response)).item();
+  if (difference > 1e-5)
+    return 1;
+  {
+    n::NoGradGuard guard;
+    p.set("g/gamma", n::linspace(.1, .3, 8, type));
+    p.set("g/beta", n::linspace(-.1, .1, 8, type));
+  }
+  const auto active = n::models::GlobalResponseNorm(p, "g", x);
+  const auto norm = n::sqrt(n::sum(n::square(x), {1, 2}, true));
+  const auto ref =
+      p.at("g/gamma") * x * norm / (n::mean(norm, {3}, true) + 1e-6) + p.at("g/beta") + x;
+  const double error = n::max(n::abs(active.output - ref)).item();
+  if (error > 1e-12)
+    return 1;
+  for (bool all_zero : {false, true}) {
+    n::ParameterStore q(19, type);
+    const auto input = (all_zero ? n::zeros({2, 5, 5, 8}, type) : x.detach()).requires_grad_();
+    const auto out = n::models::GlobalResponseNorm(q, "safe", input);
+    const auto dx = n::grad(n::sum(out.output), {input})[0];
+    if (n::max(n::abs(dx - 1)).item() != 0)
+      return 1;
+  }
+  auto response = dm::graphics::RPlot::create(), identity = dm::graphics::RPlot::create();
+  response
+      .lines(n::arange(0, 8).to_vector<double>(),
+             n::slice_axis(initial.response, 0, 0, 1).reshape({8}).to_vector<double>(),
+             "original", {37, 99, 235})
+      .lines(n::arange(0, 8).to_vector<double>(),
+             n::slice_axis(scaled.response, 0, 0, 1).reshape({8}).to_vector<double>(),
+             "input times seven", {234, 88, 12})
+      .title("GRN response; dead channel is zero")
+      .x_label("channel")
+      .y_label("normalized spatial L2 response")
+      .y_limits(0, 1.7);
+  identity
+      .lines(n::arange(0, 8).to_vector<double>(),
+             n::slice(derivative, {0, 0, 0, 0}, {1, 1, 1, 8}).reshape({8}).to_vector<double>(),
+             "initial derivative", {147, 51, 234})
+      .title("Zero affine initialization: identity gradient")
+      .x_label("channel")
+      .y_label("d sum(output) / dx at one pixel")
+      .y_limits(0, 1.5);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(response)
+      .add(identity)
+      .size(1200, 500)
+      .fit_panels()
+      .save_svg("build/convnext_v2_grn.svg");
+  std::print(
+      "Initial GRN is exact identity including all-zero/dead channels, with finite unit input "
+      "derivatives. Active affine formula error {:.12f}; response difference after scaling "
+      "input by seven {:.12f}. Fixed epsilon prevents exact scale invariance.\n",
+      error, difference);
+}
+```
+// result_begin: markdown
+Initial GRN is exact identity including all-zero/dead channels, with finite unit input derivatives. Active affine formula error 0.000000000000; response difference after scaling input by seven 0.000000324177. Fixed epsilon prevents exact scale invariance.
+\image(figures/convnext_v2_grn.svg)
+// result_end
+\caption(GRN compares each channel’s spatial L2 response with the channel mean. A safe zero-norm derivative avoids sqrt-zero infinities. Gamma/beta start at zero, so the initialized layer is identity; learned affine values activate response competition. Fixed epsilon makes scale invariance approximate.)
+\alttext(GRN compares each channel’s spatial L2 response with the channel mean. A safe zero-norm derivative avoids sqrt-zero infinities. Gamma/beta start at zero, so the initialized layer is identity; learned affine values activate response competition. Fixed epsilon makes scale invariance approximate.)
+
+> Analytical budgets and executed cross-checks
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int64_t target_macs(const dm::nn::models::ConvNeXtSize &layout) {
+  int64_t result = int64_t(layout.dims.back()) * 1000, side = 56;
+  for (int stage = 0; stage < 4; ++stage, side /= 2) {
+    const int64_t d = layout.dims[stage];
+    result += layout.depths[stage] * side * side * (49 * d + 8 * d * d) +
+              (stage ? side * side * 4 * layout.dims[stage - 1] * d : side * side * 48 * d);
+  }
+  return result;
+}
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  struct Case {
+    const char *name;
+    int64_t parameters, macs;
+  };
+  for (const auto &expected : std::vector<Case>{{"atto", 3708400, 547332480},
+                                                {"femto", 5233240, 779629824},
+                                                {"pico", 9066280, 1367055360},
+                                                {"nano", 15623800, 2445528320},
+                                                {"tiny", 28635496, 4455531264},
+                                                {"base", 88717800, 15354729472},
+                                                {"large", 197956840, 34361433600},
+                                                {"huge", 660289640, 114922100480}}) {
+    const auto layout = n::models::ConvNeXtLayout(expected.name);
+    const auto count = n::models::ConvNeXtParameters(layout, 1000, 4, true);
+    const auto macs = target_macs(layout);
+    if (count != expected.parameters || macs != expected.macs)
+      return 1;
+    std::print("ConvNeXt V2 {}: analytical {} parameters / {} reference-224 MACs.\n",
+               expected.name, count, macs);
+  }
+  for (const std::string name : {"atto", "tiny"}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17);
+    n::models::ConvNeXtConfig cfg;
+    cfg.size = name;
+    cfg.v2 = true;
+    const auto layout = n::models::ConvNeXtLayout(name);
+    const auto out = n::models::ConvNeXt(p, n::zeros({1, 64, 64, 3}), cfg);
+    if (p.count() != n::models::ConvNeXtParameters(layout, 1000, 4, true))
+      return 1;
+    const auto extrapolated =
+        (n::models::ConvNeXtMacs(out, layout, 1000, 4) - int64_t(layout.dims.back()) * 1000) *
+            49 / 4 +
+        int64_t(layout.dims.back()) * 1000;
+    if (extrapolated != target_macs(layout))
+      return 1;
+    if (name == "tiny") {
+      const auto full = n::models::ConvNeXt(p, n::zeros({1, 224, 224, 3}), cfg);
+      if (n::models::ConvNeXtMacs(full, layout, 1000, 4) != target_macs(layout))
+        return 1;
+    }
+    std::print("Actual full-weight {} 64-pixel count agrees; Tiny additionally executes at "
+               "224 pixels.\n",
+               name);
+  }
+  std::print("Other table entries are analytical counts, not allocated networks. In "
+             "particular Huge is not allocated. MACs count convolution/classifier products, "
+             "excluding LayerNorm/GELU/GRN/dropout/addition and memory traffic; they are not "
+             "runtime measurements.\n");
+}
+```
+// result_begin: markdown
+ConvNeXt V2 atto: analytical 3708400 parameters / 547332480 reference-224 MACs.
+ConvNeXt V2 femto: analytical 5233240 parameters / 779629824 reference-224 MACs.
+ConvNeXt V2 pico: analytical 9066280 parameters / 1367055360 reference-224 MACs.
+ConvNeXt V2 nano: analytical 15623800 parameters / 2445528320 reference-224 MACs.
+ConvNeXt V2 tiny: analytical 28635496 parameters / 4455531264 reference-224 MACs.
+ConvNeXt V2 base: analytical 88717800 parameters / 15354729472 reference-224 MACs.
+ConvNeXt V2 large: analytical 197956840 parameters / 34361433600 reference-224 MACs.
+ConvNeXt V2 huge: analytical 660289640 parameters / 114922100480 reference-224 MACs.
+Actual full-weight atto 64-pixel count agrees; Tiny additionally executes at 224 pixels.
+Actual full-weight tiny 64-pixel count agrees; Tiny additionally executes at 224 pixels.
+Other table entries are analytical counts, not allocated networks. In particular Huge is not allocated. MACs count convolution/classifier products, excluding LayerNorm/GELU/GRN/dropout/addition and memory traffic; they are not runtime measurements.
+// result_end
+
+> Full Tiny backward
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17);
+  n::models::ConvNeXtConfig cfg;
+  cfg.v2 = true;
+  {
+    n::NoGradGuard guard;
+    n::models::ConvNeXt(p, n::zeros({1, 32, 32, 3}), cfg);
+    for (const auto &name : p.names()) {
+      if (name.ends_with("/layer_scale"))
+        p.set(name, n::ones(p.at(name).shape()));
+      if (name.find("/grn/") != std::string::npos)
+        p.set(name,
+              (.1 + .1 * n::sin(.37 * n::arange(0, p.at(name).numel()).to(n::DType::Float32)))
+                  .reshape(p.at(name).shape()));
+    }
+  }
+  const auto input = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                         .reshape({2, 64, 64, 3});
+  const auto out = n::models::ConvNeXt(p, input, cfg, true);
+  const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+  double low = std::numeric_limits<double>::infinity(), high = 0;
+  for (const auto &g : gradients) {
+    const double norm = n::sqrt(n::sum(n::square(g))).item();
+    if (!std::isfinite(norm))
+      return 1;
+    low = std::min(low, norm);
+    high = std::max(high, norm);
+  }
+  if (low <= 1e-7 * high)
+    return 1;
+  std::print("Full-width Tiny V2, all eighteen blocks at 64 pixels: {} finite "
+             "parameter-tensor gradients, norm range [{:.12f},{:.9f}]. V2 probe uses active "
+             "GRN affine entries.\n",
+             gradients.size(), low, high);
+}
+```
+// result_begin: markdown
+Full-width Tiny V2, all eighteen blocks at 64 pixels: 200 finite parameter-tensor gradients, norm range [0.000276859180,0.822385490]. V2 probe uses active GRN affine entries.
+// result_end
+
+> Original pixels and visible Atto optimization
+
+```{cpp, results="markdown", file="figures/convnext_v2_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/convnext_v2_inputs.png", 5, 0., 1., 4,
+                     1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/convnext_v2_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/convnext_v2_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+             vy       = n::slice_axis(labels, 0, 128, 192);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  n::models::ConvNeXtConfig cfg;
+  cfg.size       = "atto";
+  cfg.classes    = 10;
+  cfg.cifar_stem = true;
+  cfg.drop_path  = .1;
+  cfg.v2         = true;
+  n::ParameterStore p(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::ConvNeXt(p, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 3389170)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/convnext_v2_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 8; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/convnext_v2_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "convnext v2 / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("ConvNeXt V2 Atto, complete layout")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/convnext_v2_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars; no BN/moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 3389170 learned scalars; no BN/moving scalars; 128 explicit Adam updates.
+Selected epoch 4; validation NLL 2.127380; inference training NLL 1.889064; test NLL 2.110236; test accuracy 0.234375.
+\image(figures/convnext_v2_training.svg)
+// result_end
+\caption(Explicit 8-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and row branch dropout; validation/test use full branches. LayerNorm has no moving state. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 8-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and row branch dropout; validation/test use full branches. LayerNorm has no moving state. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+
+
+> Observed subset result
+
+Validation selects epoch 4: validation NLL 2.127380, inference training NLL
+1.889064, test NLL 2.110236 and 23.4375% accuracy on 64 held-out test images.
+This small fixed-seed result does not establish a V1/V2 accuracy ranking or reproduce
+published ImageNet performance.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/convnext_v2_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Controlled tensor fixtures explain the residual rule, while exact count formulas and actual
+Atto/Tiny forwards distinguish architecture budgets from large allocations. Visible optimization
+connects the complete Atto topology to data without claiming published pretraining or benchmarks.
+
+> References
+
+- [Woo et al. (2023), ConvNeXt V2](https://arxiv.org/abs/2301.00808).
+- [ConvNeXt V2 release](https://github.com/facebookresearch/ConvNeXt-V2).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

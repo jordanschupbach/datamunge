@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/stl_ex.r
 library(datamunger)
 
 # Can only coerce (can't use methods directly without a wrapper)

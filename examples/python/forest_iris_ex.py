@@ -1,3 +1,4 @@
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/forest_iris_ex.py
 from pydatamunge import datamunge as dm
 
 iris = dm.DataFrame.iris()

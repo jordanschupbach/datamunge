@@ -61,7 +61,7 @@ a =BipartiteMatchingResult= holding both orientations, =match_left= and
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Layered augmenting paths

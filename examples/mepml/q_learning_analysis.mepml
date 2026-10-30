@@ -58,7 +58,7 @@ learned \(Q\) table, the greedy policy, and the return of every training episode
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The temporal-difference update
@@ -193,7 +193,7 @@ agent to try unexplored actions early.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

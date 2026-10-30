@@ -1,7 +1,6 @@
 # Native Python NN example. MountainCar, discrete and continuous.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/mountain_car.py
 """MountainCar, discrete and continuous.
-
-CMD: just python-example mountain_car
 
 Port of tflow's mountain_car. The car's engine is too weak to climb
 directly, so it has to build momentum. Random actions never reach the flag

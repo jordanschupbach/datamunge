@@ -1,0 +1,199 @@
+//? Title: Naive Bayes: Counts, Absences and Gaussian Features
+//? Subtitle: Conditional independence is a model assumption, not a consequence of normalization
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A classifier can combine many weak feature observations through class-conditional likelihoods.
+We inspect smoothed multinomial word probabilities and show how Bernoulli likelihoods also count
+absent words. A separate Gaussian fixture verifies population variances and a constant-feature
+floor. All model state is fitted by explicit tensor Adam loops from the supplied training tensors.
+)
+\toc
+
+> The method
+
+Naive Bayes uses log score log pi_c + sum_j log p(x_j|c), then softmax-normalises scores.
+For multinomial count features with additive smoothing alpha and vocabulary width D,
+
+$$
+\theta_{cj}=\frac{\sum_{i:y_i=c}x_{ij}+\alpha}{\sum_j\sum_{i:y_i=c}x_{ij}+\alpha D},\quad
+s_c^{\rm Bern}=\log\pi_c+\sum_j[x_j\log\theta_{cj}+(1-x_j)\log(1-\theta_{cj})].
+$$
+\alttext(Multinomial probabilities normalise smoothed word counts; Bernoulli log likelihood includes both present and absent features.)
+
+Multinomial scores omit the query's class-independent factorial coefficient, which does not
+change posteriors. An empty count document therefore reduces to the class prior. An all-zero
+Bernoulli document still contributes absence probabilities. Gaussian features use per-class
+population variance with an absolute positive floor. Every class must occur in training;
+callers supply valid nonnegative counts or binary indicators. The absolute variance constraint is specified in feature-squared units.
+The visible loops optimise the supervised generative joint likelihood, not discriminative
+cross-entropy of the class posterior. Initial and conditional logits remain learnable leaves.
+Multinomial pseudocounts add alpha times the sum of log conditional word probabilities;
+Bernoulli adds alpha times log p plus log(1-p) for every feature. Their stationary points
+are exactly the displayed smoothed count formulas. The empirical prior maximises the
+label likelihood. Gaussian Adam fits means and log variances; after each update, an
+explicit projection enforces variance at least .001. Fitting is iterative, not a constructor
+side effect. Each full-batch iteration and prediction costs O(ND) and O(QKD), respectively.
+
+The concept diagram has a retained TikZ source in `diagrams/naive_bayes_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/naive_bayes_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/naive_bayes_concept.tikz > build/naive_bayes_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/naive_bayes_concept.svg build/naive_bayes_concept.dvi > build/naive_bayes_concept.render.log 2>&1
+printf 'Rendered build/naive_bayes_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/naive_bayes_concept.svg from local TikZ source.
+// \image(figures/naive_bayes_concept.svg)
+// result_end
+\caption(Conditional independence is a model assumption, not a consequence of normalization)
+\alttext(Labelled tensor inputs; class-conditional likelihood. Then Learnable probability logits; include smoothing objective. Then Explicit tensor Adam; check closed-form moments.)
+
+> Simple examples
+
+Class-zero documents (2,0),(1,0) and class-one documents (0,1),(0,2) give smoothed multinomial rows (.8,.2),(.2,.8).
+
+```{cpp, results="markdown", file="figures/naive_bayes_documents.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto counts = n::tensor({2, 0, 1, 0, 0, 1, 0, 2}, {4, 2}, dtype);
+  const auto labels = n::from_vector(std::vector<int64_t>{0, 0, 1, 1});
+  const auto query = n::tensor({1, 0, 0, 1, 0, 0}, {3, 2}, dtype);
+  std::vector<double> multinomial, bernoulli;
+  double worst = 0;
+  for (bool binary : {false, true}) {
+    const auto x = binary ? n::minimum(counts, n::ones_like(counts)) : counts;
+    auto prior = n::zeros({2}, dtype).requires_grad_();
+    auto logits = n::zeros({2, 2}, dtype).requires_grad_();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer optimizer({prior, logits}, .05, config);
+    for (int step = 0; step < 800; ++step) {
+      const auto log_prior = n::log_softmax(prior, 0);
+      const auto selected = n::gather(logits, labels);
+      n::Tensor likelihood, regularizer;
+      if (binary) {
+        likelihood = -n::sum(n::sigmoid_cross_entropy(selected, x, n::Reduction::None));
+        // One presence and one absence pseudocount per class/feature.
+        regularizer = n::sum(n::log_sigmoid(logits) + n::log_sigmoid(-logits));
+      } else {
+        likelihood = n::sum(x * n::log_softmax(selected, 1));
+        // One pseudocount per class/word, reproducing additive smoothing.
+        regularizer = n::sum(n::log_softmax(logits, 1));
+      }
+      const auto loss =
+          -(n::sum(n::gather(log_prior, labels)) + likelihood + regularizer) / 4.;
+      optimizer.minimize(loss);
+    }
+    n::NoGradGuard guard;
+    const auto log_prior = n::log_softmax(prior, 0);
+    const auto log_present = binary ? n::log_sigmoid(logits) : n::log_softmax(logits, 1);
+    auto scores = n::matmul(query, log_present, false, true) + log_prior;
+    if (binary)
+      scores = scores + n::matmul(1 - query, n::log_sigmoid(-logits), false, true);
+    const auto probabilities = n::select(n::softmax(scores, 1), 1, 0).to_vector<double>();
+    if (binary)
+      bernoulli = probabilities;
+    else
+      multinomial = probabilities;
+    const auto expected = binary ? n::tensor({.75, .25, .25, .75}, {2, 2}, dtype)
+                                 : n::tensor({.8, .2, .2, .8}, {2, 2}, dtype);
+    const auto fitted = binary ? n::sigmoid(logits) : n::softmax(logits, 1);
+    worst = std::max(worst, n::max(n::abs(fitted - expected)).item());
+  }
+  if (worst > 1e-8)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.lines({0, 1, 2}, multinomial, "multinomial Adam", {37, 99, 235})
+      .lines({0, 1, 2}, bernoulli, "Bernoulli Adam", {234, 88, 12})
+      .title("Adam fits smoothed feature likelihoods")
+      .x_label("query: first word, second word, empty")
+      .y_label("P(class 0)")
+      .y_limits(0, 1.1);
+  std::filesystem::create_directories("build");
+  p.size(850, 420).save_svg("build/naive_bayes_documents.svg");
+  dm::dstruct::DataFrame t;
+  t.add_column("query", std::vector<std::string>{"word 0", "word 1", "empty"});
+  t.add_column("multinomial_P0", multinomial);
+  t.add_column("Bernoulli_P0", bernoulli);
+  std::print("{}\n\nMaximum smoothed closed-form check error {:.12f}.\n", t.to_md(8), worst);
+}
+```
+// result_begin: markdown
+| query | multinomial_P0 | Bernoulli_P0 |
+| :--- | ---: | ---: |
+| word 0 | 0.8 | 0.9 |
+| word 1 | 0.2 | 0.1 |
+| empty | 0.5 | 0.5 |
+
+
+Maximum smoothed closed-form check error 0.000000000000.
+\image(figures/naive_bayes_documents.svg)
+// result_end
+\caption(Bernoulli scores include an absent-word factor as well as the present-word factor.)
+\alttext(Bernoulli scores include an absent-word factor as well as the present-word factor.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto x = n::tensor({-2, 4, -1, 4, 1, 4, 2, 4}, {4, 2}, dtype);
+  const auto labels = n::from_vector(std::vector<int64_t>{0, 0, 1, 1});
+  auto means = n::zeros({2, 2}, dtype).requires_grad_();
+  auto log_variance = n::zeros({2, 2}, dtype).requires_grad_();
+  auto prior = n::zeros({2}, dtype).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer optimizer({means, log_variance, prior}, .03, config);
+  for (int step = 0; step < 2400; ++step) {
+    if (step == 1200)
+      optimizer.set_learning_rate(.003);
+    if (step == 1800)
+      optimizer.set_learning_rate(.0003);
+    const auto mu = n::gather(means, labels), lv = n::gather(log_variance, labels);
+    const auto conditional =
+        .5 * n::sum(std::log(2 * std::numbers::pi) + lv + n::square(x - mu) / n::exp(lv), {1});
+    const auto loss = n::mean(conditional - n::gather(n::log_softmax(prior, 0), labels));
+    optimizer.minimize(loss);
+    // Project the retained variance leaf onto the absolute variance constraint.
+    n::NoGradGuard guard;
+    log_variance.copy_(n::maximum(log_variance, n::scalar_like(std::log(.001), log_variance)));
+  }
+  n::NoGradGuard guard;
+  const auto exact_mean = n::tensor({-1.5, 4, 1.5, 4}, {2, 2}, dtype);
+  const auto exact_variance = n::tensor({.25, .001, .25, .001}, {2, 2}, dtype);
+  const double error = n::max(n::abs(means - exact_mean)).item();
+  const double variance_error = n::max(n::abs(n::exp(log_variance) - exact_variance)).item();
+  if (error > 1e-5 || variance_error > 1e-5)
+    return 1;
+  std::print("Adam Gaussian means {}; variance entries {}; mean error {:.9f}; variance error "
+             "{:.9f}.\n",
+             means.to_vector<double>(), n::exp(log_variance).to_vector<double>(), error,
+             variance_error);
+}
+```
+// result_begin: markdown
+Adam Gaussian means [-1.5, 4, 1.5, 4]; variance entries [0.25000000000000006, 0.0010000000000000002, 0.25000000000000006, 0.0010000000000000002]; mean error 0.000000000; variance error 0.000000000.
+// result_end
+
+
+> Conclusion
+
+The visible tensor Adam fits recover the smoothed count solutions and constrained Gaussian
+moments on the fixtures. Posterior normalisation does not prove conditional independence or
+calibration; those remain model assumptions and evaluation questions.
+
+> References
+
+- [Stanford Introduction to Information Retrieval: Naive Bayes text classification](https://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html).

@@ -1,11 +1,15 @@
 #pragma once
 
-// Convenience umbrella header — includes all stats components.
+/// @file stats.hpp
+/// @brief Convenience umbrella header that includes every stats component.
 
 #include <datamunge/stats/agglomerative_clustering.hpp>
 #include <datamunge/stats/anova_test.hpp>
 #include <datamunge/stats/arima.hpp>
+#include <datamunge/stats/time_series.hpp>
+#include <datamunge/stats/knn_graph.hpp>
 #include <datamunge/stats/chi_squared_test.hpp>
+#include <datamunge/stats/clustering_diagnostics.hpp>
 #include <datamunge/stats/cnn_classifier.hpp>
 #include <datamunge/stats/conformal.hpp>
 #include <datamunge/stats/correlation_test.hpp>
@@ -26,6 +30,7 @@
 #include <datamunge/stats/ica.hpp>
 #include <datamunge/stats/image_explainers.hpp>
 #include <datamunge/stats/hypothesis_test_result.hpp>
+#include <datamunge/stats/hypothesis_diagnostics.hpp>
 #include <datamunge/stats/inla_mixed_model.hpp>
 #include <datamunge/stats/isomap.hpp>
 #include <datamunge/stats/kernel_pca.hpp>
@@ -38,13 +43,18 @@
 #include <datamunge/stats/laplacian_eigenmaps.hpp>
 #include <datamunge/stats/lda.hpp>
 #include <datamunge/stats/lle.hpp>
+#include <datamunge/stats/embedding_quality.hpp>
 #include <datamunge/stats/lm.hpp>
+#include <datamunge/stats/lowess.hpp>
 #include <datamunge/stats/lmm.hpp>
 #include <datamunge/stats/bootstrap.hpp>
 #include <datamunge/stats/jackknife.hpp>
 #include <datamunge/stats/mds.hpp>
 #include <datamunge/stats/mlp_classifier.hpp>
 #include <datamunge/stats/naive_bayes_classifier.hpp>
+#include <datamunge/stats/adaboost_classifier.hpp>
+#include <datamunge/stats/train_test_split.hpp>
+#include <datamunge/stats/almeida_pineda_classifier.hpp>
 #include <datamunge/stats/pca.hpp>
 #include <datamunge/stats/permutation_test.hpp>
 #include <datamunge/stats/u_statistic.hpp>
@@ -63,4 +73,5 @@
 #include <datamunge/stats/variance_test.hpp>
 #include <datamunge/stats/wilcoxon_test.hpp>
 #include <datamunge/stats/xgboost_classifier.hpp>
+#include <datamunge/stats/xgboost_diagnostics.hpp>
 #include <datamunge/stats/xgboost_regressor.hpp>

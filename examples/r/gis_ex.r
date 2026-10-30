@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/gis_ex.r
 # Demonstrates ShapeLayer: reading a shapefile (.shp geometry + .dbf attributes) and drawing it
 # as a map. Real .shp/.dbf files are large binary bundles that don't belong in this repo, so
 # this example first writes a tiny synthetic shapefile by hand (two "counties": one plain

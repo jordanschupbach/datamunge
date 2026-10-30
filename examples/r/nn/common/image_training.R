@@ -114,11 +114,8 @@ image_training_apply_cifar_options <- function(args, cfg) {
 
 # The five official development batches and the separate test batch: list(development, test).
 image_training_load_cifar10 <- function(directory) {
-    if (!file.exists(file.path(directory, "data_batch_1.bin")))
-        stop("CIFAR-10 missing in ", directory,
-             "; run python3 scripts/fetch_datasets.py cifar10 --split both in tflow_examples, or set data=")
-    development <- nn$load_cifar10(directory, "train")
-    test <- nn$load_cifar10(directory, "test")
+    development <- nn_components$dataset_assets$LoadCifar10(directory, "train")
+    test <- nn_components$dataset_assets$LoadCifar10(directory, "test")
     if (!identical(as.numeric(development$images$shape()), c(50000, 32, 32, 3)) ||
         !identical(as.numeric(test$images$shape()), c(10000, 32, 32, 3)))
         stop("official CIFAR-10 split sizes")

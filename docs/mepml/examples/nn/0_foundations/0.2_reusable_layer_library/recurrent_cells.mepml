@@ -1,0 +1,749 @@
+//? Title: Recurrent Cells: Gates, Gradients Through Time and Parallel Scans
+//? Subtitle: The vanilla RNN, LSTM and GRU checked step by step; how the gradient through time decays and which part of it the gates control; the minimal cells minGRU and minLSTM and the IndRNN, whose gradient is an exact product of scalars; a parallel scan for diagonal recurrences; a latch task and sequential digits, using datamunge's nn::rnn_step, nn::lstm_step, nn::gru_step, nn::linear_scan, nn::mingru, nn::minlstm and nn::indrnn_step
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A recurrent cell maps an input and the previous hidden state to the next state, and a sequence is processed by repeating it. This report checks one step of six cells against their equations, to \(2\times10^{-16}\), and counts their parameters. It then measures how the gradient of the final state with respect to the initial one depends on the sequence length.
+For the classical cells the gradient is a product of full Jacobians. The gate bias controls only one path through it, and for the LSTM that path underestimates the gradient by orders of magnitude. For the new minimal cells minGRU and minLSTM, and for the IndRNN, the gradient is exactly a product of gate values, to \(2.4\times10^{-15}\). Because their gates ignore the state, minGRU and minLSTM can be evaluated for all time steps at once with a parallel scan, which agrees with the step-by-step loop to \(4\times10^{-15}\).
+The price is expressiveness. On a latch task, where the first of 40 noisy inputs decides the label, every single-layer minimal cell stays at chance while the plain RNN, the LSTM and the GRU with retaining gate biases learn it. Two stacked minGRU layers start to learn it too. On digits read one row at a time, the classical cells reach 91–94% test accuracy, level with the 92% of an MLP that sees the whole image. The best minimal model, two minLSTM layers, reaches 88%.
+)
+
+\toc
+
+> The problem
+
+Many inputs are sequences: text, audio, sensor readings, the pixels of an image read in order. A recurrent network keeps a hidden state \(h_t\) and updates it with each input, \(h_t=F(x_t,h_{t-1})\), using the same parameters at every step. Training it by backpropagation through time multiplies one Jacobian \(\partial h_t/\partial h_{t-1}\) per step. Over long sequences that product tends to vanish or explode, so information from early inputs becomes hard to learn from (Hochreiter, 1991; Bengio, Simard and Frasconi, 1994).
+The LSTM (Hochreiter and Schmidhuber, 1997; Gers, Schmidhuber and Cummins, 2000) and the GRU (Cho et al., 2014) address this with multiplicative gates that let the state pass through a step almost unchanged. Their gates depend on the previous state, though, so a sequence must be processed one step at a time.
+More recent cells drop that dependence to gain parallelism over time. In minGRU and minLSTM (Feng et al., 2024) the gates depend on the input alone. In the IndRNN (Li et al., 2018) each unit sees only its own past.
+
+This report replaces the original example `examples/nn/0_foundations/0.2_reusable_layer_library/recurrent_cells.cpp`. That example checked one step of the RNN, LSTM and GRU against a hand computation and counted their parameters. It measured the gradient with respect to the initial state for sequence lengths up to 80 and several gate biases, and trained the three cells on a latch task. All of that is kept.
+Added are the minimal cells, the IndRNN and a parallel scan for diagonal linear recurrences, in `datamunge/nn/recurrent_variants.hpp`. The report also adds closed-form predictions for the gradients, an explanation of why the minimal cells fail the latch task, and a dataset.
+
+> The method
+
+>> The classical cells
+
+The vanilla (Elman) RNN is \(h_t=\tanh(x_tW_x+h_{t-1}W_h+b)\). The LSTM keeps a second state, the cell \(c_t\), and four gates computed from \(x_t\) and \(h_{t-1}\): input \(i_t\), forget \(f_t\), candidate \(g_t\) and output \(o_t\), with
+
+$$
+c_t=f_t\odot c_{t-1}+i_t\odot g_t,\qquad h_t=o_t\odot\tanh(c_t),
+$$
+\alttext(c t equals f t times c t minus 1 plus i t times g t, and h t equals o t times tanh of c t, all elementwise.)
+
+where \(i,f,o\) are sigmoids and \(g\) is a tanh. The GRU has an update gate \(z_t\) and a reset gate \(r_t\), both sigmoids of \(x_tW_x+h_{t-1}W_h+b\), and
+
+$$
+n_t=\tanh\big(x_tW_{xn}+(r_t\odot h_{t-1})W_{hn}+b_n\big),\qquad h_t=(1-z_t)\odot n_t+z_t\odot h_{t-1}.
+$$
+\alttext(n t equals tanh of x t W x n plus r t times h t minus 1, times W h n, plus b n; and h t equals 1 minus z t times n t plus z t times h t minus 1.)
+
+With \(u\) units and \(d\) inputs, the RNN has \(du+u^2+u\) parameters, the GRU three times and the LSTM four times as many. The LSTM's forget bias \(b_f\) and the GRU's update bias \(b_z\) set how much of the state each step keeps at initialisation: about \(\sigma(b)\), which is 0.73 for \(b=1\), 0.95 for \(b=3\) and 0.993 for \(b=5\).
+
+>> The gradient through time
+
+For a loss \(L\) of the final state, \(\partial L/\partial h_0=(\partial L/\partial h_T)\,J_T\cdots J_1\) with \(J_t=\partial h_t/\partial h_{t-1}\). For the RNN, \(J_t=\mathrm{diag}(1-h_t^2)\,W_h^\top\). The library initialises \(W_h\) uniformly on \(\pm\sqrt{3/u}\), so its entries have variance \(1/u\) and \(\mathbb E\lVert vW_h^\top\rVert^2=\lVert v\rVert^2\) for a fixed \(v\).
+A mean-field estimate treats the coordinates as exchangeable: each step multiplies the gradient norm by about
+
+$$
+\rho_t=\sqrt{\tfrac1u\textstyle\sum_j(1-h_{t,j}^2)^2}\;\lVert W_h\rVert_F/\sqrt u ,
+$$
+\alttext(rho t equals the square root of the mean over units of 1 minus h t j squared, squared, times the Frobenius norm of W h divided by the square root of u.)
+
+which is below 1 whenever the tanh is not in its linear range, so the gradient vanishes geometrically.
+
+For the gated cells the Jacobian is a sum of paths. In the LSTM, \(\partial c_t/\partial c_{t-1}=\mathrm{diag}(f_t)\) plus terms that go through \(h_{t-1}=o_{t-1}\odot\tanh(c_{t-1})\) into all four gates. In the GRU, \(\partial h_t/\partial h_{t-1}=\mathrm{diag}(z_t)\) plus terms through \(n_t\), \(z_t\) and \(r_t\). Keeping only the diagonal "direct path" gives the estimate \(\partial L/\partial h_0\approx r\odot\prod_td_t\), with \(r=\partial L/\partial h_T\) and \(d_t=f_t\) or \(z_t\). This is the constant error carousel of Hochreiter and Schmidhuber: with the gate near 1, the direct path neither vanishes nor explodes. It is an approximation, and the measurements below show how far it goes.
+
+>> Minimal cells and the IndRNN
+
+minGRU computes its gate and candidate from the input alone:
+
+$$
+z_t=\sigma(x_tW_z+b_z),\qquad \tilde h_t=x_tW_h+b_h,\qquad h_t=(1-z_t)\odot h_{t-1}+z_t\odot\tilde h_t .
+$$
+\alttext(z t equals sigma of x t W z plus b z; h tilde t equals x t W h plus b h; h t equals 1 minus z t times h t minus 1 plus z t times h tilde t.)
+
+minLSTM uses a forget gate \(f_t\) and an input gate \(i_t\), both sigmoids of the input, normalised so that \(f'_t+i'_t=1\): \(h_t=f'_t\odot h_{t-1}+i'_t\odot\tilde h_t\) with \(f'=f/(f+i)\) and \(i'=i/(f+i)\). In minGRU the bias \(b_z\) controls retention through \(1-\sigma(b_z)\), so a negative bias retains: \(b_z=-3\) keeps 0.95 per step. They have \(2(du+u)\) and \(3(du+u)\) parameters.
+Both cells are linear in the state, and \(\partial h_t/\partial h_{t-1}\) is the diagonal matrix of the retention gate. The gradient is therefore exactly
+
+$$
+\frac{\partial L}{\partial h_0}=r\odot\prod_{t=1}^T(1-z_t)\quad\text{(minGRU)},\qquad r\odot\prod_{t=1}^Tf'_t\quad\text{(minLSTM)},
+$$
+\alttext(dL by dh 0 equals r times the product over t of 1 minus z t for minGRU, and r times the product of f prime t for minLSTM.)
+
+with no other paths. The IndRNN keeps a nonlinearity but makes the recurrent weight a vector, \(h_t=\phi(x_tW+u\odot h_{t-1}+b)\). Its Jacobian is \(\mathrm{diag}(u\odot\phi'(a_t))\), so with ReLU the gradient is \(r\odot\prod_tu\odot\mathbb 1[a_t>0]\). The library draws \(u\) uniformly on \([0,1]\).
+
+>> The parallel scan
+
+A minimal cell's state obeys \(h_t=a_t\odot h_{t-1}+b_t\), with \(a_t\) and \(b_t\) known for all \(t\) before any state is computed. Each step is the affine map \(h\mapsto a\,h+b\), and composing two of them gives another, \((a,b)\circ(a',b')=(a\,a',\ a\,b'+b)\). Composition is associative, so all prefixes can be formed by a scan (Blelloch, 1990).
+`nn::linear_scan` uses the Hillis–Steele form. In round \(k\), every position combines its partial result with the one \(2^{k-1}\) steps earlier. After \(\lceil\log_2T\rceil\) rounds every position holds \(h_t\), and the initial state is folded in as \(b_0\leftarrow a_0h_0+b_0\). Each round is a few elementwise operations on \([B,T,H]\) tensors, so the scan has depth \(O(\log T)\) but does \(O(T\log T)\) work, against \(O(T)\) of both for a loop. It is built from differentiable operations, so gradients come for free.
+
+> Simple examples
+
+>> One step of each cell, and parallel against sequential
+
+The program evaluates one step of each cell with \(d=3\) inputs, \(u=4\) units and a batch of 2, recomputes it from the stored parameters by hand, and counts the parameters. It runs minGRU and minLSTM over 50 steps both with the scan and with the step function in a loop. Finally, it times the forward and backward pass of `nn::linear_scan` against a loop for sequence lengths from 8 to 2048.
+
+```{cpp, results="markdown", file="figures/recurrent_scan.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+using nn::Tensor;
+using dm::graphics::RGB;
+const auto F64 = nn::DType::Float64;
+using Vec = std::vector<double>;
+
+// (A W)[i][j] for row-major A [rows, k] and W [k, cols], restricted to columns [c0, c0 + n).
+Vec mm(const Vec& A, const Vec& W, int rows, int k, int cols, int c0, int n) {
+  Vec out(rows * n, 0.0);
+  for (int i = 0; i < rows; ++i)
+    for (int j = 0; j < n; ++j)
+      for (int l = 0; l < k; ++l) out[i * n + j] += A[i * k + l] * W[l * cols + c0 + j];
+  return out;
+}
+double sig(double v) { return 1 / (1 + std::exp(-v)); }
+double max_diff(const Vec& a, const Vec& b) {
+  double m = 0;
+  for (std::size_t i = 0; i < a.size(); ++i) m = std::max(m, std::abs(a[i] - b[i]));
+  return m;
+}
+
+int main() {
+  std::filesystem::create_directories("build");
+  // One step of each cell with in = 3, units = 4, batch 2, against the equations evaluated by hand.
+  const int in = 3, u = 4, B = 2;
+  nn::Generator g(1);
+  const Tensor x = nn::normal({B, in}, 0.0, 1.0, g, F64), h = nn::normal({B, u}, 0.0, 0.5, g, F64), c = nn::normal({B, u}, 0.0, 0.5, g, F64);
+  const Vec X = x.to_vector<double>(), H = h.to_vector<double>(), C = c.to_vector<double>();
+  std::print("| cell | max abs(library − hand) | parameters | formula |\n| :--- | ---: | ---: | :--- |\n");
+  auto row = [&](const char* cell, double err, const nn::ParameterStore& p, int expect, const char* formula) {
+    std::print("| {} | {:.1e} | {} | {} = {} |\n", cell, err, p.count(), formula, expect);
+  };
+  {
+    nn::ParameterStore p(1, F64);
+    const Vec out = nn::rnn_step(p, "c", x, h).to_vector<double>();
+    const Vec a = mm(X, p.at("c/Wx").to_vector<double>(), B, in, u, 0, u), r = mm(H, p.at("c/Wh").to_vector<double>(), B, u, u, 0, u), b = p.at("c/b").to_vector<double>();
+    Vec hand(B * u);
+    for (int i = 0; i < B * u; ++i) hand[i] = std::tanh(a[i] + r[i] + b[i % u]);
+    row("RNN", max_diff(out, hand), p, in * u + u * u + u, "in·u + u² + u");
+  }
+  {
+    nn::ParameterStore p(1, F64);
+    const auto st = nn::lstm_step(p, "c", x, {h, c}, 1.0);
+    const Vec Wx = p.at("c/Wx").to_vector<double>(), Wh = p.at("c/Wh").to_vector<double>(), b = p.at("c/b").to_vector<double>();
+    auto gate = [&](int k) {
+      Vec a = mm(X, Wx, B, in, 4 * u, k * u, u), r = mm(H, Wh, B, u, 4 * u, k * u, u);
+      for (int i = 0; i < B * u; ++i) a[i] += r[i] + b[k * u + i % u];
+      return a;
+    };
+    const Vec ig = gate(0), fg = gate(1), gg = gate(2), og = gate(3);
+    Vec hh(B * u), cc(B * u);
+    for (int i = 0; i < B * u; ++i) cc[i] = sig(fg[i]) * C[i] + sig(ig[i]) * std::tanh(gg[i]), hh[i] = sig(og[i]) * std::tanh(cc[i]);
+    row("LSTM", std::max(max_diff(st.h.to_vector<double>(), hh), max_diff(st.c.to_vector<double>(), cc)), p, 4 * (in * u + u * u + u), "4(in·u + u² + u)");
+  }
+  {
+    nn::ParameterStore p(1, F64);
+    const Vec out = nn::gru_step(p, "c", x, h, 0.0).to_vector<double>();
+    const Vec Wxzr = p.at("c/Wx_zr").to_vector<double>(), Whzr = p.at("c/Wh_zr").to_vector<double>(), bzr = p.at("c/b_zr").to_vector<double>();
+    Vec z = mm(X, Wxzr, B, in, 2 * u, 0, u), r = mm(X, Wxzr, B, in, 2 * u, u, u);
+    const Vec zh = mm(H, Whzr, B, u, 2 * u, 0, u), rh = mm(H, Whzr, B, u, 2 * u, u, u);
+    Vec rH(B * u);
+    for (int i = 0; i < B * u; ++i) z[i] = sig(z[i] + zh[i] + bzr[i % u]), r[i] = sig(r[i] + rh[i] + bzr[u + i % u]), rH[i] = r[i] * H[i];
+    const Vec nx = mm(X, p.at("c/Wx_n").to_vector<double>(), B, in, u, 0, u), nh = mm(rH, p.at("c/Wh_n").to_vector<double>(), B, u, u, 0, u), bn = p.at("c/b_n").to_vector<double>();
+    Vec hand(B * u);
+    for (int i = 0; i < B * u; ++i) hand[i] = (1 - z[i]) * std::tanh(nx[i] + nh[i] + bn[i % u]) + z[i] * H[i];
+    row("GRU", max_diff(out, hand), p, 3 * (in * u + u * u + u), "3(in·u + u² + u)");
+  }
+  {
+    nn::ParameterStore p(1, F64);
+    const Vec out = nn::mingru_step(p, "c", x, h, -1.0).to_vector<double>();
+    const Vec z = mm(X, p.at("c/z/W").to_vector<double>(), B, in, u, 0, u), ht = mm(X, p.at("c/h/W").to_vector<double>(), B, in, u, 0, u);
+    const Vec bz = p.at("c/z/b").to_vector<double>(), bh = p.at("c/h/b").to_vector<double>();
+    Vec hand(B * u);
+    for (int i = 0; i < B * u; ++i) {
+      const double zz = sig(z[i] + bz[i % u]);
+      hand[i] = (1 - zz) * H[i] + zz * (ht[i] + bh[i % u]);
+    }
+    row("minGRU", max_diff(out, hand), p, 2 * (in * u + u), "2(in·u + u)");
+  }
+  {
+    nn::ParameterStore p(1, F64);
+    const Vec out = nn::minlstm_step(p, "c", x, h, 1.0).to_vector<double>();
+    const Vec f = mm(X, p.at("c/f/W").to_vector<double>(), B, in, u, 0, u), ii = mm(X, p.at("c/i/W").to_vector<double>(), B, in, u, 0, u);
+    const Vec ht = mm(X, p.at("c/h/W").to_vector<double>(), B, in, u, 0, u);
+    const Vec bf = p.at("c/f/b").to_vector<double>(), bi = p.at("c/i/b").to_vector<double>(), bh = p.at("c/h/b").to_vector<double>();
+    Vec hand(B * u);
+    for (int k = 0; k < B * u; ++k) {
+      const double ff = sig(f[k] + bf[k % u]), gi = sig(ii[k] + bi[k % u]);
+      hand[k] = ff / (ff + gi) * H[k] + gi / (ff + gi) * (ht[k] + bh[k % u]);
+    }
+    row("minLSTM", max_diff(out, hand), p, 3 * (in * u + u), "3(in·u + u)");
+  }
+  {
+    nn::ParameterStore p(1, F64);
+    const Vec out = nn::indrnn_step(p, "c", x, h).to_vector<double>();
+    const Vec a = mm(X, p.at("c/W").to_vector<double>(), B, in, u, 0, u), uu = p.at("c/u").to_vector<double>(), b = p.at("c/b").to_vector<double>();
+    Vec hand(B * u);
+    for (int i = 0; i < B * u; ++i) hand[i] = std::max(0.0, a[i] + uu[i % u] * H[i] + b[i % u]);
+    row("IndRNN", max_diff(out, hand), p, in * u + 2 * u, "in·u + 2u");
+  }
+
+  // The minimal cells: a whole sequence in parallel against the step function in a loop.
+  {
+    const Tensor xs = nn::normal({4, 50, in}, 0.0, 1.0, g, F64), h0 = nn::normal({4, u}, 0.0, 1.0, g, F64);
+    nn::ParameterStore p(2, F64);
+    const Tensor pg = nn::mingru(p, "g", xs, u, h0), pl = nn::minlstm(p, "l", xs, u, h0);
+    std::vector<Tensor> sg, sl;
+    Tensor a = h0, b = h0;
+    for (const Tensor& xt : nn::time_steps(xs)) sg.push_back(a = nn::mingru_step(p, "g", xt, a)), sl.push_back(b = nn::minlstm_step(p, "l", xt, b));
+    std::print("\nWhole sequence (T = 50) in parallel against 50 calls of the step function: minGRU {:.1e}, minLSTM {:.1e}.\n",
+               nn::max(nn::abs(pg - nn::stack_time(sg))).item(), nn::max(nn::abs(pl - nn::stack_time(sl))).item());
+  }
+
+  // Cost of the scan against a loop: forward and backward of sum(h ⊙ w), batch 8, 64 channels, median of 5 runs.
+  std::print("\n| T | scan rounds | loop (ms) | scan (ms) | ratio loop/scan | max abs difference |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> Ts, tl, ts;
+  for (std::int64_t T : {8, 32, 128, 512, 2048}) {
+    Tensor a = nn::uniform({8, T, 64}, 0.5, 1.0, g, F64), b = nn::normal({8, T, 64}, 0.0, 1.0, g, F64);
+    const Tensor w = nn::normal({8, T, 64}, 0.0, 1.0, g, F64);
+    a.requires_grad_(), b.requires_grad_();
+    auto loop = [&] {
+      Tensor hh = nn::zeros({8, 64}, F64);
+      std::vector<Tensor> out;
+      const auto as = nn::time_steps(a), bs = nn::time_steps(b);
+      for (std::int64_t t = 0; t < T; ++t) out.push_back(hh = as[t] * hh + bs[t]);
+      return nn::stack_time(out);
+    };
+    auto time = [&](auto&& f) {
+      std::vector<double> ms;
+      for (int r = 0; r < 5; ++r) {
+        const auto t0 = std::chrono::steady_clock::now();
+        (void)nn::grad(nn::sum(f() * w), {a, b});
+        ms.push_back(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count());
+      }
+      std::ranges::sort(ms);
+      return ms[2];
+    };
+    const double l = time(loop), s = time([&] { return nn::linear_scan(a, b); });
+    const double diff = nn::max(nn::abs(loop() - nn::linear_scan(a, b))).item();
+    std::print("| {} | {} | {:.1f} | {:.1f} | {:.1f} | {:.1e} |\n", T, static_cast<int>(std::ceil(std::log2(T))), l, s, l / s, diff);
+    Ts.push_back(std::log2(T)), tl.push_back(std::log10(l)), ts.push_back(std::log10(s));
+  }
+
+  auto pl = dm::graphics::RPlot::create();
+  pl.lines(Ts, tl, "loop over time", RGB{220, 38, 38}, 2).points(Ts, tl, "", RGB{220, 38, 38}, 6)
+      .lines(Ts, ts, "parallel scan", RGB{37, 99, 235}, 2).points(Ts, ts, "", RGB{37, 99, 235}, 6)
+      .x_limits(2.5, 11.5).y_limits(-1.5, 3.5).x_ticks({3, 5, 7, 9, 11}, {"8", "32", "128", "512", "2048"})
+      .title("Forward + backward time, batch 8, 64 channels").x_label("sequence length T (log scale)").y_label("log10 time (ms)");
+  auto fig = dm::graphics::RLayout::create(1, 1);
+  fig.add(pl);
+  fig.size(1100, 460).fit_panels();
+  fig.save("build/recurrent_scan.svg");
+}
+```
+// result_begin: markdown
+| cell | max abs(library − hand) | parameters | formula |
+| :--- | ---: | ---: | :--- |
+| RNN | 2.2e-16 | 32 | in·u + u² + u = 32 |
+| LSTM | 1.1e-16 | 128 | 4(in·u + u² + u) = 128 |
+| GRU | 5.6e-17 | 96 | 3(in·u + u² + u) = 96 |
+| minGRU | 1.1e-16 | 32 | 2(in·u + u) = 32 |
+| minLSTM | 2.8e-17 | 48 | 3(in·u + u) = 48 |
+| IndRNN | 0.0e+00 | 20 | in·u + 2u = 20 |
+
+Whole sequence (T = 50) in parallel against 50 calls of the step function: minGRU 8.9e-16, minLSTM 4.4e-16.
+
+| T | scan rounds | loop (ms) | scan (ms) | ratio loop/scan | max abs difference |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 8 | 3 | 0.2 | 0.1 | 1.4 | 8.9e-16 |
+| 32 | 5 | 0.7 | 1.1 | 0.6 | 2.7e-15 |
+| 128 | 7 | 3.6 | 15.1 | 0.2 | 3.6e-15 |
+| 512 | 9 | 20.8 | 51.8 | 0.4 | 2.7e-15 |
+| 2048 | 11 | 75.8 | 307.9 | 0.2 | 3.6e-15 |
+\image(figures/recurrent_scan.svg)
+// result_end
+
+\caption(Time for the forward and backward pass of the diagonal recurrence with batch 8 and 64 channels, as a loop over time (red) and as a parallel scan (blue), on a logarithmic scale.)
+\alttext(Both lines rise steadily from about 0.1 ms at T = 8. The blue scan line lies above the red loop line everywhere except at T = 8, where they meet, ending near 90 ms against about 34 ms at T = 2048.)
+
+Every cell agrees with its equations to at most \(2.2\times10^{-16}\), and every parameter count matches its formula: 32 for the RNN, 128 for the LSTM, 96 for the GRU, 32 for minGRU, 48 for minLSTM and 20 for the IndRNN. The scan and the loop give the same 50 states to within \(10^{-15}\).
+The timing shows the other side of the scan. On a single CPU, depth does not help. Each of the \(\lceil\log_2T\rceil\) rounds touches the whole sequence, so the scan is slower than the loop beyond the shortest length, by a factor of roughly 2 to 3 in this run. The scan pays off only where many elementwise operations run at once, as on a GPU. Its results agree with the loop to \(4\times10^{-15}\) at every length.
+
+> Checking the theory
+
+>> The gradient through time
+
+For lengths \(T\) from 1 to 80, the program draws random inputs (\(d=4\)), a small random initial state and a random \(r\). It computes \(\partial L/\partial h_0\) (or \(\partial L/\partial c_0\)) for \(L=\sum h_T\odot r\) with 32 units, averaging the norm over 8 initialisations. Along the same trajectories it evaluates the closed forms: the mean-field estimate for the RNN, the direct path for the LSTM and GRU, and the exact products for the minimal cells and the IndRNN.
+
+```{cpp, results="markdown", file="figures/recurrent_gradients.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+using nn::Tensor;
+using dm::graphics::RGB;
+const auto F64 = nn::DType::Float64;
+
+// Columns [c0, c0 + n) of a matrix, or entries of a vector.
+Tensor cols(const Tensor& W, std::int64_t c0, std::int64_t n) {
+  return W.dim() == 1 ? nn::slice(W, {c0}, {n}) : nn::slice(W, {0, c0}, {W.size(0), n});
+}
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::int64_t in = 4, u = 32;
+  const std::vector<std::int64_t> lengths{1, 5, 10, 20, 40, 80};
+  enum Kind { Rnn, LstmH, LstmC, Gru, MinGru, MinLstm, IndRnn };
+  struct Variant { Kind kind; double bias; std::string label; RGB color; };
+  const std::vector<Variant> variants{
+      {Rnn, 0, "RNN, ∂L/∂h0", {17, 24, 39}},           {LstmH, 1, "LSTM b_f = 1, ∂L/∂h0", {148, 163, 184}},
+      {LstmC, 1, "LSTM b_f = 1, ∂L/∂c0", {220, 38, 38}}, {LstmC, 3, "LSTM b_f = 3, ∂L/∂c0", {234, 88, 12}},
+      {LstmC, 5, "LSTM b_f = 5, ∂L/∂c0", {202, 138, 4}}, {Gru, 0, "GRU b_z = 0", {37, 99, 235}},
+      {Gru, 3, "GRU b_z = 3", {14, 165, 233}},           {MinGru, 0, "minGRU b_z = 0", {37, 99, 235}},
+      {MinGru, -3, "minGRU b_z = −3", {14, 165, 233}},   {MinLstm, 0, "minLSTM b_f = 0", {220, 38, 38}},
+      {MinLstm, 3, "minLSTM b_f = 3", {234, 88, 12}},    {IndRnn, 0, "IndRNN, ReLU", {22, 163, 74}}};
+
+  // For each run: ||∂L/∂state0|| for L = sum(h_T ⊙ r), and the norm of r ⊙ prod_t d_t, where d_t is the diagonal
+  // "direct path" factor of each step (the whole Jacobian for the diagonal cells, one path among many for the others).
+  std::vector<std::vector<double>> measured(variants.size()), predicted(variants.size());
+  double worst_exact = 0;
+  for (std::size_t v = 0; v < variants.size(); ++v) {
+    const auto& V = variants[v];
+    for (std::int64_t T : lengths) {
+      double m = 0, pr = 0;
+      for (std::uint64_t seed = 1; seed <= 8; ++seed) {
+        nn::Generator g(seed);
+        nn::ParameterStore p(seed, F64);
+        const Tensor x = nn::normal({1, T, in}, 0.0, 1.0, g, F64);
+        Tensor h0 = nn::normal({1, u}, 0.0, 0.1, g, F64), c0 = nn::normal({1, u}, 0.0, 0.1, g, F64);
+        const Tensor r = nn::normal({1, u}, 0.0, 1.0, g, F64);
+        h0.requires_grad_(), c0.requires_grad_();
+        Tensor hT, factor = nn::ones({1, u}, F64);
+        std::vector<Tensor> hs{h0};
+        const auto xs = nn::time_steps(x);
+        if (V.kind == MinGru || V.kind == MinLstm) {
+          const Tensor hseq = V.kind == MinGru ? nn::mingru(p, "c", x, u, h0, V.bias) : nn::minlstm(p, "c", x, u, h0, V.bias);
+          hT = nn::reshape(nn::slice(hseq, {0, T - 1, 0}, {1, 1, u}), {1, u});
+        } else {
+          nn::LstmState s{h0, c0};
+          for (const Tensor& xt : xs) {
+            if (V.kind == Rnn) s.h = nn::rnn_step(p, "c", xt, s.h);
+            else if (V.kind == Gru) s.h = nn::gru_step(p, "c", xt, s.h, V.bias);
+            else if (V.kind == IndRnn) s.h = nn::indrnn_step(p, "c", xt, s.h);
+            else s = nn::lstm_step(p, "c", xt, s, V.bias);
+            hs.push_back(s.h);
+          }
+          hT = s.h;
+        }
+        const Tensor gnorm = nn::grad(nn::sum(hT * r), {V.kind == LstmC ? c0 : h0})[0];
+        nn::NoGradGuard ng;
+        for (std::int64_t t = 0; t < T; ++t) {
+          const Tensor& xt = xs[t];
+          const Tensor& hp = hs[std::min<std::size_t>(t, hs.size() - 1)];
+          if (V.kind == Rnn) {  // mean-field: sqrt(mean_j tanh'(a_j)²) · ||W_h||_F / sqrt(u) in every coordinate
+            const Tensor d = 1.0 - nn::square(hs[t + 1]);
+            factor = factor * std::sqrt(nn::mean(nn::square(d)).item()) * std::sqrt(nn::sum(nn::square(p.at("c/Wh"))).item() / u);
+          } else if (V.kind == LstmC) {
+            factor = factor * nn::sigmoid(nn::matmul(xt, cols(p.at("c/Wx"), u, u)) + nn::matmul(hp, cols(p.at("c/Wh"), u, u)) + cols(p.at("c/b"), u, u));
+          } else if (V.kind == Gru) {
+            factor = factor * nn::sigmoid(nn::matmul(xt, cols(p.at("c/Wx_zr"), 0, u)) + nn::matmul(hp, cols(p.at("c/Wh_zr"), 0, u)) + cols(p.at("c/b_zr"), 0, u));
+          } else if (V.kind == MinGru) {
+            factor = factor * (1.0 - nn::sigmoid(nn::matmul(xt, p.at("c/z/W")) + p.at("c/z/b")));
+          } else if (V.kind == MinLstm) {
+            const Tensor f = nn::sigmoid(nn::matmul(xt, p.at("c/f/W")) + p.at("c/f/b")), i = nn::sigmoid(nn::matmul(xt, p.at("c/i/W")) + p.at("c/i/b"));
+            factor = factor * f / (f + i);
+          } else if (V.kind == IndRnn) {
+            factor = factor * p.at("c/u") * nn::cast(nn::greater(hs[t + 1], nn::scalar(0.0)), F64);
+          }
+        }
+        const Tensor pred = r * factor;
+        if (V.kind == MinGru || V.kind == MinLstm || V.kind == IndRnn) worst_exact = std::max(worst_exact, nn::max(nn::abs(gnorm - pred)).item() / std::max(1e-300, nn::max(nn::abs(pred)).item()));
+        m += std::sqrt(nn::sum(nn::square(gnorm)).item()) / 8;
+        pr += std::sqrt(nn::sum(nn::square(pred)).item()) / 8;
+      }
+      measured[v].push_back(m), predicted[v].push_back(pr);
+    }
+  }
+  std::print("Mean over 8 initialisations of the gradient norm (and of the direct-path prediction, in brackets):\n\n| variant |");
+  for (auto T : lengths) std::print(" T = {} |", T);
+  std::print("\n| :--- |");
+  for (std::size_t k = 0; k < lengths.size(); ++k) std::print(" ---: |");
+  std::print("\n");
+  for (std::size_t v = 0; v < variants.size(); ++v) {
+    std::print("| {} |", variants[v].label);
+    for (std::size_t k = 0; k < lengths.size(); ++k)
+      variants[v].kind == LstmH ? std::print(" {:.2e} |", measured[v][k]) : std::print(" {:.2e} ({:.2e}) |", measured[v][k], predicted[v][k]);
+    std::print("\n");
+  }
+  std::print("\nminGRU, minLSTM and IndRNN: largest relative difference between the gradient and r ⊙ ∏ d_t over all runs: {:.1e}.\n", worst_exact);
+  std::print("Retention at the gate bias alone: σ(1) = {:.3f}, σ(3) = {:.3f}, σ(5) = {:.4f}; σ(3)^80 = {:.2e}, σ(5)^80 = {:.3f}.\n",
+             1 / (1 + std::exp(-1.0)), 1 / (1 + std::exp(-3.0)), 1 / (1 + std::exp(-5.0)), std::pow(1 / (1 + std::exp(-3.0)), 80), std::pow(1 / (1 + std::exp(-5.0)), 80));
+
+  auto panel = [&](std::vector<std::size_t> which, const std::string& title) {
+    auto pl = dm::graphics::RPlot::create();
+    std::vector<double> xs;
+    for (auto T : lengths) xs.push_back(static_cast<double>(T));
+    for (std::size_t v : which) {
+      std::vector<double> xm, ym, xp, yp;  // a zero gradient (IndRNN with every unit switched off once) has no logarithm
+      for (std::size_t k = 0; k < lengths.size(); ++k) {
+        if (measured[v][k] > 0) xm.push_back(xs[k]), ym.push_back(std::log10(measured[v][k]));
+        if (predicted[v][k] > 0) xp.push_back(xs[k]), yp.push_back(std::log10(predicted[v][k]));
+      }
+      pl.points(xm, ym, variants[v].label, variants[v].color, 6);
+      if (variants[v].kind != LstmH) pl.lines(xp, yp, variants[v].color, 1.5);
+    }
+    pl.x_limits(0, 84).y_limits(-25, 16).title(title).x_label("sequence length T").y_label("log10 gradient norm");
+    return pl;
+  };
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(panel({0, 1, 2, 3, 4, 5, 6}, "Classical cells (lines: direct path)"));
+  fig.add(panel({7, 8, 9, 10, 11}, "Diagonal cells (lines: exact product)"));
+  fig.size(1100, 560).fit_panels();
+  fig.save("build/recurrent_gradients.svg");
+}
+```
+// result_begin: markdown
+Mean over 8 initialisations of the gradient norm (and of the direct-path prediction, in brackets):
+
+| variant | T = 1 | T = 5 | T = 10 | T = 20 | T = 40 | T = 80 |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| RNN, ∂L/∂h0 | 4.66e+00 (4.67e+00) | 1.66e+00 (1.85e+00) | 5.17e-01 (5.47e-01) | 4.45e-02 (4.94e-02) | 3.57e-04 (3.59e-04) | 5.89e-07 (2.04e-08) |
+| LSTM b_f = 1, ∂L/∂h0 | 7.60e-01 | 2.91e-01 | 1.10e-01 | 3.17e-02 | 1.30e-03 | 2.97e-06 |
+| LSTM b_f = 1, ∂L/∂c0 | 1.93e+00 (3.88e+00) | 7.31e-01 (1.07e+00) | 2.85e-01 (2.44e-01) | 7.28e-02 (1.07e-02) | 3.37e-03 (2.10e-05) | 8.05e-06 (6.15e-11) |
+| LSTM b_f = 3, ∂L/∂c0 | 2.50e+00 (5.05e+00) | 2.38e+00 (4.04e+00) | 2.51e+00 (3.45e+00) | 4.93e+00 (2.07e+00) | 5.40e+00 (8.14e-01) | 1.64e+01 (1.21e-01) |
+| LSTM b_f = 5, ∂L/∂c0 | 2.61e+00 (5.27e+00) | 2.87e+00 (5.00e+00) | 3.49e+00 (5.29e+00) | 8.49e+00 (4.89e+00) | 1.42e+01 (4.39e+00) | 1.82e+01 (3.12e+00) |
+| GRU b_z = 0 | 2.90e+00 (2.57e+00) | 5.07e-01 (1.69e-01) | 8.01e-02 (7.04e-03) | 1.93e-03 (9.31e-06) | 2.96e-06 (1.47e-11) | 2.21e-11 (9.27e-24) |
+| GRU b_z = 3 | 5.03e+00 (5.03e+00) | 4.04e+00 (4.01e+00) | 3.52e+00 (3.37e+00) | 2.23e+00 (2.04e+00) | 1.06e+00 (7.59e-01) | 2.66e-01 (9.41e-02) |
+| minGRU b_z = 0 | 2.70e+00 (2.70e+00) | 1.77e-01 (1.77e-01) | 7.86e-03 (7.86e-03) | 1.21e-05 (1.21e-05) | 8.43e-12 (8.43e-12) | 3.03e-24 (3.03e-24) |
+| minGRU b_z = −3 | 5.04e+00 (5.04e+00) | 4.00e+00 (4.00e+00) | 3.36e+00 (3.36e+00) | 1.94e+00 (1.94e+00) | 6.97e-01 (6.97e-01) | 7.76e-02 (7.76e-02) |
+| minLSTM b_f = 0 | 2.67e+00 (2.67e+00) | 1.59e-01 (1.59e-01) | 6.80e-03 (6.80e-03) | 8.79e-06 (8.79e-06) | 8.11e-12 (8.11e-12) | 6.52e-24 (6.52e-24) |
+| minLSTM b_f = 3 | 3.51e+00 (3.51e+00) | 6.31e-01 (6.31e-01) | 9.37e-02 (9.37e-02) | 1.49e-03 (1.49e-03) | 3.83e-07 (3.83e-07) | 1.62e-14 (1.62e-14) |
+| IndRNN, ReLU | 2.28e+00 (2.28e+00) | 5.31e-01 (5.31e-01) | 2.24e-01 (2.24e-01) | 2.99e-01 (2.99e-01) | 2.42e-02 (2.42e-02) | 0.00e+00 (0.00e+00) |
+
+minGRU, minLSTM and IndRNN: largest relative difference between the gradient and r ⊙ ∏ d_t over all runs: 2.4e-15.
+Retention at the gate bias alone: σ(1) = 0.731, σ(3) = 0.953, σ(5) = 0.9933; σ(3)^80 = 2.05e-02, σ(5)^80 = 0.584.
+\image(figures/recurrent_gradients.svg)
+// result_end
+
+\caption(The norm of the gradient with respect to the initial state against the sequence length (points, mean over 8 initialisations, log scale), with the closed-form prediction of the same colour as a line. Left: the classical cells, with the direct path through the memory gate (mean field for the RNN); no prediction is drawn for the LSTM's gradient with respect to h0. Right: minGRU, minLSTM and the IndRNN, where the line is the exact product of gate values.)
+\alttext(Left: the GRU with b_z = 3 and the LSTMs with b_f = 3 and 5 stay near 10 to the 0 out to T = 80. The RNN, the LSTM with b_f = 1 and the GRU with b_z = 0 fall to between 10 to the minus 5 and 10 to the minus 11. The blue line for the GRU with b_z = 0 falls far below its points, to 10 to the minus 23, and the red LSTM b_f = 1 line lies below its points. Right: every point sits on its line. minGRU and minLSTM with zero bias fall to about 10 to the minus 23 at T = 80, minLSTM with b_f = 3 to 10 to the minus 14, minGRU with b_z = −3 only to 10 to the minus 1. The IndRNN points stop at T = 40.)
+
+For the diagonal cells the closed form is exact. Over all 240 runs, the largest relative difference between the gradient and \(r\odot\prod_td_t\) is \(2.4\times10^{-15}\). With zero biases, minGRU and minLSTM retain about half the state per step, and their gradients fall to about \(10^{-23}\) at \(T=80\). minLSTM with \(b_f=3\) keeps more but still falls to \(1.6\times10^{-14}\), because the input gate takes a share of the normalised total: at the biases, \(f'=0.95/(0.95+0.5)\approx0.66\). minGRU with \(b_z=-3\) keeps 0.95 per step at its bias and is still at 0.078 after 80 steps. That is below the bias-only value \(0.953^{80}\sqrt{32}\approx0.12\), as it must be: \(\log(1-\sigma(s))\) is concave in \(s\), so by Jensen's inequality input-dependent gates retain less on average than the gate at the mean preactivation. The IndRNN's gradient is exactly 0 at \(T=80\) in every run: with ReLU, a unit that is switched off once cuts its own path, and within 80 steps every unit was off at least once.
+
+For the classical cells the closed forms are only estimates, and they behave differently. The RNN's mean-field estimate tracks the measured norm to within 12% up to \(T=40\), as both fall to \(3.6\times10^{-4}\). At \(T=80\) it predicts \(2\times10^{-8}\) against a measured \(5.9\times10^{-7}\).
+The GRU with \(b_z=3\) follows its direct path within a factor of 3 up to \(T=80\), so the update gate does control its memory. With \(b_z=0\) the direct path falls much faster than the gradient (\(9\times10^{-24}\) against \(2\times10^{-11}\)), and the other paths carry the gradient.
+The LSTM shows the largest gap. With \(b_f=1\), \(\prod f_t\) predicts \(6\times10^{-11}\) at \(T=80\), but the measured gradient is \(8\times10^{-6}\). With \(b_f=3\) and 5 the measured gradient with respect to \(c_0\) grows with \(T\), to 16 and 18 at \(T=80\), while the direct path shrinks. The paths from the cell state through the output into the gates matter as much as the carousel itself. A large forget bias prevents vanishing but not growth.
+
+>> A latch task
+
+The latch task asks a cell to remember one bit. The first input is \(\pm1\), the next 39 are standard normal noise, and the label is the sign of the first input. Each cell has 16 units and a dense readout of its final state, and is trained by Adam (step \(3\times10^{-3}\), gradients clipped to global norm 1) for 400 batches of 32, with test accuracy on 256 fixed sequences every 25 steps. The budget is kept small so that the report runs quickly; the cells that solve the task do so well within it. A control runs the RNN with the first input replaced by 0. The program also estimates the spectral radius of the RNN's \(W_h\) before and after training.
+
+```{cpp, results="markdown", file="figures/recurrent_latch.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+using nn::Tensor;
+using dm::graphics::RGB;
+const auto F32 = nn::DType::Float32;
+
+int main() {
+  std::filesystem::create_directories("build");
+  // The latch task: x_1 = ±1 decides the label, x_2, ..., x_T are N(0, 1) noise.
+  const std::int64_t T = 40, units = 16, batch = 32;
+  const int steps = 400, every = 25;
+  enum Kind { Rnn, RnnBlind, Lstm, Gru, MinGru, MinLstm, IndRnn, MinGru2, MinLstm2 };
+  struct Variant { Kind kind; double bias; std::string label; RGB color; };
+  const std::vector<Variant> variants{
+      {Rnn, 0, "RNN", {17, 24, 39}},                     {RnnBlind, 0, "RNN, x_1 set to 0", {148, 163, 184}},
+      {Lstm, 1, "LSTM b_f = 1", {220, 38, 38}},          {Lstm, 3, "LSTM b_f = 3", {234, 88, 12}},
+      {Gru, 0, "GRU b_z = 0", {37, 99, 235}},            {Gru, 3, "GRU b_z = 3", {14, 165, 233}},
+      {MinGru, -3, "minGRU b_z = −3", {14, 165, 233}},   {MinLstm, 3, "minLSTM b_f = 3", {234, 88, 12}},
+      {IndRnn, 0, "IndRNN, ReLU", {22, 163, 74}},        {MinGru2, -3, "minGRU, 2 layers", {124, 58, 237}},
+      {MinLstm2, 3, "minLSTM, 2 layers", {219, 39, 119}}};
+  auto make = [&](nn::Generator& g, std::int64_t n) {
+    Tensor x = nn::normal({n, T, 1}, 0.0, 1.0, g, F32);
+    const Tensor bit = nn::cast(nn::greater(nn::uniform({n, 1, 1}, 0.0, 1.0, g, F32), nn::scalar(0.5)), F32);
+    x = nn::concat({2.0 * bit - 1.0, nn::slice(x, {0, 1, 0}, {n, T - 1, 1})}, 1);
+    return std::pair{x, nn::reshape(bit, {n, 1})};
+  };
+  // Largest |eigenvalue| of a square matrix, from ||v W^k||^(1/k) with k = 400 (renormalising as it goes).
+  auto spectral_radius = [](const Tensor& W) {
+    Tensor v = nn::ones({1, W.size(0)}, W.dtype());
+    double log_growth = 0;
+    for (int k = 0; k < 400; ++k) {
+      v = nn::matmul(v, W);
+      const double nv = std::sqrt(nn::sum(nn::square(v)).item());
+      if (k >= 200) log_growth += std::log(nv);
+      v = v / nv;
+    }
+    return std::exp(log_growth / 200);
+  };
+  std::print("Accuracy on 256 held-out sequences (T = {}, {} units, batch {}, Adam 3e-3, gradients clipped to global norm 1):\n\n", T, units, batch);
+  std::print("| cell | step 50 | step 100 | step 200 | step 400 | best (step) | first step ≥ 95% | seconds |\n| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<std::vector<double>> curves(variants.size());
+  std::string rho_note;
+  for (std::size_t v = 0; v < variants.size(); ++v) {
+    const auto& V = variants[v];
+    nn::ParameterStore p(7, F32);
+    auto model = [&](const Tensor& xin) {
+      const std::int64_t n = xin.size(0);
+      // The control sees the same sequences with the deciding first element replaced by 0.
+      const Tensor x = V.kind == RnnBlind ? nn::concat({nn::zeros({n, 1, 1}, F32), nn::slice(xin, {0, 1, 0}, {n, T - 1, 1})}, 1) : xin;
+      const Tensor h0 = nn::zeros({n, units}, F32);
+      Tensor h;
+      if (V.kind == MinGru2 || V.kind == MinLstm2) {
+        const auto layer = [&](const std::string& name, const Tensor& in) {
+          return V.kind == MinGru2 ? nn::mingru(p, name, in, units, h0, V.bias) : nn::minlstm(p, name, in, units, h0, V.bias);
+        };
+        h = nn::reshape(nn::slice(layer("c2", layer("c1", x)), {0, T - 1, 0}, {n, 1, units}), {n, units});
+      } else if (V.kind == MinGru || V.kind == MinLstm) {
+        const Tensor hs = V.kind == MinGru ? nn::mingru(p, "c", x, units, h0, V.bias) : nn::minlstm(p, "c", x, units, h0, V.bias);
+        h = nn::reshape(nn::slice(hs, {0, T - 1, 0}, {n, 1, units}), {n, units});
+      } else {
+        nn::LstmState s{h0, h0};
+        for (const Tensor& xt : nn::time_steps(x)) {
+          if (V.kind == Rnn || V.kind == RnnBlind) s.h = nn::rnn_step(p, "c", xt, s.h);
+          else if (V.kind == Gru) s.h = nn::gru_step(p, "c", xt, s.h, V.bias);
+          else if (V.kind == IndRnn) s.h = nn::indrnn_step(p, "c", xt, s.h);
+          else s = nn::lstm_step(p, "c", xt, s, V.bias);
+        }
+        h = s.h;
+      }
+      return nn::dense(p, "out", h, 1);
+    };
+    nn::Generator gtest(11), gtrain(12);
+    const auto [xtest, ytest] = make(gtest, 256);
+    { nn::NoGradGuard ng; (void)model(nn::slice(xtest, {0, 0, 0}, {1, T, 1})); }
+    nn::Optimizer adam(p, 3e-3, {.kind = nn::OptimizerKind::Adam});
+    const double rho0 = V.kind == Rnn ? spectral_radius(p.at("c/Wh")) : 0.0;
+    const auto t0 = std::chrono::steady_clock::now();
+    int first95 = -1;
+    for (int s = 1; s <= steps; ++s) {
+      const auto [x, y] = make(gtrain, batch);
+      adam.step(nn::clip_by_global_norm(nn::grad(nn::sigmoid_cross_entropy(model(x), y), p.parameters()), 1.0).first);
+      if (s % every == 0) {
+        nn::NoGradGuard ng;
+        const double acc = nn::mean(nn::cast(nn::equal(nn::cast(nn::greater(model(xtest), nn::scalar(0.0)), F32), ytest), F32)).item();
+        curves[v].push_back(acc);
+        if (first95 < 0 && acc >= 0.95) first95 = s;
+      }
+    }
+    const double secs = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+    const auto& c = curves[v];
+    if (V.kind == Rnn) rho_note = std::format("Spectral radius of the RNN's W_h: {:.3f} at initialisation, {:.3f} after training.", rho0, spectral_radius(p.at("c/Wh")));
+    const auto best = std::ranges::max_element(c);
+    std::print("| {} | {:.1f}% | {:.1f}% | {:.1f}% | {:.1f}% | {:.1f}% ({}) | {} | {:.1f} |\n", V.label, 100 * c[1], 100 * c[3], 100 * c[7], 100 * c[15],
+               100 * *best, every * (best - c.begin() + 1),
+               first95 < 0 ? std::string("never") : std::to_string(first95), secs);
+  }
+
+  std::print("\n{}\n", rho_note);
+
+  auto panel = [&](std::vector<std::size_t> which, const std::string& title) {
+    auto pl = dm::graphics::RPlot::create();
+    std::vector<double> xs;
+    for (int s = every; s <= steps; s += every) xs.push_back(s);
+    for (std::size_t v : which) {
+      std::vector<double> ys;
+      for (double a : curves[v]) ys.push_back(100 * a);
+      pl.lines(xs, ys, variants[v].label, variants[v].color, 2);
+    }
+    pl.abline_h(50, RGB{148, 163, 184}, 1).x_limits(0, steps * 1.02).y_limits(40, 140).y_ticks({40, 50, 60, 70, 80, 90, 100}, {"40", "50", "60", "70", "80", "90", "100"})
+        .title(title).x_label("training step").y_label("test accuracy (%)");
+    return pl;
+  };
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(panel({0, 1, 2, 3, 4, 5}, "Classical cells"));
+  fig.add(panel({6, 7, 8, 9, 10}, "Diagonal cells"));
+  fig.size(1100, 500).fit_panels();
+  fig.save("build/recurrent_latch.svg");
+}
+```
+// result_begin: markdown
+Accuracy on 256 held-out sequences (T = 40, 16 units, batch 32, Adam 3e-3, gradients clipped to global norm 1):
+
+| cell | step 50 | step 100 | step 200 | step 400 | best (step) | first step ≥ 95% | seconds |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| RNN | 99.6% | 100.0% | 100.0% | 100.0% | 100.0% (100) | 50 | 0.5 |
+| RNN, x_1 set to 0 | 48.4% | 54.3% | 48.8% | 48.4% | 54.3% (100) | never | 0.5 |
+| LSTM b_f = 1 | 75.8% | 82.4% | 86.7% | 89.8% | 91.8% (350) | never | 1.7 |
+| LSTM b_f = 3 | 81.2% | 89.1% | 99.6% | 100.0% | 100.0% (225) | 150 | 1.8 |
+| GRU b_z = 0 | 48.8% | 50.0% | 51.2% | 52.0% | 52.0% (400) | never | 1.5 |
+| GRU b_z = 3 | 56.2% | 62.9% | 86.7% | 99.2% | 99.2% (400) | 300 | 1.6 |
+| minGRU b_z = −3 | 52.0% | 55.1% | 56.2% | 58.6% | 59.4% (300) | never | 0.7 |
+| minLSTM b_f = 3 | 52.3% | 48.8% | 49.2% | 50.4% | 52.3% (50) | never | 0.9 |
+| IndRNN, ReLU | 47.7% | 49.6% | 47.7% | 48.0% | 50.8% (275) | never | 0.4 |
+| minGRU, 2 layers | 56.6% | 56.2% | 59.0% | 76.6% | 76.6% (400) | never | 1.7 |
+| minLSTM, 2 layers | 50.4% | 49.6% | 48.0% | 53.1% | 53.1% (400) | never | 2.0 |
+
+Spectral radius of the RNN's W_h: 1.069 at initialisation, 2.026 after training.
+\image(figures/recurrent_latch.svg)
+// result_end
+
+\caption(Test accuracy on the latch task during training, with chance (50%) as a grey line. Left: the classical cells and the RNN control without the deciding input. Right: the minimal cells and the IndRNN, with one or two layers.)
+\alttext(Left: the black RNN line is at 100% from the first evaluations on. The orange LSTM b_f = 3 line starts at 81% and climbs to 100% by step 225, and the light blue GRU b_z = 3 line climbs from 56% to 99%. The red LSTM b_f = 1 line climbs slowly from 76% to about 90%; the GRU b_z = 0 and the control stay near 50%. Right: only the purple two-layer minGRU line leaves 50%, rising from about 59% at step 200 to 77% at step 400; all other lines stay between 46 and 60%.)
+
+The control stays at chance, so the task can only be solved by carrying the first input. The plain RNN solves it fastest: 99.6% at the first evaluation (step 50) and 100% from step 100. Its recurrent matrix's spectral radius rose from 1.07 to 2.03 during training, which is consistent with the network having learned two attracting states, one for each sign, rather than a slowly decaying memory. The LSTM with \(b_f=3\) and the GRU with \(b_z=3\) reach 100% and 99.2%. With the default biases they do worse. The LSTM with \(b_f=1\) climbs slowly to 89.8% at step 400 (91.8% at best) and never reaches 95%, and the GRU with \(b_z=0\) never leaves chance.
+
+Every single-layer minimal cell and the IndRNN stay at chance, even with retaining biases. Vanishing gradients are not the cause: in the gradient section, minGRU with \(b_z=-3\) still had a gradient of 0.70 after 40 steps, the length of the latch sequences. The cause is what a single layer can compute. Unrolled, minGRU's final state is
+
+$$
+h_T=\sum_{t=1}^Tw_t\odot\tilde h_t+\Big(\prod_{s=1}^T(1-z_s)\Big)\odot h_0,\qquad w_t=z_t\odot\prod_{s>t}(1-z_s),
+$$
+\alttext(h T equals the sum over t of w t times h tilde t, plus the product over s of 1 minus z s, times h 0; where w t equals z t times the product over s greater than t of 1 minus z s.)
+
+where \(z_t\) and \(\tilde h_t\) depend on \(x_t\) alone. The weight on step 1 is \(z(x_1)\) times the retention of all later steps. The same value arriving at the last step would get the weight \(z(x_1)\), at least as much. A single layer cannot prefer the first input over a later one with the same value, and the noise takes values near \(\pm1\) all the time.
+A second layer removes the restriction. A first-layer unit with zero input weights and a constant candidate counts time, \(h_t=1-(1-z)^t\) from \(h_0=0\), so the second layer's gates can depend on position. The two-layer minGRU does start to learn the task: it leaves chance after step 200 and reaches 76.6% at step 400, still rising, far more slowly than the classical cells. The two-layer minLSTM did not leave chance within 400 steps. The IndRNN could in principle latch through a self-exciting ReLU unit with \(u\ge1\), but its weights start in \([0,1]\) and it did not find that solution here.
+
+> A dataset: digits one row at a time
+
+The digits data (Alpaydin and Kaynak, 1998) has 1797 handwritten digits as \(8\times8\) images with 17 grey levels. Here each image is read one row at a time, as a sequence of 8 inputs of 8 pixels each, so the class must be inferred from information spread over the whole sequence. This is a small version of the row-by-row sequential MNIST benchmark; reading one pixel per step (Le, Jaitly and Hinton, 2015) gives sequences 8 times as long and makes the experiment correspondingly slower. The first 1437 images train and the last 360 test.
+Each recurrent model has 64 units and a dense readout of its final state. The minimal cells use the retaining biases from the latch task. An MLP with one hidden layer of 64 units that sees all 64 pixels at once is the reference. Training is 1000 Adam steps (step 0.003, batch 64, clipping at global norm 1), with test accuracy every 50 steps.
+
+```{cpp, results="markdown", file="figures/recurrent_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace nn = dm::nn;
+using nn::Tensor;
+using dm::graphics::RGB;
+const auto F32 = nn::DType::Float32;
+
+int main() {
+  std::filesystem::create_directories("build");
+  // 8 × 8 digits read one pixel at a time, row by row: a sequence of length 64 with one input per step.
+  const auto digits = dm::datasets::digits();
+  const std::int64_t n = 1797, n_train = 1437, n_test = n - n_train, T = 8, D = 8, units = 64;
+  std::vector<float> px(static_cast<std::size_t>(n * T * D));
+  for (int j = 0; j < T * D; ++j) {
+    const auto c = digits.get_column<double>(std::format("pixel_{}", j)).values();
+    for (std::int64_t i = 0; i < n; ++i) px[i * T * D + j] = static_cast<float>(c[i] / 16.0);
+  }
+  const Tensor X = nn::from_vector(px, {n, T, D});
+  const Tensor y = nn::cast(nn::from_vector(digits.get_column<double>("digit").values(), {n}), nn::DType::Int64);
+  const Tensor Xtr = nn::slice(X, {0, 0, 0}, {n_train, T, D}), ytr = nn::slice(y, {0}, {n_train});
+  const Tensor Xte = nn::slice(X, {n_train, 0, 0}, {n_test, T, D}), yte = nn::slice(y, {n_train}, {n_test});
+
+  enum Kind { Mlp, Rnn, Lstm, Gru, MinGru, MinGru2, MinLstm2, IndRnn };
+  struct Model { Kind kind; std::string label; RGB color; };
+  const std::vector<Model> models{{Mlp, "MLP on all 64 pixels", {148, 163, 184}}, {Rnn, "RNN", {17, 24, 39}},
+                                  {Lstm, "LSTM b_f = 1", {220, 38, 38}},          {Gru, "GRU b_z = 0", {37, 99, 235}},
+                                  {MinGru, "minGRU b_z = −3", {14, 165, 233}},    {MinGru2, "minGRU, 2 layers", {124, 58, 237}},
+                                  {MinLstm2, "minLSTM, 2 layers", {219, 39, 119}}, {IndRnn, "IndRNN, ReLU", {22, 163, 74}}};
+  const int steps = 1000, every = 50;
+  std::print("Sequential digits: {} training and {} test images, {} hidden units, {} Adam steps (learning rate 0.003, batch 64, clipping at global norm 1).\n\n",
+             n_train, n_test, units, steps);
+  std::print("| model | parameters | test accuracy at step 250 | 500 | 1000 | best | seconds |\n| :--- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<std::vector<double>> curves(models.size()), clock(models.size());
+  for (std::size_t m = 0; m < models.size(); ++m) {
+    const Kind K = models[m].kind;
+    nn::ParameterStore p(1, F32);
+    auto f = [&](const Tensor& x) {
+      const std::int64_t b = x.size(0);
+      const Tensor h0 = nn::zeros({b, units}, F32);
+      auto last = [&](const Tensor& hs) { return nn::reshape(nn::slice(hs, {0, T - 1, 0}, {b, 1, units}), {b, units}); };
+      Tensor h;
+      if (K == Mlp) h = nn::dense(p, "h", nn::reshape(x, {b, T * D}), units, {.activation = nn::Activation::Relu, .init = nn::init::he_normal()});
+      else if (K == MinGru) h = last(nn::mingru(p, "c", x, units, h0, -3.0));
+      else if (K == MinGru2) h = last(nn::mingru(p, "c2", nn::mingru(p, "c1", x, units, h0, -3.0), units, h0, -3.0));
+      else if (K == MinLstm2) h = last(nn::minlstm(p, "c2", nn::minlstm(p, "c1", x, units, h0, 3.0), units, h0, 3.0));
+      else {
+        nn::LstmState s{h0, h0};
+        for (const Tensor& xt : nn::time_steps(x)) {
+          if (K == Rnn) s.h = nn::rnn_step(p, "c", xt, s.h);
+          else if (K == Gru) s.h = nn::gru_step(p, "c", xt, s.h);
+          else if (K == IndRnn) s.h = nn::indrnn_step(p, "c", xt, s.h);
+          else s = nn::lstm_step(p, "c", xt, s);
+        }
+        h = s.h;
+      }
+      return nn::dense(p, "out", h, 10);
+    };
+    { nn::NoGradGuard ng; (void)f(nn::slice(Xtr, {0, 0, 0}, {2, T, D})); }
+    nn::Optimizer opt(p, 0.003, {.kind = nn::OptimizerKind::Adam});
+    std::mt19937_64 rng(1);
+    std::vector<std::int64_t> order(n_train);
+    std::iota(order.begin(), order.end(), 0);
+    std::size_t pos = n_train;
+    double secs = 0;
+    for (int s = 1; s <= steps; ++s) {
+      if (pos + 64 > order.size()) std::shuffle(order.begin(), order.end(), rng), pos = 0;
+      const Tensor idx = nn::from_vector(std::vector<std::int64_t>(order.begin() + pos, order.begin() + pos + 64), {64});
+      pos += 64;
+      const auto t0 = std::chrono::steady_clock::now();
+      const Tensor loss = nn::sparse_softmax_cross_entropy(f(nn::gather(Xtr, idx, 0)), nn::gather(ytr, idx, 0));
+      opt.step(nn::clip_by_global_norm(nn::grad(loss, p.parameters()), 1.0).first);
+      secs += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+      if (s % every == 0) {
+        nn::NoGradGuard ng;
+        curves[m].push_back(nn::mean(nn::cast(nn::equal(nn::argmax(f(Xte), -1), yte), F32)).item());
+        clock[m].push_back(secs);
+      }
+    }
+    const auto& c = curves[m];
+    std::print("| {} | {} | {:.1f}% | {:.1f}% | {:.1f}% | {:.1f}% | {:.1f} |\n", models[m].label, p.count(), 100 * c[4], 100 * c[9], 100 * c.back(),
+               100 * *std::ranges::max_element(c), secs);
+  }
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  for (int panel = 0; panel < 2; ++panel) {
+    auto pl = dm::graphics::RPlot::create();
+    double xmax = 0;
+    for (std::size_t m = 0; m < models.size(); ++m) {
+      std::vector<double> xs, ys;
+      for (std::size_t k = 0; k < curves[m].size(); ++k) {
+        xs.push_back(panel == 0 ? (k + 1.0) * every : std::log10(clock[m][k]));
+        ys.push_back(100 * curves[m][k]);
+      }
+      xmax = std::max(xmax, xs.back());
+      pl.lines(xs, ys, panel == 0 ? models[m].label : "", models[m].color, 2);
+    }
+    pl.y_limits(0, 165).y_ticks({0, 20, 40, 60, 80, 100}, {"0", "20", "40", "60", "80", "100"}).y_label("test accuracy (%)");
+    if (panel == 0) pl.x_limits(0, steps * 1.02).title("Accuracy by training step").x_label("training step");
+    else pl.x_limits(-2, std::ceil(xmax)).title("Accuracy by training time").x_label("log10 seconds of training");
+    fig.add(pl);
+  }
+  fig.size(1100, 520).fit_panels();
+  fig.save("build/recurrent_digits.svg");
+}
+```
+// result_begin: markdown
+Sequential digits: 1437 training and 360 test images, 64 hidden units, 1000 Adam steps (learning rate 0.003, batch 64, clipping at global norm 1).
+
+| model | parameters | test accuracy at step 250 | 500 | 1000 | best | seconds |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| MLP on all 64 pixels | 4810 | 90.0% | 90.8% | 91.7% | 91.7% | 0.1 |
+| RNN | 5322 | 89.7% | 91.4% | 93.9% | 93.9% | 0.7 |
+| LSTM b_f = 1 | 19338 | 78.1% | 86.1% | 91.1% | 91.1% | 2.3 |
+| GRU b_z = 0 | 14666 | 90.0% | 93.1% | 93.3% | 93.3% | 1.9 |
+| minGRU b_z = −3 | 1802 | 58.1% | 69.7% | 75.6% | 75.6% | 0.7 |
+| minGRU, 2 layers | 10122 | 60.3% | 70.3% | 82.5% | 82.5% | 1.5 |
+| minLSTM, 2 layers | 14858 | 75.3% | 85.0% | 87.8% | 87.8% | 2.2 |
+| IndRNN, ReLU | 1290 | 73.3% | 77.8% | 81.4% | 81.4% | 0.2 |
+\image(figures/recurrent_digits.svg)
+// result_end
+
+\caption(Test accuracy on sequential digits by training step (left) and by training time on a logarithmic scale (right); the MLP sees the whole image at once.)
+\alttext(Left: the grey MLP line levels off at about 92%. The black RNN and blue GRU lines rise to about 93 to 94% and the red LSTM line to 91%. The pink two-layer minLSTM line rises to 88%, the purple two-layer minGRU to 83%, the green IndRNN to 81% and the light blue single-layer minGRU to 76%. Right: the MLP finishes in about a tenth of a second, the RNN, the IndRNN and the single minGRU layer in under a second, the LSTM and GRU in one to two seconds, and the two-layer minimal models in two to four seconds.)
+
+The classical cells are level with the MLP: the RNN finishes at 93.9%, the GRU at 93.3% and the LSTM at 91.1%, against 91.7% for the MLP. They have to compress the image into 64 numbers one row at a time, which costs them nothing here.
+The minimal cells trail. Two minLSTM layers reach 87.8% and two minGRU layers 82.5%. A single minGRU layer and the IndRNN, with fewer than 2000 parameters each, reach 75.6% and 81.4%. The latch task explains part of this: each layer weights its inputs by recency in a way that depends only on those inputs, so it cannot focus on a part of the image chosen by what came before.
+Training time follows the scan measurements. With only 8 steps the scan needs just 3 rounds, so a single minGRU layer trains faster than the LSTM, but two minimal layers take as long as one LSTM or longer.
+
+> Conclusion
+
+The classical cells compute exactly what their equations say, and their parameter counts follow from the gate structure. Their gradient through time is a product of full Jacobians. The plain RNN's decays geometrically, at about the rate a mean-field argument predicts. The gate bias in the GRU controls the dominant path. In the LSTM, the paths through the gates matter as much as the forget gate, so a large forget bias keeps the gradient alive but can let it grow.
+
+The minimal cells make the gradient exactly a product of gate values and make the sequence computable by a parallel scan. Both properties come from gates that ignore the state, and that is also their limitation. A single layer weights every input by recency in a way fixed by the inputs themselves, so it cannot latch onto the first element of a noisy sequence. A second layer can count time and fixes this, but on row-by-row digits two layers still trail the classical cells by 3 to 11 points. On a CPU, where the scan's extra work is not hidden by parallel hardware, two layers are not faster than one LSTM either.
+
+> References
+
+- S. Hochreiter (1991). "Untersuchungen zu dynamischen neuronalen Netzen". Diploma thesis, Technische Universität München.
+- Y. Bengio, P. Simard and P. Frasconi (1994). "Learning long-term dependencies with gradient descent is difficult". *IEEE Transactions on Neural Networks* 5(2), 157–166.
+- S. Hochreiter and J. Schmidhuber (1997). "Long short-term memory". *Neural Computation* 9(8), 1735–1780.
+- F. A. Gers, J. Schmidhuber and F. Cummins (2000). "Learning to forget: continual prediction with LSTM". *Neural Computation* 12(10), 2451–2471.
+- K. Cho, B. van Merriënboer, C. Gulcehre, D. Bahdanau, F. Bougares, H. Schwenk and Y. Bengio (2014). "Learning phrase representations using RNN encoder–decoder for statistical machine translation". *EMNLP*.
+- W. D. Hillis and G. L. Steele (1986). "Data parallel algorithms". *Communications of the ACM* 29(12), 1170–1183.
+- G. E. Blelloch (1990). "Prefix sums and their applications". Technical report CMU-CS-90-190, Carnegie Mellon University.
+- E. Alpaydin and C. Kaynak (1998). "Optical recognition of handwritten digits". UCI Machine Learning Repository.
+- Q. V. Le, N. Jaitly and G. E. Hinton (2015). "A simple way to initialize recurrent networks of rectified linear units". arXiv:1504.00941
+- S. Li, W. Li, C. Cook, C. Zhu and Y. Gao (2018). "Independently recurrent neural network (IndRNN): building a longer and deeper RNN". *CVPR*.
+- L. Feng, F. Tung, M. O. Ahmed, Y. Bengio and H. Hajimirsadeghi (2024). "Were RNNs all we needed?". arXiv:2410.01201

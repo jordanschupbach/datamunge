@@ -92,74 +92,118 @@ inline int perceptron_predict(const PerceptronModel& model, const std::vector<do
     return score > 0.0 ? 1 : -1;
 }
 
-/// A trained Winnow classifier over boolean features: predicts \f$1\f$ iff \f$w\cdot x > \theta\f$.
+/// @brief Owned positive-weight Boolean threshold rule learned by Winnow2.
+///
+/// Predicts one exactly when sum(weights[j]*x[j]) > threshold; equality predicts
+/// zero. No bias or probability calibration is fitted. Concurrent read-only
+/// predictions are safe when the instance is not mutated.
+/// @par Example
+/// @code
+/// const auto model=dm::algorithms::winnow_train({{1,0},{0,1},{0,0}},{1,1,0});
+/// const auto dimension=model.weights.size(); // 2
+/// @endcode
+/// @par References
+/// - N. Littlestone (1988), Learning Quickly When Irrelevant Attributes Abound,
+///   https://ai.stanford.edu/~pabbeel/depth_qual/littlestone1988.pdf
+/// @see winnow_train(), winnow_predict()
 struct WinnowModel {
-    std::vector<double> weights;               ///< Positive multiplicative weights \f$w_i\f$.
-    double              threshold      = 0.0;   ///< Threshold \f$\theta\f$.
-    double              alpha          = 2.0;   ///< Update multiplier \f$\alpha>1\f$.
-    std::size_t         epochs_run     = 0;
-    bool                converged      = false;
-    std::size_t         total_mistakes = 0;
+    std::vector<double> weights; ///< Owned positive finite weights, initially all one.
+    double threshold{0}; ///< Finite nonnegative decision threshold; a strict comparison is used.
+    double alpha{2}; ///< Finite update multiplier greater than one.
+    std::size_t epochs_run{0}; ///< Number of completed passes, including any final mistake-free pass.
+    bool converged{false}; ///< True only after observing a complete pass without an online mistake.
+    std::size_t total_mistakes{0}; ///< Cumulative online updates; not the final classification error count.
 };
 
-/// \brief Train the Winnow2 algorithm by multiplicative updates.
+/// @brief Internal trace records shared by the ordinary and instrumented Winnow entry points.
+namespace detail {
+/// @brief One completed pass's online update counts and post-pass state summary.
+struct WinnowEpoch {
+    std::size_t epoch{0}; ///< One-based pass number.
+    std::size_t false_positives{0}; ///< Online demotions during this pass.
+    std::size_t false_negatives{0}; ///< Online promotions during this pass.
+    std::size_t cumulative_mistakes{0}; ///< Updates through this pass.
+    double accuracy{0}; ///< Accuracy of the final weights on the supplied training rows.
+    double total_weight{0}; ///< Sum of weights after the pass, before any next-pass updates.
+};
+/// @brief Validated common training loop, optionally retaining pass records.
+/// @param features Rectangular Boolean rows.
+/// @param labels Boolean responses aligned with rows.
+/// @param alpha Finite multiplier greater than one.
+/// @param threshold Negative finite selects dimension; otherwise finite nonnegative.
+/// @param max_epochs Maximum passes, possibly zero.
+/// @param history Optional output vector, cleared before training and owned by caller.
+/// @return Owned fitted model; inputs are unchanged.
+/// @throws std::invalid_argument If options, shapes or Boolean values are invalid.
+/// @throws std::overflow_error If arithmetic overflows or a positive weight underflows to zero.
+WinnowModel winnow_train_impl(const std::vector<std::vector<int>>& features,
+                              const std::vector<int>& labels, double alpha, double threshold,
+                              std::size_t max_epochs, std::vector<WinnowEpoch>* history);
+} // namespace detail
+
+/// @brief Train Winnow2 by promoting active weights on false negatives and demoting on false positives.
 ///
-/// Features are boolean (\f$0/1\f$) and labels are \f$0/1\f$. Weights start at 1 and
-/// the threshold defaults to the number of features \f$n\f$. The prediction is
-/// \f$\hat y = [\,w\cdot x > \theta\,]\f$; on a mistake only the *active* weights
-/// (\f$x_i=1\f$) are changed:
-///   - false negative (\f$\hat y=0, y=1\f$): *promote*, \f$w_i \leftarrow \alpha\,w_i\f$;
-///   - false positive (\f$\hat y=1, y=0\f$): *demote*, \f$w_i \leftarrow w_i/\alpha\f$.
-/// Correct weights are untouched. Winnow tolerates many irrelevant features because
-/// their weights are never promoted; its mistake bound is \f$O(k\log n)\f$ for a
-/// \f$k\f$-literal monotone disjunction over \f$n\f$ attributes.
-///
-/// \param features  Boolean design matrix.
-/// \param labels    Class labels, each \f$0\f$ or \f$1\f$.
-/// \param alpha     Multiplier \f$\alpha>1\f$.
-/// \param threshold Decision threshold; a negative value selects the default \f$\theta=n\f$.
-/// \param max_epochs Maximum passes over the data.
+/// Starts weights at one, visits rows in supplied order on each pass, and
+/// stops after a complete mistake-free pass. Correct predictions never update
+/// weights. Other attributes can be promoted on positive examples, including
+/// attributes irrelevant to a target concept. The O(k log d) mistake bound
+/// requires labels from a fixed k-literal monotone disjunction over d Boolean
+/// attributes, alpha=2 and the default threshold d; it is not a guarantee on
+/// arbitrary labels or generalisation to unseen rows. Finite-precision range
+/// failures are reported, rather than silently producing zero/infinite weights.
+/// O(epochs*n*d) time and O(d) model storage; input is borrowed and unchanged.
+/// @param features Rectangular Boolean rows; an empty matrix returns an untrained empty model.
+/// @param labels Each zero or one, one label per row.
+/// @param alpha Finite multiplier greater than one, default two.
+/// @param threshold Finite threshold; any negative value selects d, default -1.
+/// @param max_epochs Maximum passes, default 100; zero returns the initial weights without fitting.
+/// @return Owned model with pass/update counts; empty input is not marked converged.
+/// @throws std::invalid_argument If shapes, Boolean values or options are invalid.
+/// @throws std::overflow_error If weights/scores overflow or positive weights underflow to zero.
+/// @par Example
+/// @code
+/// const auto model=dm::algorithms::winnow_train({{1,0},{0,1},{0,0}},{1,1,0});
+/// const bool fitted=model.converged; // true
+/// @endcode
+/// @par References
+/// - N. Littlestone (1988), Learning Quickly When Irrelevant Attributes Abound:
+///   A New Linear-threshold Algorithm, Machine Learning 2, 285-318,
+///   https://ai.stanford.edu/~pabbeel/depth_qual/littlestone1988.pdf
+/// @see WinnowModel, winnow_score(), winnow_fit()
 inline WinnowModel winnow_train(const std::vector<std::vector<int>>& features,
-                                const std::vector<int>&              labels,
-                                double                               alpha      = 2.0,
-                                double                               threshold  = -1.0,
-                                std::size_t                          max_epochs = 100) {
-    if (features.size() != labels.size()) throw std::invalid_argument("winnow: size mismatch");
-    WinnowModel model;
-    if (features.empty()) return model;
-    const std::size_t dim = features.front().size();
-    model.weights.assign(dim, 1.0);
-    model.alpha     = alpha;
-    model.threshold = threshold < 0.0 ? static_cast<double>(dim) : threshold;
-
-    for (std::size_t epoch = 0; epoch < max_epochs; ++epoch) {
-        bool mistake_this_epoch = false;
-        for (std::size_t i = 0; i < features.size(); ++i) {
-            double dot = 0.0;
-            for (std::size_t j = 0; j < dim; ++j) dot += model.weights[j] * features[i][j];
-            const int predicted = dot > model.threshold ? 1 : 0;
-            if (predicted != labels[i]) {
-                const bool promote = (labels[i] == 1);  // false negative -> promote active weights
-                for (std::size_t j = 0; j < dim; ++j)
-                    if (features[i][j] != 0) model.weights[j] = promote ? model.weights[j] * alpha : model.weights[j] / alpha;
-                ++model.total_mistakes;
-                mistake_this_epoch = true;
-            }
-        }
-        model.epochs_run = epoch + 1;
-        if (!mistake_this_epoch) {
-            model.converged = true;
-            break;
-        }
-    }
-    return model;
+                                const std::vector<int>& labels, double alpha=2.0,
+                                double threshold=-1.0, std::size_t max_epochs=100) {
+    return detail::winnow_train_impl(features,labels,alpha,threshold,max_epochs,nullptr);
 }
 
-/// Predict \f$0\f$ or \f$1\f$ for a boolean feature vector with a trained Winnow model.
-inline int winnow_predict(const WinnowModel& model, const std::vector<int>& x) {
-    double dot = 0.0;
-    for (std::size_t j = 0; j < model.weights.size() && j < x.size(); ++j) dot += model.weights[j] * x[j];
-    return dot > model.threshold ? 1 : 0;
+/// @brief Compute a checked Boolean row's weighted score without changing the model.
+/// @param model Finite nonnegative threshold and positive finite weights; alpha metadata is unused.
+/// @param x Boolean values, with exactly model.weights.size() entries.
+/// @return Sum of weights of active attributes; zero for an empty row/model.
+/// @throws std::invalid_argument If dimensions, Boolean values, weights or threshold are invalid.
+/// @throws std::overflow_error If the score exceeds the finite double range.
+/// @par Example
+/// @code
+/// const auto model=dm::algorithms::winnow_train({{1,0},{0,1},{0,0}},{1,1,0});
+/// const double score=dm::algorithms::winnow_score(model,{0,0}); // 0
+/// @endcode
+/// @see winnow_predict()
+double winnow_score(const WinnowModel& model,const std::vector<int>& x);
+
+/// @brief Predict zero or one by the strict test winnow_score(model,x) > model.threshold.
+/// @param model Read-only fitted model, with winnow_score()'s validity constraints.
+/// @param x Boolean row with exactly as many entries as weights.
+/// @return One above the threshold; zero at or below it.
+/// @throws std::invalid_argument If model or row is invalid.
+/// @throws std::overflow_error If the weighted score overflows.
+/// @par Example
+/// @code
+/// const auto model=dm::algorithms::winnow_train({{1,0},{0,1},{0,0}},{1,1,0});
+/// const int positive=dm::algorithms::winnow_predict(model,{1,0}); // 1
+/// @endcode
+/// @see winnow_score(), winnow_train()
+inline int winnow_predict(const WinnowModel& model,const std::vector<int>& x) {
+    return winnow_score(model,x)>model.threshold ? 1 : 0;
 }
 
-}  // namespace datamunge::algorithms
+} // namespace datamunge::algorithms

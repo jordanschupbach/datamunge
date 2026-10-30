@@ -245,6 +245,8 @@ std::uint32_t crc32(const Bytes& data) {
 // ---- npy -------------------------------------------------------------------------------------
 
 std::vector<unsigned char> encode_npy(const Tensor& tensor) {
+  if (tensor.device().backend != compute::Backend::CPU)
+    throw std::logic_error("encode_npy: transfer GPU tensors to an explicit CPU context first");
   const Tensor packed = tensor.detach().contiguous();
   std::string  header = "{'descr': '" + npy_descr(packed.dtype()) + "', 'fortran_order': False, 'shape': (";
   for (std::size_t i = 0; i < packed.shape().size(); ++i) {
@@ -265,7 +267,7 @@ std::vector<unsigned char> encode_npy(const Tensor& tensor) {
 
   const std::size_t   count = static_cast<std::size_t>(packed.numel());
   const std::size_t   size  = dtype_size(packed.dtype());
-  const unsigned char* src  = packed.impl()->storage->bytes.get() + packed.offset() * static_cast<std::int64_t>(size);
+  const unsigned char* src  = packed.impl()->storage->bytes.host_data() + packed.offset() * static_cast<std::int64_t>(size);
   const std::size_t   start = out.size();
   out.resize(start + count * size);
   if (host_is_little_endian() || size == 1) {

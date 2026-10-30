@@ -1,6 +1,6 @@
 # Native Python NN example. MNIST and Fashion-MNIST: strict IDX loading and nn preprocessing.
-"""CMD: just python-example idx_loader
-MNIST and Fashion-MNIST: strict IDX loading and nn preprocessing.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/idx_loader.py
+"""MNIST and Fashion-MNIST: strict IDX loading and nn preprocessing.
 
 Port of tflow's idx_loader. Create a tiny on-disk IDX pair with known
 bytes, load uint8 NHWC images and integer labels, shuffle matched
@@ -28,6 +28,7 @@ from pathlib import Path
 
 from pydatamunge import nn
 from pydatamunge.nn_workflows import data_root, helper
+from pydatamunge.nn_components import dataset_assets
 
 checks = helper("checks")
 
@@ -155,7 +156,8 @@ def fixtures():
 def inspect(directory, split):
     images = directory / (split + "-images-idx3-ubyte")
     labels = directory / (split + "-labels-idx1-ubyte")
-    dataset = load_pair(images, labels)
+    dataset = load_pair(images if images.exists() else Path(str(images) + ".gz"),
+                        labels if labels.exists() else Path(str(labels) + ".gz"))
     n = dataset.labels.size(0)
     counts = [0] * 10
     for label in dataset.labels.values():
@@ -168,7 +170,7 @@ def inspect(directory, split):
     )
     print("    class counts:" + "".join(f" {count}" for count in counts))
     gz_images, gz_labels = Path(str(images) + ".gz"), Path(str(labels) + ".gz")
-    if gz_images.exists() and gz_labels.exists():
+    if images.exists() and labels.exists() and gz_images.exists() and gz_labels.exists():
         gz = load_pair(gz_images, gz_labels)
         checks.require(
             nn.all(nn.equal(gz.images, dataset.images)).item() == 1
@@ -202,10 +204,8 @@ def main(arguments=None):
             inspect(required, split)
         else:
             for name in ("mnist", "fashion_mnist"):
-                if (root / name / (split + "-images-idx3-ubyte")).exists():
-                    inspect(root / name, split)
-                else:
-                    print(f"  {name} not cached; fetch with scripts/fetch_datasets.py {name}")
+                dataset_assets.EnsureMnist(str(root / name), name == "fashion_mnist", "train" if split == "train" else "test")
+                inspect(root / name, split)
         print("All IDX loader checks passed.")
     except Exception as error:  # noqa: BLE001 - mirrors the C++ catch-all
         print(error, file=sys.stderr)
