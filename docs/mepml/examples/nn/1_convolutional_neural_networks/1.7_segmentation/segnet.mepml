@@ -1,0 +1,498 @@
+//? Title: SegNet pooling indices and sparse decoding
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Recovering pixel labels from pooled CNN features requires restoring lost spatial detail. SegNet reuses encoder maximum locations for sparse decoder unpooling; this report checks exact values/derivatives before a visible tensor Adam fit and held-out mask evaluation.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segmentation/segnet.cpp`.
+
+> The method
+
+The encoder saves detached2x2 maximum indices. Sparse unpooling restores values to those positions and convolution densifies the result. Full and compact VGG-style graphs preserve original odd shapes,and learned/BN state are checkpointed together during explicit optimization.
+
+The editable concept diagram is `diagrams/segnet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/segnet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/segnet_concept.tikz > build/segnet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/segnet_concept.svg build/segnet_concept.dvi > build/segnet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/segnet_concept.svg)
+// result_end
+\caption(SegNet pooling indices and sparse decoding)
+\alttext(Encoder pooling; Save winner indices; then Sparse unpooling; Restore saved shapes; then Learned decoder; Explicit Adam loop.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/segnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore       p(17), state(17);
+  n::models::SegNetConfig c;
+  c.classes       = 4;
+  c.width_divisor = 8;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) { return n::models::SegNet(p, state, image, c).logits; },
+      "SegNet pooling indices and sparse decoding");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 3}), options);
+  diagram.save_svg("build/segnet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+98 displayed nodes; 463132 reachable learned values.
+\image(figures/segnet_architecture.svg)
+// result_end
+\caption(Executed segnet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right segnet architecture with rotated names and exact output shapes.)
+
+> Tensor winner indices and sparse unpooling
+
+Each nonoverlapping2x2 encoder pool saves the first row-major maximum index.
+The flattened NHWC index includes batch and channel offsets. Ordinary tensor
+max-pooling supplies the differentiable values; the detached winner indices
+are computed by tensor reshape/transpose/argmax and integer index arithmetic.
+No host pixel-value scan or inverse-map arithmetic remains.
+
+Unpool uses tensor segment scattering to restore values only at the saved
+winners,with zeros everywhere else. This includes negative pooled values;
+unpooling is not nearest interpolation. Saved pre-pool shapes restore odd
+trailing rows/columns as zeros. Only values receive gradients through the
+scatter. The independent native oracle checks every sparse value and derivative
+for negative inputs,multiple batches/channels and odd5x7 shapes. Ties select
+top-left first; malformed duplicate/out-of-range winner records are rejected.
+
+```{cpp, results="markdown", file="figures/segnet_pooling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  auto x = (n::arange(0, 35, 1, n::DType::Float64) * .1 - 4.)
+               .reshape({1, 5, 7, 1})
+               .requires_grad_();
+  const auto record = m::SegNetPoolWithIndices(x);
+  const auto restored = m::SegNetIndexUnpool(record.values, record),
+             g = n::grad(n::sum(restored), {x})[0];
+  const std::vector<std::int64_t> expected = {8, 10, 12, 22, 24, 26};
+  if (record.indices.to_vector<std::int64_t>() != expected ||
+      n::count_nonzero(g).item<int>() != 6)
+    return 1;
+  for (int row = 0; row < 5; ++row)
+    for (int col = 0; col < 7; ++col) {
+      const auto index = row * 7 + col;
+      const bool winner = std::find(expected.begin(), expected.end(), index) != expected.end();
+      if (std::abs(restored.at({0, row, col, 0}) - (winner ? x.at({0, row, col, 0}) : 0.)) >
+              1e-12 ||
+          g.at({0, row, col, 0}) != (winner ? 1 : 0))
+        return 1;
+    }
+  auto a = n::plot_tensor_map(n::reverse(x.detach().reshape({5, 7}), {0}), -4, 0),
+       b = n::plot_tensor_map(n::reverse(restored.reshape({5, 7}), {0}), -4, 0),
+       c = n::plot_tensor_map(n::reverse(record.values.reshape({2, 3}), {0}), -4, 0),
+       d = n::plot_tensor_map(n::reverse(g.reshape({5, 7}), {0}), 0, 1);
+  a.title("Negative5 by7 encoder input");
+  b.title("Sparse unpool: zeros elsewhere");
+  c.title("Six pooled maxima");
+  d.title("Exact winner gradient footprint");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(2, 2)
+      .add(a)
+      .add(b)
+      .add(c)
+      .add(d)
+      .size(1200, 1000)
+      .fit_panels()
+      .save_svg("build/segnet_pooling.svg");
+  std::print("All35 sparse values and input derivatives exact;winner indices8/10/12/22/24/26. "
+             "Odd row4 and column6 remain zero;negative winners are retained.\n");
+}
+```
+// result_begin: markdown
+All35 sparse values and input derivatives exact;winner indices8/10/12/22/24/26. Odd row4 and column6 remain zero;negative winners are retained.
+\image(figures/segnet_pooling.svg)
+// result_end
+\caption(Known negative input,pooled values,sparse unpool and exact gradient footprint. Input and sparse output share[-4,0]; the derivative map uses[0,1]. Only recorded winner locations are restored.)
+\alttext(Known negative input,pooled values,sparse unpool and exact gradient footprint. Input and sparse output share[-4,0]; the derivative map uses[0,1]. Only recorded winner locations are restored.)
+
+> Full and compact SegNet graphs and index-cache accounting
+
+Thirteen VGG encoder convolutions and a mirrored decoder use BN/ReLU except
+the final biased3x3 class predictor. Decoder stages unpool from saved encoder
+indices,then convolve sparse features to form dense representations. No
+pretrained weights or learned upsampling filters are used. BN has
+momentum.9/epsilon1e-5 and eagerly updates moving moments during training.
+
+The full RGB/11-class model has29,449,355 learned and15,872 moving-state
+scalars,with all102 learned tensor gradients executed below at64x64.
+The compact RGB/four-class model divides widths by8 and retains all stages.
+Native tests require every compact derivative to be finite and nonzero and
+check96/97-pixel alignment.
+
+For even spatial sizes,an Int64 winner cache takes half the bytes of the
+corresponding full Float32 pre-pool feature cache: one8-byte index replaces
+four4-byte feature values. This compares index storage alone; returned pooled
+values and autograd graphs also consume memory,so it is not a measured peak
+training-memory reduction.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  {
+    n::ParameterStore p(17), state(17);
+    const auto net = n::models::SegNet(
+        p, state, n::sin(.13 * n::arange(0, 64 * 64 * 3)).reshape({1, 64, 64, 3}), {}, true);
+    const auto g = n::grad(n::mean(n::square(net.logits)), p.parameters());
+    if (p.count() != 29449355 || state.count() != 15872 || g.size() != 102)
+      return 1;
+    for (const auto &v : g)
+      if (!v.defined() || !std::isfinite(n::sum(n::square(v.to(n::DType::Float64))).item()))
+        return 1;
+    std::print(
+        "Full SegNet:{} learned/{} state scalars,all{} finite defined gradients at64px.\n",
+        p.count(), state.count(), g.size());
+  }
+  n::ParameterStore p(17), state(17);
+  n::models::SegNetConfig c;
+  c.classes = 4;
+  c.width_divisor = 8;
+  for (int side : {96, 97}) {
+    const auto net = n::models::SegNet(p, state, n::zeros({2, side, side, 3}), c);
+    if (net.logits.shape() != n::Shape{2, side, side, 4})
+      return 1;
+    std::int64_t index_bytes = 0, feature_bytes = 0;
+    for (const auto &record : net.pooling) {
+      index_bytes += 8 * record.indices.numel();
+      feature_bytes += 4 * n::shape_numel(record.shape);
+    }
+    if (side == 96 && index_bytes * 2 != feature_bytes)
+      return 1;
+    std::print("Compact{}px:{} learned/{} state scalars;indices{} bytes versus original "
+               "Float32 feature cache{} bytes,excluding pooled tensors/graphs.\n",
+               side, p.count(), state.count(), index_bytes, feature_bytes);
+  }
+}
+```
+// result_begin: markdown
+Full SegNet:29449355 learned/15872 state scalars,all102 finite defined gradients at64px.
+Compact96px:463132 learned/1984 state scalars;indices562176 bytes versus original Float32 feature cache1124352 bytes,excluding pooled tensors/graphs.
+Compact97px:463132 learned/1984 state scalars;indices562176 bytes versus original Float32 feature cache1136704 bytes,excluding pooled tensors/graphs.
+// result_end
+
+> Actual procedural fitting images and masks
+
+The tensor generator produces64 fitting/16 validation/16 test96-pixel RGB
+shape scenes,seeds11/22/33. Brightness,noise and image-wide tint are independent
+of shape class. Later objects occlude earlier labels. The tensor RNG changes
+fixed-seed pixels from the legacy mt19937 implementation; this is an explicit
+procedural adaptation. Palette: background dark,circle red,rectangle green,
+triangle blue.
+
+```{cpp, results="markdown", file="figures/segnet_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto data = m::TensorSegmentationShapes(64, 96, 11);
+  std::vector<n::Tensor> gallery;
+  const auto colored = m::ColorSegmentationLabels(n::slice_axis(data.labels, 0, 0, 4));
+  for (int i = 0; i < 4; ++i) {
+    gallery.push_back(n::slice_axis(data.images, 0, i, i + 1));
+    gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+  }
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::concat(gallery, 0), "build/segnet_data.png", 2, 0., 1., 3, 1., 2);
+  const auto weights = m::SegmentationClassWeights(data.labels, 4);
+  std::print(
+      "64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. "
+      "Fit-only inverse-square-root pseudocount weights {:.6f}/{:.6f}/{:.6f}/{:.6f}. "
+      "Noise,tint and brightness are class-independent; later objects occlude earlier masks. "
+      "Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.\n",
+      weights.at({0}), weights.at({1}), weights.at({2}), weights.at({3}));
+}
+```
+// result_begin: markdown
+64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. Fit-only inverse-square-root pseudocount weights 1.149431/3.477891/3.045941/4.357872. Noise,tint and brightness are class-independent; later objects occlude earlier masks. Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.
+\image(figures/segnet_data.png)
+// result_end
+\caption(Actual first four fitting image/mask pairs. Appearance distributions are shared across classes,so spatial context is needed for identifying the shape.)
+\alttext(Actual first four fitting image/mask pairs. Appearance distributions are shared across classes,so spatial context is needed for identifying the shape.)
+
+> Visible whole-model Adam with paired BN checkpoints
+
+Fit-only inverse-square-root pixel weights use pseudocount1. Weighted CE is
+normalized by the sum of pixel weights,using stable tensor log-softmax.
+Every learned leaf is warmed before Adam(.001); all encoder/decoder,
+convolution biases and BN affine parameters fit12 epochs,batch4,192 visible
+updates. Explicit kernel L2 is `.00005*sum(kernel²)`; biases and BN affine
+leaves are optimized but excluded from this penalty. Validation mean IoU
+strictly selects paired learned/BN checkpoints. Restoration reproduces the
+selected validation score before evaluating test pixels. No fitting loop,
+checkpoint choice or test contribution to weights is hidden in a helper.
+
+```{cpp, results="markdown", file="figures/segnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <print>
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  namespace m             = n::models;
+  n::set_num_threads(2);
+  const auto fit               = m::TensorSegmentationShapes(64, 96, 11),
+             validation        = m::TensorSegmentationShapes(16, 96, 22),
+             test              = m::TensorSegmentationShapes(16, 96, 33);
+  const auto          weights  = m::SegmentationClassWeights(fit.labels, 4);
+  const int           n_epochs = 12; // 16 batches of four per epoch
+  std::vector<double> epochs;
+  for (int epoch = 1; epoch <= n_epochs; ++epoch)
+    epochs.push_back(epoch);
+  auto loss_plot = dm::graphics::RPlot::create(), score_plot = dm::graphics::RPlot::create();
+  const std::array<dm::graphics::RGB, 3> colors = {{{37, 99, 235}, {22, 163, 74}, {220, 38, 38}}};
+  int                                    color_index = 0;
+  double                                 max_loss    = 0;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  for (int variant : {1}) {
+    n::ParameterStore p(17), state(17);
+    m::SegNetConfig   config;
+    config.classes       = 4;
+    config.width_divisor = 8;
+    const auto forward   = [&](const n::Tensor& images, bool training) {
+      return m::SegNet(p, state, images, config, training).logits;
+    };
+    // Create every learnable convolution/score leaf before Adam captures the store.
+    {
+      n::NoGradGuard guard;
+      forward(n::slice_axis(fit.images, 0, 0, 1), false);
+    }
+    n::OptimizerConfig adam_config;
+    adam_config.kind = n::OptimizerKind::Adam;
+    n::Optimizer           adam(p, .001, adam_config);
+    n::BatchOrder          batches(64, 4, 29);
+    std::vector<n::Tensor> kernels;
+    for (const auto& leaf : p.parameters())
+      if (leaf.dim() > 1)
+        kernels.push_back(leaf);
+    const std::string   prefix   = "build/segnet_" + std::to_string(variant);
+    double              best     = -1;
+    int                 selected = 0, updates = 0;
+    std::vector<double> losses, miou;
+    const auto          evaluate = [&](const m::TensorSegmentationData& data) {
+      n::NoGradGuard guard;
+      auto           confusion = n::zeros({4, 4}, n::DType::Int64);
+      for (int first = 0; first < data.images.shape()[0]; first += 8) {
+        const auto end    = std::min<std::int64_t>(first + 8, data.images.shape()[0]);
+        const auto logits = forward(n::slice_axis(data.images, 0, first, end), false);
+        confusion =
+            confusion + m::SegmentationPredictionMetrics(
+                            n::argmax(logits, 3), n::slice_axis(data.labels, 0, first, end), 4)
+                            .confusion;
+      }
+      return m::SegmentationConfusionMetrics(confusion);
+    };
+    std::print(
+        "Variant{}: {} learned scalars, paired BN state. Fit-only weights "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}.\n",
+        variant,
+        p.count(),
+        weights.at({0}),
+        weights.at({1}),
+        weights.at({2}),
+        weights.at({3}));
+    std::print(
+        "| variant | epoch | weighted pixel CE | validation mIoU |\n|---:|---:|---:|---:|\n");
+    for (int epoch = 1; epoch <= n_epochs; ++epoch) {
+      batches.begin_epoch();
+      double      total = 0;
+      std::size_t seen  = 0;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto batch   = m::TensorSegmentationBatch(fit, n::from_vector(rows));
+        const auto logits  = forward(batch.first, true);
+        const auto ce      = m::SegmentationCrossEntropy(logits, batch.second, 4, weights);
+        n::Tensor  penalty = n::zeros({});
+        for (const auto& kernel : kernels)
+          penalty = penalty + n::sum(n::square(kernel));
+        if (!std::isfinite(ce.item()))
+          return 1;
+        total += ce.item() * rows.size();
+        seen += rows.size();
+        adam.minimize(ce + .00005 * penalty);
+        ++updates;
+      }
+      const auto metric = evaluate(validation);
+      losses.push_back(total / double(seen));
+      miou.push_back(metric.mean_iou.item());
+      if (miou.back() > best) {
+        best     = miou.back();
+        selected = epoch;
+        p.save(prefix + "_best.npz");
+        state.save(prefix + "_best_state.npz");
+      }
+      std::print("| {} | {} | {:.6f} | {:.6f} |\n", variant, epoch, losses.back(), miou.back());
+    }
+    p.load(prefix + "_best.npz");
+    state.load(prefix + "_best_state.npz");
+    const auto restored = evaluate(validation), metric = evaluate(test);
+    const auto count_matrix = n::ConfusionMatrix::from_counts(metric.confusion);
+    const auto index        = std::to_string(rendered_confusions++);
+    count_matrix.save_svg(
+        "build/segnet_confusion_api_" + index + ".svg",
+        {.title = "Selected-checkpoint pixel counts"});
+    count_matrix.save_svg(
+        "build/segnet_confusion_api_" + index + "_normalized.svg",
+        {.title         = "Selected-checkpoint pixel recall",
+         .normalization = n::ConfusionMatrixNormalization::True});
+
+    if (std::abs(restored.mean_iou.item() - best) > 1e-12 || updates != 16 * n_epochs)
+      return 1;
+    n::NoGradGuard         guard;
+    std::vector<n::Tensor> gallery;
+    const auto prediction = n::argmax(forward(n::slice_axis(test.images, 0, 0, 4), false), 3);
+    const auto truth      = m::ColorSegmentationLabels(n::slice_axis(test.labels, 0, 0, 4)),
+               colored    = m::ColorSegmentationLabels(prediction);
+    for (int i = 0; i < 4; ++i) {
+      gallery.push_back(n::slice_axis(test.images, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(truth, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+    }
+    const auto image_name = "segnet_predictions_" + std::to_string(variant) + ".png";
+    n::save_image_grid(n::concat(gallery, 0), "build/" + image_name, 3, 0., 1., 3, 1., 2);
+    std::filesystem::copy_file(
+        "build/" + image_name,
+        "figures/" + image_name,
+        std::filesystem::copy_options::overwrite_existing);
+    const auto color = colors[color_index++];
+    const auto name  = "SegNet " + std::to_string(variant);
+    loss_plot.lines(epochs, losses, name, color);
+    score_plot.lines(epochs, miou, name, color);
+    max_loss = std::max(max_loss, *std::max_element(losses.begin(), losses.end()));
+    std::print(
+        "Variant{} restored epoch{}: validation mIoU {:.6f}; test pixel accuracy "
+        "{:.6f}, mean IoU {:.6f}; per-class IoU(background,circle,rectangle,triangle) "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}. {} explicit Adam updates.\n",
+        variant,
+        selected,
+        best,
+        metric.pixel_accuracy.item(),
+        metric.mean_iou.item(),
+        metric.iou.at({0}),
+        metric.iou.at({1}),
+        metric.iou.at({2}),
+        metric.iou.at({3}),
+        updates);
+  }
+  loss_plot.title("Compact SegNet weighted pixel loss")
+      .x_label("epoch")
+      .y_label("unregularized weighted CE")
+      .y_limits(0, max_loss * 1.3);
+  score_plot.title("Validation mean IoU selection")
+      .x_label("epoch")
+      .y_label("present-class mIoU")
+      .y_limits(0, 1.3);
+  dm::graphics::RLayout::create(1, 2)
+      .add(loss_plot)
+      .add(score_plot)
+      .size(1200, 550)
+      .fit_panels()
+      .save_svg("build/segnet_training.svg");
+}
+```
+// result_begin: markdown
+Variant1: 463132 learned scalars, paired BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 1 | 1 | 1.489587 | 0.175447 |
+| 1 | 2 | 1.274654 | 0.190084 |
+| 1 | 3 | 1.152626 | 0.185302 |
+| 1 | 4 | 1.058200 | 0.188590 |
+| 1 | 5 | 0.953063 | 0.192023 |
+| 1 | 6 | 0.892072 | 0.195073 |
+| 1 | 7 | 0.844066 | 0.200790 |
+| 1 | 8 | 0.813267 | 0.304293 |
+| 1 | 9 | 0.792780 | 0.308943 |
+| 1 | 10 | 0.772431 | 0.314951 |
+| 1 | 11 | 0.762964 | 0.313470 |
+| 1 | 12 | 0.750770 | 0.329043 |
+Variant1 restored epoch12: validation mIoU 0.329043; test pixel accuracy 0.810140, mean IoU 0.315424; per-class IoU(background,circle,rectangle,triangle) 0.935009/0.274629/0.046585/0.005472. 192 explicit Adam updates.
+\image(figures/segnet_training.svg)
+// result_end
+\caption(All compact SegNet parameters fit192 explicit Adam updates. Training CE excludes kernel L2; validation selects and restores paired learned/BN state before test evaluation.)
+\alttext(All compact SegNet parameters fit192 explicit Adam updates. Training CE excludes kernel L2; validation selects and restores paired learned/BN state before test evaluation.)
+
+The compact model has463,132 learned scalars and1,984 BN state scalars.
+Epoch12, the last, selects validation mean IoU.329043, so the short fit is
+still improving. Test pixel accuracy is.810140, but mean IoU is only.315424:
+background.935009,circle.274629,rectangle.046585 and triangle.005472. The
+model largely misses rectangles/triangles in this bounded seed17 fit. The galleries retain this failure; falling CE
+and high background accuracy do not establish successful shape segmentation.
+
+\image(figures/segnet_predictions_1.png)
+\caption(Each row shows an actual test RGB image,its truth mask and restored SegNet prediction. The same palette/range is used throughout,and errors remain visible.)
+\alttext(Four held-out SegNet image/truth/prediction triples.)
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/segnet_confusion_api_0.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/segnet_confusion_api_0_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Exact winner/value/gradient checks make sparse decoding inspectable. Index-cache accounting is distinguished from peak graph memory; fit-only weights,explicit whole-model Adam and paired BN restoration support the actual held-out prediction galleries.
+
+> References
+
+- [Badrinarayanan,Kendall and Cipolla, SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation](https://arxiv.org/abs/1511.00561).
+- [Authors’ SegNet tutorial](https://github.com/alexgkendall/SegNet-Tutorial).

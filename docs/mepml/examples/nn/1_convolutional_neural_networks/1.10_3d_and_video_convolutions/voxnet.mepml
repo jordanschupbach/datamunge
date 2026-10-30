@@ -1,0 +1,712 @@
+//? Title: VoxNet:genuine surface occupancy and explicit tensor MomentumSGD
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Classifying a3Dobject requires relating geometry to its category. Genuine original CAD surfaces become declared tensor occupancy grids;the complete original-width VoxNet shows every regularized MomentumSGD update and every held-out prediction.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/voxnet.cpp`.
+
+> The method
+
+Binary occupancy is mapped to[-1,1]before two3Dconvolutions,pooling and a128unit dense layer. The objective explicitly adds a weight-only sum-of-squares penalty:
+
+$$ L=\frac1B\sum_i-\log\operatorname{softmax}(z_i)_{y_i}+\lambda\sum_{W}\|W\|_F^2,\qquad\nabla_W L=\nabla_W CE+2\lambda W. $$
+\alttext(Mean categorical negative log likelihood plus lambda times the sum of squared weights;weight gradients add two lambda W,biases do not.)
+
+The visible MomentumSGD loop fits all eight learned tensors. Four quarter-turn logits are averaged at inference. Reindexing this finite rotation orbit preserves the average up to floating-point accumulation order;this is discrete C4invariance,not arbitrary3Drotation invariance.
+
+The editable concept diagram is `diagrams/voxnet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/voxnet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/voxnet_concept.tikz > build/voxnet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/voxnet_concept.svg build/voxnet_concept.dvi > build/voxnet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/voxnet_concept.svg)
+// result_end
+\caption(VoxNet:genuine surface occupancy and explicit tensor MomentumSGD)
+\alttext(Genuine mesh;  surface samples; then 32cube occupancy;  full-width CNN; then Visible SGD;  four-logit vote.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/voxnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::ParameterStore p(907);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) { return m::Voxnet(p, image, 3).logits; },
+      "VoxNet:genuine surface occupancy and explicit tensor MomentumSGD");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 32, 1}), options);
+  diagram.save_svg("build/voxnet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+12 displayed nodes; 916963 reachable learned values.
+\image(figures/voxnet_architecture.svg)
+// result_end
+\caption(Executed voxnet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right voxnet architecture with rotated names and exact output shapes.)
+
+> Genuine CAD surfaces and declared occupancy preparation
+
+Use the same42original ModelNet10 chair0/sofa1/table2objects as the point
+reports:per category,first eight lexical official train objects fit,next two
+validate,first four official test objects are held out. Original OFF meshes,
+archive SHA256 and object IDs are retained. This custom three-class subset is
+not a full ModelNet40 benchmark;cross-source near-duplicate shapes are not certified absent.
+
+The report declares its own sampled-SURFACE occupancy:Double tensors compute
+triangle areas and65536area-weighted barycentric samples,seed1193+objectID.
+Center on the original vertex bounding-box midpoint,divide by its maximum half
+extent,then convert toFloat32. Map floor((xyz+1)*14.5)+1,clamp1..30 and threshold
+tensor segment counts. The result has an empty one-voxel border. This is not
+solid filling,triangle/voxel intersection or the published benchmark preparation.
+Every face draw,uniform pair,center/radius and original object identity is saved
+for independent reconstruction. No test label influences voxelization.
+
+```{cpp, flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::filesystem::path cache = dm::datasets::data_home();
+  dm::datasets::prepare_example_data("mesh", (cache / "modelnet").string());
+  dm::datasets::prepare_example_data("voxel", (cache / "modelnet").string());
+}
+```
+// result_begin:
+// Tensor65536point surface sampling,bounding-box normalization and32cube occupancy saved42original surfaces.
+// result_end
+
+Show all12held-out objects as axis projections,then inspect genuine fitting
+occupancy counts. Max projections visualize surface occupancy,not photographs.
+```{cpp, results="markdown", file="figures/voxnet_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  std::filesystem::path root = cache / "voxnet";
+  if (const auto *v = std::getenv("DATAMUNGE_VOXNET_DIR"))
+    root = v;
+  else {
+    dm::datasets::prepare_example_data("voxel", (cache / "modelnet").string());
+    root = cache / "voxnet";
+  }
+  const auto pools = m::LoadVoxnet(root);
+  const auto &fit = pools[0];
+  const auto &validation = pools[1];
+  const auto &test = pools[2];
+
+  const auto xy = n::max(test.voxels, {3});
+  const auto xz = n::max(test.voxels, {2});
+  n::save_image_grid(n::concat({xy, xz}, 0), "build/voxnet_data.png", 4, 0, 1, 2, 0, 4);
+  const auto counts = n::sum(fit.voxels, {1, 2, 3, 4});
+  std::print(
+      "| held-out source ID | class0chair1sofa2table | occupied voxels |\n|---:|---:|---:|\n");
+  const auto occupied = n::sum(test.voxels, {1, 2, 3, 4});
+  for (int i = 0; i < 12; ++i)
+    std::print("| {} | {} | {} |\n", test.source.at({i}), test.labels.at({i}),
+               occupied.at({i}));
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(n::arange(0, 24).to_vector<double>(), counts.to_vector<double>(),
+              "fitting objects", {37, 99, 235})
+      .title("Actual sampled-surface occupancy")
+      .x_label("fitting row:8chair,8sofa,8table")
+      .y_label("occupied32cube voxels");
+  plot.save_svg("build/voxnet_occupancy.svg");
+  std::filesystem::copy_file("build/voxnet_occupancy.svg", "figures/voxnet_occupancy.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+ModelNet10 fit:24 distinct objects,balanced chair/sofa/table
+ModelNet10 validation:6 distinct objects,balanced chair/sofa/table
+ModelNet10 test:12 distinct objects,balanced chair/sofa/table
+| held-out source ID | class0chair1sofa2table | occupied voxels |
+|---:|---:|---:|
+| 10 | 0 | 983 |
+| 11 | 0 | 889 |
+| 12 | 0 | 1751 |
+| 13 | 0 | 1147 |
+| 24 | 1 | 3589 |
+| 25 | 1 | 2661 |
+| 26 | 1 | 1964 |
+| 27 | 1 | 2053 |
+| 38 | 2 | 1012 |
+| 39 | 2 | 640 |
+| 40 | 2 | 878 |
+| 41 | 2 | 917 |
+\image(figures/voxnet_data.png)
+// result_end
+\caption(All12actual held-out objects:the first three rows are XYmax projections,the next three XZ. Four objects per row,class rows chair/sofa/table. Occupancy is sampled genuine mesh surface with the declared preparation.)
+\alttext(All12actual held-out objects:the first three rows are XYmax projections,the next three XZ. Four objects per row,class rows chair/sofa/table. Occupancy is sampled genuine mesh surface with the declared preparation.)
+
+
+\image(figures/voxnet_occupancy.svg)
+\caption(All24actual fitting occupancy counts after genuine mesh sampling and tensor binning.)
+\alttext(Occupied-voxel count for each fitting object in class order.)
+
+> Hand-checkable bins and quarter turns
+
+Points-1,0,+1in each coordinate map to bins1,15,30. Duplicate points increase
+counts before thresholding and therefore leave binary occupancy unchanged.
+A quarter turn transposes the first two spatial axes then reverses the first;
+four turns close exactly. Only host index metadata controls the transformations.
+```{cpp, results="markdown", file="figures/voxnet_rotation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto points =
+      n::from_vector(std::vector<float>{-1, -1, -1, 0, 0, 0, 1, 1, 1, 0, 0, 0}, {1, 4, 3});
+  const auto occupancy = m::VoxnetOccupancy(points);
+  std::print("Declared4points with one duplicate produce {}occupied voxels;bins1/15/30 values "
+             "{}/{}/{}.\n",
+             n::sum(occupancy).item(), occupancy.at({0, 1, 1, 1, 0}),
+             occupancy.at({0, 15, 15, 15, 0}), occupancy.at({0, 30, 30, 30, 0}));
+  auto x = occupancy;
+  for (int k = 0; k < 4; ++k)
+    x = m::VoxnetRotate(x, 1);
+  if (n::max(n::abs(x - occupancy)).item() != 0)
+    return 1;
+  auto a = n::plot_tensor_map(
+           n::reverse(n::select(n::select(n::max(occupancy, {3}), 0, 0), 2, 0), {0}), 0, 1),
+       b = n::plot_tensor_map(
+           n::reverse(
+               n::select(n::select(n::max(m::VoxnetRotate(occupancy, 1), {3}), 0, 0), 2, 0),
+               {0}),
+           0, 1);
+  a.title("Declared three-bin occupancy")
+      .x_label("second spatial bin")
+      .y_label("first spatial bin");
+  b.title("One exact quarter turn")
+      .x_label("rotated second spatial bin")
+      .y_label("rotated first spatial bin");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(a).add(b).size(1100, 500).fit_panels().save_svg("build/voxnet_rotation.svg");
+}
+```
+// result_begin: markdown
+Declared4points with one duplicate produce 3occupied voxels;bins1/15/30 values 1/1/1.
+\image(figures/voxnet_rotation.svg)
+// result_end
+\caption(Explicit three-bin teaching fixture and exact quarter turn. The duplicated center point does not create an extra occupied voxel;all borders stay empty.)
+\alttext(Explicit three-bin teaching fixture and exact quarter turn. The duplicated center point does not create an extra occupied voxel;all borders stay empty.)
+
+> Full original-width graph and explicit weight penalty
+
+The complete model uses conv5/stride2/32LeakyReLU.1,dropout.2,
+conv3/stride1/32LeakyReLU.1,maxpool2,dropout.3,flatten6912,FC128ReLU,
+dropout.4,linear categorical head. Convolutions are VALID with HeNormal weights;
+dense weights are Normal.01,biases0. There is no BN. Changing40classes to3only
+changes the head:921736versus916963learned scalars,eight tensor leaves in each.
+Native tests actually execute the full40class graph and all learned derivatives
+on real occupancy,not just an analytical reference census.
+
+For the source weight-only objective L=CE+.001*sum(W squared),the gradient is
+CEgrad+.002W on named weights;biases remain unregularized. This is a coupled
+sum-of-squares penalty,not decoupled optimizer decay or mean weight-square loss.
+```{cpp, results="markdown", file="figures/voxnet_gradients.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  std::filesystem::path root = cache / "voxnet";
+  if (const auto *v = std::getenv("DATAMUNGE_VOXNET_DIR"))
+    root = v;
+  else {
+    dm::datasets::prepare_example_data("voxel", (cache / "modelnet").string());
+    root = cache / "voxnet";
+  }
+  const auto pools = m::LoadVoxnet(root);
+  const auto &fit = pools[0];
+  const auto &validation = pools[1];
+  const auto &test = pools[2];
+
+  n::ParameterStore p(907);
+  m::VoxnetDropout dropout;
+  {
+    n::NoGradGuard guard;
+    m::Voxnet(p, n::zeros({1, 32, 32, 32, 1}), 3);
+  }
+  auto predict = [&](const n::Tensor &input, bool vote = true) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> parts;
+    for (std::int64_t start = 0; start < input.size(0); start += 4) {
+      const auto x =
+          n::slice_axis(input, 0, start, std::min<std::int64_t>(start + 4, input.size(0)));
+      auto y = m::Voxnet(p, x, 3).logits;
+      if (vote) {
+        for (int k = 1; k < 4; ++k)
+          y = y + m::Voxnet(p, m::VoxnetRotate(x, k), 3).logits;
+        y = y / 4.;
+      }
+      parts.push_back(y);
+    }
+    return n::concat(parts, 0);
+  };
+
+  const auto d = m::VoxnetRows(fit, {0, 8, 16, 1});
+  const auto out = m::Voxnet(p, d.voxels, 3, true, &dropout);
+  const auto loss = n::sparse_softmax_cross_entropy(out.logits, d.labels);
+  const auto gs = n::grad(loss, p.parameters()), regularized = m::VoxnetRegularized(p, gs);
+  std::vector<n::Tensor> norms;
+  std::print(
+      "| learned tensor | shape | CE gradient L2 | regularized L2 |\n|---|---|---:|---:|\n");
+  for (std::size_t i = 0; i < p.size(); ++i) {
+    const auto norm = n::sqrt(n::sum(n::square(gs[i])));
+    if (!n::all(n::is_finite(gs[i])).item<bool>() || norm.item() <= 0)
+      return 1;
+    norms.push_back(norm);
+    std::print("| {} | {} | {:.6g} | {:.6g} |\n", p.names()[i], p.parameters()[i].shape(),
+               norm.item(), n::sqrt(n::sum(n::square(regularized[i]))).item());
+  }
+  std::print("Actual916963values/{}learned leaves;conv1 {},conv2 {},pool {},flat {},FC {}.\n",
+             p.size(), out.conv1.shape(), out.conv2.shape(), out.pool.shape(),
+             out.flat.shape(), out.fc1.shape());
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(n::arange(0, 8).to_vector<double>(), n::stack(norms, 0).to_vector<double>(),
+              "all8leaves", {37, 99, 235})
+      .title("Every actual VoxNet CE derivative")
+      .x_label("W/b pairs:conv1,conv2,FC128,head")
+      .y_label("categorical gradient L2 norm");
+  plot.save_svg("build/voxnet_gradients.svg");
+}
+```
+// result_begin: markdown
+ModelNet10 fit:24 distinct objects,balanced chair/sofa/table
+ModelNet10 validation:6 distinct objects,balanced chair/sofa/table
+ModelNet10 test:12 distinct objects,balanced chair/sofa/table
+| learned tensor | shape | CE gradient L2 | regularized L2 |
+|---|---|---:|---:|
+| conv1/W | [5, 5, 5, 1, 32] | 0.408839 | 0.409495 |
+| conv1/b | [32] | 0.0369291 | 0.0369291 |
+| conv2/W | [3, 3, 3, 32, 32] | 0.825275 | 0.8256 |
+| conv2/b | [32] | 0.0298901 | 0.0298901 |
+| fc1/W | [6912, 128] | 4.90578 | 4.90584 |
+| fc1/b | [128] | 0.0299041 | 0.0299041 |
+| head/W | [128, 3] | 4.7568 | 4.75683 |
+| head/b | [3] | 0.236842 | 0.236842 |
+Actual916963values/8learned leaves;conv1 [4, 14, 14, 14, 32],conv2 [4, 12, 12, 12, 32],pool [4, 6, 6, 6, 32],flat [4, 6912],FC [4, 128].
+\image(figures/voxnet_gradients.svg)
+// result_end
+\caption(Every CE gradient coordinate is finite and all eight leaves have nonzero norm on the original fitting probe. The shown regularized norms add exactly2lambdaW to weights and leave biases unchanged.)
+\alttext(Every CE gradient coordinate is finite and all eight leaves have nonzero norm on the original fitting probe. The shown regularized norms add exactly2lambdaW to weights and leave biases unchanged.)
+
+> Every tensor MomentumSGD update and C4 vote
+
+Warm all eight learned tensors before MomentumSGD(.001,momentum.9). Parameter
+seed907,independent dropout seeds881/883/887. The source first-four-object CE
+probe advances all three RNG streams before fitting. Order919,batch4,three
+epochs give18updates;mt19937seed929 draws one quarter turn per entire batch.
+All numeric image transformation,loss,regularization,gradients and updates
+remain tensor operations. Validation averages the four rotated LOGITS before
+computing NLL;averaging softmax probabilities would be a different rule.
+```{cpp, results="markdown", file="figures/voxnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+#include <random>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  std::filesystem::path root = cache / "voxnet";
+  if (const auto *v = std::getenv("DATAMUNGE_VOXNET_DIR"))
+    root = v;
+  else {
+    dm::datasets::prepare_example_data("voxel", (cache / "modelnet").string());
+    root = cache / "voxnet";
+  }
+  const auto pools = m::LoadVoxnet(root);
+  const auto &fit = pools[0];
+  const auto &validation = pools[1];
+  const auto &test = pools[2];
+
+  n::ParameterStore p(907);
+  m::VoxnetDropout dropout;
+  {
+    n::NoGradGuard guard;
+    m::Voxnet(p, n::zeros({1, 32, 32, 32, 1}), 3);
+  }
+  auto predict = [&](const n::Tensor &input, bool vote = true) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> parts;
+    for (std::int64_t start = 0; start < input.size(0); start += 4) {
+      const auto x =
+          n::slice_axis(input, 0, start, std::min<std::int64_t>(start + 4, input.size(0)));
+      auto y = m::Voxnet(p, x, 3).logits;
+      if (vote) {
+        for (int k = 1; k < 4; ++k)
+          y = y + m::Voxnet(p, m::VoxnetRotate(x, k), 3).logits;
+        y = y / 4.;
+      }
+      parts.push_back(y);
+    }
+    return n::concat(parts, 0);
+  };
+
+  const auto initial = m::ScoreSequenceClassifier(predict(fit.voxels), fit.labels).nll;
+  const auto untrained = predict(test.voxels);
+  const auto probe = m::VoxnetRows(fit, {0, 8, 16, 1});
+  const auto gs =
+      n::grad(n::sparse_softmax_cross_entropy(
+                  m::Voxnet(p, probe.voxels, 3, true, &dropout).logits, probe.labels),
+              p.parameters());
+  for (const auto &g : gs)
+    if (!n::all(n::is_finite(g)).item<bool>() || n::sum(n::square(g)).item() <= 0)
+      return 1;
+  n::OptimizerConfig options;
+  options.kind = n::OptimizerKind::Momentum;
+  options.momentum = .9;
+  n::Optimizer sgd(p, .001, options);
+  n::BatchOrder order(24, 4, 919);
+  std::mt19937 turns(929);
+  double best = INFINITY;
+  int selected = 0, updates = 0;
+  std::vector<n::Tensor> history;
+  std::print("| epoch | dropout CE+L2 | validation C4-logit NLL |\n|---:|---:|---:|\n");
+  for (int epoch = 1; epoch <= 3; ++epoch) {
+    order.begin_epoch();
+    auto average = n::zeros({}, n::DType::Float64);
+    for (;;) {
+      const auto rows = order.next();
+      if (rows.empty())
+        break;
+      auto batch = m::VoxnetRows(fit, rows);
+      batch.voxels =
+          m::VoxnetRotate(batch.voxels, std::uniform_int_distribution<int>(0, 3)(turns));
+      const auto ce = n::sparse_softmax_cross_entropy(
+          m::Voxnet(p, batch.voxels, 3, true, &dropout).logits, batch.labels);
+      auto penalty = n::zeros({}, n::DType::Float64);
+      {
+        n::NoGradGuard guard;
+        for (const auto &name : p.names())
+          if (name.ends_with("/W"))
+            penalty = penalty + n::sum(n::square(p.at(name))).to(n::DType::Float64) * .001;
+      }
+      average = average + (ce.detach().to(n::DType::Float64) + penalty) / 6.;
+      sgd.step(m::VoxnetRegularized(p, n::grad(ce, p.parameters()), .001));
+      ++updates;
+    }
+    const auto val =
+        m::ScoreSequenceClassifier(predict(validation.voxels), validation.labels).nll;
+    if (val.item() < best) {
+      best = val.item();
+      selected = epoch;
+      n::NamedTensors arrays;
+      for (std::size_t i = 0; i < p.size(); ++i)
+        arrays.push_back({p.names()[i], p.parameters()[i]});
+      n::save_npz("build/voxnet_best.npz", arrays);
+    }
+    history.push_back(n::stack({average, val}, 0));
+    std::print("| {} | {:.6f} | {:.6f} |\n", epoch, average.item(), val.item());
+  }
+  for (const auto &[key, value] : n::load_npz("build/voxnet_best.npz"))
+    p.set(key, value);
+  const auto fitted = m::ScoreSequenceClassifier(predict(fit.voxels), fit.labels).nll;
+  n::save_npz("build/voxnet_outputs.npz",
+              {{"logits", predict(test.voxels)}, {"untrained", untrained}});
+  std::print("{}explicit MomentumSGD updates,selected {},validation {:.6f};fixed C4fit NLL "
+             "{:.9f}->{:.9f}.\n",
+             updates, selected, best, initial.item(), fitted.item());
+  const auto h = n::stack(history, 0);
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(n::arange(1, 4).to_vector<double>(), n::select(h, 1, 0).to_vector<double>(),
+             "fit CE+L2", {37, 99, 235})
+      .lines(n::arange(1, 4).to_vector<double>(), n::select(h, 1, 1).to_vector<double>(),
+             "C4validation", {220, 38, 38})
+      .title("Eighteen explicit MomentumSGD updates")
+      .x_label("epoch;six fitting batches each")
+      .y_label("declared objective/NLL");
+  plot.save_svg("build/voxnet_training.svg");
+}
+```
+// result_begin: markdown
+ModelNet10 fit:24 distinct objects,balanced chair/sofa/table
+ModelNet10 validation:6 distinct objects,balanced chair/sofa/table
+ModelNet10 test:12 distinct objects,balanced chair/sofa/table
+| epoch | dropout CE+L2 | validation C4-logit NLL |
+|---:|---:|---:|
+| 1 | 1.321908 | 1.099104 |
+| 2 | 1.315848 | 1.098456 |
+| 3 | 1.275253 | 1.092044 |
+18explicit MomentumSGD updates,selected 3,validation 1.092044;fixed C4fit NLL 1.106853194->1.065721723.
+\image(figures/voxnet_training.svg)
+// result_end
+\caption(All18actual optimizer updates show CE gradients,weight-only L2,random quarter turns and three independent dropout streams. Validation selects on four-rotated-logit NLL;the fitting objective additionally contains L2.)
+\alttext(All18actual optimizer updates show CE gradients,weight-only L2,random quarter turns and three independent dropout streams. Validation selects on four-rotated-logit NLL;the fitting objective additionally contains L2.)
+
+The selected third epoch has validation NLL1.092044. Fixed fitting C4NLL
+improves1.106853194to1.065721723. Held-out accuracy is7/12,NLL1.097433,
+with zero recall on all four sofas. Coarse1NN also reaches7/12but has lower
+NLL.968111 and detects one sofa. Full class errors matter more than a tied
+overall accuracy on this tiny custom split.
+
+> Fresh occupancy-only restoration and every held-out error
+
+Restore into a fresh eight-leaf store. Verify saved/repeated logits,single/batch
+parity,all parameters unchanged and C4vote invariance under orbit permutation.
+Single-view logits may change with orientation even when the vote stays fixed.
+The coarse occupancy1NN reference has no learned parameters;fitting-only
+population standardization and pairwise distances are tensor operations.
+```{cpp, results="markdown", file="figures/voxnet_confusion.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  std::filesystem::path root = cache / "voxnet";
+  if (const auto *v = std::getenv("DATAMUNGE_VOXNET_DIR"))
+    root = v;
+  else {
+    dm::datasets::prepare_example_data("voxel", (cache / "modelnet").string());
+    root = cache / "voxnet";
+  }
+  const auto pools = m::LoadVoxnet(root);
+  const auto &fit = pools[0];
+  const auto &validation = pools[1];
+  const auto &test = pools[2];
+
+  n::ParameterStore p(907);
+  m::VoxnetDropout dropout;
+  {
+    n::NoGradGuard guard;
+    m::Voxnet(p, n::zeros({1, 32, 32, 32, 1}), 3);
+  }
+  auto predict = [&](const n::Tensor &input, bool vote = true) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> parts;
+    for (std::int64_t start = 0; start < input.size(0); start += 4) {
+      const auto x =
+          n::slice_axis(input, 0, start, std::min<std::int64_t>(start + 4, input.size(0)));
+      auto y = m::Voxnet(p, x, 3).logits;
+      if (vote) {
+        for (int k = 1; k < 4; ++k)
+          y = y + m::Voxnet(p, m::VoxnetRotate(x, k), 3).logits;
+        y = y / 4.;
+      }
+      parts.push_back(y);
+    }
+    return n::concat(parts, 0);
+  };
+
+  for (const auto &[key, value] : n::load_npz("build/voxnet_best.npz"))
+    p.set(key, value);
+  const auto before = p.flatten();
+  n::Tensor saved, untrained;
+  for (const auto &[key, value] : n::load_npz("build/voxnet_outputs.npz")) {
+    if (key == "logits")
+      saved = value;
+    if (key == "untrained")
+      untrained = value;
+  }
+  const auto logits = predict(test.voxels),
+             single = predict(n::slice_axis(test.voxels, 0, 0, 1)),
+             canonical = predict(test.voxels, false),
+             rotated = predict(m::VoxnetRotate(test.voxels, 1)),
+             rotated_single = predict(m::VoxnetRotate(test.voxels, 1), false);
+  const auto parity = n::max(n::abs(logits - saved)),
+             batch = n::max(n::abs(single - n::slice_axis(logits, 0, 0, 1))),
+             orbit = n::max(n::abs(logits - rotated)),
+             change = n::sum(n::abs(canonical - rotated_single));
+  if (parity.item() != 0 || n::max(n::abs(logits - predict(test.voxels))).item() != 0 ||
+      batch.item() > 1e-6 || orbit.item() > 1e-6 || change.item() <= 1e-7 ||
+      before != p.flatten())
+    return 1;
+  std::print("Fresh restore/repeat {},single/batch {:.9g},C4orbit {:.9g};single-view rotation "
+             "L1 {:.9g};all8leaves immutable.\n",
+             parity.item(), batch.item(), orbit.item(), change.item());
+  const auto nearest = m::VoxnetNearest(fit, test);
+  std::vector<std::pair<std::string, n::Tensor>> predictions = {
+      {"C4voted", logits},
+      {"single view", canonical},
+      {"initial C4", untrained},
+      {"coarse1NN", nearest},
+      {"rotated single", rotated_single},
+      {"balanced tie", n::zeros({12, 3})}};
+  std::print("| predictor | accuracy | macroF1 | NLL | all recalls | all confusion counts "
+             "|\n|---|---:|---:|---:|---|---|\n");
+  for (const auto &[name, z] : predictions) {
+    const auto score = m::ScoreSensor(z, test.labels, 3);
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {} | {} |\n", name, score.accuracy,
+               score.macro_f1, score.nll, score.recall, score.confusion);
+  }
+  const auto labels = n::argmax(logits, 1);
+  std::print("\n| source ID | true class | learned class |\n|---:|---:|---:|\n");
+  for (int i = 0; i < 12; ++i)
+    std::print("| {} | {} | {} |\n", test.source.at({i}), test.labels.at({i}), labels.at({i}));
+  auto a = n::plot_tensor_map(
+           n::reverse(m::ScoreSequenceClassifier(logits, test.labels).confusion, {0}), 0, 4),
+       b = n::plot_tensor_map(
+           n::reverse(m::ScoreSequenceClassifier(nearest, test.labels).confusion, {0}), 0, 4);
+  a.title("Complete VoxNet confusion")
+      .x_label("predicted chair0/sofa1/table2")
+      .y_label("true class0at bottom");
+  b.title("Complete coarse1NN confusion")
+      .x_label("predicted chair0/sofa1/table2")
+      .y_label("true class0at bottom");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(a).add(b).size(1100, 500).fit_panels().save_svg("build/voxnet_confusion.svg");
+}
+```
+// result_begin: markdown
+ModelNet10 fit:24 distinct objects,balanced chair/sofa/table
+ModelNet10 validation:6 distinct objects,balanced chair/sofa/table
+ModelNet10 test:12 distinct objects,balanced chair/sofa/table
+Fresh restore/repeat 0,single/batch 3.7252903e-08,C4orbit 7.4505806e-09;single-view rotation L1 2.10843587;all8leaves immutable.
+| predictor | accuracy | macroF1 | NLL | all recalls | all confusion counts |
+|---|---:|---:|---:|---|---|
+| C4voted | 0.583333 | 0.464646 | 1.097433 | [0.75, 0, 1] | [3, 0, 1, 2, 0, 2, 0, 0, 4] |
+| single view | 0.416667 | 0.305556 | 1.124004 | [0.25, 0, 1] | [1, 0, 3, 3, 0, 1, 0, 0, 4] |
+| initial C4 | 0.250000 | 0.142857 | 1.100081 | [0, 0.75, 0] | [0, 3, 1, 0, 3, 1, 0, 4, 0] |
+| coarse1NN | 0.583333 | 0.555556 | 0.968111 | [0.75, 0.25, 0.75] | [3, 0, 1, 2, 1, 1, 1, 0, 3] |
+| rotated single | 0.583333 | 0.472222 | 1.076883 | [0.75, 0, 1] | [3, 0, 1, 1, 0, 3, 0, 0, 4] |
+| balanced tie | 0.333333 | 0.166667 | 1.098612 | [1, 0, 0] | [4, 0, 0, 4, 0, 0, 4, 0, 0] |
+
+| source ID | true class | learned class |
+|---:|---:|---:|
+| 10 | 0 | 0 |
+| 11 | 0 | 0 |
+| 12 | 0 | 0 |
+| 13 | 0 | 2 |
+| 24 | 1 | 0 |
+| 25 | 1 | 2 |
+| 26 | 1 | 0 |
+| 27 | 1 | 2 |
+| 38 | 2 | 2 |
+| 39 | 2 | 2 |
+| 40 | 2 | 2 |
+| 41 | 2 | 2 |
+\image(figures/voxnet_confusion.svg)
+// result_end
+\caption(Every held-out original object,all class errors and six fixed predictor/control metrics. Four-logit averaging yields C4invariance while the unchanged single-view model can remain orientation-sensitive.)
+\alttext(Every held-out original object,all class errors and six fixed predictor/control metrics. Four-logit averaging yields C4invariance while the unchanged single-view model can remain orientation-sensitive.)
+
+
+> Annotated confusion counts
+
+The following program replots the complete frozen evaluation counts printed in the
+predictor tables above. It reproduces those recorded measurements without refitting
+or re-evaluating the model. `ConfusionMatrix::from_counts` owns the integer tensor
+counts and `save_svg` labels every cell. True class zero is the **top** row and
+predicted class zero the left column. Counts are exact; colors use the observed
+count range. Source class meanings remain those declared for the dataset above.
+
+```{cpp, results="markdown", file="figures/voxnet_confusion_api_0.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  std::filesystem::create_directories("build");
+  {
+    const auto counts =
+        n::from_vector(std::vector<std::int64_t>{3, 0, 1, 2, 0, 2, 0, 0, 4}, {3, 3});
+    const auto matrix = n::ConfusionMatrix::from_counts(counts);
+    if (std::abs(matrix.accuracy() - 0.583333) > 1e-5)
+      return 1;
+    matrix.save_svg(
+        "build/voxnet_confusion_api_0.svg",
+        {.title = "voxnet / C4voted / 1", .cell_size = 52, .font_size = 13});
+    std::print("Recorded evaluation 1: 12 observations; accuracy {:.6f}.\n", matrix.accuracy());
+  }
+}
+```
+// result_begin: markdown
+Recorded evaluation 1: 12 observations; accuracy 0.583333.
+\image(figures/voxnet_confusion_api_0.svg)
+// result_end
+\caption(Annotated confusion matrix from the recorded C4voted predictions. Every cell is labeled; true classes run top to bottom.)
+\alttext(Exact recorded true-row predicted-column counts rendered by the confusion-matrix SVG API.)
+
+> Conclusion
+
+The architecture,regularization and discrete rotation mechanism are checked independently from held-out quality. Complete source identities and a declared sampled-surface preparation make the tiny custom42object experiment reproducible without a published voxelization or benchmark accuracy claim.
+
+> References
+
+- [Maturana and Scherer(2015),VoxNet:A3DConvolutional Neural Network for Real-Time Object Recognition](https://publications.ri.cmu.edu/voxnet-a-3d-convolutional-neural-network-for-real-time-object-recognition).
+- [Original Princeton ModelNet data](https://3dvision.princeton.edu/projects/2014/3DShapeNets/).

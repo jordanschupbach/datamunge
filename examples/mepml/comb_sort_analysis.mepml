@@ -38,7 +38,7 @@ no swaps.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static long comb_compares(std::vector<int> a) {
     long c = 0; const std::size_t n = a.size();
@@ -127,7 +127,7 @@ sort's as \(n\) grows.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static long comb_compares(std::vector<int> a) {
     long c = 0; const std::size_t n = a.size();

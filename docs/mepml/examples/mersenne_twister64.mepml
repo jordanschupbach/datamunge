@@ -1,0 +1,558 @@
+//? Title: Mersenne Twister: Reproducible Words and Recoverable State
+//? Subtitle: MT19937-64 twist arithmetic, inverse tempering and honest empirical checks
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A simulation needs a long, repeatable stream of numeric inputs from a compact seed,
+with a precise contract for restarting and transforming that stream. MT19937-64
+produces 64-bit words from a 312-word state array. We work through a single twist
+and a tiny tempering example before checking seeded streams across many refills.
+Inverting tempering recovers a continuation from one aligned block of full outputs,
+showing why reproducibility and a long period do not imply unpredictability.
+Single-stream and forty-seed statistical checks then describe selected finite samples,
+without treating unremarkable p-values as a certification of randomness.
+)
+\toc
+
+> The method
+
+>> A seed is a starting condition, not fresh entropy
+
+`dm::random::MersenneTwister64(seed)` owns its state and implements **MT19937-64**.
+It matches the scalar-seeded raw stream of `std::mt19937_64`, not the 32-bit
+`std::mt19937` engine or an unspecified language's default random generator.
+The 64-bit version has distinct parameters and output. In particular the original
+32-bit paper's 623-dimensional statement must not simply be attached to this engine.
+
+For \(n=312\) words, scalar initialisation uses unsigned wraparound:
+
+$$
+ x_0=s,\qquad x_i=6364136223846793005\,
+ [x_{i-1}\oplus(x_{i-1}\gg62)]+i\pmod{2^{64}},\quad 1\le i<312.
+$$
+\alttext(The seed is word zero. Each later word multiplies the previous word XOR its right shift by 62, adds its index, and retains the low 64 bits.)
+
+For seed zero, the first three words are zero, one and 6364136223846793007:
+seeding zero does not initialise an all-zero array. The first output refills the
+array before reading it. `block_index()` is 312 initially, then one after that
+first output. Copies preserve both the raw array/index and the inherited normal
+sampler's cache. `state_words()` alone is a borrowed raw view, not a full checkpoint;
+a later refill changes that view.
+
+There are 19968 stored word bits, but the recurrence's effective degree is
+\(312\times64-31=19937\). Its published nonzero-state period is
+\(2^{19937}-1\). This is a property of the chosen recurrence and its characteristic
+polynomial, not a conclusion from the short runs below. A scalar seed supplies
+at most \(2^{64}\) possible initial streams, not 19937 bits of entropy. Different
+seeds do not prove independent streams. No fresh randomness arrives after seeding.
+
+>> Join two words and apply the twist
+
+Let \(U=\mathtt{FFFFFFFF80000000}\), \(L=\mathtt{000000007FFFFFFF}\), and
+\(A=\mathtt{B5026F5AA96619E9}\), all hexadecimal 64-bit constants. In recurrence
+order, one new word is
+
+$$
+ v=(x_i\mathbin{\&}U)\mathbin{|}(x_{i+1}\mathbin{\&}L),\qquad
+ x_{i+312}=x_{i+156}\oplus(v\gg1)\oplus
+ \begin{cases}A,&v\text{ odd},\\0,&v\text{ even}.\end{cases}
+$$
+\alttext(Join the upper 33 bits of the left word with the lower 31 bits of the next word. XOR the lag-156 word with that join shifted right once and, when the join is odd, the twist mask A.)
+
+The join has disjoint bit fields, so its OR also equals XOR. The odd correction
+is the low bit of v multiplied by the fixed binary vector A; thus the twist is
+linear over \(\mathbf F_2\). This does not make the scalar-seeding recurrence,
+which includes integer multiplication and addition, binary-linear.
+
+The implementation fills its ring **in increasing index order**. Steps 0–155
+read lag words from the old block; steps 156–311 use already replaced lag words.
+The final step also takes the lower bits of the newly written word zero. A loop
+that computes all 312 updates simultaneously from a frozen old array implements
+a different stream. Refill costs O(312); between refills a draw reads and tempers
+one word, giving O(1) amortised cost and fixed storage. The array itself is
+2496 bytes, with additional index, distribution cache and object metadata.
+
+The retained diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Ordinary documentation export consumes the saved local SVG.
+
+```{bash, file="figures/mt64_stream_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/mt64_stream_mechanism.tikz > build/mt64_stream_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/mt64_stream_mechanism.svg build/mt64_stream_mechanism.dvi > build/mt64_stream_mechanism.render.log 2>&1
+printf 'Rendered the seed, ordered-refill and output-transform diagram.\n'
+```
+// result_begin:
+// Rendered the seed, ordered-refill and output-transform diagram.
+// \image(figures/mt64_stream_mechanism.svg)
+// result_end
+\caption(The state transition and the output transform have different roles; only seeding chooses a starting point.)
+\alttext(A seed fills 312 words. An ordered twist refills the block when its index is exhausted. Each selected raw word passes through invertible tempering to a full 64-bit output. Keeping its upper 53 bits produces a grid-valued uniform sample; tempering does not conceal the state word.)
+
+>> Tempering is an invertible output map
+
+Starting from one raw word, apply the four operations below in order, truncating
+left shifts to 64 bits. The native inspection function returns the input and all
+four intermediate words.
+
+$$
+ \begin{aligned}
+ z_1&=x\oplus[(x\gg29)\mathbin{\&}\mathtt{5555555555555555}],\\
+ z_2&=z_1\oplus[(z_1\ll17)\mathbin{\&}\mathtt{71D67FFFEDA60000}],\\
+ z_3&=z_2\oplus[(z_2\ll37)\mathbin{\&}\mathtt{FFF7EEE000000000}],\\
+ y&=z_3\oplus(z_3\gg43).
+ \end{aligned}
+$$
+\alttext(Tempering applies right-29 masked XOR, left-17 masked XOR, left-37 masked XOR, and finally right-43 XOR. Each stage uses the preceding stage's value.)
+
+For any one stage write \(y=(I+N)x\), where N is its masked-shift map over
+\(\mathbf F_2\). Every application shifts surviving information farther in one
+direction, so \(N^q=0\) once \(q\,\text{shift}\ge64\). Therefore
+\((I+N)^{-1}=I+N+\cdots+N^{q-1}\): multiplying the two expressions cancels every
+interior term, leaving \(I+N^q=I\). Undo the four stages in reverse order.
+This proves a unique preimage for every 64-bit output, and explains the native
+`mt19937_64_untemper` implementation. Tempering changes distribution properties
+of the output coordinates without increasing period, state entropy or secrecy.
+
+The common `uniform01()` sampler takes the upper 53 bits and multiplies by
+\(2^{-53}\). Its possible values are exactly \(j/2^{53}\), from zero through
+\(1-2^{-53}\); it is a discrete grid rather than a literal continuous uniform.
+It discards eleven bits, so the simple full-word inversion shown here does not
+apply directly to those floating samples. Integer `uniform_u64` uses unbiased
+multiply-and-reject range mapping; `normal` uses cached Box–Muller pairs.
+Consequently a seed alone does not specify a mixed sampling transcript: the call
+order, parameters and cached state matter. Raw integer streams are exact; results
+involving log, sin and cos can vary with the floating-point math implementation.
+
+> Small worked examples
+
+>> One odd bit changes an entire next word
+
+Supply left word \(\mathtt{8000000000000000}\), lag word zero, and right word
+zero or one. The join is respectively \(\mathtt{8000000000000000}\) or
+\(\mathtt{8000000000000001}\). Both right shifts equal
+\(\mathtt{4000000000000000}\), but the odd case XORs A and becomes
+\(\mathtt{F5026F5AA96619E9}\). The table preserves exact hex words instead of
+putting 64-bit integers into floating-point DataFrame columns. In each raster,
+row zero is the least significant bit and a dark cell means one.
+
+```{cpp, results="markdown", file="figures/mt64_twist.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto even = dm::random::mt19937_64_twist_steps(0x8000000000000000ULL, 0, 0);
+  const auto odd  = dm::random::mt19937_64_twist_steps(0x8000000000000000ULL, 1, 0);
+  const std::vector<std::string> stages{"join", "shift", "mask", "result"};
+  auto a = dm::random::bit_plot(std::vector<std::uint64_t>(even.begin(), even.end()), 64)
+               .title("Even join: no correction")
+               .x_ticks({.5, 1.5, 2.5, 3.5}, stages)
+               .x_label("twist stage");
+  auto b = dm::random::bit_plot(std::vector<std::uint64_t>(odd.begin(), odd.end()), 64)
+               .title("Odd join: XOR the twist mask")
+               .x_ticks({.5, 1.5, 2.5, 3.5}, stages)
+               .x_label("twist stage");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 490).fit_panels().save_svg(
+      "build/mt64_twist.svg");
+  std::print("| stage | even case | odd case |\n| :--- | :--- | :--- |\n");
+  for (std::size_t i = 0; i < stages.size(); ++i)
+    std::print("| {} | {:016x} | {:016x} |\n", stages[i], even[i], odd[i]);
+}
+```
+// result_begin: markdown
+| stage | even case | odd case |
+| :--- | :--- | :--- |
+| join | 8000000000000000 | 8000000000000001 |
+| shift | 4000000000000000 | 4000000000000000 |
+| mask | 0000000000000000 | b5026f5aa96619e9 |
+| result | 4000000000000000 | f5026f5aa96619e9 |
+\image(figures/mt64_twist.svg)
+// result_end
+\caption(The low bit of the joined word selects a fixed XOR correction.)
+\alttext(Each panel shows 64 bit rows over join, shift, mask and result. The two joins differ only at bit zero. Their shifts agree, but the odd case spreads the fixed twist-mask pattern across the final word.)
+
+>> Temper the tiny word one, then invert it
+
+From x=one, the right-29 stage changes nothing. The left-17 stage gives
+\(\mathtt{0000000000020001}\), the left-37 stage gives
+\(\mathtt{0040002000020001}\), and the final stage gives
+\(\mathtt{0040002000020801}\). Native inverse tempering recovers one exactly.
+The second panel repeats the same stages for the first raw state word actually
+emitted after seeding 5489; its tempered output is decimal 14514284786278117030.
+Neither diagram treats tempering as a new state transition.
+
+```{cpp, results="markdown", file="figures/mt64_temper.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::random::MersenneTwister64  rng(5489);
+  const auto                     first = rng.next_u64();
+  const auto                     tiny  = dm::random::mt19937_64_temper_steps(1);
+  const auto                     real  = dm::random::mt19937_64_temper_steps(rng.state_words()[0]);
+  const std::vector<std::string> labels{"input", "R29", "L17", "L37", "R43"};
+  auto a = dm::random::bit_plot(std::vector<std::uint64_t>(tiny.begin(), tiny.end()), 64)
+               .title("Tempering the raw word one")
+               .x_ticks({.5, 1.5, 2.5, 3.5, 4.5}, labels)
+               .x_label("stage");
+  auto b = dm::random::bit_plot(std::vector<std::uint64_t>(real.begin(), real.end()), 64)
+               .title("First word from seed 5489")
+               .x_ticks({.5, 1.5, 2.5, 3.5, 4.5}, labels)
+               .x_label("stage");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 490).fit_panels().save_svg(
+      "build/mt64_temper.svg");
+  std::print("| stage | input one | first seeded word |\n| :--- | :--- | :--- |\n");
+  for (std::size_t i = 0; i < labels.size(); ++i)
+    std::print("| {} | {:016x} | {:016x} |\n", labels[i], tiny[i], real[i]);
+  std::print(
+      "\nInverse of tiny output: {}; inverse of seeded output: {:016x}.\n",
+      dm::random::mt19937_64_untemper(tiny.back()),
+      dm::random::mt19937_64_untemper(first));
+}
+```
+// result_begin: markdown
+| stage | input one | first seeded word |
+| :--- | :--- | :--- |
+| input | 0000000000000001 | 245b1c66f2bdc210 |
+| R29 | 0000000000000001 | 245b1c67f2ed8305 |
+| L17 | 0000000000020001 | 149d79bcf6ef8305 |
+| L37 | 0040002000020001 | c96d191cf6ef8305 |
+| R43 | 0040002000020801 | c96d191cf6f6aea6 |
+
+Inverse of tiny output: 1; inverse of seeded output: 245b1c66f2bdc210.
+\image(figures/mt64_temper.svg)
+// result_end
+\caption(Tempering moves information through masked shifts while retaining an exact inverse.)
+\alttext(The word one develops a few distant one bits through the four stages. The first real seeded word produces a denser pattern. Every full output maps back to its raw input exactly.)
+
+> Checking the implementation and its limits
+
+>> Seeded reference streams, refill boundaries and sampling order
+
+Compare eight declared seeds, including zero, the high bit and the all-ones value,
+for 10000 consecutive outputs each. This exercises repeated refills in
+80000 exact 64-bit word comparisons, covering 5120000 bit positions. The standard's
+10000th default-seeded word is 9981545732273789042;
+its scalar default seed is 5489. Our constructor requires an explicit seed.
+Endpoint words and the boundary transcript are hexadecimal, with zero-based output
+indices. Index 311 exhausts the first block; index 312 triggers the next refill.
+
+The plots are descriptive views of fresh seed-5489 streams. A visually unstructured
+bit raster or pair cloud does not establish independence. The final three sampler
+calls preserve the original report's order: first raw word, then normal(10,2), then
+an inclusive die roll. Changing that order changes which raw words are consumed.
+
+```{cpp, results="markdown", file="figures/mt64_reference.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto table = dm::random::mt19937_64_conformance(
+      {0, 1, 42, 5489, 0xffffffffULL, 0x100000000ULL, 0x8000000000000000ULL, ~std::uint64_t{0}},
+      10000);
+  dm::random::MersenneTwister64 bits(5489), pairs(5489), transcript(5489), sample(5489);
+  std::vector<std::uint64_t>    words(128);
+  for (auto& word : words)
+    word = bits.next_u64();
+  const auto          u = dm::random::uniform_sample(pairs, 2000);
+  std::vector<double> x, y;
+  for (std::size_t i = 0; i < u.size(); i += 2) {
+    x.push_back(u[i]);
+    y.push_back(u[i + 1]);
+  }
+  auto a = dm::random::bit_plot(words, 16).title("First 128 words: low 16 bits");
+  auto b = dm::graphics::RPlot::create()
+               .points(x, y, "pairs", {40, 100, 190}, 1.5)
+               .title("1000 non-overlapping uniform pairs")
+               .x_label("first uniform")
+               .y_label("second uniform")
+               .x_limits(0, 1)
+               .y_limits(0, 1);
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 490).fit_panels().save_svg(
+      "build/mt64_reference.svg");
+  std::print(
+      "{}\n\n| output index | next block index | raw output |\n| ---: | ---: | :--- |\n",
+      table.select({"seed", "draws", "mismatches", "native_first", "native_last"}).to_md(0));
+  const std::set<std::size_t> show{0, 1, 155, 156, 310, 311, 312, 313, 623, 624, 9999};
+  for (std::size_t i = 0; i < 10000; ++i) {
+    const auto word = transcript.next_u64();
+    if (show.contains(i))
+      std::print("| {} | {} | {:016x} |\n", i, transcript.block_index(), word);
+  }
+  const auto first  = sample.next_u64();
+  const auto normal = sample.normal(10, 2);
+  const auto die    = sample.uniform_u64(1, 6);
+  std::print(
+      "\nOriginal sampler transcript: first={}, normal(10,2)={:.6f}, die={}.\n",
+      first,
+      normal,
+      die);
+}
+```
+// result_begin: markdown
+| seed | draws | mismatches | native_first | native_last |
+| :--- | ---: | ---: | :--- | :--- |
+| 0000000000000000 | 10000 | 0 | 28e837c5cb41dc3e | e2b1e4b21dba573d |
+| 0000000000000001 | 10000 | 0 | 2245bd5fbb686f68 | ae0c4945538782f4 |
+| 000000000000002a | 10000 | 0 | c151df7d6ee5e2d6 | 83a8ba941acb9cc7 |
+| 0000000000001571 | 10000 | 0 | c96d191cf6f6aea6 | 8a8592f5817ed872 |
+| 00000000ffffffff | 10000 | 0 | 34eeb3d17756bb4e | 559d51630d818e0b |
+| 0000000100000000 | 10000 | 0 | 2a0077626dd09950 | 540161829c714017 |
+| 8000000000000000 | 10000 | 0 | c05fcbd49bf042a9 | b82b2b51e04d0f34 |
+| ffffffffffffffff | 10000 | 0 | 06a24a7a23fbc864 | 0c79a404b8be0872 |
+
+
+| output index | next block index | raw output |
+| ---: | ---: | :--- |
+| 0 | 1 | c96d191cf6f6aea6 |
+| 1 | 2 | 401f7ac78bc80f1c |
+| 155 | 156 | 06cc239429a34614 |
+| 156 | 157 | 4927012902f7e84c |
+| 310 | 311 | 9d132341a097e11b |
+| 311 | 312 | 13038d24c91c1bb8 |
+| 312 | 1 | 5e0b18c0f57393b1 |
+| 313 | 2 | 2fe29c88085c779f |
+| 623 | 312 | d7c295afc52a1c17 |
+| 624 | 1 | ab1bf7646b530a67 |
+| 9999 | 16 | 8a8592f5817ed872 |
+
+Original sampler transcript: first=14514284786278117030, normal(10,2)=9.185984, die=6.
+\image(figures/mt64_reference.svg)
+// result_end
+\caption(All declared raw streams match the standard engine, including many ordered refills.)
+\alttext(The first 128 outputs are shown as a low-bit raster. A separate stream supplies 1000 non-overlapping uniform pairs filling the unit square; neither visual is a randomness certificate.)
+
+>> An aligned output block is enough to reproduce the continuation
+
+Observe all 312 full outputs beginning at a refill. Invert each to recover the
+stored raw block, set the next index to 312, and apply the same ordered recurrence.
+The next block is then determined. Induction gives the same result for every later
+block. No seed search is involved. The native `from_output_block` factory implements
+this calculation and starts with an empty normal cache; it does not recover a
+previously cached normal value or infer the starting alignment.
+
+We collect the first block from a known local engine, then freeze that recovered
+state before generating 4096 unseen words. The two rasters show only the first
+64 held-out words, while the error count checks all 4096. This is an exact
+predictability demonstration on our own sequence, distinct from probabilistic
+quality tests. Arbitrary input arrays are accepted as deterministic states; they
+need not be reachable by scalar seeding. An all-zero supplied block gives a
+degenerate zero continuation and is outside the nonzero-state period claim.
+
+```{cpp, results="markdown", file="figures/mt64_recovery.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::random::MersenneTwister64  source(42);
+  std::array<std::uint64_t, 312> observed{};
+  for (auto& word : observed)
+    word = source.next_u64();
+  auto                       recovered = dm::random::MersenneTwister64::from_output_block(observed);
+  std::vector<std::uint64_t> actual(4096), predicted(4096);
+  std::size_t                errors = 0;
+  for (std::size_t i = 0; i < actual.size(); ++i) {
+    actual[i]    = source.next_u64();
+    predicted[i] = recovered.next_u64();
+    errors += actual[i] != predicted[i];
+  }
+  auto a = dm::random::bit_plot(std::vector<std::uint64_t>(actual.begin(), actual.begin() + 64), 16)
+               .title("Unseen outputs: low 16 bits");
+  auto b = dm::random::bit_plot(
+               std::vector<std::uint64_t>(predicted.begin(), predicted.begin() + 64), 16)
+               .title("Recovered-state predictions");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 490).fit_panels().save_svg(
+      "build/mt64_recovery.svg");
+  std::print(
+      "Observed full words: {}; held-out words: {}; mismatches: {}.\n\n| held-out index | actual | "
+      "predicted |\n| ---: | :--- | :--- |\n",
+      observed.size(),
+      actual.size(),
+      errors);
+  for (std::size_t i = 0; i < 6; ++i)
+    std::print("| {} | {:016x} | {:016x} |\n", i, actual[i], predicted[i]);
+}
+```
+// result_begin: markdown
+Observed full words: 312; held-out words: 4096; mismatches: 0.
+
+| held-out index | actual | predicted |
+| ---: | :--- | :--- |
+| 0 | e6b448db2600a92a | e6b448db2600a92a |
+| 1 | b96b8c4d8107a82b | b96b8c4d8107a82b |
+| 2 | b44725a2eb31c9be | b44725a2eb31c9be |
+| 3 | 0d87a641cc303d58 | 0d87a641cc303d58 |
+| 4 | 1f6f934a09478c01 | 1f6f934a09478c01 |
+| 5 | 5a14262df4a9c3b2 | 5a14262df4a9c3b2 |
+\image(figures/mt64_recovery.svg)
+// result_end
+\caption(A full aligned block recovers the raw continuation, with no held-out mismatches.)
+\alttext(The actual and predicted low-bit rasters agree exactly on 64 unseen outputs. The printed mismatch count covers 4096 subsequent words across thirteen complete refills and part of the next.)
+
+>> A finite sample can look uniform and remain predictable
+
+The existing seven-test battery checks 100-cell uniform counts, uniform KS,
+non-overlapping 10-by-10 serial cells, lag-one correlation, low/high monobit counts
+and low-byte frequencies. Each stage uses fresh words in a fixed order; the two
+monobit counts share their n words. The full battery advances the generator by
+7n raw outputs. Set n=20000 before inspecting the results.
+
+For a bit with ideal independent fair draws, the estimated one-frequency has
+standard deviation \(1/(2\sqrt n)\). The plotted three-SD guides are **pointwise**,
+not simultaneous 64-bit acceptance bands. The histogram uses another fresh engine
+with the same seed; these reused prefixes are reproducible, not independent
+replications. The null reference is a modelling benchmark for the diagnostics,
+not a claim that a deterministic seeded sequence literally consists of independent
+random variables.
+
+The chi-square statistics use their multinomial degrees of freedom. Correlation
+and monobit p-values use approximate normal tails; the KS routine uses a corrected
+asymptotic reference. The floating uniform's very fine grid, dependence and finite
+sample size qualify those calibrations. No rule here declares a generator good
+because every p-value exceeds 0.05: even ideal calibrated tests sometimes give
+small p-values, and these tests are not mutually independent.
+
+```{cpp, results="markdown", file="figures/mt64_quality.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  constexpr std::size_t         n = 20000;
+  dm::random::MersenneTwister64 battery(5489), bits(5489), uniforms(5489);
+  const auto                    tests       = dm::random::quality_tests(battery, n);
+  const auto                    frequencies = dm::random::bit_frequencies(bits, n);
+  const auto                    u           = dm::random::uniform_sample(uniforms, n);
+  const double                  delta       = 3 / (2 * std::sqrt(double(n)));
+  auto                          a           = dm::graphics::RPlot::create()
+               .points(dm::seql(0, 63, 64).values(), frequencies, "frequency", {40, 100, 190}, 2)
+               .abline_h(.5, {130, 130, 130}, 1)
+               .abline_h(.5 - delta, {190, 100, 35}, 1)
+               .abline_h(.5 + delta, {190, 100, 35}, 1)
+               .title("20000 words: per-bit balance")
+               .x_label("bit position (0 = lowest)")
+               .y_label("fraction of ones")
+               .x_limits(0, 63)
+               .y_limits(.48, .535)
+               .legend(
+                   {"frequency", "fair-bit mean", "pointwise +/-3 SD"},
+                   {{40, 100, 190}, {130, 130, 130}, {190, 100, 35}});
+  auto b = dm::graphics::RPlot::hist(u, 20, "uniforms", {40, 100, 190})
+               .title("Same-seed uniforms: 20 cells")
+               .x_label("upper-53-bit uniform")
+               .y_label("count")
+               .x_limits(0, 1)
+               .y_limits(0, 1400);
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 490).fit_panels().save_svg(
+      "build/mt64_quality.svg");
+  std::print("{}\n", tests.to_md(6));
+}
+```
+// result_begin: markdown
+| test | statistic | df | p_value |
+| :--- | ---: | ---: | ---: |
+| Uniformity, chi-square (100 cells) | 96.500000 | 99 | 0.552383 |
+| Uniformity, Kolmogorov-Smirnov | 0.004995 | 0 | 0.699432 |
+| Serial pairs, chi-square (10 x 10 cells) | 77.900000 | 99 | 0.942179 |
+| Lag-1 correlation, z = r sqrt(n) | -0.403471 | 0 | 0.686602 |
+| Monobit, lowest bit (z) | -1.187939 | 0 | 0.234857 |
+| Monobit, highest bit (z) | -1.739483 | 0 | 0.081950 |
+| Lowest byte, chi-square (256 cells) | 297.241600 | 255 | 0.035514 |
+
+\image(figures/mt64_quality.svg)
+// result_end
+\caption(Balance and low-dimensional goodness-of-fit tests describe this sample without resolving predictability.)
+\alttext(Sixty-four one-frequencies lie near one half, with pointwise three-SD guides. A twenty-cell uniform histogram is approximately flat. These simple diagnostics coexist with exact recovery from full outputs.)
+
+The single-seed low-byte test gives p=0.035514. It is retained alongside the
+other six results. An isolated value below 0.05 calls for context and a declared
+follow-up protocol; it is neither suppressed nor treated as conclusive evidence
+from an independent, perfectly calibrated family of tests.
+
+>> Repeat the battery across forty declared seeds
+
+A second-level check looks at the first-level p-values across seeds 1 through 40,
+with n=20000 per stage. Under an ideal independent, exactly calibrated reference,
+first-level p-values would be uniform; one expects about two below 0.05 per test,
+with standard deviation \(\sqrt{40(0.05)(0.95)}\), about 1.38. The figure's
+horizontal count-two guide is an expectation, not a threshold. The native table
+also reports upper-tail counts, mean p and a KS check of each p-value distribution.
+Finite-sample approximations, discrete statistics and consecutive-seed dependence
+mean the second-level p-values are diagnostic rather than exact significance
+levels. Seven second-level comparisons add another multiplicity issue. We retain
+all seven outcomes rather than selecting a favourable test or seed.
+
+```{cpp, results="markdown", file="figures/mt64_many_seeds.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto table = dm::random::quality_tests_over_seeds(
+      [](std::uint64_t seed) { return std::make_unique<dm::random::MersenneTwister64>(seed); },
+      40,
+      20000,
+      1);
+  const std::vector<std::string> labels{
+      "cells", "KS", "pairs", "lag1", "low bit", "high bit", "byte"};
+  auto a = dm::graphics::RPlot::barplot(
+               table.numeric_column("small_p_count").values(), labels, "count", {40, 100, 190})
+               .abline_h(2, {190, 100, 35}, 1)
+               .title("Forty seeds: p below 0.05")
+               .x_label("first-level test")
+               .y_label("number of small p-values")
+               .y_limits(0, 10)
+               .legend({"observed", "ideal expectation"}, {{40, 100, 190}, {190, 100, 35}});
+  auto b = dm::graphics::RPlot::barplot(
+               table.numeric_column("ks_p_value").values(), labels, "KS p", {70, 145, 90})
+               .title("Second-level KS diagnostics")
+               .x_label("first-level test")
+               .y_label("approximate KS p-value")
+               .y_limits(0, 1.15);
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 490).fit_panels().save_svg(
+      "build/mt64_many_seeds.svg");
+  std::print("{}\n", table.to_md(6));
+}
+```
+// result_begin: markdown
+| test | seeds | draws_per_test | mean_p | small_p_count | large_p_count | ks_statistic | ks_p_value |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Uniformity, chi-square (100 cells) | 40 | 20000 | 0.516464 | 1 | 2 | 0.074607 | 0.974250 |
+| Uniformity, Kolmogorov-Smirnov | 40 | 20000 | 0.509335 | 1 | 0 | 0.139834 | 0.387777 |
+| Serial pairs, chi-square (10 x 10 cells) | 40 | 20000 | 0.545065 | 3 | 7 | 0.138229 | 0.402152 |
+| Lag-1 correlation, z = r sqrt(n) | 40 | 20000 | 0.451036 | 4 | 4 | 0.147284 | 0.325351 |
+| Monobit, lowest bit (z) | 40 | 20000 | 0.528789 | 2 | 4 | 0.105635 | 0.739954 |
+| Monobit, highest bit (z) | 40 | 20000 | 0.483400 | 3 | 3 | 0.091843 | 0.872788 |
+| Lowest byte, chi-square (256 cells) | 40 | 20000 | 0.438160 | 1 | 1 | 0.157814 | 0.249392 |
+
+\image(figures/mt64_many_seeds.svg)
+// result_end
+\caption(All seven second-level results are retained; neither the count guide nor a p-value certifies the engine.)
+\alttext(For forty consecutive seeds, bars show counts of first-level p-values below 0.05 and second-level KS p-values. The count-two line is the ideal expected count, with substantial sampling variation.)
+
+The serial-pair test has seven p-values above 0.95 across these forty seeds,
+compared with the ideal expected count two. Its second-level KS p-value is
+0.402152: a global CDF discrepancy and a selected tail count measure different
+features. This visible excess is a reason to retain the whole table and, if
+using the diagnostic for a decision, plan a larger follow-up rather than change
+the seed range after inspection.
+
+> What the examples establish
+
+The twist example checks exact masking and conditional XOR. The tempering example
+connects intermediate words to a finite inverse-series proof. Seeded conformance
+checks exercise the ordered refill and the standard's long transcript rather than
+relying on one matching output. The continuation example shows that 312 aligned
+full words reveal enough state to predict later words exactly, despite balanced
+bits and a huge recurrence period.
+
+Statistical plots and forty-seed checks expose only selected low-dimensional
+features of finite samples. They do not prove the stated period, all-dimensional
+equidistribution, stream independence or cryptographic security. MT19937-64 is
+appropriate here as a reproducible simulation mechanism; a secret seed does not
+turn its invertible output mapping into protection for adversarial use.
+No external dataset is needed for this algorithm report: all inputs, reference
+words and observed sequences are declared, and correctness has an exact oracle.
+No timing ranking or practical throughput claim is inferred from the complexity
+calculation.
+
+> References
+
+- M. Matsumoto and T. Nishimura (1998), “Mersenne twister: A 623-dimensionally
+  equidistributed uniform pseudo-random number generator”, *ACM Transactions on
+  Modeling and Computer Simulation* 8(1), 3–30.
+  [Original 32-bit paper](https://doi.org/10.1145/272991.272995).
+- [Authors' MT19937-64 page](https://math.sci.hiroshima-u.ac.jp/m-mat/MT/emt64.html),
+  with the distinct 64-bit implementation and parameters.
+- C++ working draft: [Mersenne Twister transition, seeding and output specification](https://eel.is/c++draft/rand.eng.mers)
+  and [predefined MT19937-64 parameters and 10000th reference word](https://eel.is/c++draft/rand.predef).
+  These specify the comparison engine; the inspection and inversion arguments above
+  are derived directly from those word operations.
+

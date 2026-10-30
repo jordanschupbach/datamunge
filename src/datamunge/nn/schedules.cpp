@@ -1,3 +1,6 @@
+/// @file schedules.cpp
+/// @brief Validation and arithmetic for step, exponential, cosine, warmup, and cyclical schedules.
+
 #include "datamunge/nn/schedules.hpp"
 
 #include <algorithm>
@@ -7,8 +10,11 @@
 
 namespace datamunge::nn::schedule {
 
+/// @brief Common schedule argument validation.
 namespace {
 
+/// @brief Requires a nonnegative step and a finite, nonnegative learning rate.
+/// @throws std::invalid_argument If either argument violates those constraints.
 void validate(std::int64_t step, double rate) {
   if (step < 0 || !std::isfinite(rate) || rate < 0)
     throw std::invalid_argument("schedule needs a nonnegative step and finite nonnegative rate");

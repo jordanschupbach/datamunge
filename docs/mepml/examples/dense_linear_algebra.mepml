@@ -1,0 +1,904 @@
+//? Title: Dense Linear Algebra: Factorizations, Conditioning and Least Squares
+//? Subtitle: LU, Cholesky, Householder QR and the singular value decomposition in datamunge::linalg, compared on the Motor Trend car data
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Almost every statistical fit ends in a dense linear algebra problem, and the way that problem
+is solved decides how many correct digits survive. This report surveys the dense toolkit in
+`dm::linalg`: the `DenseMatrix` type, the LU, Cholesky and Householder QR factorizations, and a
+new one-sided Jacobi singular value decomposition. Each method is derived, and their costs and
+error bounds are stated. The running example is least squares on `dm::datasets::mtcars()`:
+fuel consumption regressed on the other ten measurements, then on a polynomial in weight whose
+condition number grows from \(10^1\) to \(10^{15}\). The central result is that the normal
+equations square the condition number, \(\kappa(X^\top X)=\kappa(X)^2\). We prove this and then
+watch it happen. At degree 8 the normal equations keep about one correct digit, while QR keeps
+nine, and both errors match the predictions \(u\kappa^2\) and \(u\kappa\) once the harmless
+part of \(\kappa\), column scaling, is removed. The SVD then handles an exactly collinear design
+that defeats the other two methods. A timing study confirms the cubic cost of every
+factorization. Building the report fixed five library bugs. `stats::LM`'s standard errors came
+from \(X^\top X\) and were 88% wrong at \(\kappa=10^9\). The Jacobi eigensolver's absolute
+stopping test returned wrong eigenvalues for small-scale matrices. QR's rank test was not scale
+invariant. Formulas such as `mpg ~ . - model` ignored the `- model`. And `RPlot::text()` colours
+were overridden by the SVG's stylesheet.
+)
+
+\toc
+
+> The data
+
+`dm::datasets::mtcars()` is R's `mtcars`: 32 cars from the 1974 *Motor Trend* road tests,
+with fuel consumption `mpg` (miles per US gallon) and ten design and performance variables.
+It is small, but it is a famously awkward regression problem, because the predictors measure
+overlapping things: engine displacement `disp`, cylinder count `cyl`, horsepower `hp` and weight
+`wt` all describe how big the car is.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace agg = dm::agg;
+
+int main() {
+  const auto cars = dm::datasets::mtcars();
+  std::print("{} rows, {} columns\n\n{}\n\n", cars.nrows(), cars.ncols(), cars.head(5).to_md());
+  std::print("{}\n", cars
+                         | dm::pivot_longer({"mpg", "cyl", "disp", "hp", "drat", "wt", "qsec", "vs",
+                                             "am", "gear", "carb"},
+                                            "variable", "value")
+                         | dm::group_by("variable")
+                         | dm::summarise(agg::mean("value", "Mean"), agg::sd("value", "SD"),
+                                         agg::min("value", "Min"), agg::max("value", "Max"))
+                         | dm::to_md(2));
+}
+```
+// result_begin: markdown
+32 rows, 12 columns
+
+| model | mpg | cyl | disp | hp | drat | wt | qsec | vs | am | gear | carb |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Mazda RX4 | 21.0 | 6 | 160 | 110 | 3.90 | 2.620 | 16.46 | 0 | 1 | 4 | 4 |
+| Mazda RX4 Wag | 21.0 | 6 | 160 | 110 | 3.90 | 2.875 | 17.02 | 0 | 1 | 4 | 4 |
+| Datsun 710 | 22.8 | 4 | 108 | 93 | 3.85 | 2.320 | 18.61 | 1 | 1 | 4 | 1 |
+| Hornet 4 Drive | 21.4 | 6 | 258 | 110 | 3.08 | 3.215 | 19.44 | 1 | 0 | 3 | 1 |
+| Hornet Sportabout | 18.7 | 8 | 360 | 175 | 3.15 | 3.440 | 17.02 | 0 | 0 | 3 | 2 |
+
+
+| variable | Mean | SD | Min | Max |
+| :--- | ---: | ---: | ---: | ---: |
+| mpg | 20.09 | 6.03 | 10.40 | 33.90 |
+| cyl | 6.19 | 1.79 | 4.00 | 8.00 |
+| disp | 230.72 | 123.94 | 71.10 | 472.00 |
+| hp | 146.69 | 68.56 | 52.00 | 335.00 |
+| drat | 3.60 | 0.53 | 2.76 | 4.93 |
+| wt | 3.22 | 0.98 | 1.51 | 5.42 |
+| qsec | 17.85 | 1.79 | 14.50 | 22.90 |
+| vs | 0.44 | 0.50 | 0.00 | 1.00 |
+| am | 0.41 | 0.50 | 0.00 | 1.00 |
+| gear | 3.69 | 0.74 | 3.00 | 5.00 |
+| carb | 2.81 | 1.62 | 1.00 | 8.00 |
+// result_end
+\caption(The first five cars, and a summary of every numeric column. The standard deviations range from 0.5 (the 0/1 indicators `vs` and `am`) to 124 (`disp`, in cubic inches).)
+
+The scales differ by more than two orders of magnitude, and the correlations are strong. The
+next program builds the design matrix through the formula interface used by `stats::LM`
+(`mpg ~ . - model` keeps every numeric column) and draws the correlation matrix of the ten
+predictors, \(R=Z^\top Z/(n-1)\) with \(Z\) the standardized columns.
+
+```{cpp, results="markdown", file="figures/dense_linear_algebra_correlation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const auto cars   = dm::datasets::mtcars();
+  const auto design = dm::formula("mpg ~ . - model - 1").resolve(cars).build_matrix(cars, true);
+  const auto names  = dm::formula("mpg ~ . - model - 1").resolve(cars).coefficient_names;
+  const auto R      = dm::linalg::correlation_matrix(design.X);
+  const std::size_t p = R.rows();
+
+  std::vector<double> pos(p);
+  std::vector<std::vector<double>> z(p, std::vector<double>(p));
+  for (std::size_t i = 0; i < p; ++i) {
+    pos[i] = static_cast<double>(i);
+    for (std::size_t j = 0; j < p; ++j) z[i][j] = R(i, p - 1 - j);  // first variable on top
+  }
+  std::vector<std::string> reversed(names.rbegin(), names.rend());
+  auto plot = dm::graphics::RPlot::create().image(pos, pos, z, dm::graphics::diverging_colors(21), -1, 1);
+  for (std::size_t i = 0; i < p; ++i)
+    for (std::size_t j = 0; j < p; ++j)
+      plot.text(pos[i], pos[j], std::format("{:.2f}", z[i][j]),
+                std::abs(z[i][j]) > 0.7 ? dm::RGB{255, 255, 255} : dm::RGB{17, 24, 39}, 11);
+  plot.x_ticks(pos, names).y_ticks(pos, reversed).show_grid(false).x_label("").y_label("")
+      .title("Correlations between the ten mtcars predictors")
+      .size(720, 660)
+      .save_svg("build/dense_linear_algebra_correlation.svg");
+
+  double largest = 0;
+  std::string pair;
+  for (std::size_t i = 0; i < p; ++i)
+    for (std::size_t j = i + 1; j < p; ++j)
+      if (std::abs(R(i, j)) > largest) largest = std::abs(R(i, j)), pair = names[i] + " and " + names[j];
+  std::print("Largest |correlation|: {:.3f} ({}).\n", largest, pair);
+}
+```
+// result_begin: markdown
+Largest |correlation|: 0.902 (cyl and disp).
+\image(figures/dense_linear_algebra_correlation.svg)
+// result_end
+\caption(Correlation matrix of the ten predictors, blue for negative and red for positive. The size variables `cyl`, `disp`, `hp` and `wt` form one strongly correlated block.)
+\alttext(A ten by ten heat map of correlations. A red block of values between 0.66 and 0.90 joins cyl, disp, hp and wt, and these are negatively correlated, in blue, with drat and vs, with values between -0.45 and -0.81.)
+
+Strong correlations make the columns of \(X\) nearly linearly dependent, and that is what
+the condition number measures. The rest of the report is about solving
+\(\min_\beta\lVert X\beta-y\rVert_2\) for such an \(X\).
+
+> Dense matrices and their norms
+
+A `dm::linalg::DenseMatrix<T>` stores its \(m\times n\) elements row-major in one contiguous
+vector, so element \((i,j)\) sits at offset \(in+j\). The product \(C=AB\) is computed with an
+\(i\)-\(k\)-\(j\) loop. The innermost loop then runs along a row of \(B\) and a row of \(C\), both
+contiguous in memory, so a product of an \(m\times k\) and a \(k\times n\) matrix costs \(2mkn\)
+floating-point operations (*flops*) at close to the machine's streaming speed. The class has the
+three induced norms \(\lVert A\rVert_1\) (largest column sum), \(\lVert A\rVert_\infty\) (largest
+row sum) and, through the SVD, \(\lVert A\rVert_2=\sigma_1\), plus the Frobenius norm
+\(\lVert A\rVert_F=(\sum a_{ij}^2)^{1/2}\). Writing \(A=U\Sigma V^\top\) gives
+\(\lVert A\rVert_F^2=\sum_i\sigma_i^2\), and hence for a matrix of rank \(r\)
+
+$$
+\lVert A\rVert_2\le\lVert A\rVert_F\le\sqrt r\,\lVert A\rVert_2,
+\qquad
+\lVert A\rVert_2\le\sqrt{\lVert A\rVert_1\lVert A\rVert_\infty}.
+$$
+\alttext(The 2-norm of A is at most its Frobenius norm, which is at most root r times the 2-norm. The 2-norm is also at most the square root of the 1-norm times the infinity-norm.)
+
+The second inequality holds because \(\sigma_1^2\) is the largest eigenvalue of \(A^\top A\),
+and every eigenvalue is bounded by any induced norm:
+\(\sigma_1^2\le\lVert A^\top A\rVert_1\le\lVert A^\top\rVert_1\lVert A\rVert_1=\lVert A\rVert_\infty\lVert A\rVert_1\).
+On the mtcars design (intercept plus ten predictors) these bounds are far from tight, because
+`disp` and `hp` dominate every norm:
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const auto cars = dm::datasets::mtcars();
+  const auto X    = dm::formula("mpg ~ . - model").resolve(cars).build_matrix(cars, true).X;
+  const auto f    = dm::linalg::svd(X);
+  std::print("X is {} x {}, rank {}\n\n", X.rows(), X.cols(), f.rank());
+  std::print("| quantity | value |\n| --- | ---: |\n");
+  std::print("| \\(\\lVert X\\rVert_2=\\sigma_1\\) | {:.2f} |\n", f.norm_2());
+  std::print("| \\(\\lVert X\\rVert_F\\) | {:.2f} |\n", X.norm_frobenius());
+  std::print("| \\(\\sqrt{{11}}\\,\\lVert X\\rVert_2\\) | {:.2f} |\n", std::sqrt(11.0) * f.norm_2());
+  std::print("| \\(\\lVert X\\rVert_1\\) | {:.2f} |\n", X.norm_1());
+  std::print("| \\(\\lVert X\\rVert_\\infty\\) | {:.2f} |\n", X.norm_inf());
+  std::print("| \\(\\sqrt{{\\lVert X\\rVert_1\\lVert X\\rVert_\\infty}}\\) | {:.2f} |\n",
+             std::sqrt(X.norm_1() * X.norm_inf()));
+  std::print("| \\(\\sigma_{{11}}\\) | {:.4f} |\n", f.s.back());
+  std::print("| \\(\\kappa_2(X)=\\sigma_1/\\sigma_{{11}}\\) | {:.0f} |\n", f.condition_number());
+}
+```
+// result_begin: markdown
+X is 32 x 11, rank 11
+
+| quantity | value |
+| --- | ---: |
+| \(\lVert X\rVert_2=\sigma_1\) | 1724.34 |
+| \(\lVert X\rVert_F\) | 1739.87 |
+| \(\sqrt{11}\,\lVert X\rVert_2\) | 5718.99 |
+| \(\lVert X\rVert_1\) | 7383.10 |
+| \(\lVert X\rVert_\infty\) | 719.16 |
+| \(\sqrt{\lVert X\rVert_1\lVert X\rVert_\infty}\) | 2304.26 |
+| \(\sigma_{11}\) | 0.1412 |
+| \(\kappa_2(X)=\sigma_1/\sigma_{11}\) | 12213 |
+// result_end
+\caption(Norms of the mtcars design matrix. \(\lVert X\rVert_F\) is only slightly larger than \(\sigma_1\): one direction, dominated by `disp` and `hp`, carries almost all of the matrix's size.)
+
+> The least-squares problem
+
+Given \(X\in\mathbb R^{n\times p}\) with \(n\ge p\) and \(y\in\mathbb R^n\), find \(\beta\)
+minimizing \(f(\beta)=\lVert y-X\beta\rVert_2^2\). Expanding,
+\(f(\beta)=y^\top y-2\beta^\top X^\top y+\beta^\top X^\top X\beta\), a quadratic with gradient
+\(2(X^\top X\beta-X^\top y)\) and constant Hessian \(2X^\top X\), which is positive semidefinite
+because \(v^\top X^\top Xv=\lVert Xv\rVert^2\ge0\). So the minimizers are exactly the solutions
+of the *normal equations*
+
+$$
+X^\top X\,\hat\beta=X^\top y
+\iff X^\top(y-X\hat\beta)=0 .
+$$
+\alttext(X transpose X times beta hat equals X transpose y, which is equivalent to X transpose times the residual y minus X beta hat being zero.)
+
+The second form is the geometry. The residual \(r=y-X\hat\beta\) is orthogonal to every column
+of \(X\), so \(X\hat\beta\) is the orthogonal projection of \(y\) onto the column space. The
+minimizer is unique exactly when \(X^\top X\) is invertible, that is, when \(Xv=0\) only for
+\(v=0\) (full column rank). Three algorithms solve this problem, and they differ in what they
+do with the matrix.
+
+>> Normal equations and the Cholesky factorization
+
+The direct route forms the \(p\times p\) Gram matrix \(G=X^\top X\) (`dm::linalg::gram`,
+\(np^2\) flops, using symmetry) and solves \(G\hat\beta=X^\top y\). \(G\) is symmetric positive
+definite (SPD) when \(X\) has full rank, and SPD matrices have a *Cholesky factorization*
+\(G=LL^\top\) with \(L\) lower triangular and \(\ell_{ii}>0\).
+
+*Existence, by induction on \(p\).* Partition
+\(G=\begin{pmatrix}g_{11}&g^\top\\ g&G_{22}\end{pmatrix}\). Positive definiteness gives
+\(g_{11}=e_1^\top Ge_1>0\), so set \(\ell_{11}=\sqrt{g_{11}}\) and \(\ell=g/\ell_{11}\). Then
+
+$$
+G=\begin{pmatrix}\ell_{11}&0\\ \ell&I\end{pmatrix}
+\begin{pmatrix}1&0\\ 0&S\end{pmatrix}
+\begin{pmatrix}\ell_{11}&\ell^\top\\ 0&I\end{pmatrix},
+\qquad S=G_{22}-\frac{gg^\top}{g_{11}} .
+$$
+\alttext(G equals the block matrix with l 1 1, zero, l and I, times the block diagonal matrix with 1 and S, times the transpose of the first factor. S, the Schur complement, equals G 2 2 minus g g transpose over g 1 1.)
+
+The Schur complement \(S\) is SPD: for any \(w\ne0\) take
+\(v=(-g^\top w/g_{11},\,w)\), and then \(w^\top Sw=v^\top Gv>0\). By induction \(S=L_2L_2^\top\), which
+completes \(L\). Each pivot \(\ell_{ii}^2\) is a Schur complement's corner entry, so the
+factorization fails (a pivot \(\le0\)) exactly when \(G\) is not positive definite. `cholesky()`
+therefore doubles as a definiteness test, and its `ok` flag reports the outcome. The algorithm
+costs \(p^3/3\) flops and needs no pivoting: \(\ell_{ij}^2\le\sum_k\ell_{ik}^2=g_{ii}\), so no entry
+can grow. Two triangular solves \(Lz=X^\top y\), \(L^\top\hat\beta=z\) finish the job. In total
+the normal equations cost about \(np^2+p^3/3\) flops, the cheapest of the three methods.
+
+>> Householder QR
+
+The orthogonal route never forms \(G\). Orthogonal matrices preserve lengths, so for any
+orthogonal \(Q\), \(\lVert y-X\beta\rVert=\lVert Q^\top y-Q^\top X\beta\rVert\). If \(X=QR\)
+with \(R=\begin{pmatrix}R_1\\0\end{pmatrix}\), \(R_1\) upper triangular, and
+\(Q^\top y=\begin{pmatrix}c_1\\c_2\end{pmatrix}\), then
+
+$$
+\lVert y-X\beta\rVert_2^2=\lVert c_1-R_1\beta\rVert_2^2+\lVert c_2\rVert_2^2 ,
+$$
+\alttext(The squared norm of y minus X beta equals the squared norm of c 1 minus R 1 beta plus the squared norm of c 2.)
+
+and the minimizer solves the triangular system \(R_1\hat\beta=c_1\), with residual norm
+\(\lVert c_2\rVert\). The factorization is built from *Householder reflections*
+\(H=I-2vv^\top\) with \(\lVert v\rVert=1\): \(H\) is symmetric and orthogonal
+(\(H^2=I-4vv^\top+4v(v^\top v)v^\top=I\)), and it reflects across the hyperplane orthogonal to
+\(v\). To map a vector \(x\) onto the first axis, \(Hx=\alpha e_1\), the reflection must
+preserve length, so \(\alpha=\pm\lVert x\rVert\), and \(v\) must be parallel to the difference
+\(x-\alpha e_1\). The sign is a numerical choice. Taking \(\alpha=-\operatorname{sign}(x_1)\lVert x\rVert\)
+gives \(v\propto x+\operatorname{sign}(x_1)\lVert x\rVert e_1\), whose first entry is a sum
+of two numbers of the same sign, so nothing cancels even when \(x\) already points nearly along
+\(e_1\). Step \(j\) of `qr()` applies such a reflection to rows \(j..n\) of column \(j\), zeroing
+it below the diagonal without disturbing the columns already finished:
+
+```{cpp, results="markdown", file="figures/dense_linear_algebra_householder.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  // The (wt, qsec) pair of the first car as a 2-vector, reflected onto the first axis.
+  const auto cars = dm::datasets::mtcars();
+  const double x1 = cars.double_at("wt", 0), x2 = cars.double_at("qsec", 0) / 8.0;
+  const dm::linalg::DenseMatrix<double> A(2, 1, {x1, x2});
+  const auto f = dm::linalg::qr(A);
+  const double len = std::hypot(x1, x2), alpha = f.R(0, 0);
+  const double v1 = x1 + len, v2 = x2;  // v = x + sign(x1)|x| e1, unnormalized
+  const double s = 1.3 / std::hypot(v1, v2), m = 2.6 / std::hypot(v1, v2);  // arrow and mirror lengths
+
+  dm::graphics::RPlot::create()
+      .segments({0}, {0}, {x1}, {x2}, dm::RGB{37, 99, 235}, 3)
+      .segments({0}, {0}, {alpha}, {0}, dm::RGB{220, 38, 38}, 3)
+      .segments({0}, {0}, {v1 * s}, {v2 * s}, dm::RGB{100, 116, 139}, 1.5)
+      .segments({-v2 * m}, {v1 * m}, {v2 * m}, {-v1 * m}, dm::RGB{22, 163, 74}, 2)
+      .segments({x1}, {x2}, {alpha}, {0}, dm::RGB{148, 163, 184}, 1)
+      .text(x1 + 0.1, x2 + 0.12, "x", dm::RGB{37, 99, 235}, 16)
+      .text(alpha + 0.9, -0.25, "Hx = -|x| e1", dm::RGB{220, 38, 38}, 14)
+      .text(v1 * s + 0.05, v2 * s + 0.15, "v", dm::RGB{71, 85, 105}, 14)
+      .text(-1.9, 2.0, "mirror: v^T z = 0", dm::RGB{22, 163, 74}, 14)
+      .abline_h(0, dm::RGB{203, 213, 225}, 1)
+      .abline_v(0, dm::RGB{203, 213, 225}, 1)
+      .x_limits(-3.6, 3.6).y_limits(-2.8, 2.8)
+      .title("A Householder reflection maps x onto the first axis")
+      .x_label("first coordinate").y_label("second coordinate")
+      .size(700, 560)
+      .save_svg("build/dense_linear_algebra_householder.svg");
+  std::print("x = ({:.4f}, {:.4f}), |x| = {:.4f}, R(0,0) from qr() = {:.4f}\n", x1, x2, len, alpha);
+}
+```
+// result_begin: markdown
+x = (2.6200, 2.0575), |x| = 3.3313, R(0,0) from qr() = -3.3313
+\image(figures/dense_linear_algebra_householder.svg)
+// result_end
+\caption(The reflection used by one Householder step, on the Mazda RX4's weight and quarter-mile time (divided by 8 to keep the picture square). The mirror, in green, is orthogonal to \(v=x+\lVert x\rVert e_1\). It sends \(x\), in blue, to \(-\lVert x\rVert e_1\), in red, and `qr()` reports that same value as \(R_{11}\).)
+\alttext(A plane with a blue vector x in the first quadrant, a gray vector v between x and the positive first axis, a green mirror line through the origin perpendicular to v, and a red vector of the same length as x lying along the negative first axis.)
+
+Computing \(R\) costs \(2np^2-2p^3/3\) flops, about twice the normal equations when
+\(n\gg p\). (`qr()` also accumulates the full \(n\times n\) matrix \(Q\), another \(4n^2p\) flops.
+That is negligible at \(n=32\) but matters for tall data.) Every reflection is applied exactly
+in orthogonal form, so errors are not amplified. The computed \(\hat R\) is the exact factor of
+\(X+\Delta X\) with \(\lVert\Delta X\rVert\le c\,np\,u\lVert X\rVert\), where
+\(u=2^{-53}\approx1.1\times10^{-16}\) is the unit roundoff. This is *backward stability*.
+
+>> The singular value decomposition
+
+Every \(X\in\mathbb R^{n\times p}\) can be written \(X=U\Sigma V^\top\) with orthonormal columns
+\(U\in\mathbb R^{n\times p}\), orthogonal \(V\in\mathbb R^{p\times p}\), and
+\(\Sigma=\operatorname{diag}(\sigma_1\ge\dots\ge\sigma_p\ge0)\). (Take \(V\) and
+\(\sigma_i^2\) from the eigendecomposition of the symmetric matrix \(X^\top X\), and set
+\(u_i=Xv_i/\sigma_i\). These are orthonormal because \(u_i^\top u_j=v_i^\top X^\top Xv_j/(\sigma_i\sigma_j)=\delta_{ij}\).)
+Substituting \(\beta=Vw\), \(U^\top y=c\):
+
+$$
+\lVert y-X\beta\rVert^2=\sum_{i\le r}(c_i-\sigma_iw_i)^2+\text{const},
+\qquad
+\hat\beta=\sum_{i\le r}\frac{u_i^\top y}{\sigma_i}\,v_i=X^{+}y .
+$$
+\alttext(The squared residual norm equals the sum over i up to r of c i minus sigma i w i, squared, plus a constant. So beta hat equals the sum over i up to r of u i transpose y over sigma i times v i, which is X plus times y.)
+
+When the rank \(r<p\), the coordinates \(w_{r+1},\dots,w_p\) do not affect the residual, and
+setting them to zero gives the minimizer of smallest norm. That is the Moore-Penrose
+pseudo-inverse solution. Numerically, singular values below \(\max(n,p)\,\varepsilon\,\sigma_1\), with
+\(\varepsilon=2u=2^{-52}\) the machine epsilon, are treated as zero (the LAPACK and NumPy convention; `SVDDecomposition::rank()` and `solve()` take
+another cut-off as an argument).
+
+The new `dm::linalg::svd()` uses *one-sided Jacobi* (Hestenes, 1958). It applies plane
+rotations to pairs of columns of \(X\) until all columns are mutually orthogonal. Then
+\(XV=W\) with orthogonal columns \(w_j\), so \(\sigma_j=\lVert w_j\rVert\) and
+\(u_j=w_j/\sigma_j\). For columns \(a_p,a_q\) with \(\alpha=\lVert a_p\rVert^2\),
+\(\beta=\lVert a_q\rVert^2\) and \(\gamma=a_p^\top a_q\), the rotated pair
+\(a_p'=ca_p-sa_q\), \(a_q'=sa_p+ca_q\) is orthogonal when
+
+$$
+a_p'^\top a_q'=(c^2-s^2)\gamma+cs(\alpha-\beta)=0
+\iff t^2+2\zeta t-1=0,\quad t=\frac sc,\quad \zeta=\frac{\beta-\alpha}{2\gamma} .
+$$
+\alttext(a p prime transpose a q prime equals c squared minus s squared times gamma, plus c s times alpha minus beta, which is zero. This is equivalent to t squared plus 2 zeta t minus 1 equals 0, with t equal to s over c and zeta equal to beta minus alpha over 2 gamma.)
+
+The smaller root \(t=\operatorname{sign}(\zeta)/(|\zeta|+\sqrt{1+\zeta^2})\), so
+\(|t|\le1\) and the rotation angle is at most \(\pi/4\), is the stable choice. Then
+\(c=1/\sqrt{1+t^2}\) and \(s=ct\). Each rotation is one step of the classical two-sided Jacobi
+method applied to \(X^\top X\) without forming it. It zeroes the \((p,q)\) entry and lowers the
+off-diagonal mass \(\sum_{i\ne j}(a_i^\top a_j)^2\) by \(2\gamma^2\), while the total
+\(\lVert X^\top X\rVert_F\) stays fixed, so cyclic sweeps converge, and the convergence is
+quadratic in the end. A sweep costs about \(3np^2\) flops (plus \(1.5p^3\) to accumulate \(V\)), and
+about 6 to 15 sweeps are typical (13 for the \(400\times400\) random matrix timed below). That is slower than bidiagonalization methods. In exchange the
+algorithm is simple, backward stable, and accurate in the *relative* sense for small singular
+values (Demmel and Veselić, 1992), which makes it a good reference solver.
+
+>> Conditioning: why \(X^\top X\) is the wrong matrix
+
+The 2-norm condition number of a full-rank \(X\) is \(\kappa(X)=\sigma_1/\sigma_p\). From the
+SVD, \(X^\top X=V\Sigma^2V^\top\), which is itself an eigendecomposition, so the singular values
+of \(X^\top X\) are \(\sigma_i^2\) and
+
+$$
+\kappa(X^\top X)=\frac{\sigma_1^2}{\sigma_p^2}=\kappa(X)^2 .
+$$
+\alttext(The condition number of X transpose X equals sigma 1 squared over sigma p squared, which is the condition number of X, squared.)
+
+For the least-squares problem, perturbation theory (Wedin, 1973) says that if \(X\) and \(y\)
+are perturbed by relative amounts \(\epsilon\), the solution changes by
+
+$$
+\frac{\lVert\delta\hat\beta\rVert}{\lVert\hat\beta\rVert}
+\lesssim\epsilon\left(\kappa+\kappa^2\tan\theta\right),
+\qquad \tan\theta=\frac{\lVert r\rVert}{\lVert X\hat\beta\rVert},
+$$
+\alttext(The relative change in beta hat is at most about epsilon times kappa plus kappa squared times tan theta, where tan theta is the norm of the residual over the norm of the fitted values.)
+
+where \(\theta\) is the angle between \(y\) and the column space. A backward-stable method
+(QR, SVD) commits errors equivalent to \(\epsilon\approx u\), so its error obeys this bound: of
+order \(u\kappa\) for a nearly consistent system, with a \(\kappa^2\) term weighted by the
+residual. The normal equations instead hand Cholesky the matrix \(X^\top X\). Merely rounding
+its entries is a relative perturbation of size \(u\) to a matrix with condition number
+\(\kappa^2\), so the error is of order \(u\kappa^2\) *whatever the residual*. Once
+\(\kappa\gtrsim u^{-1/2}\approx10^8\), the normal equations can return no correct digits at all.
+
+One refinement matters in practice. All three methods are unaffected by scaling the columns of
+\(X\). Scaling column \(j\) by \(d_j\) only rescales \(\hat\beta_j\), and the rounding errors scale
+with it. So the \(\kappa\) that governs accuracy is that of the column-equilibrated matrix
+\(XD^{-1}\), with \(D\) the column norms. By a theorem of van der Sluis, this is within a
+factor \(\sqrt p\) of the best \(\kappa\) achievable by any column scaling
+(`dm::linalg::equilibrate_columns`). A design whose \(\kappa\) comes only from mixing units,
+cubic inches beside thousands of pounds, is not ill-conditioned in any sense that matters.
+
+> Applying it to mtcars
+
+>> The full regression
+
+The first fit regresses `mpg` on all ten predictors plus an intercept. `least_squares()` runs
+each method, and `stats::LM` (R's `lm`, which now also uses QR) gives the reference
+coefficients.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace la = dm::linalg;
+
+int main() {
+  const auto cars   = dm::datasets::mtcars();
+  const auto design = dm::formula("mpg ~ . - model").resolve(cars).build_matrix(cars, true);
+  const dm::stats::LM lm(dm::formula("mpg ~ . - model"), cars);
+  const auto ne  = la::least_squares(design.X, design.y, la::LeastSquaresMethod::NormalEquations);
+  const auto qr  = la::least_squares(design.X, design.y, la::LeastSquaresMethod::HouseholderQR);
+  const auto svd = la::least_squares(design.X, design.y, la::LeastSquaresMethod::SVD);
+  const auto acc = la::least_squares_accuracy(design.X, design.y);
+
+  std::print("| coefficient | `stats::LM` | Householder QR | normal equations | SVD |\n"
+             "| --- | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t j = 0; j < qr.coefficients.size(); ++j)
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n", lm.coefficient_names()[j],
+               lm.coefficients()[j], qr.coefficients[j], ne.coefficients[j], svd.coefficients[j]);
+  std::print("\n| | normal equations | Householder QR | SVD |\n| --- | ---: | ---: | ---: |\n");
+  std::print("| relative error against a `long double` SVD | {:.1e} | {:.1e} | {:.1e} |\n",
+             acc.normal_equations_error, acc.qr_error, acc.svd_error);
+  std::print("| residual norm | {:.6f} | {:.6f} | {:.6f} |\n\n", ne.residual_norm, qr.residual_norm,
+             svd.residual_norm);
+  std::print("kappa(X) = {:.0f}, kappa after equilibrating columns = {:.0f}, tan(theta) = {:.3f}, "
+             "u kappa = {:.1e}, u kappa^2 = {:.1e} (equilibrated)\n",
+             acc.condition_number, acc.equilibrated_condition_number, acc.tan_theta,
+             0x1p-53 * acc.equilibrated_condition_number,
+             0x1p-53 * acc.equilibrated_condition_number * acc.equilibrated_condition_number);
+}
+```
+// result_begin: markdown
+| coefficient | `stats::LM` | Householder QR | normal equations | SVD |
+| --- | ---: | ---: | ---: | ---: |
+| (Intercept) | 12.303374 | 12.303374 | 12.303374 | 12.303374 |
+| cyl | -0.111440 | -0.111440 | -0.111440 | -0.111440 |
+| disp | 0.013335 | 0.013335 | 0.013335 | 0.013335 |
+| hp | -0.021482 | -0.021482 | -0.021482 | -0.021482 |
+| drat | 0.787111 | 0.787111 | 0.787111 | 0.787111 |
+| wt | -3.715304 | -3.715304 | -3.715304 | -3.715304 |
+| qsec | 0.821041 | 0.821041 | 0.821041 | 0.821041 |
+| vs | 0.317763 | 0.317763 | 0.317763 | 0.317763 |
+| am | 2.520227 | 2.520227 | 2.520227 | 2.520227 |
+| gear | 0.655413 | 0.655413 | 0.655413 | 0.655413 |
+| carb | -0.199419 | -0.199419 | -0.199419 | -0.199419 |
+
+| | normal equations | Householder QR | SVD |
+| --- | ---: | ---: | ---: |
+| relative error against a `long double` SVD | 1.3e-12 | 6.5e-15 | 1.9e-14 |
+| residual norm | 12.144728 | 12.144728 | 12.144728 |
+
+kappa(X) = 12213, kappa after equilibrating columns = 143, tan(theta) = 0.103, u kappa = 1.6e-14, u kappa^2 = 2.3e-12 (equilibrated)
+// result_end
+\caption(Coefficients of `mpg ~ .` from four solvers, and each double-precision method's relative error against the same problem solved in `long double`, with unit roundoff \(5\cdot10^{-20}\).)
+
+All four agree to the printed six decimals, because the equilibrated condition number,
+143, is modest (the raw \(\kappa\) is 12,213). The errors are of the predicted orders: about \(u\kappa\) for QR and the SVD, and
+about \(u\kappa^2\) for the normal equations. With \(\tan\theta\approx0.1\) (the model explains
+most of `mpg` but not all of it) the QR error stays near the \(u\kappa\) end of the Wedin bound.
+Note what the table does *not* show: none of these coefficients is individually trustworthy as a
+statistical estimate (in R's `summary(lm(mpg ~ ., mtcars))` none reaches significance at the 5%
+level), but that is a question of the data's information, not of arithmetic.
+
+>> Where the conditioning comes from
+
+The singular values show what makes this design ill-conditioned. The next program compares
+the raw design, the column-equilibrated design, and the standardized predictors \(Z\) (centred
+and scaled, without the intercept). It also cross-checks the identity
+\(\sigma_i(Z)^2/(n-1)=\lambda_i(R)\) against the Jacobi eigensolver applied to the correlation
+matrix, which is the link between the SVD and principal components.
+
+```{cpp, results="markdown", file="figures/dense_linear_algebra_spectrum.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace la = dm::linalg;
+
+int main() {
+  const auto cars = dm::datasets::mtcars();
+  const auto X    = dm::formula("mpg ~ . - model").resolve(cars).build_matrix(cars, true).X;
+  const auto P    = dm::formula("mpg ~ . - model - 1").resolve(cars).build_matrix(cars, true).X;
+  const auto raw  = la::svd(X);
+  const auto eq   = la::svd(la::equilibrate_columns(X));
+  const auto Z    = la::svd(la::standardize_columns(P));
+  const auto eig  = la::jacobi_eigen(la::correlation_matrix(P));
+
+  std::print("| \\(i\\) | \\(\\sigma_i(X)\\) | \\(\\sigma_i(XD^{{-1}})\\) | \\(\\sigma_i(Z)\\) | "
+             "\\(\\sigma_i(Z)^2/31\\) | \\(\\lambda_i(R)\\) (Jacobi) |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t i = 0; i < 11; ++i) {
+    if (i < 10)
+      std::print("| {} | {:.4f} | {:.4f} | {:.4f} | {:.6f} | {:.6f} |\n", i + 1, raw.s[i], eq.s[i], Z.s[i],
+                 Z.s[i] * Z.s[i] / 31, eig.eigenvalues[i]);
+    else
+      std::print("| {} | {:.4f} | {:.4f} | | | |\n", i + 1, raw.s[i], eq.s[i]);
+  }
+  std::print("\n| matrix | \\(\\kappa_2\\) |\n| --- | ---: |\n| \\(X\\) (raw, with intercept) | {:.0f} |\n"
+             "| \\(XD^{{-1}}\\) (unit columns) | {:.1f} |\n| \\(Z\\) (standardized predictors) | {:.1f} |\n",
+             raw.condition_number(), eq.condition_number(), Z.condition_number());
+
+  std::vector<double> idx, lr, le, lz;
+  for (std::size_t i = 0; i < 11; ++i) {
+    idx.push_back(static_cast<double>(i + 1));
+    lr.push_back(std::log10(raw.s[i] / raw.s[0]));
+    le.push_back(std::log10(eq.s[i] / eq.s[0]));
+  }
+  for (std::size_t i = 0; i < 10; ++i) lz.push_back(std::log10(Z.s[i] / Z.s[0]));
+  std::vector<double> idx10(idx.begin(), idx.end() - 1);
+  dm::graphics::RPlot::create()
+      .line(idx, lr, "raw X", dm::RGB{220, 38, 38}, 2).points(idx, lr, "", dm::RGB{220, 38, 38}, 6)
+      .line(idx, le, "unit columns", dm::RGB{37, 99, 235}, 2).points(idx, le, "", dm::RGB{37, 99, 235}, 6)
+      .line(idx10, lz, "standardized Z", dm::RGB{22, 163, 74}, 2).points(idx10, lz, "", dm::RGB{22, 163, 74}, 6)
+      .y_ticks({0, -1, -2, -3, -4}, {"1", "0.1", "0.01", "0.001", "0.0001"})
+      .y_limits(-4.3, 0.8)
+      .title("Singular values relative to the largest")
+      .x_label("index i").y_label("sigma_i / sigma_1 (log scale)")
+      .size(800, 520)
+      .save_svg("build/dense_linear_algebra_spectrum.svg");
+}
+```
+// result_begin: markdown
+| \(i\) | \(\sigma_i(X)\) | \(\sigma_i(XD^{-1})\) | \(\sigma_i(Z)\) | \(\sigma_i(Z)^2/31\) | \(\lambda_i(R)\) (Jacobi) |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1724.3415 | 3.0162 | 13.3629 | 5.760217 | 5.760217 |
+| 2 | 226.1268 | 1.0623 | 9.0631 | 2.649643 | 2.649643 |
+| 3 | 50.8976 | 0.7510 | 4.3028 | 0.597215 | 0.597215 |
+| 4 | 5.6511 | 0.3403 | 2.8905 | 0.269507 | 0.269507 |
+| 5 | 4.2791 | 0.2198 | 2.6248 | 0.222250 | 0.222250 |
+| 6 | 4.0501 | 0.1485 | 2.5522 | 0.210117 | 0.210117 |
+| 7 | 1.6243 | 0.0983 | 2.0299 | 0.132920 | 0.132920 |
+| 8 | 1.4050 | 0.0794 | 1.5815 | 0.080682 | 0.080682 |
+| 9 | 1.2373 | 0.0770 | 1.2897 | 0.053652 | 0.053652 |
+| 10 | 1.1138 | 0.0443 | 0.8589 | 0.023796 | 0.023796 |
+| 11 | 0.1412 | 0.0210 | | | |
+
+| matrix | \(\kappa_2\) |
+| --- | ---: |
+| \(X\) (raw, with intercept) | 12213 |
+| \(XD^{-1}\) (unit columns) | 143.4 |
+| \(Z\) (standardized predictors) | 15.6 |
+\image(figures/dense_linear_algebra_spectrum.svg)
+// result_end
+\caption(Singular values of three versions of the mtcars design, and the eigenvalues of the predictors' correlation matrix from `jacobi_eigen`, which match \(\sigma_i(Z)^2/(n-1)\).)
+\alttext(Three decreasing curves of relative singular value on a log scale against index 1 to 11. The raw design falls to about 0.0001, the unit-column design to about 0.007, and the standardized predictors only to about 0.06.)
+
+Most of the raw \(\kappa\) is units: equilibrating the columns removes a factor of 85, from
+12,213 to 143. Most of what remains is the intercept. The predictors have large means compared
+with their spread, so the constant column is nearly a combination of them, and centring removes
+that near-dependence. The standardized predictors keep a \(\kappa\) of 15.6, which is the real
+collinearity, the red block in the correlation figure. The last two columns of the table agree to six decimals, so
+the SVD of the standardized data and the eigendecomposition of its correlation matrix give the
+same principal components.
+
+>> A conditioning ladder: polynomials in weight
+
+To see the error laws over many orders of magnitude, fit `mpg` by a polynomial in weight with
+raw monomials, \(X_d=[1,\ w,\ w^2,\dots,w^d]\) (`dm::linalg::vandermonde`). Weights lie
+between 1.5 and 5.4, so the columns \(w^j\) grow ever more alike as \(d\) increases. For each
+degree, `least_squares_accuracy()` solves the problem by all three methods and compares each
+answer with a `long double` SVD of the identical data, so the errors are the algorithms' alone.
+It does this for the real response, and for a consistent response (the reference fitted values,
+residual zero) that removes the \(\kappa^2\tan\theta\) term. The figure plots the
+errors against the equilibrated condition number, with the two predicted lines \(u\kappa\)
+and \(u\kappa^2\).
+
+```{cpp, results="markdown", file="figures/dense_linear_algebra_ladder.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace la = dm::linalg;
+
+int main() {
+  const auto cars = dm::datasets::mtcars();
+  const auto wt   = cars.get_column("wt").values();
+  const auto mpg  = cars.get_column("mpg").values();
+  const double lu = std::log10(0x1p-53);
+  std::vector<double> kn, en, kq, eq, kq0, eq0, ks, es;  // log10 kappa_eq and log10 error per method
+  auto keep = [](std::vector<double>& k, std::vector<double>& e, double kappa, double err) {
+    if (std::isfinite(err) && err > 0) k.push_back(std::log10(kappa)), e.push_back(std::log10(err));
+  };
+
+  std::print("| \\(d\\) | \\(\\kappa(X_d)\\) | \\(\\kappa(X_dD^{{-1}})\\) | \\(\\tan\\theta\\) | normal eq. | QR | SVD "
+             "| normal eq., consistent | QR, consistent |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t d = 1; d <= 12; ++d) {
+    const auto X = la::vandermonde(wt, d);
+    const auto a = la::least_squares_accuracy(X, mpg);
+    const auto c = la::least_squares_accuracy(X, X * a.reference);  // same X, zero residual
+    std::print("| {} | {:.1e} | {:.1e} | {:.3f} | {:.1e} | {:.1e} | {:.1e} | {:.1e} | {:.1e} |\n", d,
+               a.condition_number, a.equilibrated_condition_number, a.tan_theta, a.normal_equations_error,
+               a.qr_error, a.svd_error, c.normal_equations_error, c.qr_error);
+    const double k = a.equilibrated_condition_number;
+    keep(kn, en, k, a.normal_equations_error), keep(kq, eq, k, a.qr_error);
+    keep(kq0, eq0, k, c.qr_error), keep(ks, es, k, a.svd_error);
+  }
+  std::print("\nu = {:.2e}; nan = the method gave up (Cholesky met a non-positive pivot)\n", 0x1p-53);
+
+  dm::graphics::RPlot::create()
+      .segments({0.5, 0.5}, {lu + 0.5, lu + 1.0}, {11.8, 10.4}, {lu + 11.8, lu + 20.8},
+                dm::RGB{148, 163, 184}, 1.5)  // u kappa and u kappa^2, kept inside the axes
+      .text(10.6, -3.6, "u kappa", dm::RGB{100, 116, 139}, 13)
+      .text(4.6, -4.6, "u kappa^2", dm::RGB{100, 116, 139}, 13)
+      .line(kn, en, "normal equations", dm::RGB{220, 38, 38}, 2).points(kn, en, "", dm::RGB{220, 38, 38}, 7)
+      .line(kq, eq, "Householder QR", dm::RGB{37, 99, 235}, 2).points(kq, eq, "", dm::RGB{37, 99, 235}, 7)
+      .points(kq0, eq0, "QR, consistent y", dm::RGB{125, 211, 252}, 6)
+      .points(ks, es, "SVD", dm::RGB{22, 163, 74}, 5)
+      .x_limits(0.5, 11.8).y_limits(-16.5, 5.5)
+      .x_ticks({1, 3, 5, 7, 9, 11}, {"10", "1e3", "1e5", "1e7", "1e9", "1e11"})
+      .y_ticks({-16, -12, -8, -4, 0}, {"1e-16", "1e-12", "1e-8", "1e-4", "1"})
+      .title("Least-squares error against conditioning (mtcars, mpg ~ poly(wt, d))")
+      .x_label("kappa of the column-equilibrated design")
+      .y_label("relative error of the coefficients")
+      .size(860, 600)
+      .save_svg("build/dense_linear_algebra_ladder.svg");
+}
+```
+// result_begin: markdown
+| \(d\) | \(\kappa(X_d)\) | \(\kappa(X_dD^{-1})\) | \(\tan\theta\) | normal eq. | QR | SVD | normal eq., consistent | QR, consistent |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1.3e+01 | 6.8e+00 | 0.142 | 9.1e-15 | 7.5e-16 | 3.7e-15 | 8.3e-15 | 7.5e-16 |
+| 2 | 1.4e+02 | 3.8e+01 | 0.121 | 1.9e-13 | 8.3e-16 | 4.1e-16 | 1.7e-13 | 7.0e-16 |
+| 3 | 2.8e+03 | 3.5e+02 | 0.121 | 6.0e-12 | 8.5e-15 | 3.8e-15 | 4.6e-12 | 2.0e-15 |
+| 4 | 5.9e+04 | 3.2e+03 | 0.120 | 2.0e-10 | 2.8e-13 | 3.8e-13 | 1.9e-10 | 2.8e-14 |
+| 5 | 1.1e+06 | 2.4e+04 | 0.119 | 5.5e-09 | 3.6e-13 | 1.5e-12 | 5.6e-09 | 4.8e-13 |
+| 6 | 2.3e+07 | 1.9e+05 | 0.117 | 1.3e-07 | 3.2e-13 | 1.1e-11 | 1.3e-07 | 2.6e-12 |
+| 7 | 6.3e+08 | 2.1e+06 | 0.115 | 1.1e-04 | 6.8e-11 | 7.9e-11 | 1.1e-04 | 2.6e-11 |
+| 8 | 1.6e+10 | 2.2e+07 | 0.114 | 4.9e-02 | 2.1e-10 | 2.3e-09 | 4.9e-02 | 2.1e-10 |
+| 9 | 3.2e+11 | 1.7e+08 | 0.105 | 7.1e-01 | 8.9e-10 | 5.0e-10 | 7.1e-01 | 7.3e-10 |
+| 10 | 6.6e+12 | 1.4e+09 | 0.103 | 1.7e+00 | 7.1e-08 | 2.6e-09 | 1.7e+00 | 2.9e-08 |
+| 11 | 1.9e+14 | 1.7e+10 | 0.100 | nan | 1.9e-07 | 1.0e+00 | nan | 1.3e-07 |
+| 12 | 7.3e+15 | 2.7e+11 | 0.098 | nan | 1.3e-06 | 1.0e+00 | nan | 1.4e-06 |
+
+u = 1.11e-16; nan = the method gave up (Cholesky met a non-positive pivot)
+\image(figures/dense_linear_algebra_ladder.svg)
+// result_end
+\caption(Relative coefficient error of each method against a `long double` reference, for polynomial degree \(d=1,\dots,12\). "Consistent" replaces `mpg` by the reference fitted values, so the residual is zero. In the figure each point is one degree, \(d=1\) on the left to \(d=12\) on the right. The normal equations, in red, follow \(u\kappa^2\) and break down at \(d=11\). QR, in blue, and its consistent-response version, in light blue, follow \(u\kappa\). The SVD, in green, follows QR until its rank cut-off discards the smallest singular value at \(d\ge11\).)
+\alttext(A log-log plot of error against condition number, with two gray reference lines of slope 1 and 2. Red normal-equation points climb along the slope-2 line from 1e-15 to near 1. Blue QR points and green SVD points stay along or below the slope-1 line, ending near 1e-6. Two green points at the far right sit at error 1.)
+
+Three things stand out.
+
+- The **normal equations** track \(u\kappa^2\) closely. At \(d=8\) the prediction is
+  \(u\kappa_{eq}^2\approx0.05\), and the measured error is 0.049: about one correct digit. From
+  \(d=11\), \(\kappa_{eq}^2\) exceeds \(1/u\). The rounded \(X^\top X\) is then no longer
+  positive definite, Cholesky meets a negative pivot, and the method gives up.
+- **QR** stays at or below \(u\kappa\) all the way, about nine correct digits at \(d=8\)
+  and six at \(d=12\). The residual term \(u\kappa^2\tan\theta\) of the Wedin bound never
+  appears, even though \(\tan\theta\approx0.1\): the real response and the consistent one give
+  errors within a factor of ten of each other, usually much closer, with no trend in \(\kappa\). The bound is a worst case over all perturbations of size \(u\), and
+  the structured errors of a Householder sweep do not come close to it on these data.
+- The **SVD** also stays below \(u\kappa\) until \(d=11\). There, \(\sigma_{\min}/\sigma_1\) of
+  the *raw* design falls below the default cut-off \(32\varepsilon\approx7\times10^{-15}\) (the
+  cut-off is not scale invariant), the SVD treats the design as rank-deficient,
+  and it returns the minimum-norm solution of the truncated problem, a different answer (error
+  near 1). Passing a smaller `rcond` to `SVDDecomposition::solve` recovers QR-like accuracy. Whether
+  that is wise is a statistical question: the discarded direction is pure noise amplification.
+
+The plot is against the *equilibrated* \(\kappa\). The raw \(\kappa(X_d)\) is larger by up to a
+factor of 27,000 (at \(d=12\)), because the column \(w^{12}\) is about \(10^{9}\) times longer
+than the constant column. Against it, the measured slopes are much shallower than 1 and 2. That
+is the van der Sluis effect at work.
+
+>> Standard errors from `stats::LM`
+
+The coefficients are only half of a regression. The covariance
+\(\hat\sigma^2(X^\top X)^{-1}\) gives the standard errors, and until this report
+`linalg::linear_regression` (behind `stats::LM`) computed it by Cholesky-inverting
+\(X^\top X\), squaring \(\kappa\) again even though the coefficients came from QR. It now uses
+the QR factor, \((X^\top X)^{-1}=R_1^{-1}R_1^{-\top}\) (`QRDecomposition::r_inverse`), which
+never forms \(X^\top X\). The check below compares `LM`'s standard errors for
+`mpg ~ poly(wt, d)` with \(\hat\sigma\lVert\Sigma^{-1}V^\top e_j\rVert\) from the SVD.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace la = dm::linalg;
+
+int main() {
+  const auto cars = dm::datasets::mtcars();
+  std::print("| \\(d\\) | \\(\\kappa(X_d)\\) | max relative difference of `LM` standard errors from the SVD |\n"
+             "| ---: | ---: | ---: |\n");
+  for (int d : {3, 6, 8, 9}) {
+    const auto formula = std::format("mpg ~ poly(wt, {})", d);
+    const dm::stats::LM lm(dm::formula(formula), cars);
+    const auto X = dm::formula(formula).resolve(cars).build_matrix(cars, true).X;
+    const auto f = la::svd(X);
+    double worst = 0;
+    for (std::size_t j = 0; j < X.cols(); ++j) {
+      double v = 0;
+      for (std::size_t k = 0; k < X.cols(); ++k) v += std::pow(f.V(j, k) / f.s[k], 2);
+      worst = std::max(worst, std::abs(lm.standard_errors()[j] / (lm.sigma() * std::sqrt(v)) - 1));
+    }
+    std::print("| {} | {:.1e} | {:.1e} |\n", d, f.condition_number(), worst);
+  }
+}
+```
+// result_begin: markdown
+| \(d\) | \(\kappa(X_d)\) | max relative difference of `LM` standard errors from the SVD |
+| ---: | ---: | ---: |
+| 3 | 2.8e+03 | 8.4e-15 |
+| 6 | 2.3e+07 | 2.4e-12 |
+| 8 | 1.6e+10 | 2.0e-10 |
+| 9 | 3.2e+11 | 1.7e-09 |
+// result_end
+\caption(Agreement between `stats::LM`'s standard errors and the SVD formula. The differences are of order \(u\kappa\). Before the change, the Cholesky route had errors of order \(u\kappa^2\): on synthetic designs, 0.4% at \(\kappa=10^7\) and 88% at \(\kappa=10^9\).)
+
+>> A rank-deficient design
+
+Add a column that measures the same thing in other units: displacement in litres,
+\(\texttt{disp}/61.0237\). The design now has an exact linear dependence (up to the rounding of
+that one division). Coefficients are no longer identified, so any split of the displacement
+effect between the two columns fits equally well.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace la = dm::linalg;
+
+int main() {
+  auto cars = dm::datasets::mtcars();
+  std::vector<double> litres;
+  for (std::size_t i = 0; i < cars.nrows(); ++i) litres.push_back(cars.double_at("disp", i) / 61.0237);
+  cars.add_column("disp_l", litres);
+  const auto info   = dm::formula("mpg ~ wt + disp + disp_l").resolve(cars);
+  const auto design = info.build_matrix(cars, true);
+  const auto f      = la::svd(design.X);
+  std::print("singular values:");
+  for (double s : f.s) std::print(" {:.3e}", s);
+  std::print("\nnumerical rank {} of {}, kappa = {:.1e}\n\n", f.rank(), design.X.cols(), f.condition_number());
+
+  std::print("| method | outcome | `wt` | `disp` | `disp_l` | residual norm |\n| --- | --- | ---: | ---: | ---: | ---: |\n");
+  for (auto m : {la::LeastSquaresMethod::NormalEquations, la::LeastSquaresMethod::HouseholderQR,
+                 la::LeastSquaresMethod::SVD}) {
+    try {
+      const auto r = la::least_squares(design.X, design.y, m);
+      std::print("| {} | rank {} | {:.5f} | {:.7f} | {:.7f} | {:.6f} |\n", la::to_string(m), r.rank,
+                 r.coefficients[1], r.coefficients[2], r.coefficients[3], r.residual_norm);
+    } catch (const std::runtime_error& e) {
+      std::print("| {} | {} | | | | |\n", la::to_string(m), e.what());
+    }
+  }
+  const auto base = la::least_squares(dm::formula("mpg ~ wt + disp").resolve(cars).build_matrix(cars, true).X,
+                                      design.y);
+  std::print("| QR without `disp_l` | rank 2 | {:.5f} | {:.7f} | | {:.6f} |\n", base.coefficients[1],
+             base.coefficients[2], base.residual_norm);
+}
+```
+// result_begin: markdown
+singular values: 1.477e+03 5.448e+00 1.216e+00 2.989e-15
+numerical rank 3 of 4, kappa = 4.9e+17
+
+| method | outcome | `wt` | `disp` | `disp_l` | residual norm |
+| --- | --- | ---: | ---: | ---: | ---: |
+| normal equations | least_squares: X^T X is not numerically positive definite | | | | |
+| Householder QR | least_squares: X is rank-deficient; use LeastSquaresMethod::SVD | | | | |
+| SVD | rank 3 | -3.35083 | -0.0177200 | -0.0002904 | 15.706129 |
+| QR without `disp_l` | rank 2 | -3.35083 | -0.0177247 | | 15.706129 |
+// result_end
+\caption(An exactly collinear design. The minimum-norm SVD solution divides the displacement effect between the two columns in proportion to their scales.)
+
+The rounded quotient leaves \(\sigma_4/\sigma_1=2\times10^{-18}\), below the unit roundoff, so
+the problem is singular to working precision, and the three methods respond differently.
+Cholesky meets a non-positive pivot, so the normal equations stop. (With a less exact
+dependence a tiny positive pivot can slip through instead, and then the method returns large,
+meaningless coefficients.) QR detects that \(|R_{44}|\) is below its threshold
+\(\max(n,p)\,\varepsilon\max|R_{ii}|\) and refuses. The SVD drops the null direction and returns the
+minimum-norm solution. Its residual equals the reduced model's, and its two displacement
+coefficients satisfy \(b_\texttt{disp}+b_\texttt{disp\_l}/61.0237=\hat b_\texttt{disp}\)
+(the reduced model's effect per cubic inch), split so that the coefficient vector is as short as
+possible: \(b_\texttt{disp\_l}/b_\texttt{disp}=1/61.0237\). (QR's threshold used to be an
+absolute \(10^{-12}\), so whether a design counted as rank-deficient depended on its units. It is
+now relative to the largest \(|R_{ii}|\).)
+
+>> What it costs
+
+Every dense factorization costs \(O(n^3)\) for an \(n\times n\) matrix, but the constants differ:
+\(\tfrac13n^3\) flops for Cholesky, \(\tfrac23n^3\) for LU, \(\tfrac43n^3\) for the
+Householder \(R\) (plus about \(2n^3\) more for the explicit \(Q\)), \(2n^3\) for a product,
+and several sweeps of about \(4.5n^3\) for one-sided Jacobi. The timing below uses random SPD
+and general matrices; times are for this machine and vary between runs.
+
+```{cpp, results="markdown", file="figures/dense_linear_algebra_timing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <chrono>
+#include <random>
+
+namespace la = dm::linalg;
+
+template <class F> double seconds(F&& f) {
+  const auto t0 = std::chrono::steady_clock::now();
+  f();
+  return std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+}
+
+int main() {
+  std::mt19937_64 rng(1974);
+  std::normal_distribution<double> z;
+  const std::vector<std::string> names{"Cholesky", "LU", "product", "QR (with Q)", "SVD (Jacobi)"};
+  const std::vector<dm::RGB> cols{{22, 163, 74}, {37, 99, 235}, {100, 116, 139}, {234, 88, 12}, {220, 38, 38}};
+  std::vector<double> sizes{50, 100, 200, 400};
+  std::vector<std::vector<double>> t(names.size());
+  std::size_t sweeps = 0;
+  double lu_backward = 0;
+  for (double nd : sizes) {
+    const auto n = static_cast<std::size_t>(nd);
+    la::DenseMatrix<double> A(n, n);
+    for (auto& v : A.data()) v = z(rng);
+    auto S = la::gram(A);
+    for (std::size_t i = 0; i < n; ++i) S(i, i) += static_cast<double>(n);
+    t[0].push_back(seconds([&] { (void)la::cholesky(S); }));
+    t[1].push_back(seconds([&] { (void)la::lu(A); }));
+    t[2].push_back(seconds([&] { (void)(A * A); }));
+    t[3].push_back(seconds([&] { (void)la::qr(A); }));
+    t[4].push_back(seconds([&] { sweeps = la::svd(A).sweeps; }));
+    const std::vector<double> b(n, 1.0);
+    lu_backward = la::backward_error(A, la::lu(A).solve(b), b);
+  }
+  std::print("| method |");
+  for (double n : sizes) std::print(" \\(n={}\\) |", n);
+  std::print(" log-log slope 200 to 400 |\n| --- |");
+  for (std::size_t i = 0; i <= sizes.size(); ++i) std::print(" ---: |");
+  std::print("\n");
+  auto plot = dm::graphics::RPlot::create();
+  std::vector<double> lx;
+  for (double n : sizes) lx.push_back(std::log10(n));
+  for (std::size_t m = 0; m < names.size(); ++m) {
+    std::print("| {} |", names[m]);
+    std::vector<double> ly;
+    for (double s : t[m]) std::print(" {:.4f} s |", s), ly.push_back(std::log10(s));
+    std::print(" {:.2f} |\n", std::log2(t[m][3] / t[m][2]));
+    plot.line(lx, ly, names[m], cols[m], 2).points(lx, ly, "", cols[m], 6);
+  }
+  std::print("\nJacobi sweeps at n = 400: {}; LU backward error at n = 400: {:.1e}\n", sweeps, lu_backward);
+  const double c0 = std::log10(t[0][0]) - 0.4;  // slope-3 reference line below Cholesky
+  plot.segments({lx.front()}, {c0}, {lx.back()}, {c0 + 3 * (lx.back() - lx.front())}, dm::RGB{148, 163, 184}, 1)
+      .x_ticks(lx, {"50", "100", "200", "400"})
+      .y_ticks({-5, -4, -3, -2, -1, 0, 1}, {"1e-5", "1e-4", "0.001", "0.01", "0.1", "1", "10"})
+      .y_limits(-5.3, 1.8)
+      .title("Time of dense factorizations of an n x n matrix")
+      .x_label("n (log scale)").y_label("seconds (log scale)")
+      .size(800, 540)
+      .save_svg("build/dense_linear_algebra_timing.svg");
+}
+```
+// result_begin: markdown
+| method | \(n=50\) | \(n=100\) | \(n=200\) | \(n=400\) | log-log slope 200 to 400 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Cholesky | 0.0000 s | 0.0001 s | 0.0007 s | 0.0050 s | 2.93 |
+| LU | 0.0000 s | 0.0002 s | 0.0013 s | 0.0102 s | 3.02 |
+| product | 0.0000 s | 0.0002 s | 0.0015 s | 0.0127 s | 3.10 |
+| QR (with Q) | 0.0001 s | 0.0008 s | 0.0065 s | 0.0547 s | 3.07 |
+| SVD (Jacobi) | 0.0010 s | 0.0077 s | 0.0627 s | 0.5452 s | 3.12 |
+
+Jacobi sweeps at n = 400: 13; LU backward error at n = 400: 2.7e-16
+\image(figures/dense_linear_algebra_timing.svg)
+// result_end
+\caption(Wall-clock time of each factorization. The last column is \(\log_2\) of the time ratio between \(n=400\) and \(n=200\), which is 3 for an exactly cubic cost. The gray line has slope 3.)
+\alttext(A log-log plot of seconds against n from 50 to 400. Five roughly parallel rising lines, from Cholesky at the bottom through LU, the matrix product and QR to the Jacobi SVD at the top, all with slope close to the gray slope-3 reference line.)
+
+The slopes sit within 0.1 of 3 (they vary a little between runs), as they should; any excess shows the
+\(400\times400\) matrices (1.3 MB) starting to spill out of the faster caches. The time ratios
+follow the flop counts: Cholesky takes about half as long as LU (predicted \(\tfrac12\)), and QR
+with its explicit \(Q\) about five times as long (predicted \((\tfrac43+2)/\tfrac23=5\)). The one
+exception is the product, which does three times LU's flops in about the same time, because
+its inner loop streams through contiguous rows while elimination's access pattern does not. The
+SVD is about a hundred times slower than Cholesky, a fair price for a reference solution, but
+it is not a routine solver for large problems. The
+LU backward error \(\lVert b-A\hat x\rVert/(\lVert A\rVert\lVert\hat x\rVert+\lVert b\rVert)\),
+of order \(u\), is the backward stability of partial pivoting seen directly.
+
+> Conclusion
+
+- **Do not solve least squares by the normal equations unless the design is well conditioned.**
+  Forming \(X^\top X\) squares the condition number. On mtcars polynomials the normal equations
+  lost digits exactly as \(u\kappa^2\) predicts and failed outright past \(\kappa\approx10^8\).
+  Householder QR costs about twice as much and keeps \(u\kappa\). That is why R's `lm`, and now
+  every part of `stats::LM` including its standard errors, uses QR.
+- **Measure conditioning after equilibrating columns.** The raw \(\kappa\) of a design
+  conflates units with collinearity. Scaling is free and harmless for every method, so
+  only the equilibrated \(\kappa\) predicts accuracy. Centring then removes the large-mean
+  collinearity with the intercept. For mtcars these two steps take \(\kappa\) from 12,213 to 15.6.
+- **Use the SVD when rank is in doubt.** It exposes the spectrum, returns a sensible
+  minimum-norm answer for a singular design, and doubles as principal components analysis. Its
+  cut-off is a modelling choice, as the \(d\ge11\) polynomials showed. It is also the slowest
+  method by far.
+- **Limits.** These are textbook dense algorithms with plain loops: no blocking, BLAS or
+  threads. They suit the \(p\lesssim\) few hundred problems of classical statistics. `qr()` forms
+  an explicit \(n\times n\) \(Q\), which wastes \(O(n^2)\) memory on tall data. The Wedin
+  bound's \(\kappa^2\tan\theta\) term, invisible here, can appear for adversarial data or large
+  residuals, so QR is not immune to squaring either.
+
+The library changes made for this report are the new `linalg/svd.hpp` (`svd`,
+`SVDDecomposition`, `condition_number`) and `linalg/least_squares.hpp` (`least_squares`,
+`LeastSquaresMethod`, `gram`, `vandermonde`, `matrix_cast`, `equilibrate_columns`,
+`standardize_columns`, `correlation_matrix`, `relative_error`, `backward_error`,
+`least_squares_accuracy`), `QRDecomposition::r_inverse`/`rank_threshold`, and
+`graphics::diverging_colors`. Five bugs were fixed along the way. `linear_regression`'s
+covariance now comes from \(R\), not from Cholesky on \(X^\top X\). `jacobi_eigen` used an
+absolute stopping test and returned \((10^{-7},10^{-7})\) as the eigenvalues of
+\(10^{-7}\begin{psmallmatrix}1&1\\1&1\end{psmallmatrix}\), whose true eigenvalues are
+\(2\times10^{-7}\) and 0. QR's rank test was absolute, so it depended on units. In a formula,
+`. - x` subtracted `x` before `.` was expanded, so `x` stayed in the model; R drops it. And the
+SVG writer's stylesheet rule `text{fill:...}` overrode every `RPlot::text()` colour in every
+renderer; it now applies only to text without its own colour.

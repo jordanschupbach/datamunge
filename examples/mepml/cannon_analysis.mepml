@@ -41,7 +41,7 @@ in one process.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -108,7 +108,7 @@ product across random matrices, entry for entry.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

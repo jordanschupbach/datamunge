@@ -1,6 +1,6 @@
 # Native Python NN example. Tied-weight autoencoder (one live encoder matrix, transposed decoder) with an untied control.
-"""CMD: just python-example tied_autoencoder
-ONE live 784x32 parameter for encoder AND transposed decoder; two independent biases.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/tied_autoencoder.py
+"""ONE live 784x32 parameter for encoder AND transposed decoder; two independent biases.
 Three default epochs, matched-initial untied control, and explicit gradient-path checks.
 
 Port of tflow's tied_autoencoder (model: examples/nn/common/tied_autoencoder.hpp).

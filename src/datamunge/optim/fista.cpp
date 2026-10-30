@@ -1,3 +1,5 @@
+/// @file fista.cpp
+/// @brief FISTA native update, trial and stopping implementation.
 #include <datamunge/optim/fista.hpp>
 #include <cmath>
 #include <stdexcept>

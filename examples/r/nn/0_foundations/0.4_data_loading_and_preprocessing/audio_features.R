@@ -1,9 +1,9 @@
 # Native R NN example. PCM16 WAV decoding, STFT power and log-mel spectrograms with datamunge::nn.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/audio_features.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example audio_features
 # Port of tflow's audio_features. Encode a stereo 1 kHz signal at 8 kHz, load
 # it back through the WAV decoder, verify PCM quantization, and average
 # channels. Compute a periodic-Hann STFT (256-sample frames, 128-sample hop),

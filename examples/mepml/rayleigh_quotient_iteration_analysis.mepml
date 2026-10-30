@@ -45,7 +45,7 @@ blistering convergence. It is the refinement step behind high-accuracy symmetric
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -106,7 +106,7 @@ residual \(\lVert Ax-\mu x\rVert\) each step to expose the cubic rate.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

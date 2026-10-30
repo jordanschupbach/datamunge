@@ -6,6 +6,7 @@
 #include <optional>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 #include <datamunge/dstruct/foundational.hpp>
 
@@ -38,6 +39,18 @@ class AssociativeArray {
     while (*link) { if (equal_((*link)->key, key)) { *link = std::move((*link)->next); --size_; return true; } link = &(*link)->next; }
     return false;
   }
+  /// @brief Number of hash buckets chosen at construction.
+  /// @return The bucket count (always positive).
+  [[nodiscard]] std::size_t bucket_count() const noexcept { return bucket_count_; }
+  /// @brief Copies every key/value entry without modifying the map.
+  /// @return The entries in bucket order (unspecified with respect to insertion order).
+  [[nodiscard]] std::vector<std::pair<Key, Value>> to_vector() const {
+    std::vector<std::pair<Key, Value>> entries;
+    entries.reserve(size_);
+    for (std::size_t b = 0; b < bucket_count_; ++b)
+      for (const Node* node = buckets_[b].get(); node; node = node->next.get()) entries.emplace_back(node->key, node->value);
+    return entries;
+  }
  private:
   std::size_t bucket(const Key& key) const { return hash_(key) % bucket_count_; }
   Node* find_node(const Key& key) { for (Node* node = buckets_[bucket(key)].get(); node; node = node->next.get()) if (equal_(node->key, key)) return node; return nullptr; }
@@ -58,6 +71,18 @@ class Multimap {
   std::size_t count(const Key& key) const { std::size_t result = 0; for (auto* node = buckets_[bucket(key)].get(); node; node = node->next.get()) if (equal_(node->key, key)) ++result; return result; }
   std::size_t erase(const Key& key) { std::size_t removed = 0; auto* link = &buckets_[bucket(key)]; while (*link) { if (equal_((*link)->key, key)) { *link = std::move((*link)->next); ++removed; --size_; } else link = &(*link)->next; } return removed; }
   std::size_t size() const noexcept { return size_; }
+  /// @brief Number of hash buckets chosen at construction.
+  /// @return The bucket count (always positive).
+  [[nodiscard]] std::size_t bucket_count() const noexcept { return bucket_count_; }
+  /// @brief Copies every key/value entry (duplicates included) without modifying the map.
+  /// @return The entries in bucket order; entries sharing a key appear most recently inserted first.
+  [[nodiscard]] std::vector<std::pair<Key, Value>> to_vector() const {
+    std::vector<std::pair<Key, Value>> entries;
+    entries.reserve(size_);
+    for (std::size_t b = 0; b < bucket_count_; ++b)
+      for (const Node* node = buckets_[b].get(); node; node = node->next.get()) entries.emplace_back(node->key, node->value);
+    return entries;
+  }
  private:
   std::size_t bucket(const Key& key) const { return hash_(key) % bucket_count_; }
   std::unique_ptr<std::unique_ptr<Node>[]> buckets_; std::size_t bucket_count_; std::size_t size_{0}; Hash hash_{}; Equal equal_{};
@@ -70,6 +95,14 @@ class Set {
   bool contains(const T& value) const { return values_.contains(value); }
   bool erase(const T& value) { return values_.erase(value); }
   std::size_t size() const noexcept { return values_.size(); }
+  /// @brief Copies the members without modifying the set.
+  /// @return The members in hash-bucket order (unspecified with respect to insertion order).
+  [[nodiscard]] std::vector<T> to_vector() const {
+    std::vector<T> members;
+    members.reserve(values_.size());
+    for (auto& entry : values_.to_vector()) members.push_back(std::move(entry.first));
+    return members;
+  }
  private: AssociativeArray<T, bool, Hash, Equal> values_;
 };
 
@@ -80,6 +113,14 @@ class Multiset {
   std::size_t count(const T& value) const { return values_.count(value); }
   std::size_t erase(const T& value) { return values_.erase(value); }
   std::size_t size() const noexcept { return values_.size(); }
+  /// @brief Copies the members, one entry per occurrence, without modifying the multiset.
+  /// @return The members in hash-bucket order (unspecified with respect to insertion order).
+  [[nodiscard]] std::vector<T> to_vector() const {
+    std::vector<T> members;
+    members.reserve(values_.size());
+    for (auto& entry : values_.to_vector()) members.push_back(std::move(entry.first));
+    return members;
+  }
  private: Multimap<T, bool, Hash, Equal> values_;
 };
 
@@ -105,6 +146,16 @@ class DisjointSet {
   std::size_t find(std::size_t item) { check(item); if (parent_[item] != item) parent_[item] = find(parent_[item]); return parent_[item]; }
   bool unite(std::size_t first, std::size_t second) { auto a = find(first), b = find(second); if (a == b) return false; if (rank_[a] < rank_[b]) std::swap(a, b); parent_[b] = a; if (rank_[a] == rank_[b]) ++rank_[a]; return true; }
   bool connected(std::size_t first, std::size_t second) { return find(first) == find(second); }
+  /// @brief Number of elements, fixed at construction.
+  /// @return The element count; valid items are 0 .. size()-1.
+  [[nodiscard]] std::size_t size() const noexcept { return parent_.size(); }
+  /// @brief Number of disjoint sets, counted without path compression (so the structure is not modified).
+  /// @return How many elements are their own representative; O(size()).
+  [[nodiscard]] std::size_t set_count() const noexcept {
+    std::size_t roots = 0;
+    for (std::size_t i = 0; i < parent_.size(); ++i) if (parent_[i] == i) ++roots;
+    return roots;
+  }
  private:
   void check(std::size_t item) const { if (item >= parent_.size()) throw std::out_of_range("DisjointSet item out of range"); }
   DynamicArray<std::size_t> parent_; DynamicArray<std::size_t> rank_;

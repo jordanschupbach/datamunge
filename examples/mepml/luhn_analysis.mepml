@@ -35,7 +35,7 @@ the total a multiple of 10.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -106,7 +106,7 @@ transposition, counting how many Luhn detects.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

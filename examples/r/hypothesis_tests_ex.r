@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/hypothesis_tests_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # Hypothesis-test functions are free functions (not class methods), so they're already called
 # in their natural flat form: t_test_two_sample(x, y), etc. Alternative is passed as a plain

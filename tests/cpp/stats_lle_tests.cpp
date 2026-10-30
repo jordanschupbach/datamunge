@@ -179,3 +179,86 @@ TEST(LLE, PlotEmbeddingGroupedMatchesUngrouped) {
     EXPECT_THROW(lle.plot_embedding(std::vector<std::string>{"only-one-label"}), std::invalid_argument);
     EXPECT_THROW(lle.plot_embedding(10, 0), std::out_of_range);
 }
+
+TEST(LLEWeights, HandExamples) {
+    // Three affinely independent neighbours in 2-D: the unique exact reconstruction (1/3 each).
+    const auto w3 = datamunge::stats::lle_reconstruction_weights({0.0, 0.0}, {{1.0, 0.0}, {0.0, 1.0}, {-1.0, -1.0}}, 1e-9);
+    for (const double w : w3) EXPECT_NEAR(w, 1.0 / 3.0, 1e-6);
+    // Four neighbours: a family of exact reconstructions; the ridge limit is the minimum-norm
+    // one, (5, 5, 6, 3) / 19.
+    const auto w4 = datamunge::stats::lle_reconstruction_weights(
+        {0.0, 0.0}, {{1.0, 0.0}, {-1.0, 0.0}, {0.0, 1.0}, {0.0, -2.0}}, 1e-9);
+    const std::vector<double> expected = {5.0 / 19, 5.0 / 19, 6.0 / 19, 3.0 / 19};
+    for (std::size_t a = 0; a < 4; ++a) EXPECT_NEAR(w4[a], expected[a], 1e-6);
+    // Coincident neighbours give equal weights.
+    EXPECT_EQ(datamunge::stats::lle_reconstruction_weights({1.0}, {{1.0}, {1.0}}), (std::vector<double>{0.5, 0.5}));
+    EXPECT_THROW((void)datamunge::stats::lle_reconstruction_weights({1.0}, {}), std::invalid_argument);
+    EXPECT_THROW((void)datamunge::stats::lle_reconstruction_weights({1.0}, {{1.0, 2.0}}), std::invalid_argument);
+}
+
+TEST(LLE, CollinearPointsRecoverTheCentredIndex) {
+    // Seven equally spaced points on a line in 2-D with k = 2: interior weights (1/2, 1/2),
+    // end weights (2, -1), so the null space of M is span{1, i} and the embedding is
+    // (i - 3) / sqrt(28) up to sign.
+    DataFrame line;
+    std::vector<double> x, y;
+    for (int i = 0; i < 7; ++i) {
+        x.push_back(1.0 + 0.6 * i);
+        y.push_back(2.0 + 0.8 * i);
+    }
+    line.add_column("x", x);
+    line.add_column("y", y);
+    const LLE lle(line, {"x", "y"}, LLEOptions{1, 2, 1e-9, DistanceMetric::Euclidean});
+    const double sign = lle.embedding()(6, 0) > 0 ? 1.0 : -1.0;
+    for (int i = 0; i < 7; ++i) EXPECT_NEAR(sign * lle.embedding()(i, 0), (i - 3) / std::sqrt(28.0), 1e-6);
+    EXPECT_NEAR(lle.weights()[0][0], 2.0, 1e-6);
+    EXPECT_NEAR(lle.weights()[0][1], -1.0, 1e-6);
+    EXPECT_NEAR(lle.weights()[3][0], 0.5, 1e-6);
+    for (const double e : lle.reconstruction_errors()) EXPECT_LT(e, 1e-12);
+    EXPECT_EQ(lle.connected_components(), 1u);
+}
+
+TEST(LLE, IrisNeighbourGraphSplitsOffSetosa) {
+    const auto iris = datamunge::datasets::iris();
+    const LLE  lle(iris, kIrisFeatures);
+    ASSERT_EQ(lle.connected_components(), 2u);
+    for (std::size_t i = 0; i < 150; ++i)
+        EXPECT_EQ(lle.component_labels()[i], i < 50 ? 0 : 1) << "row " << i;
+}
+
+TEST(LLE, EmbeddingColumnsAreOrthonormalAndCentred) {
+    const auto roll = datamunge::datasets::swiss_roll(300, 0.0, 3);
+    const LLE  lle(roll, {"x", "y", "z"}, LLEOptions{2, 12, 1e-3, DistanceMetric::Euclidean});
+    ASSERT_EQ(lle.connected_components(), 1u);
+    const auto& Y = lle.embedding();
+    for (std::size_t a = 0; a < 2; ++a) {
+        double sum = 0.0;
+        for (std::size_t i = 0; i < 300; ++i) sum += Y(i, a);
+        EXPECT_NEAR(sum, 0.0, 1e-9);
+        for (std::size_t b = 0; b < 2; ++b) {
+            double dot = 0.0;
+            for (std::size_t i = 0; i < 300; ++i) dot += Y(i, a) * Y(i, b);
+            EXPECT_NEAR(dot, a == b ? 1.0 : 0.0, 1e-9);
+        }
+    }
+    for (const auto& w : lle.weights()) {
+        double s = 0.0;
+        for (const double v : w) s += v;
+        EXPECT_NEAR(s, 1.0, 1e-12);
+    }
+}
+
+TEST(LLE, CostOfAnEmbeddingColumnIsItsEigenvalue) {
+    const auto roll = datamunge::datasets::swiss_roll(300, 0.0, 3);
+    const LLE  lle(roll, {"x", "y", "z"}, LLEOptions{2, 12, 1e-3, DistanceMetric::Euclidean});
+    const auto n = lle.observations();
+    EXPECT_NEAR(lle.cost(lle.dimension(0)), lle.eigenvalues()[n - 2], 1e-12);
+    EXPECT_NEAR(lle.cost(lle.dimension(1)), lle.eigenvalues()[n - 3], 1e-12);
+    // Shifting and scaling does not change the cost, and no coordinate beats the smallest eigenvalue.
+    std::vector<double> scaled;
+    for (const double v : lle.dimension(0)) scaled.push_back(5.0 * v + 3.0);
+    EXPECT_NEAR(lle.cost(scaled), lle.eigenvalues()[n - 2], 1e-12);
+    EXPECT_GE(lle.cost(roll.numeric_column("arc_length").values()), lle.eigenvalues()[n - 2]);
+    EXPECT_THROW((void)lle.cost(std::vector<double>(n, 1.0)), std::invalid_argument);
+    EXPECT_THROW((void)lle.cost({1.0, 2.0}), std::invalid_argument);
+}

@@ -19,10 +19,10 @@
 /// \f$\hat n = (a^{c}-1)/(a-1)\f$, trading more bits for accuracy
 /// \f$\operatorname{Var}(\hat n)/n^2 \approx \varepsilon\f$.
 
-#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <random>
+#include <vector>
 
 namespace datamunge::algorithms {
 
@@ -31,26 +31,59 @@ class MorrisCounter {
  public:
     /// \param base The base \f$a>1\f$. Base 2 is the classic counter; values closer to 1
     ///             (e.g. 1.08) shrink the variance at the cost of more bits in \f$c\f$.
-    explicit MorrisCounter(double base = 2.0) : base_(base) {}
+    /// \throws std::invalid_argument if \p base is not greater than 1.
+    explicit MorrisCounter(double base = 2.0);
 
     /// Process one event: increment the exponent with probability \f$a^{-c}\f$.
-    void increment(std::mt19937_64& rng) {
-        std::uniform_real_distribution<double> unit(0.0, 1.0);
-        if (unit(rng) < std::pow(base_, -exponent_)) exponent_ += 1.0;
-    }
+    /// \param rng Random engine for the coin flip.
+    void increment(std::mt19937_64& rng);
+
+    /// \brief Process \p events events at once, with the same distribution as calling
+    ///        increment() that many times.
+    ///
+    /// Instead of one coin per event it draws the geometric waiting time until the next
+    /// increment, so the cost is proportional to the number of increments, about
+    /// \f$\log_a n\f$, not to \p events.
+    /// \param events Number of events to add.
+    /// \param rng Random engine.
+    void add(std::uint64_t events, std::mt19937_64& rng);
 
     /// The stored exponent \f$c\f$ (this, in bits, is all the counter occupies).
+    /// \return The exponent, a whole number stored as a double.
     double exponent() const { return exponent_; }
 
+    /// The base \f$a\f$.
+    /// \return The base passed to the constructor.
+    double base() const { return base_; }
+
+    /// Bits needed to store the current exponent, \f$\lceil\log_2(c+1)\rceil\f$ (0 for \f$c=0\f$).
+    /// \return The register width in bits.
+    int register_bits() const;
+
     /// Unbiased estimate of the number of events seen: \f$(a^{c}-1)/(a-1)\f$ (\f$2^c-1\f$ for base 2).
-    double estimate() const {
-        return base_ == 2.0 ? std::pow(2.0, exponent_) - 1.0
-                            : (std::pow(base_, exponent_) - 1.0) / (base_ - 1.0);
-    }
+    /// \return The estimate.
+    double estimate() const;
 
  private:
-    double base_     = 2.0;
-    double exponent_ = 0.0;
+    double base_     = 2.0;  ///< the base a.
+    double exponent_ = 0.0;  ///< the stored exponent c.
 };
+
+/// \brief Exact variance of the Morris estimate after \p n events: \f$(a-1)\,n(n-1)/2\f$.
+/// \param n Number of events.
+/// \param base The base \f$a>1\f$.
+/// \return \f$\operatorname{Var}(\hat n)\f$.
+double morris_variance(double n, double base);
+
+/// \brief Exact distribution of the exponent after \p n events, by dynamic programming over events.
+///
+/// Entry \f$c\f$ is \f$P(c_n=c)\f$ for \f$c=0,\dots,\f$ \p max_level; mass above \p max_level
+/// is added to the last entry. The cost is \f$O(n\cdot\f$ \p max_level\f$)\f$.
+/// \param n Number of events.
+/// \param base The base \f$a>1\f$.
+/// \param max_level Largest exponent tracked.
+/// \return The probability of each exponent.
+/// \throws std::invalid_argument if \p base is not greater than 1.
+std::vector<double> morris_exponent_pmf(std::uint64_t n, double base, std::size_t max_level);
 
 }  // namespace datamunge::algorithms

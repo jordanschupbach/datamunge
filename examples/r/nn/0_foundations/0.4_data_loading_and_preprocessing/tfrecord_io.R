@@ -1,9 +1,9 @@
 # Native R NN example. TFRecord writing, streaming reads, compression and tf.Example parsing.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/tfrecord_io.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example tfrecord_io
 # Port of tflow's tfrecord_io. Serialize float, integer and bytes features in
 # tf.Example records. Round-trip identical payloads through plain, GZIP and
 # ZLIB TFRecord files, then parse required and defaulted features with a

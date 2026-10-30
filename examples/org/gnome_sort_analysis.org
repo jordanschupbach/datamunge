@@ -35,7 +35,7 @@ later back step; the total number of steps is \(O(n^2)\) in the worst case and
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

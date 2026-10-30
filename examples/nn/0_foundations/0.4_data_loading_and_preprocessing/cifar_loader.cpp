@@ -19,6 +19,7 @@
 // pixels as int32 holding 0..255 (labels int32 as in tflow). Fixtures are
 // written under output/nn/fixtures/ (paths::OutputDir).
 
+#include "common/dataset_assets.hpp"
 #include <datamunge/nn/nn.hpp>
 #include <filesystem>
 #include <iostream>
@@ -125,7 +126,7 @@ int main(int argc, char** argv) {
       std::cout << '\n';
       // A single standard test_batch.bin can be checked against the library loader.
       if (kind == data::Cifar::k10 && files.size() == 1 && files[0].filename() == "test_batch.bin") {
-        const auto lib = nn::load_cifar10(files[0].parent_path().string(), "test");
+        const auto lib = dataset_assets::LoadCifar10(files[0].parent_path().string(), "test");
         const auto ours = nn::div(nn::cast(dataset.images, nn::DType::Float32), 255.0);
         check::Require(nn::equal(ours, lib.images).to_vector<int>() == std::vector<int>(ours.numel(), 1) &&
                            lib.labels.to_vector<int>() == dataset.labels.to_vector<int>(),

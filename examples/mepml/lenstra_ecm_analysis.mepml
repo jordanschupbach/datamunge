@@ -44,7 +44,7 @@ tries rather than luck with a fixed \(p-1\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // B-smoothness test: are all prime factors of m at most B?
 static bool is_smooth(long long m, long long B) {
@@ -117,7 +117,7 @@ sets the per-curve success probability) shrinks as \(p\) grows.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // B-smoothness test: are all prime factors of m at most B?
 static bool is_smooth(long long m, long long B) {

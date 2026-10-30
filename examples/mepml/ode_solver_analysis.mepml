@@ -242,7 +242,7 @@ at its classical chaotic parameters \(\sigma=10\), \(\rho=28\),
 >> Software
 
 The entire analysis is one C\+\+ program against `datamunge`:
-`ode::ODESolver` and `ode::RHS` for integration, and `plot::RPlot` for
+`ode::ODESolver` and `ode::RHS` for integration, and `graphics::RPlot` for
 every figure. No external ODE or plotting package is used.
 
 >> Program, presented as a literate whole
@@ -263,7 +263,7 @@ only path available to bindings without SWIG director support (§2.1).
 #include <iostream>
 
 using namespace datamunge::ode;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 namespace {
 
@@ -426,7 +426,7 @@ itself.
 #include <iostream>
 
 using namespace datamunge::ode;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 namespace {
 

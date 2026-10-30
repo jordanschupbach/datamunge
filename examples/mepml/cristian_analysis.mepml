@@ -36,7 +36,7 @@ taking the fastest of several requests) gives a tighter bound.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -88,7 +88,7 @@ trip.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

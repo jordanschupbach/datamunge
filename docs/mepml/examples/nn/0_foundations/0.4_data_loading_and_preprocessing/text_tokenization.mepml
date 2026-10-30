@@ -1,0 +1,117 @@
+//? Title: Text Tokenization: Ranked Merges, Greedy Pieces and Padding
+//? Subtitle: Vocabulary fitting, unknown text and padding masks are separate decisions
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Variable-length text must become integer sequences without confusing real tokens, unknown words
+and padding. We compare small learned byte-pair merges with a fixed WordPiece vocabulary and
+inspect right truncation and padding. Unicode validation and model serialization are checked
+separately from any language-model quality claim.
+)
+\toc
+
+> The method
+
+Whitespace tokenization preserves case and punctuation and splits on ASCII whitespace.
+Character tokenization validates UTF-8 and returns Unicode scalar values, not grapheme clusters.
+BPE starts with characters plus an end-of-word marker, repeatedly merges the most frequent adjacent
+pair weighted by word counts, and breaks ties lexicographically. Encoding applies learned merges in
+rank order. With pair count c(p), each training step chooses
+
+$$
+p^*=\arg\max_p c(p),\qquad c(p)=\sum_w f(w)\,\#\{p\text{ adjacent in }w\}.
+$$
+\alttext(The selected adjacent pair maximises frequency weighted by each corpus word count.)
+
+The reference implementation rescans the corpus each step, targeting small corpora. WordPiece
+instead uses a supplied vocabulary and greedy longest prefixes with ## continuation pieces. If
+any suffix fails, the whole word becomes UNK. IDs follow supplied vocabulary order, with PAD=0
+and UNK=1. PadTokens right-truncates, right-pads and emits a separate Float32 mask. Empty rows have
+zero mask mass; a masked mean must guard its denominator. Neither tokenizer normalises Unicode,
+lowercases text or learns the WordPiece vocabulary.
+
+The concept diagram has a retained TikZ source in `diagrams/text_tokenization_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/text_tokenization_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/text_tokenization_concept.tikz > build/text_tokenization_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/text_tokenization_concept.svg build/text_tokenization_concept.dvi > build/text_tokenization_concept.render.log 2>&1
+printf 'Rendered build/text_tokenization_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/text_tokenization_concept.svg from local TikZ source.
+// \image(figures/text_tokenization_concept.svg)
+// result_end
+\caption(Vocabulary fitting, unknown text and padding masks are separate decisions)
+\alttext(Training word counts; or fixed vocabulary Then Ranked BPE merges; or greedy WordPiece Then IDs + padding mask; PAD=0; UNK=1.)
+
+> Simple examples
+
+Counts aaa:3, ab:1 make (a,a) the first BPE merge. A fixed vocabulary splits playing into play and ##ing, while playx becomes one unknown word.
+
+```{cpp, results="markdown", file="figures/text_tokenization_masks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace t=dm::nn::data::text;
+ const auto b=t::Bpe::Train({{"aaa",3},{"ab",1}},1);
+ const t::WordPiece wp({"[PAD]","[UNK]","play","##ing","ball"});
+ const auto batch=t::PadTokens({wp.Encode("playing ball"),wp.Encode("playx"),{}},4);
+ dm::dstruct::DataFrame table;std::vector<double> row,length;std::vector<std::string> pieces;
+ for(const auto& word:{"playing","playx","ball"}){std::string s;for(const auto& p:wp.EncodeWord(word)){if(!s.empty())s+=" | ";s+=p;}pieces.push_back(s);}
+ for(int i=0;i<3;++i){row.push_back(i);length.push_back(dm::nn::sum(dm::nn::take_rows(batch.mask,{i})).item());}
+ table.add_column("word",std::vector<std::string>{"playing","playx","ball"});table.add_column("pieces",pieces);
+ auto p=dm::graphics::RPlot::create();p.bars(row,length,"unmasked tokens",{37,99,235},.6)
+ .title("Padding does not add real tokens").x_label("sentence: playing ball, playx, empty").y_label("mask mass").y_limits(0,4);
+ std::filesystem::create_directories("build");p.size(850,420).save_svg("build/text_tokenization_masks.svg");
+ if(b.merges()[0]!=t::Bpe::Pair{"a","a"}||length!=std::vector<double>({3,1,0}))return 1;
+ std::print("First BPE merge: {} + {}.\n\n{}\n",b.merges()[0].first,b.merges()[0].second,table.to_md());
+}
+```
+// result_begin: markdown
+First BPE merge: a + a.
+
+| word | pieces |
+| :--- | :--- |
+| playing | play \| ##ing |
+| playx | [UNK] |
+| ball | ball |
+
+\image(figures/text_tokenization_masks.svg)
+// result_end
+\caption(Known subwords, one whole-word UNK and empty input have different mask lengths.)
+\alttext(Known subwords, one whole-word UNK and empty input have different mask lengths.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace t=dm::nn::data::text;
+ const auto b=t::Bpe::Train({{"low",5},{"lower",2},{"newest",6},{"widest",3}},12),copy=t::Bpe::Load(b.Save());
+ int checked=0;for(const auto w:{"low","lower","lowest","newest","z"}){if(b.EncodeWord(w)!=copy.EncodeWord(w))return 1;++checked;}
+ int rejected=0;for(const std::string bad:{std::string("\xc0\x80",2),std::string("\xed\xa0\x80",3),std::string("\xf4\x90\x80\x80",4)})try{t::Characters(bad);}catch(const std::invalid_argument&){++rejected;}
+ const auto truncated=t::PadTokens({{2,3,4,5,6}},3);
+ if(rejected!=3||truncated.ids.to_vector<int>()!=std::vector<int>({2,3,4}))return 1;
+ std::print("Serialized BPE: {} ranked merges; {} encodings exactly preserved.\n\nInvalid UTF-8 cases rejected: {}; right-truncation retains three IDs.\n",b.merges().size(),checked,rejected);
+}
+```
+// result_begin: markdown
+Serialized BPE: 12 ranked merges; 5 encodings exactly preserved.
+
+Invalid UTF-8 cases rejected: 3; right-truncation retains three IDs.
+// result_end
+
+
+> Conclusion
+
+The learned merge order survives serialization, WordPiece's unknown rule applies to whole words,
+and the mask distinguishes padding from actual IDs. Corpus, vocabulary order, normalisation policy,
+merge budget and truncation length are part of a reproducible text pipeline.
+
+> References
+
+- [Sennrich, Haddow and Birch (2016), Neural Machine Translation of Rare Words with Subword Units](https://aclanthology.org/P16-1162/).
+- [BERT WordPiece tokenizer source](https://github.com/google-research/bert/blob/master/tokenization.py).

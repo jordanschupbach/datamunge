@@ -1,3 +1,5 @@
+/// @file adadelta.cpp
+/// @brief AdaDelta native update, trial and stopping implementation.
 #include <datamunge/optim/adadelta.hpp>
 
 #include <cmath>

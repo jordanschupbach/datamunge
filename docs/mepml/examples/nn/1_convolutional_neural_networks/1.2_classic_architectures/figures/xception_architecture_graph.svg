@@ -1,0 +1,1498 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="11264.8" height="663.093" viewBox="0 0 11264.8 663.093" role="img" data-model-layout="left-to-right" data-model-style="Graph" data-model-detail="layers" aria-labelledby="model-title model-description">
+<title id="model-title">Xception / report configuration</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">Xception / report configuration</text>
+<text x="24" y="51" font-size="12">162 nodes | 1354844 unique learned values | Graph / layers</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#64B5CD"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#748BCB"/><text x="302" y="69" font-size="11">Dense</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#5ABF9A"/><text x="432" y="69" font-size="11">Pooling</text>
+<rect x="544" y="59" width="12" height="12" rx="2" fill="#F0E442"/><text x="562" y="69" font-size="11">Activation</text>
+<rect x="674" y="59" width="12" height="12" rx="2" fill="#CC79A7"/><text x="692" y="69" font-size="11">Normalization</text>
+<rect x="804" y="59" width="12" height="12" rx="2" fill="#D55E00"/><text x="822" y="69" font-size="11">Merge</text>
+<rect x="24" y="81" width="12" height="12" rx="2" fill="#6C8194"/><text x="42" y="91" font-size="11">Output</text>
+<rect x="154" y="81" width="12" height="12" rx="2" fill="#94A3B8"/><text x="172" y="91" font-size="11">Operation</text>
+<text x="24" y="121" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path data-from="0" data-to="1" d="M 121 224.5 C 133 224.5 133 200.162 145 200.162" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="1" data-to="2" d="M 193.324 200.162 C 205.541 200.162 205.541 198.966 217.758 198.966" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="2" data-to="3" d="M 263.69 198.966 C 276.124 198.966 276.124 198.966 288.558 198.966" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="3" data-to="4" d="M 334.49 198.966 C 346.707 198.966 346.707 199.622 358.924 199.622" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="4" data-to="5" d="M 406.169 199.622 C 418.169 199.622 418.169 199.622 430.169 199.622" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="5" data-to="6" d="M 477.413 199.622 C 489.413 199.622 489.413 199.622 501.413 199.622" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="6" data-to="7" d="M 548.658 199.622 C 560.658 199.622 560.658 199.622 572.658 199.622" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="7" data-to="8" d="M 619.903 199.622 C 631.903 199.622 631.903 199.622 643.903 199.622" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="8" data-to="9" d="M 691.148 199.622 C 703.148 199.622 703.148 199.622 715.148 199.622" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="9" data-to="10" d="M 762.392 199.622 C 779.69 199.622 779.69 188.805 796.987 188.805" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="2" data-to="11" d="M 263.69 198.966 C 281.204 198.966 281.204 449.188 298.718 449.188" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="10" data-to="12" d="M 822.598 188.805 C 845.192 188.805 845.192 188.805 867.787 188.805" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="11" data-to="12" d="M 324.329 449.188 C 340.329 449.188 340.329 172 356.329 172 L 835.787 172 C 851.787 172 851.787 188.805 867.787 188.805" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="12" data-to="13" d="M 893.398 188.805 C 915.992 188.805 915.992 188.805 938.587 188.805" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="13" data-to="14" d="M 964.198 188.805 C 986.792 188.805 986.792 188.805 1009.39 188.805" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="14" data-to="15" d="M 1035 188.805 C 1056.94 188.805 1056.94 190.118 1078.87 190.118" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="15" data-to="16" d="M 1107.11 190.118 C 1128.39 190.118 1128.39 190.118 1149.67 190.118" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="16" data-to="17" d="M 1177.91 190.118 C 1199.19 190.118 1199.19 190.118 1220.47 190.118" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="17" data-to="18" d="M 1248.71 190.118 C 1269.99 190.118 1269.99 190.118 1291.27 190.118" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="18" data-to="19" d="M 1319.51 190.118 C 1340.79 190.118 1340.79 190.118 1362.07 190.118" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="19" data-to="20" d="M 1390.31 190.118 C 1411.59 190.118 1411.59 190.118 1432.87 190.118" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="20" data-to="21" d="M 1461.11 190.118 C 1485.1 190.118 1485.1 184.71 1509.08 184.71" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="12" data-to="22" d="M 893.398 188.805 C 918.04 188.805 918.04 399.42 942.683 399.42" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="21" data-to="23" d="M 1526.5 184.71 C 1553.19 184.71 1553.19 184.71 1579.88 184.71" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="22" data-to="23" d="M 960.102 399.42 C 976.102 399.42 976.102 164 992.102 164 L 1547.88 164 C 1563.88 164 1563.88 184.71 1579.88 184.71" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="23" data-to="24" d="M 1597.3 184.71 C 1623.99 184.71 1623.99 184.71 1650.68 184.71" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="24" data-to="25" d="M 1668.1 184.71 C 1694.79 184.71 1694.79 184.71 1721.48 184.71" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="25" data-to="26" d="M 1738.9 184.71 C 1763.17 184.71 1763.17 189.549 1787.44 189.549" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="26" data-to="27" d="M 1814.54 189.549 C 1836.39 189.549 1836.39 189.549 1858.24 189.549" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="27" data-to="28" d="M 1885.34 189.549 C 1907.19 189.549 1907.19 189.549 1929.04 189.549" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="28" data-to="29" d="M 1956.14 189.549 C 1977.99 189.549 1977.99 189.549 1999.84 189.549" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="29" data-to="30" d="M 2026.94 189.549 C 2048.79 189.549 2048.79 189.549 2070.64 189.549" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="30" data-to="31" d="M 2097.74 189.549 C 2119.59 189.549 2119.59 189.549 2141.44 189.549" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="31" data-to="32" d="M 2168.54 189.549 C 2191.74 189.549 2191.74 186.845 2214.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="23" data-to="33" d="M 1597.3 184.71 C 1622.92 184.71 1622.92 376.464 1648.55 376.464" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="32" data-to="34" d="M 2236.64 186.845 C 2261.19 186.845 2261.19 186.845 2285.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="33" data-to="34" d="M 1670.24 376.464 C 1686.24 376.464 1686.24 156 1702.24 156 L 2253.75 156 C 2269.75 156 2269.75 186.845 2285.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="34" data-to="35" d="M 2307.44 186.845 C 2331.99 186.845 2331.99 186.845 2356.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="35" data-to="36" d="M 2378.24 186.845 C 2402.79 186.845 2402.79 186.845 2427.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="36" data-to="37" d="M 2449.04 186.845 C 2473.59 186.845 2473.59 186.845 2498.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="37" data-to="38" d="M 2519.84 186.845 C 2544.39 186.845 2544.39 186.845 2568.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="38" data-to="39" d="M 2590.64 186.845 C 2615.19 186.845 2615.19 186.845 2639.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="39" data-to="40" d="M 2661.44 186.845 C 2685.99 186.845 2685.99 186.845 2710.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="40" data-to="41" d="M 2732.24 186.845 C 2756.79 186.845 2756.79 186.845 2781.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="41" data-to="42" d="M 2803.04 186.845 C 2827.59 186.845 2827.59 186.845 2852.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="42" data-to="43" d="M 2873.84 186.845 C 2898.39 186.845 2898.39 186.845 2922.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="43" data-to="44" d="M 2944.64 186.845 C 2969.19 186.845 2969.19 186.845 2993.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="44" data-to="45" d="M 3015.44 186.845 C 3039.99 186.845 3039.99 186.845 3064.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="45" data-to="46" d="M 3086.24 186.845 C 3110.79 186.845 3110.79 186.845 3135.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="46" data-to="47" d="M 3157.04 186.845 C 3181.59 186.845 3181.59 186.845 3206.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="34" data-to="47" d="M 2307.44 186.845 C 2323.44 186.845 2323.44 164 2339.44 164 L 3174.15 164 C 3190.15 164 3190.15 186.845 3206.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="47" data-to="48" d="M 3227.84 186.845 C 3252.39 186.845 3252.39 186.845 3276.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="48" data-to="49" d="M 3298.64 186.845 C 3323.19 186.845 3323.19 186.845 3347.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="49" data-to="50" d="M 3369.44 186.845 C 3393.99 186.845 3393.99 186.845 3418.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="50" data-to="51" d="M 3440.24 186.845 C 3464.79 186.845 3464.79 186.845 3489.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="51" data-to="52" d="M 3511.04 186.845 C 3535.59 186.845 3535.59 186.845 3560.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="52" data-to="53" d="M 3581.84 186.845 C 3606.39 186.845 3606.39 186.845 3630.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="53" data-to="54" d="M 3652.64 186.845 C 3677.19 186.845 3677.19 186.845 3701.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="54" data-to="55" d="M 3723.44 186.845 C 3747.99 186.845 3747.99 186.845 3772.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="55" data-to="56" d="M 3794.24 186.845 C 3818.79 186.845 3818.79 186.845 3843.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="56" data-to="57" d="M 3865.04 186.845 C 3889.59 186.845 3889.59 186.845 3914.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="57" data-to="58" d="M 3935.84 186.845 C 3960.39 186.845 3960.39 186.845 3984.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="58" data-to="59" d="M 4006.64 186.845 C 4031.19 186.845 4031.19 186.845 4055.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="59" data-to="60" d="M 4077.44 186.845 C 4101.99 186.845 4101.99 186.845 4126.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="47" data-to="60" d="M 3227.84 186.845 C 3243.84 186.845 3243.84 172 3259.84 172 L 4094.55 172 C 4110.55 172 4110.55 186.845 4126.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="60" data-to="61" d="M 4148.24 186.845 C 4172.79 186.845 4172.79 186.845 4197.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="61" data-to="62" d="M 4219.04 186.845 C 4243.59 186.845 4243.59 186.845 4268.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="62" data-to="63" d="M 4289.84 186.845 C 4314.39 186.845 4314.39 186.845 4338.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="63" data-to="64" d="M 4360.64 186.845 C 4385.19 186.845 4385.19 186.845 4409.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="64" data-to="65" d="M 4431.44 186.845 C 4455.99 186.845 4455.99 186.845 4480.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="65" data-to="66" d="M 4502.24 186.845 C 4526.79 186.845 4526.79 186.845 4551.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="66" data-to="67" d="M 4573.04 186.845 C 4597.59 186.845 4597.59 186.845 4622.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="67" data-to="68" d="M 4643.84 186.845 C 4668.39 186.845 4668.39 186.845 4692.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="68" data-to="69" d="M 4714.64 186.845 C 4739.19 186.845 4739.19 186.845 4763.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="69" data-to="70" d="M 4785.44 186.845 C 4809.99 186.845 4809.99 186.845 4834.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="70" data-to="71" d="M 4856.24 186.845 C 4880.79 186.845 4880.79 186.845 4905.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="71" data-to="72" d="M 4927.04 186.845 C 4951.59 186.845 4951.59 186.845 4976.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="72" data-to="73" d="M 4997.84 186.845 C 5022.39 186.845 5022.39 186.845 5046.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="60" data-to="73" d="M 4148.24 186.845 C 4164.24 186.845 4164.24 156 4180.24 156 L 5014.95 156 C 5030.95 156 5030.95 186.845 5046.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="73" data-to="74" d="M 5068.64 186.845 C 5093.19 186.845 5093.19 186.845 5117.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="74" data-to="75" d="M 5139.44 186.845 C 5163.99 186.845 5163.99 186.845 5188.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="75" data-to="76" d="M 5210.24 186.845 C 5234.79 186.845 5234.79 186.845 5259.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="76" data-to="77" d="M 5281.04 186.845 C 5305.59 186.845 5305.59 186.845 5330.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="77" data-to="78" d="M 5351.84 186.845 C 5376.39 186.845 5376.39 186.845 5400.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="78" data-to="79" d="M 5422.64 186.845 C 5447.19 186.845 5447.19 186.845 5471.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="79" data-to="80" d="M 5493.44 186.845 C 5517.99 186.845 5517.99 186.845 5542.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="80" data-to="81" d="M 5564.24 186.845 C 5588.79 186.845 5588.79 186.845 5613.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="81" data-to="82" d="M 5635.04 186.845 C 5659.59 186.845 5659.59 186.845 5684.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="82" data-to="83" d="M 5705.84 186.845 C 5730.39 186.845 5730.39 186.845 5754.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="83" data-to="84" d="M 5776.64 186.845 C 5801.19 186.845 5801.19 186.845 5825.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="84" data-to="85" d="M 5847.44 186.845 C 5871.99 186.845 5871.99 186.845 5896.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="85" data-to="86" d="M 5918.24 186.845 C 5942.79 186.845 5942.79 186.845 5967.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="73" data-to="86" d="M 5068.64 186.845 C 5084.64 186.845 5084.64 164 5100.64 164 L 5935.35 164 C 5951.35 164 5951.35 186.845 5967.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="86" data-to="87" d="M 5989.04 186.845 C 6013.59 186.845 6013.59 186.845 6038.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="87" data-to="88" d="M 6059.84 186.845 C 6084.39 186.845 6084.39 186.845 6108.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="88" data-to="89" d="M 6130.64 186.845 C 6155.19 186.845 6155.19 186.845 6179.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="89" data-to="90" d="M 6201.44 186.845 C 6225.99 186.845 6225.99 186.845 6250.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="90" data-to="91" d="M 6272.24 186.845 C 6296.79 186.845 6296.79 186.845 6321.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="91" data-to="92" d="M 6343.04 186.845 C 6367.59 186.845 6367.59 186.845 6392.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="92" data-to="93" d="M 6413.84 186.845 C 6438.39 186.845 6438.39 186.845 6462.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="93" data-to="94" d="M 6484.64 186.845 C 6509.19 186.845 6509.19 186.845 6533.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="94" data-to="95" d="M 6555.44 186.845 C 6579.99 186.845 6579.99 186.845 6604.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="95" data-to="96" d="M 6626.24 186.845 C 6650.79 186.845 6650.79 186.845 6675.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="96" data-to="97" d="M 6697.04 186.845 C 6721.59 186.845 6721.59 186.845 6746.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="97" data-to="98" d="M 6767.84 186.845 C 6792.39 186.845 6792.39 186.845 6816.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="98" data-to="99" d="M 6838.64 186.845 C 6863.19 186.845 6863.19 186.845 6887.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="86" data-to="99" d="M 5989.04 186.845 C 6005.04 186.845 6005.04 172 6021.04 172 L 6855.75 172 C 6871.75 172 6871.75 186.845 6887.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="99" data-to="100" d="M 6909.44 186.845 C 6933.99 186.845 6933.99 186.845 6958.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="100" data-to="101" d="M 6980.24 186.845 C 7004.79 186.845 7004.79 186.845 7029.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="101" data-to="102" d="M 7051.04 186.845 C 7075.59 186.845 7075.59 186.845 7100.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="102" data-to="103" d="M 7121.84 186.845 C 7146.39 186.845 7146.39 186.845 7170.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="103" data-to="104" d="M 7192.64 186.845 C 7217.19 186.845 7217.19 186.845 7241.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="104" data-to="105" d="M 7263.44 186.845 C 7287.99 186.845 7287.99 186.845 7312.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="105" data-to="106" d="M 7334.24 186.845 C 7358.79 186.845 7358.79 186.845 7383.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="106" data-to="107" d="M 7405.04 186.845 C 7429.59 186.845 7429.59 186.845 7454.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="107" data-to="108" d="M 7475.84 186.845 C 7500.39 186.845 7500.39 186.845 7524.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="108" data-to="109" d="M 7546.64 186.845 C 7571.19 186.845 7571.19 186.845 7595.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="109" data-to="110" d="M 7617.44 186.845 C 7641.99 186.845 7641.99 186.845 7666.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="110" data-to="111" d="M 7688.24 186.845 C 7712.79 186.845 7712.79 186.845 7737.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="111" data-to="112" d="M 7759.04 186.845 C 7783.59 186.845 7783.59 186.845 7808.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="99" data-to="112" d="M 6909.44 186.845 C 6925.44 186.845 6925.44 156 6941.44 156 L 7776.15 156 C 7792.15 156 7792.15 186.845 7808.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="112" data-to="113" d="M 7829.84 186.845 C 7854.39 186.845 7854.39 186.845 7878.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="113" data-to="114" d="M 7900.64 186.845 C 7925.19 186.845 7925.19 186.845 7949.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="114" data-to="115" d="M 7971.44 186.845 C 7995.99 186.845 7995.99 186.845 8020.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="115" data-to="116" d="M 8042.24 186.845 C 8066.79 186.845 8066.79 186.845 8091.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="116" data-to="117" d="M 8113.04 186.845 C 8137.59 186.845 8137.59 186.845 8162.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="117" data-to="118" d="M 8183.84 186.845 C 8208.39 186.845 8208.39 186.845 8232.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="118" data-to="119" d="M 8254.64 186.845 C 8279.19 186.845 8279.19 186.845 8303.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="119" data-to="120" d="M 8325.44 186.845 C 8349.99 186.845 8349.99 186.845 8374.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="120" data-to="121" d="M 8396.24 186.845 C 8420.79 186.845 8420.79 186.845 8445.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="121" data-to="122" d="M 8467.04 186.845 C 8491.59 186.845 8491.59 186.845 8516.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="122" data-to="123" d="M 8537.84 186.845 C 8562.39 186.845 8562.39 186.845 8586.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="123" data-to="124" d="M 8608.64 186.845 C 8633.19 186.845 8633.19 186.845 8657.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="124" data-to="125" d="M 8679.44 186.845 C 8703.99 186.845 8703.99 186.845 8728.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="112" data-to="125" d="M 7829.84 186.845 C 7845.84 186.845 7845.84 164 7861.84 164 L 8696.55 164 C 8712.55 164 8712.55 186.845 8728.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="125" data-to="126" d="M 8750.24 186.845 C 8774.79 186.845 8774.79 186.845 8799.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="126" data-to="127" d="M 8821.04 186.845 C 8845.59 186.845 8845.59 186.845 8870.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="127" data-to="128" d="M 8891.84 186.845 C 8916.39 186.845 8916.39 186.845 8940.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="128" data-to="129" d="M 8962.64 186.845 C 8987.19 186.845 8987.19 186.845 9011.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="129" data-to="130" d="M 9033.44 186.845 C 9057.99 186.845 9057.99 186.845 9082.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="130" data-to="131" d="M 9104.24 186.845 C 9128.79 186.845 9128.79 186.845 9153.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="131" data-to="132" d="M 9175.04 186.845 C 9199.59 186.845 9199.59 186.845 9224.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="132" data-to="133" d="M 9245.84 186.845 C 9270.39 186.845 9270.39 186.845 9294.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="133" data-to="134" d="M 9316.64 186.845 C 9341.19 186.845 9341.19 186.845 9365.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="134" data-to="135" d="M 9387.44 186.845 C 9411.99 186.845 9411.99 186.845 9436.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="135" data-to="136" d="M 9458.24 186.845 C 9482.79 186.845 9482.79 186.845 9507.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="136" data-to="137" d="M 9529.04 186.845 C 9553.59 186.845 9553.59 186.845 9578.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="137" data-to="138" d="M 9599.84 186.845 C 9624.39 186.845 9624.39 186.845 9648.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="125" data-to="138" d="M 8750.24 186.845 C 8766.24 186.845 8766.24 172 8782.24 172 L 9616.95 172 C 9632.95 172 9632.95 186.845 9648.95 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="138" data-to="139" d="M 9670.64 186.845 C 9695.19 186.845 9695.19 186.845 9719.75 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="139" data-to="140" d="M 9741.44 186.845 C 9765.99 186.845 9765.99 186.845 9790.55 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="140" data-to="141" d="M 9812.24 186.845 C 9836.79 186.845 9836.79 186.845 9861.35 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="141" data-to="142" d="M 9883.04 186.845 C 9907.59 186.845 9907.59 186.845 9932.15 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="142" data-to="143" d="M 9953.84 186.845 C 9978.39 186.845 9978.39 186.845 10002.9 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="143" data-to="144" d="M 10024.6 186.845 C 10049.2 186.845 10049.2 186.845 10073.7 186.845" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="144" data-to="145" d="M 10095.4 186.845 C 10118.5 186.845 10118.5 189.88 10141.5 189.88" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="145" data-to="146" d="M 10169.3 189.88 C 10190.8 189.88 10190.8 189.88 10212.3 189.88" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="146" data-to="147" d="M 10240.1 189.88 C 10262.3 189.88 10262.3 188.528 10284.5 188.528" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="138" data-to="148" d="M 9670.64 186.845 C 9694.35 186.845 9694.35 390.868 9718.06 390.868" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="147" data-to="149" d="M 10309.5 188.528 C 10332.4 188.528 10332.4 188.528 10355.3 188.528" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="148" data-to="149" d="M 9743.12 390.868 C 9759.12 390.868 9759.12 164 9775.12 164 L 10323.3 164 C 10339.3 164 10339.3 188.528 10355.3 188.528" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="149" data-to="150" d="M 10380.3 188.528 C 10403.2 188.528 10403.2 188.528 10426.1 188.528" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="150" data-to="151" d="M 10451.1 188.528 C 10471.4 188.528 10471.4 193.778 10491.6 193.778" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="151" data-to="152" d="M 10527.2 193.778 C 10544.8 193.778 10544.8 193.778 10562.4 193.778" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="152" data-to="153" d="M 10598 193.778 C 10615.6 193.778 10615.6 193.778 10633.2 193.778" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="153" data-to="154" d="M 10668.8 193.778 C 10686.4 193.778 10686.4 193.778 10704 193.778" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="154" data-to="155" d="M 10739.6 193.778 C 10754.6 193.778 10754.6 199.028 10769.6 199.028" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="155" data-to="156" d="M 10815.6 199.028 C 10828 199.028 10828 199.028 10840.4 199.028" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="156" data-to="157" d="M 10886.4 199.028 C 10898.8 199.028 10898.8 199.028 10911.2 199.028" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="157" data-to="158" d="M 10957.2 199.028 C 10976.4 199.028 10976.4 224.5 10995.5 224.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="158" data-to="159" d="M 11014.5 224.5 C 11040.4 224.5 11040.4 224.5 11066.3 224.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="159" data-to="160" d="M 11085.3 224.5 C 11111.2 224.5 11111.2 177.438 11137.1 177.438" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="160" data-to="161" d="M 11156.1 177.438 C 11182 177.438 11182 177.438 11207.9 177.438" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 71 x 71 x 3]</title>
+<g id="model-glyph-0" data-left="24" data-right="121" data-face-width="96" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="24" y="176" width="97" height="97" rx="14" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(72.5 363.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 71 x 71 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>stem1 [1 x 35 x 35 x 8]</title>
+<g id="model-glyph-1" data-left="145" data-right="193.324" data-face-width="47.3239" data-face-height="47.3239" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="145" y="176" width="48.3239" height="48.3239" rx="12.081" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(169.162 314.649) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">stem1</text>
+<text x="0" y="12.35" font-size="13">[1 x 35 x 35 x 8]</text>
+</g></g>
+<g data-node="2" data-category="Convolution"><title>stem2 [1 x 33 x 33 x 16]</title>
+<g id="model-glyph-2" data-left="217.758" data-right="263.69" data-face-width="44.6197" data-face-height="44.6197" data-depth="1.3125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="217.758" y="176" width="45.9322" height="45.9322" rx="11.4831" fill="#64B5CD"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(240.724 316.482) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">stem2</text>
+<text x="0" y="12.35" font-size="13">[1 x 33 x 33 x 16]</text>
+</g></g>
+<g data-node="3" data-category="Convolution"><title>entry1/sep1/depthwise [1 x 33 x 33 x 16]</title>
+<g id="model-glyph-3" data-left="288.558" data-right="334.49" data-face-width="44.6197" data-face-height="44.6197" data-depth="1.3125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="288.558" y="176" width="45.9322" height="45.9322" rx="11.4831" fill="#64B5CD"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(311.524 329.157) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry1/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 33 x 33 x 16]</text>
+</g></g>
+<g data-node="4" data-category="Convolution"><title>entry1/sep1/pointwise [1 x 33 x 33 x 32]</title>
+<g id="model-glyph-4" data-left="358.924" data-right="406.169" data-face-width="44.6197" data-face-height="44.6197" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="358.924" y="176" width="47.2447" height="47.2447" rx="11.8112" fill="#64B5CD"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(382.546 330.47) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry1/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 33 x 33 x 32]</text>
+</g></g>
+<g data-node="5" data-category="Normalization"><title>entry1/sep1/bn [1 x 33 x 33 x 32]</title>
+<g id="model-glyph-5" data-left="430.169" data-right="477.413" data-face-width="44.6197" data-face-height="44.6197" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="430.169" y="176" width="47.2447" height="47.2447" rx="11.8112" fill="#CC79A7"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(453.791 317.795) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry1/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 33 x 33 x 32]</text>
+</g></g>
+<g data-node="6" data-category="Activation"><title>Relu [1 x 33 x 33 x 32]</title>
+<g id="model-glyph-6" data-left="501.413" data-right="548.658" data-face-width="44.6197" data-face-height="44.6197" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="501.413" y="176" width="47.2447" height="47.2447" rx="11.8112" fill="#F0E442"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(525.036 317.795) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 33 x 33 x 32]</text>
+</g></g>
+<g data-node="7" data-category="Convolution"><title>entry1/sep2/depthwise [1 x 33 x 33 x 32]</title>
+<g id="model-glyph-7" data-left="572.658" data-right="619.903" data-face-width="44.6197" data-face-height="44.6197" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="572.658" y="176" width="47.2447" height="47.2447" rx="11.8112" fill="#64B5CD"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(596.28 330.47) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry1/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 33 x 33 x 32]</text>
+</g></g>
+<g data-node="8" data-category="Convolution"><title>entry1/sep2/pointwise [1 x 33 x 33 x 32]</title>
+<g id="model-glyph-8" data-left="643.903" data-right="691.148" data-face-width="44.6197" data-face-height="44.6197" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="643.903" y="176" width="47.2447" height="47.2447" rx="11.8112" fill="#64B5CD"/>
+</g>
+<g id="model-label-8" data-node-label="8" transform="translate(667.525 330.47) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry1/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 33 x 33 x 32]</text>
+</g></g>
+<g data-node="9" data-category="Normalization"><title>entry1/sep2/bn [1 x 33 x 33 x 32]</title>
+<g id="model-glyph-9" data-left="715.148" data-right="762.392" data-face-width="44.6197" data-face-height="44.6197" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="715.148" y="176" width="47.2447" height="47.2447" rx="11.8112" fill="#CC79A7"/>
+</g>
+<g id="model-label-9" data-node-label="9" transform="translate(738.77 317.795) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry1/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 33 x 33 x 32]</text>
+</g></g>
+<g data-node="10" data-category="Pooling"><title>MaxPool [1 x 17 x 17 x 32]</title>
+<g id="model-glyph-10" data-left="796.987" data-right="822.598" data-face-width="22.9859" data-face-height="22.9859" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="796.987" y="176" width="25.6109" height="25.6109" rx="6.40273" fill="#5ABF9A"/>
+</g>
+<g id="model-label-10" data-node-label="10" transform="translate(809.792 296.161) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 32]</text>
+</g></g>
+<g data-node="11" data-category="Convolution"><title>entry1/skip [1 x 17 x 17 x 32]</title>
+<g id="model-glyph-11" data-left="298.718" data-right="324.329" data-face-width="22.9859" data-face-height="22.9859" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="298.718" y="436.382" width="25.6109" height="25.6109" rx="6.40273" fill="#64B5CD"/>
+</g>
+<g id="model-label-11" data-node-label="11" transform="translate(311.524 556.543) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry1/skip</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 32]</text>
+</g></g>
+<g data-node="12" data-category="Merge"><title>Add [1 x 17 x 17 x 32]</title>
+<g id="model-glyph-12" data-left="867.787" data-right="893.398" data-face-width="22.9859" data-face-height="22.9859" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="867.787" y="176" width="25.6109" height="25.6109" rx="6.40273" fill="#D55E00"/>
+</g>
+<g id="model-label-12" data-node-label="12" transform="translate(880.592 296.161) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 32]</text>
+</g></g>
+<g data-node="13" data-category="Activation"><title>Relu [1 x 17 x 17 x 32]</title>
+<g id="model-glyph-13" data-left="938.587" data-right="964.198" data-face-width="22.9859" data-face-height="22.9859" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="938.587" y="176" width="25.6109" height="25.6109" rx="6.40273" fill="#F0E442"/>
+</g>
+<g id="model-label-13" data-node-label="13" transform="translate(951.392 296.161) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 32]</text>
+</g></g>
+<g data-node="14" data-category="Convolution"><title>entry2/sep1/depthwise [1 x 17 x 17 x 32]</title>
+<g id="model-glyph-14" data-left="1009.39" data-right="1035" data-face-width="22.9859" data-face-height="22.9859" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1009.39" y="176" width="25.6109" height="25.6109" rx="6.40273" fill="#64B5CD"/>
+</g>
+<g id="model-label-14" data-node-label="14" transform="translate(1022.19 308.836) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry2/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 32]</text>
+</g></g>
+<g data-node="15" data-category="Convolution"><title>entry2/sep1/pointwise [1 x 17 x 17 x 64]</title>
+<g id="model-glyph-15" data-left="1078.87" data-right="1107.11" data-face-width="22.9859" data-face-height="22.9859" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1078.87" y="176" width="28.2359" height="28.2359" rx="7.05898" fill="#64B5CD"/>
+</g>
+<g id="model-label-15" data-node-label="15" transform="translate(1092.99 311.461) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry2/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 64]</text>
+</g></g>
+<g data-node="16" data-category="Normalization"><title>entry2/sep1/bn [1 x 17 x 17 x 64]</title>
+<g id="model-glyph-16" data-left="1149.67" data-right="1177.91" data-face-width="22.9859" data-face-height="22.9859" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1149.67" y="176" width="28.2359" height="28.2359" rx="7.05898" fill="#CC79A7"/>
+</g>
+<g id="model-label-16" data-node-label="16" transform="translate(1163.79 298.786) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry2/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 64]</text>
+</g></g>
+<g data-node="17" data-category="Activation"><title>Relu [1 x 17 x 17 x 64]</title>
+<g id="model-glyph-17" data-left="1220.47" data-right="1248.71" data-face-width="22.9859" data-face-height="22.9859" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1220.47" y="176" width="28.2359" height="28.2359" rx="7.05898" fill="#F0E442"/>
+</g>
+<g id="model-label-17" data-node-label="17" transform="translate(1234.59 298.786) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 64]</text>
+</g></g>
+<g data-node="18" data-category="Convolution"><title>entry2/sep2/depthwise [1 x 17 x 17 x 64]</title>
+<g id="model-glyph-18" data-left="1291.27" data-right="1319.51" data-face-width="22.9859" data-face-height="22.9859" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1291.27" y="176" width="28.2359" height="28.2359" rx="7.05898" fill="#64B5CD"/>
+</g>
+<g id="model-label-18" data-node-label="18" transform="translate(1305.39 311.461) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry2/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 64]</text>
+</g></g>
+<g data-node="19" data-category="Convolution"><title>entry2/sep2/pointwise [1 x 17 x 17 x 64]</title>
+<g id="model-glyph-19" data-left="1362.07" data-right="1390.31" data-face-width="22.9859" data-face-height="22.9859" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1362.07" y="176" width="28.2359" height="28.2359" rx="7.05898" fill="#64B5CD"/>
+</g>
+<g id="model-label-19" data-node-label="19" transform="translate(1376.19 311.461) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry2/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 64]</text>
+</g></g>
+<g data-node="20" data-category="Normalization"><title>entry2/sep2/bn [1 x 17 x 17 x 64]</title>
+<g id="model-glyph-20" data-left="1432.87" data-right="1461.11" data-face-width="22.9859" data-face-height="22.9859" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1432.87" y="176" width="28.2359" height="28.2359" rx="7.05898" fill="#CC79A7"/>
+</g>
+<g id="model-label-20" data-node-label="20" transform="translate(1446.99 298.786) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry2/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 17 x 17 x 64]</text>
+</g></g>
+<g data-node="21" data-category="Pooling"><title>MaxPool [1 x 9 x 9 x 64]</title>
+<g id="model-glyph-21" data-left="1509.08" data-right="1526.5" data-face-width="12.169" data-face-height="12.169" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1509.08" y="176" width="17.419" height="17.419" rx="4.35475" fill="#5ABF9A"/>
+</g>
+<g id="model-label-21" data-node-label="21" transform="translate(1517.79 279.519) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 64]</text>
+</g></g>
+<g data-node="22" data-category="Convolution"><title>entry2/skip [1 x 9 x 9 x 64]</title>
+<g id="model-glyph-22" data-left="942.683" data-right="960.102" data-face-width="12.169" data-face-height="12.169" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="942.683" y="390.711" width="17.419" height="17.419" rx="4.35475" fill="#64B5CD"/>
+</g>
+<g id="model-label-22" data-node-label="22" transform="translate(951.392 494.23) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry2/skip</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 64]</text>
+</g></g>
+<g data-node="23" data-category="Merge"><title>Add [1 x 9 x 9 x 64]</title>
+<g id="model-glyph-23" data-left="1579.88" data-right="1597.3" data-face-width="12.169" data-face-height="12.169" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1579.88" y="176" width="17.419" height="17.419" rx="4.35475" fill="#D55E00"/>
+</g>
+<g id="model-label-23" data-node-label="23" transform="translate(1588.59 279.519) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 64]</text>
+</g></g>
+<g data-node="24" data-category="Activation"><title>Relu [1 x 9 x 9 x 64]</title>
+<g id="model-glyph-24" data-left="1650.68" data-right="1668.1" data-face-width="12.169" data-face-height="12.169" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1650.68" y="176" width="17.419" height="17.419" rx="4.35475" fill="#F0E442"/>
+</g>
+<g id="model-label-24" data-node-label="24" transform="translate(1659.39 279.519) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 64]</text>
+</g></g>
+<g data-node="25" data-category="Convolution"><title>entry3/sep1/depthwise [1 x 9 x 9 x 64]</title>
+<g id="model-glyph-25" data-left="1721.48" data-right="1738.9" data-face-width="12.169" data-face-height="12.169" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1721.48" y="176" width="17.419" height="17.419" rx="4.35475" fill="#64B5CD"/>
+</g>
+<g id="model-label-25" data-node-label="25" transform="translate(1730.19 300.644) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry3/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 64]</text>
+</g></g>
+<g data-node="26" data-category="Convolution"><title>entry3/sep1/pointwise [1 x 9 x 9 x 182]</title>
+<g id="model-glyph-26" data-left="1787.44" data-right="1814.54" data-face-width="12.169" data-face-height="12.169" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1787.44" y="176" width="27.0987" height="27.0987" rx="6.77468" fill="#64B5CD"/>
+</g>
+<g id="model-label-26" data-node-label="26" transform="translate(1800.99 310.324) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry3/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 182]</text>
+</g></g>
+<g data-node="27" data-category="Normalization"><title>entry3/sep1/bn [1 x 9 x 9 x 182]</title>
+<g id="model-glyph-27" data-left="1858.24" data-right="1885.34" data-face-width="12.169" data-face-height="12.169" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1858.24" y="176" width="27.0987" height="27.0987" rx="6.77468" fill="#CC79A7"/>
+</g>
+<g id="model-label-27" data-node-label="27" transform="translate(1871.79 293.424) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry3/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 182]</text>
+</g></g>
+<g data-node="28" data-category="Activation"><title>Relu [1 x 9 x 9 x 182]</title>
+<g id="model-glyph-28" data-left="1929.04" data-right="1956.14" data-face-width="12.169" data-face-height="12.169" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1929.04" y="176" width="27.0987" height="27.0987" rx="6.77468" fill="#F0E442"/>
+</g>
+<g id="model-label-28" data-node-label="28" transform="translate(1942.59 293.424) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 182]</text>
+</g></g>
+<g data-node="29" data-category="Convolution"><title>entry3/sep2/depthwise [1 x 9 x 9 x 182]</title>
+<g id="model-glyph-29" data-left="1999.84" data-right="2026.94" data-face-width="12.169" data-face-height="12.169" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1999.84" y="176" width="27.0987" height="27.0987" rx="6.77468" fill="#64B5CD"/>
+</g>
+<g id="model-label-29" data-node-label="29" transform="translate(2013.39 310.324) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry3/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 182]</text>
+</g></g>
+<g data-node="30" data-category="Convolution"><title>entry3/sep2/pointwise [1 x 9 x 9 x 182]</title>
+<g id="model-glyph-30" data-left="2070.64" data-right="2097.74" data-face-width="12.169" data-face-height="12.169" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2070.64" y="176" width="27.0987" height="27.0987" rx="6.77468" fill="#64B5CD"/>
+</g>
+<g id="model-label-30" data-node-label="30" transform="translate(2084.19 310.324) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry3/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 182]</text>
+</g></g>
+<g data-node="31" data-category="Normalization"><title>entry3/sep2/bn [1 x 9 x 9 x 182]</title>
+<g id="model-glyph-31" data-left="2141.44" data-right="2168.54" data-face-width="12.169" data-face-height="12.169" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2141.44" y="176" width="27.0987" height="27.0987" rx="6.77468" fill="#CC79A7"/>
+</g>
+<g id="model-label-31" data-node-label="31" transform="translate(2154.99 293.424) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry3/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 9 x 9 x 182]</text>
+</g></g>
+<g data-node="32" data-category="Pooling"><title>MaxPool [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-32" data-left="2214.95" data-right="2236.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2214.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#5ABF9A"/>
+</g>
+<g id="model-label-32" data-node-label="32" transform="translate(2225.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="33" data-category="Convolution"><title>entry3/skip [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-33" data-left="1648.55" data-right="1670.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1648.55" y="365.619" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-33" data-node-label="33" transform="translate(1659.39 477.634) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">entry3/skip</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="34" data-category="Merge"><title>Add [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-34" data-left="2285.75" data-right="2307.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2285.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#D55E00"/>
+</g>
+<g id="model-label-34" data-node-label="34" transform="translate(2296.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="35" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-35" data-left="2356.55" data-right="2378.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2356.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-35" data-node-label="35" transform="translate(2367.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="36" data-category="Convolution"><title>middle1/sep1/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-36" data-left="2427.35" data-right="2449.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2427.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-36" data-node-label="36" transform="translate(2438.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle1/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="37" data-category="Convolution"><title>middle1/sep1/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-37" data-left="2498.15" data-right="2519.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2498.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-37" data-node-label="37" transform="translate(2508.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle1/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="38" data-category="Normalization"><title>middle1/sep1/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-38" data-left="2568.95" data-right="2590.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2568.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-38" data-node-label="38" transform="translate(2579.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle1/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="39" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-39" data-left="2639.75" data-right="2661.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2639.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-39" data-node-label="39" transform="translate(2650.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="40" data-category="Convolution"><title>middle1/sep2/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-40" data-left="2710.55" data-right="2732.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2710.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-40" data-node-label="40" transform="translate(2721.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle1/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="41" data-category="Convolution"><title>middle1/sep2/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-41" data-left="2781.35" data-right="2803.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2781.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-41" data-node-label="41" transform="translate(2792.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle1/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="42" data-category="Normalization"><title>middle1/sep2/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-42" data-left="2852.15" data-right="2873.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2852.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-42" data-node-label="42" transform="translate(2862.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle1/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="43" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-43" data-left="2922.95" data-right="2944.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2922.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-43" data-node-label="43" transform="translate(2933.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="44" data-category="Convolution"><title>middle1/sep3/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-44" data-left="2993.75" data-right="3015.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2993.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-44" data-node-label="44" transform="translate(3004.59 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle1/sep3/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="45" data-category="Convolution"><title>middle1/sep3/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-45" data-left="3064.55" data-right="3086.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3064.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-45" data-node-label="45" transform="translate(3075.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle1/sep3/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="46" data-category="Normalization"><title>middle1/sep3/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-46" data-left="3135.35" data-right="3157.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3135.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-46" data-node-label="46" transform="translate(3146.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle1/sep3/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="47" data-category="Merge"><title>Add [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-47" data-left="3206.15" data-right="3227.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3206.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#D55E00"/>
+</g>
+<g id="model-label-47" data-node-label="47" transform="translate(3216.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="48" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-48" data-left="3276.95" data-right="3298.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3276.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-48" data-node-label="48" transform="translate(3287.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="49" data-category="Convolution"><title>middle2/sep1/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-49" data-left="3347.75" data-right="3369.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3347.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-49" data-node-label="49" transform="translate(3358.59 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle2/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="50" data-category="Convolution"><title>middle2/sep1/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-50" data-left="3418.55" data-right="3440.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3418.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-50" data-node-label="50" transform="translate(3429.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle2/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="51" data-category="Normalization"><title>middle2/sep1/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-51" data-left="3489.35" data-right="3511.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3489.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-51" data-node-label="51" transform="translate(3500.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle2/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="52" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-52" data-left="3560.15" data-right="3581.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3560.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-52" data-node-label="52" transform="translate(3570.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="53" data-category="Convolution"><title>middle2/sep2/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-53" data-left="3630.95" data-right="3652.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3630.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-53" data-node-label="53" transform="translate(3641.79 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle2/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="54" data-category="Convolution"><title>middle2/sep2/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-54" data-left="3701.75" data-right="3723.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3701.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-54" data-node-label="54" transform="translate(3712.59 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle2/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="55" data-category="Normalization"><title>middle2/sep2/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-55" data-left="3772.55" data-right="3794.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3772.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-55" data-node-label="55" transform="translate(3783.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle2/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="56" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-56" data-left="3843.35" data-right="3865.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3843.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-56" data-node-label="56" transform="translate(3854.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="57" data-category="Convolution"><title>middle2/sep3/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-57" data-left="3914.15" data-right="3935.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3914.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-57" data-node-label="57" transform="translate(3924.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle2/sep3/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="58" data-category="Convolution"><title>middle2/sep3/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-58" data-left="3984.95" data-right="4006.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="3984.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-58" data-node-label="58" transform="translate(3995.79 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle2/sep3/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="59" data-category="Normalization"><title>middle2/sep3/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-59" data-left="4055.75" data-right="4077.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4055.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-59" data-node-label="59" transform="translate(4066.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle2/sep3/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="60" data-category="Merge"><title>Add [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-60" data-left="4126.55" data-right="4148.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4126.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#D55E00"/>
+</g>
+<g id="model-label-60" data-node-label="60" transform="translate(4137.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="61" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-61" data-left="4197.35" data-right="4219.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4197.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-61" data-node-label="61" transform="translate(4208.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="62" data-category="Convolution"><title>middle3/sep1/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-62" data-left="4268.15" data-right="4289.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4268.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-62" data-node-label="62" transform="translate(4278.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle3/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="63" data-category="Convolution"><title>middle3/sep1/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-63" data-left="4338.95" data-right="4360.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4338.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-63" data-node-label="63" transform="translate(4349.79 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle3/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="64" data-category="Normalization"><title>middle3/sep1/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-64" data-left="4409.75" data-right="4431.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4409.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-64" data-node-label="64" transform="translate(4420.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle3/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="65" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-65" data-left="4480.55" data-right="4502.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4480.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-65" data-node-label="65" transform="translate(4491.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="66" data-category="Convolution"><title>middle3/sep2/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-66" data-left="4551.35" data-right="4573.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4551.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-66" data-node-label="66" transform="translate(4562.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle3/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="67" data-category="Convolution"><title>middle3/sep2/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-67" data-left="4622.15" data-right="4643.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4622.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-67" data-node-label="67" transform="translate(4632.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle3/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="68" data-category="Normalization"><title>middle3/sep2/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-68" data-left="4692.95" data-right="4714.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4692.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-68" data-node-label="68" transform="translate(4703.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle3/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="69" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-69" data-left="4763.75" data-right="4785.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4763.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-69" data-node-label="69" transform="translate(4774.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="70" data-category="Convolution"><title>middle3/sep3/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-70" data-left="4834.55" data-right="4856.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4834.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-70" data-node-label="70" transform="translate(4845.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle3/sep3/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="71" data-category="Convolution"><title>middle3/sep3/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-71" data-left="4905.35" data-right="4927.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4905.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-71" data-node-label="71" transform="translate(4916.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle3/sep3/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="72" data-category="Normalization"><title>middle3/sep3/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-72" data-left="4976.15" data-right="4997.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="4976.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-72" data-node-label="72" transform="translate(4986.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle3/sep3/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="73" data-category="Merge"><title>Add [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-73" data-left="5046.95" data-right="5068.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5046.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#D55E00"/>
+</g>
+<g id="model-label-73" data-node-label="73" transform="translate(5057.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="74" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-74" data-left="5117.75" data-right="5139.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5117.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-74" data-node-label="74" transform="translate(5128.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="75" data-category="Convolution"><title>middle4/sep1/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-75" data-left="5188.55" data-right="5210.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5188.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-75" data-node-label="75" transform="translate(5199.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle4/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="76" data-category="Convolution"><title>middle4/sep1/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-76" data-left="5259.35" data-right="5281.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5259.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-76" data-node-label="76" transform="translate(5270.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle4/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="77" data-category="Normalization"><title>middle4/sep1/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-77" data-left="5330.15" data-right="5351.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5330.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-77" data-node-label="77" transform="translate(5340.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle4/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="78" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-78" data-left="5400.95" data-right="5422.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5400.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-78" data-node-label="78" transform="translate(5411.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="79" data-category="Convolution"><title>middle4/sep2/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-79" data-left="5471.75" data-right="5493.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5471.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-79" data-node-label="79" transform="translate(5482.59 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle4/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="80" data-category="Convolution"><title>middle4/sep2/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-80" data-left="5542.55" data-right="5564.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5542.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-80" data-node-label="80" transform="translate(5553.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle4/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="81" data-category="Normalization"><title>middle4/sep2/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-81" data-left="5613.35" data-right="5635.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5613.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-81" data-node-label="81" transform="translate(5624.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle4/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="82" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-82" data-left="5684.15" data-right="5705.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5684.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-82" data-node-label="82" transform="translate(5694.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="83" data-category="Convolution"><title>middle4/sep3/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-83" data-left="5754.95" data-right="5776.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5754.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-83" data-node-label="83" transform="translate(5765.79 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle4/sep3/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="84" data-category="Convolution"><title>middle4/sep3/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-84" data-left="5825.75" data-right="5847.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5825.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-84" data-node-label="84" transform="translate(5836.59 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle4/sep3/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="85" data-category="Normalization"><title>middle4/sep3/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-85" data-left="5896.55" data-right="5918.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5896.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-85" data-node-label="85" transform="translate(5907.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle4/sep3/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="86" data-category="Merge"><title>Add [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-86" data-left="5967.35" data-right="5989.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="5967.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#D55E00"/>
+</g>
+<g id="model-label-86" data-node-label="86" transform="translate(5978.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="87" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-87" data-left="6038.15" data-right="6059.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6038.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-87" data-node-label="87" transform="translate(6048.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="88" data-category="Convolution"><title>middle5/sep1/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-88" data-left="6108.95" data-right="6130.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6108.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-88" data-node-label="88" transform="translate(6119.79 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle5/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="89" data-category="Convolution"><title>middle5/sep1/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-89" data-left="6179.75" data-right="6201.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6179.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-89" data-node-label="89" transform="translate(6190.59 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle5/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="90" data-category="Normalization"><title>middle5/sep1/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-90" data-left="6250.55" data-right="6272.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6250.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-90" data-node-label="90" transform="translate(6261.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle5/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="91" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-91" data-left="6321.35" data-right="6343.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6321.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-91" data-node-label="91" transform="translate(6332.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="92" data-category="Convolution"><title>middle5/sep2/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-92" data-left="6392.15" data-right="6413.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6392.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-92" data-node-label="92" transform="translate(6402.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle5/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="93" data-category="Convolution"><title>middle5/sep2/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-93" data-left="6462.95" data-right="6484.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6462.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-93" data-node-label="93" transform="translate(6473.79 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle5/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="94" data-category="Normalization"><title>middle5/sep2/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-94" data-left="6533.75" data-right="6555.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6533.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-94" data-node-label="94" transform="translate(6544.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle5/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="95" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-95" data-left="6604.55" data-right="6626.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6604.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-95" data-node-label="95" transform="translate(6615.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="96" data-category="Convolution"><title>middle5/sep3/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-96" data-left="6675.35" data-right="6697.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6675.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-96" data-node-label="96" transform="translate(6686.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle5/sep3/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="97" data-category="Convolution"><title>middle5/sep3/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-97" data-left="6746.15" data-right="6767.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6746.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-97" data-node-label="97" transform="translate(6756.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle5/sep3/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="98" data-category="Normalization"><title>middle5/sep3/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-98" data-left="6816.95" data-right="6838.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6816.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-98" data-node-label="98" transform="translate(6827.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle5/sep3/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="99" data-category="Merge"><title>Add [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-99" data-left="6887.75" data-right="6909.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6887.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#D55E00"/>
+</g>
+<g id="model-label-99" data-node-label="99" transform="translate(6898.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="100" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-100" data-left="6958.55" data-right="6980.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="6958.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-100" data-node-label="100" transform="translate(6969.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="101" data-category="Convolution"><title>middle6/sep1/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-101" data-left="7029.35" data-right="7051.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7029.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-101" data-node-label="101" transform="translate(7040.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle6/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="102" data-category="Convolution"><title>middle6/sep1/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-102" data-left="7100.15" data-right="7121.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7100.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-102" data-node-label="102" transform="translate(7110.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle6/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="103" data-category="Normalization"><title>middle6/sep1/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-103" data-left="7170.95" data-right="7192.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7170.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-103" data-node-label="103" transform="translate(7181.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle6/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="104" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-104" data-left="7241.75" data-right="7263.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7241.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-104" data-node-label="104" transform="translate(7252.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="105" data-category="Convolution"><title>middle6/sep2/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-105" data-left="7312.55" data-right="7334.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7312.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-105" data-node-label="105" transform="translate(7323.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle6/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="106" data-category="Convolution"><title>middle6/sep2/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-106" data-left="7383.35" data-right="7405.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7383.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-106" data-node-label="106" transform="translate(7394.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle6/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="107" data-category="Normalization"><title>middle6/sep2/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-107" data-left="7454.15" data-right="7475.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7454.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-107" data-node-label="107" transform="translate(7464.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle6/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="108" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-108" data-left="7524.95" data-right="7546.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7524.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-108" data-node-label="108" transform="translate(7535.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="109" data-category="Convolution"><title>middle6/sep3/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-109" data-left="7595.75" data-right="7617.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7595.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-109" data-node-label="109" transform="translate(7606.59 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle6/sep3/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="110" data-category="Convolution"><title>middle6/sep3/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-110" data-left="7666.55" data-right="7688.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7666.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-110" data-node-label="110" transform="translate(7677.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle6/sep3/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="111" data-category="Normalization"><title>middle6/sep3/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-111" data-left="7737.35" data-right="7759.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7737.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-111" data-node-label="111" transform="translate(7748.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle6/sep3/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="112" data-category="Merge"><title>Add [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-112" data-left="7808.15" data-right="7829.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7808.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#D55E00"/>
+</g>
+<g id="model-label-112" data-node-label="112" transform="translate(7818.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="113" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-113" data-left="7878.95" data-right="7900.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7878.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-113" data-node-label="113" transform="translate(7889.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="114" data-category="Convolution"><title>middle7/sep1/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-114" data-left="7949.75" data-right="7971.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="7949.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-114" data-node-label="114" transform="translate(7960.59 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle7/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="115" data-category="Convolution"><title>middle7/sep1/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-115" data-left="8020.55" data-right="8042.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8020.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-115" data-node-label="115" transform="translate(8031.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle7/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="116" data-category="Normalization"><title>middle7/sep1/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-116" data-left="8091.35" data-right="8113.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8091.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-116" data-node-label="116" transform="translate(8102.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle7/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="117" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-117" data-left="8162.15" data-right="8183.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8162.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-117" data-node-label="117" transform="translate(8172.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="118" data-category="Convolution"><title>middle7/sep2/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-118" data-left="8232.95" data-right="8254.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8232.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-118" data-node-label="118" transform="translate(8243.79 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle7/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="119" data-category="Convolution"><title>middle7/sep2/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-119" data-left="8303.75" data-right="8325.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8303.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-119" data-node-label="119" transform="translate(8314.59 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle7/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="120" data-category="Normalization"><title>middle7/sep2/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-120" data-left="8374.55" data-right="8396.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8374.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-120" data-node-label="120" transform="translate(8385.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle7/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="121" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-121" data-left="8445.35" data-right="8467.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8445.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-121" data-node-label="121" transform="translate(8456.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="122" data-category="Convolution"><title>middle7/sep3/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-122" data-left="8516.15" data-right="8537.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8516.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-122" data-node-label="122" transform="translate(8526.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle7/sep3/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="123" data-category="Convolution"><title>middle7/sep3/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-123" data-left="8586.95" data-right="8608.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8586.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-123" data-node-label="123" transform="translate(8597.79 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle7/sep3/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="124" data-category="Normalization"><title>middle7/sep3/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-124" data-left="8657.75" data-right="8679.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8657.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-124" data-node-label="124" transform="translate(8668.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle7/sep3/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="125" data-category="Merge"><title>Add [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-125" data-left="8728.55" data-right="8750.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8728.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#D55E00"/>
+</g>
+<g id="model-label-125" data-node-label="125" transform="translate(8739.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="126" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-126" data-left="8799.35" data-right="8821.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8799.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-126" data-node-label="126" transform="translate(8810.19 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="127" data-category="Convolution"><title>middle8/sep1/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-127" data-left="8870.15" data-right="8891.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8870.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-127" data-node-label="127" transform="translate(8880.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle8/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="128" data-category="Convolution"><title>middle8/sep1/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-128" data-left="8940.95" data-right="8962.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="8940.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-128" data-node-label="128" transform="translate(8951.79 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle8/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="129" data-category="Normalization"><title>middle8/sep1/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-129" data-left="9011.75" data-right="9033.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9011.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-129" data-node-label="129" transform="translate(9022.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle8/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="130" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-130" data-left="9082.55" data-right="9104.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9082.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-130" data-node-label="130" transform="translate(9093.39 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="131" data-category="Convolution"><title>middle8/sep2/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-131" data-left="9153.35" data-right="9175.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9153.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-131" data-node-label="131" transform="translate(9164.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle8/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="132" data-category="Convolution"><title>middle8/sep2/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-132" data-left="9224.15" data-right="9245.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9224.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-132" data-node-label="132" transform="translate(9234.99 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle8/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="133" data-category="Normalization"><title>middle8/sep2/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-133" data-left="9294.95" data-right="9316.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9294.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-133" data-node-label="133" transform="translate(9305.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle8/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="134" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-134" data-left="9365.75" data-right="9387.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9365.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-134" data-node-label="134" transform="translate(9376.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="135" data-category="Convolution"><title>middle8/sep3/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-135" data-left="9436.55" data-right="9458.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9436.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-135" data-node-label="135" transform="translate(9447.39 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle8/sep3/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="136" data-category="Convolution"><title>middle8/sep3/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-136" data-left="9507.35" data-right="9529.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9507.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-136" data-node-label="136" transform="translate(9518.19 309.14) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle8/sep3/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="137" data-category="Normalization"><title>middle8/sep3/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-137" data-left="9578.15" data-right="9599.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9578.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-137" data-node-label="137" transform="translate(9588.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">middle8/sep3/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="138" data-category="Merge"><title>Add [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-138" data-left="9648.95" data-right="9670.64" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9648.95" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#D55E00"/>
+</g>
+<g id="model-label-138" data-node-label="138" transform="translate(9659.79 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="139" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-139" data-left="9719.75" data-right="9741.44" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9719.75" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-139" data-node-label="139" transform="translate(9730.59 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="140" data-category="Convolution"><title>exit/sep1/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-140" data-left="9790.55" data-right="9812.24" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9790.55" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-140" data-node-label="140" transform="translate(9801.39 296.465) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">exit/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="141" data-category="Convolution"><title>exit/sep1/pointwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-141" data-left="9861.35" data-right="9883.04" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9861.35" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-141" data-node-label="141" transform="translate(9872.19 296.465) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">exit/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="142" data-category="Normalization"><title>exit/sep1/bn [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-142" data-left="9932.15" data-right="9953.84" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9932.15" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#CC79A7"/>
+</g>
+<g id="model-label-142" data-node-label="142" transform="translate(9942.99 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">exit/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="143" data-category="Activation"><title>Relu [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-143" data-left="10002.9" data-right="10024.6" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10002.9" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#F0E442"/>
+</g>
+<g id="model-label-143" data-node-label="143" transform="translate(10013.8 288.015) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="144" data-category="Convolution"><title>exit/sep2/depthwise [1 x 5 x 5 x 182]</title>
+<g id="model-glyph-144" data-left="10073.7" data-right="10095.4" data-face-width="6.76056" data-face-height="6.76056" data-depth="14.9297" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10073.7" y="176" width="21.6903" height="21.6903" rx="5.42256" fill="#64B5CD"/>
+</g>
+<g id="model-label-144" data-node-label="144" transform="translate(10084.6 296.465) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">exit/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 182]</text>
+</g></g>
+<g data-node="145" data-category="Convolution"><title>exit/sep2/pointwise [1 x 5 x 5 x 256]</title>
+<g id="model-glyph-145" data-left="10141.5" data-right="10169.3" data-face-width="6.76056" data-face-height="6.76056" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10141.5" y="176" width="27.7606" height="27.7606" rx="6.94014" fill="#64B5CD"/>
+</g>
+<g id="model-label-145" data-node-label="145" transform="translate(10155.4 302.536) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">exit/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 256]</text>
+</g></g>
+<g data-node="146" data-category="Normalization"><title>exit/sep2/bn [1 x 5 x 5 x 256]</title>
+<g id="model-glyph-146" data-left="10212.3" data-right="10240.1" data-face-width="6.76056" data-face-height="6.76056" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10212.3" y="176" width="27.7606" height="27.7606" rx="6.94014" fill="#CC79A7"/>
+</g>
+<g id="model-label-146" data-node-label="146" transform="translate(10226.2 294.086) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">exit/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 256]</text>
+</g></g>
+<g data-node="147" data-category="Pooling"><title>MaxPool [1 x 3 x 3 x 256]</title>
+<g id="model-glyph-147" data-left="10284.5" data-right="10309.5" data-face-width="4.05634" data-face-height="4.05634" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10284.5" y="176" width="25.0563" height="25.0563" rx="6.26408" fill="#5ABF9A"/>
+</g>
+<g id="model-label-147" data-node-label="147" transform="translate(10297 291.381) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 256]</text>
+</g></g>
+<g data-node="148" data-category="Convolution"><title>exit/skip [1 x 3 x 3 x 256]</title>
+<g id="model-glyph-148" data-left="9718.06" data-right="9743.12" data-face-width="4.05634" data-face-height="4.05634" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="9718.06" y="378.34" width="25.0563" height="25.0563" rx="6.26408" fill="#64B5CD"/>
+</g>
+<g id="model-label-148" data-node-label="148" transform="translate(9730.59 493.722) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">exit/skip</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 256]</text>
+</g></g>
+<g data-node="149" data-category="Merge"><title>Add [1 x 3 x 3 x 256]</title>
+<g id="model-glyph-149" data-left="10355.3" data-right="10380.3" data-face-width="4.05634" data-face-height="4.05634" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10355.3" y="176" width="25.0563" height="25.0563" rx="6.26408" fill="#D55E00"/>
+</g>
+<g id="model-label-149" data-node-label="149" transform="translate(10367.8 291.381) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Add</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 256]</text>
+</g></g>
+<g data-node="150" data-category="Convolution"><title>final/sep1/depthwise [1 x 3 x 3 x 256]</title>
+<g id="model-glyph-150" data-left="10426.1" data-right="10451.1" data-face-width="4.05634" data-face-height="4.05634" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10426.1" y="176" width="25.0563" height="25.0563" rx="6.26408" fill="#64B5CD"/>
+</g>
+<g id="model-label-150" data-node-label="150" transform="translate(10438.6 304.056) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">final/sep1/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 256]</text>
+</g></g>
+<g data-node="151" data-category="Convolution"><title>final/sep1/pointwise [1 x 3 x 3 x 384]</title>
+<g id="model-glyph-151" data-left="10491.6" data-right="10527.2" data-face-width="4.05634" data-face-height="4.05634" data-depth="31.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10491.6" y="176" width="35.5563" height="35.5563" rx="8.88908" fill="#64B5CD"/>
+</g>
+<g id="model-label-151" data-node-label="151" transform="translate(10509.4 314.556) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">final/sep1/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 384]</text>
+</g></g>
+<g data-node="152" data-category="Normalization"><title>final/sep1/bn [1 x 3 x 3 x 384]</title>
+<g id="model-glyph-152" data-left="10562.4" data-right="10598" data-face-width="4.05634" data-face-height="4.05634" data-depth="31.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10562.4" y="176" width="35.5563" height="35.5563" rx="8.88908" fill="#CC79A7"/>
+</g>
+<g id="model-label-152" data-node-label="152" transform="translate(10580.2 301.881) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">final/sep1/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 384]</text>
+</g></g>
+<g data-node="153" data-category="Activation"><title>Relu [1 x 3 x 3 x 384]</title>
+<g id="model-glyph-153" data-left="10633.2" data-right="10668.8" data-face-width="4.05634" data-face-height="4.05634" data-depth="31.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10633.2" y="176" width="35.5563" height="35.5563" rx="8.88908" fill="#F0E442"/>
+</g>
+<g id="model-label-153" data-node-label="153" transform="translate(10651 301.881) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 384]</text>
+</g></g>
+<g data-node="154" data-category="Convolution"><title>final/sep2/depthwise [1 x 3 x 3 x 384]</title>
+<g id="model-glyph-154" data-left="10704" data-right="10739.6" data-face-width="4.05634" data-face-height="4.05634" data-depth="31.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10704" y="176" width="35.5563" height="35.5563" rx="8.88908" fill="#64B5CD"/>
+</g>
+<g id="model-label-154" data-node-label="154" transform="translate(10721.8 314.556) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">final/sep2/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 384]</text>
+</g></g>
+<g data-node="155" data-category="Convolution"><title>final/sep2/pointwise [1 x 3 x 3 x 512]</title>
+<g id="model-glyph-155" data-left="10769.6" data-right="10815.6" data-face-width="4.05634" data-face-height="4.05634" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10769.6" y="176" width="46.0563" height="46.0563" rx="11.5141" fill="#64B5CD"/>
+</g>
+<g id="model-label-155" data-node-label="155" transform="translate(10792.6 325.056) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">final/sep2/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 512]</text>
+</g></g>
+<g data-node="156" data-category="Normalization"><title>final/sep2/bn [1 x 3 x 3 x 512]</title>
+<g id="model-glyph-156" data-left="10840.4" data-right="10886.4" data-face-width="4.05634" data-face-height="4.05634" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10840.4" y="176" width="46.0563" height="46.0563" rx="11.5141" fill="#CC79A7"/>
+</g>
+<g id="model-label-156" data-node-label="156" transform="translate(10863.4 312.381) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">final/sep2/bn</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 512]</text>
+</g></g>
+<g data-node="157" data-category="Activation"><title>Relu [1 x 3 x 3 x 512]</title>
+<g id="model-glyph-157" data-left="10911.2" data-right="10957.2" data-face-width="4.05634" data-face-height="4.05634" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10911.2" y="176" width="46.0563" height="46.0563" rx="11.5141" fill="#F0E442"/>
+</g>
+<g id="model-label-157" data-node-label="157" transform="translate(10934.2 312.381) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 512]</text>
+</g></g>
+<g data-node="158" data-category="Operation"><title>Sum [1 x 512]</title>
+<g id="model-glyph-158" data-left="10995.5" data-right="11014.5" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="10995.5" y="176" width="19" height="97" rx="4.75" fill="#94A3B8"/>
+</g>
+<g id="model-label-158" data-node-label="158" transform="translate(11005 329.525) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Sum</text>
+<text x="0" y="12.35" font-size="13">[1 x 512]</text>
+</g></g>
+<g data-node="159" data-category="Operation"><title>Div [1 x 512]</title>
+<g id="model-glyph-159" data-left="11066.3" data-right="11085.3" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="11066.3" y="176" width="19" height="97" rx="4.75" fill="#94A3B8"/>
+</g>
+<g id="model-label-159" data-node-label="159" transform="translate(11075.8 329.525) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Div</text>
+<text x="0" y="12.35" font-size="13">[1 x 512]</text>
+</g></g>
+<g data-node="160" data-category="Dense"><title>output [1 x 10]</title>
+<g id="model-glyph-160" data-left="11137.1" data-right="11156.1" data-face-width="18" data-face-height="1.875" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<circle data-unit="0" cx="11146.6" cy="176.16" r="0.159722" fill="#748BCB"/>
+<circle data-unit="1" cx="11146.6" cy="176.479" r="0.159722" fill="#748BCB"/>
+<circle data-unit="2" cx="11146.6" cy="176.799" r="0.159722" fill="#748BCB"/>
+<circle data-unit="3" cx="11146.6" cy="177.118" r="0.159722" fill="#748BCB"/>
+<circle cx="11146.6" cy="177.35" r="0.0271528" stroke="none" fill="#172033"/>
+<circle cx="11146.6" cy="177.438" r="0.0271528" stroke="none" fill="#172033"/>
+<circle cx="11146.6" cy="177.525" r="0.0271528" stroke="none" fill="#172033"/>
+<circle data-unit="6" cx="11146.6" cy="177.757" r="0.159722" fill="#748BCB"/>
+<circle data-unit="7" cx="11146.6" cy="178.076" r="0.159722" fill="#748BCB"/>
+<circle data-unit="8" cx="11146.6" cy="178.396" r="0.159722" fill="#748BCB"/>
+<circle data-unit="9" cx="11146.6" cy="178.715" r="0.159722" fill="#748BCB"/>
+</g>
+<g id="model-label-160" data-node-label="160" transform="translate(11146.6 231.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+<g data-node="161" data-category="Output"><title>Output [1 x 10]</title>
+<g id="model-glyph-161" data-left="11207.9" data-right="11226.9" data-face-width="18" data-face-height="1.875" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="11207.9" y="176" width="19" height="2.875" rx="0.71875" fill="#6C8194"/>
+</g>
+<g id="model-label-161" data-node-label="161" transform="translate(11217.4 231.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+</g></svg>

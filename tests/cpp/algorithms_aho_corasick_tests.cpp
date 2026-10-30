@@ -153,3 +153,30 @@ TEST(AhoCorasick, RandomCrossCheckAgainstNaiveReference) {
             << "trial " << trial << " text='" << text << "'";
     }
 }
+
+TEST(AhoCorasick, ReusableAutomatonTableAndCounts) {
+    const datamunge::algorithms::AhoCorasick ac({"he", "she", "his", "hers"});
+    EXPECT_EQ(ac.state_count(), 10U);  // root + h,he,her,hers,hi,his,s,sh,she
+    const auto table = ac.automaton();
+    ASSERT_EQ(table.nrows(), 10U);
+    for (std::size_t r = 0; r < table.nrows(); ++r)
+        if (table.string_at("prefix", r) == "she") {
+            EXPECT_EQ(table.string_at("fail_prefix", r), "he");
+            EXPECT_EQ(table.string_at("outputs", r), "1");
+        }
+    EXPECT_EQ(ac.count("ushers"), (std::vector<std::size_t>{1, 1, 0, 1}));
+    const auto longest = ac.longest_at("ushers");
+    EXPECT_EQ(longest.at(2), 3U);  // "hers" beats "he" at position 2
+}
+
+TEST(AhoCorasick, ScanWorkIsLinear) {
+    std::mt19937_64 rng(5);
+    std::string text(20000, 'a');
+    for (auto& c : text) c = "ab"[rng() % 2];
+    const datamunge::algorithms::AhoCorasick ac({"aaaa", "abab", "aab", "b", "bbbbbbb"});
+    const auto stats = ac.scan_stats(text);
+    EXPECT_EQ(stats.characters, text.size());
+    EXPECT_LE(stats.failure_steps, stats.goto_steps);
+    EXPECT_LE(stats.goto_steps, stats.characters);
+    EXPECT_EQ(stats.matches, ac.search(text).size());
+}

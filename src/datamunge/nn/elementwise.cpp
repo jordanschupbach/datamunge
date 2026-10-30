@@ -815,6 +815,7 @@ Tensor logical_not(const Tensor& x) {
 }
 
 Tensor is_finite(const Tensor& x) {
+  detail::require_cpu(x,"is_finite");
   if (!is_floating(x.dtype())) return full(x.shape(), 1.0, DType::Bool);
   NoGradGuard guard;
   return dispatch_float(x.dtype(), "is_finite", [&](auto tag) {
@@ -824,6 +825,7 @@ Tensor is_finite(const Tensor& x) {
 }
 
 Tensor is_nan(const Tensor& x) {
+  detail::require_cpu(x,"is_nan");
   if (!is_floating(x.dtype())) return zeros(x.shape(), DType::Bool);
   NoGradGuard guard;
   return dispatch_float(x.dtype(), "is_nan", [&](auto tag) {

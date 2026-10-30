@@ -1,4 +1,5 @@
 # Native Python NN example. The model and training loop execute in Python.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/undercomplete_autoencoder.py
 """784 -> 32 ReLU -> 784 sigmoid; reconstruction-only Adam training."""
 import json
 import math

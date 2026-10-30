@@ -1,0 +1,108 @@
+//? Title: NumPy Interoperability: Layout and Byte Order
+//? Subtitle: Cross-language agreement includes layout, byte order, dtype and shape
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+NPY files describe logical coordinates independently of payload layout and byte order.
+Native C++ writes Fortran-order and big-endian variants, checks their decoded coordinates,
+and exports a transposed array. The regression suite also retains independently NumPy-written
+fixtures; the executable report requires no Python data-preparation step.
+)
+\toc
+
+> The method
+
+An NPY header records a dtype descriptor, a Fortran-order flag and a shape tuple; the payload
+contains contiguous elements in that declared order. For a two by three matrix, the address
+rules differ:
+
+$$
+\mathrm{Coffset}(i,j)=3i+j,\qquad \mathrm{Foffset}(i,j)=i+2j.
+$$
+\alttext(C order advances columns first, while Fortran order advances rows first.)
+
+Endianness is independent of this index mapping. The native reader converts layout into logical
+tensor coordinates and swaps multibyte values when required. NPZ is a ZIP archive of named NPY
+members; stored or deflated members are accepted. Native writes default to little-endian C-order NPY
+version 1.0; explicit writer options select Fortran order and big-endian bytes. Object arrays are unsupported: no pickle is loaded. Both the reader and writer copy
+data, so this is file interchange rather than zero-copy shared memory. Work is O(payload bytes).
+
+The concept diagram has a retained TikZ source in `diagrams/numpy_interop_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/numpy_interop_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/numpy_interop_concept.tikz > build/numpy_interop_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/numpy_interop_concept.svg build/numpy_interop_concept.dvi > build/numpy_interop_concept.render.log 2>&1
+printf 'Rendered build/numpy_interop_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/numpy_interop_concept.svg from local TikZ source.
+// \image(figures/numpy_interop_concept.svg)
+// result_end
+\caption(Cross-language agreement includes layout, byte order, dtype and shape)
+\alttext(Native NPY writer; Fortran and big-endian storage Then Logical coordinate checks Then Native transpose export; specified coordinates verified.)
+
+> Simple examples
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/nn/array_io.hpp>
+int main(){
+ namespace n=dm::nn;
+ std::filesystem::create_directories("build");
+ const auto x=n::arange(0.,6.,1.,n::DType::Float64).reshape({2,3});
+ n::save_npy("build/numpy_interop_fortran.npy",x,true,false);
+ n::save_npy("build/numpy_interop_big.npy",x.to(n::DType::Int32),false,true);
+ std::print("Native format variants: [[0,1,2],[3,4,5]], Fortran Float64 and big-endian Int32.\n");
+}
+```
+// result_begin:
+// Native format variants: [[0,1,2],[3,4,5]], Fortran Float64 and big-endian Int32.
+// result_end
+
+```{cpp, results="markdown", file="figures/numpy_interop_values.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;const auto f=n::load_npy("build/numpy_interop_fortran.npy"),b=n::load_npy("build/numpy_interop_big.npy");
+ if(f.shape()!=n::Shape({2,3})||f.to_vector<int>()!=std::vector<int>({0,1,2,3,4,5})||f.to_vector<int>()!=b.to_vector<int>())return 1;
+ n::save_npy("build/numpy_interop_cpp.npy",n::transpose(f));
+ auto p=dm::graphics::RPlot::create();p.lines({0,1,2,3,4,5},f.to_vector<double>(),"logical values")
+ .title("Logical values survive a layout change").x_label("logical flattened index").y_label("value");
+ p.size(820,420).save_svg("build/numpy_interop_values.svg");std::print("Fortran shape {}; big-endian dtype {}; C++ transpose saved as [3,2].\n",n::shape_str(f.shape()),n::dtype_name(b.dtype()));
+}
+```
+// result_begin: markdown
+Fortran shape [2, 3]; big-endian dtype int32; C++ transpose saved as [3,2].
+\image(figures/numpy_interop_values.svg)
+// result_end
+\caption(Layout and byte order change storage, while the decoded logical values remain the same.)
+\alttext(Layout and byte order change storage, while the decoded logical values remain the same.)
+
+> Checking the theory
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/nn/array_io.hpp>
+int main(){
+ namespace n=dm::nn;
+ const auto x=n::load_npy("build/numpy_interop_cpp.npy");
+ if(x.shape()!=n::Shape{3,2}||x.dtype()!=n::DType::Float64||x.to_vector<double>()!=std::vector<double>{0,3,1,4,2,5})return 1;
+ std::print("All six specified transposed coordinates, Float64 dtype and [3,2] shape verified.\n");
+}
+```
+// result_begin:
+// All six specified transposed coordinates, Float64 dtype and [3,2] shape verified.
+// result_end
+
+> Conclusion
+
+The native runs agree with all six specified coordinates in each layout. Independent NumPy-written reader fixtures remain in the regression suite. Header metadata is as
+important as payload bytes. This workflow checks numeric file interoperability; it does not
+provide shared memory or load arbitrary NumPy object arrays.
+
+> References
+
+- [NumPy NPY format specification](https://numpy.org/doc/stable/reference/generated/numpy.lib.format.html).

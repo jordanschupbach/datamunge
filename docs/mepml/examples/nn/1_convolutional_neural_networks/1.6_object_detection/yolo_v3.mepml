@@ -1,0 +1,671 @@
+//? Title: YOLO v3 residual features and global three-scale assignment
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Verify exact independent-logistic loss derivatives, global prior/scale matching and full80/20-class graphs, then visibly fit the complete compact75-convolution model with multiscale Adam, paired BN checkpoints and actual digit scenes.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v3.cpp`.
+
+> The method
+
+YOLO v3 combines residual Darknet53 features with three top-down prediction scales. A target selects one prior globally; independent class/objectness logistic losses and area-weighted coordinates train all scales in one visible tensor optimization loop.
+
+The editable concept diagram is `diagrams/yolo_v3_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/yolo_v3_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/yolo_v3_concept.tikz > build/yolo_v3_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/yolo_v3_concept.svg build/yolo_v3_concept.dvi > build/yolo_v3_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/yolo_v3_concept.svg)
+// result_end
+\caption(YOLO v3 residual features and global three-scale assignment)
+\alttext(Nine box priors; One global match; then Residual Darknet53; Three scale heads; then Explicit Adam loop; Independent class BCE.)
+
+> Executed tensor architecture
+
+All displayed prediction branches are joined only to keep them reachable in one diagram; the flattened display output is not postprocessed detection or pose inference.
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/yolo_v3_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  m::DetectionSceneConfig cfg;
+  m::YoloV3Config         model;
+  n::ParameterStore       p(17), state(17);
+  cfg.scenes          = 80;
+  cfg.seed            = 11;
+  model.classes       = 10;
+  model.width_divisor = 8;
+  model.grayscale     = true;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out = m::YoloV3(p, state, image, model, false);
+        return n::concat(
+            {out.raw[0].reshape({1, -1}), out.raw[1].reshape({1, -1}), out.raw[2].reshape({1, -1})},
+            1);
+      },
+      "YOLO v3 residual features and global three-scale assignment");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 1}), options);
+  diagram.save_svg("build/yolo_v3_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+327 displayed nodes; 976795 reachable learned values.
+\image(figures/yolo_v3_architecture.svg)
+// result_end
+\caption(Executed yolo v3 tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right yolo v3 architecture with rotated names and exact output shapes.)
+
+> Independent logistic classes and the exact three-head loss
+
+YOLO v3 uses independent class sigmoid logits instead of a per-anchor softmax.
+The stable elementwise loss is `softplus(logit)-logit*target`; its derivative
+at zero is `.5-target`. The fixture deliberately gives one anchor two positive
+class targets to verify independent labels. The actual digit-scene targets
+below remain single-label one-hot assignments.
+
+Coordinates are sigmoid cell offsets plus raw log prior-size ratios, with
+`.5*squared_error*(2-relative_target_area)` at positive anchors. Objectness BCE
+uses target1 on positives and a detached ignore mask. Class BCE sums all class
+channels on positives. All three heads sum before division by total batch
+positives, floored at one. Empty scenes still train background objectness.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto type = n::DType::Float64;
+  std::array<n::Tensor, 3> raw;
+  m::YoloV3Targets t;
+  for (int l = 0; l < 3; ++l) {
+    raw[l] = n::zeros({1, 1, 1, 3, 7}, type).requires_grad_();
+    t.levels[l] = {n::zeros({1, 1, 1, 3, 4}, type), n::zeros({1, 1, 1, 3, 2}, type),
+                   n::zeros({1, 1, 1, 3}, type),    n::zeros({1, 1, 1, 3}, type),
+                   n::zeros({1, 1, 1, 3}, type),    n::zeros({1, 1, 1, 3}, type)};
+  }
+  const auto positive = n::from_vector(std::vector<double>{1, 0, 0}, {1, 1, 1, 3});
+  auto &v = t.levels[0];
+  v.geometry = n::from_vector(std::vector<double>{.5, .5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                              {1, 1, 1, 3, 4});
+  v.classes = n::from_vector(std::vector<double>{1, 1, 0, 0, 0, 0}, {1, 1, 1, 3, 2});
+  v.positive = v.objectness_weight = v.geometry_weight = positive;
+  double error = 0;
+  const auto check = [&](double expected, const std::vector<double> &derivative) {
+    const auto loss = m::YoloV3Loss(raw, t, 2);
+    error = std::max(error, std::abs(loss.item() - expected));
+    const auto g = n::grad(loss, {raw[0], raw[1], raw[2]});
+    for (int l = 0; l < 3; ++l)
+      for (int i = 0; i < 21; ++i)
+        error = std::max(error, std::abs(g[l].reshape({21}).at({i}) -
+                                         (l == 0 && i < 7 ? derivative[i] : 0.)));
+  };
+  check(3 * std::log(2.), {0, 0, 0, 0, -.5, -.5, -.5});
+  v.geometry = n::from_vector(std::vector<double>{.25, .75, .2, -.3, 0, 0, 0, 0, 0, 0, 0, 0},
+                              {1, 1, 1, 3, 4});
+  v.geometry_weight = positive * 2.;
+  check(3 * std::log(2.) + .255, {.125, -.125, -.4, .6, -.5, -.5, -.5});
+  v.positive = n::zeros({1, 1, 1, 3}, type);
+  v.geometry_weight = v.positive;
+  check(std::log(2.), {0, 0, 0, 0, .5, 0, 0});
+  v.objectness_weight = v.positive;
+  check(0, {0, 0, 0, 0, 0, 0, 0});
+  if (error > 1e-12)
+    return 1;
+  std::print("All four complete multi-label/coordinate/background/ignored fixtures pass "
+             "across every head derivative; max error {:.12f}. Fixtures isolate losses with "
+             "equal1x1 grids; actual models double grids coarse to fine.\n",
+             error);
+}
+```
+// result_begin: markdown
+All four complete multi-label/coordinate/background/ignored fixtures pass across every head derivative; max error 0.000000000000. Fixtures isolate losses with equal1x1 grids; actual models double grids coarse to fine.
+// result_end
+
+> Nine fit-only pixel priors and one global assignment
+
+Nine priors are clustered from all boxes in the64 fitting scenes only, using
+tensor IoU clustering. They are in **input-pixel** units at the base64-pixel
+scene size, unlike YOLO v2's grid-unit priors. Sorted by area, the smallest
+three belong to the fine stride8 head, middle three to stride16 and largest
+three to coarse stride32. Each truth chooses exactly one best prior globally,
+first on IoU ties, then its centre cell at that scale. Same-slot collisions
+keep the largest target area, first on ties.
+
+Unassigned predictions overlapping **any** truth at current decoded IoU>.5
+are ignored for objectness, across every scale. Positives restore weight1.
+The source-compatible fixture assigns8/16/32-pixel objects once each to
+fine/middle/coarse heads and checks the resulting area weights. Fitting uses
+actual cached MNIST scenes, with no validation/test contribution to priors.
+
+```{cpp, results="markdown", file="figures/yolo_v3_priors.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto digits = n::load_mnist((cache / "mnist").string(), "train");
+  m::DetectionSceneConfig cfg;
+  cfg.scenes = 80;
+  cfg.seed = 11;
+  const auto scenes = m::MakeTensorDetectionScenes(
+      n::slice_axis(digits.images, 0, 0, 2048), n::slice_axis(digits.labels, 0, 0, 2048), cfg);
+  std::vector<n::Tensor> samples;
+  for (int row = 0; row < 64; ++row)
+    samples.push_back(n::slice_axis(scenes.boxes[row], 1, 2, 4) -
+                      n::slice_axis(scenes.boxes[row], 1, 0, 2));
+  const auto dimensions = n::concat(samples, 0),
+             priors = m::ClusterYoloDimensions(dimensions, 9);
+  const auto d = n::unstack(dimensions, 1);
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(d[1].to_vector<double>(), d[0].to_vector<double>(), "fit dimensions",
+              {100, 116, 139});
+  const std::array<dm::graphics::RGB, 3> colors = {
+      {{22, 163, 74}, {37, 99, 235}, {220, 38, 38}}};
+  const std::array<std::string, 3> names = {"fine priors", "middle priors", "coarse priors"};
+  std::print("| scale | prior height | prior width |\n|---|---:|---:|\n");
+  for (int group = 0; group < 3; ++group) {
+    const auto p = n::unstack(n::slice_axis(priors, 0, 3 * group, 3 * group + 3), 1);
+    plot.points(p[1].to_vector<double>(), p[0].to_vector<double>(), names[group],
+                colors[group]);
+    for (int a = 0; a < 3; ++a)
+      std::print("| {} | {:.6f} | {:.6f} |\n", names[group], p[0].at({a}), p[1].at({a}));
+  }
+  plot.title("Nine fitting-box pixel priors")
+      .x_label("width in input pixels")
+      .y_label("height in input pixels")
+      .x_limits(0, 40)
+      .y_limits(0, 40);
+  std::filesystem::create_directories("build");
+  plot.size(900, 700).save_svg("build/yolo_v3_priors.svg");
+  std::array<n::Tensor, 3> raw;
+  for (int l = 0; l < 3; ++l)
+    raw[l] = n::zeros({1, 2 << l, 2 << l, 3, 8});
+  m::TensorDetectionScenes fixture;
+  fixture.images = n::zeros({1, 64, 64, 1});
+  fixture.boxes = {
+      n::tensor({24., 24., 32., 32., 16., 16., 32., 32., 0., 0., 32., 32.}, {3, 4})};
+  fixture.labels = {n::from_vector(std::vector<std::int64_t>{0, 1, 2})};
+  const auto t = m::MakeYoloV3Targets(raw,
+                                      n::tensor({4., 4., 6., 6., 8., 8., 12., 12., 16., 16.,
+                                                 20., 20., 24., 24., 32., 32., 48., 48.},
+                                                {9, 2}),
+                                      fixture, {0});
+  if (t.collisions != 0)
+    return 1;
+  int ignored = 0;
+  for (int l = 0; l < 3; ++l) {
+    if (n::sum(t.levels[l].positive).item() != 1)
+      return 1;
+    const double side = 32 >> l;
+    const double weight = n::sum(t.levels[l].geometry_weight).item();
+    if (std::abs(weight - (2. - side * side / 4096.)) > 1e-6)
+      return 1;
+    ignored += n::count_nonzero(n::logical_and(n::equal(t.levels[l].positive, 0.),
+                                               n::equal(t.levels[l].objectness_weight, 0.)))
+                   .item<int>();
+    std::print("Fixture stride{}: one positive, relative-area coordinate weight {:.6f}.\n",
+               32 >> l, weight);
+  }
+  if (ignored < 3)
+    return 1;
+  std::print("{} actual fit-box samples; fixture has{} ignored nonresponsible overlaps. No "
+             "held-out box fits priors.\n",
+             dimensions.shape()[0], ignored);
+}
+```
+// result_begin: markdown
+| scale | prior height | prior width |
+|---|---:|---:|
+| fine priors | 13.000000 | 3.000000 |
+| fine priors | 12.000000 | 4.600000 |
+| fine priors | 16.600000 | 5.000000 |
+| middle priors | 14.583333 | 9.750000 |
+| middle priors | 19.750000 | 7.250000 |
+| middle priors | 11.684211 | 12.473684 |
+| coarse priors | 18.216217 | 12.783784 |
+| coarse priors | 16.000000 | 17.608696 |
+| coarse priors | 21.045454 | 18.045454 |
+Fixture stride32: one positive, relative-area coordinate weight 1.750000.
+Fixture stride16: one positive, relative-area coordinate weight 1.937500.
+Fixture stride8: one positive, relative-area coordinate weight 1.984375.
+162 actual fit-box samples; fixture has4 ignored nonresponsible overlaps. No held-out box fits priors.
+\image(figures/yolo_v3_priors.svg)
+// result_end
+\caption(Every fitting-box dimension pair and all nine learned pixel priors. Colours identify the three prior groups assigned to fine/middle/coarse heads. This is fit-only dimension preprocessing, not detector accuracy.)
+\alttext(Every fitting-box dimension pair and all nine learned pixel priors. Colours identify the three prior groups assigned to fine/middle/coarse heads. This is fit-only dimension preprocessing, not detector accuracy.)
+
+> Full residual/top-down graphs and compact widths
+
+Darknet53 stages contain1/2/8/8/4 residual units after padded stride-two
+convolutions. Three top-down routes use five alternating1x1/3x3 convolutions,
+then3x3/linear prediction heads. Reduced routes nearest-upsample and join finer
+backbone features. There are75 convolutions total, with BN/leaky-ReLU.1 on
+feature convolutions and biased linear prediction layers.
+
+The initialized full80/20-class models have61,949,149/61,626,049 learned scalars,
+52,608 state scalars and222 learned tensor gradients each. Both full128-pixel
+backward probes execute below. No pretrained weights, COCO/VOC training or
+benchmark accuracy is implied. The complete compact10-class, width-divisor8,
+grayscale model has976,795 learned/6,576 state scalars and supports64/96/128px
+multiscale inputs without changing learned shapes.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  for (int classes : {80, 20}) {
+    n::ParameterStore p(17), state(17);
+    n::models::YoloV3Config cfg;
+    cfg.classes = classes;
+    cfg.update_stats = false;
+    const auto net = n::models::YoloV3(
+        p, state, n::sin(.13 * n::arange(0, 128 * 128 * 3)).reshape({1, 128, 128, 3}), cfg,
+        true);
+    const auto g = n::grad(n::mean(n::square(net.raw[0])) + n::mean(n::square(net.raw[1])) +
+                               n::mean(n::square(net.raw[2])),
+                           p.parameters());
+    if (p.count() != (classes == 80 ? 61949149 : 61626049) || state.count() != 52608 ||
+        g.size() != 222)
+      return 1;
+    for (const auto &v : g)
+      if (!v.defined() || !std::isfinite(n::sum(n::square(v)).item()))
+        return 1;
+    std::print("Full{}-class YOLO v3: {} learned/{} state scalars, all{} finite defined "
+               "tensor gradients at128px. Heads4/8/16, three priors each.\n",
+               classes, p.count(), state.count(), g.size());
+  }
+}
+```
+// result_begin: markdown
+Full80-class YOLO v3: 61949149 learned/52608 state scalars, all222 finite defined tensor gradients at128px. Heads4/8/16, three priors each.
+Full20-class YOLO v3: 61626049 learned/52608 state scalars, all222 finite defined tensor gradients at128px. Heads4/8/16, three priors each.
+// result_end
+
+> Actual scenes and visible multiscale Adam fitting
+
+The split uses64 fit/16 validation scenes from the first2048 official MNIST
+training digits(seed11), and eight test scenes from the first512 test digits
+(seed22). The actual first eight fitting scenes and boxes appear below.
+There is no frozen backbone, classifier pretraining or hidden training call.
+
+```{cpp, results="markdown", file="figures/yolo_v3_scenes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto train = n::load_mnist((cache / "mnist").string(), "train");
+  n::models::DetectionSceneConfig cfg;
+  cfg.scenes = 80;
+  cfg.seed = 11;
+  const auto scenes = n::models::MakeTensorDetectionScenes(
+      n::slice_axis(train.images, 0, 0, 2048), n::slice_axis(train.labels, 0, 0, 2048), cfg);
+
+  std::vector<n::Tensor> boxes(scenes.boxes.begin(), scenes.boxes.begin() + 8);
+  const auto preview = n::models::DrawDetectionBoxes(n::slice_axis(scenes.images, 0, 0, 8),
+                                                     boxes, {.1, 1., .2});
+  std::filesystem::create_directories("build");
+  n::save_image_grid(preview, "build/yolo_v3_scenes.png", 4, 0., 1., 4, 1., 2);
+  std::int64_t objects = 0;
+  for (const auto &b : scenes.boxes)
+    objects += b.shape()[0];
+  std::print("80 generated training/validation scenes; {} accepted digits. Preview: first "
+             "eight training scenes with tight green boxes.\n",
+             objects);
+}
+```
+// result_begin: markdown
+80 generated training/validation scenes; 195 accepted digits. Preview: first eight training scenes with tight green boxes.
+\image(figures/yolo_v3_scenes.png)
+// result_end
+\caption(Actual first eight64-pixel training scenes with green truth boxes. Whole scenes feed the complete compact residual/top-down model.)
+\alttext(Actual first eight64-pixel training scenes with green truth boxes. Whole scenes feed the complete compact residual/top-down model.)
+
+Every leaf is warmed before Adam(.001), then the visible loop performs32
+epochs,batch4,512 updates. Input size cycles64/96/128 every10 updates by tensor
+bilinear resizing; current input size changes prior-relative geometry and target
+assignment. Loss adds explicit `.00005*sum(kernel²)`; biases and BN affine
+parameters are optimized but excluded from that L2 term. Target construction
+uses detached outputs from the same raw forward, so BN updates only once per
+training batch. Validation/test remain64 pixels. Strict validation AP50
+improvement saves/restores paired learned and moving-state checkpoints.
+
+All class channels and scales decode before class-wise IoU.45 NMS and a100/image
+cap. Scores are sigmoid(objectness)*sigmoid(class), strictly above.01. Sizes
+use exp(clipped raw log ratios,±10), and boxes clip to the image. The tensor
+native tests verify combined-level suppression, class/image separation and
+raw-candidate counts as well as empty-scene gradients and exact loss fixtures.
+
+```{cpp, results="markdown", file="figures/yolo_v3_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto digits = n::load_mnist((cache / "mnist").string(), "train");
+  m::DetectionSceneConfig cfg;
+  cfg.scenes = 80;
+  cfg.seed = 11;
+  const auto scenes = m::MakeTensorDetectionScenes(
+      n::slice_axis(digits.images, 0, 0, 2048), n::slice_axis(digits.labels, 0, 0, 2048), cfg);
+  m::YoloV3Config model;
+  model.classes = 10;
+  model.width_divisor = 8;
+  model.grayscale = true;
+  std::vector<n::Tensor> samples;
+  for (int row = 0; row < 64; ++row)
+    samples.push_back(n::slice_axis(scenes.boxes[row], 1, 2, 4) -
+                      n::slice_axis(scenes.boxes[row], 1, 0, 2));
+  const auto priors = m::ClusterYoloDimensions(n::concat(samples, 0), 9);
+  std::vector<std::int64_t> val_rows(16);
+  std::iota(val_rows.begin(), val_rows.end(), 64);
+  std::vector<int> val_ids(val_rows.begin(), val_rows.end());
+  n::ParameterStore p(17), state(17);
+  {
+    n::NoGradGuard guard;
+    m::YoloV3(p, state, n::zeros({1, 64, 64, 1}), model, false);
+  }
+  if (p.count() != 976795 || state.count() != 6576)
+    return 1;
+  // Inference borrows this scope's p/state/priors; every class and default is handled by tensor kernels.
+  const auto detect = [&](const m::TensorDetectionScenes &data,
+                          const std::vector<std::int64_t> &rows) {
+    n::NoGradGuard guard;
+    const auto net = m::YoloV3(
+        p, state, 2. * n::gather(data.images, n::from_vector(rows)) - 1., model, false);
+    return m::DecodeYoloV3Detections(net.raw, priors, n::from_vector(rows), 64, 64);
+  };
+  // Annotation conversion is presentation of existing tensor boxes/IDs, with no box arithmetic.
+  const auto truth_records = [](const m::TensorDetectionScenes &data,
+                                const std::vector<std::int64_t> &rows) {
+    std::vector<m::DetectionEvaluationTruth> out;
+    for (auto row : rows) {
+      const auto boxes = n::boxes_to_vector(data.boxes[row]);
+      const auto labels = data.labels[row].to_vector<int>();
+      for (std::size_t i = 0; i < boxes.size(); ++i)
+        out.push_back({int(row), labels[i], boxes[i]});
+    }
+    return out;
+  };
+  const auto validation_truth = truth_records(scenes, val_rows);
+  n::OptimizerConfig adam_config;
+  adam_config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(p, .001, adam_config);
+  n::BatchOrder batches(64, 4, 29);
+  std::vector<n::Tensor> kernels;
+  for (const auto &leaf : p.parameters())
+    if (leaf.dim() >= 2)
+      kernels.push_back(leaf);
+  std::filesystem::create_directories("build");
+  const std::string checkpoint = "build/yolo_v3_best.npz";
+  std::vector<double> epochs, losses, ce_trace, reg_trace, ap_trace, scale_trace;
+  double best = -1;
+  int selected = 0, steps = 0;
+  std::print("| epoch | three-head objective loss | CE | regression | val AP50 "
+             "|\n|---:|---:|---:|---:|---:|\n");
+  for (int epoch = 1; epoch <= 32; ++epoch) {
+    batches.begin_epoch();
+    double total = 0, total_ce = 0, total_reg = 0;
+    std::size_t seen = 0;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const int side = 64 + 32 * ((steps / 10) % 3);
+      const auto input = n::resize_bilinear(
+          2. * n::gather(scenes.images, n::from_vector(rows)) - 1., {side, side});
+      const auto net = m::YoloV3(p, state, input, model, true);
+      const auto targets = m::MakeYoloV3Targets(net.raw, priors, scenes, rows);
+      n::Tensor class_sum = n::zeros({}), positive_count = n::zeros({});
+      for (int level = 0; level < 3; ++level) {
+        const auto &t = targets.levels[level];
+        class_sum =
+            class_sum + n::sum(n::sum(m::YoloLogisticCrossEntropy(
+                                          n::slice_axis(net.raw[level], 4, 5, 15), t.classes),
+                                      {4}) *
+                               t.positive);
+        positive_count = positive_count + n::sum(t.positive);
+      }
+      const auto class_loss = class_sum / n::maximum(positive_count, n::ones({}));
+      const auto objective = m::YoloV3Loss(net.raw, targets, 10);
+      n::Tensor penalty = n::zeros({});
+      for (const auto &kernel : kernels)
+        penalty = penalty + n::sum(n::square(kernel));
+      if (!std::isfinite(objective.item()))
+        return 1;
+      total += objective.item() * rows.size();
+      total_ce += class_loss.item() * rows.size();
+      total_reg += (objective - class_loss).item() * rows.size();
+      seen += rows.size();
+      adam.minimize(objective + .00005 * penalty);
+      ++steps;
+    }
+    const auto metric =
+        m::EvaluateDetectionDataset(m::DetectionEvaluationRecords(detect(scenes, val_rows)),
+                                    validation_truth, val_ids, false, true);
+    epochs.push_back(epoch);
+    losses.push_back(total / double(seen));
+    ce_trace.push_back(total_ce / double(seen));
+    reg_trace.push_back(total_reg / double(seen));
+    ap_trace.push_back(metric.ap50.item());
+    scale_trace.push_back(n::mean(n::abs(state.at(state.names()[0]))).item());
+    if (metric.ap50.item() > best) {
+      best = metric.ap50.item();
+      selected = epoch;
+      p.save(checkpoint);
+      state.save("build/yolo_v3_best_state.npz");
+    }
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n", epoch, losses.back(),
+               ce_trace.back(), reg_trace.back(), ap_trace.back());
+  }
+  p.load(checkpoint);
+  state.load("build/yolo_v3_best_state.npz");
+  const auto restored =
+      m::EvaluateDetectionDataset(m::DetectionEvaluationRecords(detect(scenes, val_rows)),
+                                  validation_truth, val_ids, false, true);
+  if (std::abs(restored.ap50.item() - best) > 1e-12)
+    return 1;
+  const auto test_digits = n::load_mnist((cache / "mnist").string(), "test");
+  cfg.scenes = 8;
+  cfg.seed = 22;
+  const auto test =
+      m::MakeTensorDetectionScenes(n::slice_axis(test_digits.images, 0, 0, 512),
+                                   n::slice_axis(test_digits.labels, 0, 0, 512), cfg);
+  std::vector<std::int64_t> test_rows(8);
+  std::iota(test_rows.begin(), test_rows.end(), 0);
+  std::vector<int> test_ids(test_rows.begin(), test_rows.end());
+  const auto output = detect(test, test_rows);
+  const auto records = m::DetectionEvaluationRecords(output);
+  const auto truth = truth_records(test, test_rows);
+  const auto voc = m::EvaluateDetectionDataset(records, truth, test_ids, false, true),
+             coco = m::EvaluateDetectionDataset(records, truth, test_ids, true);
+  std::vector<n::Tensor> predicted;
+  const auto image_ids = output.images.to_vector<int>();
+  for (int image = 0; image < 8; ++image) {
+    std::vector<std::int64_t> index;
+    for (std::size_t j = 0; j < image_ids.size(); ++j)
+      if (image_ids[j] == image)
+        index.push_back(std::int64_t(j));
+    predicted.push_back(n::gather(output.boxes, n::from_vector(index)));
+  }
+  const auto green = m::DrawDetectionBoxes(test.images, test.boxes, {.1, 1., .2}),
+             red = m::DrawDetectionBoxes(test.images, predicted, {1., .1, .1}),
+             raw = test.images * n::ones({1, 1, 1, 3});
+  n::save_image_grid(n::where(n::any(n::not_equal(green, raw), {3}, true), green, red),
+                     "build/yolo_v3_detections.png", 4, 0., 1., 4, 1., 2);
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file("build/yolo_v3_detections.png", "figures/yolo_v3_detections.png",
+                             std::filesystem::copy_options::overwrite_existing);
+  auto a = dm::graphics::RPlot::create();
+  a.lines(epochs, losses, "three-head objective", {37, 99, 235})
+      .title("Compact YOLO v3 objective")
+      .x_label("epoch")
+      .y_label("unregularized three-head loss")
+      .y_limits(0, 1.3 * *std::max_element(losses.begin(), losses.end()));
+  auto b = dm::graphics::RPlot::create();
+  b.lines(epochs, ce_trace, "class BCE", {37, 99, 235})
+      .lines(epochs, reg_trace, "coords + obj", {220, 38, 38})
+      .title("Class and other fitted terms")
+      .x_label("epoch")
+      .y_label("normalized loss")
+      .y_limits(0, 1.3 * std::max(*std::max_element(ce_trace.begin(), ce_trace.end()),
+                                  *std::max_element(reg_trace.begin(), reg_trace.end())));
+  auto c = dm::graphics::RPlot::create();
+  c.lines(epochs, ap_trace, "validation AP50", {22, 163, 74})
+      .title("Validation detection selection")
+      .x_label("epoch")
+      .y_label("inclusive VOC AP50")
+      .y_limits(0, 1.3);
+  auto d = dm::graphics::RPlot::create();
+  d.lines(epochs, scale_trace, "BN state", {147, 51, 234})
+      .title("Backbone moving state")
+      .x_label("epoch")
+      .y_label("mean abs first state tensor")
+      .y_limits(*std::min_element(scale_trace.begin(), scale_trace.end()) - .1,
+                *std::max_element(scale_trace.begin(), scale_trace.end()) + .2);
+  dm::graphics::RLayout::create(2, 2)
+      .add(a)
+      .add(b)
+      .add(c)
+      .add(d)
+      .size(1200, 1000)
+      .fit_panels()
+      .save_svg("build/yolo_v3_training.svg");
+  std::print(
+      "{} learned scalars, {} Adam updates; selected epoch {}, validation AP50 {:.6f}. Test: "
+      "{} digits in eight scenes, inclusive VOC AP50 {:.6f}, COCO AP75 {:.6f}, AP50:95 "
+      "{:.6f}, {} detections. Selected mean absolute first BN state {:.6f}; paired learned "
+      "and BN state restored.\n",
+      p.count(), steps, selected, best, truth.size(), voc.ap50.item(), coco.ap75.item(),
+      coco.ap.item(), records.size(), n::mean(n::abs(state.at(state.names()[0]))).item());
+}
+```
+// result_begin: markdown
+| epoch | three-head objective loss | CE | regression | val AP50 |
+|---:|---:|---:|---:|---:|
+| 1 | 121.864821 | 7.831880 | 114.032941 | 0.000316 |
+| 2 | 205.380010 | 6.070558 | 199.309453 | 0.000000 |
+| 3 | 81.322808 | 5.276969 | 76.045839 | 0.000611 |
+| 4 | 126.858409 | 4.279489 | 122.578921 | 0.000000 |
+| 5 | 60.342057 | 4.179353 | 56.162704 | 0.000000 |
+| 6 | 75.191529 | 3.627282 | 71.564247 | 0.000000 |
+| 7 | 49.614965 | 3.533240 | 46.081725 | 0.000000 |
+| 8 | 50.033596 | 3.500639 | 46.532958 | 0.000000 |
+| 9 | 42.837322 | 3.169707 | 39.667616 | 0.000000 |
+| 10 | 34.160398 | 3.296871 | 30.863527 | 0.000000 |
+| 11 | 34.570528 | 2.798354 | 31.772174 | 0.000000 |
+| 12 | 23.011986 | 2.970392 | 20.041594 | 0.000000 |
+| 13 | 29.455866 | 2.523718 | 26.932148 | 0.000000 |
+| 14 | 16.819872 | 2.922986 | 13.896885 | 0.000000 |
+| 15 | 24.916001 | 2.478283 | 22.437719 | 0.000000 |
+| 16 | 13.561893 | 2.877239 | 10.684654 | 0.002350 |
+| 17 | 20.221668 | 2.242935 | 17.978732 | 0.000000 |
+| 18 | 11.756531 | 2.604709 | 9.151821 | 0.003297 |
+| 19 | 15.994674 | 2.366261 | 13.628413 | 0.000000 |
+| 20 | 10.887176 | 2.551512 | 8.335663 | 0.006305 |
+| 21 | 12.985008 | 2.241462 | 10.743547 | 0.005238 |
+| 22 | 10.331871 | 2.361841 | 7.970031 | 0.009424 |
+| 23 | 11.291779 | 2.211316 | 9.080464 | 0.007674 |
+| 24 | 10.077001 | 2.106582 | 7.970419 | 0.000000 |
+| 25 | 9.374798 | 2.267035 | 7.107764 | 0.001631 |
+| 26 | 9.473718 | 1.973400 | 7.500319 | 0.010361 |
+| 27 | 8.298223 | 2.156228 | 6.141996 | 0.043582 |
+| 28 | 8.672808 | 1.822048 | 6.850761 | 0.006024 |
+| 29 | 7.096057 | 2.149247 | 4.946810 | 0.015996 |
+| 30 | 7.695793 | 1.530234 | 6.165559 | 0.006614 |
+| 31 | 6.357236 | 1.987716 | 4.369520 | 0.012328 |
+| 32 | 7.187553 | 1.374400 | 5.813152 | 0.009106 |
+976795 learned scalars, 512 Adam updates; selected epoch 27, validation AP50 0.043582. Test: 23 digits in eight scenes, inclusive VOC AP50 0.000000, COCO AP75 0.000000, AP50:95 0.000000, 800 detections. Selected mean absolute first BN state 0.865207; paired learned and BN state restored.
+\image(figures/yolo_v3_training.svg)
+// result_end
+\caption(Visible Adam fits every compact Darknet53, route and prediction parameter at cycling input resolutions. Class BCE and combined coordinate/objectness curves exclude explicit kernel L2. Validation selects paired learned/BN checkpoints.)
+\alttext(Visible Adam fits every compact Darknet53, route and prediction parameter at cycling input resolutions. Class BCE and combined coordinate/objectness curves exclude explicit kernel L2. Validation selects paired learned/BN checkpoints.)
+
+\image(figures/yolo_v3_detections.png)
+\caption(Actual restored compact YOLO v3 detections in red and true boxes in green on eight held-out scenes. Extra predictions, missed digits and wrong labels/localization remain in the evaluated result.)
+\alttext(Eight held-out digit scenes with true and three-scale YOLO v3 predicted boxes.)
+
+> Conclusion
+
+The compact run selects epoch27 at validation AP50 .043582. All held-out AP metrics are zero, with800 detections across23 digits/eight scenes. The bounded schedule has not produced a useful held-out detector; falling training loss and the visible thin/mislocalized boxes expose the failure.
+
+Independent objective/assignment fixtures precede full-graph checks and compact whole-model fitting. Fit-only priors, multiscale geometry and paired BN restoration are explicit, while actual held-out results and boxes retain errors without a benchmark claim.
+
+> References
+
+- [Redmon and Farhadi (2018), YOLOv3: An Incremental Improvement](https://arxiv.org/abs/1804.02767).
+- [Authors’ YOLOv3 configuration](https://github.com/pjreddie/darknet/blob/master/cfg/yolov3.cfg).

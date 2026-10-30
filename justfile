@@ -8,6 +8,9 @@ NN_JOBS := env_var_or_default("DATAMUNGE_EXAMPLE_BUILD_JOBS", "4")
 SWIG_SRC := env_var_or_default("DATAMUNGE_SWIG_SRC", "")
 SWIG_OVERRIDE := if SWIG_SRC == "" { "" } else { " --override-input swig git+file://" + SWIG_SRC }
 NIX_DEVELOP := "nix develop --accept-flake-config --option eval-cache false" + SWIG_OVERRIDE
+# PKG_CONFIG_PATH the docs' mepml report blocks build against (empty: the shell's own;
+# a directory with a datamunge.pc for the working tree makes them use the current library).
+MEPML_PKG_CONFIG_PATH := env_var_or_default("DATAMUNGE_MEPML_PKG_CONFIG_PATH", "")
 BINDINGS_DIR := "src"
 
 # {{{ run commands
@@ -206,19 +209,25 @@ run-all-java: build-java
 
 run-all-cpp: examples
   {{ NIX_DEVELOP }} .#cpp --command bash -c 'pass=0; fail=0; failed=""; \
-    for f in examples/cpp/source/*.cpp; do n="$(basename "$f" .cpp)"; b="build/debug/examples/$n"; \
+    while IFS= read -r f; do n="$(basename "$f" .cpp)"; b="build/debug/examples/$n"; \
       printf "\n========== %s ==========\n" "$n"; \
-      if [ -x "$b" ] && "$b"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+      if [ -x "$b" ] && "$b"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done < <(find examples/cpp/source -path examples/cpp/source/nn -prune -o -type f -name "*.cpp" -print); \
     printf "\n########## cpp: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
-run-cpp: examples
+## Build and run only the selected working-tree example; forward optional program arguments.
+[positional-arguments]
+run-cpp *ARGS:
     @echo "Running target {{ TARGET }}"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c './build/debug/examples/{{ TARGET }}'
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S examples/cpp -B build/debug/examples -DCMAKE_BUILD_TYPE=Debug -DBUILD_W_INSTALLED=OFF
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/debug/examples --target {{ TARGET }} --parallel {{ JOBS }}
+    {{ NIX_DEVELOP }} .#cpp-tools --command ./build/debug/examples/{{ TARGET }} "$@"
 
-run-plot: examples
+run-plot:
     @echo "Running plot example"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c './build/debug/examples/plot_ex'
+    {{ NIX_DEVELOP }} .#cpp-tools --command bash -c 'cmake -S examples/cpp -B build/debug/examples --preset=debug -DCMAKE_MAKE_PROGRAM="$(command -v make)" -DBUILD_W_INSTALLED=OFF'
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/debug/examples --target plot_ex --parallel {{ JOBS }}
+    ./build/debug/examples/plot_ex
 
 view-plot: examples
     @echo "Running plot example and opening the scatter plot"
@@ -232,6 +241,18 @@ run-benchmark:
 # }}} run commands
 
 # {{{ prebuild commands
+
+# Regenerate the embedded Computer Modern plot font (src/datamunge/plot/cmu_serif_font_data.hpp)
+# from CMU Serif + Latin Modern Math, using the flake's pinned nixpkgs.
+embed-plot-font:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  mapfile -t deps < <(nix build --inputs-from . --no-link --print-out-paths \
+    nixpkgs#texlivePackages.cm-unicode.tex nixpkgs#texlivePackages.lm-math.tex \
+    nixpkgs#python3 nixpkgs#python3Packages.fonttools)
+  PYTHONPATH="$(echo "${deps[3]}"/lib/python3*/site-packages)" "${deps[2]}/bin/python3" scripts/embed_plot_font.py \
+    --font "${deps[0]}/fonts/opentype/public/cm-unicode/cmunrm.otf" \
+    --fallback "${deps[1]}/fonts/opentype/public/lm-math/latinmodern-math.otf"
 
 # Update the pinned swig fork revision in flake.lock to the latest github:jordanschupbach/swig.
 update-swig:
@@ -461,7 +482,7 @@ repl-java:
   {{ NIX_DEVELOP }} .#java --command bash -c 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./{{ BINDINGS_DIR }}/jdatamunge/build/libs/jdatamunge.jar'
 
 # C++ REPL on clang-repl, with the std headers and <datamunge/datamunge.hpp>
-# already included. Optional EXAMPLE also preloads examples/cpp/source/<EXAMPLE>.cpp
+# already included. Optional EXAMPLE preloads examples/cpp/source/<topic>/<EXAMPLE>.cpp
 # and calls its main(), e.g. `just repl-cpp dataframe_ex`.
 repl-cpp EXAMPLE="":
   {{ NIX_DEVELOP }} .#cpp --command bash -lc 'exec scripts/cpp_repl.sh {{ EXAMPLE }}'
@@ -666,6 +687,10 @@ build-nn-api-python: prebuild-python
   {{ NIX_DEVELOP }} .#python --command bash -c 'test -x build/venv/pydatamunge-run/bin/python || python -m venv --system-site-packages build/venv/pydatamunge-run'
   {{ NIX_DEVELOP }} .#python --command bash -c 'DATAMUNGE_USE_SYSTEM_LIB=1 DATAMUNGE_BUILD_NN_EXAMPLES=0 CMAKE_BUILD_PARALLEL_LEVEL={{ NN_JOBS }} build/venv/pydatamunge-run/bin/python -m pip install . --no-deps --no-build-isolation'
 
+# Native workflows and reusable SWIG components; excludes the optional C++ experiment bridge.
+test-nn-api-python: build-nn-api-python
+  {{ NIX_DEVELOP }} .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python -m pytest --import-mode=importlib -q tests/python/test_nn_example_regressions.py tests/python/test_nn_dataset_assets.py tests/python/test_nn_cifar_workflows.py tests/python/test_nn_memory_workflows.py tests/python/test_nn_components.py tests/python/test_nn_example_workflow_ownership.py tests/python/test_nn_functional_api.py tests/python/test_nn_migration_inventory.py
+
 python-example NAME *ARGS: build-nn-api-python
   {{ NIX_DEVELOP }} .#python --command build/venv/pydatamunge-run/bin/python -I scripts/python_example.py {{ NAME }} {{ ARGS }}
 
@@ -673,11 +698,34 @@ r-example NAME *ARGS: build-nn-r
   {{ NIX_DEVELOP }} .#r --command env R_LIBS_USER=build/r/library Rscript --vanilla -e 'args <- commandArgs(TRUE); quit(status=datamungerNN::nn_example_run(args[[1L]], args[-1L]))' {{ NAME }} {{ ARGS }}
 
 nn-language-status:
-  python3 scripts/nn_migration_status.py --refresh
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/nn_migration_status.py --refresh
+
+# Original MNIST IDX files plus balanced, disjoint pools used by autoencoder examples.
+nn-mnist-assets:
+  {{ NIX_DEVELOP }} .#cpp --command datamunge-prepare-data mnist-assets
+
+nn-mnist-assets-r: build-nn-r
+  {{ NIX_DEVELOP }} .#r --command env R_LIBS_USER=build/r/library Rscript --vanilla -e 'root <- Sys.getenv("DATAMUNGE_DATA_DIR", "build/datasets"); datamungerNN::nn_components$dataset_assets$EnsureMnist(file.path(root,"mnist")); datamungerNN::nn_components$dataset_assets$EnsureSaliency(file.path(root,"saliency"))'
+
+nn-memory-assets:
+  {{ NIX_DEVELOP }} .#cpp --command datamunge-prepare-data memory
+
+nn-memory-assets-r: build-nn-r
+  {{ NIX_DEVELOP }} .#r --command env R_LIBS_USER=build/r/library Rscript --vanilla -e 'root <- Sys.getenv("DATAMUNGE_DATA_DIR", "build/datasets"); datamungerNN::nn_components$memory_components$PrepareData(root, FALSE); cat("Prepared local synthetic memory tasks in", root, "\n")'
+
+# Where each example keeps its workflow (main / local function / pasted or header harness),
+# which shared headers it uses and whether they are SWIG-bound. Writes examples/nn/example_audit.json
+# and docs/nn-example-audit.md; --check fails when a shared header owns a training loop.
+nn-audit *ARGS:
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/nn_example_audit.py --markdown docs/nn-example-audit.md {{ ARGS }}
 
 # Run C++/Python/R for each NAME (epochs=5) and record passing evidence in the ledger.
 validate-nn-ports *ARGS:
-  python3 scripts/validate_nn_ports.py {{ ARGS }}
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/validate_nn_ports.py {{ ARGS }}
+
+# Exact persisted-array comparison across the three language output directories.
+nn-compare *ARGS:
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/compare_nn_outputs.py {{ ARGS }}
 
 # }}} nn examples
 
@@ -690,11 +738,9 @@ jq:
     {{ NIX_DEVELOP }} . --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
 
 
-playground:
-    @echo "Building playground"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S playground -B build/debug/playground"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/debug/playground -j {{JOBS}} --verbose"
-    ./build/debug/playground/playground_cpp
+[positional-arguments]
+playground *ARGS:
+    @just TARGET=playground run-cpp "$@"
 
 flamechart:
     @echo "Running Performance Tests"
@@ -860,6 +906,28 @@ org-examples:
 mepml-from-org:
     python3 scripts/org_to_mepml.py --run examples/org examples/mepml
 
+# Run every code block of the docs' mepml reports (docs/mepml/examples/**/*.mepml, or
+# FILES) with mep (the flake's, from the cpp shell), as its C-c C-c does, writing
+# each block's results and figures back into its report. The C++ blocks build against
+# datamunge found by pkg-config. Prints each block's outcome and fails if one failed
+# (a failed block keeps its old results). `just docs` runs only the changed reports.
+docs-mepml-run *FILES:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    files=({{ if FILES == "" { "$(find docs/mepml/examples -name '*.mepml' | sort)" } else { FILES } }})
+    pc="{{ MEPML_PKG_CONFIG_PATH }}"
+    # mep finds its own libraries; an outside LD_LIBRARY_PATH can stop it starting.
+    {{ NIX_DEVELOP }} .#cpp --command env -u LD_LIBRARY_PATH ${pc:+PKG_CONFIG_PATH="$pc"} \
+      bash -c 'python3 scripts/website/reports.py --check-toolchain "$@" && exec mep-mepml run --timeout 1800 "$@"' _ "${files[@]}"
+
+# The website, as `just docs` builds it (kept for its older name).
+docs-mepml *ARGS: (docs ARGS)
+
+# Bump the flake's mep (the editor and `mep-mepml`, which the docs build uses) to the
+# latest commit of its main branch.
+update-mep:
+    nix flake update mep
+
 prebuild-docs-pages:
     @echo "Exporting Org pages -> Markdown"
     @bash -c 'set -euo pipefail; \
@@ -890,11 +958,85 @@ docs-md-file INPUT OUTPUT:
         bash -c "$export_cmd"; \
       fi'
 
-docs: build
+# Build the documentation website in build/debug/docs/site: Doxygen reads the headers
+# into XML, mep runs the mepml reports that changed since their last run (and every one
+# that failed) and exports them, and scripts/website/build.py writes the site, with a
+# "Report build status" page. Fails if a report's code block failed. ARGS go to CMake:
+# -DDOCS_MEPML_FORCE=ON reruns every report, -DDOCS_MEPML_JOBS=N runs N reports at once
+# (default: one per core, as memory allows), -DDOCS_MEPML_PCH=OFF compiles the blocks
+# with plain g++ (not clang++ with a precompiled dm.hpp), -DDOCS_MEPML_RUN=OFF uses the
+# stored results, -DDOCS_MEPML_ALLOW_FAILURES=ON builds the site anyway.
+docs *ARGS:
     @echo "Building docs"
-    just prebuild-docs-pages
-    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S docs -B build/debug/docs"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/debug/docs --target GenerateDocs"
+    {{ NIX_DEVELOP }} .#cpp --command cmake -U MEP_MEPML_EXECUTABLE -S docs -B build/debug/docs -DDOCS_MEPML_PKG_CONFIG_PATH="{{ MEPML_PKG_CONFIG_PATH }}" {{ ARGS }}
+    {{ NIX_DEVELOP }} .#cpp --command cmake --build build/debug/docs --target Website
+
+# Serve the built website at http://localhost:PORT (it also works opened from disk).
+docs-serve PORT="8000":
+    @test -f build/debug/docs/site/index.html || { echo "No website yet: run 'just docs' first" >&2; exit 1; }
+    @echo "Serving the website at http://localhost:{{ PORT }}/"
+    python3 -m http.server {{ PORT }} --bind 127.0.0.1 -d build/debug/docs/site
+
+# Embed data-raw/datasets/*.csv into src/datamunge/datasets/embedded/ (the built-in datasets).
+generate-datasets:
+    python3 -I scripts/generate_datasets.py
+
+# Inventory every maintained core definition, including private/static internals.
+# Add --check and repeatable --path arguments to enforce a completed source batch.
+# Regenerate include/datamunge/dir_registry.hpp (the member tables behind dm::dir()) from fresh Doxygen XML.
+generate-dir:
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S docs -B build/debug/docs
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/debug/docs --target GenerateDocsXml
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/generate_dir_registry.py
+
+docs-audit *ARGS:
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S docs -B build/debug/docs
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/debug/docs --target GenerateDocsXml
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/check_documentation.py --json build/debug/docs/coverage.json {{ ARGS }}
+
+# Check descriptions returned by clangd at representative source definitions.
+docs-hover *ARGS:
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/check_documentation_hover.py {{ ARGS }}
+
+# Native library simulation tests; optional GPU tests report unavailable backends explicitly.
+# Opt-in SDK build; the host NVIDIA driver is discovered at runtime, including NixOS.
+build-cuda *CMAKE_ARGS:
+    {{ NIX_DEVELOP }} .#cuda --command cmake -S . -B build/cuda -DCMAKE_BUILD_TYPE=Release -DDATAMUNGE_ENABLE_CUDA=ON -DDATAMUNGE_ENABLE_CUBLAS=ON {{ CMAKE_ARGS }}
+    {{ NIX_DEVELOP }} .#cuda --command cmake --build build/cuda --target datamunge -j{{ JOBS }}
+
+test-cuda *CMAKE_ARGS:
+    {{ NIX_DEVELOP }} .#cuda --command cmake -S tests -B build/cuda-tests -DCMAKE_BUILD_TYPE=Release -DDATAMUNGE_ENABLE_CUDA=ON -DDATAMUNGE_ENABLE_CUBLAS=ON {{ CMAKE_ARGS }}
+    {{ NIX_DEVELOP }} .#cuda --command cmake --build build/cuda-tests --target run_simulation_tests run_nn_device_tests check_simulation_allocations -j{{ JOBS }}
+    {{ NIX_DEVELOP }} .#cuda --command env DATAMUNGE_REQUIRE_CUDA=1 ctest --test-dir build/cuda-tests -R '^(simulation|nn-device)\.' --output-on-failure
+
+test-simulation *CMAKE_ARGS:
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S tests -B build/simulation -DCMAKE_BUILD_TYPE=Release {{ CMAKE_ARGS }}
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/simulation --target run_simulation_tests check_simulation_allocations -j{{ JOBS }}
+    {{ NIX_DEVELOP }} .#cpp-tools --command ctest --test-dir build/simulation -R '^simulation\.' --output-on-failure
+
+# Regenerate the native Vulkan shader test asset with a standard SDK shader compiler.
+prebuild-compute-fixtures *ARGS:
+    python3 scripts/compile_compute_fixture.py {{ ARGS }}
+
+prebuild-simulation-shaders *ARGS:
+    python3 scripts/prebuild_simulation_shaders.py {{ ARGS }}
+
+# Native tensor storage shaders; generated SPIR-V is consumed without an SDK.
+prebuild-nn-storage-shaders *ARGS:
+    python3 scripts/prebuild_nn_storage_shaders.py {{ ARGS }}
+
+test-nn-device *CMAKE_ARGS:
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S tests -B build/simulation -DCMAKE_BUILD_TYPE=Release {{ CMAKE_ARGS }}
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/simulation --target run_nn_device_tests -j{{ JOBS }}
+    {{ NIX_DEVELOP }} .#cpp-tools --command ctest --test-dir build/simulation -R '^nn-device\.' --output-on-failure
+
+test-simulation-examples: test-simulation
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/check_simulation_examples.py --library-dir build/simulation/_deps/datamunge-build
+
+# Real Doxygen fixtures verify that incomplete or stale inventories cannot pass.
+test-docs:
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 -m unittest discover -s tests/python -p test_documentation_audit.py -v
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 -m pytest -q tests/python/test_website_toolchain.py tests/python/test_website_model_diagrams.py
 
 docs-bindings: prebuild-swig
     @echo "Binding documentation is emitted as SWIG-generated docstrings/comments (per language)."
@@ -975,7 +1117,7 @@ view-flamechart:
 
 view-docs:
     @echo "Opening docs"
-    qutebrowser ./build/debug/docs/doxygen/html/index.html
+    qutebrowser ./build/debug/docs/site/index.html
 
 # }}} view commands
 
@@ -988,6 +1130,16 @@ windows-run: build
 # }}} windows specifics
 
 # {{{ all commands
+
+test-nn-model-plot:
+  {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S tests -B build/debug/tests -DCMAKE_BUILD_TYPE=Debug
+  {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/debug/tests --target run_nn_model_plot_tests -j{{ NN_JOBS }}
+  {{ NIX_DEVELOP }} .#cpp-tools --command ctest --test-dir build/debug/tests -R '^nn-model-plot\.' --output-on-failure --no-tests=error
+
+test-nn-metrics-plot:
+  {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S tests -B build/debug/tests -DCMAKE_BUILD_TYPE=Debug
+  {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/debug/tests --target run_nn_metrics_plot_tests -j{{ NN_JOBS }}
+  {{ NIX_DEVELOP }} .#cpp-tools --command ctest --test-dir build/debug/tests -R '^nn-metrics-plot\.' --output-on-failure --no-tests=error
 
 test-nix:
   nix flake check --accept-flake-config -L{{ SWIG_OVERRIDE }}

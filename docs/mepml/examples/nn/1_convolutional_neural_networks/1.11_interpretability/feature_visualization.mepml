@@ -1,0 +1,477 @@
+//? Title: Feature visualization:all channels and explicit regularized tensor ascent
+//? Requires: vanilla_saliency.mepml
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An internal convolutional channel can prefer patterns that are hard to identify from its weights. Optimize explicit synthetic inputs for every frozen MNISTconv2channel,show every TensorSGD step and image prior,and retain all channels and control outcomes.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.11_interpretability/feature_visualization.cpp`.
+
+> The method
+
+For selected post-ReLUchannelc,maximize its spatial mean while explicitly penalizing centered pixel energy and squared neighbor differences:
+
+$$ J_c(x)=mean(A_c(x))-\lambda mean((x-.5)^2)-\tau[mean((\Delta_yx)^2)+mean((\Delta_xx)^2)]. $$
+\alttext(The selected-channel mean response subtracts a centered mean-square image prior and separately normalized vertical and horizontal squared-difference penalties.)
+
+Plain tensorSGD on the negative RMS-normalized ordinary derivative proposes bounded image changes;actual complete-objective backtracking accepts nondecreases. Model parameters remain frozen. Uniformnoise initialization is declared synthetic;this is channel-preference synthesis rather than attribution to a real observation.
+
+The editable concept diagram is `diagrams/feature_visualization_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/feature_visualization_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/feature_visualization_concept.tikz > build/feature_visualization_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/feature_visualization_concept.svg build/feature_visualization_concept.dvi > build/feature_visualization_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/feature_visualization_concept.svg)
+// result_end
+\caption(Feature visualization:all channels and explicit regularized tensor ascent)
+\alttext(Explicit synthetic;  uniform starts; then Selected feature;  and visible priors; then Visible TensorSGD;  all channels and controls.)
+
+> The optimized input is explicit synthetic noise
+
+Restore the exact frozen MNIST classifier and actual initial arrays from
+[vanilla saliency](vanilla_saliency.mepml),where all96tensor Adam fitting
+updates and held-out errors are visible. There is no new classifier fitting.
+Here the inputs are deliberately SYNTHETICuniform noise,not real MNIST images:
+16independent28pxstarts,one per selected conv2channel0..15. Seeds1423and1429
+are fixed before inspecting results. Every channel is retained without selection
+by its response or visual appearance.
+
+The objective for one selected channel is its mean spatial post-ReLUresponse,
+minus.01times mean(x-.5)^2and.2times squared-TV. Squared-TV is the sum of
+mean squared vertical and horizontal first differences,not absolute TV.
+The three objective terms remain visible. Maximizing one channel does not
+suppress every other channel and need not produce a digit or semantic prototype.
+
+> Executed tensor architecture
+
+The diagram shows the forward MNIST CNN that the attribution or feature-optimization method inspects; the attribution algorithm is explained separately.
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/feature_visualization_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(1103);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) { return m::SaliencyCnn(p, image).logits; },
+      "Feature visualization:all channels and explicit regularized tensor ascent");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 28, 28, 1}), options);
+  diagram.save_svg("build/feature_visualization_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+12 displayed nodes; 26826 reachable learned values.
+\image(figures/feature_visualization_architecture.svg)
+// result_end
+\caption(Executed feature visualization tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right feature visualization architecture with rotated names and exact output shapes.)
+
+> Exact image-prior derivatives and actual noise starts
+
+A declared feature map[image,2*image]and selected channel1give a2*xspatial
+mean. Native independent checks verify the full objective,all784image gradients
+and all1512squared-TVedges including boundaries. The batchmean derivative has
+an explicit1/Bfactor. Uniform inputs use raw mt19937draws and Doubletensor
+(raw+.5)/2^32scaling beforeFloat32rounding,with exact seeded replay.
+```{cpp, results="markdown", file="figures/feature_visualization_noise.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto first = m::FeatureNoise(16, 1423), second = m::FeatureNoise(16, 1429);
+  const auto x = m::FeatureNoise(1, 1433).requires_grad_();
+  const auto objective = m::VisualizeFeature(x, n::concat({x, x * 2.}, 3),
+                                             n::ones({1}, n::DType::Int32), 2, .3f, .7f);
+  const auto gradient = n::grad(objective.mean, {x})[0];
+  std::print("Declared selectedresponse {},L2 {},squaredTV {},completeobjective "
+             "{},every784gradientfinite {}.\n",
+             objective.feature, objective.l2, objective.tv, objective.mean,
+             n::all(n::is_finite(gradient)).item<bool>());
+  n::save_image_grid(n::concat({first, second}, 0), "build/feature_visualization_noise.png",
+                     16, 0, 1, 2, .8, 3);
+}
+```
+// result_begin: markdown
+Declared selectedresponse float32[1] [0.997244] (grad_fn=Sum),L2 float32[1] [0.080823] (grad_fn=Div),squaredTV float32[1] [0.334425] (grad_fn=Add),completeobjective float32[] 0.7389 (grad_fn=Div),every784gradientfinite true.
+\image(figures/feature_visualization_noise.png)
+// result_end
+\caption(Two fixed actual SYNTHETICinitial-noise banks:seed1423top,seed1429bottom. Columns select channels0..15. These are optimization starts,not MNIST observations or learned images.)
+\alttext(Two fixed actual SYNTHETICinitial-noise banks:seed1423top,seed1429bottom. Columns select channels0..15. These are optimization starts,not MNIST observations or learned images.)
+
+> Every selected-channel TensorSGD loop and bounded proposal
+
+For each of all16channels,warm one Doubleimage leaf before plain tensorSGD.
+Show all twelve ordinary objective gradients,RMSnormalization,negative-gradient
+ascent step,projection to[0,1],Float32candidate evaluation and monotonic12trial
+backtracking. Rejected proposals reset the image leaf;the frozen classifier
+arrays are excluded from the image optimizer. Each channel is optimized as
+one independent image,matching the source per-image RMS convention.
+
+Five variants retain every channel:regularized main,unregularized,actual initial
+weights,second seed,and zero rate. Zero-rate controls keep every starting pixel
+unchanged. All960channel/iteration records,all initial/final16channel response
+vectors and every gradient/proposal are saved;the table reports every final
+selected response and objective gain rather than hiding weak or confusing cases.
+```{cpp, results="markdown", file="figures/feature_visualization_images.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  n::ParameterStore p(1103);
+  {
+    n::NoGradGuard guard;
+    m::SaliencyCnn(p, n::zeros({1, 28, 28, 1}));
+  }
+  auto predict = [&](const n::Tensor &images) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> parts;
+    for (std::int64_t start = 0; start < images.size(0); start += 32)
+      parts.push_back(
+          m::SaliencyCnn(p, n::slice_axis(images, 0, start,
+                                          std::min<std::int64_t>(start + 32, images.size(0))))
+              .logits);
+    return n::concat(parts, 0);
+  };
+
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_best.npz"))
+    p.set(key, value.clone());
+
+  const auto before = p.flatten();
+  n::ParameterStore random(1103);
+  {
+    n::NoGradGuard guard;
+    m::SaliencyCnn(random, n::zeros({1, 28, 28, 1}));
+  }
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_initial.npz"))
+    random.set(key, value.clone());
+  const auto random_before = random.flatten();
+  const auto noise = m::FeatureNoise(16, 1423), second = m::FeatureNoise(16, 1429);
+  n::NamedTensors arrays{{"noise", noise}, {"noise_second", second}};
+  std::vector<n::Tensor> gallery{noise};
+  std::print(
+      "| variant | selected channel | initial objective | final objective | final selected "
+      "feature | final L2 | final squaredTV |\n|---|---:|---:|---:|---:|---:|---:|\n");
+  for (const std::string name : {"main", "unregularized", "initial", "second_seed", "zero"}) {
+    const auto starts = name == "second_seed" ? second : noise;
+    auto &store = name == "initial" ? random : p;
+    const float l2 = name == "unregularized" ? 0.f : .01f,
+                tv = name == "unregularized" ? 0.f : .2f;
+    const double base_rate = name == "zero" ? 0. : .05;
+    std::vector<n::Tensor> final_images;
+    for (int channel = 0; channel < 16; ++channel) {
+      auto current = n::slice_axis(starts, 0, channel, channel + 1);
+      const auto selected = n::full({1}, channel, n::DType::Int32);
+      n::ParameterStore input(0, n::DType::Float64);
+      input.get("image", current.shape(), n::init::zeros());
+      input.set("image", current.to(n::DType::Float64));
+      n::OptimizerConfig config;
+      config.kind = n::OptimizerKind::Sgd;
+      n::Optimizer sgd(input, base_rate, config);
+      std::vector<n::Tensor> images, gradients, terms;
+      double first = 0;
+      for (int step = 0; step <= 12; ++step) {
+        auto x = current.detach().clone().requires_grad_();
+        const auto features = m::SaliencyConvFeatures(store, x).conv2;
+        const auto value = m::VisualizeFeature(x, features, selected, 16, l2, tv);
+        const auto term = n::stack({value.mean, value.feature.reshape({}),
+                                    value.l2.reshape({}), value.tv.reshape({})},
+                                   0)
+                              .to(n::DType::Float64);
+        images.push_back(current);
+        terms.push_back(term);
+        if (step == 0) {
+          first = value.mean.item();
+          arrays.push_back({name + "_c" + std::to_string(channel) + "_initial_responses",
+                            n::mean(features, {1, 2}).detach()});
+        }
+        if (step == 12) {
+          arrays.push_back({name + "_c" + std::to_string(channel) + "_final_responses",
+                            n::mean(features, {1, 2}).detach()});
+          std::print("| {} | {} | {:.9g} | {:.9g} | {:.9g} | {:.9g} | {:.9g} |\n", name,
+                     channel, first, value.mean.item(), value.feature.item(), value.l2.item(),
+                     value.tv.item());
+          break;
+        }
+        const auto gradient = n::grad(value.mean, {x})[0].detach();
+        gradients.push_back(gradient);
+        const auto wide = gradient.to(n::DType::Float64),
+                   rms = n::sqrt(n::mean(n::square(wide)));
+        auto accepted = current;
+        double rate = 0, after = value.mean.item();
+        int backtracks = 0;
+        if (base_rate > 0 && rms.item() > 0) {
+          rate = base_rate;
+          bool found = false;
+          for (int trial = 0; trial < 12; ++trial) {
+            input.set("image", current.to(n::DType::Float64));
+            sgd.set_learning_rate(rate);
+            sgd.step({-wide / (rms + 1e-12)});
+            const auto candidate = n::clip(input.at("image"), 0., 1.).to(n::DType::Float32);
+            n::Tensor score;
+            {
+              n::NoGradGuard guard;
+              const auto f = m::SaliencyConvFeatures(store, candidate).conv2;
+              score = m::VisualizeFeature(candidate, f, selected, 16, l2, tv).mean;
+            }
+            if (score.item() >= value.mean.item()) {
+              accepted = candidate;
+              after = score.item();
+              backtracks = trial;
+              found = true;
+              break;
+            }
+            rate *= .5;
+          }
+          if (!found) {
+            rate = 0;
+            backtracks = 12;
+          }
+        }
+        if (after < value.mean.item())
+          return 1;
+        const auto key = name + "_c" + std::to_string(channel) + "_s" + std::to_string(step);
+        arrays.push_back({key + "_rms", rms});
+        arrays.push_back({key + "_rate", n::full({}, rate, n::DType::Float64)});
+        arrays.push_back({key + "_backtracks", n::full({}, backtracks, n::DType::Int32)});
+        current = accepted;
+      }
+      const auto prefix = name + "_c" + std::to_string(channel);
+      arrays.push_back({prefix + "_images", n::concat(images, 0)});
+      arrays.push_back({prefix + "_gradients", n::concat(gradients, 0)});
+      arrays.push_back({prefix + "_terms", n::stack(terms, 0)});
+      final_images.push_back(current);
+    }
+    const auto final = n::concat(final_images, 0);
+    arrays.push_back({name + "_final", final});
+    if (name == "zero" && n::max(n::abs(final - noise)).item() != 0)
+      return 1;
+    gallery.push_back(final);
+  }
+  if (before != p.flatten() || random_before != random.flatten())
+    return 1;
+  std::print("All16selected/control classifier arrays unchanged;all960channel iterations "
+             "retained;zero-rate pixels exact.\n");
+  n::save_npz("build/feature_visualization_outputs.npz", arrays);
+  n::save_image_grid(n::concat(gallery, 0), "build/feature_visualization_images.png", 16, 0, 1,
+                     2, .8, 3);
+}
+```
+// result_begin: markdown
+| variant | selected channel | initial objective | final objective | final selected feature | final L2 | final squaredTV |
+|---|---:|---:|---:|---:|---:|---:|
+| main | 0 | 1.89550769 | 3.23173475 | 3.25363541 | 0.182819322 | 0.10036172 |
+| main | 1 | 1.73007679 | 3.25104189 | 3.26422 | 0.189758301 | 0.0564031787 |
+| main | 2 | 0.0105023906 | 0.543287337 | 0.588578165 | 0.149799556 | 0.218964189 |
+| main | 3 | 1.09669614 | 2.2281549 | 2.24241257 | 0.182610258 | 0.0621578246 |
+| main | 4 | 0.789080024 | 1.25591195 | 1.32967019 | 0.163618833 | 0.360610068 |
+| main | 5 | 1.3368305 | 2.49711609 | 2.51666355 | 0.175339565 | 0.0889703482 |
+| main | 6 | 0.351564437 | 0.836293638 | 0.890988886 | 0.160717458 | 0.265440315 |
+| main | 7 | 2.78693914 | 5.01344442 | 5.02954865 | 0.187210336 | 0.0711610988 |
+| main | 8 | 0.581170857 | 1.27207422 | 1.35918665 | 0.175472647 | 0.42678827 |
+| main | 9 | 0.521801591 | 0.953414798 | 0.99238348 | 0.151152909 | 0.187285736 |
+| main | 10 | -0.0457452461 | 0.218320474 | 0.236739412 | 0.0817190483 | 0.0880087018 |
+| main | 11 | 1.57143819 | 2.97042465 | 2.98091531 | 0.195867017 | 0.0426597893 |
+| main | 12 | -0.00623946637 | 0.461661935 | 0.507325292 | 0.15468736 | 0.220582396 |
+| main | 13 | 0.0175705031 | 0.478224456 | 0.518458903 | 0.143967927 | 0.19397375 |
+| main | 14 | 0.646686792 | 1.28410006 | 1.29927468 | 0.181597948 | 0.0667930022 |
+| main | 15 | 1.57401574 | 3.095474 | 3.11247373 | 0.177633613 | 0.0761172026 |
+| unregularized | 0 | 1.96385133 | 3.15668297 | 3.15668297 | 0.175821766 | 0.185919285 |
+| unregularized | 1 | 1.79628313 | 3.19289374 | 3.19289374 | 0.180233687 | 0.0970155895 |
+| unregularized | 2 | 0.0789015144 | 0.548852503 | 0.548852503 | 0.163005561 | 0.391374707 |
+| unregularized | 3 | 1.16876411 | 2.18580747 | 2.18580747 | 0.174286038 | 0.119464077 |
+| unregularized | 4 | 0.854562044 | 1.30701792 | 1.30701792 | 0.17575787 | 0.58092016 |
+| unregularized | 5 | 1.40717995 | 2.45243955 | 2.45243955 | 0.169960096 | 0.169440821 |
+| unregularized | 6 | 0.419448704 | 0.864030361 | 0.864030361 | 0.176563531 | 0.440549076 |
+| unregularized | 7 | 2.85257077 | 4.94927168 | 4.94927168 | 0.181509823 | 0.102956757 |
+| unregularized | 8 | 0.653114736 | 1.3074677 | 1.3074677 | 0.183023721 | 0.578712881 |
+| unregularized | 9 | 0.588408589 | 0.970040858 | 0.970040858 | 0.169987723 | 0.43667978 |
+| unregularized | 10 | 0.0187806655 | 0.221908927 | 0.221908927 | 0.123201348 | 0.315034688 |
+| unregularized | 11 | 1.64155936 | 2.91002774 | 2.91002774 | 0.18522872 | 0.0809336901 |
+| unregularized | 12 | 0.0636392981 | 0.470364928 | 0.470364928 | 0.16705361 | 0.383923709 |
+| unregularized | 13 | 0.0836491287 | 0.475125909 | 0.475125909 | 0.159600556 | 0.374014407 |
+| unregularized | 14 | 0.713872433 | 1.24335551 | 1.24335551 | 0.174188942 | 0.186279655 |
+| unregularized | 15 | 1.64391387 | 3.0446434 | 3.0446434 | 0.171817318 | 0.122769818 |
+| initial | 0 | 0.216454387 | 0.534486771 | 0.552245796 | 0.153314605 | 0.0811293721 |
+| initial | 1 | 0.346501797 | 0.713323832 | 0.741727531 | 0.153568923 | 0.134340167 |
+| initial | 2 | -0.0677490532 | 0.00169278216 | 0.0025060093 | 0.00587282702 | 0.00377249462 |
+| initial | 3 | 0.111273922 | 0.5000723 | 0.536423206 | 0.1338211 | 0.175063461 |
+| initial | 4 | -0.0320642218 | 0.158003002 | 0.182467848 | 0.12140426 | 0.11625398 |
+| initial | 5 | 0.659621775 | 1.46255016 | 1.47193623 | 0.193664923 | 0.0372469276 |
+| initial | 6 | -0.0602549091 | 0.0568688586 | 0.0679192767 | 0.0461655185 | 0.0529438108 |
+| initial | 7 | 0.955783486 | 1.93220997 | 1.94158494 | 0.197172984 | 0.0370161161 |
+| initial | 8 | -0.0290174857 | 0.211845696 | 0.229756564 | 0.110755898 | 0.0840165168 |
+| initial | 9 | -0.0439189449 | 0.069283627 | 0.0787839592 | 0.0611366965 | 0.0444448143 |
+| initial | 10 | -0.0609966516 | 0.0401959568 | 0.048160363 | 0.0385370515 | 0.0378951691 |
+| initial | 11 | 0.141099393 | 0.414340198 | 0.431122124 | 0.14949663 | 0.0764347613 |
+| initial | 12 | -0.0686875805 | 0.018720217 | 0.0233481787 | 0.0262244884 | 0.0218285881 |
+| initial | 13 | -0.0558993667 | 0.0639689788 | 0.0751346797 | 0.052950751 | 0.0531809665 |
+| initial | 14 | -0.0122284777 | 0.182988033 | 0.216924772 | 0.129124478 | 0.163227439 |
+| initial | 15 | 0.298456907 | 0.87632668 | 0.885035753 | 0.166937262 | 0.0351983905 |
+| second_seed | 0 | 1.88362825 | 3.2183063 | 3.23997593 | 0.180813208 | 0.0993070155 |
+| second_seed | 1 | 1.77379835 | 3.24957395 | 3.26326227 | 0.189900085 | 0.0589467585 |
+| second_seed | 2 | 0.0166840777 | 0.523046255 | 0.574543893 | 0.154266015 | 0.249775022 |
+| second_seed | 3 | 1.12491 | 2.23888779 | 2.25148678 | 0.184123874 | 0.0537882149 |
+| second_seed | 4 | 0.780424535 | 1.22784817 | 1.29688239 | 0.15925014 | 0.33720848 |
+| second_seed | 5 | 1.32724023 | 2.49037266 | 2.51021814 | 0.175421655 | 0.0904561728 |
+| second_seed | 6 | 0.35367164 | 0.890096664 | 0.93656379 | 0.16633077 | 0.22401911 |
+| second_seed | 7 | 2.75290775 | 4.99730539 | 5.01430893 | 0.187336519 | 0.075650081 |
+| second_seed | 8 | 0.561527491 | 1.33958364 | 1.4198544 | 0.178586811 | 0.392424762 |
+| second_seed | 9 | 0.527770817 | 0.979055822 | 1.02908659 | 0.15987049 | 0.24216035 |
+| second_seed | 10 | -0.0462300628 | 0.257699311 | 0.27488178 | 0.089514181 | 0.0814366713 |
+| second_seed | 11 | 1.58518946 | 2.986696 | 2.99659729 | 0.198893845 | 0.0395619497 |
+| second_seed | 12 | 0.00477966666 | 0.45651269 | 0.500709355 | 0.154615134 | 0.213252485 |
+| second_seed | 13 | 0.0214023516 | 0.476678073 | 0.51532191 | 0.145592734 | 0.185939506 |
+| second_seed | 14 | 0.645906806 | 1.30057991 | 1.31341338 | 0.185829207 | 0.0548758209 |
+| second_seed | 15 | 1.58051169 | 3.08863592 | 3.1065352 | 0.17629084 | 0.0806812868 |
+| zero | 0 | 1.89550769 | 1.89550769 | 1.96385133 | 0.0803449079 | 0.337701082 |
+| zero | 1 | 1.73007679 | 1.73007679 | 1.79628313 | 0.0787749663 | 0.327092677 |
+| zero | 2 | 0.0105023906 | 0.0105023906 | 0.0789015144 | 0.082808502 | 0.33785516 |
+| zero | 3 | 1.09669614 | 1.09669614 | 1.16876411 | 0.0864624307 | 0.356016576 |
+| zero | 4 | 0.789080024 | 0.789080024 | 0.854562044 | 0.0810320601 | 0.323358476 |
+| zero | 5 | 1.3368305 | 1.3368305 | 1.40717995 | 0.0812721774 | 0.347683907 |
+| zero | 6 | 0.351564437 | 0.351564437 | 0.419448704 | 0.084565185 | 0.335193068 |
+| zero | 7 | 2.78693914 | 2.78693914 | 2.85257077 | 0.0808248669 | 0.324116826 |
+| zero | 8 | 0.581170857 | 0.581170857 | 0.653114736 | 0.0860488042 | 0.355416983 |
+| zero | 9 | 0.521801591 | 0.521801591 | 0.588408589 | 0.0813233256 | 0.328968704 |
+| zero | 10 | -0.0457452461 | -0.0457452461 | 0.0187806655 | 0.0812253058 | 0.318568259 |
+| zero | 11 | 1.57143819 | 1.57143819 | 1.64155936 | 0.0871108994 | 0.346250176 |
+| zero | 12 | -0.00623946637 | -0.00623946637 | 0.0636392981 | 0.0832782388 | 0.345229924 |
+| zero | 13 | 0.0175705031 | 0.0175705031 | 0.0836491287 | 0.0801189169 | 0.326387167 |
+| zero | 14 | 0.646686792 | 0.646686792 | 0.713872433 | 0.0849845037 | 0.331678927 |
+| zero | 15 | 1.57401574 | 1.57401574 | 1.64391387 | 0.0848526955 | 0.345248193 |
+All16selected/control classifier arrays unchanged;all960channel iterations retained;zero-rate pixels exact.
+\image(figures/feature_visualization_images.png)
+// result_end
+\caption(Columns:selected conv2channels0..15. Rows:seed1423noise,regularized main final,unregularized final,actual-initial-weight final,seed1429final,and zero-rate final. Every channel is shown,including those whose optimized target is not the strongest response. All960iterations use explicit bounded TensorSGD loops.)
+\alttext(Columns:selected conv2channels0..15. Rows:seed1423noise,regularized main final,unregularized final,actual-initial-weight final,seed1429final,and zero-rate final. Every channel is shown,including those whose optimized target is not the strongest response. All960iterations use explicit bounded TensorSGD loops.)
+
+> Objective traces and every cross-channel response
+
+Report all sixteen regularized objective traces and the full16x16final response
+matrix. Rows select the optimized channel;columns are all measured conv2channels.
+A large off-diagonal response is not a coding failure:the objective rewards its
+selected channel without penalizing other channels. The largest-response count
+is measured after optimization and never used to choose which images to show.
+In the actual run,the selected target is the largest final response in only
+1of16images. All16main objectives improve;that gain does not mean the target
+becomes exclusive or defines the entire visible pattern.
+```{cpp, results="markdown", file="figures/feature_visualization_responses.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  std::map<std::string, n::Tensor> a;
+  for (const auto &[key, value] : n::load_npz("build/feature_visualization_outputs.npz"))
+    a.emplace(key, value);
+  std::vector<n::Tensor> rows;
+  auto left = dm::graphics::RPlot::create();
+  int strongest = 0;
+  std::print("| selected channel | objective gain | final strongest channel | all16responses "
+             "|\n|---:|---:|---:|---|\n");
+  for (int channel = 0; channel < 16; ++channel) {
+    const auto prefix = "main_c" + std::to_string(channel);
+    const auto response = a.at(prefix + "_final_responses").reshape({16});
+    rows.push_back(response);
+    const int best = n::argmax(response, 0).item<int>();
+    strongest += best == channel;
+    const auto terms = a.at(prefix + "_terms");
+    std::print("| {} | {:.9g} | {} | {} |\n", channel, terms.at({12, 0}) - terms.at({0, 0}),
+               best, response.to_vector<float>());
+    const dm::graphics::RGB color{std::uint8_t(30 + channel * 11),
+                                  std::uint8_t(60 + (channel * 37) % 160),
+                                  std::uint8_t(220 - channel * 10)};
+    left.lines(n::arange(0, 13).to_vector<double>(),
+               n::select(terms, 1, 0).to_vector<double>(), "", color);
+  }
+  const auto responses = n::stack(rows, 0);
+  std::print("Selected target is final strongest channel in{}/16images;all256responses {}.\n",
+             strongest, responses);
+  auto right = n::plot_tensor_map(n::reverse(responses, {0}), 0, n::max(responses).item());
+  left.title("All sixteen complete objective traces")
+      .x_label("bounded input iteration0..12")
+      .y_label("selected feature minus explicit priors");
+  right.title("All final cross-channel responses")
+      .x_label("measured response channel0..15")
+      .y_label("optimized target channel0at bottom");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(left).add(right).size(1100, 500).fit_panels().save_svg(
+      "build/feature_visualization_responses.svg");
+}
+```
+// result_begin: markdown
+| selected channel | objective gain | final strongest channel | all16responses |
+|---:|---:|---:|---|
+| 0 | 1.33622706 | 7 | [3.2536354, 3.1758606, 0.07838981, 2.1374376, 1.2688874, 2.430108, 0.5311809, 4.919227, 0.76205266, 0.9337461, 0.032725256, 2.8662484, 0.034667943, 0.07986917, 1.231206, 2.96198] |
+| 1 | 1.5209651 | 7 | [3.290918, 3.26422, 0.09736084, 2.1482477, 1.2792813, 2.4496362, 0.5136185, 4.999117, 0.72596437, 0.9205278, 0.043050736, 2.905776, 0.021923209, 0.07361354, 1.2566767, 3.0070925] |
+| 2 | 0.532784946 | 7 | [2.0446155, 1.9398351, 0.58857816, 1.0926758, 1.0297207, 1.3082284, 0.7155465, 2.778772, 1.0662494, 0.72899145, 0.19993006, 1.5523602, 0.15967633, 0.37611228, 0.7655437, 1.676177] |
+| 3 | 1.13145876 | 7 | [3.210076, 3.0930176, 0.05931157, 2.2424126, 1.2361375, 2.5249352, 0.6187878, 4.948602, 0.9192423, 0.9016909, 0.028827183, 2.8939028, 0.09398118, 0.10038137, 1.256814, 3.1212711] |
+| 4 | 0.466831923 | 7 | [2.85477, 2.7696285, 0.14211354, 1.7658259, 1.3296702, 2.062937, 0.62734556, 4.1443543, 0.9067413, 0.90752006, 0.036254566, 2.4041233, 0.06580511, 0.15106136, 1.0734028, 2.4689379] |
+| 5 | 1.16028559 | 7 | [3.1379476, 3.0359244, 0.055575352, 2.191705, 1.2171528, 2.5166636, 0.5995718, 4.8650165, 0.8849498, 0.8588438, 0.029796248, 2.8429294, 0.07797392, 0.10033, 1.2480106, 3.059892] |
+| 6 | 0.484729201 | 7 | [2.336549, 2.1587858, 0.17914401, 1.5601879, 1.0678835, 1.8100883, 0.8909889, 3.45313, 1.2298684, 0.7427831, 0.04334618, 1.965917, 0.26363444, 0.24807519, 0.96091974, 2.2755933] |
+| 7 | 2.22650528 | 7 | [3.2786388, 3.2026765, 0.06720945, 2.1992853, 1.2604154, 2.504681, 0.54152966, 5.0295486, 0.7873538, 0.92717993, 0.034219317, 2.922817, 0.042483572, 0.0833415, 1.2630154, 3.0717251] |
+| 8 | 0.690903366 | 7 | [2.245154, 1.9899057, 0.28574598, 1.4539046, 1.0613948, 1.6869317, 0.7889837, 3.2244444, 1.3591866, 0.7625491, 0.06068355, 1.8354115, 0.28727537, 0.29507285, 0.8519495, 2.17246] |
+| 9 | 0.431613207 | 7 | [2.7805755, 2.6419783, 0.11204408, 1.7350122, 1.1707213, 1.969912, 0.50528485, 4.0573897, 0.8129306, 0.9923835, 0.018999444, 2.3622582, 0.14317548, 0.12533033, 0.979807, 2.3690562] |
+| 10 | 0.26406572 | 7 | [1.883144, 1.8432183, 0.24137661, 1.1520321, 0.8324708, 1.3376805, 0.39933792, 2.7471104, 0.61944604, 0.65664935, 0.23673941, 1.5843836, 0.05617197, 0.13708018, 0.730406, 1.6728227] |
+| 11 | 1.39898646 | 7 | [3.3194675, 3.2473216, 0.06083679, 2.2326076, 1.2633797, 2.5361607, 0.5310442, 5.0903673, 0.76909786, 0.92664355, 0.028643083, 2.9809153, 0.041182946, 0.08692187, 1.2832668, 3.105211] |
+| 12 | 0.467901401 | 7 | [1.9427153, 1.6350437, 0.15844038, 1.1957539, 0.88991034, 1.3877755, 0.611427, 2.727233, 0.9610474, 0.7682979, 0.04360568, 1.5972086, 0.5073253, 0.28846416, 0.7739607, 1.6757953] |
+| 13 | 0.460653953 | 7 | [2.0241494, 1.8357433, 0.4011008, 1.169943, 0.99049246, 1.372747, 0.72004974, 2.7852268, 1.1065925, 0.710157, 0.08809429, 1.6073495, 0.28854507, 0.5184589, 0.80009127, 1.7191192] |
+| 14 | 0.637413263 | 7 | [3.1513448, 3.0245912, 0.041903634, 2.12445, 1.2369996, 2.4562473, 0.58977324, 4.859825, 0.8141105, 0.8646034, 0.029219557, 2.8179836, 0.071810156, 0.092675045, 1.2992747, 2.985271] |
+| 15 | 1.52145827 | 7 | [3.1525235, 3.035867, 0.06517339, 2.2038956, 1.2188582, 2.4977825, 0.635282, 4.883617, 0.9397283, 0.87427604, 0.032873806, 2.837098, 0.09465583, 0.09787943, 1.2475865, 3.1124737] |
+Selected target is final strongest channel in1/16images;all256responses float32[16, 16] [[3.25364, 3.17586, 0.0783898, ..., 0.0798692, 1.23121, 2.96198], [3.29092, 3.26422, 0.0973608, ..., 0.0736135, 1.25668, 3.00709], [2.04462, 1.93984, 0.588578, ..., 0.376112, 0.765544, 1.67618], ..., [2.02415, 1.83574, 0.401101, ..., 0.518459, 0.800091, 1.71912], [3.15134, 3.02459, 0.0419036, ..., 0.092675, 1.29927, 2.98527], [3.15252, 3.03587, 0.0651734, ..., 0.0978794, 1.24759, 3.11247]].
+\image(figures/feature_visualization_responses.svg)
+// result_end
+\caption(Every selected-channel objective trace and all256final channel responses. Cross-channel dominance is measured without selecting or omitting any target;optimization does not guarantee class-like images or channel exclusivity.)
+\alttext(Every selected-channel objective trace and all256final channel responses. Cross-channel dominance is measured without selecting or omitting any target;optimization does not guarantee class-like images or channel exclusivity.)
+
+
+> Conclusion
+
+Every channel,objective term and bounded input step remains inspectable. Seed,prior and initialization controls expose dependence;full cross-channel responses show that maximizing one unit does not make it exclusive. Activation gain does not establish a semantic prototype,causal explanation or recognition improvement.
+
+> References
+
+- [Olah,Mordvintsev and Schubert(2017),Feature Visualization](https://distill.pub/2017/feature-visualization/).

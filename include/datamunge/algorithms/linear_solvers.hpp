@@ -1,5 +1,9 @@
 #pragma once
 
+/// @file linear_solvers.hpp
+/// @brief Dense and matrix-free linear solvers: Jacobi, Gauss-Seidel, CG, BiCG, Thomas, Gauss-Jordan.
+
+#include <functional>
 #include <vector>
 
 namespace datamunge::algorithms {
@@ -26,10 +30,10 @@ LinearSolution gaussian_elimination(std::vector<std::vector<double>> a, std::vec
 ///        approximate solution @ref x, the number of @ref iterations, and the final @ref residual
 ///        @c ||A x - b||.
 struct IterativeSolution {
-    bool                converged{false};
-    std::vector<double> x;
-    int                 iterations{0};
-    double              residual{0.0};
+    bool                converged{false}; ///< Whether the tolerance was reached.
+    std::vector<double> x;                ///< The approximate solution.
+    int                 iterations{0};    ///< Iterations performed.
+    double              residual{0.0};    ///< Final residual norm ||A x - b||.
 };
 
 /// @brief The *Gauss-Seidel method*: a stationary iterative solver for @c A x = b. It sweeps the
@@ -79,7 +83,7 @@ std::vector<double> thomas_solve(std::vector<double> sub, std::vector<double> di
 /// @brief The result of @ref gauss_jordan: whether the system was @ref solved, the solution @ref x,
 ///        and the full matrix @ref inverse (a by-product of reducing @c A to the identity).
 struct GaussJordanResult {
-    bool                             solved{false};
+    bool                             solved{false}; ///< false when A is singular.
     std::vector<double>              x;       ///< the solution to @c A x = b.
     std::vector<std::vector<double>> inverse; ///< @c A^{-1} (empty when singular).
 };
@@ -126,6 +130,53 @@ IterativeSolution sor(const std::vector<std::vector<double>>& a, const std::vect
 /// @return the @ref IterativeSolution.
 IterativeSolution biconjugate_gradient(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
                                        int max_iter = 1000, double tol = 1e-10);
+
+/// @brief A linear map \f$v\mapsto Mv\f$ supplied as a function, for matrix-free solvers.
+using LinearOperator = std::function<std::vector<double>(const std::vector<double>&)>;
+
+/// @brief Result of the matrix-free biconjugate_gradient(): the iterate, its history and why it stopped.
+struct BiCGResult {
+    std::vector<double> x;                  ///< The final iterate.
+    bool                converged{false};   ///< Whether the relative residual reached the tolerance.
+    bool                breakdown{false};   ///< Whether a vanishing \f$\tilde r^\top r\f$ or \f$\tilde p^\top Ap\f$ stopped it.
+    int                 iterations{0};      ///< Iterations taken.
+    int                 products{0};        ///< Operator applications (two per iteration: \f$A\f$ and \f$A^\top\f$).
+    std::vector<double> residual_history;   ///< \f$\|r_k\|/\|b\|\f$ for k = 0 .. iterations (recursively updated residual).
+};
+
+/// @brief Matrix-free BiCG for \f$Ax=b\f$ from \f$x_0=0\f$, with shadow residual \f$\tilde r_0\f$ = @p shadow
+///        (default \f$b\f$).
+///
+/// Each iteration applies @p apply to the direction \f$p_k\f$ and @p apply_transpose to the
+/// shadow direction \f$\tilde p_k\f$, then updates
+/// \f$\alpha_k=\tilde r_k^\top r_k/\tilde p_k^\top Ap_k\f$, \f$x_{k+1}=x_k+\alpha_kp_k\f$,
+/// \f$r_{k+1}=r_k-\alpha_kAp_k\f$, \f$\tilde r_{k+1}=\tilde r_k-\alpha_kA^\top\tilde p_k\f$,
+/// \f$\beta_k=\tilde r_{k+1}^\top r_{k+1}/\tilde r_k^\top r_k\f$ and the two directions. It stops when
+/// \f$\|r_k\|\le\text{tol}\,\|b\|\f$, or with `breakdown` set when either inner product falls
+/// below \f$10^{-15}\f$ of the product of the norms involved, or when the shadow residual has
+/// collapsed far faster than the residual, \f$\|\tilde r_k\|/\|\tilde r_0\|\le10^{-10}\|r_k\|/\|b\|\f$ (in
+/// exact arithmetic \f$\tilde r_k\f$ would be zero: a serious breakdown).
+///
+/// @param apply \f$v\mapsto Av\f$.
+/// @param apply_transpose \f$v\mapsto A^\top v\f$.
+/// @param b The right-hand side.
+/// @param max_iter The iteration cap.
+/// @param tol The relative residual tolerance.
+/// @param shadow The shadow residual \f$\tilde r_0\f$; empty means \f$b\f$. It must not be orthogonal to
+///        \f$b\f$, and a random vector avoids accidental structure (for example a left eigenvector of A).
+/// @return The iterate, the residual history and the stopping reason.
+/// @throws std::invalid_argument if @p shadow or an operator result has the wrong size.
+///
+/// @par Example
+/// @code
+/// const auto A = dm::linalg::to_csr(coo), At = dm::linalg::to_csr(coo_transposed);
+/// const auto run = dm::algorithms::biconjugate_gradient(
+///     [&](const auto& v) { return A.spmv(v); }, [&](const auto& v) { return At.spmv(v); }, b, 500, 1e-10);
+/// @endcode
+/// @see biconjugate_gradient(const std::vector<std::vector<double>>&, const std::vector<double>&, int, double)
+BiCGResult biconjugate_gradient(const LinearOperator& apply, const LinearOperator& apply_transpose,
+                                const std::vector<double>& b, int max_iter = 1000, double tol = 1e-10,
+                                const std::vector<double>& shadow = {});
 
 /// @brief *Levinson recursion*: solves a *symmetric Toeplitz* system @c T x = b in @c O(n^2) time
 ///        (versus @c O(n^3) for a general solver), by exploiting the constant-diagonal structure. A

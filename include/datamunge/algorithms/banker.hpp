@@ -12,6 +12,7 @@
 /// safe sequence exist, and what is it) and the resource-request test.
 
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 
 namespace datamunge::algorithms {
@@ -90,5 +91,54 @@ inline bool banker_request_grantable(std::size_t                          proces
     }
     return banker_safety(alloc2, max_demand, avail2).safe;
 }
+
+/// \brief Counts every safe sequence of the state (orderings in which each process's remaining
+///        need fits in the free resources plus the allocations of the processes before it).
+///
+/// The free pool after finishing a set of processes depends only on the set, so a dynamic
+/// program over subsets counts the orderings in \f$O(2^n n m)\f$ time.
+/// \throws std::invalid_argument if there are more than 24 processes or the shapes disagree.
+std::uint64_t banker_count_safe_sequences(const std::vector<std::vector<int>>& allocation,
+                                          const std::vector<std::vector<int>>& max_demand,
+                                          const std::vector<int>&              available);
+
+/// \brief Deadlock detection (Holt's reduction): processes with outstanding @p requests that
+///        can never be satisfied, even if every satisfiable process runs and releases.
+///
+/// Repeatedly marks a process whose current request fits in the free pool as able to finish and
+/// returns its allocation to the pool. The processes left unmarked are deadlocked.
+/// \return the ids of the deadlocked processes (empty if none).
+std::vector<std::size_t> deadlocked_processes(const std::vector<std::vector<int>>& allocation,
+                                              const std::vector<std::vector<int>>& requests,
+                                              const std::vector<int>&              available);
+
+/// How requests are decided in simulate_resource_allocation().
+enum class AllocationPolicy {
+    Banker,           ///< grant a request only if the resulting state is safe.
+    GrantIfAvailable  ///< grant whenever the units are free.
+};
+
+/// Outcome of a simulated run of processes acquiring resources one unit at a time.
+struct AllocationRun {
+    bool          deadlocked    = false;  ///< whether the run ended in deadlock.
+    std::size_t   steps         = 0;      ///< scheduler steps taken.
+    std::size_t   jobs_finished = 0;      ///< jobs that reached their maximum claim and released.
+    std::size_t   grants        = 0;      ///< unit requests granted.
+    std::size_t   denials       = 0;      ///< unit requests refused although the unit was free (banker only).
+    std::size_t   blocked       = 0;      ///< unit requests that had to wait because no unit was free.
+    double        utilisation   = 0.0;    ///< mean fraction of all units allocated, over the steps.
+};
+
+/// \brief Simulates processes that each repeatedly run jobs: a job acquires its maximum claim one
+///        random unit at a time, then releases everything and starts again.
+///
+/// At each step a random process acts. A process holding its full claim finishes the job and
+/// releases. Otherwise it asks for one unit of a resource type it still needs (keeping the same
+/// pending request until granted), and the @p policy decides. The run stops after @p max_steps
+/// steps or when no process can ever act again (deadlock).
+/// \throws std::invalid_argument if a claim exceeds the total of its resource type.
+AllocationRun simulate_resource_allocation(const std::vector<std::vector<int>>& max_demand,
+                                           const std::vector<int>& total, AllocationPolicy policy,
+                                           std::size_t max_steps, std::uint64_t seed);
 
 }  // namespace datamunge::algorithms

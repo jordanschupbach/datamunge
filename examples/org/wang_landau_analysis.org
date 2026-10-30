@@ -43,7 +43,7 @@ the thermodynamics of spin systems, polymers, and other models with rugged energ
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

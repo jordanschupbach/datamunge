@@ -1,4 +1,5 @@
 #include <datamunge/algorithms/number_theory_advanced.hpp>
+#include <datamunge/algorithms/aks.hpp>
 
 #include <cmath>
 #include <cstdint>
@@ -114,70 +115,6 @@ struct XorShift {
     u64 next() { s ^= s << 13; s ^= s >> 7; s ^= s << 17; return s; }
 };
 
-// ---- AKS helpers ----
-
-bool is_perfect_power(u64 n) {
-    for (int b = 2; (1ull << b) <= n; ++b) {
-        // integer b-th root
-        u64 lo = 1, hi = 1ull << (63 / b + 1);
-        while (hi - lo > 1) {
-            u64 mid = lo + (hi - lo) / 2;
-            // mid^b vs n, guard overflow
-            u128 p = 1;
-            bool over = false;
-            for (int i = 0; i < b; ++i) { p *= mid; if (p > n) { over = true; break; } }
-            if (!over && static_cast<u64>(p) == n) return true;
-            if (over || static_cast<u64>(p) > n) hi = mid; else lo = mid;
-        }
-    }
-    return false;
-}
-
-u64 mult_order(u64 n, u64 r) {
-    if (gcd_u64(n % r, r) != 1) return 0;
-    u64 k = 1, cur = n % r;
-    while (cur != 1) { cur = mulmod(cur, n % r, r); ++k; if (k > r) return 0; }
-    return k;
-}
-
-u64 euler_phi(u64 r) {
-    u64 res = r, m = r;
-    for (u64 p = 2; p * p <= m; ++p)
-        if (m % p == 0) { while (m % p == 0) m /= p; res -= res / p; }
-    if (m > 1) res -= res / m;
-    return res;
-}
-
-// Multiply two polynomials mod (x^r - 1) with coefficients mod n.
-std::vector<u64> polymul_mod(const std::vector<u64>& A, const std::vector<u64>& B, u64 r, u64 n) {
-    std::vector<u64> C(r, 0);
-    for (u64 i = 0; i < r; ++i) {
-        if (!A[i]) continue;
-        for (u64 j = 0; j < r; ++j) {
-            if (!B[j]) continue;
-            const u64 k = (i + j) % r;
-            C[k]        = (C[k] + mulmod(A[i], B[j], n)) % n;
-        }
-    }
-    return C;
-}
-
-// (x + a)^n mod (x^r - 1, n).
-std::vector<u64> poly_pow_xa(u64 a, u64 n, u64 r) {
-    std::vector<u64> result(r, 0);
-    result[0] = 1 % n; // 1
-    std::vector<u64> base(r, 0);
-    base[0]              = a % n;
-    base[1 % r]          = (base[1 % r] + 1) % n; // x  (if r==1, wraps to index 0)
-    u64 e                = n;
-    while (e) {
-        if (e & 1) result = polymul_mod(result, base, r, n);
-        base = polymul_mod(base, base, r, n);
-        e >>= 1;
-    }
-    return result;
-}
-
 } // namespace
 
 PellSolution chakravala(u64 N) {
@@ -268,46 +205,6 @@ u64 lenstra_ecm(u64 n, u64 seed) {
     return n; // failure
 }
 
-bool aks_is_prime(u64 n) {
-    if (n < 2) return false;
-    if (n < 4) return true; // 2, 3
-    if (n % 2 == 0) return false;
-    // Step 1: perfect power => composite.
-    if (is_perfect_power(n)) return false;
-
-    const double log2n = std::log2(static_cast<double>(n));
-    const u64    limit = static_cast<u64>(log2n * log2n) + 1;
-
-    // Step 2: find the smallest r with ord_r(n) > log2(n)^2.
-    u64 r = 2;
-    for (;; ++r) {
-        if (gcd_u64(n % r, r) != 1) continue; // ensure invertibility for order
-        const u64 ord = mult_order(n, r);
-        if (ord > limit) break;
-        if (r >= n) break;
-    }
-
-    // Step 3: small gcd checks.
-    for (u64 a = 2; a <= r && a < n; ++a) {
-        const u64 g = gcd_u64(a, n);
-        if (g > 1 && g < n) return false;
-    }
-
-    // Step 4: if n <= r, n is prime.
-    if (n <= r) return true;
-
-    // Step 5: polynomial congruence (x + a)^n == x^n + a in (Z/n)[x]/(x^r - 1).
-    const u64 phi_r = euler_phi(r);
-    const u64 amax  = static_cast<u64>(std::sqrt(static_cast<double>(phi_r)) * log2n);
-    for (u64 a = 1; a <= amax; ++a) {
-        std::vector<u64> lhs = poly_pow_xa(a, n, r);
-        // rhs = x^(n mod r) + a
-        std::vector<u64> rhs(r, 0);
-        rhs[n % r] = (rhs[n % r] + 1) % n;
-        rhs[0]     = (rhs[0] + a) % n;
-        if (lhs != rhs) return false;
-    }
-    return true;
-}
+bool aks_is_prime(u64 n) { return aks_trace(n).is_prime; }
 
 } // namespace datamunge::algorithms

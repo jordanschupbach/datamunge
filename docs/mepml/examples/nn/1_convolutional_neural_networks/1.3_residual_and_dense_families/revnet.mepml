@@ -1,0 +1,604 @@
+//? Title: RevNet: Reconstructed Activations and Measured Memory
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Additive coupling lets most residual-unit inputs be recovered from outputs. We verify
+nontrivial inverses, compare every gradient against ordinary backpropagation, measure live tensor
+memory across depths, then explicitly train the full RevNet-38 with reversible tensor Adam updates.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/revnet.cpp`.
+
+> The method
+
+Split the channel axis into equal halves. An invertible unit computes
+
+$$y_1=x_1+F(x_2),\qquad y_2=x_2+G(y_1),\qquad
+ x_2=y_2-G(y_1),\qquad x_1=y_1-F(x_2).$$
+\alttext(The additive coupling can reconstruct inputs without inverting the learned F or G functions.)
+
+F/G need not themselves be invertible. They are deterministic preactivated basic two-3×3
+functions or bottlenecks with 1×1/3×3/1×1 and inner width one quarter of their output.
+There is no post-addition ReLU. Learned-scale BN uses epsilon .001; the first F after the
+stem skips BN/ReLU. Basic dimension-changing shortcuts average-pool and symmetrically zero-pad
+half-maps; bottleneck shortcuts use raw bias-free 1×1 projections. Stage-entry units are stored,
+including the first-F exception. They cannot use the ordinary equal-width inverse.
+
+The stem is 3×3 conv/BN/ReLU for CIFAR or 7×7/2 conv/BN/ReLU plus SAME max-pool for
+ImageNet. The head concatenates halves, applies BN/ReLU, global mean and a linear classifier.
+He-uniform fan-in replaces the release's truncated-normal fan-out initialization. Full learned
+counts are 464890/1729194/1748778 for CIFAR-38/110/164 and 27553128/45428072 for
+ImageNet-56/104. Count-only ImageNet forwards use 64 pixels; the parameter budgets do not
+depend on spatial size. No pretrained weights, dropout or hidden fitting occurs.
+
+Ordinary mode stores normal autograd activations. Stored-input mode checkpoints every unit
+and recomputes from its retained input; reversible mode checkpoints stage entries and reconstructs
+interior inputs from outputs using nn::reversible_sequence. Both suppress repeated BN moving
+updates during backward. The context borrows parameter/state stores: they must outlive backward
+and weights must remain unchanged between forward and backward. Float32 reconstruction introduces
+drift and can move early-unit gradients; compare every tensor against ordinary gradients rather
+than assuming exact equivalence. The diagnostic reports worst relative L2 errors and checks
+stored-input error <=1e-6, reconstructed-gradient error <=.05 and input drift <=1e-4.
+
+Memory measurements warm each model, then track one forward/gradient step above its parameter,
+state and data baseline, using batch 16 at 32 pixels. All three modes share widths; stage lengths
+are 3/9/18. The exact logical tensor-buffer counter includes temporary/gradient tensors and excludes
+allocator overhead, process RSS and optimizer state. It is not a runtime benchmark. Recomputation
+saves activation storage by performing extra forward arithmetic; parameter storage still grows.
+
+The visible Adam loop trains full-width/depth RevNet-38, selecting reversible backward explicitly
+for every training forward. Seven batch-eight epochs use 128 fit/64 validation/64 official-test
+images, Adam(.001), explicit kernel L2=.0001/2 and independent padded crops/flips. Validation
+selects paired learned/moving-state checkpoints before test evaluation. This bounded run differs
+from the original larger source fit and the paper's long SGD schedule; it is not a benchmark.
+
+The editable concept diagram is `diagrams/revnet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/revnet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/revnet_concept.tikz > build/revnet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/revnet_concept.svg build/revnet_concept.dvi > build/revnet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/revnet_concept.svg)
+// result_end
+\caption(RevNet: Reconstructed Activations and Measured Memory)
+\alttext(Split additive coupling; invert interior units; then Recompute F and G; suppress repeated BN updates; then Measure tensor memory; visible reversible Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/revnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  const auto        cfg = n::models::RevNetConfig::Cifar(38);
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::RevNet(
+                   p,
+                   state,
+                   image,
+                   cfg,
+                   false,
+                   false ? n::models::RevNetMode::Reversible : n::models::RevNetMode::Ordinary)
+            .logits;
+      },
+      "RevNet: Reconstructed Activations and Measured Memory");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/revnet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+145 displayed nodes; 464890 reachable learned values.
+\image(figures/revnet_architecture.svg)
+// result_end
+\caption(Executed revnet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right revnet architecture with rotated names and exact output shapes.)
+
+> Simple inverse example
+
+The fixture changes the input nontrivially before reconstructing it in both BN modes.
+
+```{cpp, results="markdown", file="figures/revnet_inverse.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  auto layout = dm::graphics::RLayout::create(2, 2);
+  for (bool bottle : {false, true})
+    for (bool training : {false, true}) {
+      n::ParameterStore p(1, type), state(1, type);
+      const n::models::RevContext c{p, state, training, .9, bottle, false};
+      const auto value = n::sin(.37 * n::arange(0, 800).to(type) + .2).reshape({4, 5, 5, 8});
+      const auto halves = n::split(value, 2, 3);
+      const n::models::RevPair x{halves[0], halves[1]};
+      {
+        n::NoGradGuard guard;
+        n::models::RevBlockForward(c, "u", x, 8, 8, 1, false);
+        for (const auto &name : state.names()) {
+          auto v = .3 * n::sin(.37 * n::arange(0, state.at(name).numel()).to(type) +
+                               double(name.size()));
+          if (name.find("moving_var") != std::string::npos)
+            v = v + .8;
+          state.set(name, v);
+        }
+      }
+      n::NoGradGuard guard;
+      const auto y = n::models::RevBlockForward(c, "u", x, 8, 8, 1, false);
+      const auto recovered = n::models::RevBlockInverse(c, "u", y, 8);
+      const auto restored = n::concat({recovered.first, recovered.second}, 3);
+      const double error = n::max(n::abs(restored - value)).item(),
+                   change = n::max(n::abs(y.first - x.first)).item();
+      if (error > 1e-11 || change < .01)
+        return 1;
+      std::print(
+          "{} / {} BN: changed input by {:.6f}, inversion max absolute error {:.12f}.\n",
+          bottle ? "bottleneck" : "basic", training ? "training" : "inference", change, error);
+      if (!bottle && !training) {
+        auto channel = [](const auto &t) {
+          return n::slice_axis(n::slice_axis(t, 0, 0, 1), 3, 0, 1).reshape({5, 5});
+        };
+        const auto output = n::concat({y.first, y.second}, 3);
+        const double low = std::min(n::min(value).item(), n::min(output).item()),
+                     high = std::max(n::max(value).item(), n::max(output).item());
+        layout
+            .add(n::plot_tensor_map(channel(value), low, high)
+                     .title("Input half: first channel"))
+            .add(n::plot_tensor_map(channel(output), low, high)
+                     .title("Nontrivial additive coupling"))
+            .add(n::plot_tensor_map(channel(restored), low, high).title("Reconstructed input"))
+            .add(n::plot_tensor_map(channel(n::abs(restored - value)), 0,
+                                    std::max(error, 1e-15))
+                     .title("Absolute roundoff error, auto range"));
+      }
+    }
+  std::filesystem::create_directories("build");
+  layout.size(1100, 920).fit_panels().save_svg("build/revnet_inverse.svg");
+}
+```
+// result_begin: markdown
+basic / inference BN: changed input by 1.165165, inversion max absolute error 0.000000000000.
+basic / training BN: changed input by 2.873625, inversion max absolute error 0.000000000000.
+bottleneck / inference BN: changed input by 0.549639, inversion max absolute error 0.000000000000.
+bottleneck / training BN: changed input by 3.526057, inversion max absolute error 0.000000000000.
+\image(figures/revnet_inverse.svg)
+// result_end
+\caption(Only equal-width stride-one units with the first F preactivation enabled are inverted. The first three panels share a colour range; the error panel magnifies roundoff. Both basic/bottleneck and training/inference BN cases are checked with unchanged weights and disabled moving updates.)
+\alttext(Only equal-width stride-one units with the first F preactivation enabled are inverted. The first three panels share a colour range; the error panel magnifies roundoff. Both basic/bottleneck and training/inference BN cases are checked with unchanged weights and disabled moving updates.)
+
+> Complete presets and gradient comparison
+
+Every learned tensor is compared with ordinary backpropagation, with reconstruction drift reported separately.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+double relative(const dm::nn::Tensor &a, const dm::nn::Tensor &b) {
+  namespace n = dm::nn;
+  return std::sqrt(n::sum(n::square(a - b)).item() /
+                   std::max(n::sum(n::square(b)).item(), 1e-30));
+}
+int main() {
+  namespace n = dm::nn;
+  using Mode = n::models::RevNetMode;
+  n::set_num_threads(2);
+  for (auto [large, depth, count, moving] :
+       std::vector<std::tuple<bool, int, int64_t, int64_t>>{{false, 38, 464890, 2672},
+                                                            {false, 110, 1729194, 8256},
+                                                            {false, 164, 1748778, 24768},
+                                                            {true, 56, 27553128, 51200},
+                                                            {true, 104, 45428072, 100352}}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    const auto cfg = large ? n::models::RevNetConfig::ImageNet(depth)
+                           : n::models::RevNetConfig::Cifar(depth);
+    const int side = large ? 64 : 32;
+    const auto out = n::models::RevNet(p, state, n::zeros({1, side, side, 3}), cfg);
+    int stored = 0;
+    for (const auto &u : out.units)
+      stored += u.stored;
+    if (p.count() != count || state.count() != moving || stored != int(cfg.units.size()) ||
+        out.logits.shape() != n::Shape{1, cfg.classes})
+      return 1;
+    std::print(
+        "{} RevNet-{}: {} learned / {} moving scalars, {} units, {} stored stage entries.\n",
+        large ? "ImageNet" : "CIFAR", depth, count, moving, out.units.size(), stored);
+  }
+  for (int depth : {38, 164}) {
+    n::ParameterStore p(17), state(17);
+    const auto cfg = n::models::RevNetConfig::Cifar(depth);
+    const auto x = n::sin(.37 * n::arange(0, 8 * 32 * 32 * 3).to(n::DType::Float32) + .5)
+                       .reshape({8, 32, 32, 3});
+    const auto labels = n::from_vector(std::vector<int64_t>{3, 0, 7, 4, 1, 8, 5, 2});
+    const auto ordinary = n::models::RevNet(p, state, x, cfg, true, Mode::Ordinary, false);
+    const auto expected =
+        n::grad(n::sparse_softmax_cross_entropy(ordinary.logits, labels), p.parameters());
+    double stored_error = 0, reversible_error = 0, drift = 0;
+    for (Mode mode : {Mode::StoredUnits, Mode::Reversible}) {
+      const auto out = n::models::RevNet(p, state, x, cfg, true, mode, false);
+      if (relative(out.logits, ordinary.logits) > 1e-6)
+        return 1;
+      const auto gradients =
+          n::grad(n::sparse_softmax_cross_entropy(out.logits, labels), p.parameters());
+      for (size_t i = 0; i < gradients.size(); ++i) {
+        if (!std::isfinite(n::sum(n::abs(gradients[i])).item()))
+          return 1;
+        auto &error = mode == Mode::StoredUnits ? stored_error : reversible_error;
+        error = std::max(error, relative(gradients[i], expected[i]));
+      }
+    }
+    {
+      n::NoGradGuard guard;
+      const n::models::RevContext c{p, state, true, cfg.momentum, cfg.bottleneck, false};
+      auto y = ordinary.units.back().output;
+      for (size_t i = ordinary.units.size(); i-- > 0;) {
+        const auto &u = ordinary.units[i];
+        if (u.stored) {
+          y = u.input;
+          continue;
+        }
+        y = n::models::RevBlockInverse(c, u.name, y, u.out);
+        drift = std::max(drift, relative(n::concat({y.first, y.second}, 3),
+                                         n::concat({u.input.first, u.input.second}, 3)));
+      }
+    }
+    if (stored_error > 1e-6 || reversible_error > .05 || drift > 1e-4)
+      return 1;
+    std::print("RevNet-{}: {} parameter derivatives; stored-input relative error {:.9f}; "
+               "reconstructed-input relative error {:.9f}; max reconstruction relative drift "
+               "{:.9f}.\n",
+               depth, expected.size(), stored_error, reversible_error, drift);
+  }
+}
+```
+// result_begin: markdown
+CIFAR RevNet-38: 464890 learned / 2672 moving scalars, 9 units, 3 stored stage entries.
+CIFAR RevNet-110: 1729194 learned / 8256 moving scalars, 27 units, 3 stored stage entries.
+CIFAR RevNet-164: 1748778 learned / 24768 moving scalars, 27 units, 3 stored stage entries.
+ImageNet RevNet-56: 27553128 learned / 51200 moving scalars, 9 units, 4 stored stage entries.
+ImageNet RevNet-104: 45428072 learned / 100352 moving scalars, 17 units, 4 stored stage entries.
+RevNet-38: 113 parameter derivatives; stored-input relative error 0.000000000; reconstructed-input relative error 0.000001338; max reconstruction relative drift 0.000000448.
+RevNet-164: 497 parameter derivatives; stored-input relative error 0.000000000; reconstructed-input relative error 0.006258122; max reconstruction relative drift 0.000004861.
+// result_end
+
+> Measuring live tensor memory
+
+The warmed baseline and counted buffers are explicit.
+
+```{cpp, results="markdown", file="figures/revnet_memory.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <datamunge/nn/memory.hpp>
+double peak(const dm::nn::models::RevNetConfig &cfg, dm::nn::models::RevNetMode mode) {
+  namespace n = dm::nn;
+  n::ParameterStore p(17), state(17);
+  const auto x = n::sin(.37 * n::arange(0, 16 * 32 * 32 * 3).to(n::DType::Float32))
+                     .reshape({16, 32, 32, 3});
+  const auto labels = n::arange(0, 16).to(n::DType::Int64);
+  const auto target = labels - 10 * n::cast(n::greater_equal(labels, 10), n::DType::Int64);
+  auto step = [&]() {
+    const auto out = n::models::RevNet(p, state, x, cfg, true, mode, false);
+    return n::grad(n::sparse_softmax_cross_entropy(out.logits, target), p.parameters());
+  };
+  step();
+  n::PeakMemoryScope scope;
+  step();
+  return scope.peak_above_baseline() / 1048576.;
+}
+int main() {
+  namespace n = dm::nn;
+  using Mode = n::models::RevNetMode;
+  n::set_num_threads(2);
+  std::vector<double> units, ordinary, reversible, stored, ratio;
+  for (int count : {3, 9, 18}) {
+    auto cfg = n::models::RevNetConfig::Cifar(38);
+    cfg.units = {count, count, count};
+    units.push_back(count);
+    ordinary.push_back(peak(cfg, Mode::Ordinary));
+    reversible.push_back(peak(cfg, Mode::Reversible));
+    stored.push_back(peak(cfg, Mode::StoredUnits));
+    ratio.push_back(ordinary.back() / reversible.back());
+    if (ordinary.back() <= 0 || reversible.back() <= 0 || stored.back() <= 0)
+      return 1;
+    std::print("{} units/stage, batch 16 at 32 pixels: ordinary {:.3f} MiB, reversible {:.3f} "
+               "MiB, stored-input {:.3f} MiB, ordinary/reversible {:.3f}.\n",
+               count, ordinary.back(), reversible.back(), stored.back(), ratio.back());
+  }
+  auto bytes = dm::graphics::RPlot::create(), saving = dm::graphics::RPlot::create();
+  bytes.lines(units, ordinary, "ordinary", {37, 99, 235})
+      .lines(units, reversible, "reversible", {234, 88, 12})
+      .lines(units, stored, "stored inputs", {22, 163, 74})
+      .title("Measured live tensor peak above baseline")
+      .x_label("units per stage")
+      .y_label("MiB above warmed baseline");
+  bytes.y_limits(0, 1.4 * (*std::max_element(ordinary.begin(), ordinary.end())));
+  saving.lines(units, ratio, "ordinary / reversible", {147, 51, 234})
+      .title("Measured peak-memory ratio")
+      .x_label("units per stage")
+      .y_label("ordinary / reversible")
+      .y_limits(0, 1.4 * (*std::max_element(ratio.begin(), ratio.end())));
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(bytes)
+      .add(saving)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/revnet_memory.svg");
+}
+```
+// result_begin: markdown
+3 units/stage, batch 16 at 32 pixels: ordinary 46.797 MiB, reversible 22.164 MiB, stored-input 22.111 MiB, ordinary/reversible 2.111.
+9 units/stage, batch 16 at 32 pixels: ordinary 129.316 MiB, reversible 25.822 MiB, stored-input 40.325 MiB, ordinary/reversible 5.008.
+18 units/stage, batch 16 at 32 pixels: ordinary 253.095 MiB, reversible 31.308 MiB, stored-input 71.216 MiB, ordinary/reversible 8.084.
+\image(figures/revnet_memory.svg)
+// result_end
+\caption(Measured logical live tensor-buffer peaks above warmed parameters, BN state and input/target tensors. Step gradients and temporary buffers are included. Models keep RevNet-38 widths while units per stage change. These are neither process RSS nor optimizer-step/timing measurements; recomputation trades arithmetic for activation storage.)
+\alttext(Measured logical live tensor-buffer peaks above warmed parameters, BN state and input/target tensors. Step gradients and temporary buffers are included. Models keep RevNet-38 widths while units per stage change. These are neither process RSS nor optimizer-step/timing measurements; recomputation trades arithmetic for activation storage.)
+
+In this run, stored-input checkpoint gradients agree exactly at the printed precision.
+Reconstruction moves the worst parameter-gradient tensor by relative L2 0.000001338
+at depth 38 and 0.006258122 at depth 164; the corresponding maximum input drifts are
+0.000000448 and 0.000004861. With 18 units per stage, reversible peak step storage
+is 31.308 MiB versus 253.095 MiB for ordinary autograd, a measured ratio of 8.084.
+Those figures apply to this fixture, baseline and buffer counter.
+
+> Dataset and reversible fitting
+
+Original CIFAR images precede the full fitting loop; the mode choice is visible in its forward callback.
+
+```{cpp, results="markdown", file="figures/revnet_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/revnet_inputs.png", 5, 0., 1., 4, 1.,
+                     4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/revnet_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/revnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx         = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+             vy         = n::slice_axis(labels, 0, 128, 192);
+  const auto official   = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx         = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy         = n::slice_axis(official.labels, 0, 0, 64);
+  const auto        cfg = n::models::RevNetConfig::Cifar(38);
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::RevNet(
+               p,
+               state,
+               image,
+               cfg,
+               training,
+               training ? n::models::RevNetMode::Reversible : n::models::RevNetMode::Ordinary)
+        .logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 464890 || state.count() != 2672)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/revnet_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 7; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/revnet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "revnet / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("Full RevNet-38, reversible backward")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/revnet_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 464890 learned scalars, 2672 moving scalars; 112 explicit Adam updates.
+Selected epoch 7; validation NLL 2.257676; inference training NLL 1.252152; test NLL 2.270011; test accuracy 0.203125.
+\image(figures/revnet_training.svg)
+// result_end
+\caption(Explicit 7-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 7-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+
+
+The selected epoch is 7, the last one: validation NLL 2.257676, inference training NLL 1.252152,
+and test NLL 2.270011 with accuracy 0.203125. Inference
+training NLL is far below validation NLL, which stays just under the uniform-guess value
+ln 10 ≈ 2.303, so the model mostly fits its 128 images. Training uses augmented inputs/batch moments;
+the restored inference loss uses saved moving moments. This small-data result
+demonstrates reversible fitting without reproducing published performance.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/revnet_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Reversible coupling recovers interior activations while stage entries retain their inputs.
+Inversion, every-gradient comparisons and actual tensor-byte measurements expose the numerical
+and storage tradeoffs; the explicit optimizer demonstrates that backward path in a full classifier.
+
+> References
+
+- [Gomez et al. (2017), The Reversible Residual Network](https://arxiv.org/abs/1707.04585).
+- [Authors' released model](https://github.com/renmengye/revnet-public/blob/master/resnet/models/revnet_model.py).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

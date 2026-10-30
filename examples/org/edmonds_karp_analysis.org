@@ -55,7 +55,7 @@ input order), and the source side of a minimum cut.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Residual graphs and augmenting paths

@@ -1,3 +1,6 @@
+/// @file autograd.cpp
+/// @brief Eager gradient recording, reverse graph traversal, checkpointing, and reversible blocks.
+
 #include "datamunge/nn/autograd.hpp"
 
 #include <algorithm>
@@ -6,24 +9,41 @@
 #include <unordered_set>
 
 #include "datamunge/nn/ops.hpp"
+#include "datamunge/nn/profiler.hpp"
 #include "datamunge/nn/random.hpp"
 #include "detail.hpp"
 
 namespace datamunge::nn {
 
+/// @brief Thread-local recording state and private graph discovery/execution machinery.
 namespace {
+/// @brief CPU contexts interoperate; GPU gradients must use the exact native execution owner.
+/// @param tensor Defined tensor whose storage context is inspected.
+/// @param context Expected gradient destination, retained elsewhere.
+/// @return Whether the tensor can be used without an implicit device/context transfer.
+bool compatible_context(const Tensor& tensor,const compute::Context& context) {
+  return (tensor.device().backend==compute::Backend::CPU && context.device().backend==compute::Backend::CPU) ||
+    tensor.context().shares_with(context);
+}
+/// @brief Whether this thread records differentiable operations; restored by grad guards.
 thread_local bool grad_enabled = true;
-// Depth of checkpoint / reversible recomputations running on this thread.
+/// @brief Nesting depth of checkpoint/reversible forward recomputations on this thread.
 thread_local int recompute_depth = 0;
-// Source of Node::sequence_nr.
+/// @brief Process-wide source of node creation IDs; relaxed atomic increments keep IDs unique.
 std::atomic<std::uint64_t> next_sequence_nr{1};
 
+/// @brief Non-owning identity of a gradient destination, used while graph ownership exists elsewhere.
 struct EdgeKey {
+  /// @brief Receiving backward node; this key does not retain it.
   Node*         node;
+  /// @brief Incoming gradient slot at the receiving node.
   std::uint32_t slot;
+  /// @brief Compares node identity and slot, without inspecting graph contents.
   bool          operator==(const EdgeKey& o) const { return node == o.node && slot == o.slot; }
 };
+/// @brief Hash function for destination identities in checkpoint boundary sets.
 struct EdgeKeyHash {
+  /// @brief Combines the destination pointer hash with a mixed slot index.
   std::size_t operator()(const EdgeKey& k) const {
     return std::hash<const void*>()(k.node) ^ (static_cast<std::size_t>(k.slot) * 0x9e3779b97f4a7c15ULL);
   }
@@ -34,10 +54,14 @@ struct EdgeKeyHash {
 /// (the "boundary") and tags outputs with a shared marker node, so tensors
 /// computed inside count as requiring grad but nothing is saved for backward.
 struct Collector {
+  /// @brief Placeholder attached to outputs produced inside the collected forward segment.
   std::shared_ptr<Node>                         marker;
+  /// @brief Distinct outside gradient destinations encountered in first-use order.
   std::vector<Edge>                             boundary;
+  /// @brief Deduplication set for destinations already in the explicit inputs or boundary.
   std::unordered_set<EdgeKey, EdgeKeyHash>      seen;
 
+  /// @brief Records an outside tensor's gradient destination, ignoring untracked and marker tensors.
   void note(const Tensor& t) {
     if (!t.defined() || !t.requires_grad()) return;
     Edge e = gradient_edge(t);
@@ -45,6 +69,7 @@ struct Collector {
     if (seen.insert({e.node.get(), e.input_nr}).second) boundary.push_back(std::move(e));
   }
 };
+/// @brief Active checkpoint collector on this thread, or null for ordinary graph recording.
 thread_local Collector* collector = nullptr;
 }  // namespace
 
@@ -120,7 +145,7 @@ void Node::release() {
 }
 
 AccumulateGrad::AccumulateGrad(const std::shared_ptr<TensorImpl>& variable)
-    : Node("AccumulateGrad", {}, {{variable->shape, variable->dtype}}, {{variable->shape, variable->dtype}}, nullptr),
+    : Node("AccumulateGrad", {}, {{variable->shape, variable->dtype,variable->storage->context}}, {{variable->shape, variable->dtype,variable->storage->context}}, nullptr),
       variable_(variable) {}
 
 std::vector<Tensor> AccumulateGrad::apply(const std::vector<Tensor>& grad_outputs) {
@@ -143,6 +168,7 @@ std::vector<Tensor> AccumulateGrad::apply(const std::vector<Tensor>& grad_output
 
 namespace {
 
+/// @brief Reuses a leaf's live weakly cached sink or creates a new AccumulateGrad node.
 std::shared_ptr<Node> grad_accumulator(const std::shared_ptr<TensorImpl>& impl) {
   if (auto existing = impl->grad_accumulator.lock()) return existing;
   auto node              = std::make_shared<AccumulateGrad>(impl);
@@ -185,10 +211,10 @@ void record(const std::string& name, const std::vector<Tensor>& inputs, const st
   std::vector<TensorMeta> input_meta;
   for (const auto& t : inputs) {
     edges.push_back(gradient_edge(t));
-    input_meta.push_back(t.defined() ? TensorMeta{t.shape(), t.dtype()} : TensorMeta{});
+    input_meta.push_back(t.defined() ? TensorMeta{t.shape(), t.dtype(),t.context()} : TensorMeta{});
   }
   std::vector<TensorMeta> output_meta;
-  for (const auto& t : outputs) output_meta.push_back({t.shape(), t.dtype()});
+  for (const auto& t : outputs) output_meta.push_back({t.shape(), t.dtype(),t.context()});
   auto node = std::make_shared<Node>(name, std::move(edges), std::move(input_meta), std::move(output_meta),
                                      std::move(fn));
   if (save_outputs) node->save_outputs(outputs);
@@ -217,20 +243,28 @@ const Tensor& SavedTensor::get() const {
 
 namespace {
 
-// One dense record per reachable node. Open-addressed integer buckets replace
-// separate visited/needed/buffer hash nodes without mutating the shared graph.
-// State remains local to a backward invocation, including recursive checkpoints.
+/// @brief Invocation-local execution state for one reachable backward node.
+/// Dense records avoid mutating the shared graph and support recursive checkpoints.
 struct BackwardNode {
+  /// @brief Owned graph node retained until this backward traversal finishes.
   std::shared_ptr<Node> node;
+  /// @brief Start of this node's gradient slots in the traversal's flat buffer array.
   std::size_t offset{0};
-  bool needed{false}, captured{false}, received{false};
+  bool needed{false}; ///< Whether this node contributes to a requested gradient.
+  bool captured{false}; ///< Whether an incoming gradient here is an explicit capture target.
+  bool received{false}; ///< Whether any defined gradient has arrived in this node's slots.
 };
 
+/// @brief Dense node records indexed by an invocation-local open-addressed hash table.
+/// The hash table retains indices rather than pointers into the resizable record vector.
 class BackwardGraph {
  public:
+  /// @brief Sentinel for an absent node or an unoccupied hash bucket.
   static constexpr std::size_t missing = static_cast<std::size_t>(-1);
+  /// @brief Node records in first-discovery order, retained for the whole traversal.
   std::vector<BackwardNode> nodes;
 
+  /// @brief Returns a node's record index, or missing for null/unregistered nodes.
   std::size_t find(Node* node) const {
     if (!node || buckets_.empty()) return missing;
     auto bucket = hash(node) & (buckets_.size() - 1);
@@ -242,6 +276,7 @@ class BackwardGraph {
     return missing;
   }
 
+  /// @brief Registers a non-null node and returns its index plus whether it was newly inserted.
   std::pair<std::size_t, bool> insert(const std::shared_ptr<Node>& node) {
     const auto existing = find(node.get());
     if (existing != missing) return {existing, false};
@@ -255,12 +290,14 @@ class BackwardGraph {
     return {index, true};
   }
 
+  /// @brief Returns whether a registered node is marked as contributing to requested gradients.
   bool needed(Node* node) const {
     const auto index = find(node);
     return index != missing && nodes[index].needed;
   }
 
  private:
+  /// @brief Mixes a live node's unique sequence number for use in power-of-two bucket arrays.
   static std::size_t hash(const Node* node) {
     // Sequence numbers avoid the zero low bits of aligned pointer hashes.
     auto key = node->sequence_nr();
@@ -268,6 +305,7 @@ class BackwardGraph {
     key = (key ^ (key >> 27)) * 0x94d049bb133111ebULL;
     return static_cast<std::size_t>(key ^ (key >> 31));
   }
+  /// @brief Rebuilds bucket indices at a nonzero power-of-two capacity large enough for all nodes.
   void rehash(std::size_t capacity) {
     std::vector<std::size_t> buckets(capacity, missing);
     for (std::size_t index = 0; index < nodes.size(); ++index) {
@@ -277,13 +315,16 @@ class BackwardGraph {
     }
     buckets_.swap(buckets);
   }
+  /// @brief Power-of-two array of indices into nodes, with missing marking unused buckets.
   std::vector<std::size_t> buckets_;
 };
 
+/// @brief Orders destination identities by node pointer and then slot for capture lookup.
 bool edge_less(const EdgeKey& a, const EdgeKey& b) {
   return a.node == b.node ? a.slot < b.slot : std::less<Node*>{}(a.node, b.node);
 }
 
+/// @brief Adds defined contributions, treating an undefined gradient as additive zero.
 Tensor accumulate(const Tensor& a, const Tensor& b) {
   if (!a.defined()) return b;
   if (!b.defined()) return a;
@@ -300,6 +341,7 @@ std::vector<Tensor> run_backward(const std::vector<Tensor>& outputs, const std::
                                  bool allow_unused, std::uint64_t stop_before = 0) {
   if (collector)
     throw std::logic_error("autograd: grad/backward was called inside a checkpointed function, which is not supported");
+  // Nodes created before recomputation are capture boundaries rather than nodes to execute.
   auto is_boundary = [stop_before](const Node* n) { return stop_before != 0 && n->sequence_nr() < stop_before; };
   if (!grad_outputs.empty() && grad_outputs.size() != outputs.size())
     throw std::invalid_argument("grad: got " + std::to_string(grad_outputs.size()) + " grad_outputs for " +
@@ -318,7 +360,9 @@ std::vector<Tensor> run_backward(const std::vector<Tensor>& outputs, const std::
       if (seed.shape() != out.shape())
         throw std::invalid_argument("grad: grad_outputs[" + std::to_string(i) + "] has shape " +
                                     shape_str(seed.shape()) + " but the output has shape " + shape_str(out.shape()));
-      seed = detail::as_dtype(seed, out.dtype());
+      if(!compatible_context(seed,out.context()))
+        throw std::invalid_argument("grad: explicit seed context differs from output context; transfer it explicitly");
+      seed = cast(seed, out.dtype());
     } else {
       if (out.numel() != 1)
         throw std::invalid_argument("grad: output " + std::to_string(i) + " has shape " + shape_str(out.shape()) +
@@ -391,6 +435,7 @@ std::vector<Tensor> run_backward(const std::vector<Tensor>& outputs, const std::
   // All pending gradient handles share one allocation. Reuse the call vector
   // rather than allocating a separate vector/hash node for every graph node.
   std::vector<Tensor> buffers(slots);
+  // Add a contribution to its already-discovered destination and mark the node ready for work.
   auto add_to_buffer = [&](Node* node, std::uint32_t slot, const Tensor& g) {
     auto& state = graph.nodes[graph.find(node)];
     Tensor& value = buffers[state.offset + slot];
@@ -444,12 +489,16 @@ std::vector<Tensor> run_backward(const std::vector<Tensor>& outputs, const std::
           any = true;
         } else {
           const auto& m = node->output_meta()[s];
-          grads[s]      = zeros(m.shape, m.dtype);
+          grads[s]      = m.context ? zeros(m.shape,m.dtype,*m.context) : zeros(m.shape,m.dtype);
         }
       }
       if (!any) continue;
 
-      std::vector<Tensor> input_grads = node->apply(grads);
+      std::vector<Tensor> input_grads;
+      {
+        ProfileScope profile(node->name(), "backward");
+        input_grads = node->apply(grads);
+      }
       if (!retain_graph) node->release();
       const auto& edges = node->next_edges();
       if (!input_grads.empty() && input_grads.size() != edges.size())
@@ -465,6 +514,8 @@ std::vector<Tensor> run_backward(const std::vector<Tensor>& outputs, const std::
           throw std::logic_error("autograd: backward of '" + node->name() + "' returned a gradient of shape " +
                                  shape_str(g.shape()) + " for input " + std::to_string(i) + " of shape " +
                                  shape_str(meta.shape));
+        if(meta.context ? !compatible_context(g,*meta.context) : g.device().backend!=compute::Backend::CPU)
+          throw std::logic_error("autograd: backward returned a gradient on the wrong device context");
         if (g.dtype() != meta.dtype) g = cast(g, meta.dtype);
         add_to_buffer(e.node.get(), e.input_nr, g);
       }
@@ -570,18 +621,24 @@ namespace {
 /// Marks this thread as recomputing, with grad mode on.
 class RecomputeScope {
  public:
+  /// @brief Marks entry into recomputation; the member guard has already enabled recording.
   RecomputeScope() { ++recompute_depth; }
+  /// @brief Removes this recomputation level before the member guard restores recording mode.
   ~RecomputeScope() { --recompute_depth; }
+  /// @brief Disallowed to keep recomputation depth increments and decrements balanced.
   RecomputeScope(const RecomputeScope&)            = delete;
+  /// @brief Disallowed because an active recomputation scope cannot transfer its depth ownership.
   RecomputeScope& operator=(const RecomputeScope&) = delete;
 
  private:
+  /// @brief Enables graph recording for recomputation and restores the previous thread mode.
   EnableGradGuard grad_;
 };
 
 /// Generator states captured before a checkpointed forward.
 using RngSnapshot = std::vector<std::pair<Generator*, Generator>>;
 
+/// @brief Copies the optional default generator and each non-null explicit generator before forward.
 RngSnapshot snapshot_rng(const CheckpointOptions& options) {
   RngSnapshot snap;
   if (options.preserve_rng_state) snap.emplace_back(&default_generator(), default_generator());
@@ -594,33 +651,45 @@ RngSnapshot snapshot_rng(const CheckpointOptions& options) {
 /// states the generators had before.
 class RngReplay {
  public:
+  /// @brief Installs saved generator states and stashes the states to restore on scope exit.
+  /// Generator pointers must remain valid for the entire replay scope.
   explicit RngReplay(const RngSnapshot& snap) {
     for (const auto& [gen, state] : snap) {
       stash_.emplace_back(gen, *gen);
       *gen = state;
     }
   }
+  /// @brief Restores stashed generator states in reverse order, including repeated generator pointers.
   ~RngReplay() {
     for (auto it = stash_.rbegin(); it != stash_.rend(); ++it) *it->first = it->second;
   }
+  /// @brief Disallowed so saved generator states are restored exactly once.
   RngReplay(const RngReplay&)            = delete;
+  /// @brief Disallowed because assignment could discard an active generator restoration scope.
   RngReplay& operator=(const RngReplay&) = delete;
 
  private:
+  /// @brief Generator states displaced by this replay, restored when it ends.
   RngSnapshot stash_;
 };
 
 /// A leaf read inside a checkpoint and its storage version at that time.
 struct LeafVersion {
+  /// @brief Weak reference to a captured leaf, without extending its lifetime.
   std::weak_ptr<TensorImpl> variable;
+  /// @brief Expected leaf storage version before backward recomputation.
   std::uint64_t             version{0};
 };
 
 /// What a collector run of a forward function found.
 struct Discovery {
-  std::vector<Tensor>      outputs;  // may carry marker history; never returned as is
-  std::vector<Edge>        edges;    // one per input (empty if no grad), then outside tensors
+  /// @brief Forward results, possibly carrying marker history; detached/reattached before return.
+  std::vector<Tensor>      outputs;
+  /// @brief Gradient destinations: explicit inputs first (possibly null), then outside tensors.
+  std::vector<Edge>        edges;
+  /// @brief Input shape/dtype information aligned with edges.
   std::vector<TensorMeta>  meta;
+  /// @brief Weak leaf references and captured storage versions for mutation checks.
   std::vector<LeafVersion> leaves;
 };
 
@@ -635,10 +704,13 @@ Discovery discover(const std::function<std::vector<Tensor>()>& run, const std::v
     Edge e = gradient_edge(t);
     if (e.node) c.seen.insert({e.node.get(), e.input_nr});
     d.edges.push_back(e);
-    d.meta.push_back(t.defined() ? TensorMeta{t.shape(), t.dtype()} : TensorMeta{});
+    d.meta.push_back(t.defined() ? TensorMeta{t.shape(), t.dtype(),t.context()} : TensorMeta{});
   }
+  /// @brief Restores an outer collector even if the collected forward callback throws.
   struct Restore {
+    /// @brief Thread-local collector that was active before this discovery run.
     Collector* previous;
+    /// @brief Reinstalls the outer collector during exception unwinding or normal scope exit.
     ~Restore() { collector = previous; }
   } restore{collector};
   collector = &c;
@@ -655,12 +727,15 @@ Discovery discover(const std::function<std::vector<Tensor>()>& run, const std::v
   return d;
 }
 
+/// @brief Returns whether any discovered destination has a backward node.
 bool has_edges(const std::vector<Edge>& edges) {
   for (const auto& e : edges)
     if (e.node) return true;
   return false;
 }
 
+/// @brief Rejects changed storage versions on still-live captured leaves; expired leaves are ignored.
+/// @throws std::logic_error If a forward dependency was updated before recomputation.
 void check_leaves(const std::vector<LeafVersion>& leaves, const std::string& what) {
   for (const auto& leaf : leaves)
     if (auto var = leaf.variable.lock())
@@ -678,6 +753,7 @@ void check_boundary(const std::vector<Tensor>& outputs, std::uint64_t stop_befor
     if (e.node) ok.insert({e.node.get(), e.input_nr});
   std::unordered_set<Node*> visited;
   std::vector<Node*>        stack;
+  // Validate outside destinations immediately; queue newly encountered recomputation nodes.
   auto                      visit = [&](const Edge& e) {
     if (!e.node) return;
     const bool outside = e.node->sequence_nr() < stop_before || dynamic_cast<AccumulateGrad*>(e.node.get());
@@ -713,9 +789,10 @@ void attach(std::vector<Tensor>& outputs, const std::shared_ptr<Node>& node) {
   }
 }
 
+/// @brief Captures each tensor's metadata, using scalar Float32 defaults for undefined handles.
 std::vector<TensorMeta> metas(const std::vector<Tensor>& ts) {
   std::vector<TensorMeta> m;
-  for (const auto& t : ts) m.push_back(t.defined() ? TensorMeta{t.shape(), t.dtype()} : TensorMeta{});
+  for (const auto& t : ts) m.push_back(t.defined() ? TensorMeta{t.shape(), t.dtype(),t.context()} : TensorMeta{});
   return m;
 }
 
@@ -723,6 +800,7 @@ std::vector<TensorMeta> metas(const std::vector<Tensor>& ts) {
 /// grad mode on, then backpropagates through that fresh graph alone.
 class CheckpointNode : public Node {
  public:
+  /// @brief Retains a discovered boundary, versioned inputs, callback, and RNG snapshot for replay.
   CheckpointNode(Discovery& d, std::vector<TensorMeta> output_meta, CheckpointFn fn, const std::vector<Tensor>& inputs,
                  RngSnapshot rng)
       : Node("Checkpoint", d.edges, d.meta, std::move(output_meta), nullptr),
@@ -732,6 +810,8 @@ class CheckpointNode : public Node {
     for (const auto& t : inputs) inputs_.emplace_back(t);
   }
 
+  /// @brief Recomputes the forward with replayed RNG state and differentiates only its fresh graph.
+  /// Validates captured leaf versions and boundary determinism before returning input gradients.
   std::vector<Tensor> apply(const std::vector<Tensor>& grad_outputs) override {
     if (released_)
       throw std::logic_error("autograd: tried to run backward through 'Checkpoint' a second time; its saved values "
@@ -769,6 +849,7 @@ class CheckpointNode : public Node {
     return result;
   }
 
+  /// @brief Releases replay inputs, the callback, and generator snapshots after backward.
   void release() override {
     Node::release();
     fn_ckpt_ = nullptr;
@@ -777,9 +858,13 @@ class CheckpointNode : public Node {
   }
 
  private:
+  /// @brief Forward segment to recompute; cleared on release().
   CheckpointFn             fn_ckpt_;
+  /// @brief Explicit forward inputs with storage-version checks.
   std::vector<SavedTensor> inputs_;
+  /// @brief Pre-forward generator states to replay during backward recomputation.
   RngSnapshot              rng_;
+  /// @brief Captured leaves whose versions must match the initial forward.
   std::vector<LeafVersion> leaves_;
 };
 
@@ -787,11 +872,15 @@ class CheckpointNode : public Node {
 /// output, last block first, and backpropagates through one block at a time.
 class ReversibleNode : public Node {
  public:
+  /// @brief Retains coupling blocks and their discovered external gradient dependencies.
   ReversibleNode(Discovery& d, std::vector<TensorMeta> output_meta, std::vector<ReversibleBlock> blocks)
       : Node("ReversibleSequence", d.edges, d.meta, std::move(output_meta), nullptr),
         blocks_(std::move(blocks)),
         leaves_(std::move(d.leaves)) {}
 
+  /// @brief Reconstructs each block's inputs and propagates its gradients, from last block to first.
+  /// @throws std::invalid_argument If higher-order gradient recording is requested.
+  /// @throws std::logic_error For released state, changed saved storage, or a changed boundary.
   std::vector<Tensor> apply(const std::vector<Tensor>& grad_outputs) override {
     if (released_)
       throw std::logic_error("autograd: tried to run backward through 'ReversibleSequence' a second time; its saved "
@@ -852,13 +941,16 @@ class ReversibleNode : public Node {
     return acc;
   }
 
+  /// @brief Releases the coupling callbacks and base-node saved output state.
   void release() override {
     Node::release();
     blocks_.clear();
   }
 
  private:
+  /// @brief Owned forward coupling callbacks, traversed in reverse during backward.
   std::vector<ReversibleBlock> blocks_;
+  /// @brief Leaf storage versions captured when the reversible forward was discovered.
   std::vector<LeafVersion>     leaves_;
 };
 
@@ -911,6 +1003,7 @@ std::vector<Tensor> reversible_sequence(const std::vector<ReversibleBlock>& bloc
                                         const Tensor& x2) {
   for (const auto& b : blocks)
     if (!b.f || !b.g) throw std::invalid_argument("reversible_sequence: every block needs f and g");
+  // Apply the additive coupling chain; discovery and ordinary evaluation use the same closure.
   auto run = [&]() {
     Tensor a = x1, b = x2;
     for (const auto& block : blocks) {

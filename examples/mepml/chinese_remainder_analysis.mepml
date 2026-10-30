@@ -78,7 +78,7 @@ moduli.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Constructive solution: pairwise merging
@@ -236,7 +236,7 @@ criterion (\(\gcd(2,4)=2\nmid1\)) and is reported unsolvable.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

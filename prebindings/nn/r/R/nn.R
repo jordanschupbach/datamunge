@@ -31,6 +31,50 @@ nn <- new.env(parent = emptyenv())
     code()
   }
 }
+# Shared example components (examples/nn/common/*.hpp, bound by
+# examples/bindings/nn_components.i) regrouped by C++ namespace: C++
+# image_training::ImageBatch is nn_components$image_training$ImageBatch. The R
+# examples run the same loops as the C++ examples over these pieces.
+nn_components <- new.env(parent = emptyenv())
+.local_nn_component_namespaces <- c("example_runtime", "paths", "dataset_assets", "check", "image_training", "resnet", "resnet_demo",
+                                    "architecture", "mobile_checks", "nn_components", "grouped", "lrn", "inception",
+                                    "normalized_conv", "deconvnet", "alexnet", "googlenet", "inception23", "inception4",
+                                    "nin", "vgg", "xception", "zfnet", "preact", "densenet", "dpn", "pyramidnet",
+                                    "res2net", "resnext", "revnet", "stochastic_depth", "wide_resnet", "mobilenet",
+                                    "mbconv", "condensenet", "ghostnet", "regnet", "shufflenet", "squeezenet", "convnext",
+                                    "deformable", "non_local", "octconv", "repvgg", "attention_cnn", "mnist",
+                                    "cnn_baselines", "alexnet_checks", "xception_checks", "densenet_checks", "ghostnet_checks", "mobilenet_v2_checks", "mnasnet_checks", "convnext_checks", "efficientnet_checks", "efficientnet_v2_checks", "preactivation_resnet_checks", "pyramidnet_checks", "res2net_checks", "resnext_checks", "revnet_checks", "cbam_checks", "non_local_checks", "octconv_checks", "repvgg_checks", "sknet_checks", "ae", "memory_components",
+                                    "seg", "fcn", "unet", "segnet", "hrnet", "pspnet", "deeplab", "sentence", "replay", "series", "sensor", "charcnn", "tcn", "wavestack", "sal", "dream", "featurevis", "cam", "occlusion", "ig", "smooth", "guided", "detector", "fpn", "retinanet", "fcos", "ssd", "centernet", "detr", "hungarian", "efficientdet", "bifpn",
+                                    "yolo", "wordtree", "maskrcnn", "instance", "panoptic", "yolact", "detection_evaluation", "detection", "highway", "stn", "capsnet", "im2col", "receptive")
+.local_nn_populate_components <- function() {
+  namespace <- environment(.local_nn_populate_components)
+  symbols <- ls(namespace, all.names = TRUE)
+  for (prefix in .local_nn_component_namespaces) {
+    marker <- paste0(prefix, "__")
+    group <- new.env(parent = emptyenv())
+    selected <- symbols[startsWith(symbols, marker)]
+    # Drop generated accessors and overload variants; the dispatching function keeps the plain name.
+    selected <- selected[!grepl("__SWIG_[0-9]+$|_(get|set)$", selected)]
+    for (name in selected) {
+      value <- get(name, namespace)
+      if (!is.function(value)) next
+      # Flush R's buffered output before a C++ call so std::cout text stays in order.
+      wrapped <- eval(bquote(function(...) { flush(stdout()); .(value)(...) }))
+      group[[substring(name, nchar(marker) + 1L)]] <- wrapped
+    }
+    # SWIG exposes enum constants as zero-argument getters in R. Preserve
+    # their enum class so they can be assigned to bound configuration fields.
+    for (name in symbols[startsWith(symbols, marker) & endsWith(symbols, "_get")]) {
+      value <- get(name, namespace)
+      if (is.function(value) && identical(names(formals(value)), ".copy") &&
+          base::any(grepl("enumFromInteger", deparse(body(value)), fixed = TRUE))) {
+        key <- base::sub("_get$", "", substring(name, nchar(marker) + 1L))
+        group[[key]] <- value()
+      }
+    }
+    nn_components[[prefix]] <- group
+  }
+}
 # Called after all generated proxy functions have been defined.
 
 .local_nn_tensor_list <- function(vector) {
@@ -46,8 +90,7 @@ nn <- new.env(parent = emptyenv())
   for (value in values) vector$push_back(value)
   vector
 }
-.local_nn_load_npz <- function(path) {
-  vector <- load_npz(path)
+.local_nn_named_list <- function(vector) {
   result <- list()
   for (i in seq_len(NamedTensors_size(vector)) - 1L) {
     pair <- NamedTensors___getitem__(vector, i)
@@ -58,12 +101,17 @@ nn <- new.env(parent = emptyenv())
   }
   result
 }
-.local_nn_save_npz <- function(path, arrays) {
+.local_nn_named_tensors <- function(arrays) {
+  if (!is.list(arrays)) return(arrays)
   vector <- NamedTensors()
-  if (is.null(names(arrays)) || base::any(!nzchar(names(arrays)))) stop("arrays must be named")
+  if (!length(arrays)) return(vector)
+  if (is.null(names(arrays)) || base::any(!nzchar(names(arrays))) || anyDuplicated(names(arrays)))
+    stop("arrays must have unique nonempty names")
   for (name in names(arrays)) vector$push_back(NamedTensor(name, arrays[[name]]))
-  save_npz(path, vector)
+  vector
 }
+.local_nn_load_npz <- function(path) .local_nn_named_list(load_npz(path))
+.local_nn_save_npz <- function(path, arrays) save_npz(path, .local_nn_named_tensors(arrays))
 .local_nn_grad <- function(output, inputs, options = GradOptions(), grad_outputs = NULL) {
   if (is.list(output) || !is.null(grad_outputs)) {
     if (!is.list(output)) output <- list(output)
@@ -73,11 +121,27 @@ nn <- new.env(parent = emptyenv())
   }
   .local_nn_tensor_list(grad(output, .local_nn_tensor_vector(inputs), options))
 }
+.local_nn_image_size <- function(size) {
+  if (!is.numeric(size)) return(size) # Already a bound C++ ImageSize.
+  if (length(size) != 2L || base::any(!is.finite(size) | size != base::floor(size)))
+    stop("image size must contain two finite integer dimensions")
+  result <- ImageSize()
+  result$height <- size[1L]
+  result$width <- size[2L]
+  result
+}
 .onLoad <- function(libname, pkgname) {
   .local_nn_populate()
+  .local_nn_populate_components()
   nn$load_npz <- .local_nn_load_npz
   nn$save_npz <- .local_nn_save_npz
   nn$grad <- .local_nn_grad
   nn$tensor_list <- .local_nn_tensor_list
   nn$tensor_vector <- .local_nn_tensor_vector
+  nn$named_tensors <- .local_nn_named_tensors
+  nn$named_list <- .local_nn_named_list
+  nn$resize_bilinear <- function(images, size, align_corners = FALSE, half_pixel_centers = FALSE)
+    resize_bilinear(images, .local_nn_image_size(size), align_corners, half_pixel_centers)
+  nn$resize_nearest <- function(images, size, align_corners = FALSE, half_pixel_centers = FALSE)
+    resize_nearest(images, .local_nn_image_size(size), align_corners, half_pixel_centers)
 }

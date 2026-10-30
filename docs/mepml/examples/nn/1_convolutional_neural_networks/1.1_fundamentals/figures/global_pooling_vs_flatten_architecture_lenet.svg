@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1239.5" viewBox="0 0 1000 1239.5" role="img" data-model-layout="left-to-right" data-model-style="LeNet" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Flatten and global-average classifier heads</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="36" y="36" font-size="20" font-weight="600">Flatten and global-average classifier heads</text>
+<text x="36" y="63" font-size="12">8 nodes | 264 unique learned values | LeNet / blocks</text>
+<rect x="36" y="71" width="12" height="12" rx="2" fill="#E69F00"/><text x="54" y="81" font-size="11">Input</text>
+<rect x="166" y="71" width="12" height="12" rx="2" fill="#748BCB"/><text x="184" y="81" font-size="11">Dense</text>
+<rect x="296" y="71" width="12" height="12" rx="2" fill="#D55E00"/><text x="314" y="81" font-size="11">Merge</text>
+<rect x="426" y="71" width="12" height="12" rx="2" fill="#6C8194"/><text x="444" y="81" font-size="11">Output</text>
+<rect x="556" y="71" width="12" height="12" rx="2" fill="#94A3B8"/><text x="574" y="81" font-size="11">Operation</text>
+<text x="36" y="111" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path class="feature-connector" d="M 244 186 L 355.1 217.5 M 244 394 L 355.1 362.5" stroke="#94A3B8" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="0" data-to="1" d="M 244 290 C 299.55 290 299.55 290 355.1 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 374.1 217.5 L 499.1 288.375 M 374.1 362.5 L 499.1 291.625" stroke="#748BCB" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="1" data-to="2" d="M 374.1 290 C 436.6 290 436.6 290 499.1 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 244 186 L 355.1 797.125 M 244 394 L 355.1 800.375" stroke="#94A3B8" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="0" data-to="3" d="M 244 290 C 299.55 290 299.55 798.75 355.1 798.75" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 374.1 797.125 L 499.1 797.125 M 374.1 800.375 L 499.1 800.375" stroke="#94A3B8" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="3" data-to="4" d="M 374.1 798.75 C 436.6 798.75 436.6 798.75 499.1 798.75" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 518.1 797.125 L 643.1 288.375 M 518.1 800.375 L 643.1 291.625" stroke="#748BCB" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="4" data-to="5" d="M 518.1 798.75 C 580.6 798.75 580.6 290 643.1 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="2" data-to="6" d="M 518.1 290 C 534.1 290 534.1 162 550.1 162 L 755.1 162 C 771.1 162 771.1 290 787.1 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 662.1 288.375 L 787.1 287.25 M 662.1 291.625 L 787.1 292.75" stroke="#D55E00" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="5" data-to="6" d="M 662.1 290 C 724.6 290 724.6 290 787.1 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 806.1 287.25 L 931.1 287.25 M 806.1 292.75 L 931.1 292.75" stroke="#6C8194" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="6" data-to="7" d="M 806.1 290 C 868.6 290 868.6 290 931.1 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 8 x 8 x 2]</title>
+<g id="model-glyph-0" data-left="36" data-right="244" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 36 250 L 100 186" fill="none"/>
+<rect class="feature-plane" data-plane="1" x="100" y="186" width="144" height="144" fill="#E69F00"/>
+<rect class="feature-plane" data-plane="0" x="36" y="250" width="144" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(140 531.375) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 2]</text>
+</g></g>
+<g data-node="1" data-category="Operation"><title>Reshape [1 x 128]</title>
+<g id="model-glyph-1" data-left="355.1" data-right="374.1" data-face-width="18" data-face-height="144" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 355.1 218.5 L 356.1 217.5" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="355.1" y="218.5" width="18" height="144" fill="#94A3B8"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(364.6 531.375) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Reshape</text>
+<text x="0" y="12.35" font-size="13">[1 x 128]</text>
+</g></g>
+<g data-node="2" data-category="Dense"><title>flatten_head [1 x 2]</title>
+<g id="model-glyph-2" data-left="499.1" data-right="518.1" data-face-width="18" data-face-height="2.25" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 499.1 289.375 L 500.1 288.375" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="499.1" y="289.375" width="18" height="2.25" fill="#748BCB"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(508.6 531.375) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">flatten_head</text>
+<text x="0" y="12.35" font-size="13">[1 x 2]</text>
+</g></g>
+<g data-node="3" data-category="Operation"><title>Sum [1 x 2]</title>
+<g id="model-glyph-3" data-left="355.1" data-right="374.1" data-face-width="18" data-face-height="2.25" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 355.1 798.125 L 356.1 797.125" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="355.1" y="798.125" width="18" height="2.25" fill="#94A3B8"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(364.6 1040.12) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Sum</text>
+<text x="0" y="12.35" font-size="13">[1 x 2]</text>
+</g></g>
+<g data-node="4" data-category="Operation"><title>Div [1 x 2]</title>
+<g id="model-glyph-4" data-left="499.1" data-right="518.1" data-face-width="18" data-face-height="2.25" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 499.1 798.125 L 500.1 797.125" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="499.1" y="798.125" width="18" height="2.25" fill="#94A3B8"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(508.6 1040.12) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Div</text>
+<text x="0" y="12.35" font-size="13">[1 x 2]</text>
+</g></g>
+<g data-node="5" data-category="Dense"><title>gap_head [1 x 2]</title>
+<g id="model-glyph-5" data-left="643.1" data-right="662.1" data-face-width="18" data-face-height="2.25" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 643.1 289.375 L 644.1 288.375" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="643.1" y="289.375" width="18" height="2.25" fill="#748BCB"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(652.6 531.375) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">gap_head</text>
+<text x="0" y="12.35" font-size="13">[1 x 2]</text>
+</g></g>
+<g data-node="6" data-category="Merge"><title>ConcatV2 [1 x 4]</title>
+<g id="model-glyph-6" data-left="787.1" data-right="806.1" data-face-width="18" data-face-height="4.5" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 787.1 288.25 L 788.1 287.25" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="787.1" y="288.25" width="18" height="4.5" fill="#D55E00"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(796.6 531.375) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 4]</text>
+</g></g>
+<g data-node="7" data-category="Output"><title>Output [1 x 4]</title>
+<g id="model-glyph-7" data-left="931.1" data-right="950.1" data-face-width="18" data-face-height="4.5" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 931.1 288.25 L 932.1 287.25" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="931.1" y="288.25" width="18" height="4.5" fill="#6C8194"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(940.6 531.375) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 4]</text>
+</g></g>
+</g></svg>

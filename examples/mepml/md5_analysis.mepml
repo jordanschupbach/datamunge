@@ -46,7 +46,7 @@ digest.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Popcount of the XOR of two digests: how many output bits differ.
 static int digest_hamming(const std::array<std::uint8_t, 16>& a,
@@ -136,7 +136,7 @@ bits change. Ideal diffusion centres this count on 64 (half the bits).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Popcount of the XOR of two digests: how many output bits differ.
 static int digest_hamming(const std::array<std::uint8_t, 16>& a,

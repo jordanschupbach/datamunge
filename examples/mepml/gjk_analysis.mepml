@@ -47,7 +47,7 @@ distance engine inside physics engines and robotics collision checkers.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<Point2D> ngon(double cx, double cy, double r, int n, double rot) {
     std::vector<Point2D> p;
@@ -113,7 +113,7 @@ and plot the gap as one shape slides away from another.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<Point2D> ngon(double cx, double cy, double r, int n, double rot) {
     std::vector<Point2D> p;

@@ -103,3 +103,42 @@ TEST(Ode, VerletVersusForwardEulerEnergyDrift) {
     const double eN = 0.5 * (fe.y.back()[1] * fe.y.back()[1] + fe.y.back()[0] * fe.y.back()[0]);
     EXPECT_GT(eN, 1.3 * e0); // forward Euler's energy has drifted noticeably upward
 }
+
+TEST(BackwardEulerAdaptive, MeetsToleranceOnDecay) {
+    using datamunge::algorithms::backward_euler_adaptive;
+    const auto f = [](double, const std::vector<double>& y) { return std::vector<double>{-y[0]}; };
+    const auto r = backward_euler_adaptive(f, {1.0}, 0.0, 5.0, 1e-4, 1e-8, 1e-3);
+    ASSERT_GT(r.accepted, 10);
+    EXPECT_DOUBLE_EQ(r.solution.t.back(), 5.0);
+    EXPECT_EQ(r.step_sizes.size(), static_cast<std::size_t>(r.accepted));
+    EXPECT_NEAR(r.solution.y.back()[0], std::exp(-5.0), 5e-3 * std::exp(-5.0) + 1e-3);
+    EXPECT_GT(r.f_evaluations, 0);
+    // Tighter tolerance means more steps (local error O(h^2) -> steps ~ tol^-1/2).
+    const auto tight = backward_euler_adaptive(f, {1.0}, 0.0, 5.0, 1e-6, 1e-10, 1e-3);
+    EXPECT_GT(tight.accepted, 5 * r.accepted);
+    EXPECT_THROW(backward_euler_adaptive(f, {1.0}, 1.0, 0.0, 1e-4, 1e-8, 1e-3), std::invalid_argument);
+}
+
+TEST(BackwardEulerAdaptive, StiffProblemTakesLargeSteps) {
+    using datamunge::algorithms::backward_euler_adaptive;
+    // y' = -1000 (y - cos t): after a fast transient y tracks cos t; steps must grow far beyond 2/1000.
+    const auto f = [](double t, const std::vector<double>& y) { return std::vector<double>{-1000.0 * (y[0] - std::cos(t))}; };
+    const auto r = backward_euler_adaptive(f, {0.0}, 0.0, 10.0, 1e-3, 1e-6, 1e-5);
+    double hmax = 0;
+    for (double h : r.step_sizes) hmax = std::max(hmax, h);
+    EXPECT_GT(hmax, 0.02);
+    EXPECT_NEAR(r.solution.y.back()[0], std::cos(10.0), 1e-2);
+}
+
+TEST(StabilityFunction, KnownValues) {
+    using datamunge::algorithms::OdeMethod;
+    using datamunge::algorithms::stability_function;
+    const std::complex<double> z{-3.0, 0.0};
+    EXPECT_NEAR(std::abs(stability_function(OdeMethod::ForwardEuler, z)), 2.0, 1e-15);
+    EXPECT_NEAR(std::abs(stability_function(OdeMethod::BackwardEuler, z)), 0.25, 1e-15);
+    EXPECT_NEAR(stability_function(OdeMethod::Trapezoidal, z).real(), -0.2, 1e-15);
+    EXPECT_NEAR(stability_function(OdeMethod::RungeKutta4, {-1.0, 0.0}).real(), 1 - 1 + 0.5 - 1.0 / 6 + 1.0 / 24, 1e-15);
+    // Backward Euler: |R| <= 1 on the whole left half-plane.
+    for (double x = -50; x <= 0; x += 0.5)
+        for (double y = -50; y <= 50; y += 0.5) EXPECT_LE(std::abs(stability_function(OdeMethod::BackwardEuler, {x, y})), 1.0 + 1e-15);
+}

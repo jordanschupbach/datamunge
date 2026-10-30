@@ -43,7 +43,7 @@ system canonical.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -129,7 +129,7 @@ resulting rules, then reduce a word to its normal form and plot its length shrin
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -38,7 +38,7 @@ dominates large sparse SPD solving.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -121,7 +121,7 @@ and compare CG's residual history against Gauss-Seidel's on the same system.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

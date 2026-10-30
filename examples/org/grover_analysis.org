@@ -36,7 +36,7 @@ amplitude is \(\sin((2k+1)\theta)\). It reaches 1 when \((2k+1)\theta\approx\pi/
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

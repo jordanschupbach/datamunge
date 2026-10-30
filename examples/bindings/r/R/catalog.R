@@ -167,4 +167,4 @@
   "reconstruction_anomaly"
 )
 
-.nn_native_catalog <- c("cnn_mnist", "convolution_im2col", "undercomplete_autoencoder")
+.nn_native_catalog <- c("batch_norm_ablation", "cnn_cifar10", "cnn_mnist", "convolution_im2col", "depthwise_separable", "dilated_convolutions", "global_pooling_vs_flatten", "lenet5", "receptive_fields", "transposed_convolutions", "alexnet", "googlenet", "inception_v2_v3", "inception_v4_resnet", "xception", "zfnet", "densenet", "preactivation_resnet", "pyramidnet", "res2net", "resnet_basic", "resnet_bottleneck", "resnext", "revnet", "stochastic_depth", "wide_resnet", "efficientnet", "efficientnet_v2", "ghostnet", "mnasnet", "mobilenet_v1", "mobilenet_v2", "regnet", "squeezenet", "cbam", "convnext", "convnext_v2", "deformable_conv", "eca_net", "non_local", "octconv", "repvgg", "senet", "sknet", "segnet", "kim_sentence_cnn", "contractive_autoencoder", "convolutional_autoencoder", "denoising_autoencoder", "k_sparse_autoencoder", "masked_autoencoder", "recurrent_autoencoder", "sparse_autoencoder", "stacked_autoencoder", "tied_autoencoder", "undercomplete_autoencoder", "winner_take_all_autoencoder")

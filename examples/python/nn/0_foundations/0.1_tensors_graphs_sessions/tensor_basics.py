@@ -1,4 +1,5 @@
 # Native Python NN example. Construction, views, broadcasting and checks run here.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/tensor_basics.py
 """Numeric Tensor basics, matching the canonical eager C++ demonstration."""
 import math
 from pydatamunge import nn

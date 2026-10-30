@@ -1,0 +1,28 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[font=\large,>={Stealth[length=2.5mm]}]
+\begin{scope}[shift={(0,0)}]
+\draw[->,gray] (-2,0)--(2,0);\draw[->,gray] (0,-2)--(0,2);
+\draw[thick,orange!80!black] (-1.8,-1.8)--(-.2,.2)--(1.8,1.8)--(.2,-.2)--cycle;
+\foreach \x/\y in {-1.8/-1.8,-.2/.2,1.8/1.8,.2/-.2}{\fill[orange!80!black] (\x,\y) circle(2pt);}
+\node at (0,2.6) {Observed mixtures};\node[align=center] at (0,-2.7) {$x=As$\\oblique mixing patterns};
+\end{scope}
+\begin{scope}[shift={(6,0)}]
+\draw[->,gray] (-2,0)--(2,0);\draw[->,gray] (0,-2)--(0,2);
+\draw[thick,blue!70!black] (-1.414,0)--(0,1.414)--(1.414,0)--(0,-1.414)--cycle;
+\foreach \x/\y in {-1.414/0,0/1.414,1.414/0,0/-1.414}{\fill[blue!70!black] (\x,\y) circle(2pt);}
+\node at (0,2.6) {PCA-whitened};\node[align=center] at (0,-2.7) {$\operatorname{Cov}_{n}(z)=I$\\uncorrelated, still dependent};
+\end{scope}
+\begin{scope}[shift={(12,0)}]
+\draw[->,gray] (-2,0)--(2,0);\draw[->,gray] (0,-2)--(0,2);
+\draw[thick,green!50!black] (-1,-1)--(-1,1)--(1,1)--(1,-1)--cycle;
+\foreach \x/\y in {-1/-1,-1/1,1/1,1/-1}{\fill[green!50!black] (\x,\y) circle(2pt);}
+\node at (0,2.6) {Source orientation};\node[align=center] at (0,-2.7) {$s=Rz$\\independent four corners};
+\end{scope}
+\draw[->,very thick,blue!70!black] (2.2,.4)--node[above,font=\normalsize]{whiten}(3.8,.4);
+\draw[->,very thick,green!50!black] (8.2,.4)--node[above,font=\normalsize]{rotate}(9.8,.4);
+\node[align=center] at (6,-4.0) {Covariance stays identity under every orthogonal rotation.\\A contrast uses information beyond covariance to choose an orientation.};
+\end{tikzpicture}
+\end{document}

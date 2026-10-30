@@ -1,0 +1,190 @@
+//? Title: Linear Regression: Tensor SGD and Normal Equations
+//? Subtitle: Solve for coefficients without forming an explicit inverse
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A linear predictor must separate explainable variation from residual error, while avoiding
+numerically unstable coefficient estimates. We fit a five-point problem with explicit tensor SGD,
+use QR as an independent optimum check, and optimise a small real-data model. Residual
+orthogonality gives a check independent of coefficient values.
+)
+\toc
+
+> The method
+
+Minimising L(w)=||Xw-y||²/(2N) gives gradient Xᵀ(Xw-y)/N. A full-column-rank optimum
+therefore has residual orthogonal to every design column. Normal equations solve XᵀXw=Xᵀy
+by Cholesky; thin QR instead writes X=QR and solves Rw=Qᵀy. Neither needs an explicit inverse.
+
+$$
+\nabla L=X^\top(Xw-y)/N,\qquad \kappa_2(X^\top X)=\kappa_2(X)^2.
+$$
+\alttext(The loss gradient is the design-transposed residual divided by sample size; forming a Gram matrix squares the spectral condition number.)
+
+QR is preferable on nearly dependent columns because it avoids forming that Gram matrix.
+Gradient descent converges on a fixed full-rank quadratic when 0<rate<2/lambda_max(XᵀX/N).
+Direct dense solving costs O(Np²+p³), while a gradient step costs O(Np). The rank and
+conditioning assumptions matter; a unique prediction fit need not imply stable individual
+coefficients near collinearity.
+
+The concept diagram has a retained TikZ source in `diagrams/linear_regression_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/linear_regression_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/linear_regression_concept.tikz > build/linear_regression_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/linear_regression_concept.svg build/linear_regression_concept.dvi > build/linear_regression_concept.render.log 2>&1
+printf 'Rendered build/linear_regression_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/linear_regression_concept.svg from local TikZ source.
+// \image(figures/linear_regression_concept.svg)
+// result_end
+\caption(Solve for coefficients without forming an explicit inverse)
+\alttext(Design + response; X,y. Then Tensor SGD loop; w\leftarrow w-\eta\nabla L. Then QR optimum check; X^T(Xw-y)=0.)
+
+> Simple examples
+
+For x=(-2,-1,0,1,2) and y=(0,0,1,2,2), symmetry gives intercept 1 and slope .6. The residual sum and its x-weighted sum are zero.
+
+```{cpp, results="markdown", file="figures/linear_regression_five.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto x = n::linspace(-2, 2, 5, dtype).reshape({5, 1});
+  const auto X = n::concat({n::ones_like(x), x}, 1);
+  const auto y = n::tensor({0, 0, 1, 2, 2}, {5, 1}, dtype);
+  auto w = n::zeros({2, 1}, dtype).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Sgd;
+  n::Optimizer optimizer({w}, .4, config);
+  for (int step = 0; step < 100; ++step) {
+    const auto prediction = n::matmul(X, w);
+    const auto loss = .5 * n::mean(n::square(prediction - y));
+    optimizer.minimize(loss);
+  }
+  n::NoGradGuard guard;
+  const auto prediction = n::matmul(X, w);
+  const auto oracle = n::ml::LeastSquaresQr(X, y);
+  const double normal = n::max(n::abs(n::matmul(X, prediction - y, true, false))).item();
+  if (n::max(n::abs(w - oracle)).item() > 1e-10 || normal > 1e-10)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.points(x.to_vector<double>(), y.to_vector<double>(), "observed", {37, 99, 235})
+      .lines(x.to_vector<double>(), prediction.to_vector<double>(), "tensor SGD",
+             {234, 88, 12})
+      .title("SGD fits five points; QR checks the optimum")
+      .x_label("x")
+      .y_label("y");
+  std::filesystem::create_directories("build");
+  p.size(820, 420).save_svg("build/linear_regression_five.svg");
+  std::print("SGD coefficients {}; QR oracle {}; normal-equation residual {:.12f}.\n",
+             w.to_vector<double>(), oracle.to_vector<double>(), normal);
+}
+```
+// result_begin: markdown
+SGD coefficients [0.9999999999999999, 0.6]; QR oracle [1, 0.6000000000000001]; normal-equation residual 0.000000000000.
+\image(figures/linear_regression_five.svg)
+// result_end
+\caption(The fitted intercept and slope satisfy two residual orthogonality equations.)
+\alttext(The fitted intercept and slope satisfy two residual orthogonality equations.)
+
+> Checking the theory
+
+The Hessian is diagonal with eigenvalues 1 and 2 for this symmetric design, so rate .4 lies inside the stability interval.
+
+```{cpp, results="markdown", file="figures/linear_regression_descent.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto x = n::linspace(-2, 2, 5, n::DType::Float64).reshape({5, 1});
+  const auto X = n::concat({n::ones_like(x), x}, 1);
+  const auto y = n::tensor({0, 0, 1, 2, 2}, {5, 1}, n::DType::Float64);
+  auto w = n::zeros({2, 1}, n::DType::Float64).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Sgd;
+  n::Optimizer optimizer({w}, .4, config);
+  const auto exact = n::ml::LeastSquaresQr(X, y);
+  std::vector<double> step, loss;
+  for (int i = 0; i <= 30; ++i) {
+    const auto objective = .5 * n::mean(n::square(n::matmul(X, w) - y));
+    step.push_back(i);
+    loss.push_back(objective.item());
+    if (i < 30)
+      optimizer.minimize(objective);
+  }
+  auto p = dm::graphics::RPlot::create();
+  p.lines(step, loss, "SGD loss", {37, 99, 235})
+      .title("Stable SGD approaches the QR optimum")
+      .x_label("step")
+      .y_label("half MSE");
+  std::filesystem::create_directories("build");
+  p.size(820, 420).save_svg("build/linear_regression_descent.svg");
+  if (n::max(n::abs(w - exact)).item() > 1e-6)
+    return 1;
+  std::print("After 30 steps, maximum coefficient error {:.9f}; half MSE {:.9f}.\n",
+             n::max(n::abs(w - exact)).item(), loss.back());
+}
+```
+// result_begin: markdown
+After 30 steps, maximum coefficient error 0.000000221; half MSE 0.040000000.
+\image(figures/linear_regression_descent.svg)
+// result_end
+\caption(A fixed stable step contracts the quadratic error toward the direct-solver result.)
+\alttext(A fixed stable step contracts the quadratic error toward the direct-solver result.)
+
+> A dataset example
+
+The built-in mtcars table has 32 cars. This descriptive fit relates mpg to weight; it does not identify a causal effect or estimate held-out error.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto data = dm::datasets::mtcars();
+  const auto x = n::from_vector(data.get_column("wt").values(), {32, 1});
+  const auto y = n::from_vector(data.get_column("mpg").values(), {32, 1});
+  const auto centre = n::mean(x, {0}, true);
+  const auto scale = n::sqrt(n::mean(n::square(x - centre), {0}, true));
+  const auto X = n::concat({n::ones_like(x), (x - centre) / scale}, 1);
+  auto w = n::zeros({2, 1}, n::DType::Float64).requires_grad_();
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Sgd;
+  n::Optimizer optimizer({w}, .1, config);
+  for (int step = 0; step < 350; ++step) {
+    const auto loss = .5 * n::mean(n::square(n::matmul(X, w) - y));
+    optimizer.minimize(loss);
+  }
+  n::NoGradGuard guard;
+  const auto oracle = n::ml::LeastSquaresQr(X, y);
+  if (n::max(n::abs(w - oracle)).item() > 1e-9)
+    return 1;
+  const double slope = w.at({1, 0}) / scale.item();
+  const double intercept = w.at({0, 0}) - slope * centre.item();
+  const double r2 = 1 - n::sum(n::square(n::matmul(X, w) - y)).item() /
+                            n::sum(n::square(y - n::mean(y))).item();
+  std::print("{} rows; tensor SGD R-squared {:.6f}; intercept {:.6f}; slope {:.6f}.\n",
+             data.nrows(), r2, intercept, slope);
+}
+```
+// result_begin: markdown
+32 rows; tensor SGD R-squared 0.752833; intercept 37.285126; slope -5.344472.
+// result_end
+
+
+> Conclusion
+
+The tensor SGD fits and QR reference agree on a hand-checkable optimum. Orthogonal residuals
+provide an additional correctness check. QR avoids squared conditioning, while descriptive
+real-data coefficients still depend on the design and assumptions.
+
+> References
+
+- [R lm documentation](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/lm.html).
+- [LAPACK Users Guide: least squares](https://www.netlib.org/lapack/lug/node27.html).

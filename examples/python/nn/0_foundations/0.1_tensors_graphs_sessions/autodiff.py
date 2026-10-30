@@ -1,4 +1,5 @@
 # Native Python NN example. Derivatives, Jacobians and gradient updates run here.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/autodiff.py
 """Reverse mode, differentiable gradients, finite differences and stop-gradient."""
 import math
 from pydatamunge import nn

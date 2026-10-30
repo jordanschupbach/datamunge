@@ -5,6 +5,10 @@
 #include <datamunge/algorithms/exp_golomb.hpp>
 #include <datamunge/algorithms/fibonacci_coding.hpp>
 #include <datamunge/algorithms/golomb_coding.hpp>
+#include <datamunge/algorithms/huffman_coding.hpp>
+
+#include <cmath>
+#include <stdexcept>
 
 #include <cstdint>
 #include <vector>
@@ -103,4 +107,122 @@ TEST(ArithmeticCoding, BeatsFixedLengthOnSkewedSource) {
     auto bits = arithmetic_encode(msg, freq);
     EXPECT_EQ(arithmetic_decode(bits, freq, (int)msg.size()), msg);
     EXPECT_LT((double)bits.size() / msg.size(), 1.0);  // < 1 bit/symbol on this skewed source
+}
+
+TEST(ArithmeticCoding, StaticLengthWithinTwoBitsOfInformation) {
+    std::vector<std::uint32_t> freq = {50, 25, 12, 8, 5};
+    std::vector<int>           msg;
+    for (int i = 0; i < 400; ++i) msg.push_back((i * 7 + i / 3) % 5);
+    auto         bits  = arithmetic_encode(msg, freq);
+    const double ideal = ideal_code_length(msg, freq);
+    EXPECT_EQ(arithmetic_decode(bits, freq, (int)msg.size()), msg);
+    EXPECT_LE((double)bits.size(), ideal + 2.0 + 0.01 * msg.size());
+    EXPECT_GE((double)bits.size(), ideal - 1.0);
+    auto trace = arithmetic_bits_trace(msg, freq);
+    ASSERT_EQ(trace.size(), msg.size());
+    EXPECT_LE(trace.back() + 2, bits.size() + 2);
+}
+
+TEST(ArithmeticCoding, IntervalsNestAndWidthIsProductOfProbabilities) {
+    std::vector<std::uint32_t> freq = {6, 3, 1};
+    std::vector<int>           msg  = {0, 1, 0, 2};
+    auto                       iv   = arithmetic_intervals(msg, freq);
+    ASSERT_EQ(iv.size(), 4u);
+    EXPECT_NEAR(iv[0].first, 0.0, 1e-15);
+    EXPECT_NEAR(iv[0].second, 0.6, 1e-15);
+    EXPECT_NEAR(iv[1].first, 0.36, 1e-15);
+    EXPECT_NEAR(iv[1].second, 0.54, 1e-15);
+    for (std::size_t i = 1; i < iv.size(); ++i) {
+        EXPECT_GE(iv[i].first, iv[i - 1].first);
+        EXPECT_LE(iv[i].second, iv[i - 1].second);
+    }
+    EXPECT_NEAR(iv.back().second - iv.back().first, 0.6 * 0.3 * 0.6 * 0.1, 1e-15);
+}
+
+TEST(ArithmeticCoding, RejectsZeroFrequencySymbol) {
+    EXPECT_THROW(arithmetic_encode({0, 1}, {3, 0}), std::invalid_argument);
+    EXPECT_THROW(arithmetic_encode({2}, {3, 1}), std::invalid_argument);
+}
+
+TEST(ArithmeticCoding, AdaptiveMatchesClosedFormLength) {
+    std::vector<int> msg;
+    for (int i = 0; i < 3000; ++i) msg.push_back((i % 7 == 0) ? 2 : ((i % 3 == 0) ? 1 : 0));
+    auto bits = arithmetic_encode_adaptive(msg, 4);
+    EXPECT_EQ(arithmetic_decode_adaptive(bits, 4, (int)msg.size()), msg);
+    const double ideal = adaptive_code_length(symbol_counts(msg, 4));
+    EXPECT_NEAR((double)bits.size(), ideal, 4.0);
+}
+
+TEST(ArithmeticCoding, AdaptiveClosedFormIsOrderIndependent) {
+    // Laplace sequential probabilities for "aab" and "aba" over K=2.
+    // aab: 1/2 * 2/3 * 1/4 = 1/12;  aba: 1/2 * 1/3 * 2/4 = 1/12.
+    EXPECT_NEAR(adaptive_code_length({2, 1}), std::log2(12.0), 1e-12);
+    EXPECT_NEAR(adaptive_code_length({0, 0, 0}), 0.0, 1e-12);
+}
+
+TEST(ArithmeticCoding, ContextModelRoundTripsAndHelpsMarkovSource) {
+    // Sticky two-state source: repeats the previous symbol most of the time.
+    std::vector<int> msg;
+    int              s = 0;
+    for (int i = 0; i < 4000; ++i) {
+        if (i % 37 == 0 || i % 53 == 0) s = 1 - s;
+        msg.push_back(s);
+    }
+    auto ctx   = [](const std::vector<int>& h) { return h.empty() ? 0 : h.back(); };
+    auto plain = arithmetic_encode_adaptive(msg, 2);
+    auto bits  = arithmetic_encode_adaptive(msg, 2, ctx, 2);
+    EXPECT_EQ(arithmetic_decode_adaptive(bits, 2, (int)msg.size(), ctx, 2), msg);
+    EXPECT_LT(bits.size() * 3, plain.size());
+    auto bad = [](const std::vector<int>&) { return 5; };
+    EXPECT_THROW(arithmetic_encode_adaptive(msg, 2, bad, 2), std::invalid_argument);
+}
+
+TEST(ArithmeticCoding, AdaptiveModelRescales) {
+    AdaptiveFrequencyModel m(3, 8);
+    for (int i = 0; i < 10; ++i) m.update(0);
+    EXPECT_LE(m.total(), 8u);
+    EXPECT_GT(m.probability(0), m.probability(1));
+    EXPECT_EQ(m.find(0), 0);
+    EXPECT_EQ(m.find(m.total() - 1), 2);
+}
+
+TEST(ArithmeticCoding, EntropyAndCounts) {
+    EXPECT_NEAR(shannon_entropy_bits({1, 1, 1, 1}), 2.0, 1e-12);
+    EXPECT_NEAR(shannon_entropy_bits({5, 0}), 0.0, 1e-12);
+    auto c = symbol_counts({0, 2, 2, 1, 2}, 3);
+    EXPECT_EQ(c, (std::vector<std::uint64_t>{1, 1, 3}));
+}
+
+TEST(HuffmanCoding, CodeLengthsFromCounts) {
+    // Classic example: weights 45,13,12,16,9,5 -> lengths 1,3,3,3,4,4.
+    auto l = huffman_code_lengths({45, 13, 12, 16, 9, 5});
+    EXPECT_EQ(l, (std::vector<int>{1, 3, 3, 3, 4, 4}));
+    EXPECT_EQ(huffman_code_lengths({0, 7, 0}), (std::vector<int>{0, 1, 0}));
+    // Kraft equality for a full tree.
+    auto   l2 = huffman_code_lengths({1, 2, 3, 4, 5, 6, 7});
+    double kraft = 0.0;
+    for (int x : l2) kraft += std::ldexp(1.0, -x);
+    EXPECT_NEAR(kraft, 1.0, 1e-12);
+}
+
+TEST(ArithmeticCoding, RedundancyApproximationConverges) {
+    std::vector<std::uint64_t> c = {6000, 3000, 1000};
+    double n = 10000, h = shannon_entropy_bits(c);
+    EXPECT_NEAR(adaptive_code_length(c) - n * h, adaptive_redundancy_approx(c), 0.01);
+    EXPECT_THROW(adaptive_redundancy_approx({3, 0}), std::invalid_argument);
+}
+
+TEST(ArithmeticCoding, ContextCountsMatchContextModelLength) {
+    std::vector<int> msg;
+    for (int i = 0; i < 2000; ++i) msg.push_back((i * i + i / 5) % 3);
+    auto ctx    = [](const std::vector<int>& h) { return h.empty() ? 0 : h.back(); };
+    auto counts = context_counts(msg, 3, ctx, 3);
+    double ideal = 0.0;
+    std::uint64_t total = 0;
+    for (auto& row : counts) {
+        ideal += adaptive_code_length(row);
+        for (auto x : row) total += x;
+    }
+    EXPECT_EQ(total, msg.size());
+    EXPECT_NEAR((double)arithmetic_encode_adaptive(msg, 3, ctx, 3).size(), ideal, 4.0);
 }

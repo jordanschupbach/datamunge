@@ -1,0 +1,15 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\large,box/.style={draw=blue!55!black,rounded corners,fill=blue!4,align=center,minimum width=4cm,minimum height=1.3cm},every edge/.style={draw,thick,->}]
+\node[box] (seed) at (0,2.3) {64-bit seed\\starting condition};
+\node[box] (state) at (5.3,2.3) {312 raw words\\plus index};
+\node[box,fill=orange!8] (twist) at (10.6,2.3) {Ordered twist\\when exhausted};
+\node[box] (raw) at (10.6,-.4) {Next raw word\\one of 312};
+\node[box,fill=orange!8] (temper) at (5.3,-.4) {Tempered 64-bit word\\invertible map};
+\node[box] (uniform) at (0,-.4) {Upper 53 bits / $2^{53}$\\\texttt{uniform01()}};
+\path (seed) edge (state) (state) edge (twist) (twist) edge (raw) (raw) edge (temper) (temper) edge (uniform);
+\node[align=center,font=\normalsize] at (5.3,-2) {Refill changes state; tempering only maps an output word.\\A complete engine copy also preserves the normal sampler's cache.};
+\end{tikzpicture}
+\end{document}

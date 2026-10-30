@@ -38,7 +38,7 @@ dimensionality") \-\- but in the plane it is ideal.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -112,7 +112,7 @@ brute-force scan; we also fetch the 5 nearest neighbors.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

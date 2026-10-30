@@ -1247,9 +1247,9 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__doRemoveRange(std::vector< std::str
 
   #include "datamunge/datamunge.hpp"
 
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::plot::RGB(); }
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::plot::RGB{r, g, b, alpha};
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
+    return new datamunge::graphics::RGB{r, g, b, alpha};
   }
 
 
@@ -7127,13 +7127,13 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1p
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1plot_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jlong jarg5) {
   jlong jresult = 0 ;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
   std::size_t arg5 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -7141,22 +7141,22 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1p
   (void)jarg2_;
   (void)jarg3_;
   arg1 = *(datamunge::ShapeLayer **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
   arg4 = (std::size_t)jarg4; 
   arg5 = (std::size_t)jarg5; 
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -7164,12 +7164,12 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1p
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1plot_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -7177,21 +7177,21 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1p
   (void)jarg2_;
   (void)jarg3_;
   arg1 = *(datamunge::ShapeLayer **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -7199,11 +7199,11 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1p
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1plot_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -7211,20 +7211,20 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1p
   (void)jarg2_;
   (void)jarg3_;
   arg1 = *(datamunge::ShapeLayer **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -7232,23 +7232,23 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1p
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1plot_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::ShapeLayer **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -7256,14 +7256,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1p
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ShapeLayer_1plot_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::ShapeLayer *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::ShapeLayer **)&jarg1; 
   result = ((datamunge::ShapeLayer const *)arg1)->plot();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -7526,9 +7526,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GGPlot_1
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1point_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jdouble jarg3) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
-  datamunge::plot::RGB *argp2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7536,9 +7536,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -7552,8 +7552,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1point_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7561,9 +7561,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -7591,9 +7591,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1line_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jdouble jarg3) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
-  datamunge::plot::RGB *argp2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7601,9 +7601,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -7617,8 +7617,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1line_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7626,9 +7626,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -7656,8 +7656,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1bar_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7665,9 +7665,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -7695,8 +7695,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1col_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7704,9 +7704,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -7735,8 +7735,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
   std::size_t arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *argp3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *argp3 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7745,9 +7745,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg3_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
@@ -7792,8 +7792,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1boxplot_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7801,9 +7801,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -7831,8 +7831,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1smooth_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7840,9 +7840,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -7870,8 +7870,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1area_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7879,9 +7879,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -7911,8 +7911,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   datamunge::GGPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RGB *argp4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGB *argp4 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7938,9 +7938,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   std::string arg3_str(arg3_pstr);
   arg3 = &arg3_str;
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
@@ -7988,8 +7988,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_1density_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
@@ -7997,9 +7997,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1geom_
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
@@ -8124,19 +8124,19 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1theme
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GGPlot_1scale_1color_1manual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   jlong jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  std::vector< datamunge::plot::RGB > *arg2 = 0 ;
+  std::vector< datamunge::graphics::RGB > *arg2 = 0 ;
   datamunge::GGPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GGPlot **)&jarg1; 
-  arg2 = *(std::vector< datamunge::plot::RGB > **)&jarg2;
+  arg2 = *(std::vector< datamunge::graphics::RGB > **)&jarg2;
   if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< datamunge::plot::RGB > const & is null");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< datamunge::graphics::RGB > const & is null");
     return 0;
   } 
-  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB > const &)*arg2);
+  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::graphics::RGB > const &)*arg2);
   *(datamunge::GGPlot **)&jresult = result; 
   return jresult;
 }
@@ -8962,14 +8962,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LM_1anova(JNI
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LM_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::LM **)&jarg1; 
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -8977,14 +8977,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LM_1plot_1res
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LM_1plot_1normal_1qq(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::LM **)&jarg1; 
   result = ((datamunge::LM const *)arg1)->plot_normal_qq();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -8992,14 +8992,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LM_1plot_1nor
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LM_1plot_1scale_1location(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::LM **)&jarg1; 
   result = ((datamunge::LM const *)arg1)->plot_scale_location();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -9007,14 +9007,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LM_1plot_1sca
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LM_1plot_1residuals_1vs_1leverage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::LM **)&jarg1; 
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -11459,14 +11459,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1predict_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1plot_1discriminants(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::LDA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::LDA **)&jarg1; 
   result = ((datamunge::LDA const *)arg1)->plot_discriminants();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -12349,7 +12349,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeC
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -12380,7 +12380,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeC
   arg4 = &arg4_str;
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -12391,7 +12391,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeC
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -12417,7 +12417,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeC
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -12427,7 +12427,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeC
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -12452,7 +12452,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeC
   arg3 = &arg3_str;
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -12781,14 +12781,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeR
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -12796,14 +12796,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeR
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -13466,7 +13466,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestC
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -13497,7 +13497,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestC
   arg4 = &arg4_str;
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -13508,7 +13508,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestC
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -13534,7 +13534,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestC
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -13544,7 +13544,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestC
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -13569,7 +13569,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestC
   arg3 = &arg3_str;
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -14143,14 +14143,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestR
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -14158,14 +14158,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestR
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -14741,14 +14741,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1p
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1plot_1coefficient_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::ElasticNet **)&jarg1; 
   result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -14756,14 +14756,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1p
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1plot_1cv_1curve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::ElasticNet **)&jarg1; 
   result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -14771,14 +14771,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1p
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::ElasticNet **)&jarg1; 
   result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -14786,14 +14786,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1p
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::ElasticNet **)&jarg1; 
   result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -15298,14 +15298,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1predic
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1coefficient_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::Ridge **)&jarg1; 
   result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -15313,14 +15313,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1cv_1curve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::Ridge **)&jarg1; 
   result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -15328,14 +15328,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::Ridge **)&jarg1; 
   result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -15343,14 +15343,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::Ridge **)&jarg1; 
   result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -15870,14 +15870,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1predic
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1coefficient_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::Lasso **)&jarg1; 
   result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -15885,14 +15885,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1cv_1curve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::Lasso **)&jarg1; 
   result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -15900,14 +15900,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::Lasso **)&jarg1; 
   result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -15915,14 +15915,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::Lasso **)&jarg1; 
   result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -16292,7 +16292,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -16323,7 +16323,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier
   arg4 = &arg4_str;
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -16334,7 +16334,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -16360,7 +16360,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -16370,7 +16370,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier
   datamunge::KNNClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -16395,7 +16395,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier
   arg3 = &arg3_str;
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -16740,14 +16740,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::KNNRegressor **)&jarg1; 
   result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -16755,14 +16755,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::KNNRegressor **)&jarg1; 
   result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -17716,7 +17716,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
   datamunge::PCA *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -17725,7 +17725,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -17734,7 +17734,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
   jlong jresult = 0 ;
   datamunge::PCA *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -17742,7 +17742,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
   arg1 = *(datamunge::PCA **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -17750,14 +17750,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1scores_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::PCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::PCA **)&jarg1; 
   result = ((datamunge::PCA const *)arg1)->plot_scores();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -17768,7 +17768,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -17783,7 +17783,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -17793,7 +17793,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
   datamunge::PCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -17807,7 +17807,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -17816,7 +17816,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
   jlong jresult = 0 ;
   datamunge::PCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -17829,7 +17829,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
     return 0;
   } 
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -17837,14 +17837,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1sc
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_PCA_1plot_1scree(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::PCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::PCA **)&jarg1; 
   result = ((datamunge::PCA const *)arg1)->plot_scree();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18205,7 +18205,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
   datamunge::MDS *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18214,7 +18214,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18223,7 +18223,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
   jlong jresult = 0 ;
   datamunge::MDS *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18231,7 +18231,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
   arg1 = *(datamunge::MDS **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18239,14 +18239,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1embedding_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::MDS *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::MDS **)&jarg1; 
   result = ((datamunge::MDS const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18257,7 +18257,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18272,7 +18272,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18282,7 +18282,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
   datamunge::MDS *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18296,7 +18296,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18305,7 +18305,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
   jlong jresult = 0 ;
   datamunge::MDS *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18318,7 +18318,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_MDS_1plot_1em
     return 0;
   } 
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18746,7 +18746,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
   datamunge::Isomap *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18755,7 +18755,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18764,7 +18764,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
   jlong jresult = 0 ;
   datamunge::Isomap *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18772,7 +18772,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
   arg1 = *(datamunge::Isomap **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18780,14 +18780,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_1embedding_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::Isomap *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::Isomap **)&jarg1; 
   result = ((datamunge::Isomap const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18798,7 +18798,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18813,7 +18813,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18823,7 +18823,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
   datamunge::Isomap *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18837,7 +18837,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -18846,7 +18846,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
   jlong jresult = 0 ;
   datamunge::Isomap *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -18859,7 +18859,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Isomap_1plot_
     return 0;
   } 
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -19343,7 +19343,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
   datamunge::LLE *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -19352,7 +19352,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -19361,7 +19361,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
   jlong jresult = 0 ;
   datamunge::LLE *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -19369,7 +19369,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
   arg1 = *(datamunge::LLE **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -19377,14 +19377,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1embedding_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::LLE *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::LLE **)&jarg1; 
   result = ((datamunge::LLE const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -19395,7 +19395,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -19410,7 +19410,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -19420,7 +19420,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
   datamunge::LLE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -19434,7 +19434,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -19443,7 +19443,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
   jlong jresult = 0 ;
   datamunge::LLE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -19456,7 +19456,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LLE_1plot_1em
     return 0;
   } 
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -20615,7 +20615,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
   datamunge::TSNE *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -20624,7 +20624,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -20633,7 +20633,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
   jlong jresult = 0 ;
   datamunge::TSNE *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -20641,7 +20641,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
   arg1 = *(datamunge::TSNE **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -20649,14 +20649,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1embedding_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::TSNE *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::TSNE **)&jarg1; 
   result = ((datamunge::TSNE const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -20667,7 +20667,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -20682,7 +20682,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -20692,7 +20692,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
   datamunge::TSNE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -20706,7 +20706,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -20715,7 +20715,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
   jlong jresult = 0 ;
   datamunge::TSNE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -20728,7 +20728,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_TSNE_1plot_1e
     return 0;
   } 
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21125,7 +21125,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21134,7 +21134,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21143,7 +21143,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
   jlong jresult = 0 ;
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21151,7 +21151,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
   arg1 = *(datamunge::LaplacianEigenmaps **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21159,14 +21159,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEigenmaps_1plot_1embedding_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::LaplacianEigenmaps **)&jarg1; 
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21177,7 +21177,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21192,7 +21192,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21202,7 +21202,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21216,7 +21216,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21225,7 +21225,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
   jlong jresult = 0 ;
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21238,7 +21238,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LaplacianEige
     return 0;
   } 
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21706,7 +21706,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21715,7 +21715,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21724,7 +21724,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
   jlong jresult = 0 ;
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21732,7 +21732,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
   arg1 = *(datamunge::DiffusionMaps **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21740,14 +21740,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps_1plot_1embedding_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::DiffusionMaps *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::DiffusionMaps **)&jarg1; 
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21758,7 +21758,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21773,7 +21773,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21783,7 +21783,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21797,7 +21797,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -21806,7 +21806,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
   jlong jresult = 0 ;
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -21819,7 +21819,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DiffusionMaps
     return 0;
   } 
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -22426,7 +22426,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
   datamunge::KernelPCA *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -22435,7 +22435,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -22444,7 +22444,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
   jlong jresult = 0 ;
   datamunge::KernelPCA *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -22452,7 +22452,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
   arg1 = *(datamunge::KernelPCA **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -22460,14 +22460,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1plot_1embedding_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::KernelPCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::KernelPCA **)&jarg1; 
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -22478,7 +22478,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -22493,7 +22493,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -22503,7 +22503,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
   datamunge::KernelPCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -22517,7 +22517,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -22526,7 +22526,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
   jlong jresult = 0 ;
   datamunge::KernelPCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -22539,7 +22539,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelPCA_1pl
     return 0;
   } 
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -23258,7 +23258,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
   datamunge::SammonMapping *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -23267,7 +23267,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -23276,7 +23276,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
   jlong jresult = 0 ;
   datamunge::SammonMapping *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -23284,7 +23284,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
   arg1 = *(datamunge::SammonMapping **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -23292,14 +23292,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping_1plot_1embedding_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::SammonMapping *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::SammonMapping **)&jarg1; 
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -23310,7 +23310,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -23325,7 +23325,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -23335,7 +23335,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
   datamunge::SammonMapping *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -23349,7 +23349,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -23358,7 +23358,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
   jlong jresult = 0 ;
   datamunge::SammonMapping *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -23371,7 +23371,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SammonMapping
     return 0;
   } 
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -24260,7 +24260,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
   datamunge::UMAP *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -24269,7 +24269,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -24278,7 +24278,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
   jlong jresult = 0 ;
   datamunge::UMAP *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -24286,7 +24286,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
   arg1 = *(datamunge::UMAP **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -24294,14 +24294,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1embedding_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::UMAP *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::UMAP **)&jarg1; 
   result = ((datamunge::UMAP const *)arg1)->plot_embedding();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -24312,7 +24312,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -24327,7 +24327,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
   arg3 = (std::size_t)jarg3; 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -24337,7 +24337,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
   datamunge::UMAP *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -24351,7 +24351,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -24360,7 +24360,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
   jlong jresult = 0 ;
   datamunge::UMAP *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -24373,7 +24373,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_UMAP_1plot_1e
     return 0;
   } 
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -25741,7 +25741,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -25772,7 +25772,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier
   arg4 = &arg4_str;
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -25783,7 +25783,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -25809,7 +25809,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -25819,7 +25819,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier
   datamunge::GBMClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -25844,7 +25844,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier
   arg3 = &arg3_str;
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -25852,14 +25852,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1plot_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GBMClassifier *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GBMClassifier **)&jarg1; 
   result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -26358,14 +26358,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GBMRegressor **)&jarg1; 
   result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -26373,14 +26373,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GBMRegressor **)&jarg1; 
   result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -26388,14 +26388,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1plot_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GBMRegressor **)&jarg1; 
   result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -27111,7 +27111,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassi
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -27142,7 +27142,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassi
   arg4 = &arg4_str;
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -27153,7 +27153,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassi
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -27179,7 +27179,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassi
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -27189,7 +27189,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassi
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -27214,7 +27214,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassi
   arg3 = &arg3_str;
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -27222,14 +27222,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassi
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1plot_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::XGBoostClassifier *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -27920,14 +27920,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegres
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -27935,14 +27935,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegres
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -27950,14 +27950,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegres
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1plot_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -28357,7 +28357,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegress
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -28371,7 +28371,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegress
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -28380,7 +28380,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegress
   jlong jresult = 0 ;
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -28393,7 +28393,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegress
     return 0;
   } 
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -28401,14 +28401,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegress
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::KernelRegression **)&jarg1; 
   result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -28416,14 +28416,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegress
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::KernelRegression **)&jarg1; 
   result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -28431,14 +28431,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegress
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1plot_1cv_1curve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::KernelRegression **)&jarg1; 
   result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -28994,7 +28994,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProce
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
   double arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -29009,7 +29009,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProce
   arg3 = (std::size_t)jarg3; 
   arg4 = (double)jarg4; 
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -29019,7 +29019,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProce
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -29033,7 +29033,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProce
   } 
   arg3 = (std::size_t)jarg3; 
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -29042,7 +29042,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProce
   jlong jresult = 0 ;
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -29055,7 +29055,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProce
     return 0;
   } 
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -29063,14 +29063,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProce
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -29078,14 +29078,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProce
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -29093,14 +29093,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProce
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1plot_1length_1scale_1profile(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -29374,7 +29374,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesCla
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -29405,7 +29405,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesCla
   arg4 = &arg4_str;
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -29416,7 +29416,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesCla
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -29442,7 +29442,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesCla
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   arg4 = (std::size_t)jarg4; 
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -29452,7 +29452,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesCla
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -29477,7 +29477,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesCla
   arg3 = &arg3_str;
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -30231,14 +30231,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1predict_
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GLM **)&jarg1; 
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -30246,14 +30246,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1re
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1normal_1qq(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GLM **)&jarg1; 
   result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -30261,14 +30261,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1no
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1scale_1location(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GLM **)&jarg1; 
   result = ((datamunge::GLM const *)arg1)->plot_scale_location();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -30276,14 +30276,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1sc
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1residuals_1vs_1leverage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(datamunge::GLM **)&jarg1; 
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -33433,13 +33433,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1Var(JN
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1r_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg1 = *(datamunge::graphics::RGB **)&jarg1; 
   arg2 = (int)jarg2; 
   if (arg1) (arg1)->r = arg2;
 }
@@ -33447,13 +33447,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1r_1set(JN
 
 SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1r_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg1 = *(datamunge::graphics::RGB **)&jarg1; 
   result = (int) ((arg1)->r);
   jresult = (jint)result; 
   return jresult;
@@ -33461,13 +33461,13 @@ SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1r_1get(JN
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1g_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg1 = *(datamunge::graphics::RGB **)&jarg1; 
   arg2 = (int)jarg2; 
   if (arg1) (arg1)->g = arg2;
 }
@@ -33475,13 +33475,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1g_1set(JN
 
 SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1g_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg1 = *(datamunge::graphics::RGB **)&jarg1; 
   result = (int) ((arg1)->g);
   jresult = (jint)result; 
   return jresult;
@@ -33489,13 +33489,13 @@ SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1g_1get(JN
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1b_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg1 = *(datamunge::graphics::RGB **)&jarg1; 
   arg2 = (int)jarg2; 
   if (arg1) (arg1)->b = arg2;
 }
@@ -33503,13 +33503,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1b_1set(JN
 
 SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1b_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg1 = *(datamunge::graphics::RGB **)&jarg1; 
   result = (int) ((arg1)->b);
   jresult = (jint)result; 
   return jresult;
@@ -33517,13 +33517,13 @@ SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1b_1get(JN
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1alpha_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   double arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg1 = *(datamunge::graphics::RGB **)&jarg1; 
   arg2 = (double)jarg2; 
   if (arg1) (arg1)->alpha = arg2;
 }
@@ -33531,13 +33531,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1alpha_1se
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1alpha_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg1 = *(datamunge::graphics::RGB **)&jarg1; 
   result = (double) ((arg1)->alpha);
   jresult = (jdouble)result; 
   return jresult;
@@ -33546,12 +33546,12 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1alpha_
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RGB_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_0();
-  *(datamunge::plot::RGB **)&jresult = result; 
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_0();
+  *(datamunge::graphics::RGB **)&jresult = result; 
   return jresult;
 }
 
@@ -33562,7 +33562,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RGB_1_1S
   int arg2 ;
   int arg3 ;
   double arg4 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -33570,8 +33570,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RGB_1_1S
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   arg4 = (double)jarg4; 
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
-  *(datamunge::plot::RGB **)&jresult = result; 
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
+  *(datamunge::graphics::RGB **)&jresult = result; 
   return jresult;
 }
 
@@ -33581,66 +33581,66 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RGB_1_1S
   int arg1 ;
   int arg2 ;
   int arg3 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = (int)jarg1; 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
-  *(datamunge::plot::RGB **)&jresult = result; 
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
+  *(datamunge::graphics::RGB **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1RGB(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg1 = *(datamunge::graphics::RGB **)&jarg1; 
   delete arg1;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1kind_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind arg2 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
-  arg2 = (datamunge::plot::DataSeries::Kind)jarg2; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
+  arg2 = (datamunge::graphics::DataSeries::Kind)jarg2; 
   if (arg1) (arg1)->kind = arg2;
 }
 
 
 SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1kind_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
-  result = (datamunge::plot::DataSeries::Kind) ((arg1)->kind);
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
+  result = (datamunge::graphics::DataSeries::Kind) ((arg1)->kind);
   jresult = (jint)result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1x_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   arg2 = *(std::vector< double > **)&jarg2; 
   if (arg1) (arg1)->x = *arg2;
 }
@@ -33648,13 +33648,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1x_
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1x_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   result = (std::vector< double > *)& ((arg1)->x);
   *(std::vector< double > **)&jresult = result; 
   return jresult;
@@ -33662,14 +33662,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1x
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1y_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   arg2 = *(std::vector< double > **)&jarg2; 
   if (arg1) (arg1)->y = *arg2;
 }
@@ -33677,13 +33677,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1y_
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1y_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   result = (std::vector< double > *)& ((arg1)->y);
   *(std::vector< double > **)&jresult = result; 
   return jresult;
@@ -33691,13 +33691,13 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1y
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1label_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -33713,13 +33713,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1la
 
 SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1label_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   result = (std::string *) & ((arg1)->label);
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
@@ -33727,42 +33727,42 @@ SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1color_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
-  arg2 = *(datamunge::plot::RGB **)&jarg2; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
+  arg2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (arg1) (arg1)->color = *arg2;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1color_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
-  *(datamunge::plot::RGB **)&jresult = result; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  *(datamunge::graphics::RGB **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1stroke_1width_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   arg2 = (double)jarg2; 
   if (arg1) (arg1)->stroke_width = arg2;
 }
@@ -33770,13 +33770,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1st
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1stroke_1width_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   result = (double) ((arg1)->stroke_width);
   jresult = (jdouble)result; 
   return jresult;
@@ -33784,13 +33784,13 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1marker_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   arg2 = (double)jarg2; 
   if (arg1) (arg1)->marker_size = arg2;
 }
@@ -33798,13 +33798,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1ma
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1marker_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   result = (double) ((arg1)->marker_size);
   jresult = (jdouble)result; 
   return jresult;
@@ -33812,13 +33812,13 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1bar_1width_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   arg2 = (double)jarg2; 
   if (arg1) (arg1)->bar_width = arg2;
 }
@@ -33826,13 +33826,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1ba
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1bar_1width_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   result = (double) ((arg1)->bar_width);
   jresult = (jdouble)result; 
   return jresult;
@@ -33840,13 +33840,13 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1filled_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   arg2 = jarg2 ? true : false; 
   if (arg1) (arg1)->filled = arg2;
 }
@@ -33854,13 +33854,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1fi
 
 SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1filled_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   result = (bool) ((arg1)->filled);
   jresult = (jboolean)result; 
   return jresult;
@@ -33869,34 +33869,34 @@ SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DataSeries(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  datamunge::plot::DataSeries *result = 0 ;
+  datamunge::graphics::DataSeries *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (datamunge::plot::DataSeries *)new datamunge::plot::DataSeries();
-  *(datamunge::plot::DataSeries **)&jresult = result; 
+  result = (datamunge::graphics::DataSeries *)new datamunge::graphics::DataSeries();
+  *(datamunge::graphics::DataSeries **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DataSeries(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg1 = *(datamunge::graphics::DataSeries **)&jarg1; 
   delete arg1;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1vertical_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
   arg2 = jarg2 ? true : false; 
   if (arg1) (arg1)->vertical = arg2;
 }
@@ -33904,13 +33904,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1vertic
 
 SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1vertical_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
   result = (bool) ((arg1)->vertical);
   jresult = (jboolean)result; 
   return jresult;
@@ -33918,13 +33918,13 @@ SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1ve
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
   arg2 = (double)jarg2; 
   if (arg1) (arg1)->value = arg2;
 }
@@ -33932,13 +33932,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1value_
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
   result = (double) ((arg1)->value);
   jresult = (jdouble)result; 
   return jresult;
@@ -33946,13 +33946,13 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1val
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1slope_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
   arg2 = (double)jarg2; 
   if (arg1) (arg1)->slope = arg2;
 }
@@ -33960,13 +33960,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1slope_
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1slope_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
   result = (double) ((arg1)->slope);
   jresult = (jdouble)result; 
   return jresult;
@@ -33974,42 +33974,42 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1slo
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1color_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
-  arg2 = *(datamunge::plot::RGB **)&jarg2; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
+  arg2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (arg1) (arg1)->color = *arg2;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1color_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
-  *(datamunge::plot::RGB **)&jresult = result; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  *(datamunge::graphics::RGB **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1stroke_1width_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
   arg2 = (double)jarg2; 
   if (arg1) (arg1)->stroke_width = arg2;
 }
@@ -34017,13 +34017,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1stroke
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1stroke_1width_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
   result = (double) ((arg1)->stroke_width);
   jresult = (jdouble)result; 
   return jresult;
@@ -34032,34 +34032,34 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ABLine_1str
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ABLine(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  datamunge::plot::ABLine *result = 0 ;
+  datamunge::graphics::ABLine *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
-  *(datamunge::plot::ABLine **)&jresult = result; 
+  result = (datamunge::graphics::ABLine *)new datamunge::graphics::ABLine();
+  *(datamunge::graphics::ABLine **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1ABLine(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(datamunge::plot::ABLine **)&jarg1; 
+  arg1 = *(datamunge::graphics::ABLine **)&jarg1; 
   delete arg1;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LegendEntry_1label_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::LegendEntry **)&jarg1; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -34075,13 +34075,13 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LegendEntry_1l
 
 SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LegendEntry_1label_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::LegendEntry **)&jarg1; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&jarg1; 
   result = (std::string *) & ((arg1)->label);
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
@@ -34089,95 +34089,95 @@ SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LegendEntry
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LegendEntry_1color_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::LegendEntry **)&jarg1; 
-  arg2 = *(datamunge::plot::RGB **)&jarg2; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&jarg1; 
+  arg2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (arg1) (arg1)->color = *arg2;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LegendEntry_1color_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::LegendEntry **)&jarg1; 
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
-  *(datamunge::plot::RGB **)&jresult = result; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&jarg1; 
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  *(datamunge::graphics::RGB **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LegendEntry(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  datamunge::plot::LegendEntry *result = 0 ;
+  datamunge::graphics::LegendEntry *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
-  *(datamunge::plot::LegendEntry **)&jresult = result; 
+  result = (datamunge::graphics::LegendEntry *)new datamunge::graphics::LegendEntry();
+  *(datamunge::graphics::LegendEntry **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1LegendEntry(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(datamunge::plot::LegendEntry **)&jarg1; 
+  arg1 = *(datamunge::graphics::LegendEntry **)&jarg1; 
   delete arg1;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1Plot(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   delete arg1;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
-  result = (datamunge::plot::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1title(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
@@ -34186,22 +34186,22 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1title(J
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  result = (datamunge::plot::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1label(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
@@ -34210,22 +34210,22 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1labe
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  result = (datamunge::plot::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1label(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
@@ -34234,220 +34234,220 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1labe
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  result = (datamunge::plot::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1background(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
-  result = (datamunge::plot::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1axis_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
-  result = (datamunge::plot::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1grid_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
-  result = (datamunge::plot::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1show_1grid_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   arg2 = jarg2 ? true : false; 
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid(arg2);
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid(arg2);
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1show_1grid_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid();
-  *(datamunge::plot::Plot **)&jresult = result; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid();
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
-  result = (datamunge::plot::Plot *) &(arg1)->x_limits(arg2,arg3);
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->x_limits(arg2,arg3);
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
-  result = (datamunge::plot::Plot *) &(arg1)->y_limits(arg2,arg3);
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->y_limits(arg2,arg3);
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1hide_1axes_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   arg2 = jarg2 ? true : false; 
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes(arg2);
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1hide_1axes_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
-  *(datamunge::plot::Plot **)&jresult = result; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes();
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1tick_1labels(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   argp2 = *(std::vector< std::string > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< std::string >");
     return 0;
   }
   arg2 = *argp2; 
-  result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1width(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = ((datamunge::plot::Plot const *)arg1)->width();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = ((datamunge::graphics::Plot const *)arg1)->width();
   jresult = (jlong)result; 
   return jresult;
 }
@@ -34455,14 +34455,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1width(J
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1height(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = ((datamunge::plot::Plot const *)arg1)->height();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = ((datamunge::graphics::Plot const *)arg1)->height();
   jresult = (jlong)result; 
   return jresult;
 }
@@ -34470,14 +34470,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1height(
 
 SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1title_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->title_text();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->title_text();
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
@@ -34485,14 +34485,14 @@ SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1title
 
 SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1label_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->x_label_text();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->x_label_text();
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
@@ -34500,14 +34500,14 @@ SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1la
 
 SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1label_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->y_label_text();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->y_label_text();
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
@@ -34515,74 +34515,74 @@ SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1la
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1series(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::DataSeries > *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::DataSeries > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)arg1)->series();
-  *(std::vector< datamunge::plot::DataSeries > **)&jresult = result; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (std::vector< datamunge::graphics::DataSeries > *) &((datamunge::graphics::Plot const *)arg1)->series();
+  *(std::vector< datamunge::graphics::DataSeries > **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1background_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = ((datamunge::plot::Plot const *)arg1)->background_color();
-  *(datamunge::plot::RGB **)&jresult = new datamunge::plot::RGB(result); 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = ((datamunge::graphics::Plot const *)arg1)->background_color();
+  *(datamunge::graphics::RGB **)&jresult = new datamunge::graphics::RGB(result); 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1axes_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = ((datamunge::plot::Plot const *)arg1)->axes_color();
-  *(datamunge::plot::RGB **)&jresult = new datamunge::plot::RGB(result); 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
+  *(datamunge::graphics::RGB **)&jresult = new datamunge::graphics::RGB(result); 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1major_1grid_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = ((datamunge::plot::Plot const *)arg1)->major_grid_color();
-  *(datamunge::plot::RGB **)&jresult = new datamunge::plot::RGB(result); 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
+  *(datamunge::graphics::RGB **)&jresult = new datamunge::graphics::RGB(result); 
   return jresult;
 }
 
 
 SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1grid_1visible(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (bool)((datamunge::plot::Plot const *)arg1)->grid_visible();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->grid_visible();
   jresult = (jboolean)result; 
   return jresult;
 }
@@ -34590,14 +34590,14 @@ SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1grid
 
 SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1has_1x_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_x_limits();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_x_limits();
   jresult = (jboolean)result; 
   return jresult;
 }
@@ -34605,14 +34605,14 @@ SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1has_
 
 SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1has_1y_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_y_limits();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_y_limits();
   jresult = (jboolean)result; 
   return jresult;
 }
@@ -34620,14 +34620,14 @@ SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1has_
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1min(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_min();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_min();
   jresult = (jdouble)result; 
   return jresult;
 }
@@ -34635,14 +34635,14 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1mi
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1max(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_max();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_max();
   jresult = (jdouble)result; 
   return jresult;
 }
@@ -34650,14 +34650,14 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1ma
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1min(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_min();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_min();
   jresult = (jdouble)result; 
   return jresult;
 }
@@ -34665,14 +34665,14 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1mi
 
 SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1max(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_max();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_max();
   jresult = (jdouble)result; 
   return jresult;
 }
@@ -34680,14 +34680,14 @@ SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1ma
 
 SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1axes_1hidden(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->axes_hidden();
   jresult = (jboolean)result; 
   return jresult;
 }
@@ -34695,14 +34695,14 @@ SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1axes
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1tick_1label_1list(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (std::vector< std::string > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_label_list();
   *(std::vector< std::string > **)&jresult = result; 
   return jresult;
 }
@@ -34710,57 +34710,57 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1tick
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1reference_1lines(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::ABLine > *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::ABLine > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
-  *(std::vector< datamunge::plot::ABLine > **)&jresult = result; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (std::vector< datamunge::graphics::ABLine > *) &((datamunge::graphics::Plot const *)arg1)->reference_lines();
+  *(std::vector< datamunge::graphics::ABLine > **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1legend_1entries(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::LegendEntry > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
-  *(std::vector< datamunge::plot::LegendEntry > **)&jresult = result; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = (std::vector< datamunge::graphics::LegendEntry > *) &((datamunge::graphics::Plot const *)arg1)->legend_entries();
+  *(std::vector< datamunge::graphics::LegendEntry > **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1to_1svg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  result = ((datamunge::plot::Plot const *)arg1)->to_svg();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  result = ((datamunge::graphics::Plot const *)arg1)->to_svg();
   jresult = jenv->NewStringUTF((&result)->c_str()); 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1save(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -34770,18 +34770,18 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1save(JNI
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  ((datamunge::plot::Plot const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save((std::string const &)*arg2);
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1save_1svg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -34791,18 +34791,18 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1save_1sv
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  ((datamunge::plot::Plot const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save_svg((std::string const &)*arg2);
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1view_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -34812,29 +34812,29 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1view_1_1
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  ((datamunge::plot::Plot const *)arg1)->view((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->view((std::string const &)*arg2);
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1view_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  ((datamunge::plot::Plot const *)arg1)->view();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  ((datamunge::graphics::Plot const *)arg1)->view();
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1show_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -34844,74 +34844,74 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1show_1_1
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  ((datamunge::plot::Plot const *)arg1)->show((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->show((std::string const &)*arg2);
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1show_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::Plot **)&jarg1; 
-  ((datamunge::plot::Plot const *)arg1)->show();
+  arg1 = *(datamunge::graphics::Plot **)&jarg1; 
+  ((datamunge::graphics::Plot const *)arg1)->show();
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Plot(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (datamunge::plot::Plot *)new datamunge::plot::Plot();
-  *(datamunge::plot::Plot **)&jresult = result; 
+  result = (datamunge::graphics::Plot *)new datamunge::graphics::Plot();
+  *(datamunge::graphics::Plot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1create(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
-  result = datamunge::plot::RPlot::create();
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::create();
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1title(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
@@ -34920,22 +34920,22 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1title(
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1x_1label(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
@@ -34944,22 +34944,22 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1x_1lab
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1y_1label(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
@@ -34968,22 +34968,22 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1y_1lab
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1xlab(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
@@ -34992,22 +34992,22 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1xlab(J
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1ylab(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
@@ -35016,206 +35016,206 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1ylab(J
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1background(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
-  result = (datamunge::plot::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1axis_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
-  result = (datamunge::plot::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1grid_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
-  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
+  argp2 = *(datamunge::graphics::RGB **)&jarg2; 
   if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg2 = *argp2; 
-  result = (datamunge::plot::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1show_1grid_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = jarg2 ? true : false; 
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid(arg2);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid(arg2);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1show_1grid_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid();
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid();
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1x_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->x_limits(arg2,arg3);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_limits(arg2,arg3);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1y_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->y_limits(arg2,arg3);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_limits(arg2,arg3);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hide_1axes_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = jarg2 ? true : false; 
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes(arg2);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes(arg2);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hide_1axes_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes();
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes();
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1x_1tick_1labels(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< std::string > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< std::string >");
     return 0;
   }
   arg2 = *argp2; 
-  result = (datamunge::plot::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
@@ -35226,11 +35226,11 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1plot_1
   std::vector< double > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp1 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35265,14 +35265,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1plot_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35285,7 +35285,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1plot_1
   std::string arg4 ;
   std::vector< double > *argp1 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35319,8 +35319,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1plot_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35332,7 +35332,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1plot_1
   std::string arg3 ;
   std::vector< double > *argp1 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35358,8 +35358,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1plot_1
   if (!arg3_pstr) return 0;
   (&arg3)->assign(arg3_pstr);
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35370,7 +35370,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1plot_1
   std::vector< double > arg2 ;
   std::vector< double > *argp1 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35388,8 +35388,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1plot_1
     return 0;
   }
   arg2 = *argp2; 
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35399,10 +35399,10 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hist_1
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35423,14 +35423,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hist_1
   if (!arg3_pstr) return 0;
   (&arg3)->assign(arg3_pstr);
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35441,7 +35441,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hist_1
   std::size_t arg2 ;
   std::string arg3 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35461,8 +35461,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hist_1
   if (!arg3_pstr) return 0;
   (&arg3)->assign(arg3_pstr);
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35472,7 +35472,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hist_1
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35484,8 +35484,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hist_1
   }
   arg1 = *argp1; 
   arg2 = (std::size_t)jarg2; 
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35494,7 +35494,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hist_1
   jlong jresult = 0 ;
   std::vector< double > arg1 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35505,8 +35505,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1hist_1
     return 0;
   }
   arg1 = *argp1; 
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35516,11 +35516,11 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1barplo
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35547,14 +35547,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1barplo
   if (!arg3_pstr) return 0;
   (&arg3)->assign(arg3_pstr);
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35566,7 +35566,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1barplo
   std::string arg3 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35592,8 +35592,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1barplo
   if (!arg3_pstr) return 0;
   (&arg3)->assign(arg3_pstr);
   jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35604,7 +35604,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1barplo
   std::vector< std::string > arg2 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35622,8 +35622,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1barplo
     return 0;
   }
   arg2 = *argp2; 
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35632,7 +35632,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1barplo
   jlong jresult = 0 ;
   std::vector< double > arg1 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35643,8 +35643,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1barplo
     return 0;
   }
   arg1 = *argp1; 
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35653,11 +35653,11 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1boxplo
   jlong jresult = 0 ;
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::vector< std::vector< double > > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35676,14 +35676,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1boxplo
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35694,7 +35694,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1boxplo
   std::vector< std::string > arg2 ;
   std::vector< std::vector< double > > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35712,8 +35712,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1boxplo
     return 0;
   }
   arg2 = *argp2; 
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35722,7 +35722,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1boxplo
   jlong jresult = 0 ;
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::vector< double > > *argp1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35733,8 +35733,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1boxplo
     return 0;
   }
   arg1 = *argp1; 
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35743,11 +35743,11 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1pie_1_
   jlong jresult = 0 ;
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  std::vector< datamunge::plot::RGB > *argp3 ;
-  datamunge::plot::RPlot result;
+  std::vector< datamunge::graphics::RGB > *argp3 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35765,14 +35765,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1pie_1_
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = *(std::vector< datamunge::plot::RGB > **)&jarg3; 
+  argp3 = *(std::vector< datamunge::graphics::RGB > **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< datamunge::plot::RGB >");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< datamunge::graphics::RGB >");
     return 0;
   }
   arg3 = *argp3; 
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35783,7 +35783,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1pie_1_
   std::vector< std::string > arg2 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35801,8 +35801,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1pie_1_
     return 0;
   }
   arg2 = *argp2; 
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35811,7 +35811,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1pie_1_
   jlong jresult = 0 ;
   std::vector< double > arg1 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35822,8 +35822,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1pie_1_
     return 0;
   }
   arg1 = *argp1; 
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35835,9 +35835,9 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1curve_
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
-  datamunge::plot::RGB *argp6 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGB *argp6 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35859,14 +35859,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1curve_
   if (!arg5_pstr) return 0;
   (&arg5)->assign(arg5_pstr);
   jenv->ReleaseStringUTFChars(jarg5, arg5_pstr); 
-  argp6 = *(datamunge::plot::RGB **)&jarg6; 
+  argp6 = *(datamunge::graphics::RGB **)&jarg6; 
   if (!argp6) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg6 = *argp6; 
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35878,7 +35878,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1curve_
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35899,8 +35899,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1curve_
   if (!arg5_pstr) return 0;
   (&arg5)->assign(arg5_pstr);
   jenv->ReleaseStringUTFChars(jarg5, arg5_pstr); 
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35911,7 +35911,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1curve_
   double arg2 ;
   double arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35924,8 +35924,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1curve_
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
   arg4 = (std::size_t)jarg4; 
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35935,7 +35935,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1curve_
   datamunge::Callback *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35947,8 +35947,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1curve_
   } 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3);
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35957,10 +35957,10 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1qqnorm
   jlong jresult = 0 ;
   std::vector< double > arg1 ;
   std::string arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -35980,14 +35980,14 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1qqnorm
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -35997,7 +35997,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1qqnorm
   std::vector< double > arg1 ;
   std::string arg2 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -36016,8 +36016,8 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1qqnorm
   if (!arg2_pstr) return 0;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
@@ -36026,7 +36026,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1qqnorm
   jlong jresult = 0 ;
   std::vector< double > arg1 ;
   std::vector< double > *argp1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   (void)jenv;
   (void)jcls;
@@ -36037,24 +36037,24 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1qqnorm
     return 0;
   }
   arg1 = *argp1; 
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
-  *(datamunge::plot::RPlot **)&jresult = new datamunge::plot::RPlot(result); 
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
+  *(datamunge::graphics::RPlot **)&jresult = new datamunge::graphics::RPlot(result); 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_, jdouble jarg6) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36062,7 +36062,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36083,30 +36083,30 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
   arg6 = (double)jarg6; 
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36114,7 +36114,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36135,34 +36135,34 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36183,27 +36183,27 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36216,24 +36216,24 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
     return 0;
   }
   arg3 = *argp3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_, jdouble jarg6) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36241,7 +36241,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36262,30 +36262,30 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
   arg6 = (double)jarg6; 
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36293,7 +36293,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36314,34 +36314,34 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36362,27 +36362,27 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36395,24 +36395,24 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1line_1
     return 0;
   }
   arg3 = *argp3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_, jdouble jarg6) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36420,7 +36420,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36441,30 +36441,30 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
   arg6 = (double)jarg6; 
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36472,7 +36472,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36493,34 +36493,34 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36541,27 +36541,27 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36574,23 +36574,23 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
     return 0;
   }
   arg3 = *argp3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jdouble jarg5) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36598,7 +36598,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg4_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36611,29 +36611,29 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
   arg5 = (double)jarg5; 
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36641,7 +36641,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg4_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36654,29 +36654,29 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1points
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jdouble jarg5) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36684,7 +36684,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg4_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36697,29 +36697,29 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
   arg5 = (double)jarg5; 
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36727,7 +36727,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg4_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36740,30 +36740,30 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1lines_
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_, jdouble jarg6) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36771,7 +36771,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36792,30 +36792,30 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
   arg6 = (double)jarg6; 
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -36823,7 +36823,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36844,34 +36844,34 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36892,27 +36892,27 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -36925,15 +36925,15 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1bars_1
     return 0;
   }
   arg3 = *argp3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jdouble jarg4, jdouble jarg5, jdouble jarg6, jdouble jarg7, jlong jarg8, jobject jarg8_, jlong jarg9, jobject jarg9_, jdouble jarg10) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -36941,18 +36941,18 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   double arg10 ;
   std::vector< double > *argp8 ;
-  datamunge::plot::RGB *argp9 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp9 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg8_;
   (void)jarg9_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
   arg4 = (double)jarg4; 
@@ -36965,22 +36965,22 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_
     return 0;
   }
   arg8 = *argp8; 
-  argp9 = *(datamunge::plot::RGB **)&jarg9; 
+  argp9 = *(datamunge::graphics::RGB **)&jarg9; 
   if (!argp9) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg9 = *argp9; 
   arg10 = (double)jarg10; 
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jdouble jarg4, jdouble jarg5, jdouble jarg6, jdouble jarg7, jlong jarg8, jobject jarg8_, jlong jarg9, jobject jarg9_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -36988,17 +36988,17 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   std::vector< double > *argp8 ;
-  datamunge::plot::RGB *argp9 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp9 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg8_;
   (void)jarg9_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
   arg4 = (double)jarg4; 
@@ -37011,21 +37011,21 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_
     return 0;
   }
   arg8 = *argp8; 
-  argp9 = *(datamunge::plot::RGB **)&jarg9; 
+  argp9 = *(datamunge::graphics::RGB **)&jarg9; 
   if (!argp9) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg9 = *argp9; 
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jdouble jarg4, jdouble jarg5, jdouble jarg6, jdouble jarg7, jlong jarg8, jobject jarg8_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -37034,13 +37034,13 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_
   double arg7 ;
   std::vector< double > arg8 ;
   std::vector< double > *argp8 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg8_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
   arg4 = (double)jarg4; 
@@ -37053,398 +37053,398 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_
     return 0;
   }
   arg8 = *argp8; 
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1box_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jdouble jarg4, jdouble jarg5, jdouble jarg6, jdouble jarg7) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
   double arg5 ;
   double arg6 ;
   double arg7 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
   arg4 = (double)jarg4; 
   arg5 = (double)jarg5; 
   arg6 = (double)jarg6; 
   arg7 = (double)jarg7; 
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1abline_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jlong jarg4, jobject jarg4_, jdouble jarg5) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg4_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
   arg5 = (double)jarg5; 
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1abline_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jlong jarg4, jobject jarg4_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg4_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1abline_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1abline_1h_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jlong jarg3, jobject jarg3_, jdouble jarg4) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
   arg4 = (double)jarg4; 
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1abline_1h_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1abline_1h_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1abline_1v_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jlong jarg3, jobject jarg3_, jdouble jarg4) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
   arg4 = (double)jarg4; 
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1abline_1v_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1abline_1v_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1qqline_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jdouble jarg4) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
   arg4 = (double)jarg4; 
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1qqline_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RGB *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = *(datamunge::plot::RGB **)&jarg3; 
+  argp3 = *(datamunge::graphics::RGB **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg3 = *argp3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1qqline_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > *argp2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
     return 0;
   }
   arg2 = *argp2; 
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1legend(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   std::vector< std::string > *argp2 ;
-  std::vector< datamunge::plot::RGB > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  std::vector< datamunge::graphics::RGB > *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< std::string > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< std::string >");
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = *(std::vector< datamunge::plot::RGB > **)&jarg3; 
+  argp3 = *(std::vector< datamunge::graphics::RGB > **)&jarg3; 
   if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< datamunge::plot::RGB >");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< datamunge::graphics::RGB >");
     return 0;
   }
   arg3 = *argp3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1text_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jstring jarg4, jlong jarg5, jobject jarg5_, jdouble jarg6) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
   if(!jarg4) {
@@ -37455,34 +37455,34 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1text_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
   arg6 = (double)jarg6; 
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1text_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jstring jarg4, jlong jarg5, jobject jarg5_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
   if(!jarg4) {
@@ -37493,30 +37493,30 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1text_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  argp5 = *(datamunge::graphics::RGB **)&jarg5; 
   if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg5 = *argp5; 
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1text_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jstring jarg4) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   arg2 = (double)jarg2; 
   arg3 = (double)jarg3; 
   if(!jarg4) {
@@ -37527,23 +37527,23 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1text_1
   if (!arg4_pstr) return 0;
   (&arg4)->assign(arg4_pstr);
   jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1polygon_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jboolean jarg5) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   bool arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -37551,7 +37551,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1polygo
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg4_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -37564,29 +37564,29 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1polygo
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
   arg5 = jarg5 ? true : false; 
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1polygon_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -37594,7 +37594,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1polygo
   (void)jarg2_;
   (void)jarg3_;
   (void)jarg4_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -37607,33 +37607,33 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1polygo
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = *(datamunge::plot::RGB **)&jarg4; 
+  argp4 = *(datamunge::graphics::RGB **)&jarg4; 
   if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg4 = *argp4; 
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1polygon_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -37646,27 +37646,27 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1polygo
     return 0;
   }
   arg3 = *argp3; 
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segments_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jlong jarg5, jobject jarg5_, jlong jarg6, jobject jarg6_, jdouble jarg7) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   double arg7 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   std::vector< double > *argp4 ;
   std::vector< double > *argp5 ;
-  datamunge::plot::RGB *argp6 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp6 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -37676,7 +37676,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segmen
   (void)jarg4_;
   (void)jarg5_;
   (void)jarg6_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -37701,33 +37701,33 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segmen
     return 0;
   }
   arg5 = *argp5; 
-  argp6 = *(datamunge::plot::RGB **)&jarg6; 
+  argp6 = *(datamunge::graphics::RGB **)&jarg6; 
   if (!argp6) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg6 = *argp6; 
   arg7 = (double)jarg7; 
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segments_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jlong jarg5, jobject jarg5_, jlong jarg6, jobject jarg6_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   std::vector< double > *argp4 ;
   std::vector< double > *argp5 ;
-  datamunge::plot::RGB *argp6 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RGB *argp6 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -37737,7 +37737,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segmen
   (void)jarg4_;
   (void)jarg5_;
   (void)jarg6_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -37762,21 +37762,21 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segmen
     return 0;
   }
   arg5 = *argp5; 
-  argp6 = *(datamunge::plot::RGB **)&jarg6; 
+  argp6 = *(datamunge::graphics::RGB **)&jarg6; 
   if (!argp6) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::graphics::RGB");
     return 0;
   }
   arg6 = *argp6; 
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segments_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jlong jarg5, jobject jarg5_) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
@@ -37785,7 +37785,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segmen
   std::vector< double > *argp3 ;
   std::vector< double > *argp4 ;
   std::vector< double > *argp5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -37794,7 +37794,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segmen
   (void)jarg3_;
   (void)jarg4_;
   (void)jarg5_;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   argp2 = *(std::vector< double > **)&jarg2; 
   if (!argp2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
@@ -37819,30 +37819,30 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1segmen
     return 0;
   }
   arg5 = *argp5; 
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RPlot(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
-  *(datamunge::plot::RPlot **)&jresult = result; 
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
+  *(datamunge::graphics::RPlot **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1RPlot(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(datamunge::plot::RPlot **)&jarg1; 
+  arg1 = *(datamunge::graphics::RPlot **)&jarg1; 
   delete arg1;
 }
 
@@ -37851,82 +37851,82 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RLayout_1crea
   jlong jresult = 0 ;
   std::size_t arg1 ;
   std::size_t arg2 ;
-  datamunge::plot::RLayout result;
+  datamunge::graphics::RLayout result;
   
   (void)jenv;
   (void)jcls;
   arg1 = (std::size_t)jarg1; 
   arg2 = (std::size_t)jarg2; 
-  result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  *(datamunge::plot::RLayout **)&jresult = new datamunge::plot::RLayout(result); 
+  result = datamunge::graphics::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  *(datamunge::graphics::RLayout **)&jresult = new datamunge::graphics::RLayout(result); 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RLayout_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
-  datamunge::plot::RLayout *arg1 = 0 ;
-  datamunge::plot::Plot *arg2 = 0 ;
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  datamunge::graphics::Plot *arg2 = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(datamunge::plot::RLayout **)&jarg1; 
-  arg2 = *(datamunge::plot::Plot **)&jarg2;
+  arg1 = *(datamunge::graphics::RLayout **)&jarg1; 
+  arg2 = *(datamunge::graphics::Plot **)&jarg2;
   if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::plot::Plot const & is null");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::graphics::Plot const & is null");
     return 0;
   } 
-  result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
-  *(datamunge::plot::RLayout **)&jresult = result; 
+  result = (datamunge::graphics::RLayout *) &(arg1)->add((datamunge::graphics::Plot const &)*arg2);
+  *(datamunge::graphics::RLayout **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RLayout_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
   jlong jresult = 0 ;
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RLayout **)&jarg1; 
+  arg1 = *(datamunge::graphics::RLayout **)&jarg1; 
   arg2 = (std::size_t)jarg2; 
   arg3 = (std::size_t)jarg3; 
-  result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  *(datamunge::plot::RLayout **)&jresult = result; 
+  result = (datamunge::graphics::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  *(datamunge::graphics::RLayout **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RLayout_1to_1svg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RLayout **)&jarg1; 
-  result = ((datamunge::plot::RLayout const *)arg1)->to_svg();
+  arg1 = *(datamunge::graphics::RLayout **)&jarg1; 
+  result = ((datamunge::graphics::RLayout const *)arg1)->to_svg();
   jresult = jenv->NewStringUTF((&result)->c_str()); 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RLayout_1save(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RLayout **)&jarg1; 
+  arg1 = *(datamunge::graphics::RLayout **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -37936,18 +37936,18 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RLayout_1save(
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save((std::string const &)*arg2);
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RLayout_1save_1svg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(datamunge::plot::RLayout **)&jarg1; 
+  arg1 = *(datamunge::graphics::RLayout **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -37957,28 +37957,28 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RLayout_1save_
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RLayout(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
-  *(datamunge::plot::RLayout **)&jresult = result; 
+  result = (datamunge::graphics::RLayout *)new datamunge::graphics::RLayout();
+  *(datamunge::graphics::RLayout **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1RLayout(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(datamunge::plot::RLayout **)&jarg1; 
+  arg1 = *(datamunge::graphics::RLayout **)&jarg1; 
   delete arg1;
 }
 
@@ -55862,7 +55862,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RPlot_1SWIGUp
     jlong baseptr = 0;
     (void)jenv;
     (void)jcls;
-    *(datamunge::plot::Plot **)&baseptr = *(datamunge::plot::RPlot **)&jarg1;
+    *(datamunge::graphics::Plot **)&baseptr = *(datamunge::graphics::RPlot **)&jarg1;
     return baseptr;
 }
 

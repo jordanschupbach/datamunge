@@ -37,7 +37,7 @@ yields the strict convex hull, excluding points that lie on an edge. The angular
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<Point2D> sample_points() {
     return {{0, 0}, {10, 0}, {18, 4}, {20, 12}, {15, 20}, {6, 22}, {-2, 15}, {-4, 6},

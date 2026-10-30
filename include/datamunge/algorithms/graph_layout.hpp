@@ -7,9 +7,15 @@
 
 namespace datamunge::algorithms {
 
+/// @brief A planar point shared by graph layouts and polygon rasterization.
 struct Point2D {
-  double x{0.0};
-  double y{0.0};
+  double x{0.0}; ///< Horizontal coordinate.
+  double y{0.0}; ///< Vertical coordinate.
+
+  /// @brief Borrows coordinate 0 (x) or 1 (y); index must be less than two.
+  double& operator[](std::size_t index) noexcept { return index == 0 ? x : y; }
+  /// @brief Borrows a read-only coordinate; index must be less than two.
+  const double& operator[](std::size_t index) const noexcept { return index == 0 ? x : y; }
 };
 
 struct Circle2D {

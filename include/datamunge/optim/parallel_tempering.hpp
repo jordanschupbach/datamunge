@@ -34,6 +34,10 @@ public:
 
     double optimize(ArbitraryFunction& function, std::vector<double>& coordinates) const;
 
+    /// @brief The options this ParallelTempering was configured with.
+    /// @return The stored options.
+    [[nodiscard]] const ParallelTemperingOptions& options() const noexcept { return options_; }
+
 private:
     ParallelTemperingOptions options_;
 };

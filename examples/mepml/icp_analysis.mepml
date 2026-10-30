@@ -45,7 +45,7 @@ alignment \-\- it snaps precisely onto the true transform, which is why ICP is t
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static Point2D xf(const Point2D& p, double th, double tx, double ty) {
     return {std::cos(th) * p.x - std::sin(th) * p.y + tx, std::sin(th) * p.x + std::cos(th) * p.y + ty};
@@ -117,7 +117,7 @@ source.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static Point2D xf(const Point2D& p, double th, double tx, double ty) {
     return {std::cos(th) * p.x - std::sin(th) * p.y + tx, std::sin(th) * p.x + std::cos(th) * p.y + ty};

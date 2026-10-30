@@ -41,7 +41,7 @@ extraction and molecular-surface identification.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

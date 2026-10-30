@@ -2,6 +2,7 @@
 
 #include <datamunge/algorithms/bicubic_interpolation.hpp>
 #include <datamunge/algorithms/birkhoff_interpolation.hpp>
+#include <datamunge/algorithms/interpolation_extra.hpp>
 #include <datamunge/algorithms/lanczos_resampling.hpp>
 
 #include <cmath>
@@ -127,4 +128,65 @@ TEST(Birkhoff, DetectsNonPoisedScheme) {
     // (identical rows) -> singular.
     const auto c = birkhoff_polynomial(cons);
     EXPECT_TRUE(c.empty());
+}
+
+// ---------------- Cubic-convolution kernel and grid resampling ----------------
+
+TEST(CubicConvolution, KernelInterpolatesAndReproducesPolynomials) {
+    for (double a : {-0.5, -0.75, -1.0}) {
+        EXPECT_DOUBLE_EQ(cubic_convolution_kernel(0.0, a), 1.0);
+        for (int k : {-2, -1, 1, 2, 3}) EXPECT_NEAR(cubic_convolution_kernel(k, a), 0.0, 1e-15);
+        for (double t : {0.1, 0.37, 0.5, 0.9}) {
+            double s0 = 0, s1 = 0, s2 = 0;
+            for (int m = -1; m <= 2; ++m) {
+                const double w = cubic_convolution_kernel(t - m, a);
+                s0 += w, s1 += w * m, s2 += w * m * m;
+            }
+            EXPECT_NEAR(s0, 1.0, 1e-14);  // constants, for every a
+            // Linear functions only for a = -1/2: the bias is -(2a+1) t(1-t)(1-2t).
+            EXPECT_NEAR(s1 - t, -(2 * a + 1) * t * (1 - t) * (1 - 2 * t), 1e-14);
+            if (a == -0.5) EXPECT_NEAR(s2, t * t, 1e-14);  // and quadratics
+        }
+    }
+}
+
+TEST(CubicConvolution, ConvergenceOrderIsThreeOnlyForKeysParameter) {
+    auto max_error = [](double h, double a) {
+        std::vector<double> xs, ys;
+        for (double v = -1.0; v <= 3.0 + 1e-12; v += h) xs.push_back(v), ys.push_back(v);
+        std::vector<double> z;
+        for (double x : xs)
+            for (double y : ys) z.push_back(std::sin(x) * std::cos(1.3 * y));
+        double err = 0;
+        for (double x = 0.0; x <= 2.0; x += 0.0137)
+            for (double y = 0.0; y <= 2.0; y += 0.0291)
+                err = std::max(err, std::fabs(bicubic_interpolate(xs, ys, z, x, y, a) - std::sin(x) * std::cos(1.3 * y)));
+        return err;
+    };
+    EXPECT_NEAR(std::log2(max_error(0.1, -0.5) / max_error(0.05, -0.5)), 3.0, 0.3);
+    EXPECT_NEAR(std::log2(max_error(0.1, -0.75) / max_error(0.05, -0.75)), 1.0, 0.3);
+}
+
+TEST(ResampleGrid, MethodsAgreeWithPointwiseRulesAndHitNodes) {
+    std::vector<double> xs, ys;
+    for (int i = 0; i < 6; ++i) xs.push_back(i * 2.0);
+    for (int j = 0; j < 5; ++j) ys.push_back(1.0 + j);
+    std::vector<double> z;
+    for (double x : xs)
+        for (double y : ys) z.push_back(std::exp(-0.1 * x) + y * y);
+    const std::vector<double> nx = {0.0, 1.0, 3.3, 9.9}, ny = {1.0, 2.6, 4.9};
+    const auto bic = resample_grid(xs, ys, z, nx, ny, GridInterpolation::Bicubic);
+    const auto bil = resample_grid(xs, ys, z, nx, ny, GridInterpolation::Bilinear);
+    const auto near = resample_grid(xs, ys, z, nx, ny, GridInterpolation::Nearest);
+    ASSERT_EQ(bic.size(), 12u);
+    for (std::size_t i = 0; i < nx.size(); ++i)
+        for (std::size_t j = 0; j < ny.size(); ++j) {
+            EXPECT_DOUBLE_EQ(bic[i * 3 + j], bicubic_interpolate(xs, ys, z, nx[i], ny[j]));
+            EXPECT_DOUBLE_EQ(bil[i * 3 + j], bilinear_interpolate(xs, ys, z, nx[i], ny[j]));
+        }
+    EXPECT_DOUBLE_EQ(near[2 * 3 + 1], z[2 * 5 + 2]);  // (3.3, 2.6) -> node (4, 3)
+    const auto same = resample_grid(xs, ys, z, xs, ys, GridInterpolation::Bicubic);
+    for (std::size_t k = 0; k < z.size(); ++k) EXPECT_NEAR(same[k], z[k], 1e-12);
+    EXPECT_THROW(resample_grid({1.0}, ys, z, nx, ny, GridInterpolation::Nearest), std::invalid_argument);
+    EXPECT_THROW(resample_grid(xs, ys, {1.0}, nx, ny, GridInterpolation::Nearest), std::invalid_argument);
 }

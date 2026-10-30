@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1304" height="908.2" viewBox="0 0 1304 908.2" role="img" data-model-layout="left-to-right" data-model-style="LeNet" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Three convolutions: dilation 1, 2 and 4</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="36" y="36" font-size="20" font-weight="600">Three convolutions: dilation 1, 2 and 4</text>
+<text x="36" y="63" font-size="12">5 nodes | 0 unique learned values | LeNet / blocks</text>
+<rect x="36" y="71" width="12" height="12" rx="2" fill="#E69F00"/><text x="54" y="81" font-size="11">Input</text>
+<rect x="166" y="71" width="12" height="12" rx="2" fill="#64B5CD"/><text x="184" y="81" font-size="11">Convolution</text>
+<rect x="296" y="71" width="12" height="12" rx="2" fill="#6C8194"/><text x="314" y="81" font-size="11">Output</text>
+<text x="36" y="111" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path class="feature-connector" d="M 244 186 L 292 186 M 244 394 L 292 394" stroke="#64B5CD" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="0" data-to="1" d="M 244 290 C 268 290 268 290 292 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 500 186 L 548 186 M 500 394 L 548 394" stroke="#64B5CD" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="1" data-to="2" d="M 500 290 C 524 290 524 290 548 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 756 186 L 804 186 M 756 394 L 804 394" stroke="#64B5CD" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="2" data-to="3" d="M 756 290 C 780 290 780 290 804 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 1012 186 L 1060 186 M 1012 394 L 1060 394" stroke="#6C8194" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="3" data-to="4" d="M 1012 290 C 1036 290 1036 290 1060 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-0" data-left="36" data-right="244" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 36 250 L 100 186" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="36" y="250" width="144" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(140 620.1) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>3x3 convolution / dilation 1 [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-1" data-left="292" data-right="500" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 292 250 L 356 186" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="292" y="250" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(396 620.1) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">3x3 convolution / dilation 1</text>
+<text x="0" y="12.35" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+<g data-node="2" data-category="Convolution"><title>3x3 convolution / dilation 2 [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-2" data-left="548" data-right="756" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 548 250 L 612 186" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="548" y="250" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(652 620.1) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">3x3 convolution / dilation 2</text>
+<text x="0" y="12.35" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+<g data-node="3" data-category="Convolution"><title>3x3 convolution / dilation 4 [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-3" data-left="804" data-right="1012" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 804 250 L 868 186" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="804" y="250" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(908 620.1) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">3x3 convolution / dilation 4</text>
+<text x="0" y="12.35" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+<g data-node="4" data-category="Output"><title>Output [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-4" data-left="1060" data-right="1268" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 1060 250 L 1124 186" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="1060" y="250" width="144" height="144" fill="#6C8194"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(1164 620.1) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+</g></svg>

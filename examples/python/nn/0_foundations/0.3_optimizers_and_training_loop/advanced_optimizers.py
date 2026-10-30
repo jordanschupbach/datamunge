@@ -1,4 +1,5 @@
 # Native Python NN example. LAMB/LARS trust ratios, Lion signs and Adafactor moments.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/advanced_optimizers.py
 """Optimizer mechanics, state memory and direct matrix fitting."""
 import math
 from pydatamunge import nn

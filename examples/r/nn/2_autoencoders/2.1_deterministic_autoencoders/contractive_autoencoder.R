@@ -1,10 +1,10 @@
 # Native R NN example. Contractive autoencoder with the exact sigmoid-encoder Jacobian penalty.
+# CMD: nix develop .#r --command Rscript examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/contractive_autoencoder.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example contractive_autoencoder
 # Exact sigmoid-encoder Jacobian-Frobenius penalty, plain and strong matched controls.
 # Three epochs/default; differentiate through activation slopes AND encoder weights.
 #

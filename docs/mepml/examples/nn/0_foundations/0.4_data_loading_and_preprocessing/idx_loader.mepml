@@ -1,0 +1,123 @@
+//? Title: IDX Loading: Shape Headers and Paired Rows
+//? Subtitle: Big-endian dimensions describe bytes; normalisation is a separate operation
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A tensor file must describe its dtype and shape accurately before its values can be trusted.
+We write a two-image IDX fixture with known bytes, load it through the generic reader, and
+check normalisation and matched image/label gathering. Damaged file lengths test the boundary
+between a valid tensor and an incomplete payload.
+)
+\toc
+
+> The method
+
+An IDX header starts with two zero bytes, a type byte and a rank byte, followed by one
+big-endian 32-bit length per axis. Unsigned-byte rank-three image magic is 2051; rank-one
+label magic is 2049. If dimensions are d1..dr and element width is b, the complete file needs
+
+$$
+\mathrm{bytes}=4+4r+b\prod_{j=1}^r d_j,\qquad x_{\rm model}=\mathrm{cast}(x_{\rm byte})/255.
+$$
+\alttext(The header contains four fixed bytes and four bytes per dimension, followed by the exact product of dimensions times element width.)
+
+read_idx returns one tensor, widening byte types to Int32. Generic tensor decoding does not
+establish a supervised dataset contract: the caller must check image rank, nonzero dimensions,
+matching image/label counts, label range and any required spatial shape. load_mnist supplies
+fixed-name 28 by 28 convenience loading. The raw reader accepts gzip by magic bytes. An NHWC
+channel axis may be added after loading; the same row permutation must gather both tensors.
+Reading and copying cost O(number of elements).
+
+The concept diagram has a retained TikZ source in `diagrams/idx_loader_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/idx_loader_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/idx_loader_concept.tikz > build/idx_loader_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/idx_loader_concept.svg build/idx_loader_concept.dvi > build/idx_loader_concept.render.log 2>&1
+printf 'Rendered build/idx_loader_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/idx_loader_concept.svg from local TikZ source.
+// \image(figures/idx_loader_concept.svg)
+// result_end
+\caption(Big-endian dimensions describe bytes; normalisation is a separate operation)
+\alttext(IDX header; type, rank, dimensions Then Exact tensor payload; row-major values Then Paired gather + cast; images and labels.)
+
+> Simple examples
+
+Two 2 by 3 images contain bytes increasing and decreasing by 51; both normalised means are .5. Their labels are 7 and 3. The file is generated locally by Python so the writer is independent of the C++ reader.
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/nn/array_io.hpp>
+int main(){
+ namespace n=dm::nn;
+ std::filesystem::create_directories("build");
+ n::write_idx("build/idx_images",n::tensor({0,51,102,153,204,255,255,204,153,102,51,0},{2,2,3}).to(n::DType::Int32),true);
+ n::write_idx("build/idx_labels",n::tensor({7,3}).to(n::DType::Int32),true);
+ std::print("Wrote two unsigned-byte images and labels with big-endian shape headers.\n");
+}
+```
+// result_begin:
+// Wrote two unsigned-byte images and labels with big-endian shape headers.
+// result_end
+
+```{cpp, results="markdown", file="figures/idx_loader_rows.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;
+ const auto x=n::read_idx("build/idx_images"),y=n::read_idx("build/idx_labels");
+ const auto shuffled=n::cast(n::take_rows(x,{1,0}),n::DType::Float64)/255.;
+ const auto labels=n::take_rows(y,{1,0});
+ auto p=dm::graphics::RPlot::create();p.lines({0,1,2,3,4,5},n::take_rows(shuffled,{0}).to_vector<double>(),"label 3",{37,99,235})
+ .lines({0,1,2,3,4,5},n::take_rows(shuffled,{1}).to_vector<double>(),"label 7",{234,88,12})
+ .title("One permutation keeps images and labels paired").x_label("pixel index").y_label("byte / 255");
+ std::filesystem::create_directories("build");p.size(820,420).save_svg("build/idx_loader_rows.svg");
+ dm::dstruct::DataFrame t;t.add_column("label",labels.to_vector<double>());t.add_column("image_mean",n::mean(shuffled,{1,2}).to_vector<double>());
+ if(x.shape()!=n::Shape({2,2,3})||labels.at({0})!=3||shuffled.at({0,0,0})!=1)return 1;
+ std::print("{}\n",t.to_md());
+}
+```
+// result_begin: markdown
+| label | image_mean |
+| ---: | ---: |
+| 3 | 0.5 |
+| 7 | 0.5 |
+
+\image(figures/idx_loader_rows.svg)
+// result_end
+\caption(Row gathering changes order while preserving the label attached to each image.)
+\alttext(Row gathering changes order while preserving the label attached to each image.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;namespace d=n::data;
+ const auto original=d::ReadBinary("build/idx_images");int bad=0;
+ for(int mode=0;mode<3;++mode){auto b=original;if(mode==0)b.pop_back();if(mode==1)b.push_back(0);if(mode==2)b[0]=1;
+ d::WriteBinary("build/idx_bad",b);try{n::read_idx("build/idx_bad");}catch(const std::exception&){++bad;}}
+ if(bad!=3||original.size()!=4+4*3+12)return 1;
+ std::print("Header 16 bytes + payload 12 bytes = {} bytes.\n\nTruncated, trailing and bad-magic fixtures rejected: {}.\n",original.size(),bad);
+}
+```
+// result_begin: markdown
+Header 16 bytes + payload 12 bytes = 28 bytes.
+
+Truncated, trailing and bad-magic fixtures rejected: 3.
+// result_end
+
+
+> Conclusion
+
+The shape header, exact byte count and pixel normalisation agree with independent struct-written
+files. Paired selection is part of the dataset contract, separate from tensor decoding. This small
+fixture does not claim to evaluate a recogniser or require MNIST to be downloaded.
+
+> References
+
+- [LeCun et al., MNIST and the IDX file format](https://yann.lecun.com/exdb/mnist/).

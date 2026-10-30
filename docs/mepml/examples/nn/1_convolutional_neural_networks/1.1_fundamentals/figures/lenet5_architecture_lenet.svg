@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200.43" height="817.9" viewBox="0 0 1200.43 817.9" role="img" data-model-layout="left-to-right" data-model-style="LeNet" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">LeNet-5: sparse C3 and learned subsampling</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="36" y="36" font-size="20" font-weight="600">LeNet-5: sparse C3 and learned subsampling</text>
+<text x="36" y="63" font-size="12">10 nodes | 60000 unique learned values | LeNet / blocks</text>
+<rect x="36" y="71" width="12" height="12" rx="2" fill="#E69F00"/><text x="54" y="81" font-size="11">Input</text>
+<rect x="166" y="71" width="12" height="12" rx="2" fill="#F0E442"/><text x="184" y="81" font-size="11">Activation</text>
+<rect x="296" y="71" width="12" height="12" rx="2" fill="#8B80C9"/><text x="314" y="81" font-size="11">Block</text>
+<rect x="426" y="71" width="12" height="12" rx="2" fill="#6C8194"/><text x="444" y="81" font-size="11">Output</text>
+<text x="36" y="111" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path class="feature-connector" d="M 68.9 186 L 130.8 186 M 68.9 331 L 130.8 331" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="0" data-to="1" d="M 68.9 258.5 C 99.85 258.5 99.85 258.5 130.8 258.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 275.8 186 L 323.8 193.9 M 275.8 331 L 323.8 323.1" stroke="#F0E442" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="1" data-to="2" d="M 275.8 258.5 C 299.8 258.5 299.8 258.5 323.8 258.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 453 193.9 L 501 225.4 M 453 323.1 L 501 291.6" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="2" data-to="3" d="M 453 258.5 C 477 258.5 477 258.5 501 258.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 567.2 225.4 L 615.2 231.733 M 567.2 291.6 L 615.2 285.267" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="3" data-to="4" d="M 567.2 258.5 C 591.2 258.5 591.2 258.5 615.2 258.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 668.733 231.733 L 724.617 242.983 M 668.733 285.267 L 724.617 274.017" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="4" data-to="5" d="M 668.733 258.5 C 696.675 258.5 696.675 258.5 724.617 258.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 755.65 242.983 L 811.533 224.25 M 755.65 274.017 L 811.533 292.75" stroke="#F0E442" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="5" data-to="6" d="M 755.65 258.5 C 783.592 258.5 783.592 258.5 811.533 258.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 880.033 224.25 L 941.933 250.286 M 880.033 292.75 L 941.933 266.714" stroke="#F0E442" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="6" data-to="7" d="M 880.033 258.5 C 910.983 258.5 910.983 258.5 941.933 258.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 960.933 250.286 L 1036.73 257.082 M 960.933 266.714 L 1036.73 259.918" stroke="#8B80C9" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="7" data-to="8" d="M 960.933 258.5 C 998.833 258.5 998.833 258.5 1036.73 258.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 1055.73 257.082 L 1131.53 257.082 M 1055.73 259.918 L 1131.53 259.918" stroke="#6C8194" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="8" data-to="9" d="M 1055.73 258.5 C 1093.63 258.5 1093.63 258.5 1131.53 258.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 784]</title>
+<g id="model-glyph-0" data-left="49.9" data-right="68.9" data-face-width="18" data-face-height="144" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 49.9 187 L 50.9 186" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="49.9" y="187" width="18" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(59.4 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 784]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>Pad and intensity rescale [1 x 32 x 32 x 1]</title>
+<g id="model-glyph-1" data-left="130.8" data-right="275.8" data-face-width="144" data-face-height="144" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 130.8 187 L 131.8 186" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="130.8" y="187" width="144" height="144" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(203.3 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Pad and intensity rescale</text>
+<text x="0" y="12.35" font-size="13">[1 x 32 x 32 x 1]</text>
+</g></g>
+<g data-node="2" data-category="Activation"><title>C1: 5x5, scaled tanh [1 x 28 x 28 x 6]</title>
+<g id="model-glyph-2" data-left="323.8" data-right="453" data-face-width="126" data-face-height="126" data-depth="3.2" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 323.8 197.1 L 327 193.9" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="327" y="193.9" width="126" height="126" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="4" x="326.36" y="194.54" width="126" height="126" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="3" x="325.72" y="195.18" width="126" height="126" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="2" x="325.08" y="195.82" width="126" height="126" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="1" x="324.44" y="196.46" width="126" height="126" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="0" x="323.8" y="197.1" width="126" height="126" fill="#F0E442"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(388.4 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">C1: 5x5, scaled tanh</text>
+<text x="0" y="12.35" font-size="13">[1 x 28 x 28 x 6]</text>
+</g></g>
+<g data-node="3" data-category="Block"><title>S2: learned subsampling [1 x 14 x 14 x 6]</title>
+<g id="model-glyph-3" data-left="501" data-right="567.2" data-face-width="63" data-face-height="63" data-depth="3.2" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 501 228.6 L 504.2 225.4" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="504.2" y="225.4" width="63" height="63" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="503.56" y="226.04" width="63" height="63" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="502.92" y="226.68" width="63" height="63" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="502.28" y="227.32" width="63" height="63" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="501.64" y="227.96" width="63" height="63" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="501" y="228.6" width="63" height="63" fill="#8B80C9"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(534.1 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">S2: learned subsampling</text>
+<text x="0" y="12.35" font-size="13">[1 x 14 x 14 x 6]</text>
+</g></g>
+<g data-node="4" data-category="Block"><title>C3: 60 sparse connections [1 x 10 x 10 x 16]</title>
+<g id="model-glyph-4" data-left="615.2" data-right="668.733" data-face-width="45" data-face-height="45" data-depth="8.53333" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 615.2 240.267 L 623.733 231.733" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="623.733" y="231.733" width="45" height="45" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="622.027" y="233.44" width="45" height="45" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="620.32" y="235.147" width="45" height="45" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="618.613" y="236.853" width="45" height="45" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="616.907" y="238.56" width="45" height="45" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="615.2" y="240.267" width="45" height="45" fill="#8B80C9"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(641.967 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">C3: 60 sparse connections</text>
+<text x="0" y="12.35" font-size="13">[1 x 10 x 10 x 16]</text>
+</g></g>
+<g data-node="5" data-category="Block"><title>S4: learned subsampling [1 x 5 x 5 x 16]</title>
+<g id="model-glyph-5" data-left="724.617" data-right="755.65" data-face-width="22.5" data-face-height="22.5" data-depth="8.53333" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 724.617 251.517 L 733.15 242.983" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="733.15" y="242.983" width="22.5" height="22.5" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="4" x="731.443" y="244.69" width="22.5" height="22.5" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="3" x="729.737" y="246.397" width="22.5" height="22.5" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="2" x="728.03" y="248.103" width="22.5" height="22.5" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="1" x="726.323" y="249.81" width="22.5" height="22.5" fill="#8B80C9"/>
+<rect class="feature-plane" data-plane="0" x="724.617" y="251.517" width="22.5" height="22.5" fill="#8B80C9"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(740.133 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">S4: learned subsampling</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 16]</text>
+</g></g>
+<g data-node="6" data-category="Activation"><title>C5: 5x5, scaled tanh [1 x 1 x 1 x 120]</title>
+<g id="model-glyph-6" data-left="811.533" data-right="880.033" data-face-width="4.5" data-face-height="4.5" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 811.533 288.25 L 875.533 224.25" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="875.533" y="224.25" width="4.5" height="4.5" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="4" x="862.733" y="237.05" width="4.5" height="4.5" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="3" x="849.933" y="249.85" width="4.5" height="4.5" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="2" x="837.133" y="262.65" width="4.5" height="4.5" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="1" x="824.333" y="275.45" width="4.5" height="4.5" fill="#F0E442"/>
+<rect class="feature-plane" data-plane="0" x="811.533" y="288.25" width="4.5" height="4.5" fill="#F0E442"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(845.783 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">C5: 5x5, scaled tanh</text>
+<text x="0" y="12.35" font-size="13">[1 x 1 x 1 x 120]</text>
+</g></g>
+<g data-node="7" data-category="Activation"><title>F6: 84, scaled tanh [1 x 84]</title>
+<g id="model-glyph-7" data-left="941.933" data-right="960.933" data-face-width="18" data-face-height="15.4286" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 941.933 251.286 L 942.933 250.286" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="941.933" y="251.286" width="18" height="15.4286" fill="#F0E442"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(951.433 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">F6: 84, scaled tanh</text>
+<text x="0" y="12.35" font-size="13">[1 x 84]</text>
+</g></g>
+<g data-node="8" data-category="Block"><title>Fixed-prototype RBF logits [1 x 10]</title>
+<g id="model-glyph-8" data-left="1036.73" data-right="1055.73" data-face-width="18" data-face-height="1.83673" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 1036.73 258.082 L 1037.73 257.082" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="1036.73" y="258.082" width="18" height="1.83673" fill="#8B80C9"/>
+</g>
+<g id="model-label-8" data-node-label="8" transform="translate(1046.23 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Fixed-prototype RBF logits</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+<g data-node="9" data-category="Output"><title>Output [1 x 10]</title>
+<g id="model-glyph-9" data-left="1131.53" data-right="1150.53" data-face-width="18" data-face-height="1.83673" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 1131.53 258.082 L 1132.53 257.082" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="1131.53" y="258.082" width="18" height="1.83673" fill="#6C8194"/>
+</g>
+<g id="model-label-9" data-node-label="9" transform="translate(1141.03 543.45) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+</g></svg>

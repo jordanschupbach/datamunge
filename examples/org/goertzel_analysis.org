@@ -41,7 +41,7 @@ frequencies.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

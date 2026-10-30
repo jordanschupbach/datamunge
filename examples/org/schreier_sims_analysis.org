@@ -44,7 +44,7 @@ orbit sizes give the order, and sifting a permutation to the identity is exactly
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<int> cyc(int n) { std::vector<int> p(n); for (int i = 0; i < n; ++i) p[i] = (i + 1) % n; return p; }
 static std::vector<int> tr01(int n) { std::vector<int> p(n); std::iota(p.begin(), p.end(), 0); std::swap(p[0], p[1]); return p; }

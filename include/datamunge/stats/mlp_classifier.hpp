@@ -53,6 +53,17 @@ class MLPClassifier {
 public:
     MLPClassifier(const dstruct::DataFrame& data, const std::string& formula, MLPClassifierOptions options = {});
 
+    /// @brief Fits the same model from a formula object, in R's `(formula, data)` argument order.
+    ///
+    /// Same as the `(data, formula, ...)` constructor; a string literal or std::string
+    /// converts to Formula implicitly, so `MLPClassifier("y ~ x", data)` also works.
+    /// @param formula  Model formula, e.g. `dm::formula("y ~ x1 + x2")`.
+    /// @param data  Data frame holding every column the formula names.
+    /// @param options  Same as in the `(data, formula, ...)` constructor.
+    /// @throws std::invalid_argument  As the `(data, formula, ...)` constructor.
+    MLPClassifier(const Formula& formula, const dstruct::DataFrame& data, MLPClassifierOptions options = {})
+        : MLPClassifier(data, formula.text(), std::move(options)) {}
+
     [[nodiscard]] const std::string&              formula_text() const { return formula_.text(); }
     [[nodiscard]] const std::vector<std::string>& classes() const { return classes_; }
     [[nodiscard]] const std::vector<std::string>& predictor_names() const { return predictor_names_; }
@@ -86,10 +97,10 @@ public:
 
     /// @brief Background grid of predicted class regions in the (x_feature, y_feature) plane over
     ///        the training points; only valid for a two-predictor model.
-    [[nodiscard]] plot::RPlot plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
+    [[nodiscard]] graphics::RPlot plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
                                                     std::size_t grid_resolution = 80) const;
     /// @brief The training loss curve versus epoch.
-    [[nodiscard]] plot::RPlot plot_loss_curve() const;
+    [[nodiscard]] graphics::RPlot plot_loss_curve() const;
 
 private:
     void                fit(const dstruct::DataFrame& data);

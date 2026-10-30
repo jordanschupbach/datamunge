@@ -1,0 +1,356 @@
+//? Title: SGD, Momentum and Nesterov: State, Rates and Stability
+//? Subtitle: Exact gradient streams, quadratic modes and an explicit minibatch loop
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A gradient tells us a local direction, but a training loop must decide how far to move
+and whether to remember past directions. SGD uses the current gradient; momentum keeps
+a decaying gradient accumulator; the Nesterov convention here mixes both. We expose
+those states with four prescribed gradients, derive scalar quadratic stability, and run
+an explicit minibatch fit. Every comparison names its learning rate and momentum; no
+universal ordering of optimizers is inferred from one quadratic or one small dataset.
+)
+\toc
+
+> The method
+
+>> Separate the gradient, its memory and the parameter displacement
+
+The gradient is evaluated at the stored parameter vector before any parameter changes.
+With initial velocity zero, the three rules are
+
+$$
+\begin{aligned}
+\text{SGD: }&w_{t+1}=w_t-\eta_t g_t,\\
+\text{Momentum: }&v_t=\mu v_{t-1}+g_t,\quad w_{t+1}=w_t-\eta_t v_t,\\
+\text{Nesterov here: }&v_t=\mu v_{t-1}+g_t,\quad
+ w_{t+1}=w_t-\eta_t(g_t+\mu v_t).
+\end{aligned}
+$$
+\alttext(SGD subtracts the current rate times the gradient. Momentum first accumulates the gradient in a decaying velocity. The Nesterov convention uses the gradient plus momentum times the updated velocity.)
+
+This is TensorFlow's reparameterized ApplyMomentum convention. It is not an extra
+forward evaluation at a separately constructed look-ahead point. The stored weights
+represent that parameterization. When rates change, the current rate multiplies the
+entire direction; velocity stores gradients, not previously rate-scaled displacements.
+For constant gradient g, its velocity is \((1-\mu^t)g/(1-\mu)\); for zero new gradients,
+old velocity decays rather than vanishing immediately. A larger displacement is not
+necessarily a better optimization step. These deterministic examples use Float64.
+
+The editable TikZ source and its rendering logs stay local. Regeneration requires LaTeX
+with PGF/TikZ and standalone plus dvisvgm; exports consume the saved figure.
+
+```{bash, results="output", file="figures/sgd_updates.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/sgd_momentum_updates.tikz > build/sgd_updates.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/sgd_updates.svg build/sgd_momentum_updates.dvi > build/sgd_updates.render.log 2>&1
+printf 'Rendered build/sgd_updates.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/sgd_updates.svg from local TikZ source.
+// \image(figures/sgd_updates.svg)
+// result_end
+\caption(The optimizer turns the current gradient and stored state into a parameter displacement. The current learning rate is outside the velocity recurrence.)
+\alttext(A gradient box feeds a decaying velocity box; separate arrows lead to SGD, momentum and Nesterov update formulas. A previous-state box supplies the remembered velocity.)
+
+>> One scalar quadratic mode explains stability
+
+For \(f(x)=\lambda x^2/2\), let \(a=\eta\lambda\). SGD multiplies x by 1−a,
+so strict stability requires 0<a<2. Momentum's state matrix has trace 1+mu−a and
+determinant mu. The Nesterov map used here has trace (1+mu)(1−a) and determinant
+mu(1−a). Both follow by substituting the updated velocity into the parameter rule.
+Their characteristic roots solve
+
+$$
+ r^2-\operatorname{tr}(T)r+\det(T)=0.
+$$
+\alttext(The two state-map eigenvalues are roots of a quadratic whose coefficients are its trace and determinant.)
+
+The largest root modulus is the spectral radius. At fixed rate and curvature it is
+below one precisely in the stable interior. For 0<=mu<1, momentum permits
+0<a<2(1+mu); this Nesterov convention permits 0<a<2(1+mu)/(1+2mu).
+Radius one is a boundary, not convergence. Complex roots yield oscillation, and repeated
+roots can produce a transient polynomial factor even when their modulus is below one.
+These statements concern fixed positive quadratic curvatures, not global nonconvex or
+stochastic convergence. A diagonal quadratic is stable only if all its modes are stable.
+
+`Optimizer` updates leaves in place without recording update operations in autograd.
+It retains the parameter list captured at construction. `minimize(loss)` computes all
+parameter gradients at the same old state. Momentum/Nesterov use one velocity slot per
+parameter element; plain SGD has no velocity vector. State is separate from model weights
+and can be reset or checkpointed. Changing only weights does not reset velocity.
+
+> Simple examples
+
+>> Four gradients make the convention observable
+
+Start at zero with gradients (1,1,−1,0), rates (.1,.1,.1,.05) and mu=.9.
+The first update is −.1 for SGD/momentum but −.19 for Nesterov. Momentum's third
+velocity remains positive (.71) even though that gradient is negative. A zero fourth
+gradient still moves a momentum-based parameter. The helper records the real tensor
+optimizer's before/after states; it does not generate the trajectory from a formula.
+
+```{cpp, results="markdown", file="figures/sgd_stream.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::linalg::DenseMatrix<double>    gradients(4, 1, {1, 1, -1, 0});
+  auto                                     plot = dm::graphics::RPlot::create();
+  dm::dstruct::DataFrame                   all;
+  const std::vector<dm::nn::OptimizerKind> kinds = {
+      dm::nn::OptimizerKind::Sgd, dm::nn::OptimizerKind::Momentum, dm::nn::OptimizerKind::Nesterov};
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  for (std::size_t i = 0; i < kinds.size(); ++i) {
+    dm::nn::OptimizerConfig c;
+    c.kind          = kinds[i];
+    auto       t    = dm::nn::optimizer_gradient_trace({0}, gradients, {.1, .1, .1, .05}, c);
+    const auto name = dm::nn::optimizer_name(kinds[i]);
+    t.add_column("rule", std::vector<std::string>(t.nrows(), name));
+    all = i ? all.concat_rows(t) : t;
+    plot.lines(
+        t.numeric_column("step").values(), t.numeric_column("after").values(), name, colors[i]);
+  }
+  std::filesystem::create_directories("build");
+  plot.title("A changing gradient is filtered by state")
+      .x_label("update")
+      .y_label("parameter after update")
+      .y_limits(-.6, .2)
+      .size(900, 420)
+      .save_svg("build/sgd_stream.svg");
+  std::print(
+      "{}\n", all.select({"rule", "step", "rate", "gradient", "velocity", "after"}).to_md(6));
+}
+```
+// result_begin: markdown
+| rule | step | rate | gradient | velocity | after |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| SGD | 1 | 0.10 | 1 | 0.000 | -0.100000 |
+| SGD | 2 | 0.10 | 1 | 0.000 | -0.200000 |
+| SGD | 3 | 0.10 | -1 | 0.000 | -0.100000 |
+| SGD | 4 | 0.05 | 0 | 0.000 | -0.100000 |
+| Momentum | 1 | 0.10 | 1 | 1.000 | -0.100000 |
+| Momentum | 2 | 0.10 | 1 | 1.900 | -0.290000 |
+| Momentum | 3 | 0.10 | -1 | 0.710 | -0.361000 |
+| Momentum | 4 | 0.05 | 0 | 0.639 | -0.392950 |
+| Nesterov | 1 | 0.10 | 1 | 1.000 | -0.190000 |
+| Nesterov | 2 | 0.10 | 1 | 1.900 | -0.461000 |
+| Nesterov | 3 | 0.10 | -1 | 0.710 | -0.424900 |
+| Nesterov | 4 | 0.05 | 0 | 0.639 | -0.453655 |
+
+\image(figures/sgd_stream.svg)
+// result_end
+\caption(The same prescribed gradients and rates produce different trajectories because the update rules retain and use state differently.)
+\alttext(Three parameter trajectories appear against update number; the table exposes each gradient, rate, updated velocity and resulting parameter.)
+
+> Checking the theory
+
+>> Two curvatures give slow and stiff directions
+
+Use f(x,y)=(x²+100y²)/2, initial (4,4), rate .01 and mu .9. The same settings
+are shown for all three rules to make their geometry comparable; these are not separately
+tuned optima. The rate is strictly stable in each stiff mode. The log-loss plot shows
+transient behaviour as well as eventual contraction. Coordinates are retained at every
+update, including the initial state, and the whole-objective loss is not a minibatch mean.
+
+```{cpp, results="markdown", file="figures/sgd_quadratic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  auto                   path = dm::graphics::RPlot::create(), loss = dm::graphics::RPlot::create();
+  dm::dstruct::DataFrame results;
+  const std::vector<dm::graphics::RGB>     colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  const std::vector<dm::nn::OptimizerKind> kinds  = {
+      dm::nn::OptimizerKind::Sgd, dm::nn::OptimizerKind::Momentum, dm::nn::OptimizerKind::Nesterov};
+  for (std::size_t k = 0; k < kinds.size(); ++k) {
+    dm::nn::OptimizerConfig c;
+    c.kind          = kinds[k];
+    const auto t    = dm::nn::optimizer_quadratic_trace({1, 100}, {4, 4}, 300, .01, c);
+    const auto x    = t.filter([](const auto& r) { return r.get_double("coordinate") == 0; }),
+               y    = t.filter([](const auto& r) { return r.get_double("coordinate") == 1; });
+    const auto name = dm::nn::optimizer_name(kinds[k]);
+    path.lines(
+        x.numeric_column("weight").values(), y.numeric_column("weight").values(), name, colors[k]);
+    auto logloss = x.numeric_column("loss").values();
+    for (auto& v : logloss)
+      v = std::log10(std::max(v, 1e-30));
+    loss.lines(x.numeric_column("step").values(), logloss, name, colors[k]);
+    auto row = x.tail(1).select({"step", "weight", "loss"});
+    row.add_column("rule", std::vector<std::string>{name});
+    row.add_column(
+        "slow_radius", std::vector<double>{dm::nn::optimizer_mode_radius(kinds[k], .01, .9)});
+    row.add_column(
+        "stiff_radius", std::vector<double>{dm::nn::optimizer_mode_radius(kinds[k], 1, .9)});
+    results = k ? results.concat_rows(row) : row;
+  }
+  path.title("Two-coordinate quadratic trajectories")
+      .x_label("soft coordinate x")
+      .y_label("stiff coordinate y")
+      .y_limits(-5, 7);
+  loss.title("Transient and asymptotic loss")
+      .x_label("update")
+      .y_label("log10 objective")
+      .y_limits(-30, 12);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(path).add(loss).size(1100, 490).fit_panels().save_svg(
+      "build/sgd_quadratic.svg");
+  std::print(
+      "{}\n",
+      results.select({"rule", "step", "weight", "loss", "slow_radius", "stiff_radius"})
+          .to_md(dm::dstruct::DataFrame::MarkdownOptions{.digits = 9, .scientific = {"loss"}}));
+}
+```
+// result_begin: markdown
+| rule | step | weight | loss | slow_radius | stiff_radius |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| SGD | 300 | 0.196163576 | 1.924007433e-02 | 0.990000000 | 0.000000000 |
+| Momentum | 300 | 0.000000425 | 1.917630241e-11 | 0.948683298 | 0.948683298 |
+| Nesterov | 300 | 0.000000136 | 9.213203059e-15 | 0.943927963 | 0.000000000 |
+
+\image(figures/sgd_quadratic.svg)
+// result_end
+\caption(All three methods see the same deterministic full gradients. Fixed-mode spectral radii explain eventual contraction while the plotted paths retain transients.)
+\alttext(Two panels show parameter paths in a soft/stiff quadratic and log objective against update. A table reports final soft coordinates, losses and the two analytic mode radii.)
+
+>> The three stability intervals differ
+
+Scan the dimensionless quantity a=rate times curvature at fixed mu=.9. The radius-one
+line separates strict asymptotic contraction from instability. Momentum reaches its
+boundary at a=3.8, SGD at two, and this Nesterov convention at 3.8/2.8. A wider interval
+alone does not imply faster convergence inside it. The Nesterov scalar map at a=1 is
+nilpotent: its spectral radius is zero, although its first iterate can overshoot before
+reaching zero on the second step.
+
+```{cpp, results="markdown", file="figures/sgd_stability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto                               a      = dm::seql(.001, 4.2, 300);
+  auto                                     plot   = dm::graphics::RPlot::create();
+  const std::vector<dm::graphics::RGB>     colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  dm::dstruct::DataFrame                   table;
+  const std::vector<dm::nn::OptimizerKind> kinds = {
+      dm::nn::OptimizerKind::Sgd, dm::nn::OptimizerKind::Momentum, dm::nn::OptimizerKind::Nesterov};
+  for (std::size_t i = 0; i < kinds.size(); ++i) {
+    std::vector<double> radius;
+    for (double value : a.values())
+      radius.push_back(dm::nn::optimizer_mode_radius(kinds[i], value, .9));
+    const auto name = dm::nn::optimizer_name(kinds[i]);
+    plot.lines(a.values(), radius, name, colors[i]);
+  }
+  plot.abline_h(1)
+      .title("Constant quadratic mode, momentum 0.9")
+      .x_label("a = learning rate * curvature")
+      .y_label("spectral radius")
+      .y_limits(0, 8);
+  std::filesystem::create_directories("build");
+  plot.size(900, 440).save_svg("build/sgd_stability.svg");
+  table.add_column("rule", std::vector<std::string>{"SGD", "Momentum", "Nesterov"});
+  table.add_column("upper_strict_boundary", std::vector<double>{2, 3.8, 3.8 / 2.8});
+  std::print("{}\n", table.to_md(9));
+}
+```
+// result_begin: markdown
+| rule | upper_strict_boundary |
+| :--- | ---: |
+| SGD | 2.000000000 |
+| Momentum | 3.800000000 |
+| Nesterov | 1.357142857 |
+
+\image(figures/sgd_stability.svg)
+// result_end
+\caption(The scalar-mode stability region belongs to a specified update convention, fixed learning rate and fixed curvature.)
+\alttext(Three spectral-radius curves are compared with the radius-one line over dimensionless rates. The table lists the three analytic upper stability boundaries.)
+
+> An explicit minibatch training loop
+
+The small deterministic dataset y=2x+1 at x=(−2,−1,0,1,2) has a known exact fit.
+Each optimizer gets fresh parameters, the same BatchOrder seed, rate .03, 40 epochs
+and batches of at most two, retaining the last one-row batch. Each step uses the mean
+squared error of its current batch. This means the trajectory is stochastic with respect
+to its shuffled sample order, unlike the quadratic experiments. It is a demonstration
+of the loop and state, not an estimate of prediction performance on unseen data. No
+extra scaling, optimizer selection or test-set comparison is performed.
+
+```{cpp, results="markdown", file="figures/sgd_minibatches.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto x = dm::nn::from_vector(std::vector<double>{-2, -1, 0, 1, 2}),
+             y = dm::nn::from_vector(std::vector<double>{-3, -1, 1, 3, 5});
+  auto fit = dm::graphics::RPlot::create(), curve = dm::graphics::RPlot::create();
+  fit.points({-2, -1, 0, 1, 2}, {-3, -1, 1, 3, 5}, "observations", {31, 41, 55});
+  dm::dstruct::DataFrame                   results;
+  const std::vector<dm::graphics::RGB>     colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  const std::vector<dm::nn::OptimizerKind> kinds  = {
+      dm::nn::OptimizerKind::Sgd, dm::nn::OptimizerKind::Momentum, dm::nn::OptimizerKind::Nesterov};
+  for (std::size_t k = 0; k < kinds.size(); ++k) {
+    auto w = dm::nn::from_vector(std::vector<double>{0}).requires_grad_(),
+         b = dm::nn::from_vector(std::vector<double>{0}).requires_grad_();
+    dm::nn::OptimizerConfig c;
+    c.kind = kinds[k];
+    dm::nn::Optimizer   opt({w, b}, .03, c);
+    dm::nn::BatchOrder  batches(5, 2, 7);
+    std::vector<double> epoch, loss;
+    for (int e = 0; e < 40; ++e) {
+      batches.begin_epoch();
+      for (auto ids = batches.next(); !ids.empty(); ids = batches.next()) {
+        const auto bx = dm::nn::take_rows(x, ids), by = dm::nn::take_rows(y, ids);
+        opt.minimize(dm::nn::mean(dm::nn::square(bx * w + b - by)));
+      }
+      epoch.push_back(e + 1);
+      loss.push_back(
+          std::log10(std::max(dm::nn::mean(dm::nn::square(x * w + b - y)).item<double>(), 1e-30)));
+    }
+    const auto name = dm::nn::optimizer_name(kinds[k]);
+    fit.lines(
+        {-2, 2},
+        {-2 * w.item<double>() + b.item<double>(), 2 * w.item<double>() + b.item<double>()},
+        name,
+        colors[k]);
+    curve.lines(epoch, loss, name, colors[k]);
+    dm::dstruct::DataFrame row;
+    row.add_column("rule", std::vector<std::string>{name});
+    row.add_column("slope", std::vector<double>{w.item<double>()});
+    row.add_column("intercept", std::vector<double>{b.item<double>()});
+    row.add_column("updates", std::vector<double>{double(opt.iterations())});
+    row.add_column(
+        "mse", std::vector<double>{dm::nn::mean(dm::nn::square(x * w + b - y)).item<double>()});
+    results = k ? results.concat_rows(row) : row;
+  }
+  fit.title("A five-point linear training fit").x_label("x").y_label("y").y_limits(-4, 8);
+  curve.title("Training loss after each full epoch")
+      .x_label("epoch")
+      .y_label("log10 training MSE")
+      .y_limits(-16, 6);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(fit).add(curve).size(1100, 490).fit_panels().save_svg(
+      "build/sgd_minibatches.svg");
+  std::print(
+      "{}\n",
+      results.to_md(dm::dstruct::DataFrame::MarkdownOptions{.digits = 9, .scientific = {"mse"}}));
+}
+```
+// result_begin: markdown
+| rule | slope | intercept | updates | mse |
+| :--- | ---: | ---: | ---: | ---: |
+| SGD | 1.99997742 | 0.999557369 | 120 | 1.969420525e-07 |
+| Momentum | 1.98866251 | 0.997185719 | 120 | 2.649975593e-04 |
+| Nesterov | 1.99996459 | 1.000007162 | 120 | 2.558858980e-09 |
+
+\image(figures/sgd_minibatches.svg)
+// result_end
+\caption(The loop gathers each batch, constructs a scalar loss and asks the optimizer to differentiate/update both parameters synchronously. The same shuffled batch stream is supplied to every rule.)
+\alttext(Fitted lines are shown with five observations; a second panel shows epoch-end training MSE on a logarithmic scale. The table lists slopes, intercepts, update counts and final training losses.)
+
+> Conclusion
+
+Velocity, learning rate and gradient evaluation must be stated together to define an
+optimizer. The prescribed stream reveals the convention directly; quadratic modes give
+conditional stability guarantees; and the explicit batch loop shows where gradients,
+parameters and optimizer state live. These examples do not establish a universal winner.
+The original C++ example remains a runnable target, including its coupled-gradient and
+optimizer-reset checks. Early stopping, schedules, clipping and checkpoint restoration
+are developed in their own reports.
+
+> References
+
+- Polyak, B. T. (1964). [Some methods of speeding up the convergence of iteration methods|https://doi.org/10.1016/0041-5553(64)90137-5]. ~USSR Computational Mathematics and Mathematical Physics~, 4(5), 1–17.
+- TensorFlow authors. [ApplyMomentum|https://www.tensorflow.org/api_docs/cc/class/tensorflow/ops/apply-momentum]. The accumulated-gradient and reparameterized Nesterov convention matched by this optimizer.

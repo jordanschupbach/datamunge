@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="276.45" height="365.351" viewBox="0 0 276.45 365.351" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">ecg sensor cnn / learned / 2</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="13">
+<text x="14" y="20" font-size="12" font-weight="bold">ecg sensor cnn / learned / 2</text>
+<text x="154.45" y="52" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 170) rotate(-90)" text-anchor="middle">True class</text>
+<text x="42.45" y="95.9" text-anchor="end">0</text>
+<text transform="translate(76.45 286) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="0" data-value="0"><title>0 → 0: 0</title>
+<rect x="50.45" y="66" width="52" height="52" fill="rgb(241,245,249)" stroke="white"/>
+<text x="76.45" y="95.9" font-size="13" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="9" data-value="9"><title>0 → 1: 9</title>
+<rect x="102.45" y="66" width="52" height="52" fill="rgb(37,99,235)" stroke="white"/>
+<text x="128.45" y="95.9" font-size="13" text-anchor="middle" fill="white">9</text>
+</g>
+<g data-true="0" data-predicted="2" data-count="0" data-value="0"><title>0 → 2: 0</title>
+<rect x="154.45" y="66" width="52" height="52" fill="rgb(241,245,249)" stroke="white"/>
+<text x="180.45" y="95.9" font-size="13" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="0" data-predicted="3" data-count="1" data-value="1"><title>0 → 3: 1</title>
+<rect x="206.45" y="66" width="52" height="52" fill="rgb(218,229,247)" stroke="white"/>
+<text x="232.45" y="95.9" font-size="13" text-anchor="middle" fill="#172033">1</text>
+</g>
+<text x="42.45" y="147.9" text-anchor="end">1</text>
+<text transform="translate(128.45 286) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="0" data-value="0"><title>1 → 0: 0</title>
+<rect x="50.45" y="118" width="52" height="52" fill="rgb(241,245,249)" stroke="white"/>
+<text x="76.45" y="147.9" font-size="13" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="3" data-value="3"><title>1 → 1: 3</title>
+<rect x="102.45" y="118" width="52" height="52" fill="rgb(173,196,244)" stroke="white"/>
+<text x="128.45" y="147.9" font-size="13" text-anchor="middle" fill="#172033">3</text>
+</g>
+<g data-true="1" data-predicted="2" data-count="0" data-value="0"><title>1 → 2: 0</title>
+<rect x="154.45" y="118" width="52" height="52" fill="rgb(241,245,249)" stroke="white"/>
+<text x="180.45" y="147.9" font-size="13" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="1" data-predicted="3" data-count="7" data-value="7"><title>1 → 3: 7</title>
+<rect x="206.45" y="118" width="52" height="52" fill="rgb(82,131,238)" stroke="white"/>
+<text x="232.45" y="147.9" font-size="13" text-anchor="middle" fill="white">7</text>
+</g>
+<text x="42.45" y="199.9" text-anchor="end">2</text>
+<text transform="translate(180.45 286) rotate(-60)" text-anchor="end">2</text>
+<g data-true="2" data-predicted="0" data-count="0" data-value="0"><title>2 → 0: 0</title>
+<rect x="50.45" y="170" width="52" height="52" fill="rgb(241,245,249)" stroke="white"/>
+<text x="76.45" y="199.9" font-size="13" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="1" data-count="1" data-value="1"><title>2 → 1: 1</title>
+<rect x="102.45" y="170" width="52" height="52" fill="rgb(218,229,247)" stroke="white"/>
+<text x="128.45" y="199.9" font-size="13" text-anchor="middle" fill="#172033">1</text>
+</g>
+<g data-true="2" data-predicted="2" data-count="0" data-value="0"><title>2 → 2: 0</title>
+<rect x="154.45" y="170" width="52" height="52" fill="rgb(241,245,249)" stroke="white"/>
+<text x="180.45" y="199.9" font-size="13" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="2" data-predicted="3" data-count="9" data-value="9"><title>2 → 3: 9</title>
+<rect x="206.45" y="170" width="52" height="52" fill="rgb(37,99,235)" stroke="white"/>
+<text x="232.45" y="199.9" font-size="13" text-anchor="middle" fill="white">9</text>
+</g>
+<text x="42.45" y="251.9" text-anchor="end">3</text>
+<text transform="translate(232.45 286) rotate(-60)" text-anchor="end">3</text>
+<g data-true="3" data-predicted="0" data-count="0" data-value="0"><title>3 → 0: 0</title>
+<rect x="50.45" y="222" width="52" height="52" fill="rgb(241,245,249)" stroke="white"/>
+<text x="76.45" y="251.9" font-size="13" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="3" data-predicted="1" data-count="2" data-value="2"><title>3 → 1: 2</title>
+<rect x="102.45" y="222" width="52" height="52" fill="rgb(196,213,246)" stroke="white"/>
+<text x="128.45" y="251.9" font-size="13" text-anchor="middle" fill="#172033">2</text>
+</g>
+<g data-true="3" data-predicted="2" data-count="0" data-value="0"><title>3 → 2: 0</title>
+<rect x="154.45" y="222" width="52" height="52" fill="rgb(241,245,249)" stroke="white"/>
+<text x="180.45" y="251.9" font-size="13" text-anchor="middle" fill="#172033">0</text>
+</g>
+<g data-true="3" data-predicted="3" data-count="8" data-value="8"><title>3 → 3: 8</title>
+<rect x="206.45" y="222" width="52" height="52" fill="rgb(60,115,237)" stroke="white"/>
+<text x="232.45" y="251.9" font-size="13" text-anchor="middle" fill="white">8</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="50.45" y="317.351" width="208" height="10" fill="url(#cm-scale)"/>
+<text x="50.45" y="342.351">0</text><text x="258.45" y="342.351" text-anchor="end">9</text>
+</g></svg>

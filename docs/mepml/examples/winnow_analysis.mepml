@@ -1,0 +1,334 @@
+//? Title: Winnow: A Sparse Rule Among Correlated Pixels
+//? Subtitle: Multiplicative updates, a potential-function mistake bound and the limits of observed accuracy
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Winnow learns Boolean threshold rules by multiplying active weights on
+mistakes. We use the 8 by 8 measurements in `dm::datasets::digits()` to
+construct a known two-pixel OR target, then hide those two attributes among
+other thresholded pixels. This is a sparse-concept experiment, not digit
+recognition. We derive a logarithmic mistake bound using target-weight
+promotions and a total-weight potential, inspect the actual shared training
+loop's trace, and evaluate a frozen rule on held-out images. Counterfactual
+Boolean probes show why perfect accuracy on observed images need not mean
+the learned rule equals the target on every Boolean vector.
+)
+
+\toc
+
+> The data and the constructed target
+
+The dataset contains 1797 handwritten images with 64 integer intensities
+from 0 to 16 and a numeric digit label. Pixel indices are row-major on the
+8 by 8 grid. We deliberately ignore the original digit response. Set a
+Boolean attribute to one when its intensity strictly exceeds eight, and
+define the target as the OR of `pixel_27` and `pixel_28`. These adjacent
+central pixels are useful for a reproducible sparse-rule demonstration.
+Neither the cutoff nor the target is estimated from training outcomes.
+
+```{cpp, results="markdown", file="figures/winnow_pixels.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto digits = dm::datasets::digits();
+  std::print("{}\n",digits.select({"pixel_27","pixel_28","digit"}).head(8).to_md());
+  const auto binary = dm::algorithms::winnow_disjunction_data(digits,{"pixel_27","pixel_28"},{"pixel_27","pixel_28"});
+  std::print("\n{}\n",(binary | dm::group_by("target") | dm::summarise(dm::agg::n("images"))).to_md());
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().points(digits.get_column("pixel_27").values(),digits.get_column("pixel_28").values(),
+      "images",dm::RGB{37,99,235},3)
+      .abline_v(8,dm::RGB{220,38,38},1).abline_h(8,dm::RGB{220,38,38},1)
+      .title("Two observed pixel intensities define a Boolean OR target")
+      .x_label("pixel 27 intensity").y_label("pixel 28 intensity")
+      .size(900,540).save_svg("build/winnow_pixels.svg");
+}
+```
+// result_begin: markdown
+| pixel_27 | pixel_28 | digit |
+| ---: | ---: | ---: |
+| 0 | 0 | 0 |
+| 16 | 16 | 1 |
+| 6 | 15 | 2 |
+| 15 | 11 | 3 |
+| 15 | 0 | 4 |
+| 16 | 16 | 5 |
+| 13 | 0 | 6 |
+| 8 | 15 | 7 |
+
+
+| target | images |
+| ---: | ---: |
+| 0 | 429 |
+| 1 | 1368 |
+
+\image(figures/winnow_pixels.svg)
+// result_end
+\caption(The selected measurements and target composition. The lower-left region, including equality at eight, is negative; crossing either cutoff is positive. Many images share the same integer coordinate.)
+\alttext(A scatter of integer pixel intensities with horizontal and vertical cutoff lines at eight. Observations occupy several quadrants, and multiple images overlap at the same position.)
+
+Other pixels are irrelevant to the definition of this target but remain
+correlated measurements from real images. They are not independent random
+noise. We reserve 30% of the rows with the seeded split below, leaving
+1258 training and 539 test images. Encoding uses the same fixed cutoff and
+rule on both partitions, with no fitted preprocessing parameters.
+
+> The method: mistake-driven multiplication
+
+With \(d\) Boolean features, initialise \(w_j=1\), choose threshold
+\(\theta=d\), and predict
+
+$$
+\widehat y=\mathbf1\!\left\{\sum_{j=1}^{d}w_jx_j>\theta\right\},\qquad
+w_j\leftarrow
+\begin{cases}
+2w_j & x_j=1,\ \widehat y=0,\ y=1,\\
+w_j/2 & x_j=1,\ \widehat y=1,\ y=0,\\
+w_j & \text{otherwise}.
+\end{cases}
+$$
+\alttext(Predict one only when the active-weight sum strictly exceeds the threshold. Double active weights on a false negative, halve them on a false positive, and otherwise leave them unchanged.)
+
+A score exactly equal to the threshold predicts zero. The library allows
+other finite update factors greater than one and other nonnegative
+thresholds; the following bound is for factor two and threshold d. A
+complete pass with no online mistakes sets `converged=true`. That certifies
+classification of the supplied training rows by the unchanged weights,
+not agreement with the target on every possible input.
+
+>> A potential argument for logarithmic dependence on dimension
+
+Assume exact arithmetic and labels from a fixed monotone OR of \(k\)
+relevant Boolean attributes among \(d\ge1\). Let \(P\) and \(F\)
+be the numbers of false negatives and false positives in any presented
+sequence, including repeated passes.
+
+On a negative example all relevant attributes are zero, so relevant
+weights are never demoted. Every false negative activates at least one
+relevant attribute and promotes it. Just before that update its weight is
+at most the score, which is at most \(d\); afterwards it is at most
+\(2d\). Thus the sum of base-two logarithms of relevant weights starts
+at zero, increases by at least one per false negative, and cannot exceed
+\(k\log_2(2d)\):
+
+$$
+P\le k\log_2(2d).
+$$
+\alttext(The number of false-negative promotions is bounded by k times the base-two logarithm of twice the total number of attributes.)
+
+Now use total weight \(W=\sum_j w_j\), initially \(d\). A false
+negative increases it by the active score, at most \(d\). A false
+positive decreases it by half the active score, more than \(d/2\).
+Since total weight stays positive,
+
+$$
+0<W_{\mathrm{final}}\le d+dP-\frac d2F,
+\qquad F<2+2P,
+\qquad M=P+F<2+3k\log_2(2d).
+$$
+\alttext(Positivity of the total weight bounds false-positive demotions by twice the false-negative promotions plus two. Combining the two bounds gives logarithmic dimension dependence for total online mistakes.)
+
+This simple bound is sufficient for the experiment, rather than a claim
+of the sharpest constants in Littlestone's analysis. It does not assume
+independence between attributes. Irrelevant attributes can be promoted on
+positive examples; their individual promotions and demotions need not
+cancel. The potential controls the aggregate behaviour instead.
+
+> The actual training trace and a frozen held-out evaluation
+
+The DataFrame adapter validates Boolean values and calls the same update
+loop as `winnow_train()`. Its trace distinguishes online mistakes during
+a pass from accuracy of the final weights after that pass. These can
+differ: the last update in a pass may already fix every training row,
+while a later zero-mistake pass is needed to confirm convergence.
+
+```{cpp, results="markdown", file="figures/winnow_passes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto digits = dm::datasets::digits(); auto predictors = digits.columns();
+  predictors.erase(std::remove(predictors.begin(),predictors.end(),"digit"),predictors.end());
+  const auto [train,test] = dm::stats::train_test_split(digits,0.3,42);
+  const auto training = dm::algorithms::winnow_disjunction_data(train,predictors,{"pixel_27","pixel_28"});
+  const auto fit = dm::algorithms::winnow_fit(training);
+  std::print("{}\n",fit.history.to_md(6));
+  std::print("\nTraining:\n\n{}\n",dm::algorithms::winnow_evaluate(fit,training).to_md(6));
+  std::print("\nHeld-out images:\n\n{}\n",dm::algorithms::winnow_evaluate(fit,
+      dm::algorithms::winnow_disjunction_data(test,predictors,{"pixel_27","pixel_28"})).to_md(6));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().line(fit.history.get_column("epoch").values(),fit.history.get_column("mistakes").values(),
+      "online mistakes",dm::RGB{37,99,235},2)
+      .line(fit.history.get_column("epoch").values(),fit.history.get_column("cumulative_mistakes").values(),
+          "cumulative",dm::RGB{220,38,38},2)
+      .title("Winnow: the first pass learns; the second confirms no updates")
+      .x_label("completed pass").y_label("online updates").size(1000,480).save_svg("build/winnow_passes.svg");
+}
+```
+// result_begin: markdown
+| epoch | mistakes | false_positives | false_negatives | cumulative_mistakes | accuracy | total_weight |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 15 | 6 | 9 | 15 | 1 | 232.875 |
+| 2 | 0 | 0 | 0 | 15 | 1 | 232.875 |
+
+
+Training:
+
+| rows | positives | predicted_positives | false_positives | false_negatives | mistakes | accuracy |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1258 | 966 | 966 | 0 | 0 | 0 | 1 |
+
+
+Held-out images:
+
+| rows | positives | predicted_positives | false_positives | false_negatives | mistakes | accuracy |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 539 | 402 | 402 | 0 | 0 | 0 | 1 |
+
+\image(figures/winnow_passes.svg)
+// result_end
+\caption(The first pass makes 15 online updates, although its final weights already classify every training image correctly. The next pass makes none. Test rows are evaluated without any weight update.)
+\alttext(A two-pass chart showing online mistakes falling from fifteen to zero while the cumulative update count stays at fifteen.)
+
+There are nine promotions and six demotions, below the derived bound
+\(2+6\log_2(128)=44\). The frozen rule also makes no mistakes on the
+539 held-out images. Since the engineered target is mostly positive,
+ordinary accuracy should be read with its false-positive and false-negative
+counts rather than alone. These results concern a known pixel rule, not
+the ten handwritten-digit classes.
+
+> Final weights and counterexamples outside the observed image support
+
+```{cpp, results="markdown", file="figures/winnow_weights.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto digits = dm::datasets::digits(); auto predictors = digits.columns();
+  predictors.erase(std::remove(predictors.begin(),predictors.end(),"digit"),predictors.end());
+  const auto [train,test] = dm::stats::train_test_split(digits,0.3,42);
+  const auto fit = dm::algorithms::winnow_fit(dm::algorithms::winnow_disjunction_data(train,predictors,{"pixel_27","pixel_28"}));
+  std::print("{}\n",(fit.weights | dm::arrange(dm::desc("weight"))).head(12).to_md());
+  std::print("\n{}\n",dm::algorithms::winnow_disjunction_probes(fit,{"pixel_27","pixel_28"}).to_md(6));
+  const auto relevant = fit.weights.filter([](const auto& r) {
+    return r.get_string("feature")=="pixel_27" || r.get_string("feature")=="pixel_28";
+  });
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().points(fit.weights.get_column("index").values(),fit.weights.get_column("log2_weight").values(),
+      "all weights",dm::RGB{37,99,235},3)
+      .points(relevant.get_column("index").values(),relevant.get_column("log2_weight").values(),"target weights",dm::RGB{220,38,38},6)
+      .abline_h(std::log2(fit.model.threshold),dm::RGB{100,100,100},1)
+      .title("The target pixels dominate, but a threshold tie still predicts zero")
+      .x_label("row-major pixel index").y_label("log2(weight)").size(1000,500).save_svg("build/winnow_weights.svg");
+}
+```
+// result_begin: markdown
+| feature | index | weight | log2_weight |
+| :--- | ---: | ---: | ---: |
+| pixel_27 | 27 | 64 | 6 |
+| pixel_28 | 28 | 64 | 6 |
+| pixel_20 | 20 | 8 | 3 |
+| pixel_58 | 58 | 8 | 3 |
+| pixel_2 | 2 | 4 | 2 |
+| pixel_3 | 3 | 4 | 2 |
+| pixel_4 | 4 | 4 | 2 |
+| pixel_9 | 9 | 4 | 2 |
+| pixel_36 | 36 | 4 | 2 |
+| pixel_43 | 43 | 4 | 2 |
+| pixel_44 | 44 | 4 | 2 |
+| pixel_5 | 5 | 2 | 1 |
+
+
+| probe | score | expected | predicted | correct |
+| :--- | ---: | ---: | ---: | ---: |
+| zero | 0.000 | 0 | 0 | 1 |
+| only pixel_27 | 64.000 | 1 | 0 | 0 |
+| only pixel_28 | 64.000 | 1 | 0 | 0 |
+| other features on | 104.875 | 0 | 1 | 0 |
+| relevant features on | 128.000 | 1 | 1 | 1 |
+
+\image(figures/winnow_weights.svg)
+// result_end
+\caption(The largest final weights and synthetic Boolean probes. The horizontal line marks log2(threshold). A single active weight must lie strictly above that line to predict one.)
+\alttext(A plot of all sixty-four log weights, with the two target weights highlighted at the threshold line and other attributes spread above and below their initial unit weight.)
+
+Both relevant weights are 64, exactly equal to the threshold. A Boolean
+vector activating only one of them has target one but is predicted zero.
+Activating all other attributes while both relevant ones are zero gives
+score 104.875, above 64, producing a false positive for the specified OR.
+These probes are valid Boolean vectors but need not resemble real digit
+images. They demonstrate that perfect observed accuracy has not identified
+the target function on its entire Boolean domain. If such examples were
+presented for further learning, Winnow would update again; the reported
+probes deliberately freeze the model.
+
+> Adding attributes while keeping the target fixed
+
+The next experiment orders the two relevant pixels first and then adds
+other pixel columns. Each fit uses the same training rows, row order,
+cutoff, target and update factor. Its threshold is the selected dimension.
+The test data remain the same reserved images. Changing the dimension
+changes the algorithm as specified; this is a controlled descriptive
+experiment, not a search for a best test-set configuration.
+
+```{cpp, results="markdown", file="figures/winnow_dimensions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [train,test] = dm::stats::train_test_split(dm::datasets::digits(),0.3,42);
+  std::vector<std::string> order{"pixel_27","pixel_28"};
+  for (int j=0;j<64;++j) if (j!=27 && j!=28) order.push_back(std::format("pixel_{}",j));
+  std::vector<double> log_dimension,mistakes,bound;
+  std::print("| attributes | online mistakes | passes | test mistakes | test accuracy | bound (strict) |\n"
+      "| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (const std::size_t d : {2,8,16,32,64}) {
+    const std::vector<std::string> predictors(order.begin(),order.begin()+d);
+    const auto fit = dm::algorithms::winnow_fit(dm::algorithms::winnow_disjunction_data(train,predictors,{"pixel_27","pixel_28"}));
+    const auto score = dm::algorithms::winnow_evaluate(fit,dm::algorithms::winnow_disjunction_data(test,predictors,{"pixel_27","pixel_28"}));
+    log_dimension.push_back(std::log2(d)); mistakes.push_back(fit.model.total_mistakes); bound.push_back(2+6*std::log2(2*d));
+    std::print("| {} | {} | {} | {} | {:.6f} | {:.6f} |\n",d,fit.model.total_mistakes,fit.model.epochs_run,
+        score.double_at("mistakes",0),score.double_at("accuracy",0),bound.back());
+  }
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().line(log_dimension,mistakes,"observed updates",dm::RGB{37,99,235},2)
+      .line(log_dimension,bound,"mistake bound",dm::RGB{220,38,38},2)
+      .title("More attributes: observed updates stay below a logarithmic bound")
+      .x_label("log2(number of attributes)").y_label("online updates")
+      .size(1000,480).save_svg("build/winnow_dimensions.svg");
+}
+```
+// result_begin: markdown
+| attributes | online mistakes | passes | test mistakes | test accuracy | bound (strict) |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 3 | 2 | 0 | 1.000000 | 14.000000 |
+| 8 | 8 | 2 | 0 | 1.000000 | 26.000000 |
+| 16 | 9 | 2 | 0 | 1.000000 | 32.000000 |
+| 32 | 13 | 2 | 0 | 1.000000 | 38.000000 |
+| 64 | 15 | 2 | 0 | 1.000000 | 44.000000 |
+\image(figures/winnow_dimensions.svg)
+// result_end
+\caption(Observed online update counts alongside the derived upper bound, with the dimension axis on a base-two logarithmic scale. The bound is not an expected learning curve or a bound on a frozen model's test error.)
+\alttext(A dimension-sensitivity chart with observed update counts well below a higher straight reference line representing the logarithmic mistake bound.)
+
+This bound depends on Boolean inputs, a consistent monotone-disjunction
+target and the stated update/threshold choices. Arbitrary noisy labels or
+continuous feature values do not inherit it. Training visits every
+attribute of every presented row, so logarithmic mistake dependence does
+not mean logarithmic runtime: at most \(O(End)\) work for \(E\) passes
+over \(n\) rows and \(d\) attributes. The core stores \(O(d)\) weights;
+the DataFrame adapter additionally materialises \(O(nd)\) Boolean data
+and \(O(E)\) history. It rejects invalid shapes/values and reports
+floating-point overflow or positive-weight underflow instead of silently
+changing the mathematical rule.
+
+> Conclusion
+
+A potential argument explains why a sparse realizable OR can be learned
+with only logarithmic dependence of online mistakes on total dimension.
+On thresholded image measurements, the shared Winnow loop needs fifteen
+updates and gets every observed held-out target right. Its learned weights
+still fail simple out-of-support Boolean probes. The experiment therefore
+separates mistake bounds during learning, accuracy on observed data, and
+identification of a function over its entire input domain.
+
+> References
+
+- N. Littlestone (1988). *Learning Quickly When Irrelevant Attributes Abound:
+  A New Linear-threshold Algorithm*. Machine Learning 2, 285–318.
+  https://ai.stanford.edu/~pabbeel/depth_qual/littlestone1988.pdf
+- scikit-learn, *Optical recognition of handwritten digits dataset*:
+  https://scikit-learn.org/stable/datasets/toy_dataset.html#optical-recognition-of-handwritten-digits-dataset

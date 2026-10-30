@@ -58,6 +58,7 @@
 %ignore datamunge::stats::LDAPrediction;
 %ignore datamunge::datasets::iris;
 %ignore datamunge::datasets::penguins;
+%ignore datamunge::datasets::tooth_growth;
 %ignore datamunge::stats::SVM;
 %ignore datamunge::stats::SVMOptions;
 %ignore datamunge::stats::SVMPrediction;
@@ -131,6 +132,7 @@
 %ignore datamunge::bayes::student_t_lpdf;
 %ignore datamunge::bayes::bernoulli_logit_lpmf;
 %ignore datamunge::bayes::poisson_log_lpmf;
+%ignore datamunge::bayes::laplace_lpdf;
 // Polynomial::divmod returns std::pair<Polynomial, Polynomial> -- this codebase avoids
 // exposing custom-class-pair returns to SWIG bindings directly (see poly_quotient()/
 // poly_remainder(), the binding-friendly free-function alternatives, in polynomial.hpp).
@@ -181,11 +183,37 @@
 %{
   #include "datamunge/datamunge.hpp"
 %}
+%include "datamunge/plot/exceptions.i"
+// Datasets: download/cache helpers and the disk-backed image batch loader. `next` is a
+// reserved word in R, so the batch/chunk readers expose next_batch()/next_chunk() instead.
+%rename(next_batch) datamunge::datasets::ImageLoader::next;
+%rename(next_chunk) datamunge::CsvReader::next;
+// Return ImageBatch's vector fields by value so R gets plain vectors, not pointers.
+%naturalvar datamunge::datasets::ImageBatch::pixels;
+%naturalvar datamunge::datasets::ImageBatch::labels;
+%naturalvar datamunge::datasets::ImageBatch::indices;
+%naturalvar datamunge::datasets::ImageBatch::shape;
+// Download and loader errors (unknown names, missing files, bad batches) become language
+// exceptions instead of aborting the process. Scoped to these two headers.
+%exception {
+  try {
+    $action
+  } catch (const std::invalid_argument& error) {
+    SWIG_exception_fail(SWIG_ValueError, error.what());
+  } catch (const std::exception& error) {
+    SWIG_exception_fail(SWIG_RuntimeError, error.what());
+  }
+}
+%include "datamunge/datasets/download.hpp"
+%include "datamunge/datasets/image_loader.hpp"
+%exception;
 %include "datamunge/datamunge.hpp"
 %include "datamunge/plot/plot.hpp"
+%template(RGBVector) std::vector<datamunge::graphics::RGB>;
 // datamunge::rnorm(mean, sd, n) would mask stats::rnorm(n, mean, sd), which has a different
 // argument order, for anyone who attaches datamunger; R users have rnorm()/runif()/seq() already.
 %ignore datamunge::rnorm;
+%ignore datamunge::runif;
 %include "datamunge/vector.i"
 %include "datamunge/stats/arima.hpp"
 %include "datamunge/stats/exponential_smoothing.hpp"
@@ -247,6 +275,7 @@
 %include "datamunge/optim/rbf_gaussian_process_surrogate.hpp"
 %include "datamunge/bayes/map.hpp"
 %include "datamunge/bayes/hmc.hpp"
+%ignore datamunge::bayes::NUTS::sample_chains;
 %include "datamunge/bayes/nuts.hpp"
 %include "datamunge/bayes/rwm.hpp"
 %include "datamunge/bayes/gibbs.hpp"
@@ -297,4 +326,12 @@
   }
 }
 %include "datamunge/nn/api.hpp"
+%exception;
+
+// Native simulation tasks share one generated adapter with Python.
+%exception {
+  try { $action }
+  catch (const std::exception& e) { SWIG_exception(SWIG_RuntimeError,e.what()); }
+}
+%include "prebindings/simulation/src/tasks.i"
 %exception;

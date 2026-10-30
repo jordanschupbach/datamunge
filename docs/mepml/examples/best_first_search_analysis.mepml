@@ -1,0 +1,438 @@
+//? Title: Greedy Best-First Search
+//? Subtitle: Expanding whatever looks closest to the goal: why it is fast, when it is wasteful, the high-water mark that predicts its work, and its modern use as the search loop of graph-based nearest-neighbour indexes, on the volcano terrain and the handwritten digits
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Greedy best-first search (GBFS) always expands the vertex whose heuristic \(h\) says it is
+closest to the goal, ignoring the cost already paid. We prove that with the perfect heuristic
+\(h^*\) it expands only the cells of the path it returns, and that the path can still be
+suboptimal. We also derive the *high-water mark* bounds: before reaching the goal, GBFS must
+flood every heuristic depression it starts in. On the volcano terrain, GBFS walks straight to
+the goal, expanding 76 cells against A*'s 1,732, but pays 17% more. With the perfect heuristic
+it pays 22% more, because it takes the steps that lower \(h^*\) fastest, not the cheapest. On a
+10-nearest-neighbour graph of the handwritten digits, best-first search with a result list of
+size \(e\!f\) is the search loop of HNSW-style vector indexes. Greedy routing (\(e\!f=1\)) stops in a
+local minimum for 271 of 297 queries. The depressions it falls into hold 16 vertices at the
+median, and the escape bounds hold for every query. With \(e\!f=128\) the graph search finds the
+exact neighbour 99.7% of the time from 409 distance computations, beating a k-d tree at high
+recall but not at low budgets. New library pieces are `algorithms::terrain_best_first`,
+`algorithms::high_water_mark` and `geometry::proximity_graph_search`.
+)
+
+\toc
+
+> The algorithm
+
+Best-first search keeps an *open list* of discovered but unexpanded vertices and always expands
+the one with the smallest evaluation \(f\). *Greedy* best-first search (GBFS) uses the heuristic
+alone, \(f(v)=h(v)\), an estimate of the remaining cost to the goal, and ignores the cost
+\(g(v)\) already paid to reach \(v\). A* uses \(f=g+h\). Writing \(f=\alpha g+h\) puts both on one scale:
+\(\alpha=0\) is greedy and \(\alpha=1\) is A*. `algorithms::terrain_best_first` takes \(\alpha\) and any
+table of heuristic values.
+
+```
+GreedyBestFirst(start, goal, h):
+    open = {start};  closed = {}
+    while open is not empty:
+        u = the vertex in open with the smallest h(u);  move u from open to closed
+        if u == goal: return the path to u through the parent pointers
+        for each neighbour v of u not in closed:
+            if v is new, or g(u) + c(u, v) < g(v):  g(v) = g(u) + c(u, v);  parent(v) = u;  add v to open
+    return failure
+```
+
+The closed list makes GBFS complete on a finite graph. Each vertex is expanded at most once, so
+it always finds a path if one exists. But nothing makes the path cheap, and nothing bounds the
+work below "the whole graph". Both depend entirely on how \(h\) is shaped.
+
+>> With a perfect heuristic
+
+Let \(h=h^*\), the exact cost to go. If \(u\) is expanded and \(u'\) is its successor on an optimal path,
+then \(h^*(u')=h^*(u)-c(u,u')<h^*(u)\). Every vertex still in the open list was generated before
+\(u\) was chosen, so it has \(h^*\ge h^*(u)>h^*(u')\). The next vertex expanded is therefore a
+neighbour of \(u\) with smaller \(h^*\) than \(u\). The expansions form a single chain with strictly
+decreasing \(h^*\), ending at the goal. GBFS with \(h^*\) **expands exactly the cells of the path it
+returns, and nothing else**.
+
+The path need not be optimal, though. GBFS steps to the neighbour \(m\) with the smallest \(h^*(m)\),
+not the smallest \(c(u,m)+h^*(m)\). Its total cost exceeds the optimum by the sum of the per-step
+excesses:
+
+$$
+\operatorname{cost}-C^*=\sum_{i}\Big(c(u_i,u_{i+1})+h^*(u_{i+1})-h^*(u_i)\Big)\;\ge\;0 ,
+$$
+\alttext(The cost minus C star equals the sum over steps i of c of u i, u i plus 1, plus h star of u i plus 1, minus h star of u i. This is at least 0.)
+
+where each term vanishes exactly when the step lies on an optimal path from \(u_i\). A step can be
+expensive and still lower \(h^*\) the most, for example a steep climb straight towards the goal.
+
+>> The high-water mark
+
+With a weaker \(h\), GBFS can wander. Wilt and Ruml (2014) gave a sharp description of how far.
+Define the *high-water mark*
+
+$$
+H=\min_{\text{paths }P:\,s\to t}\;\max_{v\in P}h(v),
+$$
+\alttext(H equals the minimum over paths P from s to t of the maximum over vertices v in P of h of v.)
+
+the lowest "water level" at which some start–goal path stays dry. Then:
+
+- **GBFS never expands a vertex with \(h>H\).** Some path keeps \(h\le H\) all the way. Until the
+  goal is expanded, one of its vertices is always in the open list, and it is preferred to any
+  vertex with \(h>H\).
+- **GBFS expands every vertex reachable from the start through vertices with \(h<H\).** Call this
+  region \(R\). The goal is not in \(R\), or \(H\) would be smaller. While part of \(R\) is unexpanded, the
+  open list holds a vertex of \(R\) with \(h<H\), and it is preferred to every vertex with \(h\ge H\),
+  the goal included.
+
+So \(|R|\le\) expansions \(\le|\{v\text{ reachable through }h\le H\}|\). A *heuristic depression* (a
+basin where \(h\) is low but the goal cannot be reached without climbing out) must be flooded in
+full before GBFS can leave it. `algorithms::high_water_mark` computes \(H\) by a minimax
+version of Dijkstra's algorithm and returns both region sizes. Since every path includes the
+start, \(H\ge h(s)\), and \(R\) is non-empty only when the start itself lies in a depression.
+
+> On the volcano
+
+We reuse the walking problem of the A* and beam-search reports. `dm::datasets::volcano()` gives
+Maunga Whau's elevation on a 10 m grid. A step costs its horizontal length plus 8.3 m for each
+metre climbed (Naismith's rule), and the walk goes from the south-east foot of the cone to the
+north-west corner. The admissible heuristic `OctileClimb` is the 8-neighbour distance plus 8.3
+times the net height still to gain. The perfect heuristic \(h^*\) comes from one backward Dijkstra
+run (`terrain_cost_to_go`). Between them we blend
+
+$$
+h_\lambda=(1-\lambda)\,h_{\text{octile}}+\lambda\,h^*,\qquad 0\le\lambda\le1 ,
+$$
+\alttext(h lambda equals 1 minus lambda times h octile, plus lambda times h star, for lambda between 0 and 1.)
+
+which stays admissible and consistent, since both ends are. We run GBFS and A* for each \(\lambda\).
+
+```{cpp, results="markdown", file="figures/best_first_terrain.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto grid = alg::terrain_from_frame(dm::datasets::volcano(), "x", "y", "elevation", 5000.0 / 600.0);
+  const std::size_t start = 80 * grid.cols + 5, goal = 5 * grid.cols + 55, cells = grid.elevation.size();
+  const auto hstar = alg::terrain_cost_to_go(grid, goal);
+  std::vector<double> octile(cells);
+  for (std::size_t c = 0; c < cells; ++c)
+    octile[c] = alg::terrain_heuristic(grid, c, goal, alg::TerrainHeuristic::OctileClimb);
+  const double optimum = hstar[start];
+  std::print("Grid of {} cells. Optimal cost \\(C^*={:.1f}\\).\n\n", cells, optimum);
+
+  std::print("| \\(\\lambda\\) | GBFS expansions | GBFS path cells | GBFS cost / \\(C^*\\) | A* expansions | A* cost / \\(C^*\\) |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> lam, greedy_work, astar_work, greedy_cost;
+  alg::TerrainPath greedy0, astar0;
+  std::vector<std::size_t> region0;
+  for (double lambda : {0.0, 0.25, 0.5, 0.75, 0.9, 0.95, 1.0}) {
+    std::vector<double> h(cells);
+    for (std::size_t c = 0; c < cells; ++c) h[c] = (1 - lambda) * octile[c] + lambda * hstar[c];
+    const auto greedy = alg::terrain_best_first(grid, start, goal, h, 0.0);
+    const auto astar = alg::terrain_best_first(grid, start, goal, h, 1.0);
+    std::print("| {:.2f} | {} | {} | {:.3f} | {} | {:.3f} |\n", lambda, greedy.expansion_order.size(),
+               greedy.path.size(), greedy.cost / optimum, astar.expansion_order.size(), astar.cost / optimum);
+    lam.push_back(lambda);
+    greedy_work.push_back(std::log10(greedy.expansion_order.size()));
+    astar_work.push_back(std::log10(astar.expansion_order.size()));
+    greedy_cost.push_back(greedy.cost / optimum);
+    if (lambda == 0.0) {
+      greedy0 = greedy;
+      astar0 = astar;
+    }
+  }
+
+  // Maps of the octile-heuristic runs.
+  const auto coords = [&](const std::vector<std::size_t>& list) {
+    std::pair<std::vector<double>, std::vector<double>> xy;
+    for (const std::size_t c : list) {
+      xy.first.push_back(grid.cell_size * (c / grid.cols));
+      xy.second.push_back(grid.cell_size * (c % grid.cols));
+    }
+    return xy;
+  };
+  std::vector<double> xs, ys;
+  for (std::size_t i = 0; i < grid.rows; ++i) xs.push_back(grid.cell_size * i);
+  for (std::size_t j = 0; j < grid.cols; ++j) ys.push_back(grid.cell_size * j);
+  std::vector<std::vector<double>> z(grid.rows, std::vector<double>(grid.cols));
+  for (std::size_t c = 0; c < cells; ++c) z[c / grid.cols][c % grid.cols] = grid.elevation[c];
+  const auto best = alg::terrain_a_star(grid, start, goal, alg::TerrainHeuristic::OctileClimb);
+  const auto [ox, oy] = coords(best.path);
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  for (const auto* run : {&greedy0, &astar0}) {
+    const auto [ex, ey] = coords(run->expansion_order);
+    const auto [px, py] = coords(run->path);
+    layout.add(dm::graphics::RPlot::create()
+                   .image(xs, ys, z, dm::graphics::terrain_colors(20))
+                   .points(ex, ey, "", dm::RGB{30, 64, 175}, 2.0)
+                   .lines(ox, oy, "", dm::RGB{17, 24, 39}, 1.5)
+                   .lines(px, py, "", dm::RGB{220, 38, 38}, 2.5)
+                   .title(std::format("{}: {} cells expanded, cost {:+.1f}%", run == &greedy0 ? "Greedy" : "A*",
+                                      run->expansion_order.size(), 100.0 * (run->cost / optimum - 1.0)))
+                   .x_label("x (m)")
+                   .y_label("y (m)"));
+  }
+  layout.size(1200, 470).save_svg("build/best_first_terrain.svg");
+}
+```
+// result_begin: markdown
+Grid of 5307 cells. Optimal cost \(C^*=1291.5\).
+
+| \(\lambda\) | GBFS expansions | GBFS path cells | GBFS cost / \(C^*\) | A* expansions | A* cost / \(C^*\) |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.00 | 76 | 76 | 1.167 | 1732 | 1.000 |
+| 0.25 | 76 | 76 | 1.167 | 1315 | 1.000 |
+| 0.50 | 76 | 76 | 1.193 | 813 | 1.000 |
+| 0.75 | 76 | 76 | 1.199 | 522 | 1.000 |
+| 0.90 | 83 | 83 | 1.224 | 312 | 1.000 |
+| 0.95 | 83 | 83 | 1.224 | 229 | 1.000 |
+| 1.00 | 83 | 83 | 1.224 | 150 | 1.000 |
+\image(figures/best_first_terrain.svg)
+// result_end
+
+\caption(Cells expanded (blue) with the octile-climb heuristic by greedy best-first search (left) and A* (right) on the volcano. Red is the path each returns, black the optimal path.)
+\alttext(Two maps of the volcano coloured by elevation, 860 by 600 metres. Left, greedy: a single red line of 76 expanded cells runs diagonally from the start at the bottom right (800, 50) up to y equals 550 at x equals 300, crossing the south-east shoulder of the cone, then west to the goal at (50, 550); the black optimal path instead runs north up the east edge and west along the top. Right, A*: blue dots fill the eastern third of the map and a band along the top, and the red path coincides with the black optimal one.)
+
+Greedy best-first search never backtracks on this terrain. With the octile heuristic it expands
+76 cells and returns a path of exactly those 76 cells, for every \(\lambda\) up to 0.75. With
+\(\lambda\ge0.9\) it is 83 and 83. The octile-climb heuristic has no depressions here: from every
+cell some neighbour lowers \(h\). The map shows the cost of that single-mindedness. GBFS heads
+diagonally for the goal, climbs over the cone's south-eastern shoulder and pays 16.7% more than
+the optimum. The optimal path instead walks north along the low eastern edge.
+
+A better heuristic makes greedy search *worse* here: with \(h_{0.5}\) the excess is 19.3%, and with
+the perfect \(h^*\) it is 22.4%. This is the per-step excess derived above at work. \(h^*\) falls
+fastest along steep climbs towards the goal, which are expensive, while the cheap route first
+moves sideways. The same heuristics make A* steadily better. It always returns \(C^*\), and its
+expansions fall from 1,732 with the octile heuristic to 150 with \(h^*\), close to the 99 cells
+of an optimal path. GBFS uses \(h\) to choose a direction, A* to prune, and only pruning benefits
+from accuracy.
+
+> Best-first search on a proximity graph
+
+Greedy best-first search has a second life as the search loop of the graph indexes behind
+modern vector databases (navigable small-world graphs and HNSW, Malkov et al. 2014, Malkov and
+Yashunin 2018). The points are vertices, edges join near neighbours, and the heuristic is the
+distance to the query, \(h(v)=\|v-q\|\). Here the goal is unknown: it is whichever vertex
+minimises \(h\). So the stopping rule changes. A result list keeps the \(e\!f\) closest vertices
+seen, and the search stops when the closest unexpanded vertex is farther than all of them.
+With \(e\!f=1\) this is *greedy routing*: move to the closest neighbour until none is closer. It stops
+at the first local minimum of \(h\), a heuristic depression of size one. A larger \(e\!f\)
+keeps more of the open list alive and climbs out of shallow depressions. `geometry::proximity_graph_search`
+implements this loop.
+
+We build a symmetric 10-nearest-neighbour graph on the same 1,500 indexed digits as the Best Bin
+First report (`stats::KnnGraph`). We search it for the 297 query digits from vertex 0, and compare
+recall and distance computations with Best Bin First's k-d tree.
+
+```{cpp, results="markdown", file="figures/best_first_graph.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <numeric>
+
+namespace geo = dm::geometry;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto digits = dm::datasets::digits();
+  const std::size_t rows = digits.nrows(), train = 1500;
+  std::vector<std::vector<double>> x(rows, std::vector<double>(64));
+  for (int j = 0; j < 64; ++j) {
+    const auto column = digits.get_column("pixel_" + std::to_string(j)).values();
+    for (std::size_t i = 0; i < rows; ++i) x[i][j] = column[i];
+  }
+  const auto label = digits.get_column("digit").values();
+  const std::vector<std::vector<double>> index(x.begin(), x.begin() + train);
+  const dm::stats::KnnGraph graph(index, 10);
+  std::vector<std::vector<std::size_t>> adjacency(train);
+  for (std::size_t i = 0; i < train; ++i) adjacency[i] = graph.neighbors(i);
+  std::print("Graph: {} vertices, {} edges (mean degree {:.1f}), {} connected component(s).\n\n", train, graph.edges(),
+             2.0 * graph.edges() / train, graph.components());
+
+  std::vector<int> truth;
+  for (std::size_t q = train; q < rows; ++q) truth.push_back(geo::knn_brute_force(index, x[q], 1)[0]);
+  const double nq = static_cast<double>(rows - train);
+
+  std::print("| search | setting | distance computations | expansions | recall | 1-NN accuracy |\n"
+             "| :--- | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> g_eval, g_recall, k_eval, k_recall;
+  double greedy_hops_gap = 0;
+  for (int ef : {1, 2, 4, 8, 16, 32, 64, 128}) {
+    double evals = 0, expansions = 0, recall = 0, right = 0;
+    for (std::size_t q = train; q < rows; ++q) {
+      const auto hit = geo::proximity_graph_search(index, adjacency, x[q], 0, 1, ef);
+      evals += hit.evaluations;
+      expansions += hit.expansions;
+      recall += hit.indices[0] == truth[q - train];
+      right += label[hit.indices[0]] == label[q];
+      if (ef == 1) {
+        double best = 0;
+        for (int a = 0; a < 64; ++a) best += (index[truth[q - train]][a] - x[q][a]) * (index[truth[q - train]][a] - x[q][a]);
+        greedy_hops_gap += hit.distances[0] / std::max(std::sqrt(best), 1e-12);
+      }
+    }
+    std::print("| graph best-first | \\(e\\!f={}\\) | {:.0f} | {:.1f} | {:.3f} | {:.1f}% |\n", ef, evals / nq, expansions / nq,
+               recall / nq, 100 * right / nq);
+    g_eval.push_back(std::log2(evals / nq));
+    g_recall.push_back(recall / nq);
+  }
+  const geo::BestBinFirstKd tree(index);
+  for (int budget : {16, 32, 64, 128, 256, 512, 1024}) {
+    double evals = 0, recall = 0, right = 0;
+    for (std::size_t q = train; q < rows; ++q) {
+      const auto hit = tree.knn(x[q], 1, budget);
+      evals += hit.examined;
+      recall += hit.indices[0] == truth[q - train];
+      right += label[hit.indices[0]] == label[q];
+    }
+    std::print("| k-d tree, Best Bin First | budget {} | {:.0f} | – | {:.3f} | {:.1f}% |\n", budget, evals / nq,
+               recall / nq, 100 * right / nq);
+    k_eval.push_back(std::log2(evals / nq));
+    k_recall.push_back(recall / nq);
+  }
+  std::print("\nGreedy routing (\\(e\\!f=1\\)) ends on average {:.3f} times as far from the query as the true nearest "
+             "neighbour.\n", greedy_hops_gap / nq);
+
+  // The depressions where greedy routing stops: greedy best-first search from the stuck vertex m
+  // to the true neighbour, with h = distance to the query, against the high-water bounds.
+  std::vector<std::pair<std::size_t, std::size_t>> edges;
+  for (std::size_t u = 0; u < train; ++u)
+    for (const std::size_t v : adjacency[u])
+      if (u < v) edges.emplace_back(u, v);
+  std::vector<double> region, flood, work;
+  int bracketed = 0;
+  for (std::size_t q = train; q < rows; ++q) {
+    const auto stuck = static_cast<std::size_t>(geo::proximity_graph_search(index, adjacency, x[q], 0, 1, 1).indices[0]);
+    const auto target = static_cast<std::size_t>(truth[q - train]);
+    if (stuck == target) continue;
+    std::vector<double> h(train);
+    for (std::size_t i = 0; i < train; ++i) {
+      double s = 0;
+      for (int a = 0; a < 64; ++a) s += (index[i][a] - x[q][a]) * (index[i][a] - x[q][a]);
+      h[i] = std::sqrt(s);
+    }
+    const auto mark = dm::algorithms::high_water_mark(train, edges, stuck, target, h, false);
+    const auto run = dm::algorithms::best_first_search(train, edges, stuck, target, h, false);
+    region.push_back(mark.below);
+    flood.push_back(mark.at_most);
+    work.push_back(run.order.size());
+    bracketed += mark.below <= run.order.size() && run.order.size() <= mark.at_most + 1;
+  }
+  const auto median = [](std::vector<double> v) {
+    std::ranges::sort(v);
+    return v[v.size() / 2];
+  };
+  const auto mean = [](const std::vector<double>& v) { return std::accumulate(v.begin(), v.end(), 0.0) / v.size(); };
+  std::print("\nGreedy routing stopped at a local minimum \\(m\\) other than the nearest neighbour for {} of {} queries. "
+             "From \\(m\\), greedy best-first search towards the true neighbour:\n\n", work.size(), rows - train);
+  std::print("| | median | mean |\n| :--- | ---: | ---: |\n");
+  std::print("| depression \\(|R(m)|\\): reachable from \\(m\\) through \\(h<H\\) | {:.0f} | {:.1f} |\n", median(region), mean(region));
+  std::print("| GBFS expansions from \\(m\\) | {:.0f} | {:.1f} |\n", median(work), mean(work));
+  std::print("| upper bound: reachable through \\(h\\le H\\) | {:.0f} | {:.1f} |\n", median(flood), mean(flood));
+  std::print("\nExpansions inside the bounds \\(|R|\\le\\) expansions \\(\\le|R_\\le|+1\\) for {} of {} queries.\n", bracketed, work.size());
+
+  dm::graphics::RPlot::create()
+      .lines(g_eval, g_recall, "graph best-first", dm::RGB{37, 99, 235}, 2.5)
+      .points(g_eval, g_recall, "", dm::RGB{37, 99, 235}, 6.0)
+      .lines(k_eval, k_recall, "k-d tree BBF", dm::RGB{217, 119, 6}, 2.5)
+      .points(k_eval, k_recall, "", dm::RGB{217, 119, 6}, 6.0)
+      .y_limits(0, 1.2)
+      .title("Recall against work on the digits")
+      .x_label("log2 distance computations per query")
+      .y_label("recall of the nearest neighbour")
+      .size(820, 430)
+      .save_svg("build/best_first_graph.svg");
+}
+```
+// result_begin: markdown
+Graph: 1500 vertices, 10152 edges (mean degree 13.5), 1 connected component(s).
+
+| search | setting | distance computations | expansions | recall | 1-NN accuracy |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| graph best-first | \(e\!f=1\) | 36 | 3.3 | 0.088 | 10.1% |
+| graph best-first | \(e\!f=2\) | 45 | 4.6 | 0.125 | 13.5% |
+| graph best-first | \(e\!f=4\) | 59 | 7.1 | 0.182 | 18.9% |
+| graph best-first | \(e\!f=8\) | 84 | 12.4 | 0.266 | 26.9% |
+| graph best-first | \(e\!f=16\) | 131 | 24.0 | 0.455 | 44.8% |
+| graph best-first | \(e\!f=32\) | 191 | 45.8 | 0.657 | 63.6% |
+| graph best-first | \(e\!f=64\) | 289 | 91.1 | 0.926 | 87.5% |
+| graph best-first | \(e\!f=128\) | 409 | 157.2 | 0.997 | 94.3% |
+| k-d tree, Best Bin First | budget 16 | 16 | – | 0.256 | 87.5% |
+| k-d tree, Best Bin First | budget 32 | 32 | – | 0.380 | 90.6% |
+| k-d tree, Best Bin First | budget 64 | 64 | – | 0.525 | 93.6% |
+| k-d tree, Best Bin First | budget 128 | 128 | – | 0.697 | 95.6% |
+| k-d tree, Best Bin First | budget 256 | 256 | – | 0.828 | 94.9% |
+| k-d tree, Best Bin First | budget 512 | 510 | – | 0.936 | 95.3% |
+| k-d tree, Best Bin First | budget 1024 | 991 | – | 0.990 | 94.6% |
+
+Greedy routing (\(e\!f=1\)) ends on average 2.265 times as far from the query as the true nearest neighbour.
+
+Greedy routing stopped at a local minimum \(m\) other than the nearest neighbour for 271 of 297 queries. From \(m\), greedy best-first search towards the true neighbour:
+
+| | median | mean |
+| :--- | ---: | ---: |
+| depression \(|R(m)|\): reachable from \(m\) through \(h<H\) | 16 | 24.2 |
+| GBFS expansions from \(m\) | 36 | 41.3 |
+| upper bound: reachable through \(h\le H\) | 532 | 557.8 |
+
+Expansions inside the bounds \(|R|\le\) expansions \(\le|R_\le|+1\) for 271 of 271 queries.
+\image(figures/best_first_graph.svg)
+// result_end
+
+\caption(Recall of the exact nearest neighbour against the mean number of distance computations per query, for best-first search on a 10-NN graph (blue, \(e\!f\) from 1 to 128) and Best Bin First on a k-d tree (orange, budget 16 to 1,024).)
+\alttext(Line chart of recall against log2 distance computations per query. The k-d tree curve in orange rises steadily from 0.26 at 16 computations to 0.99 at about 1,000. The graph best-first curve in blue starts lower, at 0.09 with about 36 computations, stays below the k-d tree until about 256 computations, then rises steeply to 0.93 at 289 and 1.0 at 409, above the k-d tree.)
+
+The graph is connected, and each digit has 13.5 neighbours on average. Greedy routing from vertex 0
+costs 36 distance computations and finds the exact nearest neighbour for only 8.8% of queries.
+On average it stops 2.3 times as far from the query as the true neighbour. Only 10.1% of its
+answers have the right digit, which is chance level: after about three hops it is still near
+the entry vertex. It stops in a local minimum of \(h\), a vertex all of whose
+neighbours are farther from the query. From such a vertex \(m\), GBFS towards the true neighbour
+has to flood the depression \(R(m)\) first: 16 vertices at the median and 24 on average. It then
+spends about as much again on the far side, 36 expansions at the median in total. The high-water
+bounds hold for all 271 stuck queries. The upper bound is loose (532 at the median), because once
+over the barrier, the goal's own basin of low \(h\) is large.
+
+Raising \(e\!f\) lets the search climb out of depressions. Recall reaches 0.66 at \(e\!f=32\), 0.93 at 64 and
+0.997 at 128, and 1-NN accuracy reaches 94.3%, the exact value being 94.6%. Against Best Bin
+First the picture depends on the budget. Below about 250 distance computations the k-d tree is
+better: the graph search spends its first 30 or so computations just walking from vertex 0
+towards the query's region. Above that budget the graph wins clearly, with 0.997 recall from 409
+computations against the k-d tree's 0.936 from 510. HNSW addresses the entry-point cost with a
+hierarchy of sparser graphs that brings the search close to the query in a few long hops.
+
+> Summary
+
+- Greedy best-first search orders the open list by \(h\) alone. It is complete with a closed list,
+  but neither its cost nor its work is bounded.
+- With the perfect heuristic, its expansions are exactly its path. Its excess cost is
+  \(\sum_i(c(u_i,u_{i+1})+h^*(u_{i+1})-h^*(u_i))\), which a step can make positive by lowering
+  \(h^*\) quickly at high cost. On the volcano, \(h^*\) made GBFS 22% worse than optimal, against
+  17% with the octile heuristic, while it cut A*'s work from 1,732 cells to 150.
+- The high-water mark \(H=\min_P\max_{v\in P}h(v)\) brackets GBFS. It expands every vertex reachable
+  through \(h<H\) and none with \(h>H\). Heuristic depressions must be flooded in full.
+- On a 10-NN graph of the digits, greedy routing gets stuck in a depression for 91% of queries.
+  Best-first search with a result list of 128 finds the exact neighbour 99.7% of the time from
+  409 distance computations, better than a k-d tree at high recall. Its weakness is the walk from
+  a fixed entry point, which HNSW's hierarchy removes.
+
+> References
+
+- Doran, J. E. and Michie, D. (1966). Experiments with the graph traverser program. *Proceedings
+  of the Royal Society A* 294, 235–259.
+- Pearl, J. (1984). *Heuristics: Intelligent Search Strategies for Computer Problem Solving*.
+  Addison-Wesley.
+- Wilt, C. and Ruml, W. (2014). Speedy versus greedy search. *Proceedings of the Symposium on
+  Combinatorial Search (SoCS)*, 184–192.
+- Heusner, M., Keller, T. and Helmert, M. (2017). Understanding the search behaviour of greedy
+  best-first search. *Proceedings of SoCS*, 47–55.
+- Malkov, Y., Ponomarenko, A., Logvinov, A. and Krylov, V. (2014). Approximate nearest neighbor
+  algorithm based on navigable small world graphs. *Information Systems* 45, 61–68.
+- Malkov, Y. A. and Yashunin, D. A. (2018). Efficient and robust approximate nearest neighbor
+  search using hierarchical navigable small world graphs. *IEEE Transactions on Pattern Analysis
+  and Machine Intelligence* 42, 824–836.

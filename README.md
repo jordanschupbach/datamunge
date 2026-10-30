@@ -87,6 +87,11 @@ This repo is intended to be cloned and renamed. All occurrences of the project n
 
 ## Bindings
 
+The native CPU game/simulation library and batched physical RL tasks are described
+in [the simulation guide](docs/simulation/README.md). GPU compute dispatch is
+optional, with native scene import, Courier behaviors and offscreen Vulkan
+rendering available. Full NN/GPU physics integration remains in progress.
+
 See [the binding workflow and audit](docs/bindings.md) for source packages, regeneration, and the current language coverage.
 
 ### Test Drive
@@ -160,7 +165,7 @@ source of truth; bindings are (re)generated via the `just prebuild-*` /
 `just build-*` workflows.
 
 CNN and autoencoder examples (sections 1 and 2) are available in
-[C++](examples/cpp/nn/README.md) and through [Python/SWIG](examples/python/nn/README.md).
+[C++](examples/cpp/source/nn/README.md) and through [Python/SWIG](examples/python/nn/README.md).
 
 The NN language rewrite covers 414 canonical C++ examples across foundations,
 CNNs, autoencoders, generative models, recurrent networks, attention and RL.

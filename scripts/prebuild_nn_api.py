@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate the reusable NN core API bindings, independently of experiments."""
 import argparse
+import re
 import subprocess
 import tempfile
 import sys
@@ -19,9 +20,10 @@ def generate(language, reference=False):
     wrapper.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='.swig-', dir=wrapper.parent) as temporary:
         temporary = Path(temporary)
-        command = ['swig', '-c++', '-' + language, '-Iinclude']
+        # examples/bindings holds nn_components.i; examples/nn holds the component headers it binds.
+        command = ['swig', '-c++', '-' + language, '-Iinclude', '-Iexamples/bindings', '-Iexamples/nn']
         if reference:
-            command += ['-DDATAMUNGE_NN_REFERENCE_EXAMPLES', '-Iexamples/bindings']
+            command += ['-DDATAMUNGE_NN_REFERENCE_EXAMPLES']
         if sys.platform.startswith('linux'):
             command += ['-DSWIGWORDSIZE64']
         if language == 'r':
@@ -33,6 +35,10 @@ def generate(language, reference=False):
         for source, destination in [(temporary / 'wrapper.cpp', wrapper),
                                     (temporary / proxy_name, directory / ('nn_native.R' if language == 'r' else proxy_name))]:
             text = source.read_text().replace(str(temporary.relative_to(ROOT)), 'src')
+            if language == 'r' and source.name == proxy_name:
+                # Match the R package generator's reserved S4 slot quoting.
+                text = re.sub(r'^(\s*)in(\s*=)', r'\1`in`\2', text, flags=re.M)
+                text = re.sub(r'([@$])in\b', r'\1`in`', text)
             text = '\n'.join(line.rstrip() for line in text.splitlines()) + '\n'
             if not destination.exists() or destination.read_text() != text:
                 destination.write_text(text)

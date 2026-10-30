@@ -44,7 +44,7 @@ objective minimizes \(\tfrac{\lambda}{2}\sum_c\lVert w_c\rVert^2\) plus the aver
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

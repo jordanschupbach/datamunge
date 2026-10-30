@@ -1,6 +1,6 @@
 # Native Python NN example. Lifetime winner-take-all autoencoder: training-only per-feature batch winners, matched plain control.
-"""CMD: just python-example winner_take_all_autoencoder
-Lifetime WTA: training-only per-feature batch winners, full ReLU deployment.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/winner_take_all_autoencoder.py
+"""Lifetime WTA: training-only per-feature batch winners, full ReLU deployment.
 Three default epochs per model; matched plain control.
 
 Port of tflow's winner_take_all_autoencoder (the model is examples/nn/common/competitive_autoencoder.hpp,

@@ -1,3 +1,4 @@
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/kernel_regression_iris_ex.py
 from pydatamunge import datamunge as dm
 
 FORMULA = "Petal.Length ~ Petal.Width"

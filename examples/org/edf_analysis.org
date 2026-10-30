@@ -39,7 +39,7 @@ cap guaranteed utilization at \(\approx 0.69\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Draw a real-time timeline: one row per task, a colored box per executed unit (idle skipped).
 inline void draw_timeline(const RTScheduleResult& r, std::size_t ntask, const char* path) {

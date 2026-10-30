@@ -36,14 +36,65 @@ just python-example weight_spectral_norm
 just python-example variables_initializers
 just python-example convolution_im2col
 just python-example undercomplete_autoencoder epochs=5
+just python-example k_sparse_autoencoder epochs=5
+just python-example winner_take_all_autoencoder epochs=5
+just python-example alexnet epochs=5
+just python-example xception epochs=5
+just python-example densenet epochs=5
+just python-example ghostnet epochs=5
+just python-example mobilenet_v2 epochs=5
+just python-example mnasnet epochs=5
+just python-example convnext epochs=5
+just python-example efficientnet epochs=5
+just python-example efficientnet_v2 epochs=5
+just python-example preactivation_resnet epochs=5
+just python-example pyramidnet epochs=5
+just python-example res2net epochs=5
+just python-example resnext epochs=5
+just python-example revnet epochs=5
+just python-example cbam epochs=5
+just python-example non_local epochs=5
+just python-example octconv epochs=5
+just python-example repvgg epochs=5
+just python-example sknet epochs=5
+just test-nn-api-python
 ```
 
-These scripts compose the functional `datamunge::nn` SWIG API directly: models,
-training, evaluation and numerical checks live in Python. Import it with
+These scripts compose the functional `datamunge::nn` SWIG API directly. Each
+script owns training, evaluation, checkpoint and report ordering. Import it with
 `from pydatamunge import nn`. The binding exposes tensors, parameters, layers,
 autograd, optimizers, batching, I/O, datasets, linear algebra and random streams.
 The new `python-example` recipe builds the functional API without the compiled
 experiment bridge. Classification examples print the final confusion matrix.
+
+Shared example components (`examples/nn/common/*.hpp`: model forward functions,
+configs, data readers, metrics, checks) are bound too, as
+`pydatamunge.nn_components.<namespace>` mirroring the C++ namespaces
+(`image_training.ImageBatch`, `resnet_demo.CompactResNet(18)` -> a callable
+model, `check.Require`). A port written over them implements the C++ example's
+loop line by line and calls the same C++ for everything else; `resnet_basic.py`
+is the reference and prints exactly the C++ numbers. Hand-written helper modules
+under `common/` remain for components that are not bound yet; `just nn-audit`
+lists the unbound headers per example.
+
+The `memory_components.Model` binding supplies the canonical NTM, DNC,
+MemNet and key-value models. It accepts named tensor records and exposes
+parameters, leaves, forward, loss, evaluation and prediction. Python owns
+autograd and Adam updates; the adapter contains no fitting loop. The four native
+examples own their full training, evaluation, streaming, checkpoint and diagnostic
+loops. All 62 archives and four histories match C++ and R byte for byte at five epochs.
+
+The competitive autoencoders use the bound C++ winner masks, forward functions
+and fixtures under `nn_components.ae`, with explicit Python epoch/batch loops.
+Missing MNIST pools are prepared by the shared C++ component automatically.
+Their manifest records the deterministic local selection and original source indices.
+Existing prepared pools are preserved.
+
+The listed architecture ports own their batching, Adam updates, validation and
+checkpoint loops in Python. They call the same bound forward functions and
+numerical diagnostics as C++. Their five-epoch checkpoints and histories match
+R and C++ byte for byte. `nn.resize_bilinear` and `nn.resize_nearest` accept a
+`[height, width]` pair or the bound C++ `ImageSize` object.
 
 Keep development runs small by passing `epochs=5`; `--quick` is the default and
 limits dataset sizes. An explicit epoch count is honored. No-data demonstrations
@@ -61,7 +112,7 @@ The sections below describe the original reference bridge and its commands.
 
 
 All 165 examples in sections 1 and 2 have matching Python entry points with the
-same numbered layout as [`examples/cpp/nn`](../../cpp/nn/README.md).
+same numbered layout as [`examples/cpp/source/nn`](../../cpp/source/nn/README.md).
 
 These are **thin Python wrappers over the canonical C++ experiments**, not
 independent Python implementations of their models or training loops. An
@@ -117,10 +168,10 @@ if status:
 
 Quick mode is the default. `--full` on a direct entry point, or
 `DATAMUNGE_EXAMPLES_FULL=1`, opts into the original training schedule. Dataset
-resolution is unchanged: `DATAMUNGE_DATA_DIR` or the existing
-`~/projects/tflow_examples/output/datasets` cache. See the corresponding C++
-source's opening comments for required assets and supported `key=value` options.
-Missing assets fail normally; examples do not substitute toy data.
+resolution uses `DATAMUNGE_DATA_DIR`, otherwise `$XDG_CACHE_HOME/datamunge/datasets`
+or `~/.cache/datamunge/datasets`. MNIST, CIFAR and derived MNIST pools are
+prepared automatically through C++ bindings. Memory tasks are generated on first use.
+Cached files are preserved; set `DATAMUNGE_DATA_OFFLINE=1` to disable downloads.
 
 Python output defaults to `output/nn/python/quick` or `output/nn/python/full`,
 separate from the C++ outputs. `DATAMUNGE_OUTPUT_DIR` overrides this. The runner

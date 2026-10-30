@@ -33,9 +33,7 @@ namespace nn = datamunge::nn;
 
 // ---- data ----------------------------------------------------------------------------
 
-struct SaliencyData {
-  nn::Tensor images, labels, source;  // float [n, 28, 28, 1] in [0, 1]; int32 [n]; int32 [n]
-};
+using SaliencyData=nn::models::SaliencyData;
 
 inline SaliencyData Rows(const SaliencyData& d, const std::vector<std::int64_t>& rows) {
   return {nn::take_rows(d.images, rows), nn::take_rows(d.labels, rows), nn::take_rows(d.source, rows)};
@@ -48,44 +46,7 @@ inline nn::Tensor Find(const nn::NamedTensors& arrays, const std::string& name) 
 }
 
 /// The fit, validation and test pools with tflow's integrity checks.
-inline std::vector<SaliencyData> LoadSaliency(const std::filesystem::path& root) {
-  const auto file = root / "saliency_data.npz";
-  check::Require(std::filesystem::exists(file),
-                 file.string() + " missing; run `just autoencoder-assets` in tflow_examples or pass data=");
-  const auto              arrays = nn::load_npz(file.string());
-  std::vector<SaliencyData> result;
-  std::set<int>           ids;
-  std::set<std::string>   bytes;
-  for (const std::string split : {"fit", "validation", "test"}) {
-    const auto x = Find(arrays, split + "_images").contiguous();  // uint8 is read as int32
-    const int  n = split == "fit" ? 1000 : 200;
-    check::Require(x.shape() == nn::Shape({n, 28, 28, 1}), "source28x28 grayscale digit images");
-    SaliencyData d{nn::div(nn::cast(x, nn::DType::Float32), 255.0), Find(arrays, split + "_labels").contiguous(),
-                   Find(arrays, split + "_source_ids").contiguous()};
-    check::Require(d.labels.dtype() == nn::DType::Int32 && d.source.dtype() == nn::DType::Int32 &&
-                       d.labels.shape() == nn::Shape({n}) && d.source.shape() == nn::Shape({n}),
-                   "aligned source/label vectors");
-    const auto pixels = x.to_vector<int>();
-    const auto labels = d.labels.to_vector<int>(), source = d.source.to_vector<int>();
-    int        counts[10] = {};
-    for (int b = 0; b < n; ++b) {
-      const int id = source[b], label = labels[b];
-      check::Require(label >= 0 && label < 10 && ids.insert(id).second, "source IDs disjoint,labels valid");
-      check::Require(split == "test" ? id >= 60000 && id < 70000 : id >= 0 && id < 60000,
-                     "original test/train boundary");
-      ++counts[label];
-      std::string row(784, '\0');
-      for (int i = 0; i < 784; ++i) {
-        check::Require(pixels[b * 784 + i] >= 0 && pixels[b * 784 + i] < 256, "uint8 pixels");
-        row[i] = static_cast<char>(pixels[b * 784 + i]);
-      }
-      check::Require(bytes.insert(row).second, "no duplicated input bytes across all pools");
-    }
-    for (int c : counts) check::Require(c == n / 10, "balanced digit pools");
-    result.push_back(d);
-  }
-  return result;
-}
+inline std::vector<SaliencyData> LoadSaliency(const std::filesystem::path&root){dataset_assets::EnsureSaliency(root.string());return nn::models::LoadSaliency(root);}
 
 /// Copies tflow's provenance files next to the outputs when they exist.
 inline void CopyManifests(const std::filesystem::path& data, const std::filesystem::path& root) {

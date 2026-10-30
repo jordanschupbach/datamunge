@@ -18,9 +18,10 @@ RGBA <- function(...) RGB(...)
 local({
   ns <- topenv()
   methods <- c(
-    "size", "title", "x_label", "y_label", "xlab", "ylab", "background", "axis_color",
+    "size", "title", "subtitle", "x_label", "y_label", "xlab", "ylab", "background", "axis_color",
+    "set_title", "set_subtitle", "set_xlab", "set_ylab", "set_col",
     "grid_color", "show_grid", "x_limits", "y_limits", "hide_axes", "x_tick_labels",
-    "points", "line", "lines", "bars", "box", "abline", "abline_h", "abline_v", "qqline",
+    "points", "points_colored", "line", "lines", "bars", "box", "abline", "abline_h", "abline_v", "qqline",
     "legend", "text", "polygon", "segments"
   )
   for (m in methods) {

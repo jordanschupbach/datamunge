@@ -1,0 +1,11 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usetikzlibrary{arrows.meta,positioning}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\sffamily\large,box/.style={draw,rounded corners,align=center,text width=4.4cm,minimum height=1.5cm,fill=blue!8,inner sep=5pt}]
+\node[box] (n0) at (0.0,0) {Float32 master weights\\round compute edges};
+\node[box] (n1) at (5.5,0) {Scale loss and gradient\\check finite values};
+\node[box] (n2) at (11.0,0) {Unscale then update\\or skip and back off};
+\draw[->,thick] (n0)--(n1);
+\draw[->,thick] (n1)--(n2);
+\end{tikzpicture}
+\end{document}

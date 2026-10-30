@@ -44,7 +44,7 @@ search would drown.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::string i128_str(__int128 v) {
     if (v == 0) return "0";

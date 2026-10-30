@@ -50,7 +50,7 @@ given length -- which is exactly patience sorting. Hence *Schensted's theorem*:
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Longest strictly increasing subsequence length (patience sorting), computed independently.
 static std::size_t lis_length(const std::vector<int>& a) {

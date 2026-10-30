@@ -1,6 +1,6 @@
 # Native Python NN example. Activation-L1 and Bernoulli-KL sparse autoencoders with matched controls.
-"""CMD: just python-example sparse_autoencoder
-BOTH activation-L1 and mean-unit Bernoulli-KL sparse autoencoders with matched controls.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/sparse_autoencoder.py
+"""BOTH activation-L1 and mean-unit Bernoulli-KL sparse autoencoders with matched controls.
 Four matched 64-sigmoid variants, three epochs/default, no label targets.
 
 Port of tflow's sparse_autoencoder (model and penalties: examples/nn/common/sparse_autoencoder.hpp).

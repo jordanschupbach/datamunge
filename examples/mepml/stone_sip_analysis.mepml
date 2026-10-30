@@ -47,7 +47,7 @@ fast solver for the structured grids of computational fluid dynamics and heat tr
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -136,7 +136,7 @@ solution, solve it with SIP, and trace the residual per iteration.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

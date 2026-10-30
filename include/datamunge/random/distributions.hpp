@@ -560,6 +560,70 @@ inline double f_quantile(double p, double df1, double df2) {
       p, [df1, df2](double x) { return f_cdf(x, df1, df2); }, 1e-6, 1.0);
 }
 
+/// @brief Density of the Beta(\f$a,b\f$) distribution on \f$[0,1]\f$.
+/// @param x  Point.
+/// @param a  First shape (\f$>0\f$).
+/// @param b  Second shape (\f$>0\f$).
+/// @return \f$x^{a-1}(1-x)^{b-1}/B(a,b)\f$, 0 outside \f$[0,1]\f$.
+/// @throws std::invalid_argument  If a shape is not positive.
+///
+/// @par Example
+/// @code
+/// std::print("{:.4f}\n", dm::random::beta_pdf(0.5, 2.0, 2.0));  // 1.5000
+/// @endcode
+inline double beta_pdf(double x, double a, double b) {
+  detail::require_positive(a, "beta_pdf", "a");
+  detail::require_positive(b, "beta_pdf", "b");
+  if (x < 0.0 || x > 1.0) return 0.0;
+  if (x == 0.0) return a < 1.0 ? std::numeric_limits<double>::infinity() : (a == 1.0 ? b : 0.0);
+  if (x == 1.0) return b < 1.0 ? std::numeric_limits<double>::infinity() : (b == 1.0 ? a : 0.0);
+  return std::exp((a - 1.0) * std::log(x) + (b - 1.0) * std::log1p(-x) - detail::log_beta(a, b));
+}
+
+/// @brief Distribution function of the Beta(\f$a,b\f$) distribution.
+/// @param x  Point.
+/// @param a  First shape (\f$>0\f$).
+/// @param b  Second shape (\f$>0\f$).
+/// @return The regularized incomplete beta function \f$I_x(a,b)\f$ (0 below 0, 1 above 1).
+/// @throws std::invalid_argument  If a shape is not positive.
+///
+/// @par Example
+/// @code
+/// std::print("{:.4f}\n", dm::random::beta_cdf(0.9, 18.0, 2.0));  // 0.4203
+/// @endcode
+inline double beta_cdf(double x, double a, double b) {
+  detail::require_positive(a, "beta_cdf", "a");
+  detail::require_positive(b, "beta_cdf", "b");
+  if (x <= 0.0) return 0.0;
+  if (x >= 1.0) return 1.0;
+  return detail::regularized_incomplete_beta(a, b, x);
+}
+
+/// @brief Quantile function of the Beta(\f$a,b\f$) distribution, by bisection.
+/// @param p  Probability in \f$[0,1]\f$.
+/// @param a  First shape (\f$>0\f$).
+/// @param b  Second shape (\f$>0\f$).
+/// @return The \f$x\f$ with \f$I_x(a,b)=p\f$.
+/// @throws std::invalid_argument  If @p p is not a probability or a shape is not positive.
+///
+/// @par Example
+/// @code
+/// std::print("{:.4f}\n", dm::random::beta_quantile(0.5, 1.0, 1.0));  // 0.5000
+/// @endcode
+inline double beta_quantile(double p, double a, double b) {
+  detail::require_probability(p, "beta_quantile");
+  detail::require_positive(a, "beta_quantile", "a");
+  detail::require_positive(b, "beta_quantile", "b");
+  if (p == 0.0) return 0.0;
+  if (p == 1.0) return 1.0;
+  double lo = 0.0, hi = 1.0;
+  for (int it = 0; it < 200 && hi - lo > 1e-15; ++it) {
+    const double mid = 0.5 * (lo + hi);
+    (detail::regularized_incomplete_beta(a, b, mid) < p ? lo : hi) = mid;
+  }
+  return 0.5 * (lo + hi);
+}
+
 inline double chi_squared_pdf(double x, double df) {
   detail::require_positive(df, "chi_squared_pdf", "df");
   if (x < 0.0) return 0.0;

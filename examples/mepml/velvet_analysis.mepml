@@ -36,7 +36,7 @@ Eulerian core is this.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -86,7 +86,7 @@ assembly matches the original, and tally the graph size (edges = distinct k-mers
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

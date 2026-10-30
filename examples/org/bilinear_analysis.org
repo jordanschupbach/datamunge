@@ -46,7 +46,7 @@ interpolation improves -- but it is the cheap default in graphics and geospatial
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

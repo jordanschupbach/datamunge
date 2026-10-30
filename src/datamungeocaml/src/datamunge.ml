@@ -5897,7 +5897,7 @@ let _delete_RGB arg = match _delete_RGB_f ((fnhelper arg)) with
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
-let _ = Callback.register "datamunge::plot::DataSeries::Kind_marker" (`Kind)
+let _ = Callback.register "datamunge::graphics::DataSeries::Kind_marker" (`Kind)
 external _Scatter : c_obj -> Swig.c_obj = "_wrap_Scatter" 
 external _Line : c_obj -> Swig.c_obj = "_wrap_Line" 
 external _Bar : c_obj -> Swig.c_obj = "_wrap_Bar" 
@@ -17284,7 +17284,7 @@ begin
 		(fun (x,y) ->
 		   ((String.length x) > 2)
 		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
-       ":classof", (fun args -> C_string "datamunge::plot::RGB") ;
+       ":classof", (fun args -> C_string "datamunge::graphics::RGB") ;
        ":methods", (fun args -> 
 	  C_list (let out = ref [] in 
 	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
@@ -17314,14 +17314,14 @@ begin
 			      try_parent tl raw_ptr
 			  end
 		      | [] ->
-			  raise (BadMethodName (raw_ptr,mth,"datamunge::plot::RGB"))
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::graphics::RGB"))
 		  in try_parent parent_classes raw_ptr
 		end
 	end in
 	  (fun mth arg -> invoke_inner raw_ptr mth arg)
 end
 
-let _ = register_class_byname "datamunge::plot::RGB" create_datamunge_xxplot_xxRGB_from_ptr
+let _ = register_class_byname "datamunge::graphics::RGB" create_datamunge_xxplot_xxRGB_from_ptr
 let _ = Callback.register 
           "create_datamunge::plot::RGB_from_ptr"
           create_datamunge_xxplot_xxRGB_from_ptr
@@ -17358,7 +17358,7 @@ begin
 		(fun (x,y) ->
 		   ((String.length x) > 2)
 		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
-       ":classof", (fun args -> C_string "datamunge::plot::DataSeries") ;
+       ":classof", (fun args -> C_string "datamunge::graphics::DataSeries") ;
        ":methods", (fun args -> 
 	  C_list (let out = ref [] in 
 	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
@@ -17388,14 +17388,14 @@ begin
 			      try_parent tl raw_ptr
 			  end
 		      | [] ->
-			  raise (BadMethodName (raw_ptr,mth,"datamunge::plot::DataSeries"))
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::graphics::DataSeries"))
 		  in try_parent parent_classes raw_ptr
 		end
 	end in
 	  (fun mth arg -> invoke_inner raw_ptr mth arg)
 end
 
-let _ = register_class_byname "datamunge::plot::DataSeries" create_datamunge_xxplot_xxDataSeries_from_ptr
+let _ = register_class_byname "datamunge::graphics::DataSeries" create_datamunge_xxplot_xxDataSeries_from_ptr
 let _ = Callback.register 
           "create_datamunge::plot::DataSeries_from_ptr"
           create_datamunge_xxplot_xxDataSeries_from_ptr
@@ -17428,7 +17428,7 @@ begin
 		(fun (x,y) ->
 		   ((String.length x) > 2)
 		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
-       ":classof", (fun args -> C_string "datamunge::plot::ABLine") ;
+       ":classof", (fun args -> C_string "datamunge::graphics::ABLine") ;
        ":methods", (fun args -> 
 	  C_list (let out = ref [] in 
 	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
@@ -17458,14 +17458,14 @@ begin
 			      try_parent tl raw_ptr
 			  end
 		      | [] ->
-			  raise (BadMethodName (raw_ptr,mth,"datamunge::plot::ABLine"))
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::graphics::ABLine"))
 		  in try_parent parent_classes raw_ptr
 		end
 	end in
 	  (fun mth arg -> invoke_inner raw_ptr mth arg)
 end
 
-let _ = register_class_byname "datamunge::plot::ABLine" create_datamunge_xxplot_xxABLine_from_ptr
+let _ = register_class_byname "datamunge::graphics::ABLine" create_datamunge_xxplot_xxABLine_from_ptr
 let _ = Callback.register 
           "create_datamunge::plot::ABLine_from_ptr"
           create_datamunge_xxplot_xxABLine_from_ptr
@@ -17495,7 +17495,7 @@ begin
 		(fun (x,y) ->
 		   ((String.length x) > 2)
 		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
-       ":classof", (fun args -> C_string "datamunge::plot::LegendEntry") ;
+       ":classof", (fun args -> C_string "datamunge::graphics::LegendEntry") ;
        ":methods", (fun args -> 
 	  C_list (let out = ref [] in 
 	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
@@ -17525,14 +17525,14 @@ begin
 			      try_parent tl raw_ptr
 			  end
 		      | [] ->
-			  raise (BadMethodName (raw_ptr,mth,"datamunge::plot::LegendEntry"))
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::graphics::LegendEntry"))
 		  in try_parent parent_classes raw_ptr
 		end
 	end in
 	  (fun mth arg -> invoke_inner raw_ptr mth arg)
 end
 
-let _ = register_class_byname "datamunge::plot::LegendEntry" create_datamunge_xxplot_xxLegendEntry_from_ptr
+let _ = register_class_byname "datamunge::graphics::LegendEntry" create_datamunge_xxplot_xxLegendEntry_from_ptr
 let _ = Callback.register 
           "create_datamunge::plot::LegendEntry_from_ptr"
           create_datamunge_xxplot_xxLegendEntry_from_ptr
@@ -17597,7 +17597,7 @@ begin
 		(fun (x,y) ->
 		   ((String.length x) > 2)
 		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
-       ":classof", (fun args -> C_string "datamunge::plot::Plot") ;
+       ":classof", (fun args -> C_string "datamunge::graphics::Plot") ;
        ":methods", (fun args -> 
 	  C_list (let out = ref [] in 
 	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
@@ -17627,14 +17627,14 @@ begin
 			      try_parent tl raw_ptr
 			  end
 		      | [] ->
-			  raise (BadMethodName (raw_ptr,mth,"datamunge::plot::Plot"))
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::graphics::Plot"))
 		  in try_parent parent_classes raw_ptr
 		end
 	end in
 	  (fun mth arg -> invoke_inner raw_ptr mth arg)
 end
 
-let _ = register_class_byname "datamunge::plot::Plot" create_datamunge_xxplot_xxPlot_from_ptr
+let _ = register_class_byname "datamunge::graphics::Plot" create_datamunge_xxplot_xxPlot_from_ptr
 let _ = Callback.register 
           "create_datamunge::plot::Plot_from_ptr"
           create_datamunge_xxplot_xxPlot_from_ptr
@@ -17675,7 +17675,7 @@ begin
     "polygon", _RPlot_polygon ;
     "segments", _RPlot_segments ;
     "~", _delete_RPlot ;
-   "::datamunge::plot::Plot", (fun args -> (create_class "datamunge::plot::Plot") args) ;
+   "::datamunge::graphics::Plot", (fun args -> (create_class "datamunge::graphics::Plot") args) ;
  
 	 "&", (fun args -> raw_ptr) ;
        ":parents",
@@ -17690,7 +17690,7 @@ begin
 		(fun (x,y) ->
 		   ((String.length x) > 2)
 		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
-       ":classof", (fun args -> C_string "datamunge::plot::RPlot") ;
+       ":classof", (fun args -> C_string "datamunge::graphics::RPlot") ;
        ":methods", (fun args -> 
 	  C_list (let out = ref [] in 
 	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
@@ -17708,7 +17708,7 @@ begin
 		(* Try parent classes *)
 		begin
 		  let parent_classes = [
-		    (create_class "datamunge::plot::Plot") ;
+		    (create_class "datamunge::graphics::Plot") ;
 
 		  ] in
 		  let rec try_parent plist raw_ptr =
@@ -17721,14 +17721,14 @@ begin
 			      try_parent tl raw_ptr
 			  end
 		      | [] ->
-			  raise (BadMethodName (raw_ptr,mth,"datamunge::plot::RPlot"))
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::graphics::RPlot"))
 		  in try_parent parent_classes raw_ptr
 		end
 	end in
 	  (fun mth arg -> invoke_inner raw_ptr mth arg)
 end
 
-let _ = register_class_byname "datamunge::plot::RPlot" create_datamunge_xxplot_xxRPlot_from_ptr
+let _ = register_class_byname "datamunge::graphics::RPlot" create_datamunge_xxplot_xxRPlot_from_ptr
 let _ = Callback.register 
           "create_datamunge::plot::RPlot_from_ptr"
           create_datamunge_xxplot_xxRPlot_from_ptr
@@ -17761,7 +17761,7 @@ begin
 		(fun (x,y) ->
 		   ((String.length x) > 2)
 		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
-       ":classof", (fun args -> C_string "datamunge::plot::RLayout") ;
+       ":classof", (fun args -> C_string "datamunge::graphics::RLayout") ;
        ":methods", (fun args -> 
 	  C_list (let out = ref [] in 
 	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
@@ -17791,14 +17791,14 @@ begin
 			      try_parent tl raw_ptr
 			  end
 		      | [] ->
-			  raise (BadMethodName (raw_ptr,mth,"datamunge::plot::RLayout"))
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::graphics::RLayout"))
 		  in try_parent parent_classes raw_ptr
 		end
 	end in
 	  (fun mth arg -> invoke_inner raw_ptr mth arg)
 end
 
-let _ = register_class_byname "datamunge::plot::RLayout" create_datamunge_xxplot_xxRLayout_from_ptr
+let _ = register_class_byname "datamunge::graphics::RLayout" create_datamunge_xxplot_xxRLayout_from_ptr
 let _ = Callback.register 
           "create_datamunge::plot::RLayout_from_ptr"
           create_datamunge_xxplot_xxRLayout_from_ptr

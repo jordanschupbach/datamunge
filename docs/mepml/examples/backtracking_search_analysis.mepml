@@ -1,0 +1,368 @@
+//? Title: Backtracking Search: Simple Paths and Knight's Tours
+//? Subtitle: How large the tree of simple paths is, why exhausting it is hopeless, and how branch ordering and pruning rescue the search for Hamiltonian paths, with datamunge's algorithms::count_simple_paths and algorithms::hamiltonian_path
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Backtracking extends a partial solution one choice at a time and undoes the last choice when no
+extension works. On a graph, the partial solutions are simple paths, and the search tree is the
+tree of all simple paths from the start. We derive its size for complete graphs, where the
+number of simple paths between two vertices is exactly \(\lfloor e\,(n-2)!\rfloor\), and count it
+by exhaustion on grids, where the corner-to-corner paths grow from 12 on a \(3\times3\) grid to
+1,262,816 on a \(6\times6\) grid. Looking for one path that visits every vertex (a Hamiltonian
+path) explores the same tree, so the order of branches and the ability to cut dead subtrees
+decide everything. On the knight's graph of a chessboard, trying moves in index order solves
+only 6 of the 64 starting squares within a million nodes; a connectivity prune raises that
+to 30; Warnsdorff's rule, which tries the most constrained square first, solves all 64
+with a median of 64 nodes, meaning no backtracking at all. The same rule still stalls on some
+larger boards, which is where backtracking earns its keep.
+)
+
+\toc
+
+> The algorithm
+
+Backtracking keeps a *simple* path \(v_0v_1\cdots v_k\) (no repeated vertex) and a mark on each
+vertex currently on it:
+
+```
+SEARCH(u):
+    append u to the path and mark it
+    if u is a goal: report the path (stop, or continue for all solutions)
+    for each unmarked neighbour v of u: SEARCH(v)
+    unmark u and remove it from the path        # backtrack
+```
+
+The marks are the invariant: a vertex is marked exactly while it is on the path, so the path is
+always simple, and every reported path is valid. Every simple path from the start corresponds to
+exactly one call of `SEARCH`, so the calls form the *tree of simple paths*: the root is the start,
+and each node's children are its one-vertex extensions. Memory is only the path and the marks,
+\(O(V)\), but time is the size of the tree, which is usually exponential.
+
+`dm::algorithms::backtracking_search()` stops at the first path it finds. On a \(4\times4\) grid
+from one corner to the other it follows the lowest-numbered neighbour each time:
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  const auto edges = alg::grid_graph_edges(4, 4);  // vertex (r, c) is 4r + c
+  const auto first = alg::backtracking_search(16, edges, 0, 15, false);
+  std::print("First path found: ");
+  for (std::size_t k = 0; k < first.path.size(); ++k) std::print("{}{}", k ? " → " : "", first.path[k]);
+  std::print(" ({} edges; the shortest has 6). Calls before reaching the goal: {}.\n\n", first.path.size() - 1,
+             first.order.size());
+  const auto all = alg::count_simple_paths(16, edges, 0, 15);
+  std::print("Exhausting the tree instead: {} simple paths from 0 to 15, {} search nodes, {} dead ends, longest path {} edges.\n",
+             all.paths, all.nodes, all.dead_ends, all.max_depth);
+}
+```
+// result_begin: markdown
+First path found: 0 → 1 → 2 → 3 → 7 → 6 → 5 → 4 → 8 → 9 → 10 → 11 → 15 (12 edges; the shortest has 6). Calls before reaching the goal: 13.
+
+Exhausting the tree instead: 184 simple paths from 0 to 15, 1271 search nodes, 208 dead ends, longest path 14 edges.
+// result_end
+
+The first path found is not short: always taking the lowest-numbered neighbour sweeps the grid
+row by row and reaches the goal after 12 edges, twice the 6 of a shortest path. Backtracking
+answers "is there a path?", not "which is best?"; for shortest paths, breadth-first search or
+Dijkstra's algorithm visit each vertex once. Here the first branch happened to succeed, so 13
+calls sufficed. Listing *every* path is a different matter: the \(4\times4\) grid has 184 simple
+corner-to-corner paths, and finding them took 1,271 search nodes, 208 of them dead ends where the
+path had trapped itself.
+
+> How big is the tree?
+
+>> Complete graphs, exactly
+
+In the complete graph \(K_n\) every ordering of distinct vertices is a path. A simple path from
+\(s\) to \(t\) with \(k\) intermediate vertices chooses them, in order, from the other \(n-2\):
+\((n-2)!/(n-2-k)!\) ways. Summing over \(k\) and substituting \(j=n-2-k\),
+
+$$
+P_n=\sum_{k=0}^{n-2}\frac{(n-2)!}{(n-2-k)!}=(n-2)!\sum_{j=0}^{n-2}\frac1{j!}=\bigl\lfloor e\,(n-2)!\bigr\rfloor\quad(n\ge3).
+$$
+\alttext(P n equals the sum over k from 0 to n minus 2 of n minus 2 factorial over n minus 2 minus k factorial, which equals n minus 2 factorial times the sum over j of 1 over j factorial, which equals the floor of e times n minus 2 factorial, for n at least 3.)
+
+The last step holds because the tail \((n-2)!\sum_{j>n-2}1/j!\) is positive and, for \(n\ge4\),
+below \(\tfrac1{n-1}+\tfrac1{(n-1)^2}+\cdots=\tfrac1{n-2}<1\) (and equals \(e-2<1\) at \(n=3\)).
+The search tree has one node for every path from \(s\) that avoids \(t\) except perhaps at its
+end. Those ending at \(t\) number \(P_n\); those ending elsewhere are the same choices without the
+final step to \(t\), also \(P_n\). So the tree has exactly \(2P_n\) nodes.
+
+>> Grids, by exhaustion
+
+On a grid there is no closed form. The number of corner-to-corner simple paths on a \(k\times k\)
+grid of vertices is sequence A007764 in the OEIS, and it is known that it grows like
+\(\lambda^{k^2}\) with \(\lambda\approx1.7445\) per vertex. The block counts both families with
+`count_simple_paths()`.
+
+```{cpp, results="markdown", file="figures/backtracking_search_growth.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <chrono>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::print("| \\(n\\) | paths in \\(K_n\\) | \\(\\lfloor e(n-2)!\\rfloor\\) | search nodes | \\(2P_n\\) |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> kn_v, kn_nodes;
+  for (std::size_t n = 3; n <= 11; ++n) {
+    const auto c = alg::count_simple_paths(n, alg::complete_graph_edges(n), 0, n - 1);
+    double f = 1;
+    for (std::size_t k = 2; k <= n - 2; ++k) f *= static_cast<double>(k);
+    const auto formula = static_cast<std::uint64_t>(std::floor(std::numbers::e * f));
+    std::print("| {} | {} | {} | {} | {} |\n", n, c.paths, formula, c.nodes, 2 * formula);
+    kn_v.push_back(static_cast<double>(n));
+    kn_nodes.push_back(std::log10(static_cast<double>(c.nodes)));
+  }
+
+  std::print("\n| grid | vertices | corner-to-corner paths | search nodes | dead ends | nodes per path | "
+             "\\(\\text{{paths}}^{{1/k^2}}\\) | ms |\n| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> grid_v, grid_nodes;
+  for (std::size_t k = 2; k <= 6; ++k) {
+    const auto t0 = std::chrono::steady_clock::now();
+    const auto c = alg::count_simple_paths(k * k, alg::grid_graph_edges(k, k), 0, k * k - 1);
+    const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
+    std::print("| {}×{} | {} | {} | {} | {} | {:.1f} | {:.3f} | {:.1f} |\n", k, k, k * k, c.paths, c.nodes, c.dead_ends,
+               static_cast<double>(c.nodes) / c.paths, std::pow(static_cast<double>(c.paths), 1.0 / (k * k)), ms);
+    grid_v.push_back(static_cast<double>(k * k));
+    grid_nodes.push_back(std::log10(static_cast<double>(c.nodes)));
+  }
+
+  dm::graphics::RPlot::create()
+      .lines(kn_v, kn_nodes, "", dm::RGB{220, 38, 38}, 2.0)
+      .points(kn_v, kn_nodes, "", dm::RGB{220, 38, 38}, 7.0)
+      .lines(grid_v, grid_nodes, "", dm::RGB{37, 99, 235}, 2.0)
+      .points(grid_v, grid_nodes, "", dm::RGB{37, 99, 235}, 7.0)
+      .legend({"complete graph K_n", "k x k grid"}, {dm::RGB{220, 38, 38}, dm::RGB{37, 99, 235}})
+      .y_limits(0, 9)
+      .title("Size of the backtracking tree")
+      .x_label("number of vertices")
+      .y_label("log10 search nodes")
+      .size(900, 500)
+      .save_svg("build/backtracking_search_growth.svg");
+}
+```
+// result_begin: markdown
+| \(n\) | paths in \(K_n\) | \(\lfloor e(n-2)!\rfloor\) | search nodes | \(2P_n\) |
+| ---: | ---: | ---: | ---: | ---: |
+| 3 | 2 | 2 | 4 | 4 |
+| 4 | 5 | 5 | 10 | 10 |
+| 5 | 16 | 16 | 32 | 32 |
+| 6 | 65 | 65 | 130 | 130 |
+| 7 | 326 | 326 | 652 | 652 |
+| 8 | 1957 | 1957 | 3914 | 3914 |
+| 9 | 13700 | 13700 | 27400 | 27400 |
+| 10 | 109601 | 109601 | 219202 | 219202 |
+| 11 | 986410 | 986410 | 1972820 | 1972820 |
+
+| grid | vertices | corner-to-corner paths | search nodes | dead ends | nodes per path | \(\text{paths}^{1/k^2}\) | ms |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2×2 | 4 | 2 | 5 | 0 | 2.5 | 1.189 | 0.0 |
+| 3×3 | 9 | 12 | 51 | 6 | 4.2 | 1.318 | 0.0 |
+| 4×4 | 16 | 184 | 1271 | 208 | 6.9 | 1.385 | 0.0 |
+| 5×5 | 25 | 8512 | 90111 | 17716 | 10.6 | 1.436 | 0.6 |
+| 6×6 | 36 | 1262816 | 18470411 | 4008910 | 14.6 | 1.477 | 102.9 |
+\image(figures/backtracking_search_growth.svg)
+// result_end
+
+\caption(Search-tree size, on a log scale, against the number of vertices: complete graphs \(K_3\) to \(K_{11}\) (red) and \(k\times k\) grids for \(k=2\) to 6 (blue).)
+\alttext(Line chart of log10 search nodes against the number of vertices. The red complete-graph line rises steeply and ever faster, from 0.6 at 3 vertices to 6.3 at 11. The blue grid line rises nearly straight, from 0.7 at 4 vertices to 7.3 at 36.)
+
+For the complete graphs the counts equal \(\lfloor e(n-2)!\rfloor\) and the node counts equal
+\(2P_n\) for every \(n\) from 3 to 11, as derived; at \(n=11\) there are already 986,410 paths
+and nearly two million nodes. The red curve bends upwards because factorial growth is faster
+than any exponential.
+
+The grids grow more slowly but still exponentially: the blue curve is close to a straight line
+in the number of vertices. The per-vertex growth \(\text{paths}^{1/k^2}\) rises from 1.19 to 1.48
+and is still far from its limit of about 1.74, so the next grid, \(7\times7\), has 575,780,564
+paths and would need roughly \(10^{10}\) nodes. The 6×6 grid took 18.5 million nodes, about 90 ms
+on this machine. The ratio of nodes to paths grows too, from 2.5 to 14.6, and over a fifth of the
+nodes are dead ends. Exhaustive backtracking is only useful for small instances.
+
+> Hamiltonian paths: order and pruning
+
+A *Hamiltonian path* visits every vertex once. Deciding whether one exists is NP-complete, and
+backtracking searches the same tree of simple paths, stopping at the first path of length
+\(V-1\). Two levers change how much of the tree it sees:
+
+- **Branch order.** Trying the most constrained neighbour first, the one with the fewest
+  unvisited neighbours of its own, tends to visit awkward vertices before they are cut off.
+  For knight's tours this is *Warnsdorff's rule* (1823).
+- **Pruning.** If the unvisited vertices are not all reachable from the end of the path through
+  unvisited vertices, no completion exists, and the whole subtree can be skipped. The test is one
+  graph traversal, \(O(V+E)\), per node.
+
+The knight's graph joins two squares of a board when a knight can move between them. A
+Hamiltonian path in it is an open *knight's tour*. A knight always changes square colour, so a
+tour alternates colours. On a board with an odd number of squares the tour must start and end on
+the majority colour; from any other square, no tour exists and backtracking must exhaust the tree
+to prove it.
+
+The block runs `hamiltonian_path()` from every square of the \(8\times8\) board in three ways,
+with a limit of a million nodes per search, and draws the tour from the corner.
+
+```{cpp, results="markdown", file="figures/backtracking_search_tour.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <chrono>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::size_t k = 8, n = k * k;
+  const auto edges = alg::knight_graph_edges(k, k);
+  struct Method {
+    const char* name;
+    alg::BranchOrder order;
+    bool prune;
+  };
+  const Method methods[] = {{"index order", alg::BranchOrder::Index, false},
+                            {"index order + connectivity prune", alg::BranchOrder::Index, true},
+                            {"Warnsdorff order", alg::BranchOrder::FewestOnward, false}};
+  std::print("| method | tours found (of 64) | stopped at limit | median nodes | largest nodes (solved) | total s |\n"
+             "| --- | ---: | ---: | ---: | ---: | ---: |\n");
+  for (const auto& m : methods) {
+    std::vector<std::uint64_t> nodes;
+    std::uint64_t worst_solved = 0;
+    int found = 0, limited = 0;
+    const auto t0 = std::chrono::steady_clock::now();
+    for (std::size_t s = 0; s < n; ++s) {
+      const auto h = alg::hamiltonian_path(n, edges, s, m.order, m.prune, 1000000);
+      nodes.push_back(h.nodes);
+      found += h.found;
+      limited += h.hit_limit;
+      if (h.found) worst_solved = std::max(worst_solved, h.nodes);
+    }
+    const double sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+    std::ranges::sort(nodes);
+    std::print("| {} | {} | {} | {} | {} | {:.1f} |\n", m.name, found, limited, (nodes[31] + nodes[32]) / 2, worst_solved, sec);
+  }
+
+  const auto tour = alg::hamiltonian_path(n, edges, 0, alg::BranchOrder::FewestOnward);
+  std::vector<double> x, y;
+  for (std::size_t v : tour.path) {
+    x.push_back(static_cast<double>(v % k) + 0.5);
+    y.push_back(static_cast<double>(k - 1 - v / k) + 0.5);
+  }
+  auto plot = dm::graphics::RPlot::create();
+  for (std::size_t r = 0; r < k; ++r)
+    for (std::size_t c = 0; c < k; ++c)
+      if ((r + c) % 2 == 1)
+        plot.polygon({double(c), double(c + 1), double(c + 1), double(c)}, {double(r), double(r), double(r + 1), double(r + 1)},
+                     dm::RGB{226, 232, 240}, true);
+  plot.lines(x, y, "", dm::RGB{37, 99, 235}, 2.0)
+      .points(x, y, "", dm::RGB{37, 99, 235}, 5.0)
+      .points({x.front()}, {y.front()}, "", dm::RGB{22, 163, 74}, 12.0)
+      .points({x.back()}, {y.back()}, "", dm::RGB{220, 38, 38}, 12.0);
+  for (std::size_t i = 0; i < x.size(); i += 1)
+    plot.text(x[i] + 0.22, y[i] + 0.22, std::to_string(i + 1), dm::RGB{71, 85, 105}, 9.0);
+  plot.legend({"start", "end"}, {dm::RGB{22, 163, 74}, dm::RGB{220, 38, 38}})
+      .x_limits(0, 8)
+      .y_limits(0, 8.8)
+      .title("Warnsdorff knight's tour from a corner")
+      .x_label("file")
+      .y_label("rank")
+      .size(640, 680)
+      .save_svg("build/backtracking_search_tour.svg");
+  std::print("\nTour from the corner: {} nodes, {} backtracks.\n", tour.nodes, tour.backtracks);
+}
+```
+// result_begin: markdown
+| method | tours found (of 64) | stopped at limit | median nodes | largest nodes (solved) | total s |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| index order | 6 | 58 | 1000000 | 787548 | 1.7 |
+| index order + connectivity prune | 30 | 34 | 1000000 | 953522 | 8.6 |
+| Warnsdorff order | 64 | 0 | 64 | 67771 | 0.0 |
+
+Tour from the corner: 64 nodes, 0 backtracks.
+\image(figures/backtracking_search_tour.svg)
+// result_end
+
+\caption(The knight's tour that Warnsdorff-ordered backtracking finds from the top-left corner (green) of the \(8\times8\) board; numbers give the move order and red marks the final square.)
+\alttext(An 8 by 8 checkerboard with a blue path of 64 knight moves numbered 1 to 64, starting at the green top-left corner square and ending at the red square fifth from the left on the bottom row. The path first circles the edge squares and saves the centre for last.)
+
+The order of branches matters more than anything else. In index order, backtracking found a
+tour from only 6 of the 64 squares within a million nodes. The connectivity prune made each
+node more expensive but cut whole subtrees, and raised that to 30. Warnsdorff's order found a
+tour from all 64 squares, and from the median square it needed 64 nodes, exactly one per
+square: it never backtracked. Its hardest start needed 67,771 nodes.
+
+The figure shows why the rule works. Squares near the edge and in the corners have few knight
+moves, so they are the ones that get stranded. Warnsdorff's order visits them first, sweeping
+around the rim (moves 1 to 30 stay mostly in the outer two rings) and leaves the
+well-connected centre for the end, when flexibility is most needed.
+
+>> When the heuristic is not enough
+
+Warnsdorff's rule is a heuristic, and ties (several squares with the same number of onward
+moves) are broken here by square index. On larger boards that tie-break sometimes walks into a
+dead end, and backtracking has to recover. The block runs Warnsdorff-ordered search from the
+corner of every \(k\times k\) board for \(k=5,\dots,60\) with a limit of two million nodes, and
+lists the boards where it needed to backtrack, with and without the connectivity prune.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::print("| board | Warnsdorff: nodes | backtracks | found | + prune: nodes | pruned subtrees | found |\n"
+             "| --- | ---: | ---: | --- | ---: | ---: | --- |\n");
+  int clean = 0;
+  for (std::size_t k = 5; k <= 60; ++k) {
+    const auto edges = alg::knight_graph_edges(k, k);
+    const auto a = alg::hamiltonian_path(k * k, edges, 0, alg::BranchOrder::FewestOnward, false, 2000000);
+    if (a.backtracks == 0) {
+      ++clean;
+      continue;
+    }
+    const auto b = alg::hamiltonian_path(k * k, edges, 0, alg::BranchOrder::FewestOnward, true, 2000000);
+    std::print("| {}×{} | {} | {} | {} | {} | {} | {} |\n", k, k, a.nodes, a.backtracks,
+               a.found ? "yes" : (a.hit_limit ? "limit" : "no"), b.nodes, b.pruned,
+               b.found ? "yes" : (b.hit_limit ? "limit" : "no"));
+  }
+  std::print("\nBoards solved with no backtracking at all: {} of 56.\n", clean);
+}
+```
+// result_begin: markdown
+| board | Warnsdorff: nodes | backtracks | found | + prune: nodes | pruned subtrees | found |
+| --- | ---: | ---: | --- | ---: | ---: | --- |
+| 11×11 | 352 | 231 | yes | 130 | 4 | yes |
+| 25×25 | 646 | 21 | yes | 634 | 4 | yes |
+| 43×43 | 327776 | 325927 | yes | 1852 | 2 | yes |
+| 49×49 | 2000000 | 2000000 | limit | 2413 | 8 | yes |
+| 58×58 | 2000000 | 2000000 | limit | 3370 | 4 | yes |
+| 60×60 | 2000000 | 2000000 | limit | 2000000 | 941133 | limit |
+
+Boards solved with no backtracking at all: 50 of 56.
+// result_end
+
+From the corner, Warnsdorff's order completes 50 of the 56 boards without a single backtrack.
+On \(11\times11\), \(25\times25\) and \(43\times43\) it makes a wrong choice but recovers, the last only
+after 325,927 backtracks: a mistake early in a long path is undone only after the whole subtree
+below it is exhausted. On \(49\times49\), \(58\times58\) and \(60\times60\) it does not recover
+within two million nodes. The connectivity prune detects the stranded squares as soon as they
+are cut off, rather than at the end of the path, and solves the 43, 49 and 58 boards in a few
+thousand nodes. On \(60\times60\) it prunes 941,133 subtrees and still runs out of budget, so the
+mistake must lie further back than the prune can see. Better tie-breaking rules, such as Pohl's (1967) or
+Squirrel and Cull's (1996), avoid many of these failures.
+
+> Summary
+
+- Backtracking explores the tree of simple paths: one node per path from the start, \(O(V)\)
+  memory, exponential time.
+- In \(K_n\) there are exactly \(\lfloor e(n-2)!\rfloor\) simple paths between two vertices and
+  \(2\lfloor e(n-2)!\rfloor\) search nodes, confirmed up to \(n=11\). Grids grow more slowly but
+  still exponentially: 1,262,816 corner-to-corner paths and 18.5 million nodes on \(6\times6\).
+- For Hamiltonian paths the branch order decides the outcome: on the \(8\times8\) knight's graph,
+  index order solved 6 of 64 starts within a million nodes, a connectivity prune 30, and
+  Warnsdorff's rule all 64, usually without backtracking.
+- On larger boards the rule's ties occasionally lead it astray; backtracking with the prune
+  recovers on most of them but not all.

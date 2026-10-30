@@ -1,0 +1,24 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[x=5cm,y=1.5cm,font=\large,>={Stealth[length=2.5mm]}]
+\draw[->,thick] (.5,0)--(2.13,0) node[right] {$p$};
+\draw[->,thick] (.55,-1.9)--(.55,2.5) node[above] {$r(p)$};
+\draw[blue!70!black,very thick,domain=.65:2,samples=100] plot (\x,{\x*\x-2});
+\draw[red!75!black,thick,domain=.65:2] plot (\x,{2*\x-3});
+\draw[dashed] (1,0)--(1,-1);\draw[dashed] (1.5,0)--(1.5,.25);
+\fill[blue!70!black] (1,-1) circle(1.5pt) node[below right] {current residual $-1$};
+\fill[red!75!black] (1.5,0) circle(1.5pt);
+\fill[blue!70!black] (1.5,.25) circle(1.5pt);
+\node[above left,blue!70!black] at (1.95,2.02) {$r(p)=p^2-2$};
+\node[right,red!75!black,font=\normalsize] at (1.88,.4) {tangent};
+\node[below left] at (1,0) {$1$};
+\node[above left,align=center,font=\normalsize] at (1.4,0) {true root\\$\sqrt{2}$};
+\node[below right,align=center,font=\normalsize] at (1.5,0) {tangent zero\\$1.5$};
+\draw[thin,blue!70!black] (1.5,.25)--(1.65,1.15)--(2.05,1.15);
+\node[right,align=left,font=\normalsize] at (2.05,1.15) {actual residual\\$1.5^2-2=0.25$};
+\draw[->,thick,red!75!black] (1,-1.65)--node[below] {$\delta=-r/J=1/2$}(1.5,-1.65);
+\node[align=center] at (1.32,-2.5) {Solve the tangent model, then evaluate the nonlinear residual.};
+\end{tikzpicture}
+\end{document}

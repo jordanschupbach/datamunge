@@ -1,0 +1,923 @@
+//? Title: INLA: Conditional Gaussians and Hyperparameter Mixing
+//? Subtitle: Exact controls, skew approximation, bounded quadrature and a penguin mixed model
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Observations may depend on latent effects whose prior scales are themselves unknown.
+Inference must account for uncertainty in both the effects and those scales, often
+without a tractable posterior integral. Integrated nested Laplace approximation
+replaces difficult conditional posteriors with local approximations and integrates
+low-dimensional hyperparameters numerically. We study this library's dense Gaussian
+strategy through an exact three-observation normal model, a skew Bernoulli posterior,
+and an explicit Gaussian mixture over uncertain precision. Grid refinement and a
+Palmer penguins mixed model expose numerical and prior sensitivity. A separate
+multiple-testing appendix preserves the original p-value example with its rejection
+counts corrected; it is not part of Bayesian posterior inference.
+)
+\toc
+
+> The method
+
+>> Specify the latent Gaussian model and the approximation
+
+Let \(x\in\mathbb R^p\) be the latent field, \(\theta\in\mathbb R^d\) its
+hyperparameters, and \(D\) the observation design. The model is
+
+$$
+ \eta=Dx,\qquad x\mid\theta\sim N(0,Q(\theta)^{-1}),\qquad
+ p(x,\theta\mid y)\propto p(\theta)|Q(\theta)|^{1/2}
+ \exp(-x^TQ(\theta)x/2)\prod_i p(y_i\mid\eta_i,\theta).
+$$
+\alttext(The observation predictor is D times the latent field. Given hyperparameters, the field has a zero-mean normal prior with precision Q. Its posterior combines the hyperprior, Gaussian prior normalization and quadratic, and independent observation likelihoods.)
+
+The likelihood callback supplies its log density, score \(s_i=\partial\log p_i/\partial\eta_i\),
+and nonnegative curvature \(c_i=-\partial^2\log p_i/\partial\eta_i^2\).
+At fixed \(\theta\), the gradient and negative Hessian in the latent field are
+
+$$
+ g=D^Ts-Qx,\qquad H=Q+D^T\operatorname{diag}(c_i)D,\qquad
+ x_{\mathrm{next}}=x+\alpha H^{-1}g.
+$$
+\alttext(The latent posterior score is the transposed design times likelihood scores minus prior precision times x. Its negative Hessian adds the likelihood curvature to Q. A safeguarded Newton step solves H delta equals g and scales that step by alpha.)
+
+Positive-definite \(Q\) and nonnegative curvature make \(H\) positive definite,
+so the conditional log posterior is strictly concave. A stationary point, if attained,
+is its unique mode. The solver uses Cholesky solves and step halving. It stops on a
+small *proposed* Newton step relative to \(1+\|x\|_\infty\); exhaustion or a failed
+line search is rejected. The final score norm is exposed, but numerical stopping alone
+does not quantify the Gaussian approximation error.
+
+At the conditional mode \(m(\theta)\), use
+\(x\mid y,\theta\approx N(m,H^{-1})\). This is exact for a normal likelihood with
+linear predictor and known hyperparameters. For a non-Gaussian likelihood, the mode
+usually differs from the actual conditional posterior mean.
+
+>> The Laplace ratio and the outer integral
+
+The normalized Gaussian prior contributes \(|Q|^{1/2}(2\pi)^{-p/2}\).
+Integrating the local Gaussian contributes \((2\pi)^{p/2}|H|^{-1/2}\), so those
+\(2\pi\) factors cancel. Thus the approximate log hyperposterior integrand is
+
+$$
+ \ell(\theta)=\log p(\theta)+\frac12\log|Q(\theta)|
+ +\sum_i\log p(y_i\mid D_im,\theta)-\frac12m^TQ(\theta)m
+ -\frac12\log|H(\theta)|.
+$$
+\alttext(The approximate log hyperposterior is log hyperprior plus half the log determinant of Q, plus log likelihood at the conditional mode, minus the prior quadratic and half the log determinant of the conditional negative Hessian.)
+
+A seeded differential-evolution search finds a candidate mode inside a declared box;
+it is not a global-optimality certificate. Finite differences estimate hyperparameter
+curvature there. Its inverse determines a rotated, equally spaced grid in curvature-SD
+coordinates. If the hyper-Hessian is unusable, the recorded fallback uses diagonal
+covariance equal to one sixteenth of each box width squared. Small covariance
+eigenvalues are floored for numerical grid construction.
+
+For one hyperparameter, cells are clipped to the box and evaluated at their clipped
+midpoints, with their actual widths. In higher dimensions, rotated cells retain a
+constant volume and outside-box centers are skipped: boundary quadrature is coarser
+and needs separate refinement. All retained conditional fits must converge. The
+reported skipped-point count can include both outside support and failed evaluations;
+inspect the model and sensitivity rather than interpreting it as a numerical error bound.
+
+The retained TikZ source needs LaTeX/TikZ, amsmath, lmodern and dvisvgm. Normal exports
+consume the committed SVG and do not rerun those tools.
+
+```{bash, file="figures/inla_nested_gaussians.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/inla_nested_gaussians.tikz > build/inla_nested_gaussians.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/inla_nested_gaussians.svg build/inla_nested_gaussians.dvi > build/inla_nested_gaussians.render.log 2>&1
+printf 'Rendered the conditional-Gaussian and hyperparameter-mixture diagram.\n'
+```
+// result_begin:
+// Rendered the conditional-Gaussian and hyperparameter-mixture diagram.
+// \image(figures/inla_nested_gaussians.svg)
+// result_end
+\caption(The inner Gaussian approximation supplies both an effect distribution and the outer grid's Laplace score.)
+\alttext(At each fixed theta, compute the latent mode and Hessian, score the hyperparameter, and normalize score times cell volume into weights. The final marginal is a mixture of conditional normals, with within-component and between-component variance.)
+
+>> Combine moments without confusing them with a single Gaussian
+
+With quadrature cell measures \(\Delta_k\), let
+\(w_k=\exp(\ell_k)\Delta_k/\sum_l\exp(\ell_l)\Delta_l\). Then
+
+$$
+ \bar m_j=\sum_kw_km_{kj},\qquad
+ V_j=\underbrace{\sum_kw_k[H_k^{-1}]_{jj}}_{\text{within}}
+ +\underbrace{\sum_kw_k(m_{kj}-\bar m_j)^2}_{\text{between}},\qquad
+ \widetilde p(x_j\mid y)=\sum_kw_k\phi(x_j;m_{kj},[H_k^{-1}]_{jj}).
+$$
+\alttext(The marginal mean averages conditional modes. Total variance is average conditional variance plus variance of conditional modes. The marginal density is the weighted mixture of conditional normal densities, which need not be normal.)
+
+The between term is nonnegative. This proves total variance exceeds its *own weighted
+within term*, not that it exceeds the variance of a different fit evaluated only at
+the hyperparameter mode. Empirical Bayes (EB) retains that single conditional fit,
+sets theta uncertainty and between variance to zero, and omits the outer integral.
+Its reported integrated evidence is therefore NaN. With a normalized likelihood,
+proper normalized priors and intentional integration support, the grid's
+\(\log\sum_k\exp(\ell_k)\Delta_k\) approximates log evidence. An arbitrary
+constant improper prior makes its scale arbitrary.
+
+This implementation follows the **Gaussian latent-marginal strategy**: it does not
+perform INLA's simplified/full marginal Laplace skew correction, sparse GMRF algebra,
+adaptive integration or exact posterior sampling. Conditional Newton work is
+\(O(np^2+p^3)\) per iteration; retaining \(K\) covariance matrices costs
+\(O(Kp^2)\). Tensor-grid cost grows as \(K=m^d\), so Grid caps \(d\) at four and
+candidates at one million. These are numerical limits, not promises of practical
+performance at those extremes.
+
+> Small worked examples
+
+>> Three normal observations: every conditional calculation is exact
+
+Take \(y=(1,2,3)\), \(y_i\mid x\sim N(x,1)\), and \(x\sim N(0,1)\).
+The likelihood as a function of \(x\) is proportional to \(N(2,1/3)\).
+Completing the square gives posterior precision \(1+3=4\), mean
+\((1+2+3)/4=1.5\), and variance \(1/4\). Starting at zero, the Newton score is six,
+so the first step is \(6/4=1.5\); the next proposed step is zero.
+
+The normalized evidence is also hand-checkable. The marginal covariance of \(y\)
+is \(I+\mathbf1\mathbf1^T\), with determinant four and inverse
+\(I-\mathbf1\mathbf1^T/4\), giving
+\(\log p(y)=-3\log(2\pi)/2-\log(4)/2-5/2\).
+The normalized likelihood-shaped curve below is an aid to reading the completed
+square; it is not itself a posterior.
+
+```{cpp, results="markdown", file="figures/inla_normal_exact.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace b           = dm::bayes;
+  using M               = dm::linalg::DenseMatrix<double>;
+  const auto likelihood = b::inla_gaussian_likelihood([](const auto&) { return 1.; });
+  const auto fit        = b::INLA().conditional(M(3, 1, 1), {1, 2, 3}, likelihood, M(1, 1, 1));
+  const auto reference  = b::inla_scalar_reference({1, 2, 3}, likelihood, 1, {}, -6, 8, 4001);
+  const auto x          = dm::seql(-1.5, 4.5, 401).values();
+  std::vector<double> prior, likelihood_shape, posterior;
+  for (double v : x) {
+    prior.push_back(std::exp(b::normal_lpdf(v, 0, 1)));
+    likelihood_shape.push_back(std::exp(b::normal_lpdf(v, 2, 1 / std::sqrt(3.))));
+    posterior.push_back(std::exp(b::normal_lpdf(v, fit.mode[0], std::sqrt(fit.covariance(0, 0)))));
+  }
+  auto plot = dm::graphics::RPlot::create()
+                  .line(x, prior, "prior", {130, 130, 130})
+                  .line(x, likelihood_shape, "likelihood shape", {190, 110, 35})
+                  .line(x, posterior, "posterior", {40, 100, 190})
+                  .title("Exact normal-normal posterior")
+                  .x_label("latent mean x")
+                  .y_label("density")
+                  .x_limits(-1.5, 4.5)
+                  .y_limits(0, 1.1)
+                  .legend(
+                      {"prior", "likelihood shape", "posterior"},
+                      {{130, 130, 130}, {190, 110, 35}, {40, 100, 190}});
+  plot.size(850, 490).save_svg("build/inla_normal_exact.svg");
+  std::print(
+      "Conditional Gaussian\n\n{}\n\nDirect finite-window reference: mean={:.9f}, SD={:.9f}, log "
+      "evidence={:.9f}, edge mass={:.3g}.\n",
+      b::inla_conditional_table(fit).to_md(6),
+      reference.mean[0],
+      reference.sd[0],
+      reference.log_evidence,
+      reference.edge_mass);
+}
+```
+// result_begin: markdown
+Conditional Gaussian
+
+| component | mode | sd | iterations | gradient_inf | conditional_log_evidence |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1.5 | 0.5 | 2 | 0 | -5.949963 |
+
+
+Direct finite-window reference: mean=1.500000000, SD=0.500000000, log evidence=-5.949962780, edge mass=5.86e-40.
+\image(figures/inla_normal_exact.svg)
+// result_end
+\caption(Normal likelihood and normal prior make the mode, mean and inverse-Hessian covariance agree with the exact posterior.)
+\alttext(Prior centered at zero, normalized likelihood shape centered at two, and exact posterior centered at 1.5 with SD 0.5. Direct scalar quadrature checks mean, spread and normalized evidence.)
+
+>> Four Bernoulli outcomes: mode and mean separate
+
+Now take \(y=(1,1,1,0)\), a logit link, and \(x\sim N(0,4)\).
+The score is \(3-4\operatorname{logistic}(x)-x/4\), and the negative Hessian is
+\(4p(1-p)+1/4\). At zero they equal one and 1.25, so the first Newton proposal
+is 0.8. The converged mode and local variance describe a Gaussian approximation,
+not the exact posterior mean and spread.
+
+`inla_scalar_reference` instead integrates the actual scalar likelihood times its
+normal prior on a dense finite midpoint grid. It has quadrature and tail truncation
+error, so its window, resolution and edge mass are explicit. We compare small and
+larger samples with the same exact success fraction three quarters. Improving
+agreement along this sequence is evidence for these inputs, not a universal monotonic
+error theorem. A small final Newton score cannot detect the skew error.
+
+```{cpp, results="markdown", file="figures/inla_bernoulli_skew.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace b           = dm::bayes;
+  using M               = dm::linalg::DenseMatrix<double>;
+  const auto likelihood = b::inla_binomial_logit_likelihood();
+  const auto fit        = b::INLA().conditional(M(4, 1, 1), {1, 1, 1, 0}, likelihood, M(1, 1, .25));
+  const auto ref = b::inla_scalar_reference({1, 1, 1, 0}, likelihood, .25, {}, -12, 12, 16001);
+  std::vector<double> shown_x, shown_density, gaussian;
+  for (std::size_t i = 0; i < ref.marginal_grid[0].size(); ++i) {
+    const double v = ref.marginal_grid[0][i];
+    if (v < -4 || v > 7)
+      continue;
+    shown_x.push_back(v);
+    shown_density.push_back(ref.marginal_density[0][i]);
+    gaussian.push_back(std::exp(b::normal_lpdf(v, fit.mode[0], std::sqrt(fit.covariance(0, 0)))));
+  }
+  auto density = dm::graphics::RPlot::create()
+                     .line(shown_x, shown_density, "direct", {190, 100, 35})
+                     .line(shown_x, gaussian, "Gaussian", {40, 100, 190})
+                     .title("Four outcomes: a skew posterior")
+                     .x_label("log-odds x")
+                     .y_label("density")
+                     .x_limits(-4, 7)
+                     .y_limits(0, .65)
+                     .legend({"direct", "Gaussian"}, {{190, 100, 35}, {40, 100, 190}});
+  std::vector<double> n, axis, mean_error, sd_error, exact_mean, exact_sd, approx_mean, approx_sd;
+  for (std::size_t count : {4, 20, 100, 400}) {
+    std::vector<double> y(count, 0);
+    std::fill(y.begin(), y.begin() + 3 * count / 4, 1);
+    const auto f = b::INLA().conditional(M(count, 1, 1), y, likelihood, M(1, 1, .25));
+    const auto r = b::inla_scalar_reference(y, likelihood, .25, {}, -12, 12, 8001);
+    n.push_back(count);
+    axis.push_back(std::log10(double(count)));
+    approx_mean.push_back(f.mode[0]);
+    approx_sd.push_back(std::sqrt(f.covariance(0, 0)));
+    exact_mean.push_back(r.mean[0]);
+    exact_sd.push_back(r.sd[0]);
+    mean_error.push_back(std::abs(f.mode[0] - r.mean[0]));
+    sd_error.push_back(std::abs(std::sqrt(f.covariance(0, 0)) - r.sd[0]));
+  }
+  auto errors = dm::graphics::RPlot::create()
+                    .line(axis, mean_error, "mean", {40, 100, 190})
+                    .points(axis, mean_error, "", {40, 100, 190}, 5)
+                    .line(axis, sd_error, "SD", {190, 100, 35})
+                    .points(axis, sd_error, "", {190, 100, 35}, 5)
+                    .title("Approximation error along a sequence")
+                    .x_label("observations (log-spaced)")
+                    .x_ticks(axis, {"4", "20", "100", "400"})
+                    .y_label("absolute difference")
+                    .x_limits(.5, 2.7)
+                    .y_limits(0, .23)
+                    .legend({"mean", "SD"}, {{40, 100, 190}, {190, 100, 35}});
+  dm::graphics::RLayout::create(1, 2)
+      .add(density)
+      .add(errors)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/inla_bernoulli_skew.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("observations", n);
+  table.add_column("Gaussian_mean", approx_mean);
+  table.add_column("reference_mean", exact_mean);
+  table.add_column("Gaussian_sd", approx_sd);
+  table.add_column("reference_sd", exact_sd);
+  std::print(
+      "Small-sample conditional fit\n\n{}\n\nReference edge mass={:.3g}; log "
+      "evidence={:.9f}.\n\nFixed-success-fraction sequence\n\n{}\n",
+      b::inla_conditional_table(fit).to_md(6),
+      ref.edge_mass,
+      ref.log_evidence,
+      table.to_md(6));
+}
+```
+// result_begin: markdown
+Small-sample conditional fit
+
+| component | mode | sd | iterations | gradient_inf | conditional_log_evidence |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0.836468 | 0.956237 | 4 | 0 | -3.101569 |
+
+
+Reference edge mass=6.01e-16; log evidence=-3.064267950.
+
+Fixed-success-fraction sequence
+
+| observations | Gaussian_mean | reference_mean | Gaussian_sd | reference_sd |
+| ---: | ---: | ---: | ---: | ---: |
+| 4 | 0.836468 | 0.973471 | 0.956237 | 1.033399 |
+| 20 | 1.031013 | 1.086509 | 0.492333 | 0.508962 |
+| 100 | 1.084208 | 1.097067 | 0.228606 | 0.230435 |
+| 400 | 1.094966 | 1.098269 | 0.115174 | 0.115411 |
+
+\image(figures/inla_bernoulli_skew.svg)
+// result_end
+\caption(A correctly converged conditional mode can still miss skew posterior moments; the larger-sample sequence checks how that discrepancy changes.)
+\alttext(Left: direct finite-window Bernoulli posterior and its local Gaussian approximation. Right: absolute mean and SD differences at 4, 20, 100 and 400 observations, with success fraction three quarters.)
+
+>> Unknown precision: integrate conditional normals rather than only their mode
+
+Return to \(y=(1,2,3)\) with unit observation noise, but now use
+\(x\mid\theta\sim N(0,e^{-\theta})\) and \(\theta\sim N(0,1)\).
+The fitted theta coordinate is **log precision**. Its prior is already a density on
+that scale; substituting a prior density for precision itself would require a Jacobian.
+We restrict the numerical integration box to [-6,6], where the standard-normal prior
+has negligible omitted mass, and use a five-curvature-SD grid span.
+
+At each theta the exact conditional variance is \(v_k=(3+e^{\theta_k})^{-1}\)
+and mean is \(m_k=6v_k\). Thus conditional Gaussian approximation error vanishes
+in this example. The remaining difference from the full posterior comes from mode
+search and numerical hyperparameter integration. EB freezes \(\theta\) at its
+selected mode. The integrated marginal can be skew even though every component is
+normal; replacing it with a normal having the final mean and SD would lose that shape.
+
+```{cpp, results="markdown", file="figures/inla_precision_mixture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace b               = dm::bayes;
+  using M                   = dm::linalg::DenseMatrix<double>;
+  const auto     likelihood = b::inla_gaussian_likelihood([](const auto&) { return 1.; });
+  const auto     precision  = [](const auto& t) { return M(1, 1, std::exp(t[0])); };
+  const auto     prior      = [](const auto& t) { return b::normal_lpdf(t[0], 0, 1); };
+  b::INLAOptions o;
+  o.grid_points_per_dim  = 31;
+  o.grid_span            = 5;
+  o.mode_population_size = 20;
+  o.mode_max_generations = 80;
+  const auto grid =
+      b::INLA(o).fit(M(3, 1, 1), {1, 2, 3}, likelihood, precision, prior, {-6}, {6}, {0});
+  o.strategy = b::INLAIntegrationStrategy::EmpiricalBayes;
+  const auto eb =
+      b::INLA(o).fit(M(3, 1, 1), {1, 2, 3}, likelihood, precision, prior, {-6}, {6}, {0});
+  const auto x          = dm::seql(-1, 4, 501).values();
+  const auto density    = b::inla_latent_density(grid, 0, x),
+             eb_density = b::inla_latent_density(eb, 0, x), table = b::inla_grid_table(grid);
+  std::vector<double> theta_density;
+  for (std::size_t i = 0; i < table.nrows(); ++i)
+    theta_density.push_back(table.double_at("weight", i) / table.double_at("cell_volume", i));
+  auto theta =
+      dm::graphics::RPlot::create()
+          .line(table.numeric_column("theta_0").values(), theta_density, "", {40, 100, 190})
+          .title("Weighted log-precision grid")
+          .x_label("theta = log precision")
+          .y_label("approximate theta density");
+  auto latent = dm::graphics::RPlot::create()
+                    .line(x, density.numeric_column("density").values(), "Grid", {40, 100, 190})
+                    .line(x, eb_density.numeric_column("density").values(), "EB", {190, 100, 35})
+                    .title("Latent marginal after mixing")
+                    .x_label("latent mean x")
+                    .y_label("density")
+                    .x_limits(-1, 4)
+                    .y_limits(0, 1.1)
+                    .legend({"Grid", "EB"}, {{40, 100, 190}, {190, 100, 35}});
+  dm::graphics::RLayout::create(1, 2).add(theta).add(latent).size(1100, 490).fit_panels().save_svg(
+      "build/inla_precision_mixture.svg");
+  const auto summaries =
+      b::inla_latent_summary(grid)
+          .mutate("strategy", std::vector<std::string>{"Grid"})
+          .concat_rows(
+              b::inla_latent_summary(eb).mutate("strategy", std::vector<std::string>{"EB"}));
+  std::print(
+      "Moment decomposition\n\n{}\n\nGrid theta mean={:.9f}, SD={:.9f}, log evidence={:.9f}; EB "
+      "integrated evidence={}.\n\nRetained grid\n\n{}\n",
+      summaries.to_md(6),
+      grid.theta_mean[0],
+      grid.theta_sd[0],
+      grid.log_marginal_likelihood,
+      eb.log_marginal_likelihood,
+      table.to_md(6));
+}
+```
+// result_begin: markdown
+Moment decomposition
+
+| component | mean | sd | within_variance | between_variance | total_variance | strategy |
+| ---: | ---: | ---: | ---: | ---: | ---: | :--- |
+| 0 | 1.600196 | 0.571969 | 0.266699 | 0.060450 | 0.327149 | Grid |
+| 0 | 1.650312 | 0.524454 | 0.275052 | 0.000000 | 0.275052 | EB |
+
+
+Grid theta mean=-0.468936760, SD=0.815181811, log evidence=-6.005828887; EB integrated evidence=nan.
+
+Retained grid
+
+| theta_0 | weight | cell_volume | log_posterior | iterations | gradient_inf | mode_0 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| -4.363285 | 0.000005 | 0.260681 | -16.953316 | 2 | 0 | 1.991545 |
+| -4.102604 | 0.000016 | 0.260681 | -15.727667 | 2 | 0 | 1.989041 |
+| -3.841923 | 0.000050 | 0.260681 | -14.572369 | 2 | 0 | 1.985800 |
+| -3.581241 | 0.000147 | 0.260681 | -13.488114 | 2 | 0 | 1.981610 |
+| -3.320560 | 0.000404 | 0.260681 | -12.475790 | 2 | 0 | 1.976198 |
+| -3.059878 | 0.001033 | 0.260681 | -11.536526 | 2 | 0 | 1.969219 |
+| -2.799197 | 0.002453 | 0.260681 | -10.671750 | 2 | 0 | 1.960234 |
+| -2.538516 | 0.005397 | 0.260681 | -9.883257 | 2 | 0 | 1.948695 |
+| -2.277834 | 0.010978 | 0.260681 | -9.173279 | 2 | 0 | 1.933921 |
+| -2.017153 | 0.020585 | 0.260681 | -8.544554 | 2 | 0 | 1.915077 |
+| -1.756471 | 0.035472 | 0.260681 | -8.000385 | 2 | 0 | 1.891162 |
+| -1.495790 | 0.055950 | 0.260681 | -7.544663 | 2 | 0 | 1.861001 |
+| -1.235109 | 0.080423 | 0.260681 | -7.181832 | 2 | 0 | 1.823263 |
+| -0.974427 | 0.104834 | 0.260681 | -6.916746 | 2 | 0 | 1.776510 |
+| -0.713746 | 0.123315 | 0.260681 | -6.754387 | 2 | 0 | 1.719293 |
+| -0.453064 | 0.130288 | 0.260681 | -6.699383 | 2 | 0 | 1.650312 |
+| -0.192383 | 0.123198 | 0.260681 | -6.755336 | 2 | 0 | 1.568631 |
+| 0.068298 | 0.104079 | 0.260681 | -6.923982 | 2 | 0 | 1.473954 |
+| 0.328980 | 0.078632 | 0.260681 | -7.204343 | 2 | 0 | 1.366883 |
+| 0.589661 | 0.053360 | 0.260681 | -7.592070 | 2 | 0 | 1.249121 |
+| 0.850343 | 0.032781 | 0.260681 | -8.079275 | 2 | 0 | 1.123501 |
+| 1.111024 | 0.018432 | 0.260681 | -8.655039 | 2 | 0 | 0.993794 |
+| 1.371705 | 0.009607 | 0.260681 | -9.306602 | 2 | 0 | 0.864296 |
+| 1.632387 | 0.004703 | 0.260681 | -10.021005 | 2 | 0 | 0.739274 |
+| 1.893068 | 0.002187 | 0.260681 | -10.786743 | 2 | 0 | 0.622425 |
+| 2.153749 | 0.000974 | 0.260681 | -11.594998 | 2 | 0 | 0.516480 |
+| 2.414431 | 0.000418 | 0.260681 | -12.440224 | 2 | 0 | 0.423030 |
+| 2.675112 | 0.000174 | 0.260681 | -13.320060 | 2 | 0 | 0.342583 |
+| 2.935794 | 0.000070 | 0.260681 | -14.234780 | 2 | 0 | 0.274770 |
+| 3.196475 | 0.000027 | 0.260681 | -15.186529 | 2 | 0 | 0.218609 |
+| 3.457156 | 0.000010 | 0.260681 | -16.178561 | 2 | 0 | 0.172778 |
+
+\image(figures/inla_precision_mixture.svg)
+// result_end
+\caption(The grid exposes the hyperparameter weights, exact conditional Gaussian moments and additional variance from mixing their locations.)
+\alttext(Left: approximate log-precision posterior density from normalized cell weights divided by cell widths. Right: the integrated latent Gaussian mixture versus its empirical-Bayes single component. The table splits total variance into within and between terms.)
+
+> Checking integration resolution
+
+Refine the same Gaussian-conditional model from 7 to 15, 31 and 61 grid points per
+axis. A final 61-point calculation increases the span from five to seven curvature
+SDs, checking a truncation effect that resolution at a fixed span can miss. We
+report the actual retained count, theta moments, latent moments, evidence,
+outer-grid edge mass and skipped candidates. Similar values after refinement are
+useful numerical evidence; a small edge mass is not a rigorous tail bound and can
+miss a binding integration box. In the observed-data example we therefore vary
+prior support separately. No grid setting is selected by test-label accuracy.
+
+```{cpp, results="markdown", file="figures/inla_grid_refinement.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace b = dm::bayes;
+  using M     = dm::linalg::DenseMatrix<double>;
+  std::vector<double> points, span, retained, mean, sd, theta_mean, theta_sd, evidence, edge,
+      skipped;
+  for (const auto& setting :
+       std::vector<std::pair<std::size_t, double>>{{7, 5}, {15, 5}, {31, 5}, {61, 5}, {61, 7}}) {
+    const auto     count = setting.first;
+    b::INLAOptions o;
+    o.grid_points_per_dim  = count;
+    o.grid_span            = setting.second;
+    o.mode_population_size = 20;
+    o.mode_max_generations = 80;
+    const auto f           = b::INLA(o).fit(
+        M(3, 1, 1),
+        {1, 2, 3},
+        b::inla_gaussian_likelihood([](const auto&) { return 1.; }),
+        [](const auto& t) { return M(1, 1, std::exp(t[0])); },
+        [](const auto& t) { return b::normal_lpdf(t[0], 0, 1); },
+        {-6},
+        {6},
+        {0});
+    points.push_back(count);
+    span.push_back(setting.second);
+    retained.push_back(f.theta_grid_weights.size());
+    mean.push_back(f.latent_mean[0]);
+    sd.push_back(f.latent_sd[0]);
+    theta_mean.push_back(f.theta_mean[0]);
+    theta_sd.push_back(f.theta_sd[0]);
+    evidence.push_back(f.log_marginal_likelihood);
+    edge.push_back(f.grid_edge_mass);
+    skipped.push_back(f.grid_skipped_points);
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("axis_points", points);
+  table.add_column("span", span);
+  table.add_column("retained", retained);
+  table.add_column("latent_mean", mean);
+  table.add_column("latent_sd", sd);
+  table.add_column("theta_mean", theta_mean);
+  table.add_column("theta_sd", theta_sd);
+  table.add_column("log_evidence", evidence);
+  table.add_column("grid_edge_mass", edge);
+  table.add_column("skipped", skipped);
+  auto moments = dm::graphics::RPlot::create()
+                     .line(points, mean, "mean", {40, 100, 190})
+                     .points(points, mean, "", {40, 100, 190}, 5)
+                     .line(points, sd, "SD", {190, 100, 35})
+                     .points(points, sd, "", {190, 100, 35}, 5)
+                     .title("Latent moments under refinement")
+                     .x_label("grid points per axis")
+                     .y_label("latent-coordinate units")
+                     .y_limits(0, 2.2)
+                     .legend({"mean", "SD"}, {{40, 100, 190}, {190, 100, 35}});
+  std::vector<double> evidence_difference;
+  for (double v : evidence)
+    evidence_difference.push_back(1000 * (v - evidence.back()));
+  auto integral = dm::graphics::RPlot::create()
+                      .line(points, evidence_difference, "", {40, 100, 190})
+                      .points(points, evidence_difference, "", {40, 100, 190}, 5)
+                      .title("Log evidence relative to wider grid")
+                      .x_label("grid points per axis")
+                      .y_label("1000 x log-evidence difference");
+  dm::graphics::RLayout::create(1, 2)
+      .add(moments)
+      .add(integral)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/inla_grid_refinement.svg");
+  std::print("{}\n", table.to_md(6));
+}
+```
+// result_begin: markdown
+| axis_points | span | retained | latent_mean | latent_sd | theta_mean | theta_sd | log_evidence | grid_edge_mass | skipped |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 7 | 5 | 7 | 1.602872 | 0.572186 | -0.471210 | 0.804326 | -6.003018 | 0.000073 | 0 |
+| 15 | 5 | 15 | 1.600192 | 0.571974 | -0.468929 | 0.815222 | -6.005825 | 0.000031 | 0 |
+| 31 | 5 | 31 | 1.600196 | 0.571969 | -0.468937 | 0.815182 | -6.005829 | 0.000015 | 0 |
+| 61 | 5 | 61 | 1.600198 | 0.571966 | -0.468941 | 0.815157 | -6.005832 | 0.000007 | 0 |
+| 61 | 7 | 61 | 1.600189 | 0.571978 | -0.468921 | 0.815258 | -6.005822 | 0.000000 | 0 |
+
+\image(figures/inla_grid_refinement.svg)
+// result_end
+\caption(With Gaussian conditional posteriors, changes along this refinement sequence isolate hyperparameter quadrature and mode-search effects.)
+\alttext(Two panels show latent mean and SD, and approximate log evidence, at 7, 15, 31 and 61 grid points, plus a wider 61-point span. The table also records theta moments, retained cells, skipped candidates and edge mass.)
+
+> Observed data: Palmer penguins
+
+The bundled 344-row dataset includes sex, body mass, species and island. Retain rows
+complete in sex, body_mass_g and island, giving 333 observations. Define male as one
+and use centered body mass in kilograms, \(\text{mass}=\text{body_mass_g}/1000-4.2\).
+Fit `male ~ mass + (1 | island)`, retaining the original report's random-intercept
+structure while making units and priors explicit. This is a descriptive fit to all
+complete rows; there is no held-out prediction-performance claim.
+
+Fixed coefficients receive independent \(N(0,2.5^2)\) priors on these centered units.
+The island random-intercept SD \(\lambda\) has a normalized uniform prior on
+[0.01,3]. The latter is a density on SD itself, not on variance or log SD. General
+random-slope models use independent uniform priors on packed covariance-factor
+entries, not independent uniform variance/correlation priors. With three islands,
+prior support for an SD matters and will be checked separately.
+
+Species composition differs sharply by island; the formula omits species. Consequently
+an island coefficient can absorb species composition and other omitted structure.
+It should not be read as a causal island effect. Neither descriptive fitting accuracy
+nor a local Gaussian interval resolves that model limitation.
+
+```{cpp, results="markdown", file="figures/inla_penguins.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d =
+      dm::datasets::penguins()
+          .filter([](const auto& r) {
+            return !r.is_null("sex") && !r.is_null("body_mass_g") && !r.is_null("island");
+          })
+          .mutate_with(
+              "male", [](const auto& r) { return r.get_string("sex") == "male" ? 1. : 0.; })
+          .mutate_with(
+              "mass", [](const auto& r) { return r.get_double("body_mass_g") / 1000 - 4.2; });
+  dm::stats::INLAMixedModelOptions o;
+  o.family                = dm::stats::INLAMixedModelFamily::Binomial;
+  o.fixed_effect_prior_sd = 2.5;
+  o.lambda_diag_epsilon   = .01;
+  o.lambda_bound          = 3;
+  o.grid_points_per_dim   = 41;
+  o.grid_span             = 5;
+  o.mode_population_size  = 20;
+  o.mode_max_generations  = 80;
+  const dm::stats::INLAMixedModel model(d, "male ~ mass + (1 | island)", o);
+  const auto                      effects   = model.random_effects_frame();
+  auto                            intervals = dm::graphics::RPlot::create();
+  for (std::size_t j = 0; j < effects.nrows(); ++j) {
+    intervals.line(
+        {double(j), double(j)},
+        {effects.double_at("q025", j), effects.double_at("q975", j)},
+        "",
+        {40, 100, 190});
+    intervals.points({double(j)}, {effects.double_at("mean", j)}, "", {40, 100, 190}, 6);
+  }
+  intervals.title("Island intercepts: mixture intervals")
+      .x_label("island")
+      .x_ticks({0, 1, 2}, model.group_labels())
+      .y_label("log-odds random intercept")
+      .x_limits(-.5, 2.5)
+      .y_limits(-5, 5)
+      .abline_h(0, {130, 130, 130}, 1);
+  auto                                 curves = dm::graphics::RPlot::create();
+  const auto                           mass   = dm::seql(2.7, 6.3, 121).values();
+  const std::vector<dm::graphics::RGB> colors{{40, 100, 190}, {190, 100, 35}, {40, 140, 80}};
+  for (std::size_t j = 0; j < model.num_groups(); ++j) {
+    dm::dstruct::DataFrame query;
+    std::vector<double>    centered;
+    for (double v : mass)
+      centered.push_back(v - 4.2);
+    query.add_column("mass", centered);
+    query.add_column("island", std::vector<std::string>(mass.size(), model.group_labels()[j]));
+    curves.line(mass, model.predict(query), model.group_labels()[j], colors[j]);
+  }
+  curves.title("Plug-in curves at fixed island")
+      .x_label("body mass (kg)")
+      .y_label("inverse-link mean-field prediction")
+      .x_limits(2.7, 6.3)
+      .y_limits(0, 1.35)
+      .legend(model.group_labels(), colors);
+  dm::graphics::RLayout::create(1, 2)
+      .add(intervals)
+      .add(curves)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/inla_penguins.svg");
+  std::print(
+      "{} complete rows; {} islands.\n\nIsland/species composition\n\n{}\n\nFixed "
+      "effects\n\n{}\n\nRandom effects\n\n{}\n\nPhysical SD moments\n\n{}\n\nRetained cells={}, "
+      "skipped={}, hyper-curvature fallback={}, grid-edge mass={:.3g}, log evidence={:.9f}.\n",
+      model.observations(),
+      model.num_groups(),
+      (d | dm::group_by("island", "species") |
+       dm::summarise(dm::agg::n("rows"), dm::agg::mean("male", "male_fraction")) | dm::to_md(4)),
+      model.fixed_effects_frame().to_md(),
+      effects.to_md(),
+      model.variance_components_frame().to_md(),
+      model.posterior().theta_grid_weights.size(),
+      model.posterior().grid_skipped_points,
+      model.posterior().grid_covariance_fallback,
+      model.posterior().grid_edge_mass,
+      model.log_marginal_likelihood());
+}
+```
+// result_begin: markdown
+333 complete rows; 3 islands.
+
+Island/species composition
+
+| island | species | rows | male_fraction |
+| :--- | :--- | ---: | ---: |
+| Torgersen | Adelie | 47 | 0.4894 |
+| Biscoe | Adelie | 44 | 0.5000 |
+| Dream | Adelie | 55 | 0.5091 |
+| Biscoe | Gentoo | 119 | 0.5126 |
+| Dream | Chinstrap | 68 | 0.5000 |
+
+
+Fixed effects
+
+| term | mean | sd | within_variance | between_variance |
+| :--- | ---: | ---: | ---: | ---: |
+| (Intercept) | 0.293 | 0.983 | 0.965 | 0.000 |
+| mass | 2.458 | 0.301 | 0.087 | 0.003 |
+
+
+Random effects
+
+| group | term | mean | sd | within_variance | between_variance | q025 | q975 |
+| :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Torgersen | (Intercept) | 0.853 | 1.013 | 1.022 | 0.005 | -1.153 | 2.954 |
+| Biscoe | (Intercept) | -1.605 | 1.013 | 1.024 | 0.003 | -3.679 | 0.426 |
+| Dream | (Intercept) | 0.912 | 0.998 | 0.994 | 0.003 | -1.077 | 2.977 |
+
+
+Physical SD moments
+
+| component | mean_sd | sd_of_sd | sd_at_mean_theta |
+| :--- | ---: | ---: | ---: |
+| (Intercept) | 1.791 | 0.605 | 1.791 |
+
+
+Retained cells=17, skipped=24, hyper-curvature fallback=false, grid-edge mass=0, log evidence=-183.639366002.
+\image(figures/inla_penguins.svg)
+// result_end
+\caption(Dots are approximate mixture means; intervals are its equal-tail 95% quantiles. Prediction curves hold island fixed while varying mass.)
+\alttext(Left: Torgersen, Biscoe and Dream random-intercept mixture means with equal-tail 95% approximate posterior intervals and a zero reference. Right: inverse-link predictions at the posterior mean latent field, one curve per island, as body mass varies.)
+
+The interval endpoints come from the actual retained Gaussian mixture CDF, not a
+symmetric mean-plus-or-minus-two-SD shortcut. They remain intervals of an approximation.
+`variance_components_frame()` transforms each grid point before computing the mean
+and SD of physical random-effect SDs. By contrast, legacy `random_effect_std_devs()`
+evaluates the transformation at mean theta; those quantities can differ for multivariate
+factors. Gaussian `residual_std_dev()` similarly returns exp(mean log SD), which is
+not the mean residual SD.
+
+`predict()` computes the inverse link at the posterior mean latent field. For logit
+and log links this is generally different from integrating the response mean over the
+posterior. Unseen/null groups set their random effects to zero; that fallback does
+not integrate the distribution of a new island. The smooth curves therefore illustrate
+the fitted mean field rather than calibrated posterior predictive probabilities.
+
+>> Separate grid sensitivity from prior sensitivity
+
+First change only the number of grid points, holding the [0.01,3] SD prior fixed.
+Then fix 81 grid points and vary the prior's upper bound through 1.5, 3 and 5. This
+second experiment changes the model, not just numerical resolution. Do not choose a
+prior bound by maximizing these observed-data summaries or evidence values. With
+only three groups, movement in the random-effect SD is scientifically relevant even
+when the fixed mass slope moves little. A zero outer-grid edge mass cannot establish
+that a deliberately finite prior bound is unimportant.
+
+```{cpp, results="markdown", file="figures/inla_penguins_sensitivity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d =
+      dm::datasets::penguins()
+          .filter([](const auto& r) {
+            return !r.is_null("sex") && !r.is_null("body_mass_g") && !r.is_null("island");
+          })
+          .mutate_with(
+              "male", [](const auto& r) { return r.get_string("sex") == "male" ? 1. : 0.; })
+          .mutate_with(
+              "mass", [](const auto& r) { return r.get_double("body_mass_g") / 1000 - 4.2; });
+  std::vector<std::string> experiment;
+  std::vector<double>      grid, bound, slope, mean_sd, sd_of_sd, edge;
+  for (const auto& setting : std::vector<std::pair<std::size_t, double>>{
+           {11, 3}, {21, 3}, {41, 3}, {81, 3}, {81, 1.5}, {81, 5}}) {
+    dm::stats::INLAMixedModelOptions o;
+    o.family                = dm::stats::INLAMixedModelFamily::Binomial;
+    o.fixed_effect_prior_sd = 2.5;
+    o.lambda_diag_epsilon   = .01;
+    o.lambda_bound          = setting.second;
+    o.grid_points_per_dim   = setting.first;
+    o.grid_span             = 5;
+    o.mode_population_size  = 20;
+    o.mode_max_generations  = 80;
+    const dm::stats::INLAMixedModel model(d, "male ~ mass + (1 | island)", o);
+    const auto                      components = model.variance_components_frame();
+    experiment.push_back(setting.first == 81 && setting.second != 3 ? "prior" : "grid");
+    grid.push_back(setting.first);
+    bound.push_back(setting.second);
+    slope.push_back(model.fixed_effects_mean()[1]);
+    mean_sd.push_back(components.double_at("mean_sd", 0));
+    sd_of_sd.push_back(components.double_at("sd_of_sd", 0));
+    edge.push_back(model.posterior().grid_edge_mass);
+  }
+  auto refinement = dm::graphics::RPlot::create()
+                        .line(
+                            {grid.begin(), grid.begin() + 4},
+                            {mean_sd.begin(), mean_sd.begin() + 4},
+                            "",
+                            {40, 100, 190})
+                        .points(
+                            {grid.begin(), grid.begin() + 4},
+                            {mean_sd.begin(), mean_sd.begin() + 4},
+                            "",
+                            {40, 100, 190},
+                            6)
+                        .title("Numerical refinement: same prior")
+                        .x_label("grid points per axis")
+                        .y_label("posterior mean island SD");
+  auto priors = dm::graphics::RPlot::create()
+                    .points(
+                        {bound[4], bound[3], bound[5]},
+                        {mean_sd[4], mean_sd[3], mean_sd[5]},
+                        "",
+                        {190, 100, 35},
+                        7)
+                    .line(
+                        {bound[4], bound[3], bound[5]},
+                        {mean_sd[4], mean_sd[3], mean_sd[5]},
+                        "",
+                        {190, 100, 35})
+                    .title("Prior support: different models")
+                    .x_label("uniform SD prior upper bound")
+                    .y_label("posterior mean island SD");
+  dm::graphics::RLayout::create(1, 2)
+      .add(refinement)
+      .add(priors)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/inla_penguins_sensitivity.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("experiment", experiment);
+  table.add_column("axis_points", grid);
+  table.add_column("SD_prior_upper", bound);
+  table.add_column("mass_slope", slope);
+  table.add_column("mean_island_sd", mean_sd);
+  table.add_column("sd_of_island_sd", sd_of_sd);
+  table.add_column("outer_grid_edge_mass", edge);
+  std::print("{}\n", table.to_md(6));
+}
+```
+// result_begin: markdown
+| experiment | axis_points | SD_prior_upper | mass_slope | mean_island_sd | sd_of_island_sd | outer_grid_edge_mass |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| grid | 11 | 3.0 | 2.455886 | 1.794508 | 0.602423 | 0 |
+| grid | 21 | 3.0 | 2.458160 | 1.789600 | 0.603998 | 0 |
+| grid | 41 | 3.0 | 2.458321 | 1.790849 | 0.604980 | 0 |
+| grid | 81 | 3.0 | 2.458316 | 1.790941 | 0.605403 | 0 |
+| prior | 81 | 1.5 | 2.398713 | 1.148209 | 0.231118 | 0 |
+| prior | 81 | 5.0 | 2.473804 | 2.291977 | 1.059059 | 0 |
+
+\image(figures/inla_penguins_sensitivity.svg)
+// result_end
+\caption(The left panel changes quadrature resolution within one model. The right changes a normalized prior and therefore the model itself.)
+\alttext(Left: mean island SD under 11, 21, 41 and 81 grid points with prior upper bound three. Right: mean island SD under prior upper bounds 1.5, three and five, each using 81 grid points.)
+
+> Independent appendix: adjust the original ten p-values
+
+The supplied p-values are \((.001,.004,.009,.03,.12,.18,.35,.51,.72,.98)\).
+They are illustrative numbers, not tests extracted from the penguin posterior, and
+small p-values alone do not identify which null hypotheses are true. For ordered
+values \(p_{(i)}\), Bonferroni uses \(\min(1,mp_i)\); Holm takes the running
+maximum of \((m-j+1)p_{(j)}\) through rank \(i\), capped at one. BH takes the
+backward running minimum of \(mp_{(j)}/j\) from rank \(i\), also capped at one.
+Both procedures restore the caller's original order.
+
+At level .05, Bonferroni and Holm reject **two**, while BH rejects **three**.
+The fourth raw value .03 is not rejected by any of them: its adjusted values are
+.30, .21 and .075. Bonferroni/Holm control family-wise error under valid marginal
+p-values without a dependence restriction. BH controls false discovery rate under
+independence or suitable positive dependence. FDR is an expected false-discovery
+proportion with the zero-rejection case defined as zero, not a guarantee for each
+realized list. These procedures do not convert an approximate Bayesian interval
+into a multiplicity-adjusted frequentist test.
+
+```{cpp, results="markdown", file="figures/inla_p_adjust.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::vector<double> raw{.001, .004, .009, .03, .12, .18, .35, .51, .72, .98};
+  const auto                bonf = dm::stats::p_adjust(raw, dm::stats::PAdjustMethod::Bonferroni),
+             holm                = dm::stats::p_adjust(raw, dm::stats::PAdjustMethod::Holm),
+             bh                  = dm::stats::p_adjust(raw, dm::stats::PAdjustMethod::BH);
+  dm::dstruct::DataFrame table;
+  table.add_column("raw", raw);
+  table.add_column("Bonferroni", bonf);
+  table.add_column("Holm", holm);
+  table.add_column("BH", bh);
+  auto       all = dm::graphics::RPlot::create(), detail = dm::graphics::RPlot::create();
+  const auto rank = dm::seql(1, 10, 10).values();
+  const std::vector<dm::graphics::RGB> colors{
+      {110, 110, 110}, {190, 70, 40}, {40, 100, 190}, {35, 140, 75}};
+  const std::vector<std::string>         labels{"raw", "Bonf", "Holm", "BH"};
+  const std::vector<std::vector<double>> series{raw, bonf, holm, bh};
+  for (std::size_t j = 0; j < series.size(); ++j) {
+    all.line(rank, series[j], labels[j], colors[j]);
+    detail.line({1, 2, 3, 4}, {series[j].begin(), series[j].begin() + 4}, labels[j], colors[j]);
+  }
+  all.title("All ten supplied p-values")
+      .x_label("hypothesis rank")
+      .y_label("p-value")
+      .x_limits(1, 10)
+      .y_limits(0, 1.5)
+      .abline_h(.05, {100, 100, 100}, 1)
+      .legend(labels, colors);
+  detail.title("First four hypotheses")
+      .x_label("hypothesis rank")
+      .y_label("p-value")
+      .x_limits(1, 4)
+      .y_limits(0, .5)
+      .abline_h(.05, {100, 100, 100}, 1)
+      .legend(labels, colors);
+  dm::graphics::RLayout::create(1, 2).add(all).add(detail).size(1100, 490).fit_panels().save_svg(
+      "build/inla_p_adjust.svg");
+  std::print(
+      "Bonferroni rejects {}; Holm rejects {}; BH rejects {} at .05.\n\n{}\n",
+      std::count_if(bonf.begin(), bonf.end(), [](double p) { return p <= .05; }),
+      std::count_if(holm.begin(), holm.end(), [](double p) { return p <= .05; }),
+      std::count_if(bh.begin(), bh.end(), [](double p) { return p <= .05; }),
+      table.to_md(6));
+}
+```
+// result_begin: markdown
+Bonferroni rejects 2; Holm rejects 2; BH rejects 3 at .05.
+
+| raw | Bonferroni | Holm | BH |
+| ---: | ---: | ---: | ---: |
+| 0.001 | 0.01 | 0.010 | 0.0100 |
+| 0.004 | 0.04 | 0.036 | 0.0200 |
+| 0.009 | 0.09 | 0.072 | 0.0300 |
+| 0.030 | 0.30 | 0.210 | 0.0750 |
+| 0.120 | 1.00 | 0.720 | 0.2400 |
+| 0.180 | 1.00 | 0.900 | 0.3000 |
+| 0.350 | 1.00 | 1.000 | 0.5000 |
+| 0.510 | 1.00 | 1.000 | 0.6375 |
+| 0.720 | 1.00 | 1.000 | 0.8000 |
+| 0.980 | 1.00 | 1.000 | 0.9800 |
+
+\image(figures/inla_p_adjust.svg)
+// result_end
+\caption(The corrected rejection counts are two for Bonferroni, two for Holm and three for BH. The fourth hypothesis is not rejected under any method.)
+\alttext(Left: all ten raw and adjusted p-values. Right: the first four values with a .05 reference line, showing that rank three passes BH only and rank four passes none.)
+
+> Conclusion
+
+The normal-normal control verifies the inner mode, covariance and evidence calculation
+against exact algebra. The Bernoulli control separates Newton convergence from local
+Gaussian accuracy. Unknown precision demonstrates genuine hyperparameter mixing,
+with the full conditional grid and within/between variance visible. Grid refinement
+checks the numerical integration, while the penguin prior experiment changes the
+model and exposes sensitivity that numerical convergence cannot remove.
+
+These are approximate Gaussian-mixture marginals from a dense implementation, not
+exact posteriors or the full R-INLA marginal correction machinery. Posterior SDs,
+mixture quantiles, transformed physical SD moments and inverse-link plug-in predictions
+are distinct quantities. Keeping those distinctions explicit makes the penguin example
+interpretable, including the limits imposed by three islands and omitted species.
+The p-value appendix is a separate frequentist calculation with its own error-rate
+assumptions and the original report's rejection-count errors corrected.
+
+> References
+
+1. Rue, H., Martino, S. and Chopin, N. (2009). “Approximate Bayesian inference for latent
+   Gaussian models by using integrated nested Laplace approximations.” *JRSS B* 71,
+   319–392. [Original paper](https://doi.org/10.1111/j.1467-9868.2008.00700.x).
+   The present implementation uses Gaussian conditional marginals without the paper's
+   further individual-marginal Laplace corrections.
+2. Tierney, L. and Kadane, J. B. (1986). “Accurate Approximations for Posterior Moments
+   and Marginal Densities.” *JASA* 81, 82–86.
+   [Original paper](https://doi.org/10.1080/01621459.1986.10478240).
+3. [R stats: p.adjust](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html),
+   including the original references to Holm (1979) and Benjamini–Hochberg (1995) and
+   their dependence assumptions.
+4. Gorman, K. B., Williams, T. D. and Fraser, W. R. (2014). “Ecological Sexual Dimorphism
+   and Environmental Variability within a Community of Antarctic Penguins.” *PLOS ONE*
+   9, e90081. [Original data study](https://doi.org/10.1371/journal.pone.0090081).
+   Dataset structure: [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/).
+

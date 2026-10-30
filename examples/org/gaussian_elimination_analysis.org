@@ -37,7 +37,7 @@ A pivot that is zero even after the search means the matrix is singular.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

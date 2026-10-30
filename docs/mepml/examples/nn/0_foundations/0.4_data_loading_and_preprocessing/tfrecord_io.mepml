@@ -1,0 +1,121 @@
+//? Title: TFRecord I/O: Frames, Checksums and Feature Schemas
+//? Subtitle: An empty record is data; end-of-file is the absence of another frame
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A stream of binary training examples needs exact boundaries, corruption detection and a known
+feature schema. We round-trip empty and binary payloads through TFRecord compression modes,
+then inspect typed tf.Example features and defaults. The native codec implements these formats
+without a TensorFlow runtime; the examples measure storage rather than model accuracy.
+)
+\toc
+
+> The method
+
+Each uncompressed TFRecord frame consists of an eight-byte little-endian length, its four-byte
+masked CRC-32C, the payload and its four-byte masked CRC-32C. For payload lengths L1..Ln,
+
+$$
+\mathrm{plain\ bytes}=\sum_i(L_i+16),\qquad
+\mathrm{mask}(c)=\mathrm{rotateRight}(c,15)+\mathtt{0xa282ead8}\pmod{2^{32}}.
+$$
+\alttext(Every record adds sixteen bytes of framing, and each CRC is rotated and offset modulo two to the power thirty-two.)
+
+CRC-32C uses the Castagnoli polynomial and differs from ZIP's CRC-32. It detects accidental
+corruption, not deliberate tampering. GZIP or ZLIB wraps the complete framed stream; compression
+must be supplied explicitly. An empty payload still has a complete frame. The current reader
+materialises the file and records in memory rather than streaming lazily.
+A tf.Example maps names to byte-string, Float32 or Int64 lists. ParseSingleExample returns features
+in schema order, rejects present values with a wrong type/count and uses a supplied default for
+an absent key. Use defaults matching the declared type/count. This minimal protobuf codec skips
+supported unknown fields; it is not a general protobuf implementation. Work is linear in encoded size.
+
+The concept diagram has a retained TikZ source in `diagrams/tfrecord_io_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/tfrecord_io_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/tfrecord_io_concept.tikz > build/tfrecord_io_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/tfrecord_io_concept.svg build/tfrecord_io_concept.dvi > build/tfrecord_io_concept.render.log 2>&1
+printf 'Rendered build/tfrecord_io_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/tfrecord_io_concept.svg from local TikZ source.
+// \image(figures/tfrecord_io_concept.svg)
+// result_end
+\caption(An empty record is data; end-of-file is the absence of another frame)
+\alttext(Named typed lists; tf.Example protobuf Then Length + CRCs + data; 16 bytes per record Then Optional compression; plain, GZIP, ZLIB.)
+
+> Simple examples
+
+The payloads empty, a-NUL-b and last have lengths 0,3,4, so the plain file has 55 bytes. All three records must survive each compression mode in order.
+
+```{cpp, results="markdown", file="figures/tfrecord_io_sizes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace d=dm::nn::data;
+ const std::vector<std::string> records{"",std::string("a\0b",3),"last"};
+ std::filesystem::create_directories("build");
+ dm::dstruct::DataFrame t;std::vector<std::string> mode;std::vector<double> sizes,count;
+ for(const std::string compression:{"","GZIP","ZLIB"}){
+ const auto path="build/tfrecord_"+(compression.empty()?std::string("plain"):compression);
+ d::WriteTFRecords(path,records,compression);const auto read=d::ReadTFRecords(path,compression);
+ if(read!=records)return 1;mode.push_back(compression.empty()?"plain":compression);sizes.push_back(std::filesystem::file_size(path));count.push_back(read.size());}
+ if(sizes[0]!=55)return 1;
+ t.add_column("compression",mode);t.add_column("file_bytes",sizes);t.add_column("records",count);
+ auto p=dm::graphics::RPlot::create();p.bars({0,1,2},sizes,"file bytes",{37,99,235},.5)
+ .title("Tiny streams can grow under compression").x_label("plain=0, GZIP=1, ZLIB=2").y_label("bytes");
+ p.size(820,420).save_svg("build/tfrecord_io_sizes.svg");std::print("{}\n",t.to_md());
+}
+```
+// result_begin: markdown
+| compression | file_bytes | records |
+| :--- | ---: | ---: |
+| plain | 55 | 3 |
+| GZIP | 60 | 3 |
+| ZLIB | 48 | 3 |
+
+\image(figures/tfrecord_io_sizes.svg)
+// result_end
+\caption(Compression has wrapper and block overhead; all modes retain the same three binary records.)
+\alttext(Compression has wrapper and block overhead; all modes retain the same three binary records.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace d=dm::nn::data;
+ const d::Example example{{"x",d::Feature::Floats({1,.5f})},{"label",d::Feature::Int64s({7})},{"id",d::Feature::Bytes({std::string("a\0b",3)})}};
+ const std::vector<d::DenseSpec> schema{{"x",d::Feature::Kind::kFloat,2,std::nullopt},{"label",d::Feature::Kind::kInt64,1,std::nullopt},{"weight",d::Feature::Kind::kFloat,1,d::Feature::Floats({1})}};
+ const auto parsed=d::ParseSingleExample(d::SerializeExample(example),schema);
+ int bad=0;try{d::ParseSingleExample("",schema);}catch(const std::invalid_argument&){++bad;}
+ const auto original=d::ReadBinary("build/tfrecord_plain");
+ for(int mode=0;mode<3;++mode){auto bytes=original;if(mode==0)bytes[0]^=1;else if(mode==1)bytes[28]^=1;else bytes.pop_back();
+ d::WriteBinary("build/tfrecord_bad",bytes);try{d::ReadTFRecords("build/tfrecord_bad");}catch(const std::runtime_error&){++bad;}}
+ const std::string crc_input="123456789";const auto crc=d::Crc32c(reinterpret_cast<const uint8_t*>(crc_input.data()),crc_input.size());
+ if(crc!=0xe3069283u||bad!=4||parsed[2].floats[0]!=1)return 1;
+ std::print("CRC-32C check vector: 0x{:08x}.\n\nFloat values ({}, {}), label {}, default weight {}.\n\nMissing required feature plus three damaged streams rejected: {}.\n",crc,parsed[0].floats[0],parsed[0].floats[1],parsed[1].ints[0],parsed[2].floats[0],bad);
+}
+```
+// result_begin: markdown
+CRC-32C check vector: 0xe3069283.
+
+Float values (1, 0.5), label 7, default weight 1.
+
+Missing required feature plus three damaged streams rejected: 4.
+// result_end
+
+
+> Conclusion
+
+Record boundaries, binary payloads, compression and required/defaulted features remain distinct.
+A checksum failure stops reading. The byte counts show that compression is a workload-dependent
+choice; these tiny fixtures do not establish throughput or compression ratios for real training data.
+
+> References
+
+- [TensorFlow: TFRecord and tf.train.Example](https://www.tensorflow.org/tutorials/load_data/tfrecord).
+- [Protocol Buffers encoding guide](https://protobuf.dev/programming-guides/encoding/).

@@ -32,7 +32,7 @@ SDKs, database clients, and distributed locks.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -83,7 +83,7 @@ jittered realization (using a fixed pseudo-random stream so the figure is reprod
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -1,3 +1,5 @@
+/// @file differential_evolution.cpp
+/// @brief DifferentialEvolution native update, trial and stopping implementation.
 #include <datamunge/optim/differential_evolution.hpp>
 
 #include <algorithm>
@@ -8,10 +10,23 @@
 
 namespace datamunge::optim {
 
+/// @brief Private differential evolution arithmetic, validation and local state.
 namespace {
 
-enum class Mutation { Rand1, Best1, CurrentToBest1, Rand2 };
+/// @brief Parsed differential mutation rule.
+enum class Mutation {
+ Rand1, ///< Random base plus one difference.
+ Best1, ///< Best base plus one difference.
+ CurrentToBest1, ///< Current point attracted to best plus one difference.
+ Rand2 ///< Random base plus two differences.
+};
 
+/// @brief Require nonempty coordinates, matching bounds and strict lower < upper.
+/// @param n Coordinate count.
+/// @param lower_bound Lower box endpoints.
+/// @param upper_bound Upper box endpoints.
+/// @param op Operation name for the exception text.
+/// @throws std::invalid_argument Empty dimensions, mismatched bounds or unordered endpoints.
 void validate_bounds(const std::size_t n, const std::vector<double>& lower_bound,
                       const std::vector<double>& upper_bound, const char* op) {
     if (n == 0) throw std::invalid_argument(std::string("DifferentialEvolution::") + op + ": coordinates must not be empty");
@@ -23,6 +38,12 @@ void validate_bounds(const std::size_t n, const std::vector<double>& lower_bound
                                          ": lower_bound must be < upper_bound in every dimension");
 }
 
+/// @brief Rejection-sample distinct population indices, excluding the target.
+/// @param rng Caller-owned local engine; advanced in place.
+/// @param population_size Population size, validated to allow count distinct candidates.
+/// @param exclude Target index that must not be selected.
+/// @param count Number of leading entries to fill, at most five.
+/// @return Fixed-size array with count distinct valid indices; unused entries remain zero.
 std::array<std::size_t, 5> random_distinct_indices(std::mt19937_64& rng, const std::size_t population_size,
                                                    const std::size_t exclude, const std::size_t count) {
     std::uniform_int_distribution<std::size_t> dist(0, population_size - 1);

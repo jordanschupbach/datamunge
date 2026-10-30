@@ -16,6 +16,17 @@ struct LocalBSplineEvaluation {
 
 class BSplineBasis {
 public:
+    /// @brief Degree-0 basis with knots {0, 1}: one constant function on [0, 1].
+    ///
+    /// Exists so containers (and binding-generated vectors) of bases can be default
+    /// constructed; assign a real basis before use.
+    /// @par Example
+    /// @code
+    /// dm::fda::BSplineBasis b;
+    /// std::print("{} {}\n", b.degree(), b.basis_size()); // 0 1
+    /// @endcode
+    BSplineBasis();
+
     BSplineBasis(std::size_t degree, std::vector<double> knots);
 
     static BSplineBasis open_uniform(std::size_t degree,

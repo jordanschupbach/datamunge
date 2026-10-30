@@ -1,0 +1,118 @@
+//? Title: CSV Features: Fit Once on Training Rows
+//? Subtitle: Missing values and unseen categories need different output columns
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A mixed numeric and categorical table must become a fixed-width matrix without using held-out
+information. We fit moments and a vocabulary on three training rows, then transform missing,
+unseen and extreme held-out values. Quoted fields and header reordering test the parser and
+schema independently of any prediction model.
+)
+\toc
+
+> The method
+
+Parsing and feature fitting solve different problems. CSV quoting allows delimiters and newlines
+inside a cell; doubled quotes represent literal quotes. ParseCsv preserves exact strings and
+requires unique nonempty headers and rectangular records. FeatureColumns then interprets selected
+numeric cells using finite classic-locale numbers, treating trimmed empty cells as missing.
+For observed training values, population moments and the transformation are
+
+$$
+\mu=\frac1m\sum_i x_i,\quad s^2=\frac1m\sum_i(x_i-\mu)^2,\qquad z(x)=\frac{x-\mu}{s}.
+$$
+\alttext(Compute moments on observed training values only, then standardise every later observed value with those fixed moments.)
+
+Numeric columns emit z and a missing indicator. Missing z is zero (mean imputation); constant
+or entirely missing columns use s=1, with mean zero for entirely missing columns. Categorical
+columns emit separate missing and unknown buckets before a sorted training vocabulary. This
+makes missing different from a new nonempty string. Column lookup uses names, so reordering
+is harmless. Fitting stores no held-out values. A dense output needs O(rows times encoded width)
+space; large vocabularies can make dense one-hot encoding expensive.
+
+The concept diagram has a retained TikZ source in `diagrams/csv_features_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/csv_features_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/csv_features_concept.tikz > build/csv_features_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/csv_features_concept.svg build/csv_features_concept.dvi > build/csv_features_concept.render.log 2>&1
+printf 'Rendered build/csv_features_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/csv_features_concept.svg from local TikZ source.
+// \image(figures/csv_features_concept.svg)
+// result_end
+\caption(Missing values and unseen categories need different output columns)
+\alttext(Training rows only; moments + vocabulary Then Fixed feature state; \mu,s, known strings Then Any later rows; values + indicators.)
+
+> Simple examples
+
+Numeric values 1, 3 and missing have observed mean 2 and population deviation 1. Categories B, A and missing produce known vocabulary A,B. Held-out value 9 becomes 7; C uses the unknown bucket.
+
+```{cpp, results="markdown", file="figures/csv_features_encoding.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace d=dm::nn::data;
+ const auto t=d::ParseCsv("x,city\n1,B\n3,A\n,\n9,C\n,\n");
+ const auto f=d::FeatureColumns::Fit(t,{0,1,2},{{"x",d::FeatureKind::kNumeric},{"city",d::FeatureKind::kCategorical}});
+ const auto x=f.Transform(t,{0,1,2,3,4});
+ dm::dstruct::DataFrame table;
+ for(size_t j=0;j<f.names().size();++j){std::vector<double> values;for(int i=0;i<5;++i)values.push_back(x.at({i,static_cast<int64_t>(j)}));table.add_column(f.names()[j],values);}
+ auto p=dm::graphics::RPlot::create();p.bars({0,1,2,3,4},{x.at({0,0}),x.at({1,0}),x.at({2,0}),x.at({3,0}),x.at({4,0})},"standardised value",{37,99,235},.6)
+ .title("Held-out extremes do not refit the scale").x_label("row: training 0..2, held out 3..4").y_label("z");
+ std::filesystem::create_directories("build");p.size(850,420).save_svg("build/csv_features_encoding.svg");
+ if(f.features()[0].mean!=2||f.features()[0].scale!=1||x.at({3,3})!=1||x.at({4,2})!=1)return 1;
+ std::print("{}\n",table.to_md());
+}
+```
+// result_begin: markdown
+| x:value | x:missing | city:missing | city:unknown | city:category=A | city:category=B |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| -1 | 0 | 0 | 0 | 0 | 1 |
+| 1 | 0 | 0 | 0 | 1 | 0 |
+| 0 | 1 | 1 | 0 | 0 | 0 |
+| 7 | 0 | 0 | 1 | 0 | 0 |
+| 0 | 1 | 1 | 0 | 0 | 0 |
+
+\image(figures/csv_features_encoding.svg)
+// result_end
+\caption(Missing numeric values are zero with an indicator; unseen and missing categories occupy different buckets.)
+\alttext(Missing numeric values are zero with an indicator; unseen and missing categories occupy different buckets.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace d=dm::nn::data;namespace n=dm::nn;
+ auto t=d::ParseCsv("x,city\n1,\"A,B\"\n3,\"say \"\"hi\"\"\"\n1000,new\n");
+ const auto f=d::FeatureColumns::Fit(t,{0,1},{{"x",d::FeatureKind::kNumeric},{"city",d::FeatureKind::kCategorical}});
+ const auto before=f.Transform(t,{2});std::swap(t.header[0],t.header[1]);for(auto& r:t.rows)std::swap(r[0],r[1]);
+ const double error=n::max(n::abs(before-f.Transform(t,{2}))).item();
+ int bad=0;for(const auto text:{"x,x\n1,2","x\n\"open","x,y\n1","x\nraw\"quote"})try{d::ParseCsv(text);}catch(const std::invalid_argument&){++bad;}
+ const auto fixed=d::ParseCsv("a,b\n4,\n4,\n");
+ const auto constant=d::FeatureColumns::Fit(fixed,{0,1},{{"a",d::FeatureKind::kNumeric},{"b",d::FeatureKind::kNumeric}});
+ if(error!=0||bad!=4||f.features()[0].mean!=2||constant.features()[1].scale!=1)return 1;
+ std::print("Header-reorder error: {}; malformed tables rejected: {}.\n\nTraining mean remains {}; constant/all-missing scales: {}, {}.\n",error,bad,f.features()[0].mean,constant.features()[0].scale,constant.features()[1].scale);
+}
+```
+// result_begin: markdown
+Header-reorder error: 0; malformed tables rejected: 4.
+
+Training mean remains 2; constant/all-missing scales: 1, 1.
+// result_end
+
+
+> Conclusion
+
+The output width and column meaning remain fixed when validation data contain new values.
+Mean imputation and one-hot encoding are explicit modelling choices; the fixture verifies their
+implementation but does not establish predictive utility. Fit this state separately inside each
+training fold when doing cross-validation.
+
+> References
+
+- [Shafranovich (2005), RFC 4180: CSV quoting](https://www.rfc-editor.org/rfc/rfc4180).

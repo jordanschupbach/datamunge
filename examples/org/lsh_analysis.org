@@ -42,7 +42,7 @@ these vectors similar?" into "do their bit-signatures match?".
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * From bits to sublinear search: AND then OR

@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/rplot_ex.r
 # Demonstrates RPlot / RLayout -- the R-base-graphics-style plotting library.
 # Uses the flat ClassName_method(obj, ...) call form throughout, not obj$method(...), per
 # memory/datamunge_r_dollar_dispatch_bug.md. curve() is skipped here: it takes a director-based

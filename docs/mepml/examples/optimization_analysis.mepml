@@ -1,0 +1,540 @@
+//? Title: Optimization: Choose the Information Before the Algorithm
+//? Subtitle: Full gradients, limited-memory curvature, sampled rows and bounded search
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Minimising a scalar is a common interface, but the information supplied to a
+solver determines what its updates and diagnostics mean. We derive first-order,
+momentum and limited-memory steps, check a scalar example, and compare native
+solvers on known bowls, Rosenbrock, Iris least squares and bounded Rastrigin.
+The report introduces the shared API without presenting unequal callback budgets
+or finite stochastic runs as a universal method ranking.
+)
+\toc
+
+> The problem
+
+We seek a coefficient vector \(x\) that makes \(f(x)\) small. A differentiable objective
+can supply an exact gradient; a sum of row losses can supply cheap component
+gradients; a black-box objective may supply only values. Bounds restrict the
+feasible set and alter the relevant optimum. An objective value alone cannot
+show stationarity, feasibility, uniqueness or global optimality.
+
+> The method
+
+For smooth unconstrained \(f\), gradient descent uses \(x_{t+1}=x_t-\eta g_t\). With the native
+momentum option it instead stores v_next=momentum*v+eta*g and subtracts v_next.
+This is a velocity evaluated at x, rather than the look-ahead gradient used by
+the separate Nesterov solver. Every optimize call resets its velocity.
+For a scalar quadratic \(f(x)=\tfrac12 hx^2\), zero momentum gives
+
+$$
+ x_t=(1-\eta h)^t x_0,\qquad
+ f(x_t)=\tfrac12 h(1-\eta h)^{2t}x_0^2.
+$$
+\alttext(On a positive-curvature scalar quadratic, gradient descent multiplies the coordinate by one minus eta times curvature at every step. The objective contracts by the square of that factor.)
+
+Convergence requires 0<eta*h<two. Small eta is slow, and the boundary eta*h=two
+flips the sign with unchanged loss. Native gradient descent tests the gradient it just used or absolute loss
+change, so it can return at that boundary with a large gradient. Normal return
+must therefore be followed by a diagnostic suited to the problem.
+
+The retained TikZ diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Normal documentation exports use its saved local SVG.
+
+```{bash, file="figures/opt_overview_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/opt_overview_mechanism.tikz > build/opt_overview_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/opt_overview_mechanism.svg build/opt_overview_mechanism.dvi > build/opt_overview_mechanism.render.log 2>&1
+printf 'Rendered the optimization mechanism diagram.\n'
+```
+// result_begin:
+// Rendered the optimization mechanism diagram.
+// \image(figures/opt_overview_mechanism.svg)
+// result_end
+\caption(Choose a solver from the available information, then verify its returned point.)
+\alttext(An objective interface determines the available information. Explicit solver controls produce a point and a callback history, which require problem-specific checks.)
+
+Adam stores exponential first/second moments with bias correction, then divides
+its first moment by sqrt(corrected second moment)+epsilon. In this API it uses
+the full supplied gradient; it does not select stochastic rows automatically.
+L-BFGS approximates inverse curvature using recent displacement/gradient pairs,
+with O(history_size*p) storage and a weak-Wolfe line search. Positive-curvature
+pairs are retained; a failed finite search can use a previous Armijo step or
+return without a new step. It is a local method, not a global optimizer.
+
+A full dense gradient costs O(n*p) for least squares. Mean mini-batch SGD costs
+O(batch_size*p) per update but can retain row noise. Value-only population methods
+spend many function evaluations exploring a box. Callback counts expose these
+requests, not their wall-clock cost. The linked focused reports derive
+[adaptive memories](optimization_adaptive_gradient_analysis.mepml),
+[coordinate and conjugate-gradient steps](optimization_coordinate_cg_analysis.mepml),
+[curvature methods](optimization_second_order_analysis.mepml),
+[constraints](optimization_constrained_analysis.mepml),
+[proximal maps](optimization_proximal_analysis.mepml),
+[residual least squares](optimization_nonlinear_least_squares_analysis.mepml),
+[derivative-free search](optimization_derivative_free_analysis.mepml) and
+[variance reduction](optimization_variance_reduction_analysis.mepml).
+
+> Small worked example
+
+For \(f(x)=x^2\), start two, \(\eta=.1\) and momentum .5, the first gradient is four,
+the first velocity .4 and the first point 1.6. The next gradient is 3.2,
+velocity .52 and point 1.08. Zero-momentum gradient descent instead reaches 1.28
+after two steps. Adam with the same eta, default moment weights and epsilon
+makes its first point approximately 1.9 because its bias corrections cancel
+on the first gradient. Equal numeric rates do not mean equal displacements.
+
+```{cpp, results="markdown", file="figures/opt_overview_first_steps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective     f({2}, {0});
+  o::GradientDescentOptions c;
+  c.step_size      = .1;
+  c.max_iterations = 2;
+  c.tolerance      = 0;
+  auto a           = o::trace_optimize<o::DifferentiableFunction>(f, o::GradientDescent(c), {2});
+  c.momentum       = .5;
+  auto           b = o::trace_optimize<o::DifferentiableFunction>(f, o::GradientDescent(c), {2});
+  o::AdamOptions d;
+  d.step_size      = .1;
+  d.max_iterations = 2;
+  d.tolerance      = 0;
+  auto e           = o::trace_optimize<o::DifferentiableFunction>(f, o::Adam(d), {2});
+  o::optimization_comparison(f, {a, b, e}, {"gradient descent", "momentum .5", "Adam"})
+      .title("Two updates: rates have method-specific meanings")
+      .size(850, 490)
+      .save_svg("build/opt_overview_first_steps.svg");
+  for (const auto& run : {a, b, e})
+    std::print("{}\n\n{}\n\n", run.trace.values().to_md(8), run.summary().to_md(8));
+}
+```
+// result_begin: markdown
+| event | value | gradient_norm | term_gradients | x0 |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 4.0000 | nan | 0 | 2.00 |
+| 3 | 2.5600 | nan | 1 | 1.60 |
+| 5 | 1.6384 | nan | 2 | 1.28 |
+
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 1.6384 | 1.6384 | 2.56 | 5 |  | 1.28 |
+
+
+| event | value | gradient_norm | term_gradients | x0 |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 4.0000 | nan | 0 | 2.00 |
+| 3 | 2.5600 | nan | 1 | 1.60 |
+| 5 | 1.1664 | nan | 2 | 1.08 |
+
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 1.1664 | 1.1664 | 2.16 | 5 |  | 1.08 |
+
+
+| event | value | gradient_norm | term_gradients | x0 |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 4.00000000 | nan | 0 | 2.00000000 |
+| 3 | 3.61000000 | nan | 1 | 1.90000000 |
+| 5 | 3.24059938 | nan | 2 | 1.80016649 |
+
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 3.2406 | 3.2406 | 3.60033 | 5 |  | 1.80017 |
+
+
+\image(figures/opt_overview_first_steps.svg)
+// result_end
+\caption(Two exact momentum updates distinguish stored velocity from adaptive rescaling.)
+\alttext(Three short value traces use the same numeric rate. Printed coordinates distinguish the exact gradient and momentum steps from bias-corrected Adam.)
+
+> Checking the theory
+
+>> A known bowl and its gradient certificate
+
+Use f=sum_j(x_j-centre_j) squared, centre (4,-2,1), and start (10,10,10).
+GD uses eta=.1, momentum GD eta=.1 with .8 momentum, Adam eta=.1, each with
+2000 updates and tolerance 1e-10; L-BFGS uses 100 updates and tolerance 1e-10.
+The analytic minimizer and zero objective give an exact reference. All methods
+receive the same full-gradient interface, although L-BFGS line-search trials
+change its evaluation cost. The experiment checks these configured runs rather
+than ranking methods after equal wall time or extensive tuning.
+
+```{cpp, results="markdown", file="figures/opt_overview_bowl.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective     f({2, 2, 2}, {4, -2, 1});
+  o::GradientDescentOptions g;
+  g.step_size      = .1;
+  g.max_iterations = 2000;
+  g.tolerance      = 1e-10;
+  auto m           = g;
+  m.momentum       = .8;
+  o::AdamOptions a;
+  a.step_size      = .1;
+  a.max_iterations = 2000;
+  a.tolerance      = 1e-10;
+  o::LBFGSOptions l;
+  l.max_iterations = 100;
+  l.tolerance      = 1e-10;
+  const std::vector<double>       start{10, 10, 10};
+  std::vector<o::OptimizationRun> runs{
+      o::trace_optimize<o::DifferentiableFunction>(f, o::GradientDescent(g), start),
+      o::trace_optimize<o::DifferentiableFunction>(f, o::GradientDescent(m), start),
+      o::trace_optimize<o::DifferentiableFunction>(f, o::Adam(a), start),
+      o::trace_optimize<o::DifferentiableFunction>(f, o::LBFGS(l), start)};
+  const std::vector<std::string> names{"GD", "momentum GD", "Adam", "L-BFGS"};
+  o::optimization_comparison(f, runs, names)
+      .title("Known bowl: check the returned gradient")
+      .size(850, 490)
+      .save_svg("build/opt_overview_bowl.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print(
+        "{}\n\n{}\n\n{}\n\n",
+        names[i],
+        runs[i].summary().to_md(7),
+        runs[i].trace.counts().to_md(0));
+}
+```
+// result_begin: markdown
+GD
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 1.60686e-10 | 1.60686e-10 | 2.53524e-05 | 127 |  | 4 | -1.99999 | 1.00001 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 63 |
+| value | 64 |
+| term_gradient_equivalents | 63 |
+
+
+momentum GD
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 2.91166e-11 | 2.91166e-11 | 1.0792e-05 | 239 |  | 4 | -2 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 119 |
+| value | 120 |
+| term_gradient_equivalents | 119 |
+
+
+Adam
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 7.25495e-10 | 7.25495e-10 | 5.387e-05 | 941 |  | 4 | -1.99997 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 470 |
+| value | 471 |
+| term_gradient_equivalents | 470 |
+
+
+L-BFGS
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |
+| 0 | 0 | 0 | 5 |  | 4 | -2 | 1 |
+
+
+| kind | calls |
+| :--- | ---: |
+| gradient | 2 |
+| value | 3 |
+| term_gradient_equivalents | 2 |
+
+
+\image(figures/opt_overview_bowl.svg)
+// result_end
+\caption(A known minimum makes the returned coordinates and gradient independently checkable.)
+\alttext(Four objective-gap traces use explicitly different native update rules and budgets. Tables show final gradients and callback counts rather than treating each plotted request as an accepted iteration.)
+
+>> A curved valley changes the numerical problem
+
+Rosenbrock is f=(1-x) squared+100*(y-x squared) squared, with unique global
+minimum (1,1) and zero loss. From (-1.2,1), GD uses eta=.001 and momentum zero;
+Adam uses eta=.01. Both allow 20000 updates with tolerance 1e-10. L-BFGS uses
+1000 updates, history ten and tolerance 1e-10. Rosenbrock's narrow, curved valley
+adds changing coupled curvature; success on a spherical bowl does not predict
+progress here. The value-request curve includes rejected line-search trials.
+
+```{cpp, results="markdown", file="figures/opt_overview_rosenbrock.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::SmoothBenchmark        f;
+  o::GradientDescentOptions g;
+  g.step_size      = .001;
+  g.max_iterations = 20000;
+  g.tolerance      = 1e-10;
+  o::AdamOptions a;
+  a.step_size      = .01;
+  a.max_iterations = 20000;
+  a.tolerance      = 1e-10;
+  o::LBFGSOptions l;
+  l.max_iterations = 1000;
+  l.tolerance      = 1e-10;
+  std::vector<o::OptimizationRun> runs{
+      o::trace_optimize<o::DifferentiableFunction>(f, o::GradientDescent(g), {-1.2, 1}),
+      o::trace_optimize<o::DifferentiableFunction>(f, o::Adam(a), {-1.2, 1}),
+      o::trace_optimize<o::DifferentiableFunction>(f, o::LBFGS(l), {-1.2, 1})};
+  const std::vector<std::string> names{"GD .001", "Adam .01", "L-BFGS"};
+  o::optimization_comparison(f, runs, names)
+      .title("Rosenbrock: a local curved valley")
+      .size(850, 490)
+      .save_svg("build/opt_overview_rosenbrock.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print("{}\n\n{}\n\n", names[i], runs[i].summary().to_md(8));
+}
+```
+// result_begin: markdown
+GD .001
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.24982e-07 | 1.24982e-07 | 0.000316042 | 35337 |  | 0.999647 | 0.999292 |
+
+
+Adam .01
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 9.56797e-09 | 9.56797e-09 | 9.50016e-05 | 9459 |  | 0.999902 | 0.999804 |
+
+
+L-BFGS
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 9.45645e-17 | 9.45645e-17 | 2.09644e-07 | 107 |  | 1 | 1 |
+
+
+\image(figures/opt_overview_rosenbrock.svg)
+// result_end
+\caption(The curved-valley control has a known optimum, without implying a general nonconvex guarantee.)
+\alttext(Gradient descent, Adam and L-BFGS are compared under their declared rates and budgets on Rosenbrock. Returned gradients and coordinates reveal residual finite-budget error.)
+
+> Iris: connect sampled updates to an algebraic solution
+
+Predict Petal.Length from Sepal.Length, Sepal.Width and Petal.Width, with an
+intercept and all 150 observed flowers. The numeric Formula design uses raw
+centimetres. The direct linear-model fit solves the same unpenalised least-squares
+problem, providing the full-sum minimum RSS/2. SGD averages batch gradients,
+while f remains the sum of .5*residual squared. Use rates .001 and .01,
+batch size ten, 500 epochs, seed 42, shuffling enabled and tolerance zero.
+The loss is a training numerical control; the table of Species composition is
+context, and no held-out predictive performance is inferred.
+
+Ordinary least squares has nonzero residuals here, so constant-rate sampling
+can keep fluctuating near the solution. A small loss gap can coexist with
+coefficient error in small-curvature directions. Compare the explicit final
+coefficient difference and mean full-gradient norm, not only the plotted loss.
+
+```{cpp, results="markdown", file="figures/opt_overview_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o                 = dm::optim;
+  const auto          iris    = dm::datasets::iris();
+  const std::string   formula = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width";
+  auto                f       = o::LeastSquaresObjective::from_data(iris, formula);
+  const dm::stats::LM ref(iris, formula);
+  std::vector<o::OptimizationRun> runs;
+  std::vector<std::string>        names;
+  for (double eta : {.001, .01}) {
+    o::SGDOptions s;
+    s.step_size  = eta;
+    s.batch_size = 10;
+    s.max_epochs = 500;
+    s.tolerance  = 0;
+    runs.push_back(
+        o::trace_optimize<o::DifferentiableSeparableFunction>(
+            f, o::SGD(s), std::vector<double>(4, 0)));
+    names.push_back(std::format("SGD {}", eta));
+    double error = 0;
+    for (std::size_t j = 0; j < 4; ++j)
+      error = std::max(error, std::abs(runs.back().coordinates[j] - ref.coefficients()[j]));
+    std::print(
+        "{}: max coefficient difference={:.8g}, mean gradient norm={:.8g}.\n\n{}\n\n",
+        names.back(),
+        error,
+        runs.back().gradient_norm / 150,
+        runs.back().summary().to_md(8));
+  }
+  o::optimization_comparison(f, runs, names, "value", ref.rss() / 2, false, true)
+      .title("Iris: SGD versus the direct least-squares reference")
+      .size(850, 490)
+      .save_svg("build/opt_overview_iris.svg");
+  std::print(
+      "{}\n\nDirect full-sum minimum={:.10g}.\n",
+      (iris | dm::group_by("Species") |
+       dm::summarise(dm::agg::n("n"), dm::agg::mean("Petal.Length", "mean_length_cm")))
+          .to_md(4),
+      ref.rss() / 2);
+}
+```
+// result_begin: markdown
+SGD 0.001: max coefficient difference=0.16496096, mean gradient norm=0.033845487.
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 7.5088 | 7.5088 | 5.07682 | 75501 |  | -0.0977502 | 0.75138 | -0.720653 | 1.38913 |
+
+
+SGD 0.01: max coefficient difference=0.093098536, mean gradient norm=0.38905944.
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 7.67527 | 7.67527 | 58.3589 | 75501 |  | -0.169613 | 0.709357 | -0.659819 | 1.45409 |
+
+
+| Species | n | mean_length_cm |
+| :--- | ---: | ---: |
+| setosa | 50 | 1.462 |
+| versicolor | 50 | 4.260 |
+| virginica | 50 | 5.552 |
+
+
+Direct full-sum minimum=7.426473986.
+\image(figures/opt_overview_iris.svg)
+// result_end
+\caption(Match the loss scale and design before interpreting a sampled-gradient fit.)
+\alttext(Two mini-batch SGD rates use the same raw Iris design. The objective reference comes from direct least squares, and final coefficient and mean-gradient errors accompany the finite stochastic runs.)
+
+> Values only: explore a bounded multimodal function
+
+For Rastrigin in two dimensions, f=20+x squared+y squared-10*cos(2*pi*x)
+-10*cos(2*pi*y), the minimum is exactly zero at the origin. Local basins make it
+a useful counterweight to the previous convex bowl. PSO moves a particle swarm
+using personal and global best positions. Differential evolution mutates
+population differences and retains improvements. The real-valued genetic
+algorithm selects parents, crosses coordinates and adds Gaussian mutations.
+All three native routines clamp coordinates to the supplied box and return the
+best visited point. Their stagnation stops can end a run before its budget.
+
+Use box [-5.12,5.12] squared, start (3,3), seed 42 and population forty.
+PSO uses global attraction and its default constant inertia; DE uses rand1 mutation and binomial crossover
+and default mutation/crossover; GA uses its default tournament selection,
+blend crossover, Gaussian mutation and elitism. Each allows 500 iterations
+or generations with tolerance 1e-12. Simulated annealing uses 30000 Gaussian
+proposals, initial temperature ten, cooling .9995 and sigma .3 with the same
+seed/start; its native API has no box. It is therefore shown separately.
+Curves are labelled best *visited*, including accepted and rejected proposals;
+they do not represent accepted-state paths. One seed cannot estimate success
+probability, and neither an apparent plateau nor normal return proves global
+optimality. Inspect the complete table, including any local-basin results.
+
+```{cpp, results="markdown", file="figures/opt_overview_population.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::SmoothBenchmark        f("rastrigin");
+  const std::vector<double> lo(2, -5.12), hi(2, 5.12);
+  o::PSOOptions             p;
+  p.max_iterations = 500;
+  p.tolerance      = 1e-12;
+  o::DEOptions d;
+  d.population_size = 40;
+  d.max_generations = 500;
+  d.tolerance       = 1e-12;
+  o::GAOptions g;
+  g.population_size = 40;
+  g.max_generations = 500;
+  g.tolerance       = 1e-12;
+  std::vector<o::OptimizationRun> runs{
+      o::trace_optimize<o::ArbitraryFunction>(f, o::PSO(p), {3, 3}, lo, hi),
+      o::trace_optimize<o::ArbitraryFunction>(f, o::DifferentialEvolution(d), {3, 3}, lo, hi),
+      o::trace_optimize<o::ArbitraryFunction>(f, o::GeneticAlgorithm(g), {3, 3}, lo, hi)};
+  const std::vector<std::string> names{"PSO box", "DE box", "GA box"};
+  auto                           a = o::optimization_comparison(f, runs, names, "value", 0, true)
+               .title("Bounded Rastrigin: best visited values");
+  o::SimulatedAnnealingOptions s;
+  s.max_iterations      = 30000;
+  s.initial_temperature = 10;
+  s.cooling_rate        = .9995;
+  s.step_std_dev        = .3;
+  const auto sa = o::trace_optimize<o::ArbitraryFunction>(f, o::SimulatedAnnealing(s), {3, 3});
+  auto       b  = o::optimization_comparison(f, {sa}, {"annealing, no box"}, "value", 0, true)
+               .title("Native annealing has no bounds");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1100, 490).fit_panels().save_svg(
+      "build/opt_overview_population.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print("{}\n\n{}\n\n", names[i], runs[i].summary().to_md(8));
+  std::print("Annealing\n\n{}\n", sa.summary().to_md(8));
+}
+```
+// result_begin: markdown
+PSO box
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.24345e-14 | 1.24345e-14 | nan | 7281 |  | 6.7493e-09 | -4.82916e-09 |
+
+
+DE box
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | nan | 5560 |  | 1.52489e-09 | 1.25073e-09 |
+
+
+GA box
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 3.03424e-09 | 3.03424e-09 | nan | 2966 |  | 1.64514e-08 | -3.91074e-06 |
+
+
+Annealing
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0.000575601 | 0.000575601 | nan | 30001 |  | 0.0015994 | -0.000585895 |
+
+\image(figures/opt_overview_population.svg)
+// result_end
+\caption(Bounds, best-visited semantics and unequal budgets are explicit for every value-only run.)
+\alttext(Three bounded populations form one panel, while unbounded native simulated annealing forms a separate panel. Both show best-visited full objective values, with local-basin results preserved in the tables.)
+
+> References and interpretation
+
+Gradient, momentum, line searches and limited-memory curvature are treated in
+Nocedal and Wright (2006), [Numerical Optimization](https://doi.org/10.1007/978-0-387-40065-5).
+Adam follows Kingma and Ba (2015), [Adam: A Method for Stochastic Optimization](https://arxiv.org/abs/1412.6980),
+using the full gradient supplied here. The focused reports give the original
+sources and exact native variants for the other families. Known optima, direct
+least squares and appropriate stationarity checks make these experiments
+reviewable. Choosing a method still depends on available derivatives, dimensionality,
+noise, bounds, conditioning and evaluation cost; this set of declared runs does
+not establish a general ranking.
+
+> Reading the numerical evidence
+
+`trace_optimize` calls the configured native optimizer through its stated abstract
+interface. It records callback requests without inserting fitting evaluations.
+Value calls can be rejected trials; gradient calls can be look-ahead points.
+`optimization_comparison` explicitly re-evaluates selected points afterwards on
+these pure objectives. Those diagnostic calls are excluded from fitting counts.
+Callback indices are neither accepted iterations nor wall time. The plotted gap
+uses the declared reference (minimum or stated lower bound) and a display floor of 1e-14; that floor does
+not modify any optimizer update. Returned coordinates, checked objective and
+appropriate stationarity/feasibility checks carry more information than a return
+from a finite iteration budget. Native APIs do not expose a uniform stop-status flag.
+The recorder retains exceptions and rejects nonfinite requested values/gradients;
+this makes failures visible rather than letting an instrumented run continue on NaN.
+

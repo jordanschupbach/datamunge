@@ -14,6 +14,7 @@ import struct
 from pathlib import Path
 
 from pydatamunge import nn
+from pydatamunge.nn_components import dataset_assets
 from pydatamunge.nn_workflows import data_root
 
 
@@ -49,7 +50,7 @@ def find(arrays, name):
 def load_saliency(root):
     """[fit, validation, test] SaliencyData with tflow's integrity checks."""
     path = Path(root) / "saliency_data.npz"
-    require(path.exists(), str(path) + " missing; run `just autoencoder-assets` in tflow_examples or pass data=")
+    dataset_assets.EnsureSaliency(str(root))
     arrays = nn.load_npz(str(path))
     result, ids, seen = [], set(), set()
     for split in ("fit", "validation", "test"):

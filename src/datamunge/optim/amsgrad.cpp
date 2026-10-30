@@ -1,3 +1,5 @@
+/// @file amsgrad.cpp
+/// @brief AMSGrad native update, trial and stopping implementation.
 #include <datamunge/optim/amsgrad.hpp>
 
 #include <algorithm>

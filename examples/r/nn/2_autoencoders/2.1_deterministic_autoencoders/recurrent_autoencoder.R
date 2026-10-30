@@ -1,10 +1,10 @@
 # Native R NN example. Sequence-to-sequence tanh recurrent autoencoder with a final-state-only bottleneck.
+# CMD: nix develop .#r --command Rscript examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/recurrent_autoencoder.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example recurrent_autoencoder
 # Sequence-to-sequence tanh recurrent autoencoder with a final-state-only bottleneck.
 #
 # Port of tflow's recurrent_autoencoder. Preparation (in ~/projects/tflow_examples):

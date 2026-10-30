@@ -1,7 +1,6 @@
 # Native Python NN example. Atari through ALE with DQN preprocessing.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/ale_envs.py
 """Atari through ALE with DQN preprocessing.
-
-CMD: just python-example ale_envs
 
 Port of tflow's ale_envs. What a DQN agent sees: every agent step repeats
 the action for 4 emulator frames, max-pools the last two to remove flicker,

@@ -244,7 +244,7 @@ comparison figure.
 The entire analysis is one C++ program against =datamunge=:
 =dstruct::DataFrame= for the data, =stats::DiffusionMaps= (and, for
 §4.9's comparison, =stats::PCA= and =stats::MDS=) for the models, and
-=plot::RPlot= for every figure. No external plotting or statistics
+=graphics::RPlot= for every figure. No external plotting or statistics
 package is used.
 
 ** Program, presented as a literate whole
@@ -277,7 +277,7 @@ using datamunge::stats::MDS;
 using datamunge::stats::MDSOptions;
 using datamunge::stats::PCA;
 using datamunge::stats::PCAOptions;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static double pearson(const std::vector<double>& a,
                        const std::vector<double>& b) {

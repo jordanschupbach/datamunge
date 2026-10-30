@@ -1,0 +1,731 @@
+//? Title: Hypothesis Tests: Null Models, Effects and Calibration
+//? Subtitle: Worked t, rank, ANOVA, binomial and Fisher calculations before an iris comparison
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Observed differences can arise from sampling variation, systematic effects or a poor
+sampling model. Given data and a specified null model, a hypothesis test measures how
+extreme a chosen statistic would be under that model; it does not assign a probability
+to the null being true. We derive and check classical mean, rank, correlation, variance,
+shape and count tests using small examples before examining iris measurements.
+Exact enumeration exposes the conservatism of discrete tests and the limitations of a
+normal approximation. A binomial counterexample shows why an exact two-sided p-value and
+an equal-tailed confidence interval need not give matching decisions. The iris analysis
+reports effect sizes, intervals and a declared four-test Holm family, distinguishes
+pooled from within-species association, and avoids treating a fitted-normal KS p-value as
+valid evidence. Small representable p-values are retained and printed in scientific notation.
+)
+
+\toc
+
+> The method
+
+>> Specify the sampling model and question first
+
+For a statistic \(T\) and a prespecified ordering of extreme outcomes, a p-value is a
+null probability such as \(p=P_0\{T\ge T_{\rm obs}\}\). Under a valid null model it
+satisfies \(P_0(p\le\alpha)\le\alpha\). Equality is typical for continuous exact
+references; discreteness can make the inequality strict. This calibration is a repeated-
+sampling property, not \(P(H_0\mid\text{data})\), the probability of replication, or
+the size of the effect. Failure to reject does not prove equality or equivalence.
+
+Choose the outcome, groups, direction, sampling unit and multiplicity family before
+inspecting p-values. Independent flowers, paired repeated measurements and conditional
+count tables are different designs. A paired test uses within-pair differences, and
+pairing cannot be manufactured by sorting two independent samples. Selection after seeing
+outcomes requires additional inference; changing tests until one rejects invalidates a
+single-test error interpretation.
+
+The common `HypothesisTestResult` owns a method, statistic, parameters, p-value, estimates
+and optional confidence bounds. Field meanings are test-specific: a Wilcoxon statistic
+is a rank sum/U, not a z score; a Spearman statistic here is its t approximation, not rho.
+`hypothesis_test_table()` gathers results, leaving absent intervals null. Vector APIs
+reject nonfinite values rather than silently dropping them. Any complete-case selection
+must preserve paired-row alignment and be described by the caller.
+
+>> Mean and variance references
+
+For a one-sample mean, normal independent observations give
+
+$$
+ \bar x=\frac1n\sum_i x_i,\quad s^2=\frac{\sum_i(x_i-\bar x)^2}{n-1},\quad
+ T=\frac{\bar x-\mu_0}{s/\sqrt n}\sim t_{n-1},\quad
+ C_{1-\alpha}=\bar x\pm t_{1-\alpha/2,n-1}\frac{s}{\sqrt n}.
+$$
+\alttext(The one-sample t statistic divides the mean minus its null value by the estimated standard error. Its two-sided confidence interval uses a Student critical value with n minus one degrees of freedom.)
+
+The normal mean and residual sum of squares are independent; their standardized normal
+and chi-square ratio gives the Student reference. A paired t-test applies the same result
+to \(d_i=x_i-y_i\). The differences need the distributional assumption, not each marginal
+measurement separately. Under the same normal model, the two-sided mean interval excludes
+\(\mu_0\) exactly when its matching two-sided t-test rejects.
+
+For independent groups, Welch estimates the variance of the mean difference and its df:
+
+$$
+ v_x=s_x^2/n_x,\quad v_y=s_y^2/n_y,\qquad
+ T_W=\frac{\bar x-\bar y}{\sqrt{v_x+v_y}},\quad
+ \nu=\frac{(v_x+v_y)^2}{v_x^2/(n_x-1)+v_y^2/(n_y-1)}.
+$$
+\alttext(Welch uses the sum of the groups' estimated mean variances as squared standard error, with Satterthwaite degrees of freedom obtained by moment matching.)
+
+This is an approximate t reference even for unequal-variance normal populations. Pooled
+Student instead estimates a common variance and uses \(n_x+n_y-2\) df; it requires that
+common-variance model. An F-test is not a required gatekeeper before choosing Welch.
+For variance comparison itself, independent normal samples give
+\(s_x^2/s_y^2\sim F_{n_x-1,n_y-1}\); its confidence interval targets the variance ratio.
+That reference is especially sensitive to nonnormality.
+
+Classical one-way ANOVA uses a common within-group variance:
+
+$$
+ SS_B=\sum_g n_g(\bar x_g-\bar x)^2,\quad
+ SS_W=\sum_{g,i}(x_{gi}-\bar x_g)^2,\quad
+ F=\frac{SS_B/(k-1)}{SS_W/(N-k)}\sim F_{k-1,N-k}.
+$$
+\alttext(ANOVA compares the between-group mean square with the within-group mean square. Normal independent groups with a common variance give an F reference.)
+
+The orthogonal between/within projections yield independent scaled chi-squares under
+that null. `one_way_anova()` is this equal-variance procedure, not Welch ANOVA.
+The returned F-test does not identify which group differs or estimate a causal effect.
+
+>> Ranks answer a different question
+
+Pool two samples and give tied observations their average one-based ranks. The rank-sum
+statistic for the first sample is
+
+$$
+ U=\sum_{i\in x}R_i-\frac{n_x(n_x+1)}2,\quad E_0(U)=\frac{n_xn_y}2,\quad
+ V_0(U)=\frac{n_xn_y}{12}\left[N+1-\frac{\sum_j(t_j^3-t_j)}{N(N-1)}\right].
+$$
+\alttext(The Mann-Whitney U statistic subtracts the first sample's minimum rank sum. Its null variance uses pooled sample size and a correction for tie groups of sizes t j.)
+
+The implementation subtracts a half-unit continuity correction towards the null centre
+for a two-sided z score and uses the normal reference at every sample size. It does not
+switch to exact enumeration when samples are small. \(U/(n_xn_y)\) estimates
+\(P(X>Y)+\tfrac12P(X=Y)\). The usual null is identical independent distributions;
+a common-shape location-shift model permits a location interpretation. Equal medians
+alone is not sufficient, and a rank test is not a mean test under weaker assumptions.
+
+The signed-rank test ranks nonzero absolute differences and sums ranks with positive
+signs. Its null requires a symmetric difference distribution about zero; it is not a
+distribution-free test of an arbitrary median. Kruskal–Wallis instead uses group rank sums
+\(R_g\), with tie factor \(C=1-\sum_j(t_j^3-t_j)/(N^3-N)\):
+
+$$
+ H=\frac{12\sum_g R_g^2/n_g}{N(N+1)}-3(N+1),\qquad
+ H_{\rm corrected}=H/C\ \dot\sim\ \chi^2_{k-1}.
+$$
+\alttext(Kruskal-Wallis compares squared group rank sums, corrects for pooled ties and uses a chi-square approximation with one fewer degree of freedom than groups.)
+
+The identical-distribution null supplies exchangeability. The statistic is sensitive to
+rank-location differences; it is not an omnibus detector of every possible distributional
+change. Tiny groups can give a poor chi-square approximation.
+
+>> Association and shape
+
+Pearson measures linear association and Spearman measures correlation of average ranks.
+For independent bivariate-normal pairs under zero Pearson correlation,
+\(T=r\sqrt{(n-2)/(1-r^2)}\sim t_{n-2}\). Pearson's Fisher-z confidence interval is
+approximate. Spearman here reuses the t reference for rho; it is not an exact permutation
+test. Neither zero Pearson nor zero Spearman correlation generally implies independence.
+Mixing groups can produce a large pooled association even when each group's association
+is substantially smaller.
+
+Shapiro–Francia uses the squared correlation of ordered data with Blom normal scores,
+\(W'=\operatorname{corr}(x_{(i)},\Phi^{-1}((i-3/8)/(n+1/4)))^2\), with Royston's
+approximate p-value for \(5\le n\le5000\). It tests a composite normal family.
+A large value is not proof of normality; rounding and limited sample size matter.
+
+KS uses \(D=\sup_x|F_n(x)-F_0(x)|\). For a one-sample test its continuous reference
+CDF must be fully specified independently of the sample. Fitting the reference mean and
+SD from that same sample changes the null distribution: the ordinary KS p-value then
+has no advertised calibration. This API uses an asymptotic reference with a finite-n
+correction, not exact finite-sample KS or a Lilliefors correction. Ties from measurement
+rounding also affect its continuous-null calibration. In iris we show a benchmark D
+without interpreting its nominal p-value.
+
+>> Counts, exact probabilities and confidence intervals
+
+For independent Bernoulli trials, \(X\sim\operatorname{Binomial}(n,p_0)\) under the null.
+One-sided exact p-values include the observed count. Two-sided `binomial_test()` sums
+PMFs no larger than the observed PMF, with relative ordering tolerance \(10^{-7}\):
+
+$$
+ p_{\rm exact}(x)=\sum_{k:\,f_0(k)\le f_0(x)} f_0(k),\qquad
+ f_0(k)=\binom nk p_0^k(1-p_0)^{n-k}.
+$$
+\alttext(The two-sided binomial p-value adds probabilities of counts whose null probability is at most the observed count's probability; this need not be twice a single tail.)
+
+Its Clopper–Pearson interval inverts two equal-tailed one-sided binomial bounds. Coverage
+is at least nominal under the Bernoulli model, but it does not in general invert this
+probability-ordered two-sided test. The score proportion test instead uses the null SE,
+optionally a capped half-count correction, and a normal approximation. Its returned Wilson
+interval is uncorrected even when the test is corrected, another reason to check the
+stated interval/test definitions rather than assuming duality.
+
+For a 2x2 table \((a,b;c,d)\), Fisher conditions on fixed row and column margins. With
+\(N=a+b+c+d\), \(r=a+b\) and \(c_1=a+c\), its top-left count has probability
+\(P(A=k)=\binom{c_1}k\binom{N-c_1}{r-k}/\binom Nr\). Two-sided ordering again uses
+conditional probabilities, not twice an arbitrary tail. The reported sample odds ratio
+is \(ad/(bc)\), not R's conditional maximum-likelihood estimate. A zero observed cell
+is not automatically a structural impossibility in the population.
+
+Pearson categorical independence uses \(X^2=\sum(O-E)^2/E\), with
+\(E_{ij}=O_{i+}O_{+j}/N\) and a chi-square reference. The approximation needs sufficiently
+populated expected cells. Yates correction changes the 2x2 statistic; Fisher changes the
+reference experiment. Choose these methods for their model and calibration, not whichever
+produces the preferred p-value.
+
+>> Multiple comparisons, numerics and computation
+
+For a declared family of \(m\) p-values sorted as \(p_{(1)}\le\cdots\le p_{(m)}\),
+Holm reports \(p^{\rm adj}_{(i)}=\min\{1,\max_{j\le i}(m-j+1)p_{(j)}\}\).
+The first true-null rejection would require a true-null p-value at most \(\alpha/m_0\),
+so a union bound over the \(m_0\) true nulls gives strong family-wise control without
+independence. Four separate 95% intervals remain marginal intervals after Holm adjustment;
+they do not become simultaneous 95% intervals merely by sharing a table.
+
+Mean/count sufficient-statistic tests cost linear time in observations; rank/shape/KS
+sorting costs \(O(n\log n)\). Exact binomial and 2x2 Fisher p-values enumerate their
+finite support, costing \(O(n)\) or the number of feasible tables. The complete binomial
+rejection table costs \(O(n^2)\); its size/power calculation is deterministic, not Monte Carlo.
+Normal tails use erfc, Student tails use symmetry, F tails use a complementary beta
+identity and chi-square tails use the upper incomplete gamma. This retains small
+representable p-values that would be lost by subtracting a rounded-to-one CDF.
+
+> Simple examples
+
+>> Four observations and a Student tail
+
+For \(x=(1,2,3,4)\) against \(\mu_0=0\), \(\bar x=5/2\),
+\(s^2=5/3\), \(SE=\sqrt{5/12}\), \(t=\sqrt{15}\) and df is three.
+The two-sided p-value is about 0.03047 and the matching 95% mean interval excludes zero.
+This small example relies strongly on the independent normal-sampling model.
+
+```{cpp, results="markdown", file="figures/hypothesis_t.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+const std::vector<double> x={1,2,3,4};const auto t=dm::stats::t_test_one_sample(x);
+  auto data=dm::graphics::RPlot::create();data.points(x,{1,1,1,1},"observations",{37,99,235});
+  data.segments({t.conf_int_lower},{.55},{t.conf_int_upper},{.55},{220,38,38},3).points({t.estimate1},{.55},"mean and 95% CI",{220,38,38});
+  data.title("Four values and their mean interval").x_label("measurement").y_label("display row").x_limits(-.5,5).y_limits(0,1.6).abline_v(0);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(data).add(dm::stats::t_test_reference_plot(t)).size(1100,490).fit_panels().save_svg("build/hypothesis_t.svg");
+  std::print("{}\n",dm::stats::hypothesis_test_table({t},{"mean = 0"}).select({"label","statistic","parameter1","estimate1","ci_lower","ci_upper","p_value"}).to_md(6));
+}
+```
+// result_begin: markdown
+| label | statistic | parameter1 | estimate1 | ci_lower | ci_upper | p_value |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| mean = 0 | 3.872983 | 3 | 2.5 | 0.445740 | 4.554260 | 0.030466 |
+
+\image(figures/hypothesis_t.svg)
+// result_end
+
+\caption(Four raw values, the mean interval and shaded two-sided Student tails. The shaded density is truncated to the displayed range; the table gives the numerical p-value.)
+\alttext(A left panel shows values one to four and the mean confidence interval above zero. A right panel shades both tails beyond plus or minus square root fifteen under a three-degree-of-freedom Student density.)
+
+>> Tied ranks can be inspected
+
+For \(x=(1,2,2)\) and \(y=(3,4,5)\), pooled ranks are
+\((1,2.5,2.5,4,5,6)\). Thus \(U=6-6=0\), \(E_0(U)=9/2\),
+\(V_0(U)=5.1\) and the corrected score is \(-4/\sqrt{5.1}\).
+All nine cross-pairs have X below Y, yet three observations per group give limited
+resolution. The displayed p-value is a normal approximation, not a tiny-sample exact result.
+
+```{cpp, results="markdown", file="figures/hypothesis_ranks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+const std::vector<double> x={1,2,2},y={3,4,5};const auto ranks=dm::stats::rank_sum_table(x,y);
+  auto plot=dm::graphics::RPlot::create();
+  for(const auto& group:{std::string("x"),std::string("y")}) {
+    const auto d=ranks.filter([&](const auto& r){return r.get_string("group")==group;});
+    plot.points(d.numeric_column("value").values(),d.numeric_column("rank").values(),group,group=="x"?dm::RGB{37,99,235}:dm::RGB{220,38,38},6);
+  }
+  plot.title("Pooled ranks with an average tie").x_label("observed value").y_label("pooled rank").x_limits(.5,5.5).y_limits(0,7.5);
+  std::filesystem::create_directories("build");plot.size(820,470).save_svg("build/hypothesis_ranks.svg");
+  std::print("{}\n\n{}\n",ranks.to_md(),dm::stats::hypothesis_test_table({dm::stats::wilcoxon_rank_sum_test(x,y)},{"normal approximation"}).select({"label","statistic","p_value"}).to_md(6));
+}
+```
+// result_begin: markdown
+| group | sample_row | value | rank |
+| :--- | ---: | ---: | ---: |
+| x | 0 | 1 | 1.0 |
+| x | 1 | 2 | 2.5 |
+| x | 2 | 2 | 2.5 |
+| y | 0 | 3 | 4.0 |
+| y | 1 | 4 | 5.0 |
+| y | 2 | 5 | 6.0 |
+
+
+| label | statistic | p_value |
+| :--- | ---: | ---: |
+| normal approximation | 0 | 0.076523 |
+
+\image(figures/hypothesis_ranks.svg)
+// result_end
+
+\caption(Average ranks expose the tie correction. The two equal x observations coincide in the plot but remain separate rows in the table.)
+\alttext(Values one, two, three, four and five map to pooled ranks one, two and a half, four, five and six; x and y have distinct colours.)
+
+>> Three groups and an ANOVA decomposition
+
+Take \((1,2,3)\), \((4,5,6)\) and \((7,8,9)\). Group means are two, five and
+eight; each within-group sum of squares is two. Hence \(SS_W=6\),
+\(SS_B=3(2-5)^2+3(8-5)^2=54\), and \(F=(54/2)/(6/6)=27\).
+The uncorrected pooled rank sums are six, fifteen and twenty-four, giving \(H=7.2\).
+There are no ties, so its tie factor is one. The two procedures answer different mean
+and rank-distribution questions and use different reference assumptions.
+
+```{cpp, results="markdown", file="figures/hypothesis_anova.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+const std::vector<double> values={1,2,3,4,5,6,7,8,9};const std::vector<std::size_t> sizes={3,3,3};
+  dm::dstruct::DataFrame d;d.add_column("group",std::vector<std::string>{"A","A","A","B","B","B","C","C","C"});d.add_column("value",values);
+  const auto summary=d|dm::group_by("group")|dm::summarise(dm::agg::n("n"),dm::agg::mean("value","mean"),dm::agg::sd("value","sample_sd"));
+  auto plot=dm::graphics::RPlot::create();plot.points({1,1,1,2,2,2,3,3,3},values,"observations",{37,99,235});
+  plot.segments({.8,1.8,2.8},{2,5,8},{1.2,2.2,3.2},{2,5,8},{220,38,38},3);
+  plot.title("Three means, equal within-group spread").x_label("group index: A, B, C").y_label("measurement").x_limits(.5,3.5).y_limits(0,12);
+  std::filesystem::create_directories("build");plot.size(820,470).save_svg("build/hypothesis_anova.svg");
+  std::print("{}\n\n{}\n",summary|dm::to_md(),dm::stats::hypothesis_test_table({dm::stats::one_way_anova(values,sizes),dm::stats::kruskal_wallis_test(values,sizes)},{"classical ANOVA","Kruskal-Wallis"}).select({"label","statistic","parameter1","parameter2","p_value"}).to_md(6));
+}
+```
+// result_begin: markdown
+| group | n | mean | sample_sd |
+| :--- | ---: | ---: | ---: |
+| A | 3 | 2 | 1 |
+| B | 3 | 5 | 1 |
+| C | 3 | 8 | 1 |
+
+
+| label | statistic | parameter1 | parameter2 | p_value |
+| :--- | ---: | ---: | ---: | ---: |
+| classical ANOVA | 27.0 | 2 | 6 | 0.001000 |
+| Kruskal-Wallis | 7.2 | 2 | 0 | 0.027324 |
+
+\image(figures/hypothesis_anova.svg)
+// result_end
+
+\caption(Three groups have equal sample SD one and means two, five and eight. ANOVA F equals 27; Kruskal-Wallis H equals 7.2.)
+\alttext(Three vertical strips contain values one to three, four to six and seven to nine. Short red lines mark each group mean; tables give group summaries and both test results.)
+
+>> Ten coin trials: exact tails and a non-dual interval
+
+For \(n=10,p_0=1/2\), observing nine successes selects counts \(0,1,9,10\)
+in the two-sided probability ordering. The p-value is
+\((1+10+10+1)/2^{10}=22/1024\). At 5%, the same four counts are the full rejection
+region, so the null rejection rate is 0.021484375, below the nominal 0.05.
+
+For the separate asymmetric null \(p_0=0.3\), observing zero successes gives a
+probability-ordered p-value about 0.03884, while the equal-tailed 95% Clopper–Pearson
+interval extends to about 0.30850. It contains 0.3 even though this two-sided test rejects.
+Neither calculation is contradictory: the interval and test use different orderings.
+
+```{cpp, results="markdown", file="figures/hypothesis_binomial.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+const auto region=dm::stats::binomial_rejection_table(10);auto mass=dm::graphics::RPlot::create(),pvalues=dm::graphics::RPlot::create();
+  mass.bars(region.numeric_column("successes").values(),region.numeric_column("null_probability").values(),"null PMF",{37,99,235});
+  const auto selected=region.filter([](const auto& r){return r.get_double("reject_exact")==1;});
+  mass.bars(selected.numeric_column("successes").values(),selected.numeric_column("null_probability").values(),"5% rejection region",{220,38,38});
+  mass.title("Binomial(10, 0.5) null outcomes").x_label("successes").y_label("probability").y_limits(0,.38);
+  pvalues.lines(region.numeric_column("successes").values(),region.numeric_column("exact_p").values(),"exact",{37,99,235});
+  pvalues.lines(region.numeric_column("successes").values(),region.numeric_column("score_p").values(),"corrected score",{220,38,38});
+  pvalues.abline_h(.05).title("Two-sided p-values").x_label("successes").y_label("p-value").y_limits(0,1.35);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(mass).add(pvalues).size(1100,490).fit_panels().save_svg("build/hypothesis_binomial.svg");
+  std::print("{}\n\n{}\n",region.to_md(6),dm::stats::hypothesis_test_table({dm::stats::binomial_test(9,10),dm::stats::binomial_test(0,10,.3)},{"9/10 vs 0.5","0/10 vs 0.3"}).select({"label","p_value","ci_lower","ci_upper"}).to_md(6));
+}
+```
+// result_begin: markdown
+| successes | null_probability | exact_p | score_p | reject_exact | reject_score |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0.000977 | 0.001953 | 0.004427 | 1 | 1 |
+| 1 | 0.009766 | 0.021484 | 0.026857 | 1 | 1 |
+| 2 | 0.043945 | 0.109375 | 0.113846 | 0 | 0 |
+| 3 | 0.117188 | 0.343750 | 0.342782 | 0 | 0 |
+| 4 | 0.205078 | 0.753906 | 0.751830 | 0 | 0 |
+| 5 | 0.246094 | 1.000000 | 1.000000 | 0 | 0 |
+| 6 | 0.205078 | 0.753906 | 0.751830 | 0 | 0 |
+| 7 | 0.117188 | 0.343750 | 0.342782 | 0 | 0 |
+| 8 | 0.043945 | 0.109375 | 0.113846 | 0 | 0 |
+| 9 | 0.009766 | 0.021484 | 0.026857 | 1 | 1 |
+| 10 | 0.000977 | 0.001953 | 0.004427 | 1 | 1 |
+
+
+| label | p_value | ci_lower | ci_upper |
+| :--- | ---: | ---: | ---: |
+| 9/10 vs 0.5 | 0.021484 | 0.554984 | 0.997471 |
+| 0/10 vs 0.3 | 0.038840 | 0.000000 | 0.308497 |
+
+\image(figures/hypothesis_binomial.svg)
+// result_end
+
+\caption(Exact count probabilities and exact-versus-score p-values. The asymmetric second table demonstrates the ordering difference between a two-sided exact test and a central interval.)
+\alttext(The binomial PMF marks its four extreme 5% rejection counts in red. A second panel compares exact and continuity-corrected score p-values across every possible count.)
+
+>> A 2x2 table small enough to enumerate
+
+For the observed table \((0,3;3,0)\), every margin is three. The top-left count can be
+zero, one, two or three, with probabilities \((1,9,9,1)/20\). Both endpoint tables
+are as improbable as the observed one, so Fisher's two-sided p-value is 0.1.
+Pearson expected counts are all 1.5, giving uncorrected \(X^2=6\) and Yates-corrected
+\(X^2=8/3\). Their asymptotic p-values differ substantially; these small expected
+counts do not justify choosing the uncorrected approximation because it rejects.
+
+```{cpp, results="markdown", file="figures/hypothesis_fisher.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+const auto support=dm::stats::fisher_exact_support(0,3,3,0);const auto tail=support.filter([](const auto& r){return r.get_double("selected")==1;});
+  auto plot=dm::graphics::RPlot::create();plot.bars(support.numeric_column("top_left").values(),support.numeric_column("probability").values(),"conditional null",{37,99,235});
+  plot.bars(tail.numeric_column("top_left").values(),tail.numeric_column("probability").values(),"selected tail",{220,38,38});
+  plot.title("Four tables with the same margins").x_label("top-left count").y_label("conditional probability").y_limits(0,.65);
+  std::filesystem::create_directories("build");plot.size(820,470).save_svg("build/hypothesis_fisher.svg");
+  std::print("{}\n\n{}\n",support.to_md(6),dm::stats::hypothesis_test_table({dm::stats::fisher_exact_test_2x2(0,3,3,0),dm::stats::chi_squared_test_independence({0,3,3,0},2,2,false),dm::stats::chi_squared_test_independence({0,3,3,0},2,2,true)},{"Fisher conditional","Pearson asymptotic","Yates asymptotic"}).select({"label","statistic","p_value"}).to_md(6));
+}
+```
+// result_begin: markdown
+| top_left | probability | selected |
+| ---: | ---: | ---: |
+| 0 | 0.05 | 1 |
+| 1 | 0.45 | 0 |
+| 2 | 0.45 | 0 |
+| 3 | 0.05 | 1 |
+
+
+| label | statistic | p_value |
+| :--- | ---: | ---: |
+| Fisher conditional | 0.000000 | 0.100000 |
+| Pearson asymptotic | 6.000000 | 0.014306 |
+| Yates asymptotic | 2.666667 | 0.102470 |
+
+\image(figures/hypothesis_fisher.svg)
+// result_end
+
+\caption(Fisher sums the two endpoint probabilities to 0.1. The table reports the two approximate chi-square alternatives separately, with their actual statistics.)
+\alttext(Four bars have heights 0.05, 0.45, 0.45 and 0.05. The endpoint bars are highlighted as the selected two-sided conditional tail.)
+
+> Checking calibration and power
+
+Exact enumeration provides an independent repeated-sampling question: how often does
+this fixed rule reject? For rejection set \(\mathcal R\), compute
+
+$$
+ \operatorname{size}=\sum_{x\in\mathcal R}f(x;n,p_0),\qquad
+ \operatorname{power}(p_1)=\sum_{x\in\mathcal R}f(x;n,p_1).
+$$
+\alttext(Test size sums rejection probabilities under the null success probability. Power sums probabilities over the same rejection region under a stated alternative.)
+
+We fix \(p_0=0.1\), \(p_1=0.3\), \(\alpha=0.05\) and a two-sided alternative,
+and enumerate every count for each trial number. Exact, uncorrected score and corrected
+score rules are all declared in advance. The red uncorrected-score curve shows why a
+normal approximation is unreliable with sparse expected successes. The exact size stays
+at or below 5%, but power and size have discrete jumps; a continuous smooth-power
+intuition can be misleading. These calculations have no Monte Carlo uncertainty.
+
+```{cpp, results="markdown", file="figures/hypothesis_calibration.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+std::vector<std::size_t> sizes;for(std::size_t n=1;n<=100;++n)sizes.push_back(n);
+  const auto plain=dm::stats::binomial_operating_characteristics(sizes,.1,.3,.05,dm::stats::Alternative::TwoSided,false);
+  const auto corrected=dm::stats::binomial_operating_characteristics(sizes,.1,.3);const auto n=plain.numeric_column("n").values();
+  auto size=dm::graphics::RPlot::create(),power=dm::graphics::RPlot::create();
+  size.lines(n,plain.numeric_column("exact_size").values(),"exact",{37,99,235}).lines(n,plain.numeric_column("score_size").values(),"score",{220,38,38}).lines(n,corrected.numeric_column("score_size").values(),"corrected score",{22,163,74});
+  size.abline_h(.05).title("Actual null rejection probability").x_label("trials n").y_label("size at p = 0.1").y_limits(0,.15);
+  power.lines(n,plain.numeric_column("exact_power").values(),"exact",{37,99,235}).lines(n,plain.numeric_column("score_power").values(),"score",{220,38,38}).lines(n,corrected.numeric_column("score_power").values(),"corrected score",{22,163,74});
+  power.title("Power at true p = 0.3").x_label("trials n").y_label("rejection probability").y_limits(0,1.4);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(size).add(power).size(1100,490).fit_panels().save_svg("build/hypothesis_calibration.svg");
+  std::print("Uncorrected score comparison:\n\n{}\n\nCorrected score comparison:\n\n{}\n",dm::stats::binomial_operating_characteristics({1,5,10,20,40,80},.1,.3,.05,dm::stats::Alternative::TwoSided,false).to_md(6),dm::stats::binomial_operating_characteristics({1,5,10,20,40,80},.1,.3).to_md(6));
+}
+```
+// result_begin: markdown
+Uncorrected score comparison:
+
+| n | exact_size | score_size | exact_power | score_power |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.000000 | 0.100000 | 0.000000 | 0.300000 |
+| 5 | 0.008560 | 0.081460 | 0.163080 | 0.471780 |
+| 10 | 0.012795 | 0.070191 | 0.350389 | 0.617217 |
+| 20 | 0.043174 | 0.043174 | 0.762492 | 0.762492 |
+| 40 | 0.030276 | 0.056683 | 0.888991 | 0.944718 |
+| 80 | 0.037432 | 0.037432 | 0.996377 | 0.996377 |
+
+
+Corrected score comparison:
+
+| n | exact_size | score_size | exact_power | score_power |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.000000 | 0.000000 | 0.000000 | 0.000000 |
+| 5 | 0.008560 | 0.008560 | 0.163080 | 0.163080 |
+| 10 | 0.012795 | 0.012795 | 0.350389 | 0.350389 |
+| 20 | 0.043174 | 0.011253 | 0.762492 | 0.583629 |
+| 40 | 0.030276 | 0.015495 | 0.888991 | 0.888991 |
+| 80 | 0.037432 | 0.037432 | 0.996377 | 0.996377 |
+
+\image(figures/hypothesis_calibration.svg)
+// result_end
+
+\caption(Size and power are sums over every possible binomial count for each sample size. The horizontal line is the nominal 5% size, not a target for power.)
+\alttext(Three jagged curves compare exact, uncorrected score and corrected score rules. The size panel reveals sparse-count approximation errors; the power panel evaluates the fixed rules at true probability 0.3.)
+
+At five trials, exact size is 0.00856 and uncorrected score size is 0.08146; their
+powers at p = 0.3 are 0.16308 and 0.47178. That higher apparent power accompanies
+excess null rejection. At twenty trials the exact rule has size 0.04317 and power
+0.76249; the corrected-score rule is more conservative here, with size 0.01125 and
+power 0.58363.
+
+> Iris measurements
+
+>> Dataset, location effects and a declared family
+
+`dm::datasets::iris()` contains 150 flowers, 50 of each species, with four complete
+measurements in centimetres and a species label. We first summarize the data, then
+compare setosa and versicolor petal length with Welch and rank-sum tests, and all three
+species with classical ANOVA and Kruskal–Wallis. The F-test compares setosa/virginica
+petal-length variance. These are distinct questions, not five replications of one test.
+ANOVA's common-variance assumption is questionable for these petal lengths; its result
+is presented as a model calculation rather than made robust by another test agreeing.
+
+Separately, we declare the four Welch comparisons of versicolor minus virginica on all
+four measurements as one multiplicity family and apply Holm. The plot and table give
+raw-unit mean differences and marginal 95% intervals. The historically collected,
+species-stratified data are not randomized treatments; these calculations are a sampling-
+model illustration, not evidence for a causal species effect or a new confirmatory study.
+
+```{cpp, results="markdown", file="figures/hypothesis_iris_location.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+const auto d=dm::datasets::iris();const auto setosa=d.filter([](const auto& r){return r.get_string("Species")=="setosa";}),versicolor=d.filter([](const auto& r){return r.get_string("Species")=="versicolor";}),virginica=d.filter([](const auto& r){return r.get_string("Species")=="virginica";});
+  const auto a=setosa.numeric_column("Petal.Length").values(),b=versicolor.numeric_column("Petal.Length").values(),c=virginica.numeric_column("Petal.Length").values();
+  std::vector<double> pooled=a;pooled.insert(pooled.end(),b.begin(),b.end());pooled.insert(pooled.end(),c.begin(),c.end());
+  const auto summary=d|dm::group_by("Species")|dm::summarise(dm::agg::n("n"),dm::agg::mean("Petal.Length","petal_mean_cm"),dm::agg::sd("Petal.Length","petal_sd_cm"));
+  const auto location=dm::stats::hypothesis_test_table({dm::stats::t_test_two_sample(a,b),dm::stats::wilcoxon_rank_sum_test(a,b),dm::stats::one_way_anova(pooled,{50,50,50}),dm::stats::kruskal_wallis_test(pooled,{50,50,50}),dm::stats::f_test_variance(a,c)},{"Welch setosa-versicolor","rank-sum setosa-versicolor","ANOVA three species","Kruskal-Wallis three species","variance setosa/virginica"});
+  const std::vector<std::string> features={"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};std::vector<dm::stats::HypothesisTestResult> tests;std::vector<double> raw,effect,lo,hi;
+  for(const auto& f:features){auto t=dm::stats::t_test_two_sample(versicolor.numeric_column(f).values(),virginica.numeric_column(f).values());tests.push_back(t);raw.push_back(t.p_value);effect.push_back(t.estimate1-t.estimate2);lo.push_back(t.conf_int_lower);hi.push_back(t.conf_int_upper);}
+  auto family=dm::stats::hypothesis_test_table(tests,features);family.add_column("mean_difference_cm",effect);family.add_column("holm_p",dm::stats::p_adjust(raw,dm::stats::PAdjustMethod::Holm));
+  auto boxes=dm::graphics::RPlot::boxplot({a,b,c},{"setosa","versicolor","virginica"});boxes.title("Petal lengths by species").x_label("species").y_label("petal length (cm)").y_limits(0,9);
+  auto intervals=dm::graphics::RPlot::create();intervals.segments(lo,{4,3,2,1},hi,{4,3,2,1},{37,99,235},2).points(effect,{4,3,2,1},"mean; 95% CI",{37,99,235});
+  for(std::size_t i=0;i<features.size();++i)intervals.text(-2.05,4.3-i,features[i]);
+  intervals.abline_v(0).title("Versicolor minus virginica").x_label("mean difference (cm)").y_label("feature row").x_limits(-2.5,.65).y_limits(.3,5.5);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(boxes).add(intervals).size(1100,510).fit_panels().save_svg("build/hypothesis_iris_location.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;fmt.digits=6;fmt.scientific={"p_value","holm_p"};
+  std::print("{} flowers, {} columns.\n\n{}\n\n{}\n\nFour-comparison family:\n\n{}\n",d.nrows(),d.ncols(),summary|dm::to_md(4),location.select({"label","statistic","p_value"}).to_md(fmt),family.select({"label","mean_difference_cm","ci_lower","ci_upper","p_value","holm_p"}).to_md(fmt));
+}
+```
+// result_begin: markdown
+150 flowers, 5 columns.
+
+| Species | n | petal_mean_cm | petal_sd_cm |
+| :--- | ---: | ---: | ---: |
+| setosa | 50 | 1.462 | 0.1737 |
+| versicolor | 50 | 4.260 | 0.4699 |
+| virginica | 50 | 5.552 | 0.5519 |
+
+
+| label | statistic | p_value |
+| :--- | ---: | ---: |
+| Welch setosa-versicolor | -39.492719 | 9.934433e-46 |
+| rank-sum setosa-versicolor | 0.000000 | 5.651012e-18 |
+| ANOVA three species | 1180.161182 | 2.856777e-91 |
+| Kruskal-Wallis three species | 130.411049 | 4.803974e-29 |
+| variance setosa/virginica | 0.099016 | 1.874736e-13 |
+
+
+Four-comparison family:
+
+| label | mean_difference_cm | ci_lower | ci_upper | p_value | holm_p |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Sepal.Length | -0.652 | -0.881973 | -0.422027 | 1.866144e-07 | 3.732289e-07 |
+| Sepal.Width | -0.204 | -0.330284 | -0.077716 | 1.819483e-03 | 1.819483e-03 |
+| Petal.Length | -1.292 | -1.495490 | -1.088510 | 4.900288e-22 | 1.470086e-21 |
+| Petal.Width | -0.700 | -0.795100 | -0.604900 | 2.111534e-25 | 8.446138e-25 |
+
+\image(figures/hypothesis_iris_location.svg)
+// result_end
+
+\caption(Petal-length distributions and four raw-unit mean-difference intervals. Holm-adjusted p-values belong to the declared four-Welch-test family; the displayed 95% intervals remain marginal.)
+\alttext(Three species boxplots show different petal-length levels and spreads. A second panel shows versicolor-minus-virginica differences and marginal confidence intervals for each of four measurements.)
+
+The versicolor-minus-virginica petal-length difference is -1.292 cm, with marginal
+95% interval [-1.49549, -1.08851] cm and Holm-adjusted p-value about 1.47e-21.
+All four mean differences remain distinguishable from zero within this declared family;
+the largest adjusted p-value is 0.00182 for sepal width. These effect estimates describe
+the sampled groups under the stated model.
+
+>> Pooled association is not within-species association
+
+Sepal and petal length are paired measurements on each flower. The pooled Pearson and
+Spearman results combine between-species and within-species variation. We show each
+species' separate coefficient alongside the pooled results, and colour the scatter by
+species to make that mixture visible. These additional exploratory p-values are not
+members of the preceding four-test family and are not called multiplicity-adjusted.
+
+```{cpp, results="markdown", file="figures/hypothesis_iris_association.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+const auto d=dm::datasets::iris();std::vector<dm::stats::HypothesisTestResult> pearson,spearman;std::vector<std::string> labels={"pooled"};
+  const auto x=d.numeric_column("Sepal.Length").values(),y=d.numeric_column("Petal.Length").values();pearson.push_back(dm::stats::pearson_correlation_test(x,y));spearman.push_back(dm::stats::spearman_correlation_test(x,y));
+  auto scatter=dm::graphics::RPlot::create();const std::vector<std::string> species={"setosa","versicolor","virginica"};const std::vector<dm::RGB> colors={{37,99,235},{220,38,38},{22,163,74}};
+  for(std::size_t i=0;i<species.size();++i){const auto g=d.filter([&](const auto& r){return r.get_string("Species")==species[i];});const auto gx=g.numeric_column("Sepal.Length").values(),gy=g.numeric_column("Petal.Length").values();labels.push_back(species[i]);pearson.push_back(dm::stats::pearson_correlation_test(gx,gy));spearman.push_back(dm::stats::spearman_correlation_test(gx,gy));scatter.points(gx,gy,species[i],colors[i]);}
+  scatter.title("Pooled and within-species association").x_label("sepal length (cm)").y_label("petal length (cm)").y_limits(0,9);
+  std::filesystem::create_directories("build");scatter.size(820,490).save_svg("build/hypothesis_iris_association.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;fmt.digits=6;fmt.scientific={"p_value"};
+  std::print("Pearson:\n\n{}\n\nSpearman (t approximation):\n\n{}\n",dm::stats::hypothesis_test_table(pearson,labels).select({"label","estimate1","ci_lower","ci_upper","p_value"}).to_md(fmt),dm::stats::hypothesis_test_table(spearman,labels).select({"label","estimate1","p_value"}).to_md(fmt));
+}
+```
+// result_begin: markdown
+Pearson:
+
+| label | estimate1 | ci_lower | ci_upper | p_value |
+| :--- | ---: | ---: | ---: | ---: |
+| pooled | 0.871754 | 0.827036 | 0.905508 | 1.038667e-47 |
+| setosa | 0.267176 | -0.012070 | 0.507762 | 6.069778e-02 |
+| versicolor | 0.754049 | 0.602068 | 0.853300 | 2.586190e-10 |
+| virginica | 0.864225 | 0.771454 | 0.921017 | 6.297786e-16 |
+
+
+Spearman (t approximation):
+
+| label | estimate1 | p_value |
+| :--- | ---: | ---: |
+| pooled | 0.881898 | 3.443087e-50 |
+| setosa | 0.278885 | 4.985095e-02 |
+| versicolor | 0.736625 | 1.075213e-09 |
+| virginica | 0.824323 | 1.899027e-13 |
+
+\image(figures/hypothesis_iris_association.svg)
+// result_end
+
+\caption(The pooled association combines species separation with association among flowers of the same species. Correlation coefficients and sampling-model p-values are distinct outputs.)
+\alttext(A sepal-versus-petal scatter is coloured by species. Tables compare pooled Pearson and Spearman coefficients with each species-specific coefficient and label the Spearman approximation.)
+
+Pooled Pearson r is 0.872, versus 0.267 within setosa, 0.754 within versicolor and
+0.864 within virginica. For setosa the Pearson and approximate Spearman p-values lie
+on opposite sides of 0.05 (0.06070 and 0.04985); that small threshold difference does
+not justify choosing the method after seeing its result. The coefficients and intervals
+carry more information than a binary significance label.
+
+>> Shape diagnostics with a stated calibration limitation
+
+Setosa sepal lengths are recorded to one decimal place. Their normal QQ plot and
+Shapiro–Francia statistic describe shape, with the latter's continuous-normal p-value
+only an approximation for rounded data. Failure to reject is not proof that normality
+holds, and it is not a licence to ignore the design or variance assumptions of other tests.
+
+For KS we use the illustrative fixed benchmark \(N(5,0.4^2)\), in centimetres.
+We display its D statistic only: rounding already violates a continuous-null model, and
+this historically selected dataset is not a prospective test of that benchmark. In
+particular, replacing the benchmark by the sample's fitted mean and SD would not turn
+the ordinary KS p-value into a valid composite-normality test.
+
+```{cpp, results="markdown", file="figures/hypothesis_iris_shape.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+const auto d=dm::datasets::iris().filter([](const auto& r){return r.get_string("Species")=="setosa";});const auto x=d.numeric_column("Sepal.Length").values();
+  const auto sf=dm::stats::shapiro_francia_test(x),ks=dm::stats::ks_test_one_sample_normal(x,5,.4);
+  auto qq=dm::graphics::RPlot::qqnorm(x,"setosa sepal length");qq.qqline(x).title("Rounded setosa measurements: normal QQ").x_label("standard-normal quantile").y_label("sepal length (cm)").y_limits(4.1,6.6);
+  std::filesystem::create_directories("build");qq.size(820,470).save_svg("build/hypothesis_iris_shape.svg");
+  dm::dstruct::DataFrame benchmark;benchmark.add_column("reference_mean_cm",std::vector<double>{5});benchmark.add_column("reference_sd_cm",std::vector<double>{.4});benchmark.add_column("D_only",std::vector<double>{ks.statistic});
+  std::print("Continuous-normal approximation on rounded measurements:\n\n{}\n\nFixed-benchmark discrepancy (no calibrated p-value claimed):\n\n{}\n",dm::stats::hypothesis_test_table({sf}).select({"method","statistic","p_value"}).to_md(6),benchmark.to_md(6));
+}
+```
+// result_begin: markdown
+Continuous-normal approximation on rounded measurements:
+
+| method | statistic | p_value |
+| :--- | ---: | ---: |
+| Shapiro-Francia normality test | 0.981695 | 0.535688 |
+
+
+Fixed-benchmark discrepancy (no calibrated p-value claimed):
+
+| reference_mean_cm | reference_sd_cm | D_only |
+| ---: | ---: | ---: |
+| 5 | 0.4 | 0.121294 |
+
+\image(figures/hypothesis_iris_shape.svg)
+// result_end
+
+\caption(Normal QQ diagnostic for rounded measurements. The KS discrepancy is shown without interpreting a nominal continuous-null p-value.)
+\alttext(Ordered setosa sepal lengths lie near a normal reference line with visible ties. Tables report the Shapiro-Francia approximation and the distance to a separately specified normal benchmark.)
+
+>> Counts after an explicit measurement threshold
+
+We define long petals as strictly greater than 4.5 cm and compare versicolor with
+virginica. This fixed illustrative cutoff is not the pooled sample median and is not
+optimized over candidate thresholds. Dichotomization discards measurement information;
+it does not create a second independent experiment. We show the 2x2 counts, Pearson
+and Fisher results, then ask the separate one-sample question whether the versicolor
+long-petal proportion equals one half using score and exact binomial tests. The
+reference sampling model treats flowers as independent within their sampled species;
+the balanced species counts themselves are not a random prevalence estimate.
+
+```{cpp, results="markdown", file="figures/hypothesis_iris_counts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+const auto d=dm::datasets::iris();std::vector<std::size_t> longer,shorter;
+  for(const auto& species:{std::string("versicolor"),std::string("virginica")}) {const auto g=d.filter([&](const auto& r){return r.get_string("Species")==species;});const auto long_rows=g.filter([](const auto& r){return r.get_double("Petal.Length")>4.5;});longer.push_back(long_rows.nrows());shorter.push_back(g.nrows()-long_rows.nrows());}
+  dm::dstruct::DataFrame counts;counts.add_column("species",std::vector<std::string>{"versicolor","virginica"});counts.add_column("long",std::vector<double>{double(longer[0]),double(longer[1])});counts.add_column("not_long",std::vector<double>{double(shorter[0]),double(shorter[1])});
+  auto plot=dm::graphics::RPlot::create();plot.bars({.8,1.8},{double(longer[0]),double(longer[1])},"petal > 4.5 cm",{37,99,235},.35).bars({1.2,2.2},{double(shorter[0]),double(shorter[1])},"petal <= 4.5 cm",{220,38,38},.35);
+  plot.title("An explicit petal-length cutoff").x_label("1: versicolor; 2: virginica").y_label("flower count").x_limits(.4,2.6).y_limits(0,70);
+  const auto tests=dm::stats::hypothesis_test_table({dm::stats::chi_squared_test_independence({double(longer[0]),double(shorter[0]),double(longer[1]),double(shorter[1])},2,2),dm::stats::fisher_exact_test_2x2(longer[0],shorter[0],longer[1],shorter[1]),dm::stats::proportion_test_one_sample(longer[0],50),dm::stats::binomial_test(longer[0],50)},{"Yates association","Fisher association","versicolor score vs 0.5","versicolor exact vs 0.5"});
+  std::filesystem::create_directories("build");plot.size(820,470).save_svg("build/hypothesis_iris_counts.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;fmt.digits=6;fmt.scientific={"p_value"};std::print("{}\n\nAssociation:\n\n{}\n\nSample odds ratio: {:.6f}\n\nVersicolor proportion:\n\n{}\n",counts.to_md(),tests.head(2).select({"label","statistic","p_value"}).to_md(fmt),tests.double_at("estimate1",1),tests.tail(2).select({"label","estimate1","ci_lower","ci_upper","p_value"}).to_md(fmt));
+}
+```
+// result_begin: markdown
+| species | long | not_long |
+| :--- | ---: | ---: |
+| versicolor | 14 | 36 |
+| virginica | 49 | 1 |
+
+
+Association:
+
+| label | statistic | p_value |
+| :--- | ---: | ---: |
+| Yates association | 49.592450 | 1.892406e-12 |
+| Fisher association | 14.000000 | 2.762967e-14 |
+
+
+Sample odds ratio: 0.007937
+
+Versicolor proportion:
+
+| label | estimate1 | ci_lower | ci_upper | p_value |
+| :--- | ---: | ---: | ---: | ---: |
+| versicolor score vs 0.5 | 0.28 | 0.174742 | 0.416651 | 2.979467e-03 |
+| versicolor exact vs 0.5 | 0.28 | 0.162311 | 0.424905 | 2.602171e-03 |
+
+\image(figures/hypothesis_iris_counts.svg)
+// result_end
+
+\caption(Observed long/not-long counts under a stated 4.5 cm rule. The conditional association and one-sample proportion tests answer different questions on overlapping data.)
+\alttext(Two pairs of coloured bars show long and not-long counts for versicolor and virginica. Tables give exact counts, association tests and the versicolor proportion tests with their distinct interval definitions.)
+
+There are 14 long petals among 50 versicolor flowers and 49 among 50 virginica
+flowers. Their sample odds ratio is 0.00794, with Fisher conditional p-value about
+2.76e-14. The separate versicolor proportion is 0.28, with exact 95% interval
+[0.16231, 0.42491] and a two-sided binomial p-value of 0.00260 against one half.
+The one-sample score and exact intervals differ as their definitions predict.
+
+> Conclusion
+
+A test result is interpretable only with its null, sampling design, ordering and reference
+calibration. The worked examples separate mean, rank and conditional-count questions;
+finite enumeration reveals conservative exact rules and sparse-count approximation errors.
+Confidence intervals add effect units and uncertainty but must be matched to their actual
+construction. Iris illustrates species-stratified effects, a declared multiplicity family,
+and the difference between pooled association and within-species relationships. Agreement
+among several p-values neither validates their assumptions nor supplies causal evidence.
+
+> References
+
+- Student (1908). [The Probable Error of a Mean|https://doi.org/10.1093/biomet/6.1.1]. ~Biometrika~, 6(1), 1–25. Student reference; see also the documented Welch variant in [R t.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html].
+- R Core Team. [wilcox.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html], [oneway.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/oneway.test.html] and [kruskal.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kruskal.test.html]. Nulls, rank conventions and reference methods. Here Wilcoxon is always a normal approximation and one_way_anova is the equal-variance procedure.
+- Clopper, C. J. and Pearson, E. S. (1934). [The Use of Confidence or Fiducial Limits Illustrated in the Case of the Binomial|https://doi.org/10.1093/biomet/26.4.404]. ~Biometrika~, 26(4), 404–413; [R binom.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/binom.test.html].
+- R Core Team. [fisher.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fisher.test.html], [chisq.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html] and [prop.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html]. Probability ordering, conditional sampling and score-test conventions; the library's one-proportion Wilson interval is uncorrected.
+- R Core Team. [cor.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html], [var.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/var.test.html] and [ks.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html]. Correlation/variance references and the fixed-parameter KS requirement; see also [nortest sf.test|https://search.r-project.org/CRAN/refmans/nortest/html/sf.test.html] for the Shapiro–Francia/Royston approximation.
+- Holm, S. (1979). [A Simple Sequentially Rejective Multiple Test Procedure|https://www.jstor.org/stable/4615733]. ~Scandinavian Journal of Statistics~, 6(2), 65–70; [R p.adjust|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html].
+- Fisher, R. A. (1936). [The use of multiple measurements in taxonomic problems|https://doi.org/10.1111/j.1469-1809.1936.tb02137.x]. ~Annals of Eugenics~, 7(2), 179–188. Iris measurements used directly from the built-in dataset.
+

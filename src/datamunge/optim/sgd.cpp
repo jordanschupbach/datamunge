@@ -1,3 +1,5 @@
+/// @file sgd.cpp
+/// @brief SGD native update, trial and stopping implementation.
 #include <datamunge/optim/sgd.hpp>
 
 #include <algorithm>
@@ -11,6 +13,7 @@ namespace datamunge::optim {
 SGD::SGD(SGDOptions options) : options_(options) {}
 
 double SGD::optimize(DifferentiableSeparableFunction& function, std::vector<double>& coordinates) const {
+    if (options_.batch_size == 0) throw std::invalid_argument("SGD: batch_size must be positive");
     const std::size_t n_terms = function.num_functions();
     if (n_terms == 0) throw std::invalid_argument("SGD::optimize: function has zero terms");
 

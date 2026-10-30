@@ -252,3 +252,14 @@ TEST(RandomDistributions, FDistributionMatchesKnownRValues) {
   const double t_stat = student_t_quantile(0.975, 12.0);
   EXPECT_NEAR(f_cdf(t_stat * t_stat, 1.0, 12.0), 0.95, 1e-5);
 }
+
+TEST(BetaDistribution, MatchesClosedForms) {
+  namespace rd = datamunge::random;
+  EXPECT_NEAR(rd::beta_pdf(0.5, 2.0, 2.0), 1.5, 1e-14);
+  // Beta(k, 2): F(x) = (k + 1) x^k - k x^(k + 1).
+  EXPECT_NEAR(rd::beta_cdf(0.9, 18.0, 2.0), 19.0 * std::pow(0.9, 18) - 18.0 * std::pow(0.9, 19), 1e-12);
+  EXPECT_NEAR(rd::beta_cdf(0.3, 1.0, 1.0), 0.3, 1e-14);
+  for (const double p : {0.01, 0.3, 0.5, 0.97}) EXPECT_NEAR(rd::beta_cdf(rd::beta_quantile(p, 3.5, 1.7), 3.5, 1.7), p, 1e-12);
+  EXPECT_EQ(rd::beta_pdf(1.5, 2.0, 2.0), 0.0);
+  EXPECT_THROW(rd::beta_pdf(0.5, 0.0, 1.0), std::invalid_argument);
+}

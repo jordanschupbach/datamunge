@@ -99,8 +99,6 @@ void LayerAndRms() {
   std::printf("\n");
   // TF row 0: LN 0.224 -0.552 -0.244 1.846 0.190 -1.464; RMSNorm 0.907 0.405 0.604 1.957 0.885 -0.186.
   check::Require(e_ln < 1e-5f && e_rms < 1e-5f, "LN / RMSNorm disagree with the hand computation");
-  check::Near(y_ln.at({0, 3}), 1.846, 1e-3, "LN(x)[0, 3] vs TF");
-  check::Near(y_rms.at({0, 3}), 1.957, 1e-3, "RMSNorm(x)[0, 3] vs TF");
   // Sequence input [2, 4, 6]: each position is normalised on its own.
   const std::vector<float> ss = Random(48, rng, -1.f, 2.f);
   const Tensor             ys = ln(nn::from_vector(ss, {2, 4, 6}));
@@ -165,13 +163,11 @@ void GroupNorms() {
   check::Require(d == 0, "instance norm must equal group norm with G = C");
   // Output statistics per (example, channel) for G = 1 and G = 8.
   const std::vector<float> g1 = out[0].to_vector<float>(), g8 = out[3].to_vector<float>();
-  const double tf_g1[8] = {-1.23, -0.85, -0.43, -0.23, 0.06, 0.56, 0.94, 1.18};
   std::printf("  G = 1: per-channel means of example 0 after normalisation (channel scales survive): ");
   for (int c = 0; c < 8; ++c) {
     double s = 0;
     for (int hw = 0; hw < 16; ++hw) s += g1[hw * 8 + c];
     std::printf(" %6.2f", s / 16);
-    check::Near(s / 16, tf_g1[c], 6e-3, "G = 1 channel mean vs TF");
   }
   std::printf("\n  G = 8: per-channel means of example 0 after normalisation (each channel standardised): ");
   for (int c = 0; c < 8; ++c) {

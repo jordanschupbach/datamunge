@@ -43,7 +43,7 @@ exactly like mail sorted into ever-finer pigeonholes.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -100,7 +100,7 @@ that the first recursion level produces.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 #include <algorithm>
 

@@ -9,7 +9,7 @@
 #include <iterator>
 #include <string>
 
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 using datamunge::dstruct::DataFrame;
 
 namespace {

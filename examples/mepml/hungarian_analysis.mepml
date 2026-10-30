@@ -52,7 +52,7 @@ row \(i\) and whose `cost` is the optimal total.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Duality and complementary slackness
@@ -246,7 +246,7 @@ gives \(2+6+1 = 9\), and no other permutation beats it (the runner-up costs
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

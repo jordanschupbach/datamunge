@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/pca_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # feature_columns is passed via encode_strings() -- see examples/r/clustering_ex.r for why
 # (a vector<string> constructor overload is unreachable from R; the encoded-string constructor

@@ -1,3 +1,5 @@
+/// @file nesterov_accelerated_gradient.cpp
+/// @brief NesterovAcceleratedGradient native update, trial and stopping implementation.
 #include <datamunge/optim/nesterov_accelerated_gradient.hpp>
 
 #include <cmath>

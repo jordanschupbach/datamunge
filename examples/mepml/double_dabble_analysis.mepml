@@ -36,7 +36,7 @@ result). After all input bits are consumed, the BCD field holds the decimal digi
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -92,7 +92,7 @@ string, then plot how the number of decimal digits grows with the value's magnit
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

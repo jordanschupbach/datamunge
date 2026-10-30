@@ -1,6 +1,6 @@
 # Native Python NN example. Flip, crop, color jitter, cutout, mixup and CutMix on NHWC batches.
-"""CMD: just python-example data_augmentation
-Flip, crop, color jitter, cutout, mixup and CutMix on NHWC batches.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/data_augmentation.py
+"""Flip, crop, color jitter, cutout, mixup and CutMix on NHWC batches.
 
 Port of tflow's data_augmentation. Check exact pixel positions, unchanged
 evaluation inputs, clipping, soft labels and area-correct CutMix labels on

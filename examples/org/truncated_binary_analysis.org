@@ -36,7 +36,7 @@ reads one more -- unambiguous because the short and long codewords never collide
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 inline int tb_len(std::uint64_t v, std::uint64_t n) { std::vector<bool> b; truncated_binary_encode_value(v, n, b); return (int)b.size(); }
 #+end_src

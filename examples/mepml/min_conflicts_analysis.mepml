@@ -38,7 +38,7 @@ relatives underpin practical schedulers and configurators.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -101,7 +101,7 @@ We solve \(8\)\-queens and print the board, then measure the repair steps needed
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

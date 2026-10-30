@@ -2073,9 +2073,9 @@ fail:
   return SWIG_ERROR;
 }
 
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::plot::RGB(); }
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::plot::RGB{r, g, b, alpha};
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
+    return new datamunge::graphics::RGB{r, g, b, alpha};
   }
 
 #define SWIG_NAPI_INIT datamungejs_initialize
@@ -41895,8 +41895,8 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
   std::size_t arg5 ;
   void *argp1 = 0 ;
@@ -41909,7 +41909,7 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
   int ecode4 = 0 ;
   size_t val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -41919,12 +41919,12 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -41932,12 +41932,12 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
@@ -41950,7 +41950,7 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "ShapeLayer_plot" "', argument " "5"" of type '" "std::size_t""'");
   } 
   arg5 = static_cast< std::size_t >(val5);result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -41969,8 +41969,8 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -41980,7 +41980,7 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
   int res3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -41990,12 +41990,12 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -42003,12 +42003,12 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
@@ -42017,7 +42017,7 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "ShapeLayer_plot" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -42035,15 +42035,15 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -42053,12 +42053,12 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -42066,17 +42066,17 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -42093,12 +42093,12 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -42108,17 +42108,17 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -42137,14 +42137,14 @@ Napi::Value _exports_ShapeLayer_templ<SWIG_OBJ_WRAP>::_wrap_ShapeLayer_plot__SWI
   datamunge::ShapeLayer *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);result = ((datamunge::ShapeLayer const *)arg1)->plot();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -43015,7 +43015,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_point__SWIG_
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -43033,12 +43033,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_point__SWIG_
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -43065,7 +43065,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_point__SWIG_
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -43080,12 +43080,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_point__SWIG_
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -43256,7 +43256,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_line__SWIG_0
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -43274,12 +43274,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_line__SWIG_0
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -43306,7 +43306,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_line__SWIG_1
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -43321,12 +43321,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_line__SWIG_1
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -43497,7 +43497,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_bar__SWIG_0(
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -43512,12 +43512,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_bar__SWIG_0(
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_bar" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_bar" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_bar" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_bar" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -43652,7 +43652,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_col__SWIG_0(
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -43667,12 +43667,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_col__SWIG_0(
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_col" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_col" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_col" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_col" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -43808,7 +43808,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_histogram__S
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
   std::size_t arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   size_t val2 ;
@@ -43829,12 +43829,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_histogram__S
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_geom_histogram" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_geom_histogram" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_histogram" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_histogram" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
@@ -44040,7 +44040,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_boxplot__SWI
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -44055,12 +44055,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_boxplot__SWI
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_boxplot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_boxplot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_boxplot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_boxplot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -44195,7 +44195,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_smooth__SWIG
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -44210,12 +44210,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_smooth__SWIG
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_smooth" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_smooth" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_smooth" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_smooth" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -44350,7 +44350,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_area__SWIG_0
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -44365,12 +44365,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_area__SWIG_0
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_area" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_area" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_area" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_area" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -44507,7 +44507,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_ribbon__SWIG
   datamunge::GGPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
@@ -44550,12 +44550,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_ribbon__SWIG
     {
       res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "GGPlot_geom_ribbon" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "GGPlot_geom_ribbon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
@@ -44724,7 +44724,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_density__SWI
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -44739,12 +44739,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_geom_density__SWI
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_density" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_density" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_density" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_density" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
@@ -45148,7 +45148,7 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_scale_color_manua
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   datamunge::GGPlot *arg1 = 0 ;
-  std::vector< datamunge::plot::RGB > *arg2 = 0 ;
+  std::vector< datamunge::graphics::RGB > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -45165,12 +45165,12 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_scale_color_manua
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_scale_color_manual" "', argument " "2"" of type '" "std::vector< datamunge::plot::RGB > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_scale_color_manual" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_scale_color_manual" "', argument " "2"" of type '" "std::vector< datamunge::plot::RGB > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_scale_color_manual" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB > const &""'"); 
   }
-  arg2 = reinterpret_cast< std::vector< datamunge::plot::RGB > * >(argp2);result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB > const &)*arg2);
+  arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGB > * >(argp2);result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::graphics::RGB > const &)*arg2);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
   
   
@@ -47383,7 +47383,7 @@ Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_residuals_vs_fitted(
   datamunge::LM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_plot_residuals_vs_fitted.");
@@ -47394,7 +47394,7 @@ Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_residuals_vs_fitted(
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -47413,7 +47413,7 @@ Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_normal_qq(const Napi
   datamunge::LM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_plot_normal_qq.");
@@ -47424,7 +47424,7 @@ Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_normal_qq(const Napi
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_normal_qq" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);result = ((datamunge::LM const *)arg1)->plot_normal_qq();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -47443,7 +47443,7 @@ Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_scale_location(const
   datamunge::LM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_plot_scale_location.");
@@ -47454,7 +47454,7 @@ Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_scale_location(const
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_scale_location" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);result = ((datamunge::LM const *)arg1)->plot_scale_location();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -47473,7 +47473,7 @@ Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_residuals_vs_leverag
   datamunge::LM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_plot_residuals_vs_leverage.");
@@ -47484,7 +47484,7 @@ Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_residuals_vs_leverag
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_residuals_vs_leverage" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -53341,7 +53341,7 @@ Napi::Value _exports_LDA_templ<SWIG_OBJ_WRAP>::_wrap_LDA_plot_discriminants(cons
   datamunge::LDA *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LDA_plot_discriminants.");
@@ -53352,7 +53352,7 @@ Napi::Value _exports_LDA_templ<SWIG_OBJ_WRAP>::_wrap_LDA_plot_discriminants(cons
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LDA_plot_discriminants" "', argument " "1"" of type '" "datamunge::LDA const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::LDA * >(argp1);result = ((datamunge::LDA const *)arg1)->plot_discriminants();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -55571,7 +55571,7 @@ Napi::Value _exports_DecisionTreeClassifier_templ<SWIG_OBJ_WRAP>::_wrap_Decision
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 3 || static_cast<int>(info.Length()) > 3) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DecisionTreeClassifier_plot_classification.");
@@ -55615,7 +55615,7 @@ Napi::Value _exports_DecisionTreeClassifier_templ<SWIG_OBJ_WRAP>::_wrap_Decision
     }
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -55644,7 +55644,7 @@ Napi::Value _exports_DecisionTreeClassifier_templ<SWIG_OBJ_WRAP>::_wrap_Decision
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DecisionTreeClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -55681,7 +55681,7 @@ Napi::Value _exports_DecisionTreeClassifier_templ<SWIG_OBJ_WRAP>::_wrap_Decision
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "DecisionTreeClassifier_plot_decision_regions" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -55707,7 +55707,7 @@ Napi::Value _exports_DecisionTreeClassifier_templ<SWIG_OBJ_WRAP>::_wrap_Decision
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DecisionTreeClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -55740,7 +55740,7 @@ Napi::Value _exports_DecisionTreeClassifier_templ<SWIG_OBJ_WRAP>::_wrap_Decision
     }
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -56652,7 +56652,7 @@ Napi::Value _exports_DecisionTreeRegressor_templ<SWIG_OBJ_WRAP>::_wrap_DecisionT
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DecisionTreeRegressor_plot_predicted_vs_actual.");
@@ -56663,7 +56663,7 @@ Napi::Value _exports_DecisionTreeRegressor_templ<SWIG_OBJ_WRAP>::_wrap_DecisionT
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DecisionTreeRegressor_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::DecisionTreeRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -56682,7 +56682,7 @@ Napi::Value _exports_DecisionTreeRegressor_templ<SWIG_OBJ_WRAP>::_wrap_DecisionT
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DecisionTreeRegressor_plot_residuals_vs_fitted.");
@@ -56693,7 +56693,7 @@ Napi::Value _exports_DecisionTreeRegressor_templ<SWIG_OBJ_WRAP>::_wrap_DecisionT
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DecisionTreeRegressor_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::DecisionTreeRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -58418,7 +58418,7 @@ Napi::Value _exports_RandomForestClassifier_templ<SWIG_OBJ_WRAP>::_wrap_RandomFo
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 3 || static_cast<int>(info.Length()) > 3) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RandomForestClassifier_plot_classification.");
@@ -58462,7 +58462,7 @@ Napi::Value _exports_RandomForestClassifier_templ<SWIG_OBJ_WRAP>::_wrap_RandomFo
     }
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -58491,7 +58491,7 @@ Napi::Value _exports_RandomForestClassifier_templ<SWIG_OBJ_WRAP>::_wrap_RandomFo
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__RandomForestClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -58528,7 +58528,7 @@ Napi::Value _exports_RandomForestClassifier_templ<SWIG_OBJ_WRAP>::_wrap_RandomFo
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RandomForestClassifier_plot_decision_regions" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -58554,7 +58554,7 @@ Napi::Value _exports_RandomForestClassifier_templ<SWIG_OBJ_WRAP>::_wrap_RandomFo
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__RandomForestClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -58587,7 +58587,7 @@ Napi::Value _exports_RandomForestClassifier_templ<SWIG_OBJ_WRAP>::_wrap_RandomFo
     }
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -60194,7 +60194,7 @@ Napi::Value _exports_RandomForestRegressor_templ<SWIG_OBJ_WRAP>::_wrap_RandomFor
   datamunge::RandomForestRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RandomForestRegressor_plot_predicted_vs_actual.");
@@ -60205,7 +60205,7 @@ Napi::Value _exports_RandomForestRegressor_templ<SWIG_OBJ_WRAP>::_wrap_RandomFor
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RandomForestRegressor_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::RandomForestRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -60224,7 +60224,7 @@ Napi::Value _exports_RandomForestRegressor_templ<SWIG_OBJ_WRAP>::_wrap_RandomFor
   datamunge::RandomForestRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RandomForestRegressor_plot_residuals_vs_fitted.");
@@ -60235,7 +60235,7 @@ Napi::Value _exports_RandomForestRegressor_templ<SWIG_OBJ_WRAP>::_wrap_RandomFor
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RandomForestRegressor_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::RandomForestRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -61643,7 +61643,7 @@ Napi::Value _exports_ElasticNet_templ<SWIG_OBJ_WRAP>::_wrap_ElasticNet_plot_coef
   datamunge::ElasticNet *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_ElasticNet_plot_coefficient_path.");
@@ -61654,7 +61654,7 @@ Napi::Value _exports_ElasticNet_templ<SWIG_OBJ_WRAP>::_wrap_ElasticNet_plot_coef
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ElasticNet_plot_coefficient_path" "', argument " "1"" of type '" "datamunge::ElasticNet const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -61673,7 +61673,7 @@ Napi::Value _exports_ElasticNet_templ<SWIG_OBJ_WRAP>::_wrap_ElasticNet_plot_cv_c
   datamunge::ElasticNet *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_ElasticNet_plot_cv_curve.");
@@ -61684,7 +61684,7 @@ Napi::Value _exports_ElasticNet_templ<SWIG_OBJ_WRAP>::_wrap_ElasticNet_plot_cv_c
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ElasticNet_plot_cv_curve" "', argument " "1"" of type '" "datamunge::ElasticNet const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -61703,7 +61703,7 @@ Napi::Value _exports_ElasticNet_templ<SWIG_OBJ_WRAP>::_wrap_ElasticNet_plot_pred
   datamunge::ElasticNet *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_ElasticNet_plot_predicted_vs_actual.");
@@ -61714,7 +61714,7 @@ Napi::Value _exports_ElasticNet_templ<SWIG_OBJ_WRAP>::_wrap_ElasticNet_plot_pred
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ElasticNet_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::ElasticNet const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -61733,7 +61733,7 @@ Napi::Value _exports_ElasticNet_templ<SWIG_OBJ_WRAP>::_wrap_ElasticNet_plot_resi
   datamunge::ElasticNet *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_ElasticNet_plot_residuals_vs_fitted.");
@@ -61744,7 +61744,7 @@ Napi::Value _exports_ElasticNet_templ<SWIG_OBJ_WRAP>::_wrap_ElasticNet_plot_resi
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ElasticNet_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::ElasticNet const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -62959,7 +62959,7 @@ Napi::Value _exports_Ridge_templ<SWIG_OBJ_WRAP>::_wrap_Ridge_plot_coefficient_pa
   datamunge::Ridge *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Ridge_plot_coefficient_path.");
@@ -62970,7 +62970,7 @@ Napi::Value _exports_Ridge_templ<SWIG_OBJ_WRAP>::_wrap_Ridge_plot_coefficient_pa
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Ridge_plot_coefficient_path" "', argument " "1"" of type '" "datamunge::Ridge const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -62989,7 +62989,7 @@ Napi::Value _exports_Ridge_templ<SWIG_OBJ_WRAP>::_wrap_Ridge_plot_cv_curve(const
   datamunge::Ridge *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Ridge_plot_cv_curve.");
@@ -63000,7 +63000,7 @@ Napi::Value _exports_Ridge_templ<SWIG_OBJ_WRAP>::_wrap_Ridge_plot_cv_curve(const
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Ridge_plot_cv_curve" "', argument " "1"" of type '" "datamunge::Ridge const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -63019,7 +63019,7 @@ Napi::Value _exports_Ridge_templ<SWIG_OBJ_WRAP>::_wrap_Ridge_plot_predicted_vs_a
   datamunge::Ridge *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Ridge_plot_predicted_vs_actual.");
@@ -63030,7 +63030,7 @@ Napi::Value _exports_Ridge_templ<SWIG_OBJ_WRAP>::_wrap_Ridge_plot_predicted_vs_a
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Ridge_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::Ridge const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -63049,7 +63049,7 @@ Napi::Value _exports_Ridge_templ<SWIG_OBJ_WRAP>::_wrap_Ridge_plot_residuals_vs_f
   datamunge::Ridge *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Ridge_plot_residuals_vs_fitted.");
@@ -63060,7 +63060,7 @@ Napi::Value _exports_Ridge_templ<SWIG_OBJ_WRAP>::_wrap_Ridge_plot_residuals_vs_f
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Ridge_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::Ridge const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -64305,7 +64305,7 @@ Napi::Value _exports_Lasso_templ<SWIG_OBJ_WRAP>::_wrap_Lasso_plot_coefficient_pa
   datamunge::Lasso *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Lasso_plot_coefficient_path.");
@@ -64316,7 +64316,7 @@ Napi::Value _exports_Lasso_templ<SWIG_OBJ_WRAP>::_wrap_Lasso_plot_coefficient_pa
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lasso_plot_coefficient_path" "', argument " "1"" of type '" "datamunge::Lasso const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -64335,7 +64335,7 @@ Napi::Value _exports_Lasso_templ<SWIG_OBJ_WRAP>::_wrap_Lasso_plot_cv_curve(const
   datamunge::Lasso *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Lasso_plot_cv_curve.");
@@ -64346,7 +64346,7 @@ Napi::Value _exports_Lasso_templ<SWIG_OBJ_WRAP>::_wrap_Lasso_plot_cv_curve(const
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lasso_plot_cv_curve" "', argument " "1"" of type '" "datamunge::Lasso const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -64365,7 +64365,7 @@ Napi::Value _exports_Lasso_templ<SWIG_OBJ_WRAP>::_wrap_Lasso_plot_predicted_vs_a
   datamunge::Lasso *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Lasso_plot_predicted_vs_actual.");
@@ -64376,7 +64376,7 @@ Napi::Value _exports_Lasso_templ<SWIG_OBJ_WRAP>::_wrap_Lasso_plot_predicted_vs_a
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lasso_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::Lasso const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -64395,7 +64395,7 @@ Napi::Value _exports_Lasso_templ<SWIG_OBJ_WRAP>::_wrap_Lasso_plot_residuals_vs_f
   datamunge::Lasso *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Lasso_plot_residuals_vs_fitted.");
@@ -64406,7 +64406,7 @@ Napi::Value _exports_Lasso_templ<SWIG_OBJ_WRAP>::_wrap_Lasso_plot_residuals_vs_f
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lasso_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::Lasso const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -65328,7 +65328,7 @@ Napi::Value _exports_KNNClassifier_templ<SWIG_OBJ_WRAP>::_wrap_KNNClassifier_plo
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 3 || static_cast<int>(info.Length()) > 3) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_KNNClassifier_plot_classification.");
@@ -65372,7 +65372,7 @@ Napi::Value _exports_KNNClassifier_templ<SWIG_OBJ_WRAP>::_wrap_KNNClassifier_plo
     }
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -65401,7 +65401,7 @@ Napi::Value _exports_KNNClassifier_templ<SWIG_OBJ_WRAP>::_wrap_KNNClassifier_plo
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KNNClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -65438,7 +65438,7 @@ Napi::Value _exports_KNNClassifier_templ<SWIG_OBJ_WRAP>::_wrap_KNNClassifier_plo
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "KNNClassifier_plot_decision_regions" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -65464,7 +65464,7 @@ Napi::Value _exports_KNNClassifier_templ<SWIG_OBJ_WRAP>::_wrap_KNNClassifier_plo
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KNNClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -65497,7 +65497,7 @@ Napi::Value _exports_KNNClassifier_templ<SWIG_OBJ_WRAP>::_wrap_KNNClassifier_plo
     }
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -66460,7 +66460,7 @@ Napi::Value _exports_KNNRegressor_templ<SWIG_OBJ_WRAP>::_wrap_KNNRegressor_plot_
   datamunge::KNNRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_KNNRegressor_plot_predicted_vs_actual.");
@@ -66471,7 +66471,7 @@ Napi::Value _exports_KNNRegressor_templ<SWIG_OBJ_WRAP>::_wrap_KNNRegressor_plot_
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KNNRegressor_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::KNNRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -66490,7 +66490,7 @@ Napi::Value _exports_KNNRegressor_templ<SWIG_OBJ_WRAP>::_wrap_KNNRegressor_plot_
   datamunge::KNNRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_KNNRegressor_plot_residuals_vs_fitted.");
@@ -66501,7 +66501,7 @@ Napi::Value _exports_KNNRegressor_templ<SWIG_OBJ_WRAP>::_wrap_KNNRegressor_plot_
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KNNRegressor_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::KNNRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -69125,7 +69125,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores__SWIG_0(con
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__PCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -69140,7 +69140,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores__SWIG_0(con
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "PCA_plot_scores" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -69164,7 +69164,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores__SWIG_1(con
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__PCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -69175,7 +69175,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores__SWIG_1(con
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PCA_plot_scores" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -69195,14 +69195,14 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores__SWIG_2(con
   datamunge::PCA *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__PCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PCA_plot_scores" "', argument " "1"" of type '" "datamunge::PCA const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::PCA * >(argp1);result = ((datamunge::PCA const *)arg1)->plot_scores();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -69353,7 +69353,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores_grouped__SW
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__PCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -69375,7 +69375,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores_grouped__SW
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "PCA_plot_scores_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -69403,7 +69403,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores_grouped__SW
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__PCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -69421,7 +69421,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores_grouped__SW
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "PCA_plot_scores_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -69445,7 +69445,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores_grouped__SW
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__PCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -69459,7 +69459,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scores_grouped__SW
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PCA_plot_scores_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -69602,7 +69602,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scree(const Napi::
   datamunge::PCA *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_PCA_plot_scree.");
@@ -69613,7 +69613,7 @@ Napi::Value _exports_PCA_templ<SWIG_OBJ_WRAP>::_wrap_PCA_plot_scree(const Napi::
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PCA_plot_scree" "', argument " "1"" of type '" "datamunge::PCA const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::PCA * >(argp1);result = ((datamunge::PCA const *)arg1)->plot_scree();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -70550,7 +70550,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding__SWIG_0(
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__MDS, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -70565,7 +70565,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding__SWIG_0(
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MDS_plot_embedding" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -70589,7 +70589,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding__SWIG_1(
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__MDS, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -70600,7 +70600,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding__SWIG_1(
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MDS_plot_embedding" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -70620,14 +70620,14 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding__SWIG_2(
   datamunge::MDS *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__MDS, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MDS_plot_embedding" "', argument " "1"" of type '" "datamunge::MDS const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::MDS * >(argp1);result = ((datamunge::MDS const *)arg1)->plot_embedding();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -70778,7 +70778,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding_grouped_
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__MDS, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -70800,7 +70800,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding_grouped_
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "MDS_plot_embedding_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -70828,7 +70828,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding_grouped_
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__MDS, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -70846,7 +70846,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding_grouped_
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MDS_plot_embedding_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -70870,7 +70870,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding_grouped_
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__MDS, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -70884,7 +70884,7 @@ Napi::Value _exports_MDS_templ<SWIG_OBJ_WRAP>::_wrap_MDS_plot_embedding_grouped_
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MDS_plot_embedding_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -72158,7 +72158,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding__S
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -72173,7 +72173,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding__S
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Isomap_plot_embedding" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -72197,7 +72197,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding__S
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -72208,7 +72208,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding__S
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Isomap_plot_embedding" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -72228,14 +72228,14 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding__S
   datamunge::Isomap *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Isomap_plot_embedding" "', argument " "1"" of type '" "datamunge::Isomap const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);result = ((datamunge::Isomap const *)arg1)->plot_embedding();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -72386,7 +72386,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding_gr
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -72408,7 +72408,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding_gr
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "Isomap_plot_embedding_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -72436,7 +72436,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding_gr
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -72454,7 +72454,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding_gr
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Isomap_plot_embedding_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -72478,7 +72478,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding_gr
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -72492,7 +72492,7 @@ Napi::Value _exports_Isomap_templ<SWIG_OBJ_WRAP>::_wrap_Isomap_plot_embedding_gr
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Isomap_plot_embedding_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -73965,7 +73965,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding__SWIG_0(
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -73980,7 +73980,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding__SWIG_0(
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LLE_plot_embedding" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -74004,7 +74004,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding__SWIG_1(
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -74015,7 +74015,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding__SWIG_1(
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LLE_plot_embedding" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -74035,14 +74035,14 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding__SWIG_2(
   datamunge::LLE *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LLE_plot_embedding" "', argument " "1"" of type '" "datamunge::LLE const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::LLE * >(argp1);result = ((datamunge::LLE const *)arg1)->plot_embedding();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -74193,7 +74193,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding_grouped_
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -74215,7 +74215,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding_grouped_
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "LLE_plot_embedding_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -74243,7 +74243,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding_grouped_
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -74261,7 +74261,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding_grouped_
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LLE_plot_embedding_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -74285,7 +74285,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding_grouped_
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -74299,7 +74299,7 @@ Napi::Value _exports_LLE_templ<SWIG_OBJ_WRAP>::_wrap_LLE_plot_embedding_grouped_
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LLE_plot_embedding_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -77839,7 +77839,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding__SWIG_
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -77854,7 +77854,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding__SWIG_
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "TSNE_plot_embedding" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -77878,7 +77878,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding__SWIG_
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -77889,7 +77889,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding__SWIG_
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TSNE_plot_embedding" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -77909,14 +77909,14 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding__SWIG_
   datamunge::TSNE *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TSNE_plot_embedding" "', argument " "1"" of type '" "datamunge::TSNE const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);result = ((datamunge::TSNE const *)arg1)->plot_embedding();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -78067,7 +78067,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding_groupe
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -78089,7 +78089,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding_groupe
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "TSNE_plot_embedding_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -78117,7 +78117,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding_groupe
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -78135,7 +78135,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding_groupe
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "TSNE_plot_embedding_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -78159,7 +78159,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding_groupe
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -78173,7 +78173,7 @@ Napi::Value _exports_TSNE_templ<SWIG_OBJ_WRAP>::_wrap_TSNE_plot_embedding_groupe
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "TSNE_plot_embedding_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -79401,7 +79401,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -79416,7 +79416,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LaplacianEigenmaps_plot_embedding" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -79440,7 +79440,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -79451,7 +79451,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LaplacianEigenmaps_plot_embedding" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -79471,14 +79471,14 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LaplacianEigenmaps_plot_embedding" "', argument " "1"" of type '" "datamunge::LaplacianEigenmaps const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -79629,7 +79629,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -79651,7 +79651,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "LaplacianEigenmaps_plot_embedding_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -79679,7 +79679,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -79697,7 +79697,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LaplacianEigenmaps_plot_embedding_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -79721,7 +79721,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -79735,7 +79735,7 @@ Napi::Value _exports_LaplacianEigenmaps_templ<SWIG_OBJ_WRAP>::_wrap_LaplacianEig
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LaplacianEigenmaps_plot_embedding_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -81192,7 +81192,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -81207,7 +81207,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DiffusionMaps_plot_embedding" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -81231,7 +81231,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -81242,7 +81242,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DiffusionMaps_plot_embedding" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -81262,14 +81262,14 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
   datamunge::DiffusionMaps *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiffusionMaps_plot_embedding" "', argument " "1"" of type '" "datamunge::DiffusionMaps const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -81420,7 +81420,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -81442,7 +81442,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "DiffusionMaps_plot_embedding_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -81470,7 +81470,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -81488,7 +81488,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DiffusionMaps_plot_embedding_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -81512,7 +81512,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -81526,7 +81526,7 @@ Napi::Value _exports_DiffusionMaps_templ<SWIG_OBJ_WRAP>::_wrap_DiffusionMaps_plo
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DiffusionMaps_plot_embedding_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -83292,7 +83292,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -83307,7 +83307,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "KernelPCA_plot_embedding" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -83331,7 +83331,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -83342,7 +83342,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KernelPCA_plot_embedding" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -83362,14 +83362,14 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
   datamunge::KernelPCA *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KernelPCA_plot_embedding" "', argument " "1"" of type '" "datamunge::KernelPCA const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);result = ((datamunge::KernelPCA const *)arg1)->plot_embedding();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -83520,7 +83520,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -83542,7 +83542,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "KernelPCA_plot_embedding_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -83570,7 +83570,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -83588,7 +83588,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "KernelPCA_plot_embedding_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -83612,7 +83612,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -83626,7 +83626,7 @@ Napi::Value _exports_KernelPCA_templ<SWIG_OBJ_WRAP>::_wrap_KernelPCA_plot_embedd
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "KernelPCA_plot_embedding_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -85651,7 +85651,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -85666,7 +85666,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "SammonMapping_plot_embedding" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -85690,7 +85690,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -85701,7 +85701,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SammonMapping_plot_embedding" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -85721,14 +85721,14 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
   datamunge::SammonMapping *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SammonMapping_plot_embedding" "', argument " "1"" of type '" "datamunge::SammonMapping const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);result = ((datamunge::SammonMapping const *)arg1)->plot_embedding();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -85879,7 +85879,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -85901,7 +85901,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "SammonMapping_plot_embedding_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -85929,7 +85929,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -85947,7 +85947,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "SammonMapping_plot_embedding_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -85971,7 +85971,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -85985,7 +85985,7 @@ Napi::Value _exports_SammonMapping_templ<SWIG_OBJ_WRAP>::_wrap_SammonMapping_plo
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "SammonMapping_plot_embedding_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -88580,7 +88580,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding__SWIG_
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -88595,7 +88595,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding__SWIG_
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "UMAP_plot_embedding" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -88619,7 +88619,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding__SWIG_
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -88630,7 +88630,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding__SWIG_
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "UMAP_plot_embedding" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -88650,14 +88650,14 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding__SWIG_
   datamunge::UMAP *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UMAP_plot_embedding" "', argument " "1"" of type '" "datamunge::UMAP const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);result = ((datamunge::UMAP const *)arg1)->plot_embedding();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -88808,7 +88808,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding_groupe
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -88830,7 +88830,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding_groupe
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "UMAP_plot_embedding_grouped" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -88858,7 +88858,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding_groupe
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -88876,7 +88876,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding_groupe
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "UMAP_plot_embedding_grouped" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -88900,7 +88900,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding_groupe
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -88914,7 +88914,7 @@ Napi::Value _exports_UMAP_templ<SWIG_OBJ_WRAP>::_wrap_UMAP_plot_embedding_groupe
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "UMAP_plot_embedding_grouped" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -92641,7 +92641,7 @@ Napi::Value _exports_GBMClassifier_templ<SWIG_OBJ_WRAP>::_wrap_GBMClassifier_plo
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 3 || static_cast<int>(info.Length()) > 3) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GBMClassifier_plot_classification.");
@@ -92685,7 +92685,7 @@ Napi::Value _exports_GBMClassifier_templ<SWIG_OBJ_WRAP>::_wrap_GBMClassifier_plo
     }
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -92714,7 +92714,7 @@ Napi::Value _exports_GBMClassifier_templ<SWIG_OBJ_WRAP>::_wrap_GBMClassifier_plo
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__GBMClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -92751,7 +92751,7 @@ Napi::Value _exports_GBMClassifier_templ<SWIG_OBJ_WRAP>::_wrap_GBMClassifier_plo
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "GBMClassifier_plot_decision_regions" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -92777,7 +92777,7 @@ Napi::Value _exports_GBMClassifier_templ<SWIG_OBJ_WRAP>::_wrap_GBMClassifier_plo
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__GBMClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -92810,7 +92810,7 @@ Napi::Value _exports_GBMClassifier_templ<SWIG_OBJ_WRAP>::_wrap_GBMClassifier_plo
     }
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -92918,7 +92918,7 @@ Napi::Value _exports_GBMClassifier_templ<SWIG_OBJ_WRAP>::_wrap_GBMClassifier_plo
   datamunge::GBMClassifier *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GBMClassifier_plot_training_deviance.");
@@ -92929,7 +92929,7 @@ Napi::Value _exports_GBMClassifier_templ<SWIG_OBJ_WRAP>::_wrap_GBMClassifier_plo
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GBMClassifier_plot_training_deviance" "', argument " "1"" of type '" "datamunge::GBMClassifier const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GBMClassifier * >(argp1);result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -94238,7 +94238,7 @@ Napi::Value _exports_GBMRegressor_templ<SWIG_OBJ_WRAP>::_wrap_GBMRegressor_plot_
   datamunge::GBMRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GBMRegressor_plot_predicted_vs_actual.");
@@ -94249,7 +94249,7 @@ Napi::Value _exports_GBMRegressor_templ<SWIG_OBJ_WRAP>::_wrap_GBMRegressor_plot_
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GBMRegressor_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::GBMRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -94268,7 +94268,7 @@ Napi::Value _exports_GBMRegressor_templ<SWIG_OBJ_WRAP>::_wrap_GBMRegressor_plot_
   datamunge::GBMRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GBMRegressor_plot_residuals_vs_fitted.");
@@ -94279,7 +94279,7 @@ Napi::Value _exports_GBMRegressor_templ<SWIG_OBJ_WRAP>::_wrap_GBMRegressor_plot_
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GBMRegressor_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::GBMRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -94298,7 +94298,7 @@ Napi::Value _exports_GBMRegressor_templ<SWIG_OBJ_WRAP>::_wrap_GBMRegressor_plot_
   datamunge::GBMRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GBMRegressor_plot_training_deviance.");
@@ -94309,7 +94309,7 @@ Napi::Value _exports_GBMRegressor_templ<SWIG_OBJ_WRAP>::_wrap_GBMRegressor_plot_
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GBMRegressor_plot_training_deviance" "', argument " "1"" of type '" "datamunge::GBMRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -96310,7 +96310,7 @@ Napi::Value _exports_XGBoostClassifier_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostClassi
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 3 || static_cast<int>(info.Length()) > 3) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_XGBoostClassifier_plot_classification.");
@@ -96354,7 +96354,7 @@ Napi::Value _exports_XGBoostClassifier_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostClassi
     }
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -96383,7 +96383,7 @@ Napi::Value _exports_XGBoostClassifier_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostClassi
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__XGBoostClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -96420,7 +96420,7 @@ Napi::Value _exports_XGBoostClassifier_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostClassi
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "XGBoostClassifier_plot_decision_regions" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -96446,7 +96446,7 @@ Napi::Value _exports_XGBoostClassifier_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostClassi
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__XGBoostClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -96479,7 +96479,7 @@ Napi::Value _exports_XGBoostClassifier_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostClassi
     }
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -96587,7 +96587,7 @@ Napi::Value _exports_XGBoostClassifier_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostClassi
   datamunge::XGBoostClassifier *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_XGBoostClassifier_plot_training_deviance.");
@@ -96598,7 +96598,7 @@ Napi::Value _exports_XGBoostClassifier_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostClassi
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "XGBoostClassifier_plot_training_deviance" "', argument " "1"" of type '" "datamunge::XGBoostClassifier const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::XGBoostClassifier * >(argp1);result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -98551,7 +98551,7 @@ Napi::Value _exports_XGBoostRegressor_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostRegress
   datamunge::XGBoostRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_XGBoostRegressor_plot_predicted_vs_actual.");
@@ -98562,7 +98562,7 @@ Napi::Value _exports_XGBoostRegressor_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostRegress
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "XGBoostRegressor_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::XGBoostRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -98581,7 +98581,7 @@ Napi::Value _exports_XGBoostRegressor_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostRegress
   datamunge::XGBoostRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_XGBoostRegressor_plot_residuals_vs_fitted.");
@@ -98592,7 +98592,7 @@ Napi::Value _exports_XGBoostRegressor_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostRegress
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "XGBoostRegressor_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::XGBoostRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -98611,7 +98611,7 @@ Napi::Value _exports_XGBoostRegressor_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostRegress
   datamunge::XGBoostRegressor *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_XGBoostRegressor_plot_training_deviance.");
@@ -98622,7 +98622,7 @@ Napi::Value _exports_XGBoostRegressor_templ<SWIG_OBJ_WRAP>::_wrap_XGBoostRegress
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "XGBoostRegressor_plot_training_deviance" "', argument " "1"" of type '" "datamunge::XGBoostRegressor const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -99600,7 +99600,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KernelRegression, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -99618,7 +99618,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "KernelRegression_plot_fit" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -99642,7 +99642,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__KernelRegression, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -99656,7 +99656,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "KernelRegression_plot_fit" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
   }
   arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -99763,7 +99763,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
   datamunge::KernelRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_KernelRegression_plot_predicted_vs_actual.");
@@ -99774,7 +99774,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KernelRegression_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::KernelRegression const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -99793,7 +99793,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
   datamunge::KernelRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_KernelRegression_plot_residuals_vs_fitted.");
@@ -99804,7 +99804,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KernelRegression_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::KernelRegression const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -99823,7 +99823,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
   datamunge::KernelRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_KernelRegression_plot_cv_curve.");
@@ -99834,7 +99834,7 @@ Napi::Value _exports_KernelRegression_templ<SWIG_OBJ_WRAP>::_wrap_KernelRegressi
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KernelRegression_plot_cv_curve" "', argument " "1"" of type '" "datamunge::KernelRegression const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -101302,7 +101302,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
   int ecode3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__GaussianProcessRegression, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -101324,7 +101324,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "GaussianProcessRegression_plot_fit" "', argument " "4"" of type '" "double""'");
   } 
   arg4 = static_cast< double >(val4);result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -101352,7 +101352,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
   int res2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__GaussianProcessRegression, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -101370,7 +101370,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GaussianProcessRegression_plot_fit" "', argument " "3"" of type '" "std::size_t""'");
   } 
   arg3 = static_cast< std::size_t >(val3);result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -101394,7 +101394,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__GaussianProcessRegression, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -101408,7 +101408,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
     SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GaussianProcessRegression_plot_fit" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
   }
   arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -101551,7 +101551,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GaussianProcessRegression_plot_predicted_vs_actual.");
@@ -101562,7 +101562,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GaussianProcessRegression_plot_predicted_vs_actual" "', argument " "1"" of type '" "datamunge::GaussianProcessRegression const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -101581,7 +101581,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GaussianProcessRegression_plot_residuals_vs_fitted.");
@@ -101592,7 +101592,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GaussianProcessRegression_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::GaussianProcessRegression const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -101611,7 +101611,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GaussianProcessRegression_plot_length_scale_profile.");
@@ -101622,7 +101622,7 @@ Napi::Value _exports_GaussianProcessRegression_templ<SWIG_OBJ_WRAP>::_wrap_Gauss
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GaussianProcessRegression_plot_length_scale_profile" "', argument " "1"" of type '" "datamunge::GaussianProcessRegression const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -102294,7 +102294,7 @@ Napi::Value _exports_NaiveBayesClassifier_templ<SWIG_OBJ_WRAP>::_wrap_NaiveBayes
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 3 || static_cast<int>(info.Length()) > 3) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_NaiveBayesClassifier_plot_classification.");
@@ -102338,7 +102338,7 @@ Napi::Value _exports_NaiveBayesClassifier_templ<SWIG_OBJ_WRAP>::_wrap_NaiveBayes
     }
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -102367,7 +102367,7 @@ Napi::Value _exports_NaiveBayesClassifier_templ<SWIG_OBJ_WRAP>::_wrap_NaiveBayes
   int res3 = SWIG_OLDOBJ ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__NaiveBayesClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -102404,7 +102404,7 @@ Napi::Value _exports_NaiveBayesClassifier_templ<SWIG_OBJ_WRAP>::_wrap_NaiveBayes
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NaiveBayesClassifier_plot_decision_regions" "', argument " "4"" of type '" "std::size_t""'");
   } 
   arg4 = static_cast< std::size_t >(val4);result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -102430,7 +102430,7 @@ Napi::Value _exports_NaiveBayesClassifier_templ<SWIG_OBJ_WRAP>::_wrap_NaiveBayes
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__NaiveBayesClassifier, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
@@ -102463,7 +102463,7 @@ Napi::Value _exports_NaiveBayesClassifier_templ<SWIG_OBJ_WRAP>::_wrap_NaiveBayes
     }
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
@@ -104476,7 +104476,7 @@ Napi::Value _exports_GLM_templ<SWIG_OBJ_WRAP>::_wrap_GLM_plot_residuals_vs_fitte
   datamunge::GLM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GLM_plot_residuals_vs_fitted.");
@@ -104487,7 +104487,7 @@ Napi::Value _exports_GLM_templ<SWIG_OBJ_WRAP>::_wrap_GLM_plot_residuals_vs_fitte
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GLM_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::GLM const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -104506,7 +104506,7 @@ Napi::Value _exports_GLM_templ<SWIG_OBJ_WRAP>::_wrap_GLM_plot_normal_qq(const Na
   datamunge::GLM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GLM_plot_normal_qq.");
@@ -104517,7 +104517,7 @@ Napi::Value _exports_GLM_templ<SWIG_OBJ_WRAP>::_wrap_GLM_plot_normal_qq(const Na
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GLM_plot_normal_qq" "', argument " "1"" of type '" "datamunge::GLM const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -104536,7 +104536,7 @@ Napi::Value _exports_GLM_templ<SWIG_OBJ_WRAP>::_wrap_GLM_plot_scale_location(con
   datamunge::GLM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GLM_plot_scale_location.");
@@ -104547,7 +104547,7 @@ Napi::Value _exports_GLM_templ<SWIG_OBJ_WRAP>::_wrap_GLM_plot_scale_location(con
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GLM_plot_scale_location" "', argument " "1"" of type '" "datamunge::GLM const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);result = ((datamunge::GLM const *)arg1)->plot_scale_location();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -104566,7 +104566,7 @@ Napi::Value _exports_GLM_templ<SWIG_OBJ_WRAP>::_wrap_GLM_plot_residuals_vs_lever
   datamunge::GLM *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_GLM_plot_residuals_vs_leverage.");
@@ -104577,7 +104577,7 @@ Napi::Value _exports_GLM_templ<SWIG_OBJ_WRAP>::_wrap_GLM_plot_residuals_vs_lever
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GLM_plot_residuals_vs_leverage" "', argument " "1"" of type '" "datamunge::GLM const *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -112549,7 +112549,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_r_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -112558,9 +112558,9 @@ void _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_r_set(const Napi::CallbackInfo
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_r_set" "', argument " "1"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_r_set" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);ecode2 = SWIG_AsVal_int(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);ecode2 = SWIG_AsVal_int(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RGB_r_set" "', argument " "2"" of type '" "int""'");
   } 
@@ -112581,16 +112581,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_r_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_r_get" "', argument " "1"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_r_get" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);result = (int) ((arg1)->r);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);result = (int) ((arg1)->r);
   jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(result));
   
   
@@ -112607,7 +112607,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_g_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -112616,9 +112616,9 @@ void _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_g_set(const Napi::CallbackInfo
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_g_set" "', argument " "1"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_g_set" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);ecode2 = SWIG_AsVal_int(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);ecode2 = SWIG_AsVal_int(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RGB_g_set" "', argument " "2"" of type '" "int""'");
   } 
@@ -112639,16 +112639,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_g_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_g_get" "', argument " "1"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_g_get" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);result = (int) ((arg1)->g);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);result = (int) ((arg1)->g);
   jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(result));
   
   
@@ -112665,7 +112665,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_b_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -112674,9 +112674,9 @@ void _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_b_set(const Napi::CallbackInfo
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_b_set" "', argument " "1"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_b_set" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);ecode2 = SWIG_AsVal_int(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);ecode2 = SWIG_AsVal_int(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RGB_b_set" "', argument " "2"" of type '" "int""'");
   } 
@@ -112697,16 +112697,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_b_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_b_get" "', argument " "1"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_b_get" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);result = (int) ((arg1)->b);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);result = (int) ((arg1)->b);
   jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(result));
   
   
@@ -112723,7 +112723,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_alpha_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -112732,9 +112732,9 @@ void _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_alpha_set(const Napi::Callback
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_alpha_set" "', argument " "1"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_alpha_set" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RGB_alpha_set" "', argument " "2"" of type '" "double""'");
   } 
@@ -112755,16 +112755,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_RGB_alpha_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_alpha_get" "', argument " "1"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_alpha_get" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RGB * >(argp1);result = (double) ((arg1)->alpha);
+  arg1 = reinterpret_cast< datamunge::graphics::RGB * >(argp1);result = (double) ((arg1)->alpha);
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -112781,13 +112781,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_new_RGB__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Object self;
-  datamunge::plot::RGB *result;
+  datamunge::graphics::RGB *result;
   NAPI_CHECK_RESULT(info.This().ToObject(), self);
   this->owned = true;
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_RGB__SWIG_0.");
   }
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_0();
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_0();
   
   
   this->self = result;
@@ -112815,7 +112815,7 @@ Napi::Value _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_new_RGB__SWIG_1(const Napi:
   int ecode3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RGB *result;
+  datamunge::graphics::RGB *result;
   NAPI_CHECK_RESULT(info.This().ToObject(), self);
   this->owned = true;
   if(static_cast<int>(info.Length()) < 4 || static_cast<int>(info.Length()) > 4) {
@@ -112837,7 +112837,7 @@ Napi::Value _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_new_RGB__SWIG_1(const Napi:
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_RGB" "', argument " "4"" of type '" "double""'");
   } 
-  arg4 = static_cast< double >(val4);result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
+  arg4 = static_cast< double >(val4);result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
   
   
   
@@ -112866,7 +112866,7 @@ Napi::Value _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_new_RGB__SWIG_2(const Napi:
   int ecode2 = 0 ;
   int val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RGB *result;
+  datamunge::graphics::RGB *result;
   NAPI_CHECK_RESULT(info.This().ToObject(), self);
   this->owned = true;
   if(static_cast<int>(info.Length()) < 3 || static_cast<int>(info.Length()) > 3) {
@@ -112884,7 +112884,7 @@ Napi::Value _exports_RGB_templ<SWIG_OBJ_WRAP>::_wrap_new_RGB__SWIG_2(const Napi:
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_RGB" "', argument " "3"" of type '" "int""'");
   } 
-  arg3 = static_cast< int >(val3);result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
+  arg3 = static_cast< int >(val3);result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
   
   
   
@@ -113044,7 +113044,7 @@ _exports_RGB_templ<SWIG_OBJ_WRAP>::_exports_RGB_templ(bool, const Napi::Callback
 // js_dtoroverride
 template <typename SWIG_OBJ_WRAP>
 _exports_RGB_templ<SWIG_OBJ_WRAP>::~_exports_RGB_templ() {
-  auto arg1 = reinterpret_cast<datamunge::plot::RGB *>(this->self);
+  auto arg1 = reinterpret_cast<datamunge::graphics::RGB *>(this->self);
   if (this->owned && arg1) {
     delete arg1;
     this->self = nullptr;
@@ -113058,7 +113058,7 @@ Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::exports_DataSeries_Kind_Sc
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   
-  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::plot::DataSeries::Kind::Scatter));
+  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::graphics::DataSeries::Kind::Scatter));
   
   return jsresult;
   
@@ -113074,7 +113074,7 @@ Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::exports_DataSeries_Kind_Li
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   
-  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::plot::DataSeries::Kind::Line));
+  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::graphics::DataSeries::Kind::Line));
   
   return jsresult;
   
@@ -113090,7 +113090,7 @@ Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::exports_DataSeries_Kind_Ba
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   
-  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::plot::DataSeries::Kind::Bar));
+  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::graphics::DataSeries::Kind::Bar));
   
   return jsresult;
   
@@ -113106,7 +113106,7 @@ Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::exports_DataSeries_Kind_Bo
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   
-  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::plot::DataSeries::Kind::Box));
+  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::graphics::DataSeries::Kind::Box));
   
   return jsresult;
   
@@ -113122,7 +113122,7 @@ Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::exports_DataSeries_Kind_Po
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   
-  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::plot::DataSeries::Kind::Polygon));
+  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::graphics::DataSeries::Kind::Polygon));
   
   return jsresult;
   
@@ -113138,7 +113138,7 @@ Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::exports_DataSeries_Kind_Te
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   
-  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::plot::DataSeries::Kind::Text));
+  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::graphics::DataSeries::Kind::Text));
   
   return jsresult;
   
@@ -113154,7 +113154,7 @@ Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::exports_DataSeries_Kind_Se
   Napi::Env env = info.Env();
   Napi::Value jsresult;
   
-  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::plot::DataSeries::Kind::Segment));
+  jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(datamunge::graphics::DataSeries::Kind::Segment));
   
   return jsresult;
   
@@ -113169,8 +113169,8 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_kind_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind arg2 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int val2 ;
@@ -113178,13 +113178,13 @@ void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_kind_set(const N
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_kind_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_kind_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);ecode2 = SWIG_AsVal_int(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);ecode2 = SWIG_AsVal_int(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataSeries_kind_set" "', argument " "2"" of type '" "datamunge::plot::DataSeries::Kind""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataSeries_kind_set" "', argument " "2"" of type '" "datamunge::graphics::DataSeries::Kind""'");
   } 
-  arg2 = static_cast< datamunge::plot::DataSeries::Kind >(val2);if (arg1) (arg1)->kind = arg2;
+  arg2 = static_cast< datamunge::graphics::DataSeries::Kind >(val2);if (arg1) (arg1)->kind = arg2;
   
   
   
@@ -113201,16 +113201,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_kind_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries::Kind result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_kind_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_kind_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);result = (datamunge::plot::DataSeries::Kind) ((arg1)->kind);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);result = (datamunge::graphics::DataSeries::Kind) ((arg1)->kind);
   jsresult = SWIG_From_int  SWIG_NAPI_FROM_CALL_ARGS(static_cast< int >(result));
   
   
@@ -113227,7 +113227,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_x_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113236,9 +113236,9 @@ void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_x_set(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_x_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_x_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_x_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
   }
@@ -113259,16 +113259,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_x_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::vector< double > *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_x_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_x_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);result = (std::vector< double > *)& ((arg1)->x);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);result = (std::vector< double > *)& ((arg1)->x);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
   
   
@@ -113285,7 +113285,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_y_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113294,9 +113294,9 @@ void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_y_set(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_y_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_y_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_y_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
   }
@@ -113317,16 +113317,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_y_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::vector< double > *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_y_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_y_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);result = (std::vector< double > *)& ((arg1)->y);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);result = (std::vector< double > *)& ((arg1)->y);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
   
   
@@ -113343,7 +113343,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_label_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113351,9 +113351,9 @@ void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_label_set(const 
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_label_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_label_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       res2 = SWIG_AsPtr_std_string(value, &ptr);
@@ -113383,16 +113383,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_label_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_label_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_label_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);result = (std::string *) & ((arg1)->label);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);result = (std::string *) & ((arg1)->label);
   jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(*result));
   
   
@@ -113409,8 +113409,8 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_color_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -113418,13 +113418,13 @@ void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_color_set(const 
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_color_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_color_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_color_set" "', argument " "2"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);if (arg1) (arg1)->color = *arg2;
+  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);if (arg1) (arg1)->color = *arg2;
   
   
   
@@ -113441,16 +113441,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_color_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_color_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_color_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);result = (datamunge::plot::RGB *)& ((arg1)->color);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);result = (datamunge::graphics::RGB *)& ((arg1)->color);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   
   
@@ -113467,7 +113467,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_stroke_width_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113476,9 +113476,9 @@ void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_stroke_width_set
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_stroke_width_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_stroke_width_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataSeries_stroke_width_set" "', argument " "2"" of type '" "double""'");
   } 
@@ -113499,16 +113499,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_stroke_width_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_stroke_width_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_stroke_width_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);result = (double) ((arg1)->stroke_width);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);result = (double) ((arg1)->stroke_width);
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -113525,7 +113525,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_marker_size_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113534,9 +113534,9 @@ void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_marker_size_set(
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_marker_size_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_marker_size_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataSeries_marker_size_set" "', argument " "2"" of type '" "double""'");
   } 
@@ -113557,16 +113557,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_marker_size_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_marker_size_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_marker_size_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);result = (double) ((arg1)->marker_size);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);result = (double) ((arg1)->marker_size);
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -113583,7 +113583,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_bar_width_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113592,9 +113592,9 @@ void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_bar_width_set(co
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_bar_width_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_bar_width_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataSeries_bar_width_set" "', argument " "2"" of type '" "double""'");
   } 
@@ -113615,16 +113615,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_bar_width_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_bar_width_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_bar_width_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);result = (double) ((arg1)->bar_width);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);result = (double) ((arg1)->bar_width);
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -113641,7 +113641,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_filled_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113650,9 +113650,9 @@ void _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_filled_set(const
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);ecode2 = SWIG_AsVal_bool(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);ecode2 = SWIG_AsVal_bool(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataSeries_filled_set" "', argument " "2"" of type '" "bool""'");
   } 
@@ -113673,16 +113673,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_wrap_DataSeries_filled_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);result = (bool) ((arg1)->filled);
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);result = (bool) ((arg1)->filled);
   jsresult = SWIG_From_bool  SWIG_NAPI_FROM_CALL_ARGS(static_cast< bool >(result));
   
   
@@ -113711,11 +113711,11 @@ _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_exports_DataSeries_templ(const Napi::
   }
   this->owned = true;
   
-  datamunge::plot::DataSeries *result;
+  datamunge::graphics::DataSeries *result;
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_DataSeries.");
   }
-  result = (datamunge::plot::DataSeries *)new datamunge::plot::DataSeries();
+  result = (datamunge::graphics::DataSeries *)new datamunge::graphics::DataSeries();
   
   
   this->self = result;
@@ -113736,7 +113736,7 @@ _exports_DataSeries_templ<SWIG_OBJ_WRAP>::_exports_DataSeries_templ(bool, const 
 // js_dtoroverride
 template <typename SWIG_OBJ_WRAP>
 _exports_DataSeries_templ<SWIG_OBJ_WRAP>::~_exports_DataSeries_templ() {
-  auto arg1 = reinterpret_cast<datamunge::plot::DataSeries *>(this->self);
+  auto arg1 = reinterpret_cast<datamunge::graphics::DataSeries *>(this->self);
   if (this->owned && arg1) {
     delete arg1;
     this->self = nullptr;
@@ -113749,7 +113749,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_vertical_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113758,9 +113758,9 @@ void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_vertical_set(const Napi:
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);ecode2 = SWIG_AsVal_bool(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);ecode2 = SWIG_AsVal_bool(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ABLine_vertical_set" "', argument " "2"" of type '" "bool""'");
   } 
@@ -113781,16 +113781,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_vertical_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);result = (bool) ((arg1)->vertical);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);result = (bool) ((arg1)->vertical);
   jsresult = SWIG_From_bool  SWIG_NAPI_FROM_CALL_ARGS(static_cast< bool >(result));
   
   
@@ -113807,7 +113807,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_value_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113816,9 +113816,9 @@ void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_value_set(const Napi::Ca
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ABLine_value_set" "', argument " "2"" of type '" "double""'");
   } 
@@ -113839,16 +113839,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_value_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);result = (double) ((arg1)->value);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);result = (double) ((arg1)->value);
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -113865,7 +113865,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_slope_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113874,9 +113874,9 @@ void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_slope_set(const Napi::Ca
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ABLine_slope_set" "', argument " "2"" of type '" "double""'");
   } 
@@ -113897,16 +113897,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_slope_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);result = (double) ((arg1)->slope);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);result = (double) ((arg1)->slope);
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -113923,8 +113923,8 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_color_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -113932,13 +113932,13 @@ void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_color_set(const Napi::Ca
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ABLine_color_set" "', argument " "2"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ABLine_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);if (arg1) (arg1)->color = *arg2;
+  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);if (arg1) (arg1)->color = *arg2;
   
   
   
@@ -113955,16 +113955,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_color_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);result = (datamunge::plot::RGB *)& ((arg1)->color);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);result = (datamunge::graphics::RGB *)& ((arg1)->color);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   
   
@@ -113981,7 +113981,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_stroke_width_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -113990,9 +113990,9 @@ void _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_stroke_width_set(const N
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);ecode2 = SWIG_AsVal_double(value, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ABLine_stroke_width_set" "', argument " "2"" of type '" "double""'");
   } 
@@ -114013,16 +114013,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_ABLine_templ<SWIG_OBJ_WRAP>::_wrap_ABLine_stroke_width_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);result = (double) ((arg1)->stroke_width);
+  arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);result = (double) ((arg1)->stroke_width);
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -114051,11 +114051,11 @@ _exports_ABLine_templ<SWIG_OBJ_WRAP>::_exports_ABLine_templ(const Napi::Callback
   }
   this->owned = true;
   
-  datamunge::plot::ABLine *result;
+  datamunge::graphics::ABLine *result;
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_ABLine.");
   }
-  result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
+  result = (datamunge::graphics::ABLine *)new datamunge::graphics::ABLine();
   
   
   this->self = result;
@@ -114076,7 +114076,7 @@ _exports_ABLine_templ<SWIG_OBJ_WRAP>::_exports_ABLine_templ(bool, const Napi::Ca
 // js_dtoroverride
 template <typename SWIG_OBJ_WRAP>
 _exports_ABLine_templ<SWIG_OBJ_WRAP>::~_exports_ABLine_templ() {
-  auto arg1 = reinterpret_cast<datamunge::plot::ABLine *>(this->self);
+  auto arg1 = reinterpret_cast<datamunge::graphics::ABLine *>(this->self);
   if (this->owned && arg1) {
     delete arg1;
     this->self = nullptr;
@@ -114089,7 +114089,7 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::_wrap_LegendEntry_label_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -114097,9 +114097,9 @@ void _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::_wrap_LegendEntry_label_set(cons
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_set" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_set" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       res2 = SWIG_AsPtr_std_string(value, &ptr);
@@ -114129,16 +114129,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::_wrap_LegendEntry_label_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_get" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_get" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);result = (std::string *) & ((arg1)->label);
+  arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);result = (std::string *) & ((arg1)->label);
   jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(*result));
   
   
@@ -114155,8 +114155,8 @@ template <typename SWIG_OBJ_WRAP>
 void _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::_wrap_LegendEntry_color_set(const Napi::CallbackInfo &info, const Napi::Value &value) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -114164,13 +114164,13 @@ void _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::_wrap_LegendEntry_color_set(cons
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_set" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_set" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);res2 = SWIG_ConvertPtr(value, &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_color_set" "', argument " "2"" of type '" "datamunge::plot::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGB *""'"); 
   }
-  arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);if (arg1) (arg1)->color = *arg2;
+  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);if (arg1) (arg1)->color = *arg2;
   
   
   
@@ -114187,16 +114187,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::_wrap_LegendEntry_color_get(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_get" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_get" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);result = (datamunge::plot::RGB *)& ((arg1)->color);
+  arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);result = (datamunge::graphics::RGB *)& ((arg1)->color);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
   
   
@@ -114225,11 +114225,11 @@ _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::_exports_LegendEntry_templ(const Napi
   }
   this->owned = true;
   
-  datamunge::plot::LegendEntry *result;
+  datamunge::graphics::LegendEntry *result;
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_LegendEntry.");
   }
-  result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
+  result = (datamunge::graphics::LegendEntry *)new datamunge::graphics::LegendEntry();
   
   
   this->self = result;
@@ -114250,7 +114250,7 @@ _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::_exports_LegendEntry_templ(bool, cons
 // js_dtoroverride
 template <typename SWIG_OBJ_WRAP>
 _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::~_exports_LegendEntry_templ() {
-  auto arg1 = reinterpret_cast<datamunge::plot::LegendEntry *>(this->self);
+  auto arg1 = reinterpret_cast<datamunge::graphics::LegendEntry *>(this->self);
   if (this->owned && arg1) {
     delete arg1;
     this->self = nullptr;
@@ -114261,7 +114261,7 @@ _exports_LegendEntry_templ<SWIG_OBJ_WRAP>::~_exports_LegendEntry_templ() {
 // js_dtoroverride
 template <typename SWIG_OBJ_WRAP>
 _exports_Plot_templ<SWIG_OBJ_WRAP>::~_exports_Plot_templ() {
-  auto arg1 = reinterpret_cast<datamunge::plot::Plot *>(this->self);
+  auto arg1 = reinterpret_cast<datamunge::graphics::Plot *>(this->self);
   if (this->owned && arg1) {
     delete arg1;
     this->self = nullptr;
@@ -114274,7 +114274,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_size(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   void *argp1 = 0 ;
@@ -114283,7 +114283,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_size(const Napi::Call
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_size.");
@@ -114291,9 +114291,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_size(const Napi::Call
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_size" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_size" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);ecode2 = SWIG_AsVal_size_t(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);ecode2 = SWIG_AsVal_size_t(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Plot_size" "', argument " "2"" of type '" "std::size_t""'");
   } 
@@ -114301,7 +114301,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_size(const Napi::Call
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Plot_size" "', argument " "3"" of type '" "std::size_t""'");
   } 
-  arg3 = static_cast< std::size_t >(val3);result = (datamunge::plot::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  arg3 = static_cast< std::size_t >(val3);result = (datamunge::graphics::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114320,11 +114320,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_title(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_title.");
@@ -114332,9 +114332,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_title(const Napi::Cal
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_title" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_title" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -114345,7 +114345,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_title(const Napi::Cal
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114363,11 +114363,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_label(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_x_label.");
@@ -114375,9 +114375,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_label(const Napi::C
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_label" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_label" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -114388,7 +114388,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_label(const Napi::C
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114406,11 +114406,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_label(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_y_label.");
@@ -114418,9 +114418,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_label(const Napi::C
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_label" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_label" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -114431,7 +114431,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_label(const Napi::C
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114449,13 +114449,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_background(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_background.");
@@ -114463,22 +114463,22 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_background(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_background" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_background" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114495,13 +114495,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_axis_color(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_axis_color.");
@@ -114509,22 +114509,22 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_axis_color(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axis_color" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axis_color" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114541,13 +114541,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_grid_color(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_grid_color.");
@@ -114555,22 +114555,22 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_grid_color(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_grid_color" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_grid_color" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114587,23 +114587,23 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_show_grid__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show_grid" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show_grid" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);ecode2 = SWIG_AsVal_bool(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);ecode2 = SWIG_AsVal_bool(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Plot_show_grid" "', argument " "2"" of type '" "bool""'");
   } 
-  arg2 = static_cast< bool >(val2);result = (datamunge::plot::Plot *) &(arg1)->show_grid(arg2);
+  arg2 = static_cast< bool >(val2);result = (datamunge::graphics::Plot *) &(arg1)->show_grid(arg2);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114621,16 +114621,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_show_grid__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show_grid" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show_grid" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (datamunge::plot::Plot *) &(arg1)->show_grid();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (datamunge::graphics::Plot *) &(arg1)->show_grid();
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114734,7 +114734,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_limits(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -114743,7 +114743,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_limits(const Napi::
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_x_limits.");
@@ -114751,9 +114751,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_limits(const Napi::
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_limits" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_limits" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Plot_x_limits" "', argument " "2"" of type '" "double""'");
   } 
@@ -114761,7 +114761,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_limits(const Napi::
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Plot_x_limits" "', argument " "3"" of type '" "double""'");
   } 
-  arg3 = static_cast< double >(val3);result = (datamunge::plot::Plot *) &(arg1)->x_limits(arg2,arg3);
+  arg3 = static_cast< double >(val3);result = (datamunge::graphics::Plot *) &(arg1)->x_limits(arg2,arg3);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114780,7 +114780,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_limits(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -114789,7 +114789,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_limits(const Napi::
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_y_limits.");
@@ -114797,9 +114797,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_limits(const Napi::
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_limits" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_limits" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Plot_y_limits" "', argument " "2"" of type '" "double""'");
   } 
@@ -114807,7 +114807,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_limits(const Napi::
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Plot_y_limits" "', argument " "3"" of type '" "double""'");
   } 
-  arg3 = static_cast< double >(val3);result = (datamunge::plot::Plot *) &(arg1)->y_limits(arg2,arg3);
+  arg3 = static_cast< double >(val3);result = (datamunge::graphics::Plot *) &(arg1)->y_limits(arg2,arg3);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114826,23 +114826,23 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_hide_axes__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);ecode2 = SWIG_AsVal_bool(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);ecode2 = SWIG_AsVal_bool(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Plot_hide_axes" "', argument " "2"" of type '" "bool""'");
   } 
-  arg2 = static_cast< bool >(val2);result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
+  arg2 = static_cast< bool >(val2);result = (datamunge::graphics::Plot *) &(arg1)->hide_axes(arg2);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114860,16 +114860,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_hide_axes__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (datamunge::graphics::Plot *) &(arg1)->hide_axes();
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -114973,13 +114973,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_tick_labels(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_x_tick_labels.");
@@ -114987,9 +114987,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_tick_labels(const N
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_labels" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_labels" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -115002,7 +115002,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_tick_labels(const N
       }
     }
   }
-  result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   
   
@@ -115019,7 +115019,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_width(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::size_t result;
@@ -115030,9 +115030,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_width(const Napi::Cal
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_width" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_width" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = ((datamunge::plot::Plot const *)arg1)->width();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = ((datamunge::graphics::Plot const *)arg1)->width();
   jsresult = SWIG_From_size_t  SWIG_NAPI_FROM_CALL_ARGS(static_cast< size_t >(result));
   
   
@@ -115049,7 +115049,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_height(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::size_t result;
@@ -115060,9 +115060,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_height(const Napi::Ca
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_height" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_height" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = ((datamunge::plot::Plot const *)arg1)->height();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = ((datamunge::graphics::Plot const *)arg1)->height();
   jsresult = SWIG_From_size_t  SWIG_NAPI_FROM_CALL_ARGS(static_cast< size_t >(result));
   
   
@@ -115079,7 +115079,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_title_text(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
@@ -115090,9 +115090,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_title_text(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_title_text" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_title_text" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (std::string *) &((datamunge::plot::Plot const *)arg1)->title_text();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->title_text();
   jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(*result));
   
   
@@ -115109,7 +115109,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_label_text(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
@@ -115120,9 +115120,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_label_text(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_label_text" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_label_text" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (std::string *) &((datamunge::plot::Plot const *)arg1)->x_label_text();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->x_label_text();
   jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(*result));
   
   
@@ -115139,7 +115139,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_label_text(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string *result = 0 ;
@@ -115150,9 +115150,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_label_text(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_label_text" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_label_text" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (std::string *) &((datamunge::plot::Plot const *)arg1)->y_label_text();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->y_label_text();
   jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(*result));
   
   
@@ -115169,10 +115169,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_series(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  std::vector< datamunge::plot::DataSeries > *result = 0 ;
+  std::vector< datamunge::graphics::DataSeries > *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_series.");
@@ -115180,9 +115180,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_series(const Napi::Ca
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_series" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_series" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)arg1)->series();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (std::vector< datamunge::graphics::DataSeries > *) &((datamunge::graphics::Plot const *)arg1)->series();
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t, 0 |  0 );
   
   
@@ -115199,10 +115199,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_background_color(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_background_color.");
@@ -115210,10 +115210,10 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_background_color(cons
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_background_color" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_background_color" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = ((datamunge::plot::Plot const *)arg1)->background_color();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = ((datamunge::graphics::Plot const *)arg1)->background_color();
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -115229,10 +115229,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_axes_color(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_axes_color.");
@@ -115240,10 +115240,10 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_axes_color(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axes_color" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axes_color" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = ((datamunge::plot::Plot const *)arg1)->axes_color();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -115259,10 +115259,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_major_grid_color(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_major_grid_color.");
@@ -115270,10 +115270,10 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_major_grid_color(cons
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_major_grid_color" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_major_grid_color" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = ((datamunge::plot::Plot const *)arg1)->major_grid_color();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -115289,7 +115289,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_grid_visible(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -115300,9 +115300,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_grid_visible(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_grid_visible" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_grid_visible" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (bool)((datamunge::plot::Plot const *)arg1)->grid_visible();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (bool)((datamunge::graphics::Plot const *)arg1)->grid_visible();
   jsresult = SWIG_From_bool  SWIG_NAPI_FROM_CALL_ARGS(static_cast< bool >(result));
   
   
@@ -115319,7 +115319,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_has_x_limits(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -115330,9 +115330,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_has_x_limits(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_has_x_limits" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_has_x_limits" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (bool)((datamunge::plot::Plot const *)arg1)->has_x_limits();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (bool)((datamunge::graphics::Plot const *)arg1)->has_x_limits();
   jsresult = SWIG_From_bool  SWIG_NAPI_FROM_CALL_ARGS(static_cast< bool >(result));
   
   
@@ -115349,7 +115349,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_has_y_limits(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -115360,9 +115360,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_has_y_limits(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_has_y_limits" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_has_y_limits" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (bool)((datamunge::plot::Plot const *)arg1)->has_y_limits();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (bool)((datamunge::graphics::Plot const *)arg1)->has_y_limits();
   jsresult = SWIG_From_bool  SWIG_NAPI_FROM_CALL_ARGS(static_cast< bool >(result));
   
   
@@ -115379,7 +115379,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_min(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -115390,9 +115390,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_min(const Napi::Cal
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_min" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_min" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (double)((datamunge::plot::Plot const *)arg1)->x_min();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (double)((datamunge::graphics::Plot const *)arg1)->x_min();
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -115409,7 +115409,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_max(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -115420,9 +115420,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_max(const Napi::Cal
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_max" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_max" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (double)((datamunge::plot::Plot const *)arg1)->x_max();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (double)((datamunge::graphics::Plot const *)arg1)->x_max();
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -115439,7 +115439,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_min(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -115450,9 +115450,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_min(const Napi::Cal
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_min" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_min" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (double)((datamunge::plot::Plot const *)arg1)->y_min();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (double)((datamunge::graphics::Plot const *)arg1)->y_min();
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -115469,7 +115469,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_max(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double result;
@@ -115480,9 +115480,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_y_max(const Napi::Cal
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_max" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_max" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (double)((datamunge::plot::Plot const *)arg1)->y_max();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (double)((datamunge::graphics::Plot const *)arg1)->y_max();
   jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
   
   
@@ -115499,7 +115499,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_axes_hidden(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool result;
@@ -115510,9 +115510,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_axes_hidden(const Nap
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axes_hidden" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axes_hidden" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (bool)((datamunge::graphics::Plot const *)arg1)->axes_hidden();
   jsresult = SWIG_From_bool  SWIG_NAPI_FROM_CALL_ARGS(static_cast< bool >(result));
   
   
@@ -115529,7 +115529,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_tick_label_list(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::vector< std::string > *result = 0 ;
@@ -115540,9 +115540,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_x_tick_label_list(con
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_label_list" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_label_list" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (std::vector< std::string > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_label_list();
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__string_t, 0 |  0 );
   
   
@@ -115559,10 +115559,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_reference_lines(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  std::vector< datamunge::plot::ABLine > *result = 0 ;
+  std::vector< datamunge::graphics::ABLine > *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_reference_lines.");
@@ -115570,9 +115570,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_reference_lines(const
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_reference_lines" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_reference_lines" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (std::vector< datamunge::graphics::ABLine > *) &((datamunge::graphics::Plot const *)arg1)->reference_lines();
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t, 0 |  0 );
   
   
@@ -115589,10 +115589,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_legend_entries(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
+  std::vector< datamunge::graphics::LegendEntry > *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Plot_legend_entries.");
@@ -115600,9 +115600,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_legend_entries(const 
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_legend_entries" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_legend_entries" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = (std::vector< datamunge::graphics::LegendEntry > *) &((datamunge::graphics::Plot const *)arg1)->legend_entries();
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t, 0 |  0 );
   
   
@@ -115619,7 +115619,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_to_svg(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string result;
@@ -115630,9 +115630,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_to_svg(const Napi::Ca
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_to_svg" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_to_svg" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);result = ((datamunge::plot::Plot const *)arg1)->to_svg();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);result = ((datamunge::graphics::Plot const *)arg1)->to_svg();
   jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(result));
   
   
@@ -115649,7 +115649,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_save(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -115661,9 +115661,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_save(const Napi::Call
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_save" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_save" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       res2 = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -115676,7 +115676,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_save(const Napi::Call
       arg2 = ptr;
     }
   }
-  ((datamunge::plot::Plot const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save((std::string const &)*arg2);
   jsresult = env.Undefined();
   
   if (SWIG_IsNewObj(res2)) delete arg2;
@@ -115694,7 +115694,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_save_svg(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -115706,9 +115706,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_save_svg(const Napi::
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_save_svg" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_save_svg" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       res2 = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -115721,7 +115721,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_save_svg(const Napi::
       arg2 = ptr;
     }
   }
-  ((datamunge::plot::Plot const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save_svg((std::string const &)*arg2);
   jsresult = env.Undefined();
   
   if (SWIG_IsNewObj(res2)) delete arg2;
@@ -115739,7 +115739,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_view__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -115747,9 +115747,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_view__SWIG_0(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_view" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_view" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       res2 = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -115762,7 +115762,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_view__SWIG_0(const Na
       arg2 = ptr;
     }
   }
-  ((datamunge::plot::Plot const *)arg1)->view((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->view((std::string const &)*arg2);
   jsresult = env.Undefined();
   
   if (SWIG_IsNewObj(res2)) delete arg2;
@@ -115780,15 +115780,15 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_view__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_view" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_view" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);((datamunge::plot::Plot const *)arg1)->view();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);((datamunge::graphics::Plot const *)arg1)->view();
   jsresult = env.Undefined();
   
   
@@ -115892,7 +115892,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_show__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -115900,9 +115900,9 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_show__SWIG_0(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       res2 = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -115915,7 +115915,7 @@ Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_show__SWIG_0(const Na
       arg2 = ptr;
     }
   }
-  ((datamunge::plot::Plot const *)arg1)->show((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->show((std::string const &)*arg2);
   jsresult = env.Undefined();
   
   if (SWIG_IsNewObj(res2)) delete arg2;
@@ -115933,15 +115933,15 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_Plot_templ<SWIG_OBJ_WRAP>::_wrap_Plot_show__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);((datamunge::plot::Plot const *)arg1)->show();
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);((datamunge::graphics::Plot const *)arg1)->show();
   jsresult = env.Undefined();
   
   
@@ -116057,11 +116057,11 @@ _exports_Plot_templ<SWIG_OBJ_WRAP>::_exports_Plot_templ(const Napi::CallbackInfo
   }
   this->owned = true;
   
-  datamunge::plot::Plot *result;
+  datamunge::graphics::Plot *result;
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_Plot.");
   }
-  result = (datamunge::plot::Plot *)new datamunge::plot::Plot();
+  result = (datamunge::graphics::Plot *)new datamunge::graphics::Plot();
   
   
   this->self = result;
@@ -116084,14 +116084,14 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_create(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_create.");
   }
   
-  result = datamunge::plot::RPlot::create();
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::create();
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -116106,7 +116106,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_size(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   void *argp1 = 0 ;
@@ -116115,7 +116115,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_size(const Napi::Ca
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_size.");
@@ -116123,9 +116123,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_size(const Napi::Ca
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_size" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_size" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_size_t(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_size_t(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_size" "', argument " "2"" of type '" "std::size_t""'");
   } 
@@ -116133,7 +116133,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_size(const Napi::Ca
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_size" "', argument " "3"" of type '" "std::size_t""'");
   } 
-  arg3 = static_cast< std::size_t >(val3);result = (datamunge::plot::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  arg3 = static_cast< std::size_t >(val3);result = (datamunge::graphics::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116152,11 +116152,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_title(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_title.");
@@ -116164,9 +116164,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_title(const Napi::C
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_title" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_title" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -116177,7 +116177,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_title(const Napi::C
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116195,11 +116195,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_label(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_x_label.");
@@ -116207,9 +116207,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_label(const Napi:
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_label" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_label" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -116220,7 +116220,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_label(const Napi:
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116238,11 +116238,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_y_label(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_y_label.");
@@ -116250,9 +116250,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_y_label(const Napi:
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_y_label" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_y_label" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -116263,7 +116263,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_y_label(const Napi:
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116281,11 +116281,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_xlab(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_xlab.");
@@ -116293,9 +116293,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_xlab(const Napi::Ca
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_xlab" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_xlab" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -116306,7 +116306,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_xlab(const Napi::Ca
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116324,11 +116324,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_ylab(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_ylab.");
@@ -116336,9 +116336,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_ylab(const Napi::Ca
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_ylab" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_ylab" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -116349,7 +116349,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_ylab(const Napi::Ca
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116367,13 +116367,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_background(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_background.");
@@ -116381,22 +116381,22 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_background(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_background" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_background" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116413,13 +116413,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_axis_color(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_axis_color.");
@@ -116427,22 +116427,22 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_axis_color(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_axis_color" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_axis_color" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116459,13 +116459,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_grid_color(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_grid_color.");
@@ -116473,22 +116473,22 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_grid_color(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_grid_color" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_grid_color" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116505,23 +116505,23 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_show_grid__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_show_grid" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_show_grid" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_bool(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_bool(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_show_grid" "', argument " "2"" of type '" "bool""'");
   } 
-  arg2 = static_cast< bool >(val2);result = (datamunge::plot::RPlot *) &(arg1)->show_grid(arg2);
+  arg2 = static_cast< bool >(val2);result = (datamunge::graphics::RPlot *) &(arg1)->show_grid(arg2);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116539,16 +116539,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_show_grid__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_show_grid" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_show_grid" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);result = (datamunge::plot::RPlot *) &(arg1)->show_grid();
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);result = (datamunge::graphics::RPlot *) &(arg1)->show_grid();
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116652,7 +116652,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_limits(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -116661,7 +116661,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_limits(const Napi
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_x_limits.");
@@ -116669,9 +116669,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_limits(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_limits" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_limits" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_x_limits" "', argument " "2"" of type '" "double""'");
   } 
@@ -116679,7 +116679,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_limits(const Napi
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_x_limits" "', argument " "3"" of type '" "double""'");
   } 
-  arg3 = static_cast< double >(val3);result = (datamunge::plot::RPlot *) &(arg1)->x_limits(arg2,arg3);
+  arg3 = static_cast< double >(val3);result = (datamunge::graphics::RPlot *) &(arg1)->x_limits(arg2,arg3);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116698,7 +116698,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_y_limits(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -116707,7 +116707,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_y_limits(const Napi
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_y_limits.");
@@ -116715,9 +116715,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_y_limits(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_y_limits" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_y_limits" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_y_limits" "', argument " "2"" of type '" "double""'");
   } 
@@ -116725,7 +116725,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_y_limits(const Napi
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_y_limits" "', argument " "3"" of type '" "double""'");
   } 
-  arg3 = static_cast< double >(val3);result = (datamunge::plot::RPlot *) &(arg1)->y_limits(arg2,arg3);
+  arg3 = static_cast< double >(val3);result = (datamunge::graphics::RPlot *) &(arg1)->y_limits(arg2,arg3);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116744,23 +116744,23 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hide_axes__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_hide_axes" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_hide_axes" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_bool(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_bool(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_hide_axes" "', argument " "2"" of type '" "bool""'");
   } 
-  arg2 = static_cast< bool >(val2);result = (datamunge::plot::RPlot *) &(arg1)->hide_axes(arg2);
+  arg2 = static_cast< bool >(val2);result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes(arg2);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116778,16 +116778,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hide_axes__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_hide_axes" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_hide_axes" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);result = (datamunge::plot::RPlot *) &(arg1)->hide_axes();
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes();
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116891,13 +116891,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_tick_labels(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_x_tick_labels.");
@@ -116905,9 +116905,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_tick_labels(const
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_tick_labels" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_tick_labels" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -116920,7 +116920,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_x_tick_labels(const
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -116941,14 +116941,14 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_plot__SWIG_0(const 
   std::vector< double > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117002,17 +117002,17 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_plot__SWIG_0(const 
     {
       res5 = SWIG_ConvertPtr(info[4], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -117037,7 +117037,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_plot__SWIG_1(const 
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117087,8 +117087,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_plot__SWIG_1(const 
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -117112,7 +117112,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_plot__SWIG_2(const 
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117151,8 +117151,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_plot__SWIG_2(const 
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -117174,7 +117174,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_plot__SWIG_3(const 
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117202,8 +117202,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_plot__SWIG_3(const 
       }
     }
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -117380,14 +117380,14 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hist__SWIG_0(const 
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117421,17 +117421,17 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hist__SWIG_0(const 
     {
       res4 = SWIG_ConvertPtr(info[3], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -117455,7 +117455,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hist__SWIG_1(const 
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117485,8 +117485,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hist__SWIG_1(const 
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -117509,7 +117509,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hist__SWIG_2(const 
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117528,8 +117528,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hist__SWIG_2(const 
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_hist" "', argument " "2"" of type '" "std::size_t""'");
   } 
-  arg2 = static_cast< std::size_t >(val2);result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  arg2 = static_cast< std::size_t >(val2);result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -117548,7 +117548,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hist__SWIG_3(const 
   std::vector< double > arg1 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117563,8 +117563,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_hist__SWIG_3(const 
       }
     }
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -117741,14 +117741,14 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_barplot__SWIG_0(con
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117791,17 +117791,17 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_barplot__SWIG_0(con
     {
       res4 = SWIG_ConvertPtr(info[3], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -117824,7 +117824,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_barplot__SWIG_1(con
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117863,8 +117863,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_barplot__SWIG_1(con
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -117886,7 +117886,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_barplot__SWIG_2(con
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117914,8 +117914,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_barplot__SWIG_2(con
       }
     }
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -117933,7 +117933,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_barplot__SWIG_3(con
   std::vector< double > arg1 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -117948,8 +117948,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_barplot__SWIG_3(con
       }
     }
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -118125,14 +118125,14 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_boxplot__SWIG_0(con
   Napi::Value jsresult;
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -118164,17 +118164,17 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_boxplot__SWIG_0(con
     {
       res3 = SWIG_ConvertPtr(info[2], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -118195,7 +118195,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_boxplot__SWIG_1(con
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -118223,8 +118223,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_boxplot__SWIG_1(con
       }
     }
   }
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -118242,7 +118242,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_boxplot__SWIG_2(con
   std::vector< std::vector< double > > arg1 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -118257,8 +118257,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_boxplot__SWIG_2(con
       }
     }
   }
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -118398,14 +118398,14 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_pie__SWIG_0(const N
   Napi::Value jsresult;
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -118437,17 +118437,17 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_pie__SWIG_0(const N
     {
       res3 = SWIG_ConvertPtr(info[2], &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB >""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB >""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB >""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB >""'");
       } else {
-        arg3 = *(reinterpret_cast< std::vector< datamunge::plot::RGB > * >(argp3));
+        arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGB > * >(argp3));
       }
     }
   }
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -118468,7 +118468,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_pie__SWIG_1(const N
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -118496,8 +118496,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_pie__SWIG_1(const N
       }
     }
   }
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -118515,7 +118515,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_pie__SWIG_2(const N
   std::vector< double > arg1 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -118530,8 +118530,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_pie__SWIG_2(const N
       }
     }
   }
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -118674,7 +118674,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_curve__SWIG_0(const
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -118685,7 +118685,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_curve__SWIG_0(const
   int ecode4 = 0 ;
   void *argp6 = 0 ;
   int res6 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info[0], &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
   if (!SWIG_IsOK(res1)) {
@@ -118721,17 +118721,17 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_curve__SWIG_0(const
     {
       res6 = SWIG_ConvertPtr(info[5], &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res6)) {
-        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp6) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+        arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
       }
     }
   }
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -118764,7 +118764,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_curve__SWIG_1(const
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info[0], &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
   if (!SWIG_IsOK(res1)) {
@@ -118796,8 +118796,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_curve__SWIG_1(const
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -118829,7 +118829,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_curve__SWIG_2(const
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info[0], &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
   if (!SWIG_IsOK(res1)) {
@@ -118850,8 +118850,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_curve__SWIG_2(const
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_curve" "', argument " "4"" of type '" "std::size_t""'");
   } 
-  arg4 = static_cast< std::size_t >(val4);result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  arg4 = static_cast< std::size_t >(val4);result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -118879,7 +118879,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_curve__SWIG_3(const
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   res1 = SWIG_ConvertPtr(info[0], &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
   if (!SWIG_IsOK(res1)) {
@@ -118896,8 +118896,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_curve__SWIG_3(const
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_curve" "', argument " "3"" of type '" "double""'");
   } 
-  arg3 = static_cast< double >(val3);result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  arg3 = static_cast< double >(val3);result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3);
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -119076,12 +119076,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqnorm__SWIG_0(cons
   Napi::Value jsresult;
   std::vector< double > arg1 ;
   std::string arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -119111,17 +119111,17 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqnorm__SWIG_0(cons
     {
       res3 = SWIG_ConvertPtr(info[2], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -119141,7 +119141,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqnorm__SWIG_1(cons
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -119167,8 +119167,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqnorm__SWIG_1(cons
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   
   return jsresult;
@@ -119187,7 +119187,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqnorm__SWIG_2(cons
   std::vector< double > arg1 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   {
     {
@@ -119202,8 +119202,8 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqnorm__SWIG_2(cons
       }
     }
   }
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
   
   return jsresult;
   
@@ -119341,11 +119341,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -119357,13 +119357,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_0(cons
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -119404,12 +119404,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_0(cons
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
@@ -119417,7 +119417,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_0(cons
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_points" "', argument " "6"" of type '" "double""'");
   } 
-  arg6 = static_cast< double >(val6);result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  arg6 = static_cast< double >(val6);result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -119436,11 +119436,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -119449,13 +119449,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_1(cons
   int res3 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -119496,16 +119496,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_1(cons
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -119523,7 +119523,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -119533,13 +119533,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_2(cons
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -119576,7 +119576,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_2(cons
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -119594,7 +119594,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_3(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   void *argp1 = 0 ;
@@ -119603,13 +119603,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_3(cons
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -119635,7 +119635,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_3(cons
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -119652,11 +119652,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -119668,13 +119668,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_0(const 
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -119715,12 +119715,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_0(const 
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
@@ -119728,7 +119728,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_0(const 
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_line" "', argument " "6"" of type '" "double""'");
   } 
-  arg6 = static_cast< double >(val6);result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  arg6 = static_cast< double >(val6);result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -119747,11 +119747,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -119760,13 +119760,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_1(const 
   int res3 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -119807,16 +119807,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_1(const 
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -119834,7 +119834,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -119844,13 +119844,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_2(const 
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -119887,7 +119887,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_2(const 
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -119905,7 +119905,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_3(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   void *argp1 = 0 ;
@@ -119914,13 +119914,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_3(const 
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -119946,7 +119946,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_line__SWIG_3(const 
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -120122,11 +120122,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -120138,13 +120138,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_0(const
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -120185,12 +120185,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_0(const
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
@@ -120198,7 +120198,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_0(const
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_lines" "', argument " "6"" of type '" "double""'");
   } 
-  arg6 = static_cast< double >(val6);result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  arg6 = static_cast< double >(val6);result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -120217,11 +120217,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -120230,13 +120230,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_1(const
   int res3 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -120277,16 +120277,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_1(const
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -120304,7 +120304,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -120314,13 +120314,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_2(const
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -120357,7 +120357,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_2(const
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -120375,7 +120375,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_3(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   void *argp1 = 0 ;
@@ -120384,13 +120384,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_3(const
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -120416,7 +120416,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_3(const
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -120433,10 +120433,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_4(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -120448,13 +120448,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_4(cons
   int res4 = 0 ;
   double val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -120484,12 +120484,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_4(cons
     {
       res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
@@ -120497,7 +120497,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_4(cons
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_points" "', argument " "5"" of type '" "double""'");
   } 
-  arg5 = static_cast< double >(val5);result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  arg5 = static_cast< double >(val5);result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -120515,10 +120515,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_5(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -120527,13 +120527,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_5(cons
   int res3 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -120563,16 +120563,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_points__SWIG_5(cons
     {
       res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -120820,10 +120820,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_4(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -120835,13 +120835,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_4(const
   int res4 = 0 ;
   double val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -120871,12 +120871,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_4(const
     {
       res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
@@ -120884,7 +120884,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_4(const
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "double""'");
   } 
-  arg5 = static_cast< double >(val5);result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  arg5 = static_cast< double >(val5);result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -120902,10 +120902,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_5(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -120914,13 +120914,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_5(const
   int res3 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -120950,16 +120950,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_lines__SWIG_5(const
     {
       res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -121207,11 +121207,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -121223,13 +121223,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_0(const 
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -121270,12 +121270,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_0(const 
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
@@ -121283,7 +121283,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_0(const 
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_bars" "', argument " "6"" of type '" "double""'");
   } 
-  arg6 = static_cast< double >(val6);result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  arg6 = static_cast< double >(val6);result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -121302,11 +121302,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -121315,13 +121315,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_1(const 
   int res3 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -121362,16 +121362,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_1(const 
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -121389,7 +121389,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -121399,13 +121399,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_2(const 
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -121442,7 +121442,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_2(const 
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -121460,7 +121460,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_3(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   void *argp1 = 0 ;
@@ -121469,13 +121469,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_3(const 
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -121501,7 +121501,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_bars__SWIG_3(const 
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -121677,7 +121677,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -121685,7 +121685,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_0(const N
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   double arg10 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -121707,13 +121707,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_0(const N
   int res9 = 0 ;
   double val10 ;
   int ecode10 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_box" "', argument " "2"" of type '" "double""'");
   } 
@@ -121754,12 +121754,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_0(const N
     {
       res9 = SWIG_ConvertPtr(info[7], &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res9)) {
-        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp9) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg9 = *(reinterpret_cast< datamunge::plot::RGB * >(argp9));
+        arg9 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp9));
       }
     }
   }
@@ -121767,7 +121767,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_0(const N
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "RPlot_box" "', argument " "10"" of type '" "double""'");
   } 
-  arg10 = static_cast< double >(val10);result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
+  arg10 = static_cast< double >(val10);result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -121791,7 +121791,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -121799,7 +121799,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_1(const N
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -121818,13 +121818,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_1(const N
   int res8 = 0 ;
   void *argp9 = 0 ;
   int res9 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_box" "', argument " "2"" of type '" "double""'");
   } 
@@ -121865,16 +121865,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_1(const N
     {
       res9 = SWIG_ConvertPtr(info[7], &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res9)) {
-        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp9) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg9 = *(reinterpret_cast< datamunge::plot::RGB * >(argp9));
+        arg9 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp9));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -121897,7 +121897,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -121921,13 +121921,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_2(const N
   int ecode7 = 0 ;
   void *argp8 = 0 ;
   int res8 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_box" "', argument " "2"" of type '" "double""'");
   } 
@@ -121964,7 +121964,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_2(const N
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -121987,7 +121987,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_3(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -122008,13 +122008,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_3(const N
   int ecode6 = 0 ;
   double val7 ;
   int ecode7 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_box" "', argument " "2"" of type '" "double""'");
   } 
@@ -122038,7 +122038,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_box__SWIG_3(const N
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "RPlot_box" "', argument " "7"" of type '" "double""'");
   } 
-  arg7 = static_cast< double >(val7);result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+  arg7 = static_cast< double >(val7);result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -122220,10 +122220,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -122235,13 +122235,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_0(cons
   int res4 = 0 ;
   double val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline" "', argument " "2"" of type '" "double""'");
   } 
@@ -122253,12 +122253,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_0(cons
     {
       res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
@@ -122266,7 +122266,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_0(cons
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_abline" "', argument " "5"" of type '" "double""'");
   } 
-  arg5 = static_cast< double >(val5);result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
+  arg5 = static_cast< double >(val5);result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -122286,10 +122286,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -122298,13 +122298,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_1(cons
   int ecode3 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline" "', argument " "2"" of type '" "double""'");
   } 
@@ -122316,16 +122316,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_1(cons
     {
       res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -122344,7 +122344,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
@@ -122353,13 +122353,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_2(cons
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline" "', argument " "2"" of type '" "double""'");
   } 
@@ -122367,7 +122367,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline__SWIG_2(cons
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_abline" "', argument " "3"" of type '" "double""'");
   } 
-  arg3 = static_cast< double >(val3);result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
+  arg3 = static_cast< double >(val3);result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -122509,9 +122509,9 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_h__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -122521,13 +122521,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_h__SWIG_0(co
   int res3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_h" "', argument " "2"" of type '" "double""'");
   } 
@@ -122535,12 +122535,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_h__SWIG_0(co
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
@@ -122548,7 +122548,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_h__SWIG_0(co
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_abline_h" "', argument " "4"" of type '" "double""'");
   } 
-  arg4 = static_cast< double >(val4);result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  arg4 = static_cast< double >(val4);result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -122567,22 +122567,22 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_h__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_h" "', argument " "2"" of type '" "double""'");
   } 
@@ -122590,16 +122590,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_h__SWIG_1(co
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -122617,23 +122617,23 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_h__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_h" "', argument " "2"" of type '" "double""'");
   } 
-  arg2 = static_cast< double >(val2);result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
+  arg2 = static_cast< double >(val2);result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -122774,9 +122774,9 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_v__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -122786,13 +122786,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_v__SWIG_0(co
   int res3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_v" "', argument " "2"" of type '" "double""'");
   } 
@@ -122800,12 +122800,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_v__SWIG_0(co
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
@@ -122813,7 +122813,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_v__SWIG_0(co
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_abline_v" "', argument " "4"" of type '" "double""'");
   } 
-  arg4 = static_cast< double >(val4);result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  arg4 = static_cast< double >(val4);result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -122832,22 +122832,22 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_v__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_v" "', argument " "2"" of type '" "double""'");
   } 
@@ -122855,16 +122855,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_v__SWIG_1(co
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -122882,23 +122882,23 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_abline_v__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_v" "', argument " "2"" of type '" "double""'");
   } 
-  arg2 = static_cast< double >(val2);result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
+  arg2 = static_cast< double >(val2);result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123039,9 +123039,9 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqline__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -123051,13 +123051,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqline__SWIG_0(cons
   int res3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -123074,12 +123074,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqline__SWIG_0(cons
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
@@ -123087,7 +123087,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqline__SWIG_0(cons
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_qqline" "', argument " "4"" of type '" "double""'");
   } 
-  arg4 = static_cast< double >(val4);result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
+  arg4 = static_cast< double >(val4);result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123105,22 +123105,22 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqline__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -123137,16 +123137,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqline__SWIG_1(cons
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123163,19 +123163,19 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqline__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -123188,7 +123188,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_qqline__SWIG_2(cons
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123328,16 +123328,16 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_legend(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RPlot_legend.");
@@ -123345,9 +123345,9 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_legend(const Napi::
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_legend" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_legend" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -123364,16 +123364,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_legend(const Napi::
     {
       res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB >""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB >""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB >""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB >""'");
       } else {
-        arg3 = *(reinterpret_cast< std::vector< datamunge::plot::RGB > * >(argp3));
+        arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGB > * >(argp3));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123390,11 +123390,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -123406,13 +123406,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_0(const 
   int res5 = 0 ;
   double val6 ;
   int ecode6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_text" "', argument " "2"" of type '" "double""'");
   } 
@@ -123435,12 +123435,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_0(const 
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
@@ -123448,7 +123448,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_0(const 
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_text" "', argument " "6"" of type '" "double""'");
   } 
-  arg6 = static_cast< double >(val6);result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  arg6 = static_cast< double >(val6);result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123469,11 +123469,11 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -123482,13 +123482,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_1(const 
   int ecode3 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_text" "', argument " "2"" of type '" "double""'");
   } 
@@ -123511,16 +123511,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_1(const 
     {
       res5 = SWIG_ConvertPtr(info[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123540,7 +123540,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
@@ -123550,13 +123550,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_2(const 
   int ecode2 = 0 ;
   double val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_text" "', argument " "2"" of type '" "double""'");
   } 
@@ -123575,7 +123575,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_text__SWIG_2(const 
       if (SWIG_IsNewObj(res)) delete ptr;
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123718,10 +123718,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   bool arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -123733,13 +123733,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_0(con
   int res4 = 0 ;
   bool val5 ;
   int ecode5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -123769,12 +123769,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_0(con
     {
       res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
@@ -123782,7 +123782,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_0(con
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_polygon" "', argument " "5"" of type '" "bool""'");
   } 
-  arg5 = static_cast< bool >(val5);result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  arg5 = static_cast< bool >(val5);result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123800,10 +123800,10 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -123812,13 +123812,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_1(con
   int res3 = 0 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -123848,16 +123848,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_1(con
     {
       res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -123874,7 +123874,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   void *argp1 = 0 ;
@@ -123883,13 +123883,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_2(con
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -123915,7 +123915,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_polygon__SWIG_2(con
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -124055,12 +124055,12 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_0(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   double arg7 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -124076,13 +124076,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_0(co
   int res6 = 0 ;
   double val7 ;
   int ecode7 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -124138,12 +124138,12 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_0(co
     {
       res6 = SWIG_ConvertPtr(info[4], &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res6)) {
-        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp6) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+        arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
       }
     }
   }
@@ -124151,7 +124151,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_0(co
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "RPlot_segments" "', argument " "7"" of type '" "double""'");
   } 
-  arg7 = static_cast< double >(val7);result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
+  arg7 = static_cast< double >(val7);result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -124169,12 +124169,12 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_1(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -124187,13 +124187,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_1(co
   int res5 = 0 ;
   void *argp6 = 0 ;
   int res6 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -124249,16 +124249,16 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_1(co
     {
       res6 = SWIG_ConvertPtr(info[4], &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res6)) {
-        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'"); 
       }  
       if (!argp6) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'");
       } else {
-        arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+        arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -124275,7 +124275,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_2(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
@@ -124290,13 +124290,13 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_2(co
   int res4 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);{
     {
       res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_double_t,  0 );
       if (!SWIG_IsOK(res2)) {
@@ -124348,7 +124348,7 @@ Napi::Value _exports_RPlot_templ<SWIG_OBJ_WRAP>::_wrap_RPlot_segments__SWIG_2(co
       }
     }
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
   
   
@@ -124500,11 +124500,11 @@ _exports_RPlot_templ<SWIG_OBJ_WRAP>::_exports_RPlot_templ(const Napi::CallbackIn
   }
   this->owned = true;
   
-  datamunge::plot::RPlot *result;
+  datamunge::graphics::RPlot *result;
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_RPlot.");
   }
-  result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
   
   
   this->self = result;
@@ -124525,7 +124525,7 @@ _exports_RPlot_templ<SWIG_OBJ_WRAP>::_exports_RPlot_templ(bool, const Napi::Call
 // js_dtoroverride
 template <typename SWIG_OBJ_WRAP>
 _exports_RPlot_templ<SWIG_OBJ_WRAP>::~_exports_RPlot_templ() {
-  auto arg1 = reinterpret_cast<datamunge::plot::RPlot *>(this->self);
+  auto arg1 = reinterpret_cast<datamunge::graphics::RPlot *>(this->self);
   if (this->owned && arg1) {
     delete arg1;
     this->self = nullptr;
@@ -124544,7 +124544,7 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_create(const Na
   int ecode1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  datamunge::plot::RLayout result;
+  datamunge::graphics::RLayout result;
   
   if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RLayout_create.");
@@ -124558,8 +124558,8 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_create(const Na
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RLayout_create" "', argument " "2"" of type '" "std::size_t""'");
   } 
-  arg2 = static_cast< std::size_t >(val2);result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  jsresult = SWIG_NewPointerObj((new datamunge::plot::RLayout(result)), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_OWN |  0 );
+  arg2 = static_cast< std::size_t >(val2);result = datamunge::graphics::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  jsresult = SWIG_NewPointerObj((new datamunge::graphics::RLayout(result)), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_OWN |  0 );
   
   
   
@@ -124576,13 +124576,13 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_add(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RLayout *arg1 = 0 ;
-  datamunge::plot::Plot *arg2 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  datamunge::graphics::Plot *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RLayout_add.");
@@ -124590,16 +124590,16 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_add(const Napi:
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_add" "', argument " "1"" of type '" "datamunge::plot::RLayout *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_add" "', argument " "1"" of type '" "datamunge::graphics::RLayout *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__Plot,  0 );
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__plot__Plot,  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_add" "', argument " "2"" of type '" "datamunge::plot::Plot const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_add" "', argument " "2"" of type '" "datamunge::graphics::Plot const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_add" "', argument " "2"" of type '" "datamunge::plot::Plot const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_add" "', argument " "2"" of type '" "datamunge::graphics::Plot const &""'"); 
   }
-  arg2 = reinterpret_cast< datamunge::plot::Plot * >(argp2);result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
+  arg2 = reinterpret_cast< datamunge::graphics::Plot * >(argp2);result = (datamunge::graphics::RLayout *) &(arg1)->add((datamunge::graphics::Plot const &)*arg2);
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   
   
@@ -124617,7 +124617,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_size(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   void *argp1 = 0 ;
@@ -124626,7 +124626,7 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_size(const Napi
   int ecode2 = 0 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_RLayout_size.");
@@ -124634,9 +124634,9 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_size(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_size" "', argument " "1"" of type '" "datamunge::plot::RLayout *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_size" "', argument " "1"" of type '" "datamunge::graphics::RLayout *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);ecode2 = SWIG_AsVal_size_t(info[0], &val2);
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);ecode2 = SWIG_AsVal_size_t(info[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RLayout_size" "', argument " "2"" of type '" "std::size_t""'");
   } 
@@ -124644,7 +124644,7 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_size(const Napi
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RLayout_size" "', argument " "3"" of type '" "std::size_t""'");
   } 
-  arg3 = static_cast< std::size_t >(val3);result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  arg3 = static_cast< std::size_t >(val3);result = (datamunge::graphics::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   
   
@@ -124663,7 +124663,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_to_svg(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   std::string result;
@@ -124674,9 +124674,9 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_to_svg(const Na
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_to_svg" "', argument " "1"" of type '" "datamunge::plot::RLayout const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_to_svg" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);result = ((datamunge::plot::RLayout const *)arg1)->to_svg();
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);result = ((datamunge::graphics::RLayout const *)arg1)->to_svg();
   jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(result));
   
   
@@ -124693,7 +124693,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_save(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -124705,9 +124705,9 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_save(const Napi
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save" "', argument " "1"" of type '" "datamunge::plot::RLayout const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       res2 = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -124720,7 +124720,7 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_save(const Napi
       arg2 = ptr;
     }
   }
-  ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save((std::string const &)*arg2);
   jsresult = env.Undefined();
   
   if (SWIG_IsNewObj(res2)) delete arg2;
@@ -124738,7 +124738,7 @@ template <typename SWIG_OBJ_WRAP>
 Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_save_svg(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -124750,9 +124750,9 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_save_svg(const 
   
   res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save_svg" "', argument " "1"" of type '" "datamunge::plot::RLayout const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save_svg" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);{
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);{
     {
       std::string *ptr = (std::string *)0;
       res2 = SWIG_AsPtr_std_string(info[0], &ptr);
@@ -124765,7 +124765,7 @@ Napi::Value _exports_RLayout_templ<SWIG_OBJ_WRAP>::_wrap_RLayout_save_svg(const 
       arg2 = ptr;
     }
   }
-  ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
   jsresult = env.Undefined();
   
   if (SWIG_IsNewObj(res2)) delete arg2;
@@ -124795,11 +124795,11 @@ _exports_RLayout_templ<SWIG_OBJ_WRAP>::_exports_RLayout_templ(const Napi::Callba
   }
   this->owned = true;
   
-  datamunge::plot::RLayout *result;
+  datamunge::graphics::RLayout *result;
   if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
     SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_RLayout.");
   }
-  result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
+  result = (datamunge::graphics::RLayout *)new datamunge::graphics::RLayout();
   
   
   this->self = result;
@@ -124820,7 +124820,7 @@ _exports_RLayout_templ<SWIG_OBJ_WRAP>::_exports_RLayout_templ(bool, const Napi::
 // js_dtoroverride
 template <typename SWIG_OBJ_WRAP>
 _exports_RLayout_templ<SWIG_OBJ_WRAP>::~_exports_RLayout_templ() {
-  auto arg1 = reinterpret_cast<datamunge::plot::RLayout *>(this->self);
+  auto arg1 = reinterpret_cast<datamunge::graphics::RLayout *>(this->self);
   if (this->owned && arg1) {
     delete arg1;
     this->self = nullptr;
@@ -167784,7 +167784,7 @@ static void *_p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__Differe
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::ProximalFunction *) x));
 }
 static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::RPlot *) x));
+    return (void *)((datamunge::graphics::Plot *)  ((datamunge::graphics::RPlot *) x));
 }
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__AgglomerativeClustering = {"_p_datamunge__AgglomerativeClustering", "p_datamunge__AgglomerativeClustering|datamunge::AgglomerativeClustering *", 0, 0, (void*)0, 0};
@@ -167949,13 +167949,13 @@ static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewton = {"_p_datam
 static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewtonOptions = {"_p_datamunge__optim__TrustRegionNewtonOptions", "p_datamunge__optim__TrustRegionNewtonOptions|datamunge::optim::TrustRegionNewtonOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimization = {"_p_datamunge__optim__WhaleOptimization", "datamunge::optim::WhaleOptimization *|p_datamunge__optim__WhaleOptimization", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimizationOptions = {"_p_datamunge__optim__WhaleOptimizationOptions", "p_datamunge__optim__WhaleOptimizationOptions|datamunge::optim::WhaleOptimizationOptions *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "p_datamunge__plot__ABLine|datamunge::plot::ABLine *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "p_datamunge__plot__DataSeries|datamunge::plot::DataSeries *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "p_datamunge__plot__LegendEntry|datamunge::plot::LegendEntry *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "p_datamunge__plot__Plot|datamunge::plot::Plot *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::plot::RGBA *|p_datamunge__plot__RGB|datamunge::plot::RGB *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::plot::RLayout *|p_datamunge__plot__RLayout", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::plot::RPlot *|p_datamunge__plot__RPlot", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "p_datamunge__plot__ABLine|datamunge::graphics::ABLine *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "p_datamunge__plot__DataSeries|datamunge::graphics::DataSeries *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "p_datamunge__plot__LegendEntry|datamunge::graphics::LegendEntry *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "p_datamunge__plot__Plot|datamunge::graphics::Plot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::graphics::RGBA *|p_datamunge__plot__RGB|datamunge::graphics::RGB *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::graphics::RLayout *|p_datamunge__plot__RLayout", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::graphics::RPlot *|p_datamunge__plot__RPlot", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "p_datamunge__stats__ARIMA|datamunge::stats::ARIMA *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "p_datamunge__stats__ARIMAOptions|datamunge::stats::ARIMAOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "p_datamunge__stats__ExponentialSmoothing|datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)0, 0};
@@ -167973,10 +167973,10 @@ static swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT_dou
 static swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t", "p_std__pairT_int_int_t|std::pair< int,int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_std__string_std__string_t = {"_p_std__pairT_std__string_std__string_t", "p_std__pairT_std__string_std__string_t|std::pair< std::string,std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double >,std::vector< double > > *|p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::plot::ABLine > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::plot::DataSeries > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::plot::LegendEntry > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::plot::RGB > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::graphics::ABLine > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::graphics::DataSeries > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::graphics::LegendEntry > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::graphics::RGB > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double > *|std::vector< std::vector< double > >::value_type *|p_std__vectorT_double_t", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *|p_std__vectorT_int_t", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__size_t_t = {"_p_std__vectorT_std__size_t_t", "p_std__vectorT_std__size_t_t|std::vector< std::size_t > *", 0, 0, (void*)0, 0};

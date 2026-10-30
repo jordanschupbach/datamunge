@@ -1,4 +1,5 @@
 # Native R NN example. Attention maps and measured key-removal interventions.
+# CMD: nix develop .#r --command Rscript examples/r/nn/5_attention_and_transformers/5.1_attention_fundamentals/attention_visualization.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)

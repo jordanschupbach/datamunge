@@ -1,0 +1,24 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\sffamily\large,op/.style={draw,circle,minimum size=9mm,inner sep=1pt}]
+\node (e) at (0,1.25) {$E_k$};
+\node (o) at (0,-1.25) {$O_k$};
+\node[draw,rounded corners,inner sep=6pt] (w) at (2,-1.25) {$\times\,W_N^k$};
+\node[op] (plus) at (4.6,1.25) {$+$};
+\node[op] (minus) at (4.6,-1.25) {$-$};
+\draw[->,blue!75,thick] (e)--(plus);
+\draw[->,blue!75,thick] (e.east)--(minus.north west);
+\draw[->,red!75!black,thick] (o)--(w);
+\draw[->,red!75!black,thick] (w.east)--(plus.south west);
+\draw[->,red!75!black,thick] (w)--(minus);
+\node[right] (a) at (5.3,1.25) {$X_k=E_k+W_N^kO_k$};
+\node[right] (b) at (5.3,-1.25) {$X_{k+N/2}=E_k-W_N^kO_k$};
+\draw[->,thick] (plus)--(a);
+\draw[->,thick] (minus)--(b);
+\node[align=center] at (4.2,-2.6) {$W_N^k=e^{-2\pi i k/N}$\quad(forward transform)\\[4pt]
+One twiddle product supplies two output bins.\\Each level combines $N/2$ butterflies.};
+\end{tikzpicture}
+\end{document}

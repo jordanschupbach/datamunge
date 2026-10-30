@@ -1,0 +1,560 @@
+//? Title: DenseNet: Preserved Features, Growing Channels and Compressed Transitions
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A later convolution can reuse earlier evidence directly if those feature maps remain
+available. DenseNet concatenates old and newly computed channels instead of adding them.
+We verify feature order and direct derivatives, hand-check a compressed pooling transition,
+and fit a complete DenseNet-BC-40 using visible tensor Adam updates on cached CIFAR-10 images.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/densenet.cpp`.
+
+> The method
+
+A dense layer appends k channels: x_next=concat(x,F(BN/ReLU(x))). After L layers, width is
+C0+Lk, and every old feature remains verbatim in its original slice. A loss on that original
+slice has an exact identity derivative; losses on newly added channels also contribute indirect
+derivatives. When added features are zero, the derivative of the sum of all output channels
+is exactly one for each signed original scalar. The fixture verifies old/new ordering for
+four basic and four bottleneck layers, with widths 3,5,7,9,11.
+
+Without a bottleneck, each layer uses one preactivated 3×3 filter. DenseNet-B uses a preactivated
+1×1 reduction to 4k channels, followed by preactivation and 3×3 filtering to k. The final
+filter has no output activation, so newly appended features can be signed. Summed kernel
+weights without bottlenecks are
+
+$$
+9k\sum_{l=0}^{L-1}(C_0+lk)=9k\left(LC_0+\frac{kL(L-1)}{2}\right).
+$$
+\alttext(Channel width grows linearly while aggregate uncompressed kernel work grows quadratically with dense-block length.)
+
+A bottleneck layer instead uses 4k Cin+36k² kernel weights, plus BN. A transition applies
+BN/ReLU, a bias-free 1×1 projection to floor(theta Cin), then VALID 2×2 average pooling.
+It compresses channels and halves spatial size. Positive inputs (a,2a) with weights (.25,.75)
+give 1.75a before pooling; a=1..16 on a 4×4 grid gives (6.125,9.625,20.125,23.625).
+Input derivatives of the summed pooled output are .0625 and .1875 for the two channels.
+Controlled BN gamma cancels its inference variance offset in this arithmetic fixture.
+
+The four-stage ImageNet BC-121 layout has 6/12/24/16 dense layers, growth 32, compression .5
+and 7978856 learned scalars. CIFAR BC-100 has three 16-layer blocks, growth 12 and 769162
+scalars. Their moving-state counts are 83648 and 23988. Stem width is 2k; ImageNet adds
+BN/ReLU/max-pooling after its 7×7 stride-two stem, while CIFAR uses a raw 3×3 stride-one stem.
+Final BN/ReLU, global mean and a linear classifier follow. Full forward shapes/counts and
+complete-depth growth-four parameter gradients are checked separately.
+
+BN learns gamma/beta with epsilon 1e-5. He-uniform initialization and eager unbiased-variance
+moving updates are adaptations. This model materializes every concatenation: retaining L
+successive maps costs O(NHW(LC0+kL²)) accumulated feature storage, before other backward
+buffers. It does not implement the release's shared-memory buffers or activation recomputation.
+
+The dataset fit uses CIFAR DenseNet-BC-40 k=12: three six-layer blocks, 4k bottlenecks, .5
+compression, 176122 learned scalars and no dropout. It runs 8 epochs, batch eight, Adam(.001),
+explicit kernel L2=.0001/2 and independent tensor crops/flips on 128 fitting images, kept short
+so the fit runs in seconds. Validation uses 64 separate rows, selects paired parameter/moving-state
+checkpoints, and precedes one 64-row official-test evaluation. Cached CIFAR-10 is required. This short demonstration does
+not reproduce the paper's SGD schedule or establish a benchmark.
+
+The editable concept diagram is `diagrams/densenet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/densenet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/densenet_concept.tikz > build/densenet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/densenet_concept.svg build/densenet_concept.dvi > build/densenet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/densenet_concept.svg)
+// result_end
+\caption(DenseNet: Preserved Features, Growing Channels and Compressed Transitions)
+\alttext(Retain old features; append new channels; then Dense blocks; compress and pool; then Tensor Adam loop; save weights; and BN state.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/densenet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::DenseNetConfig cfg;
+  cfg.cifar_layout = true;
+  cfg.depth        = 40;
+  cfg.growth_rate  = 12;
+  cfg.classes      = 10;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out      = n::models::DenseNet(p, state, image, cfg, false);
+        auto       previous = image;
+        for (std::size_t i = 0; i < out.stages.size(); ++i) {
+          n::model_stage("Stage " + std::to_string(i + 1), previous, out.stages[i]);
+          previous = out.stages[i];
+        }
+        return out.logits;
+      },
+      "DenseNet: Preserved Features, Growing Channels and Compressed Transitions");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/densenet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+10 displayed nodes; 176122 reachable learned values.
+\image(figures/densenet_architecture.svg)
+// result_end
+\caption(Executed densenet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right densenet architecture with rotated names and exact output shapes.)
+
+> Simple feature-reuse example
+
+The signed original channels retain their position before and after every concatenation. Random added features test ordering first; zero additions then isolate the full-output direct derivative.
+
+```{cpp, results="markdown", file="figures/densenet_growth.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  const auto x = n::linspace(-1, 1, 75, type).reshape({1, 5, 5, 3}).detach().requires_grad_();
+  for (bool bottleneck : {false, true}) {
+    n::ParameterStore p(17, type), state(17, type);
+    std::vector<double> widths;
+    auto build = [&]() {
+      auto h = x;
+      widths = {3};
+      for (int layer = 0; layer < 4; ++layer) {
+        const auto previous = h;
+        const auto out = n::models::DenseGrowthLayer(p, state, "g" + std::to_string(layer), h,
+                                                     2, bottleneck);
+        if (n::max(n::abs(n::slice_axis(out.output, 3, 0, previous.size(3)) - previous))
+                    .item() != 0 ||
+            n::max(
+                n::abs(n::slice_axis(out.output, 3, previous.size(3), previous.size(3) + 2) -
+                       out.added))
+                    .item() != 0)
+          throw std::runtime_error("feature order changed");
+        h = out.output;
+        widths.push_back(h.size(3));
+      }
+      return h;
+    };
+    const auto all = build();
+    const auto direct = n::grad(n::sum(n::slice_axis(all, 3, 0, 3)), {x})[0];
+    if (n::max(n::abs(direct - 1)).item() != 0 ||
+        widths != std::vector<double>{3, 5, 7, 9, 11})
+      return 1;
+    for (const auto &name : p.names())
+      if (name.ends_with("/conv2/W"))
+        p.set(name, n::zeros_like(p.at(name)));
+    const auto zero_added = build();
+    const auto derivative = n::grad(n::sum(zero_added), {x})[0];
+    if (n::max(n::abs(derivative - 1)).item() != 0 ||
+        n::max(n::abs(n::slice_axis(zero_added, 3, 3, 11))).item() != 0)
+      return 1;
+    if (bottleneck) {
+      auto channel = [](const n::Tensor &t) {
+        return n::slice_axis(t, 3, 0, 1).reshape({5, 5});
+      };
+      auto growth = dm::graphics::RPlot::create();
+      growth.lines({0, 1, 2, 3, 4}, widths, "observed channels", {234, 88, 12})
+          .title("Channels grow as 3 + 2L")
+          .x_label("dense layers L")
+          .y_label("channels")
+          .y_limits(0, 12);
+      auto gradient = dm::graphics::RPlot::create();
+      gradient
+          .lines(n::arange(0, 75).to_vector<double>(),
+                 derivative.reshape({75}).to_vector<double>(), "input derivative",
+                 {37, 99, 235})
+          .title("Direct derivative with zero additions")
+          .x_label("input scalar index")
+          .y_label("d sum(output) / dx")
+          .y_limits(0, 1.5);
+      auto layout = dm::graphics::RLayout::create(2, 2);
+      layout.add(n::plot_tensor_map(channel(x), -1, 1).title("Signed original channel"))
+          .add(n::plot_tensor_map(channel(zero_added), -1, 1)
+                   .title("Same channel after four concatenations"))
+          .add(growth)
+          .add(gradient);
+      std::filesystem::create_directories("build");
+      layout.size(1100, 920).fit_panels().save_svg("build/densenet_growth.svg");
+    }
+    std::print("Bottleneck={}: old/new channel order exact; widths 3,5,7,9,11; direct "
+               "derivative one, including signed original features.\n",
+               bottleneck);
+  }
+}
+```
+// result_begin: markdown
+Bottleneck=false: old/new channel order exact; widths 3,5,7,9,11; direct derivative one, including signed original features.
+Bottleneck=true: old/new channel order exact; widths 3,5,7,9,11; direct derivative one, including signed original features.
+\image(figures/densenet_growth.svg)
+// result_end
+\caption(Both basic and bottleneck layers retain old channels verbatim and append two new ones. The displayed bottleneck stack then has its added features zeroed to isolate the full-output identity derivative.)
+\alttext(Both basic and bottleneck layers retain old channels verbatim and append two new ones. The displayed bottleneck stack then has its added features zeroed to isolate the full-output identity derivative.)
+
+> Hand-checking a transition
+
+The transition example separates pointwise channel compression from spatial averaging.
+
+```{cpp, results="markdown", file="figures/densenet_transition.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), state(17, type);
+  const auto a = n::linspace(1, 16, 16, type).reshape({1, 4, 4, 1});
+  const auto x = n::concat({a, 2 * a}, 3).detach().requires_grad_();
+  {
+    n::NoGradGuard guard;
+    n::models::DenseTransition(p, state, "t", x, 1);
+  }
+  p.set("t/bn/gamma", n::full({2}, std::sqrt(1.00001), type));
+  p.set("t/conv/W", n::tensor({.25, .75}, {1, 1, 2, 1}).to(type));
+  const auto y = n::models::DenseTransition(p, state, "t", x, 1);
+  const auto dx = n::grad(n::sum(y), {x})[0];
+  const auto expected = n::tensor({6.125, 9.625, 20.125, 23.625}, {1, 2, 2, 1}).to(type);
+  if (n::max(n::abs(y - expected)).item() > 1e-12 ||
+      n::max(n::abs(dx - n::tensor({.0625, .1875}, {1, 1, 1, 2}).to(type))).item() > 1e-12)
+    return 1;
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(n::plot_tensor_map(a.reshape({4, 4}), 1, 24).title("Input channel 0: values a"))
+      .add(n::plot_tensor_map(y.reshape({2, 2}), 1, 24)
+               .title("Compress, then average 2x2 windows"));
+  std::filesystem::create_directories("build");
+  layout.size(1100, 470).fit_panels().save_svg("build/densenet_transition.svg");
+  std::print("Inputs (a,2a), weights (.25,.75): pointwise output 1.75a.\nPooled values {}; "
+             "input derivatives .25/4=.0625 and .75/4=.1875.\n",
+             y.to_vector<double>());
+}
+```
+// result_begin: markdown
+Inputs (a,2a), weights (.25,.75): pointwise output 1.75a.
+Pooled values [6.125, 9.625, 20.125, 23.625]; input derivatives .25/4=.0625 and .75/4=.1875.
+\image(figures/densenet_transition.svg)
+// result_end
+\caption(Positive inputs and compensated inference BN expose the transition arithmetic. Both panels share colour limits [1,24]. Each pooled value averages four projected pixels; channel and spatial compression are separate steps.)
+\alttext(Positive inputs and compensated inference BN expose the transition arithmetic. Both panels share colour limits [1,24]. Each pooled value averages four projected pixels; channel and spatial compression are separate steps.)
+
+> Checking complete topology
+
+Full BC-121/BC-100 forward checks use reference shapes. Growth-four backward graphs retain the same layer counts while bounding memory.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  for (bool cifar : {false, true}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    n::models::DenseNetConfig cfg;
+    cfg.cifar_layout = cifar;
+    cfg.depth = cifar ? 100 : 121;
+    cfg.growth_rate = cifar ? 12 : 32;
+    cfg.classes = cifar ? 10 : 1000;
+    const int64_t side = cifar ? 32 : 224, first = cifar ? 32 : 56;
+    const std::vector<int64_t> channels = cifar ? std::vector<int64_t>{216, 300, 342}
+                                                : std::vector<int64_t>{256, 512, 1024, 1024};
+    const auto out = n::models::DenseNet(p, state, n::zeros({1, side, side, 3}), cfg);
+    if (p.count() != (cifar ? 769162 : 7978856) || state.count() != (cifar ? 23988 : 83648) ||
+        out.layers.size() != (cifar ? 48 : 58) || out.stages.size() != channels.size())
+      return 1;
+    for (size_t i = 0; i < channels.size(); ++i) {
+      const int64_t spatial = first / (1LL << i);
+      if (out.stages[i].shape() != n::Shape{1, spatial, spatial, channels[i]})
+        return 1;
+      if (i + 1 < channels.size() &&
+          out.transitions[i].shape() != n::Shape{1, spatial / 2, spatial / 2, channels[i] / 2})
+        return 1;
+    }
+    std::print("Full DenseNet-BC-{} k={}: {} learned scalars, {} moving scalars; {} layers "
+               "and every block/transition shape verified.\n",
+               cfg.depth, cfg.growth_rate, p.count(), state.count(), out.layers.size());
+  }
+  for (bool cifar : {false, true}) {
+    n::ParameterStore p(17), state(17);
+    n::Generator rng(29);
+    n::models::DenseNetConfig cfg;
+    cfg.cifar_layout = cifar;
+    cfg.depth = cifar ? 100 : 121;
+    cfg.growth_rate = 4;
+    cfg.classes = 3;
+    cfg.update_stats = false;
+    const auto x = n::normal({2, 32, 32, 3}, 0, .2, rng);
+    const auto out = n::models::DenseNet(p, state, x, cfg, true);
+    const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+    for (const auto &g : gradients)
+      if (!std::isfinite(n::sum(n::abs(g)).item()))
+        return 1;
+    const auto saved = state.flatten();
+    n::NoGradGuard guard;
+    n::models::DenseNet(p, state, x, cfg);
+    if (state.flatten() != saved)
+      return 1;
+    std::print("Compact complete depth {}: all {} parameter-tensor gradients finite; "
+               "inference state unchanged.\n",
+               cfg.depth, gradients.size());
+  }
+}
+```
+// result_begin: markdown
+Full DenseNet-BC-121 k=32: 7978856 learned scalars, 83648 moving scalars; 58 layers and every block/transition shape verified.
+Full DenseNet-BC-100 k=12: 769162 learned scalars, 23988 moving scalars; 48 layers and every block/transition shape verified.
+Compact complete depth 121: all 364 parameter-tensor gradients finite; inference state unchanged.
+Compact complete depth 100: all 299 parameter-tensor gradients finite; inference state unchanged.
+// result_end
+
+> Dataset example
+
+One original image per class appears before tensor augmentation.
+
+```{cpp, results="markdown", file="figures/densenet_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/densenet_inputs.png", 5, 0., 1., 4, 1.,
+                     4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/densenet_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/densenet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+             vy       = n::slice_axis(labels, 0, 128, 192);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  n::models::DenseNetConfig cfg;
+  cfg.cifar_layout = true;
+  cfg.depth        = 40;
+  cfg.growth_rate  = 12;
+  cfg.classes      = 10;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::DenseNet(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/densenet_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 8; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/densenet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "densenet / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("DenseNet-BC-40")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/densenet_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 176122 learned scalars, 5088 moving scalars; 128 explicit Adam updates.
+Selected epoch 8; validation NLL 2.201438; inference training NLL 1.357072; test NLL 2.163062; test accuracy 0.359375.
+\image(figures/densenet_training.svg)
+// result_end
+\caption(Explicit 8-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order. The title gives the colour limits.)
+\alttext(Explicit 8-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order. The title gives the colour limits.)
+
+
+The BC-40 fit selects epoch 8, its last: validation NLL 2.201438, inference training
+NLL 1.357072, test NLL 2.163062 and accuracy 35.9375% (23 of 64). Validation NLL is still
+falling at the end, so a longer run would likely improve it; the training/validation gap is
+already substantial, and 64 test images are too few to establish a benchmark or
+a ranking against other architectures. The count matrix shows where the selected
+checkpoint's predictions land rather than hiding the individual-class pattern.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/densenet_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Concatenation retains existing features exactly and adds new signed channels. Bottlenecks
+control spatial-filter cost, and transitions control both channel width and spatial resolution.
+Ordering, derivatives, hand arithmetic, complete-depth checks and the explicit BC-40 subset
+fit provide separate evidence for those claims, with the eager memory cost stated directly.
+
+> References
+
+- [Huang et al. (2017), Densely Connected Convolutional Networks](https://arxiv.org/abs/1608.06993).
+- [Released DenseNet implementation](https://github.com/liuzhuang13/DenseNet/blob/master/models/densenet.lua).
+- [CIFAR-10 dataset and binary-file format](https://www.cs.toronto.edu/~kriz/cifar.html).

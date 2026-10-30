@@ -1,0 +1,603 @@
+//? Title: RetinaNet sigmoid focal loss and shared dense heads
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Verify tensor focal values and gradients, ignored-anchor matching and full RetinaNet graph structure, then fit and evaluate the complete compact source detector with a visible Adam loop and paired BN-state checkpoints.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/retinanet.cpp`.
+
+> The method
+
+RetinaNet combines feature pyramids with shared class/box towers and focal modulation of dense foreground/background imbalance. Every class is an independent sigmoid channel, and moving backbone normalization state is part of the selected fitted model.
+
+The editable concept diagram is `diagrams/retinanet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/retinanet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/retinanet_concept.tikz > build/retinanet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/retinanet_concept.svg build/retinanet_concept.dvi > build/retinanet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/retinanet_concept.svg)
+// result_end
+\caption(RetinaNet sigmoid focal loss and shared dense heads)
+\alttext(P3–P7 pyramid; Nine anchors per cell; then Shared sigmoid heads; Focal plus box loss; then Explicit Adam loop; Paired BN checkpoint.)
+
+> Executed tensor architecture
+
+All displayed prediction branches are joined only to keep them reachable in one diagram; the flattened display output is not postprocessed detection or pose inference.
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/retinanet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  m::DetectionSceneConfig cfg;
+  m::RetinaNetConfig      model;
+  n::ParameterStore       p(17), state(17);
+  cfg.scenes           = 80;
+  cfg.seed             = 11;
+  model.classes        = 10;
+  model.image_size     = 64;
+  model.backbone_depth = 18;
+  model.width_divisor  = 8;
+  model.pyramid_width  = 32;
+  model.grayscale      = true;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out = m::RetinaNet(p, state, image, model, false);
+        return n::concat({out.logits.reshape({1, -1}), out.deltas.reshape({1, -1})}, 1);
+      },
+      "RetinaNet sigmoid focal loss and shared dense heads");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 1}), options);
+  diagram.save_svg("build/retinanet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+282 displayed nodes; 346246 reachable learned values.
+\image(figures/retinanet_architecture.svg)
+// result_end
+\caption(Executed retinanet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right retinanet architecture with rotated names and exact output shapes.)
+
+> Sigmoid focal modulation and gradients
+
+RetinaNet uses independent foreground sigmoid channels and no background column.
+With target y and p=sigmoid(x), the loss is `alpha_t*(1-p_t)^gamma*BCE(x,y)`.
+Alpha is .25 for positives and .75 for negatives; gamma is two. Gamma zero
+recovers weighted BCE. The stable tensor expression uses Softplus for the
+modulator and BCE. Confident correctly classified examples may round to zero;
+incorrect logits at magnitude 80 remain finite. The following checks 42 values
+and central-difference gradients against an independent scalar oracle.
+
+```{cpp, results="markdown", file="figures/retinanet_focal.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  const auto reference = [](double x, double y, double gamma) {
+    const auto sp = [](double z) {
+      return std::max(z, 0.) + std::log1p(std::exp(-std::abs(z)));
+    };
+    return (y ? .25 : .75) * std::exp(-gamma * sp((2 * y - 1) * x)) *
+           (std::max(x, 0.) - x * y + std::log1p(std::exp(-std::abs(x))));
+  };
+  double error = 0;
+  std::vector<double> xs, bce, focal;
+  for (double gamma : {0., .5, 2.})
+    for (double x : {-80., -10., -2., 0., 2., 10., 80.})
+      for (double y : {0., 1.}) {
+        const auto v = n::full({}, x, n::DType::Float64).requires_grad_();
+        const auto loss =
+            n::models::SigmoidFocalLoss(v, n::full({}, y, n::DType::Float64), .25, gamma);
+        if (std::abs(loss.item() - reference(x, y, gamma)) > 1e-12)
+          return 1;
+        const double eps = 1e-4,
+                     expected = (reference(x + eps, y, gamma) - reference(x - eps, y, gamma)) /
+                                (2 * eps);
+        error = std::max(error, std::abs(n::grad(loss, {v})[0].item() - expected));
+      }
+  if (error > 1e-9)
+    return 1;
+  const auto logits = n::linspace(-8, 8, 161, n::DType::Float64);
+  xs = logits.to_vector<double>();
+  const auto target = n::ones({}, n::DType::Float64);
+  bce = n::models::SigmoidFocalLoss(logits, target, .25, 0).to_vector<double>();
+  focal = n::models::SigmoidFocalLoss(logits, target, .25, 2).to_vector<double>();
+  auto a = dm::graphics::RPlot::create();
+  a.lines(xs, bce, "weighted BCE", {37, 99, 235})
+      .lines(xs, focal, "focal gamma 2", {220, 38, 38})
+      .title("Positive-target focal loss")
+      .x_label("logit")
+      .y_label("loss")
+      .y_limits(0, 2.6);
+  const auto negative = n::zeros({}, n::DType::Float64);
+  auto b = dm::graphics::RPlot::create();
+  b.lines(xs, n::models::SigmoidFocalLoss(logits, negative, .25, 0).to_vector<double>(),
+          "weighted BCE", {37, 99, 235})
+      .lines(xs, n::models::SigmoidFocalLoss(logits, negative, .25, 2).to_vector<double>(),
+             "focal gamma 2", {220, 38, 38})
+      .title("Negative-target focal loss")
+      .x_label("logit")
+      .y_label("loss")
+      .y_limits(0, 7.8);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1200, 500).fit_panels().save_svg(
+      "build/retinanet_focal.svg");
+  std::print("42 focal values and central differences pass; maximum derivative error {:.12f}. "
+             "Curves are tensor evaluations, not a fitted model.\n",
+             error);
+}
+```
+// result_begin: markdown
+42 focal values and central differences pass; maximum derivative error 0.000000000360. Curves are tensor evaluations, not a fitted model.
+\image(figures/retinanet_focal.svg)
+// result_end
+\caption(Independent positive/negative sigmoid losses across logits. Focal modulation suppresses easy examples, with separate explicit colours and shared zero baselines.)
+\alttext(Independent positive/negative sigmoid losses across logits. Focal modulation suppresses easy examples, with separate explicit colours and shared zero baselines.)
+
+> Nine anchors per cell and ignored matches
+
+Each P3–P7 cell has three scales (1, cube-root 2, cube-root 4) and three
+height/width ratios (.5, 1, 2), ordered level, row, column, scale, ratio.
+Pixel strides are 8/16/32/64/128 and base sides double by level. Tensor powers
+can differ by one Float32 rounding unit from the source host cube root; the
+Float64 independent coordinate oracle checks every coordinate within 1e-12.
+Anchors are unclipped until decoding. Distinct forced matching gives every
+truth a different anchor even at low IoU, then adds IoU >=.5 matches. Unmatched
+anchors with IoU >=.4 are ignored; remaining anchors are background. Positive
+box coding uses unit variances. The loss is masked focal plus positive
+Smooth-L1 with beta 1/9, divided by batch positives floored at one. An empty
+positive set still trains background focal loss, unlike SSD hard-negative mining.
+
+```{cpp, results="markdown", file="figures/retinanet_anchors.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  m::TensorDetectionScenes data;
+  data.images = n::zeros({1, 64, 64, 1});
+  data.boxes = {n::tensor({0., 0., 10., 10.}, {1, 4})};
+  data.labels = {n::from_vector(std::vector<std::int64_t>{1})};
+  const auto a = n::tensor({0., 0., 10., 10., 0., 0., 10., 22., 30., 30., 40., 40.}, {3, 4});
+  const auto t = m::MakeRetinaTargets(a, data, {0}, 2);
+  if (t.positive.to_vector<int>() != std::vector<int>{1, 0, 0} ||
+      t.weights.to_vector<int>() != std::vector<int>{1, 0, 1})
+    return 1;
+  const auto anchors = m::RetinaAnchors({8, 4, 2, 1, 1}, 8., n::DType::Float64);
+  auto plot = dm::graphics::RPlot::create();
+  for (int i = 0; i < 9; ++i) {
+    const double y1 = anchors.at({i, 0}), x1 = anchors.at({i, 1}), y2 = anchors.at({i, 2}),
+                 x2 = anchors.at({i, 3});
+    const std::array<dm::graphics::RGB, 3> colors = {
+        {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}}};
+    plot.lines({x1, x2, x2, x1, x1}, {y1, y1, y2, y2, y1},
+               i % 3 == 0 ? "scale " + std::to_string(i / 3 + 1) : "", colors[i / 3]);
+  }
+  plot.title("Nine first-cell RetinaNet anchors")
+      .x_label("pixel x")
+      .y_label("pixel y")
+      .x_limits(-8, 16)
+      .y_limits(-8, 16)
+      .size(900, 900)
+      .margins(90, 30, 60, 60);
+  std::filesystem::create_directories("build");
+  plot.save_svg("build/retinanet_anchors.svg");
+  std::print(
+      "Compact64: {} anchors. Fixture IoUs1,10/22,0 give positive, ignored and background "
+      "masks[1,0,0]/[1,0,1]. Equal x/y pixel scaling preserves anchor shapes.\n",
+      anchors.shape()[0]);
+}
+```
+// result_begin: markdown
+Compact64: 774 anchors. Fixture IoUs1,10/22,0 give positive, ignored and background masks[1,0,0]/[1,0,1]. Equal x/y pixel scaling preserves anchor shapes.
+\image(figures/retinanet_anchors.svg)
+// result_end
+\caption(Actual nine first-cell anchors with equal x/y pixel scales; colours identify the three scales. Rectangles extend beyond the image and are not clipped during target assignment.)
+\alttext(Actual nine first-cell anchors with equal x/y pixel scales; colours identify the three scales. Rectangles extend beyond the image and are not clipped during target assignment.)
+
+> Full-weight architecture and compact fitting
+
+The full model uses feature-only ResNet50, a linear 256-channel FPN and shared
+four-layer classification/regression towers. P6 comes from original C5;
+P7 comes from ReLU(P6). Predictor/tower kernels use normal standard deviation
+.01 and classifier bias logit(.01). Full counts are 37,968,692 learned scalars
+and 53,120 BN-state scalars, with 76,725 anchors at 640 pixels. The source's
+128-pixel full-weight backward check below computes all 195 learned tensor
+derivatives. It is an initialized graph check, without pretraining or fitting.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17), state(17);
+  n::models::RetinaNetConfig cfg;
+  cfg.image_size = 128;
+  cfg.update_stats = false;
+  const auto net = n::models::RetinaNet(
+      p, state, n::sin(.13 * n::arange(0, 128 * 128 * 3)).reshape({1, 128, 128, 3}), cfg,
+      true);
+  if (p.count() != 37968692 || state.count() != 53120 || net.anchors != 3069)
+    return 1;
+  const auto g =
+      n::grad(n::mean(n::square(net.logits)) + n::mean(n::square(net.deltas)), p.parameters());
+  if (g.size() != 195)
+    return 1;
+  for (const auto &v : g)
+    if (!v.defined() || !std::isfinite(n::sum(n::square(v)).item()))
+      return 1;
+  std::print("Full-weight128-pixel graph: {} learned scalars, {} state scalars, {} anchors "
+             "and {} defined finite learned tensor derivatives. At640 pixels, tensor anchors "
+             "number{}. No fitted benchmark is claimed.\n",
+             p.count(), state.count(), net.anchors, g.size(),
+             n::models::RetinaAnchors({80, 40, 20, 10, 5}).shape()[0]);
+}
+```
+// result_begin: markdown
+Full-weight128-pixel graph: 37968692 learned scalars, 53120 state scalars, 3069 anchors and 195 defined finite learned tensor derivatives. At640 pixels, tensor anchors number76725. No fitted benchmark is claimed.
+// result_end
+
+The bounded fit uses 64 fit/16 validation scenes made from the first 2048
+MNIST training digits, seed 11; eight test scenes use the first 512 official
+test digits, seed 22. The compact source network has ResNet18 with widths
+divided by eight, a 32-channel FPN and shared towers: 346,246 learned scalars
+plus 1,200 backbone BN-state scalars. This report uses 64-pixel scenes and base
+anchor side eight (the source's larger scene run uses 128 pixels/base16).
+It fits the entire network with explicit Adam(.001), batch four, 32 epochs,
+512 updates and `.00005*sum(kernel²)`. All leaves are warmed before constructing
+Adam. Biases/normalization affines are optimized but excluded from kernel L2.
+Validation AP50 selects paired learned-parameter and moving-state files.
+
+```{cpp, results="markdown", file="figures/retinanet_scenes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto train = n::load_mnist((cache / "mnist").string(), "train");
+  n::models::DetectionSceneConfig cfg;
+  cfg.scenes = 80;
+  cfg.seed = 11;
+  const auto scenes = n::models::MakeTensorDetectionScenes(
+      n::slice_axis(train.images, 0, 0, 2048), n::slice_axis(train.labels, 0, 0, 2048), cfg);
+
+  std::vector<n::Tensor> boxes(scenes.boxes.begin(), scenes.boxes.begin() + 8);
+  const auto preview = n::models::DrawDetectionBoxes(n::slice_axis(scenes.images, 0, 0, 8),
+                                                     boxes, {.1, 1., .2});
+  std::filesystem::create_directories("build");
+  n::save_image_grid(preview, "build/retinanet_scenes.png", 4, 0., 1., 4, 1., 2);
+  std::int64_t objects = 0;
+  for (const auto &b : scenes.boxes)
+    objects += b.shape()[0];
+  std::print("80 generated training/validation scenes; {} accepted digits. Preview: first "
+             "eight training scenes with tight green boxes.\n",
+             objects);
+}
+```
+// result_begin: markdown
+80 generated training/validation scenes; 195 accepted digits. Preview: first eight training scenes with tight green boxes.
+\image(figures/retinanet_scenes.png)
+// result_end
+\caption(Actual first eight training scenes with green target boxes, generated from cached MNIST pixels. RetinaNet receives whole scenes rather than isolated object crops.)
+\alttext(Actual first eight training scenes with green target boxes, generated from cached MNIST pixels. RetinaNet receives whole scenes rather than isolated object crops.)
+
+Inference considers every foreground sigmoid class, takes up to 200 scores
+strictly above .01 per image/class (higher anchor index wins score ties), uses
+unit box coding, clips to the image, removes zero-area boxes and applies
+class-wise IoU .5 NMS with at most 100 detections/image. Validation and test
+use moving BN state; the training forward updates it. Checkpoint restoration
+is verified by recomputing the selected validation metric.
+
+```{cpp, results="markdown", file="figures/retinanet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto digits = n::load_mnist((cache / "mnist").string(), "train");
+  m::DetectionSceneConfig cfg;
+  cfg.scenes = 80;
+  cfg.seed = 11;
+  const auto scenes = m::MakeTensorDetectionScenes(
+      n::slice_axis(digits.images, 0, 0, 2048), n::slice_axis(digits.labels, 0, 0, 2048), cfg);
+  m::RetinaNetConfig model;
+  model.classes = 10;
+  model.image_size = 64;
+  model.backbone_depth = 18;
+  model.width_divisor = 8;
+  model.pyramid_width = 32;
+  model.grayscale = true;
+  const auto anchors = m::RetinaAnchors({8, 4, 2, 1, 1}, 8.);
+  std::vector<std::int64_t> val_rows(16);
+  std::iota(val_rows.begin(), val_rows.end(), 64);
+  std::vector<int> val_ids(val_rows.begin(), val_rows.end());
+  n::ParameterStore p(17), state(17);
+  {
+    n::NoGradGuard guard;
+    const auto warm = m::RetinaNet(p, state, n::zeros({1, 64, 64, 1}), model, false);
+    if (warm.anchors != anchors.shape()[0])
+      return 1;
+  }
+  if (p.count() != 346246 || state.count() != 1200)
+    return 1;
+  // Inference borrows this scope's p/anchors; every class and default is handled by tensor kernels.
+  const auto detect = [&](const m::TensorDetectionScenes &data,
+                          const std::vector<std::int64_t> &rows) {
+    n::NoGradGuard guard;
+    const auto net = m::RetinaNet(
+        p, state, 2. * n::gather(data.images, n::from_vector(rows)) - 1., model, false);
+    return m::DecodeRetinaDetections(net.probabilities, net.deltas, anchors,
+                                     n::from_vector(rows), 64, 64);
+  };
+  // Annotation conversion is presentation of existing tensor boxes/IDs, with no box arithmetic.
+  const auto truth_records = [](const m::TensorDetectionScenes &data,
+                                const std::vector<std::int64_t> &rows) {
+    std::vector<m::DetectionEvaluationTruth> out;
+    for (auto row : rows) {
+      const auto boxes = n::boxes_to_vector(data.boxes[row]);
+      const auto labels = data.labels[row].to_vector<int>();
+      for (std::size_t i = 0; i < boxes.size(); ++i)
+        out.push_back({int(row), labels[i], boxes[i]});
+    }
+    return out;
+  };
+  const auto validation_truth = truth_records(scenes, val_rows);
+  n::OptimizerConfig adam_config;
+  adam_config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(p, .001, adam_config);
+  n::BatchOrder batches(64, 4, 29);
+  std::vector<n::Tensor> kernels;
+  for (const auto &leaf : p.parameters())
+    if (leaf.dim() >= 2)
+      kernels.push_back(leaf);
+  std::filesystem::create_directories("build");
+  const std::string checkpoint = "build/retinanet_best.npz";
+  std::vector<double> epochs, losses, ce_trace, reg_trace, ap_trace, scale_trace;
+  double best = -1;
+  int selected = 0, steps = 0;
+  std::print("| epoch | focal + box loss | CE | regression | val AP50 "
+             "|\n|---:|---:|---:|---:|---:|\n");
+  for (int epoch = 1; epoch <= 32; ++epoch) {
+    batches.begin_epoch();
+    double total = 0, total_ce = 0, total_reg = 0;
+    std::size_t seen = 0;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto net = m::RetinaNet(
+          p, state, 2. * n::gather(scenes.images, n::from_vector(rows)) - 1., model, true);
+      const auto targets = m::MakeRetinaTargets(anchors, scenes, rows, 10);
+      const auto focal = n::sum(n::sum(m::SigmoidFocalLoss(net.logits, targets.classes), {2}) *
+                                targets.weights) /
+                         n::maximum(n::sum(targets.positive), n::ones({}));
+      const auto objective = m::RetinaLoss(net.logits, net.deltas, targets);
+      n::Tensor penalty = n::zeros({});
+      for (const auto &kernel : kernels)
+        penalty = penalty + n::sum(n::square(kernel));
+      if (!std::isfinite(objective.item()))
+        return 1;
+      total += objective.item() * rows.size();
+      total_ce += focal.item() * rows.size();
+      total_reg += (objective - focal).item() * rows.size();
+      seen += rows.size();
+      adam.minimize(objective + .00005 * penalty);
+      ++steps;
+    }
+    const auto metric =
+        m::EvaluateDetectionDataset(m::DetectionEvaluationRecords(detect(scenes, val_rows)),
+                                    validation_truth, val_ids, false, true);
+    epochs.push_back(epoch);
+    losses.push_back(total / double(seen));
+    ce_trace.push_back(total_ce / double(seen));
+    reg_trace.push_back(total_reg / double(seen));
+    ap_trace.push_back(metric.ap50.item());
+    scale_trace.push_back(n::mean(n::abs(state.at(state.names()[0]))).item());
+    if (metric.ap50.item() > best) {
+      best = metric.ap50.item();
+      selected = epoch;
+      p.save(checkpoint);
+      state.save("build/retinanet_best_state.npz");
+    }
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n", epoch, losses.back(),
+               ce_trace.back(), reg_trace.back(), ap_trace.back());
+  }
+  p.load(checkpoint);
+  state.load("build/retinanet_best_state.npz");
+  const auto restored =
+      m::EvaluateDetectionDataset(m::DetectionEvaluationRecords(detect(scenes, val_rows)),
+                                  validation_truth, val_ids, false, true);
+  if (std::abs(restored.ap50.item() - best) > 1e-12)
+    return 1;
+  const auto test_digits = n::load_mnist((cache / "mnist").string(), "test");
+  cfg.scenes = 8;
+  cfg.seed = 22;
+  const auto test =
+      m::MakeTensorDetectionScenes(n::slice_axis(test_digits.images, 0, 0, 512),
+                                   n::slice_axis(test_digits.labels, 0, 0, 512), cfg);
+  std::vector<std::int64_t> test_rows(8);
+  std::iota(test_rows.begin(), test_rows.end(), 0);
+  std::vector<int> test_ids(test_rows.begin(), test_rows.end());
+  const auto output = detect(test, test_rows);
+  const auto records = m::DetectionEvaluationRecords(output);
+  const auto truth = truth_records(test, test_rows);
+  const auto voc = m::EvaluateDetectionDataset(records, truth, test_ids, false, true),
+             coco = m::EvaluateDetectionDataset(records, truth, test_ids, true);
+  std::vector<n::Tensor> predicted;
+  const auto image_ids = output.images.to_vector<int>();
+  for (int image = 0; image < 8; ++image) {
+    std::vector<std::int64_t> index;
+    for (std::size_t j = 0; j < image_ids.size(); ++j)
+      if (image_ids[j] == image)
+        index.push_back(std::int64_t(j));
+    predicted.push_back(n::gather(output.boxes, n::from_vector(index)));
+  }
+  const auto green = m::DrawDetectionBoxes(test.images, test.boxes, {.1, 1., .2}),
+             red = m::DrawDetectionBoxes(test.images, predicted, {1., .1, .1}),
+             raw = test.images * n::ones({1, 1, 1, 3});
+  n::save_image_grid(n::where(n::any(n::not_equal(green, raw), {3}, true), green, red),
+                     "build/retinanet_detections.png", 4, 0., 1., 4, 1., 2);
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file("build/retinanet_detections.png",
+                             "figures/retinanet_detections.png",
+                             std::filesystem::copy_options::overwrite_existing);
+  auto a = dm::graphics::RPlot::create();
+  a.lines(epochs, losses, "focal + box", {37, 99, 235})
+      .title("Compact RetinaNet objective")
+      .x_label("epoch")
+      .y_label("unregularized focal + box loss")
+      .y_limits(0, 1.3 * *std::max_element(losses.begin(), losses.end()));
+  auto b = dm::graphics::RPlot::create();
+  b.lines(epochs, ce_trace, "focal", {37, 99, 235})
+      .lines(epochs, reg_trace, "regression", {220, 38, 38})
+      .title("Both fitted loss terms")
+      .x_label("epoch")
+      .y_label("normalized loss")
+      .y_limits(0, 1.3 * std::max(*std::max_element(ce_trace.begin(), ce_trace.end()),
+                                  *std::max_element(reg_trace.begin(), reg_trace.end())));
+  auto c = dm::graphics::RPlot::create();
+  c.lines(epochs, ap_trace, "validation AP50", {22, 163, 74})
+      .title("Validation detection selection")
+      .x_label("epoch")
+      .y_label("inclusive VOC AP50")
+      .y_limits(0, 1.3);
+  auto d = dm::graphics::RPlot::create();
+  d.lines(epochs, scale_trace, "BN state", {147, 51, 234})
+      .title("Backbone moving state")
+      .x_label("epoch")
+      .y_label("mean abs first state tensor")
+      .y_limits(*std::min_element(scale_trace.begin(), scale_trace.end()) - .1,
+                *std::max_element(scale_trace.begin(), scale_trace.end()) + .2);
+  dm::graphics::RLayout::create(2, 2)
+      .add(a)
+      .add(b)
+      .add(c)
+      .add(d)
+      .size(1200, 1000)
+      .fit_panels()
+      .save_svg("build/retinanet_training.svg");
+  std::print(
+      "{} learned scalars, {} Adam updates; selected epoch {}, validation AP50 {:.6f}. Test: "
+      "{} digits in eight scenes, inclusive VOC AP50 {:.6f}, COCO AP75 {:.6f}, AP50:95 "
+      "{:.6f}, {} detections. Selected mean absolute first BN state {:.6f}; paired learned "
+      "and BN state restored.\n",
+      p.count(), steps, selected, best, truth.size(), voc.ap50.item(), coco.ap75.item(),
+      coco.ap.item(), records.size(), n::mean(n::abs(state.at(state.names()[0]))).item());
+}
+```
+// result_begin: markdown
+| epoch | focal + box loss | CE | regression | val AP50 |
+|---:|---:|---:|---:|---:|
+| 1 | 1.617259 | 1.089703 | 0.527555 | 0.002916 |
+| 2 | 1.528677 | 1.053288 | 0.475389 | 0.003053 |
+| 3 | 1.415859 | 0.987098 | 0.428762 | 0.007617 |
+| 4 | 1.358419 | 0.969489 | 0.388930 | 0.002418 |
+| 5 | 1.168984 | 0.792971 | 0.376013 | 0.034675 |
+| 6 | 1.085546 | 0.703406 | 0.382140 | 0.009399 |
+| 7 | 1.103700 | 0.722895 | 0.380805 | 0.022100 |
+| 8 | 1.031952 | 0.656588 | 0.375364 | 0.009970 |
+| 9 | 0.997577 | 0.631591 | 0.365986 | 0.024743 |
+| 10 | 0.985806 | 0.631347 | 0.354459 | 0.008010 |
+| 11 | 0.973536 | 0.610453 | 0.363083 | 0.007542 |
+| 12 | 0.964242 | 0.622084 | 0.342159 | 0.017394 |
+| 13 | 1.009255 | 0.677822 | 0.331433 | 0.010287 |
+| 14 | 0.967110 | 0.625104 | 0.342006 | 0.010274 |
+| 15 | 0.945378 | 0.610198 | 0.335180 | 0.048383 |
+| 16 | 0.934523 | 0.606354 | 0.328169 | 0.022667 |
+| 17 | 0.928136 | 0.594182 | 0.333953 | 0.041723 |
+| 18 | 0.880817 | 0.548036 | 0.332781 | 0.114848 |
+| 19 | 0.907830 | 0.567767 | 0.340063 | 0.040836 |
+| 20 | 0.840753 | 0.534094 | 0.306659 | 0.087984 |
+| 21 | 0.837280 | 0.530465 | 0.306815 | 0.075762 |
+| 22 | 0.865146 | 0.576884 | 0.288262 | 0.020785 |
+| 23 | 0.884801 | 0.583037 | 0.301763 | 0.042675 |
+| 24 | 1.418737 | 1.101524 | 0.317213 | 0.009290 |
+| 25 | 1.371674 | 1.051692 | 0.319983 | 0.014326 |
+| 26 | 1.108163 | 0.813757 | 0.294406 | 0.044410 |
+| 27 | 0.977923 | 0.706431 | 0.271493 | 0.021333 |
+| 28 | 0.863866 | 0.616918 | 0.246948 | 0.030933 |
+| 29 | 0.793016 | 0.555109 | 0.237908 | 0.076538 |
+| 30 | 0.771416 | 0.543506 | 0.227910 | 0.061088 |
+| 31 | 0.757196 | 0.532234 | 0.224963 | 0.096937 |
+| 32 | 0.702565 | 0.499117 | 0.203449 | 0.017156 |
+346246 learned scalars, 512 Adam updates; selected epoch 18, validation AP50 0.114848. Test: 23 digits in eight scenes, inclusive VOC AP50 0.021629, COCO AP75 0.000000, AP50:95 0.003207, 800 detections. Selected mean absolute first BN state 1.313753; paired learned and BN state restored.
+\image(figures/retinanet_training.svg)
+// result_end
+\caption(Visible Adam fits every compact backbone, pyramid and shared-head parameter. Focal/box curves exclude the explicit kernel L2 term. Validation selects both learned and moving-state checkpoints.)
+\alttext(Visible Adam fits every compact backbone, pyramid and shared-head parameter. Focal/box curves exclude the explicit kernel L2 term. Validation selects both learned and moving-state checkpoints.)
+
+\image(figures/retinanet_detections.png)
+\caption(Actual held-out compact RetinaNet detections in red, with green target outlines. Extra boxes and localization mistakes remain visible; colour does not certify correct classification.)
+\alttext(Eight held-out MNIST-derived scenes with green truth and red decoded RetinaNet boxes.)
+
+
+> Conclusion
+
+The compact run selects epoch18 at validation AP50 .114848. Test AP50 is .021629, AP75 is zero and AP50:95 is .003207, with the 100/image cap reached in every scene. This schedule has poor held-out detection quality; the dense false positives in the gallery show the gap between decreasing training loss and generalization.
+
+The independent focal oracle, ignored-band fixture and full-weight backward check precede a bounded whole-network fit. Actual training scenes and restored held-out detections are saved locally. This is an instructional compact digit detector, not pretrained COCO accuracy.
+
+> References
+
+- [Lin et al. (2017), Focal Loss for Dense Object Detection](https://arxiv.org/abs/1708.02002).
+- [Lin et al. (2017), Feature Pyramid Networks for Object Detection](https://arxiv.org/abs/1612.03144).

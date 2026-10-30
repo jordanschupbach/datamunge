@@ -22,10 +22,9 @@
 #include <cstddef>
 #include <vector>
 
-namespace datamunge::algorithms {
+#include <datamunge/algorithms/graph_layout.hpp>
 
-/// \brief A 2D point {x, y}.
-using Point2D = std::array<double, 2>;
+namespace datamunge::algorithms {
 
 /// \brief An integer pixel {x, y}.
 struct Pixel {
@@ -35,7 +34,9 @@ struct Pixel {
 
 /// \brief Fill the polygon with vertices \p poly (in order) and return the interior pixels.
 /// Uses the even-odd rule with a half-open edge convention so vertices are counted once.
-inline std::vector<Pixel> scanline_fill(const std::vector<Point2D>& poly) {
+/// @tparam Point An indexed coordinate pair, including Point2D or std::array<double, 2>.
+template <typename Point>
+inline std::vector<Pixel> scanline_fill(const std::vector<Point>& poly) {
     std::vector<Pixel> pixels;
     const std::size_t n = poly.size();
     if (n < 3) return pixels;
@@ -52,8 +53,8 @@ inline std::vector<Pixel> scanline_fill(const std::vector<Point2D>& poly) {
         double ys = y + 0.5;  // sample at pixel centre
         std::vector<double> xs;
         for (std::size_t i = 0; i < n; ++i) {
-            const Point2D& a = poly[i];
-            const Point2D& b = poly[(i + 1) % n];
+            const auto& a = poly[i];
+            const auto& b = poly[(i + 1) % n];
             double ya = a[1], yb = b[1];
             // half-open [min, max): include the lower vertex, exclude the upper
             if ((ya <= ys && yb > ys) || (yb <= ys && ya > ys)) {
@@ -69,6 +70,11 @@ inline std::vector<Pixel> scanline_fill(const std::vector<Point2D>& poly) {
         }
     }
     return pixels;
+}
+
+/// @brief Fills a polygon of shared Point2D vertices; also accepts brace-initialized polygons.
+inline std::vector<Pixel> scanline_fill(const std::vector<Point2D>& poly) {
+    return scanline_fill<Point2D>(poly);
 }
 
 }  // namespace datamunge::algorithms

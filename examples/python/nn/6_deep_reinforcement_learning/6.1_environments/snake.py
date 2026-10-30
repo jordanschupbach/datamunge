@@ -1,7 +1,6 @@
 # Native Python NN example. Snake: a simple Atari-like pixel game.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/snake.py
 """Snake: a simple Atari-like pixel game.
-
-CMD: just python-example snake
 
 Port of tflow's snake. The observation is an image: three planes (head,
 body, food) over the grid, flattened to a float vector. That makes Snake the

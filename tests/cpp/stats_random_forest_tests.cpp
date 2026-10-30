@@ -176,3 +176,131 @@ TEST(RandomForestRegressor, RejectsZeroTrees) {
                                        options),
                  std::invalid_argument);
 }
+
+namespace {
+
+// Ten points on a line with overlapping classes: small enough to check by hand.
+DataFrame ten_points() {
+    DataFrame d;
+    d.add_column("x", std::vector<double>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    d.add_column("y", std::vector<std::string>{"a", "a", "a", "b", "a", "b", "b", "a", "b", "b"});
+    return d;
+}
+
+} // namespace
+
+TEST(DecisionTreeClassifier, SweepSplitsMatchTheKnownIrisTree) {
+    // The full-depth CART tree of iris (scikit-learn finds the same tree, up to the tie between
+    // the two petal measurements at the root).
+    const datamunge::stats::DecisionTreeClassifier tree(datamunge::datasets::iris(), "Species ~ .", {.max_depth = 30});
+    EXPECT_EQ(tree.node_count(), 17u);
+    const auto frame = tree.node_frame();
+    EXPECT_EQ(frame.string_at("feature", 0), "Petal.Length");
+    EXPECT_DOUBLE_EQ(frame.double_at("threshold", 0), 2.45);
+    EXPECT_DOUBLE_EQ(frame.double_at("threshold", 2), 1.75);
+    EXPECT_FALSE(frame.optional_double_at("threshold", 1).has_value()); // a leaf
+    EXPECT_DOUBLE_EQ(frame.double_at("n", 2), 100.0);
+    const auto importance = tree.feature_importance();
+    EXPECT_NEAR(importance[2], 0.5507226247987119, 1e-12);
+    EXPECT_NEAR(importance[3], 0.4226107085346215, 1e-12);
+    EXPECT_EQ(tree.classes()[tree.predict_row({5.0, 3.4, 1.5, 0.2})], "setosa");
+    EXPECT_THROW((void)tree.predict_row({1.0}), std::invalid_argument);
+}
+
+TEST(RandomForestClassifier, OutOfBagBookkeepingByHand) {
+    const RandomForestClassifier forest(ten_points(), "y ~ x", {.n_trees = 3, .max_depth = 1, .seed = 1});
+    std::vector<int> oob(10, 0);
+    for (std::size_t t = 0; t < 3; ++t) {
+        const auto counts = forest.in_bag_counts(t);
+        int        total  = 0;
+        for (std::size_t i = 0; i < 10; ++i) total += counts[i], oob[i] += counts[i] == 0;
+        EXPECT_EQ(total, 10); // a bootstrap sample has n rows
+    }
+    EXPECT_EQ(forest.oob_tree_counts(), oob);
+    const auto predictions = forest.oob_predictions();
+    const auto margins     = forest.oob_margins();
+    int        right = 0, used = 0;
+    for (std::size_t i = 0; i < 10; ++i) {
+        if (oob[i] == 0) {
+            EXPECT_EQ(predictions[i], "");
+            EXPECT_TRUE(std::isnan(margins[i]));
+            continue;
+        }
+        ++used;
+        const bool correct = predictions[i] == ten_points().string_at("y", i);
+        right += correct;
+        if (margins[i] > 0) EXPECT_TRUE(correct);
+        if (margins[i] < 0) EXPECT_FALSE(correct);
+    }
+    EXPECT_DOUBLE_EQ(forest.oob_accuracy(), static_cast<double>(right) / used);
+    EXPECT_DOUBLE_EQ(forest.oob_accuracy_path().back(), forest.oob_accuracy());
+    EXPECT_THROW((void)forest.tree(3), std::out_of_range);
+}
+
+TEST(RandomForestClassifier, FastVotesMatchTheTreesOwnPredictions) {
+    const auto                   iris = datamunge::datasets::iris();
+    const RandomForestClassifier forest(iris, "Species ~ .", {.n_trees = 30});
+    const auto                   detail = forest.predict_detail(iris);
+    for (std::size_t i = 0; i < iris.nrows(); i += 7) {
+        const std::vector<double> x{iris.double_at("Sepal.Length", i), iris.double_at("Sepal.Width", i),
+                                    iris.double_at("Petal.Length", i), iris.double_at("Petal.Width", i)};
+        const auto votes = forest.tree_votes(x);
+        const auto row   = iris.take_rows({i});
+        for (std::size_t t = 0; t < forest.n_trees(); ++t)
+            EXPECT_EQ(forest.classes()[votes[t]], forest.tree(t).predict(row)[0]);
+        const auto share = forest.vote_share(x);
+        for (std::size_t c = 0; c < 3; ++c) EXPECT_NEAR(share[c], detail.vote_share[i][c], 1e-12);
+    }
+}
+
+TEST(RandomForestClassifier, PermutationImportanceIgnoresNoiseButImpurityDoesNot) {
+    auto                           iris = datamunge::datasets::iris();
+    datamunge::random::SplitMix64 rng(4);
+    std::vector<double>           noise(iris.nrows());
+    for (double& v : noise) v = static_cast<double>(rng.next_u64() % 1000000) / 1e6;
+    iris.add_column("noise", noise);
+    const RandomForestClassifier forest(iris, "Species ~ .", {.n_trees = 300});
+    const auto                   permutation = forest.permutation_importance();
+    const auto                   impurity    = forest.feature_importance();
+    ASSERT_EQ(permutation.predictor_names.back(), "noise");
+    EXPECT_LT(std::abs(permutation.importance[4]), 3.0 * permutation.standard_error[4] + 1e-3);
+    EXPECT_GT(permutation.importance[2], 0.1); // Petal.Length
+    EXPECT_GT(impurity[4], 0.01);               // the impurity bias towards continuous noise
+}
+
+TEST(RandomForestClassifier, StrengthAndCorrelationSatisfyTheirDefinitions) {
+    const RandomForestClassifier forest(datamunge::datasets::iris(), "Species ~ .", {.n_trees = 200});
+    const auto                   sc      = forest.strength_correlation();
+    const auto                   margins = forest.oob_margins();
+    double                       mean    = 0.0;
+    for (const double m : margins) mean += m / static_cast<double>(margins.size());
+    EXPECT_EQ(sc.rows, 150u);
+    EXPECT_NEAR(sc.strength, mean, 1e-12);
+    EXPECT_NEAR(sc.correlation * sc.mean_tree_sd * sc.mean_tree_sd, sc.margin_variance, 1e-12);
+    EXPECT_NEAR(sc.error_bound, sc.correlation * (1 - sc.strength * sc.strength) / (sc.strength * sc.strength), 1e-12);
+    EXPECT_GT(sc.error_bound, 1.0 - forest.oob_accuracy());
+}
+
+TEST(RandomForestClassifier, RowsWithMissingValuesAreDroppedConsistently) {
+    // penguins has two rows without bill measurements; the forest must use the same 342 rows
+    // for its samples, its out-of-bag votes and its fitted classes.
+    const auto               penguins = datamunge::datasets::penguins();
+    std::vector<std::size_t> keep;
+    for (std::size_t i = 0; i < penguins.nrows(); ++i)
+        if (penguins.optional_double_at("bill_length_mm", i)) keep.push_back(i);
+    const std::string            f = "species ~ bill_length_mm + bill_depth_mm";
+    const RandomForestClassifier all(penguins, f), complete(penguins.take_rows(keep), f);
+    EXPECT_EQ(all.fitted_classes().size(), 342u);
+    EXPECT_DOUBLE_EQ(all.training_accuracy(), complete.training_accuracy());
+    EXPECT_DOUBLE_EQ(all.oob_accuracy(), complete.oob_accuracy());
+
+    const std::string            g = "body_mass_g ~ bill_length_mm + bill_depth_mm";
+    const RandomForestRegressor  rall(penguins, g), rcomplete(penguins.take_rows(keep), g);
+    EXPECT_DOUBLE_EQ(rall.oob_r_squared(), rcomplete.oob_r_squared());
+}
+
+TEST(RandomForestClassifier, DecisionRegionsShadeByVoteAgreement) {
+    const RandomForestClassifier forest(datamunge::datasets::iris(), "Species ~ Petal.Length + Petal.Width", {.n_trees = 20});
+    const auto plot = forest.plot_decision_regions("Petal.Length", "Petal.Width", 40, std::array<double, 4>{1, 7, 0, 2.6});
+    EXPECT_NE(plot.to_svg().find("<svg"), std::string::npos);
+}

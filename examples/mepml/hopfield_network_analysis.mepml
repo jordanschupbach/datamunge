@@ -56,7 +56,7 @@ to sit at such minima, so relaxation from a nearby probe lands on the memory.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -158,7 +158,7 @@ sweep the noise level and measure recovery.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -40,7 +40,7 @@ truncation error \(O(\Delta t^2+\Delta x^2)\) and \-\- because the amplification
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -95,7 +95,7 @@ The initial profile \(\sin(\pi x)\) diffuses as \(u(x,t)=e^{-\pi^2 t}\sin(\pi x)
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

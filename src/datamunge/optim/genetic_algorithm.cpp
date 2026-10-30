@@ -1,3 +1,5 @@
+/// @file genetic_algorithm.cpp
+/// @brief GeneticAlgorithm native update, trial and stopping implementation.
 #include <datamunge/optim/genetic_algorithm.hpp>
 
 #include <algorithm>
@@ -8,11 +10,28 @@
 
 namespace datamunge::optim {
 
+/// @brief Private genetic algorithm arithmetic, validation and local state.
 namespace {
 
-enum class Selection { Tournament, Roulette, Rank };
-enum class Crossover { SinglePoint, Uniform, Blend };
+/// @brief Parsed parent selection rule.
+enum class Selection {
+ Tournament, ///< Minimum-value winner of random candidate draws.
+ Roulette, ///< Sample shifted inverse-loss weights.
+ Rank ///< Sample weights based on objective rank.
+};
+/// @brief Parsed real-valued offspring crossover rule.
+enum class Crossover {
+ SinglePoint, ///< Split parent coordinates at one sampled index.
+ Uniform, ///< Choose parent coordinate independently.
+ Blend ///< Sample within the BLX-alpha expanded parent interval.
+};
 
+/// @brief Require nonempty coordinates, matching bounds and strict lower < upper.
+/// @param n Coordinate count.
+/// @param lower_bound Lower box endpoints.
+/// @param upper_bound Upper box endpoints.
+/// @param op Operation name for the exception text.
+/// @throws std::invalid_argument Empty dimensions, mismatched bounds or unordered endpoints.
 void validate_bounds(const std::size_t n, const std::vector<double>& lower_bound,
                       const std::vector<double>& upper_bound, const char* op) {
     if (n == 0) throw std::invalid_argument(std::string("GeneticAlgorithm::") + op + ": coordinates must not be empty");
@@ -24,6 +43,9 @@ void validate_bounds(const std::size_t n, const std::vector<double>& lower_bound
                                          ": lower_bound must be < upper_bound in every dimension");
 }
 
+/// @brief Locate the first minimum in a nonempty population loss vector.
+/// @param values Borrowed nonempty losses.
+/// @return Index of the first strictly best value; ties retain the earlier index.
 std::size_t best_index(const std::vector<double>& values) {
     std::size_t b = 0;
     for (std::size_t i = 1; i < values.size(); ++i)
@@ -88,6 +110,7 @@ double GeneticAlgorithm::optimize(ArbitraryFunction& function, std::vector<doubl
         }
         std::discrete_distribution<std::size_t> weighted_dist(selection_weights.begin(), selection_weights.end());
 
+        /// @brief Draw a parent by tournament or the prepared roulette/rank weights.
         auto select_parent = [&]() -> std::size_t {
             if (selection == Selection::Tournament) {
                 std::size_t best = pop_dist(rng);

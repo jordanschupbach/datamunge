@@ -58,6 +58,7 @@
 %ignore datamunge::stats::LDAPrediction;
 %ignore datamunge::datasets::iris;
 %ignore datamunge::datasets::penguins;
+%ignore datamunge::datasets::tooth_growth;
 %ignore datamunge::stats::SVM;
 %ignore datamunge::stats::SVMOptions;
 %ignore datamunge::stats::SVMPrediction;
@@ -131,6 +132,7 @@
 %ignore datamunge::bayes::student_t_lpdf;
 %ignore datamunge::bayes::bernoulli_logit_lpmf;
 %ignore datamunge::bayes::poisson_log_lpmf;
+%ignore datamunge::bayes::laplace_lpdf;
 %template(IPair) std::pair<int, int>;
 %template(DPair) std::pair<double, double>;
 %template(DVectorPair) std::pair<std::vector<double>, std::vector<double> >;
@@ -222,6 +224,7 @@
 %include "datamunge/optim/rbf_gaussian_process_surrogate.hpp"
 %include "datamunge/bayes/map.hpp"
 %include "datamunge/bayes/hmc.hpp"
+%ignore datamunge::bayes::NUTS::sample_chains;
 %include "datamunge/bayes/nuts.hpp"
 %include "datamunge/bayes/rwm.hpp"
 %include "datamunge/bayes/gibbs.hpp"

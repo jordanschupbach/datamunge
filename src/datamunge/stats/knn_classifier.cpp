@@ -1,4 +1,10 @@
+/// @file knn_classifier.cpp
+/// @brief KNNClassifier: fitting, exact leave-one-out evaluation, prediction and plots, and
+///        the large-sample k-NN risk.
+
 #include <datamunge/stats/knn_classifier.hpp>
+
+#include <datamunge/plot/class_regions.hpp>
 
 #include <algorithm>
 #include <cmath>
@@ -12,8 +18,13 @@
 
 namespace datamunge::stats {
 
+/// @brief Helpers private to this file.
 namespace {
 
+/// @brief Formats @p v with fixed @p precision ("NaN" for NaN).
+/// @param v          Value.
+/// @param precision  Digits after the point.
+/// @return The text.
 std::string format_stat(double v, int precision = 4) {
     if (std::isnan(v)) return "NaN";
     std::ostringstream oss;
@@ -21,15 +32,15 @@ std::string format_stat(double v, int precision = 4) {
     return oss.str();
 }
 
-const plot::RGB kSeriesColors[] = {
+/// @brief Class colours, cycled.
+const graphics::RGB kSeriesColors[] = {
     {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}, {124, 58, 237}, {8, 145, 178},
 };
 
 } // namespace
 
 KNNClassifier::KNNClassifier(const dstruct::DataFrame& data, const std::string& formula, KNNClassifierOptions options)
-    : formula_(formula) {
-    options_ = options;
+    : formula_(formula), options_(options) {
     fit(data);
 }
 
@@ -61,81 +72,79 @@ void KNNClassifier::fit(const dstruct::DataFrame& data) {
             feature_max_[j] = std::max(feature_max_[j], cd.X(i, j));
         }
 
-    feature_mean_.assign(p, 0.0);
-    feature_scale_.assign(p, 1.0);
-    if (options_.standardize) {
-        for (std::size_t j = 0; j < p; ++j) {
-            double sum = 0.0;
-            for (std::size_t i = 0; i < n; ++i) sum += cd.X(i, j);
-            feature_mean_[j] = sum / static_cast<double>(n);
-        }
-        for (std::size_t j = 0; j < p; ++j) {
-            double ss = 0.0;
-            for (std::size_t i = 0; i < n; ++i) {
-                const double d = cd.X(i, j) - feature_mean_[j];
-                ss += d * d;
-            }
-            const double scale = std::sqrt(ss / static_cast<double>(n));
-            feature_scale_[j]  = (scale < 1e-12) ? 1.0 : scale;
-        }
-    }
-
-    training_X_std_ = linalg::DenseMatrix<double>(n, p, 0.0);
-    for (std::size_t i = 0; i < n; ++i)
-        for (std::size_t j = 0; j < p; ++j) training_X_std_(i, j) = (cd.X(i, j) - feature_mean_[j]) / feature_scale_[j];
+    scaling_        = detail::knn_scaling(cd.X, options_.standardize);
+    training_X_   = cd.X;
+    multipliers_  = detail::knn_multipliers(scaling_);
 
     training_class_index_.resize(n);
     for (std::size_t i = 0; i < n; ++i)
-        training_class_index_[i] = static_cast<std::size_t>(std::lower_bound(classes_.begin(), classes_.end(),
-                                                                              cd.labels[i])
-                                                            - classes_.begin());
+        training_class_index_[i] = static_cast<std::size_t>(
+            std::lower_bound(classes_.begin(), classes_.end(), cd.labels[i]) - classes_.begin());
 
     fitted_classes_.resize(n);
     for (std::size_t i = 0; i < n; ++i) {
-        std::vector<double> query(p);
-        for (std::size_t j = 0; j < p; ++j) query[j] = training_X_std_(i, j);
-        const auto shares = vote_shares(query, /*exclude_row=*/i);
-        const auto best =
-            static_cast<std::size_t>(std::max_element(shares.begin(), shares.end()) - shares.begin());
-        fitted_classes_[i] = classes_[best];
+        const auto mult   = detail::knn_loo_multipliers(scaling_, training_X_, i, options_.standardize);
+        const auto shares = vote_shares(row_of(training_X_, i), i, mult);
+        fitted_classes_[i] = classes_[static_cast<std::size_t>(std::max_element(shares.begin(), shares.end())
+                                                               - shares.begin())];
     }
 }
 
-std::vector<double> KNNClassifier::vote_shares(const std::vector<double>& query_std, std::size_t exclude_row) const {
-    const std::size_t n = training_X_std_.rows();
-    const std::size_t p = training_X_std_.cols();
+std::vector<double> KNNClassifier::row_of(const linalg::DenseMatrix<double>& X, std::size_t row) const {
+    std::vector<double> v(X.cols());
+    for (std::size_t j = 0; j < X.cols(); ++j) v[j] = X(row, j);
+    return v;
+}
 
-    std::vector<std::pair<double, std::size_t>> distances;
-    distances.reserve(n);
-    for (std::size_t i = 0; i < n; ++i) {
-        if (i == exclude_row) continue;
-        double d = 0.0;
-        if (options_.metric == DistanceMetric::Euclidean) {
-            for (std::size_t j = 0; j < p; ++j) {
-                const double diff = training_X_std_(i, j) - query_std[j];
-                d += diff * diff;
-            }
-            d = std::sqrt(d);
-        } else {
-            for (std::size_t j = 0; j < p; ++j) d += std::fabs(training_X_std_(i, j) - query_std[j]);
-        }
-        distances.emplace_back(d, i);
-    }
-
-    const std::size_t kk = std::min(options_.k, distances.size());
-    std::partial_sort(distances.begin(), distances.begin() + static_cast<std::ptrdiff_t>(kk), distances.end());
-
+std::vector<double> KNNClassifier::vote_shares(const std::vector<double>& query, std::size_t exclude_row,
+                                               const std::vector<double>& mult) const {
+    const auto nearest = detail::knn_nearest(training_X_, query, options_.metric, options_.k,
+                                             mult.empty() ? multipliers_ : mult, exclude_row);
     std::vector<double> votes(classes_.size(), 0.0);
-    for (std::size_t idx = 0; idx < kk; ++idx) {
-        const double      d   = distances[idx].first;
-        const std::size_t row = distances[idx].second;
-        const double       w   = options_.weighted ? 1.0 / (d + 1e-12) : 1.0;
-        votes[training_class_index_[row]] += w;
-    }
+    for (const auto& [d, row] : nearest) votes[training_class_index_[row]] += detail::knn_weight(d, options_.weighted);
     const double total = std::accumulate(votes.begin(), votes.end(), 0.0);
     if (total > 0.0)
         for (double& v : votes) v /= total;
     return votes;
+}
+
+std::vector<double> KNNClassifier::loo_accuracy_path(std::size_t max_k) const {
+    if (max_k == 0) throw std::invalid_argument("KNNClassifier::loo_accuracy_path: max_k must be at least 1");
+    const std::size_t n = training_X_.rows();
+    max_k = std::min(max_k, n - 1);
+    std::vector<double> correct(max_k, 0.0);
+    for (std::size_t i = 0; i < n; ++i) {
+        const auto nearest = detail::knn_nearest(training_X_, row_of(training_X_, i), options_.metric, max_k,
+                                                 detail::knn_loo_multipliers(scaling_, training_X_, i,
+                                                                             options_.standardize),
+                                                 i);
+        std::vector<double> votes(classes_.size(), 0.0);
+        for (std::size_t k = 0; k < nearest.size(); ++k) {
+            votes[training_class_index_[nearest[k].second]] += detail::knn_weight(nearest[k].first, options_.weighted);
+            const auto best = static_cast<std::size_t>(std::max_element(votes.begin(), votes.end()) - votes.begin());
+            if (best == training_class_index_[i]) correct[k] += 1.0;
+        }
+    }
+    for (double& c : correct) c /= static_cast<double>(n);
+    return correct;
+}
+
+KNNNeighbors KNNClassifier::kneighbors(const dstruct::DataFrame& newdata) const {
+    design_.validate_categorical_levels(newdata, "KNNClassifier::kneighbors");
+    const auto dm = design_.build_matrix(newdata, /*require_response=*/false);
+    KNNNeighbors result;
+    result.index.assign(newdata.nrows(), {});
+    result.distance.assign(newdata.nrows(), {});
+    for (std::size_t i = 0; i < dm.used_row_indices.size(); ++i) {
+        std::vector<double> query(dm.X.cols());
+        for (std::size_t j = 0; j < dm.X.cols(); ++j) query[j] = dm.X(i, j);
+        const auto row = dm.used_row_indices[i];
+        for (const auto& [d, r] : detail::knn_nearest(training_X_, query, options_.metric, options_.k, multipliers_)) {
+            result.index[row].push_back(r);
+            result.distance[row].push_back(d);
+        }
+    }
+    return result;
 }
 
 double KNNClassifier::training_accuracy() const {
@@ -191,7 +200,7 @@ KNNClassifierPrediction KNNClassifier::predict_detail(const dstruct::DataFrame& 
     result.vote_share.assign(newdata.nrows(), {});
     for (std::size_t i = 0; i < dm.used_row_indices.size(); ++i) {
         std::vector<double> query(dm.X.cols());
-        for (std::size_t j = 0; j < dm.X.cols(); ++j) query[j] = (dm.X(i, j) - feature_mean_[j]) / feature_scale_[j];
+        for (std::size_t j = 0; j < dm.X.cols(); ++j) query[j] = dm.X(i, j);
 
         const auto shares = vote_shares(query);
         const auto best =
@@ -204,12 +213,12 @@ KNNClassifierPrediction KNNClassifier::predict_detail(const dstruct::DataFrame& 
     return result;
 }
 
-plot::RPlot KNNClassifier::plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
+graphics::RPlot KNNClassifier::plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
                                                       const std::string& y_feature) const {
     const auto  predictions = predict(data);
     const auto& response    = design_.response_name;
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs, ys;
         for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -240,8 +249,9 @@ plot::RPlot KNNClassifier::plot_classification(const dstruct::DataFrame& data, c
     return plot;
 }
 
-plot::RPlot KNNClassifier::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
-                                                        std::size_t grid_resolution) const {
+graphics::RPlot KNNClassifier::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
+                                                     std::size_t grid_resolution,
+                                                     std::optional<std::array<double, 4>> limits) const {
     if (predictor_names_.size() != 2)
         throw std::invalid_argument("KNNClassifier::plot_decision_regions: model must have exactly 2 predictors");
     std::size_t xi = 2, yi = 2;
@@ -249,51 +259,66 @@ plot::RPlot KNNClassifier::plot_decision_regions(const std::string& x_feature, c
         if (predictor_names_[j] == x_feature) xi = j;
         if (predictor_names_[j] == y_feature) yi = j;
     }
-    if (xi == 2 || yi == 2)
+    if (xi == 2 || yi == 2 || xi == yi)
         throw std::invalid_argument("KNNClassifier::plot_decision_regions: x_feature/y_feature must match the "
                                     "model's two predictors (" + predictor_names_[0] + ", " + predictor_names_[1]
                                     + ")");
+    grid_resolution = std::max<std::size_t>(grid_resolution, 2);
 
-    double x_min = feature_min_[xi], x_max = feature_max_[xi];
-    double y_min = feature_min_[yi], y_max = feature_max_[yi];
-    const double x_pad = std::max(1e-6, (x_max - x_min) * 0.1);
-    const double y_pad = std::max(1e-6, (y_max - y_min) * 0.1);
-    x_min -= x_pad;
-    x_max += x_pad;
-    y_min -= y_pad;
-    y_max += y_pad;
+    // Same box as RPlot's default padding: 5% in x, 10% in y.
+    const double x_pad = std::max(1e-6, (feature_max_[xi] - feature_min_[xi]) * 0.05);
+    const double y_pad = std::max(1e-6, (feature_max_[yi] - feature_min_[yi]) * 0.10);
+    const auto box = limits.value_or(std::array<double, 4>{feature_min_[xi] - x_pad, feature_max_[xi] + x_pad,
+                                                           feature_min_[yi] - y_pad, feature_max_[yi] + y_pad});
+    const double x_lo = box[0], x_hi = box[1], y_lo = box[2], y_hi = box[3];
+    if (!(x_hi > x_lo && y_hi > y_lo))
+        throw std::invalid_argument("KNNClassifier::plot_decision_regions: limits must be increasing");
 
-    auto plot = plot::RPlot::create();
-    std::vector<std::vector<double>> grid_x(classes_.size()), grid_y(classes_.size());
-    for (std::size_t gx = 0; gx < grid_resolution; ++gx) {
-        for (std::size_t gy = 0; gy < grid_resolution; ++gy) {
-            const double x = x_min + (x_max - x_min) * static_cast<double>(gx) / static_cast<double>(grid_resolution - 1);
-            const double y = y_min + (y_max - y_min) * static_cast<double>(gy) / static_cast<double>(grid_resolution - 1);
-
-            std::vector<double> point(2);
-            point[xi] = x;
-            point[yi] = y;
-            std::vector<double> query(2);
-            query[0] = (point[0] - feature_mean_[0]) / feature_scale_[0];
-            query[1] = (point[1] - feature_mean_[1]) / feature_scale_[1];
-
+    auto plot = graphics::RPlot::create();
+    std::vector<graphics::RGB> fills;
+    for (std::size_t c = 0; c < classes_.size(); ++c)
+        fills.push_back(graphics::tint(kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))], 0.8));
+    std::vector<double> query(2);
+    graphics::add_class_regions(
+        plot,
+        [&](double x, double y) {
+            query[xi] = x;
+            query[yi] = y;
             const auto shares = vote_shares(query);
-            const auto predicted_class =
-                static_cast<std::size_t>(std::max_element(shares.begin(), shares.end()) - shares.begin());
-            grid_x[predicted_class].push_back(x);
-            grid_y[predicted_class].push_back(y);
-        }
-    }
-    for (std::size_t c = 0; c < classes_.size(); ++c) {
-        auto color = kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))];
-        color.r    = static_cast<std::uint8_t>(std::min(255, color.r + (255 - color.r) * 3 / 4));
-        color.g    = static_cast<std::uint8_t>(std::min(255, color.g + (255 - color.g) * 3 / 4));
-        color.b    = static_cast<std::uint8_t>(std::min(255, color.b + (255 - color.b) * 3 / 4));
-        plot.points(grid_x[c], grid_y[c], classes_[c] + " region", color, 3.0);
-    }
+            return static_cast<std::size_t>(std::max_element(shares.begin(), shares.end()) - shares.begin());
+        },
+        {x_lo, x_hi, y_lo, y_hi}, grid_resolution, fills);
 
-    plot.title("KNN Decision Regions (k=" + std::to_string(options_.k) + ")").x_label(x_feature).y_label(y_feature);
+    for (std::size_t c = 0; c < classes_.size(); ++c) {
+        std::vector<double> xs, ys;
+        for (std::size_t i = 0; i < training_X_.rows(); ++i) {
+            if (training_class_index_[i] != c) continue;
+            xs.push_back(training_X_(i, xi));
+            ys.push_back(training_X_(i, yi));
+        }
+        plot.points(xs, ys, classes_[c], kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))]);
+    }
+    plot.title("k-NN decision regions (k = " + std::to_string(options_.k) + ")").x_label(x_feature).y_label(y_feature);
     return plot;
+}
+
+double knn_asymptotic_risk(double eta, std::size_t k) {
+    if (!(eta >= 0.0 && eta <= 1.0)) throw std::invalid_argument("knn_asymptotic_risk: eta must be in [0, 1]");
+    if (k == 0) throw std::invalid_argument("knn_asymptotic_risk: k must be at least 1");
+    double risk = 0.0;
+    for (std::size_t b = 0; b <= k; ++b) {
+        // P(B = b) for B ~ Bin(k, eta), via logs to stay finite for large k.
+        const double log_choose = std::lgamma(static_cast<double>(k) + 1.0) - std::lgamma(static_cast<double>(b) + 1.0)
+                                  - std::lgamma(static_cast<double>(k - b) + 1.0);
+        double pb = 0.0;
+        if (eta == 0.0) pb = b == 0 ? 1.0 : 0.0;
+        else if (eta == 1.0) pb = b == k ? 1.0 : 0.0;
+        else pb = std::exp(log_choose + static_cast<double>(b) * std::log(eta) + static_cast<double>(k - b) * std::log1p(-eta));
+        if (2 * b < k) risk += eta * pb;
+        else if (2 * b > k) risk += (1.0 - eta) * pb;
+        else risk += 0.5 * pb;
+    }
+    return risk;
 }
 
 } // namespace datamunge::stats

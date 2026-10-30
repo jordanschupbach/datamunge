@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstddef>
 #include <random>
+#include <stdexcept>
 #include <vector>
 
 using datamunge::algorithms::alopex_minimize;
@@ -32,6 +33,41 @@ TEST(Alopex, MinimizesQuadraticBowl) {
     auto r = alopex_minimize(cost, 3, {0.0, 0.0, 0.0}, p);
     EXPECT_LT(r.best_cost, 0.05);
     for (std::size_t i = 0; i < 3; ++i) EXPECT_NEAR(r.best_parameters[i], target[i], 0.2);
+}
+
+TEST(Alopex, CorrelationTraceMatchesAutoTemperature) {
+    auto cost = [](const std::vector<double>& w) {
+        return std::fabs(w[0] - 1.0) + 2.0 * std::fabs(w[1] + 0.5);
+    };
+    AlopexParameters p;
+    p.step        = 0.01;
+    p.temperature = 0.0;
+    p.iterations  = 500;
+    p.seed        = 3;
+    p.record_path = true;
+    const std::vector<double> init = {0.0, 0.0};
+    auto r = alopex_minimize(cost, 2, init, p);
+    ASSERT_EQ(r.parameter_history.size(), 500u);
+    ASSERT_EQ(r.temperature_history.size(), 500u);
+    EXPECT_DOUBLE_EQ(r.initial_cost, 2.0);
+    auto C = datamunge::algorithms::alopex_correlations(r, init);
+    ASSERT_EQ(C.size(), 500u);
+    // In auto mode the temperature used is the mean |C_i| (or 1 when every C_i is 0).
+    for (std::size_t n = 0; n < C.size(); ++n) {
+        const double m = 0.5 * (std::fabs(C[n][0]) + std::fabs(C[n][1]));
+        EXPECT_NEAR(r.temperature_history[n], m > 0 ? m : 1.0, 1e-12);
+    }
+    EXPECT_LT(r.best_cost, 0.5 * r.initial_cost);
+}
+
+TEST(Alopex, RejectsWrongInitLengthAndUnrecordedPath) {
+    auto cost = [](const std::vector<double>& w) { return w[0] * w[0]; };
+    AlopexParameters p;
+    EXPECT_THROW(alopex_minimize(cost, 2, {0.0}, p), std::invalid_argument);
+    p.iterations = 5;
+    auto r = alopex_minimize(cost, 1, {1.0}, p);
+    EXPECT_TRUE(r.parameter_history.empty());
+    EXPECT_THROW(datamunge::algorithms::alopex_correlations(r, {1.0}), std::invalid_argument);
 }
 
 TEST(RVM, FitsSineSparsely) {

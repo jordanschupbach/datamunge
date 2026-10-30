@@ -1,0 +1,32 @@
+\documentclass[tikz,border=9pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,thick,font=\large,
+ declare function={radius(\t,\a)=2/(\a*(abs(cos(\t))+abs(sin(\t)))+sqrt((\a*(abs(cos(\t))+abs(sin(\t))))^2+2*(1-\a)));}]
+\begin{scope}
+\draw[->,gray] (-1.8,0)--(1.9,0) node[right] {$\theta_1$};
+\draw[->,gray] (0,-1.7)--(0,1.9) node[above] {$\theta_2$};
+\draw[blue!75!black,domain=0:360,samples=145,variable=\t]
+ plot ({radius(\t,0)*cos(\t)},{radius(\t,0)*sin(\t)});
+\draw[green!50!black,domain=0:360,samples=145,variable=\t]
+ plot ({radius(\t,.5)*cos(\t)},{radius(\t,.5)*sin(\t)});
+\draw[red!75!black] (1,0)--(0,1)--(-1,0)--(0,-1)--cycle;
+\node at (0,2.6) {Equal penalty budget};
+\node[blue!75!black] at (0,-2.2) {$\alpha=0$: ridge};
+\node[green!50!black] at (0,-2.75) {$\alpha=.5$: elastic net};
+\node[red!75!black] at (0,-3.3) {$\alpha=1$: lasso};
+\end{scope}
+\begin{scope}[xshift=6.1cm]
+\draw[->,gray] (-2.1,0)--(2.2,0) node[right] {$\rho$};
+\draw[->,gray] (0,-1.7)--(0,1.9) node[above] {$S(\rho,.5)$};
+\draw[red!75!black,very thick] (-2,-1.5)--(-.5,0)--(.5,0)--(2,1.5);
+\draw[gray,dashed] (-.5,-.8)--(-.5,.8) (.5,-.8)--(.5,.8);
+\node at (-.5,-1.05) {$-.5$};\node at (.5,-1.05) {$.5$};
+\node at (0,2.6) {Threshold, then divide};
+\node[align=center] at (0,-2.35) {$S(\rho,t)=\operatorname{sign}(\rho)\max(|\rho|-t,0)$};
+\node at (0,-3.15) {$\theta_j\leftarrow S(\rho_j,\lambda\alpha)/(q_j+\lambda(1-\alpha))$};
+\end{scope}
+\end{tikzpicture}
+\end{document}

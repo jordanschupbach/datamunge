@@ -90,7 +90,7 @@ public:
                                                         int target_class = -1) const;
 
     /// @brief Loss curve versus epoch.
-    [[nodiscard]] plot::RPlot plot_loss_curve() const;
+    [[nodiscard]] graphics::RPlot plot_loss_curve() const;
 
 private:
     void                fit(const std::vector<linalg::DenseMatrix<double>>& images);

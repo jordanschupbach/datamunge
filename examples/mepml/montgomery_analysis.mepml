@@ -41,7 +41,7 @@ implementation runs in Montgomery form.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -103,7 +103,7 @@ multiply inside modular exponentiation to encrypt and decrypt with a toy RSA key
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -1,78 +1,88 @@
-// Four-image mosaic and horizontal flip for grayscale detection scenes (port
-// of tflow's common/data/detection_mosaic.h).
-//
-// Each selected image is bilinearly reduced by two and placed in one
-// quadrant of a same-size canvas. At this exact scale the pixel-centre
-// bilinear samples are the averages of 2x2 source pixels. Boxes are scaled
-// and translated with their images; labels stay attached to their boxes.
-// This fixed-centre mosaic is a small-image adaptation of the random-centre
-// crop mosaics used by YOLO training. Only the caller's selected source rows
-// are used, so training can exclude validation and test examples explicitly.
 #pragma once
-
 #include "common/detection_scenes.hpp"
-
+#include "datamunge/nn/detection_mosaic.hpp"
 namespace detector {
-
-inline DetectionScenes MosaicScenes(const DetectionScenes& source, const std::vector<std::array<int, 4>>& selections) {
+inline nn::models::TensorDetectionScenes TensorMosaicRows(const DetectionScenes &source,
+                                                          const std::vector<int> &rows) {
+  if (source.height < 1 || source.width < 1 || source.labels.size() != source.boxes.size() ||
+      source.pixels.size() !=
+          std::size_t(source.size()) * std::size_t(source.height) * std::size_t(source.width))
+    throw std::invalid_argument("invalid mosaic source storage");
+  nn::models::TensorDetectionScenes out;
+  std::vector<nn::Tensor> images;
+  for (auto row : rows) {
+    if (row < 0 || row >= source.size())
+      throw std::invalid_argument("invalid mosaic source row");
+    const auto *p = source.image(row);
+    images.push_back(nn::from_vector(std::vector<int>(p, p + source.height * source.width),
+                                     {source.height, source.width, 1})
+                         .to(nn::DType::Float32) /
+                     255.);
+    out.boxes.push_back(nn::boxes_from_vector(source.boxes[row]));
+    out.labels.push_back(nn::from_vector(
+        std::vector<std::int64_t>(source.labels[row].begin(), source.labels[row].end())));
+  }
+  out.images =
+      images.empty() ? nn::zeros({0, source.height, source.width, 1}) : nn::stack(images, 0);
+  return out;
+}
+inline DetectionScenes LegacyMosaicRows(const nn::models::TensorDetectionScenes &data) {
+  DetectionScenes out;
+  out.height = int(data.images.shape()[1]);
+  out.width = int(data.images.shape()[2]);
+  const auto bytes =
+      nn::floor(data.images.to(nn::DType::Float64) * 255. + .5).to_vector<int>();
+  for (int value : bytes)
+    out.pixels.push_back(std::uint8_t(value));
+  for (std::size_t row = 0; row < data.boxes.size(); ++row) {
+    out.boxes.push_back(nn::boxes_to_vector(data.boxes[row]));
+    out.labels.push_back(data.labels[row].to_vector<int>());
+  }
+  return out;
+}
+inline DetectionScenes MosaicScenes(const DetectionScenes &source,
+                                    const std::vector<std::array<int, 4>> &selections) {
   if (source.height < 2 || source.width < 2 || source.height % 2 || source.width % 2)
     throw std::invalid_argument("mosaic requires positive even image dimensions");
-  DetectionScenes result;
-  result.height = source.height;
-  result.width  = source.width;
-  result.pixels.resize(selections.size() * std::size_t(source.height) * std::size_t(source.width));
-  result.boxes.resize(selections.size());
-  result.labels.resize(selections.size());
-  const int h = source.height / 2, w = source.width / 2;
-  for (std::size_t n = 0; n < selections.size(); ++n)
-    for (int quadrant = 0; quadrant < 4; ++quadrant) {
-      const int row = selections[n][std::size_t(quadrant)];
-      if (row < 0 || row >= source.size() || source.boxes[std::size_t(row)].size() != source.labels[std::size_t(row)].size())
-        throw std::invalid_argument("invalid mosaic source row");
-      const auto* image = source.image(row);
-      const int   y0 = (quadrant / 2) * h, x0 = (quadrant % 2) * w;
-      for (int r = 0; r < h; ++r)
-        for (int c = 0; c < w; ++c) {
-          const int pixel = 2 * r * source.width + 2 * c;
-          const int sum   = image[pixel] + image[pixel + 1] + image[pixel + source.width] + image[pixel + source.width + 1];
-          result.pixels[(n * std::size_t(source.height) + std::size_t(y0 + r)) * std::size_t(source.width) + std::size_t(x0 + c)] =
-              std::uint8_t((sum + 2) / 4);
-        }
-      for (std::size_t k = 0; k < source.boxes[std::size_t(row)].size(); ++k) {
-        const auto& b = source.boxes[std::size_t(row)][k];
-        result.boxes[n].push_back({y0 + .5f * b[0], x0 + .5f * b[1], y0 + .5f * b[2], x0 + .5f * b[3]});
-        result.labels[n].push_back(source.labels[std::size_t(row)][k]);
-      }
-    }
-  return result;
-}
-
-inline DetectionScenes CopyDetectionRows(const DetectionScenes& source, const std::vector<int>& rows) {
-  DetectionScenes result;
-  result.height = source.height;
-  result.width  = source.width;
-  const std::size_t pixels = std::size_t(source.height) * std::size_t(source.width);
-  result.pixels.resize(rows.size() * pixels);
-  for (std::size_t i = 0; i < rows.size(); ++i) {
-    const int row = rows[i];
-    if (row < 0 || row >= source.size()) throw std::out_of_range("detection row");
-    std::copy_n(source.image(row), pixels, result.pixels.data() + i * pixels);
-    result.boxes.push_back(source.boxes[std::size_t(row)]);
-    result.labels.push_back(source.labels[std::size_t(row)]);
+  std::vector<int> rows;
+  for (const auto &s : selections)
+    rows.insert(rows.end(), s.begin(), s.end());
+  if (rows.empty()) {
+    DetectionScenes out;
+    out.height = source.height;
+    out.width = source.width;
+    return out;
   }
-  return result;
+  const auto data = TensorMosaicRows(source, rows);
+  const auto chosen = nn::arange(0, double(rows.size()), 1, nn::DType::Int64)
+                          .reshape({std::int64_t(selections.size()), 4});
+  return LegacyMosaicRows(nn::models::MosaicTensorDetectionScenes(data, chosen));
 }
-
-inline void FlipDetectionScene(DetectionScenes& scenes, int row) {
-  if (row < 0 || row >= scenes.size()) throw std::out_of_range("detection flip row");
-  auto* image = scenes.pixels.data() + std::size_t(row) * std::size_t(scenes.height) * std::size_t(scenes.width);
-  for (int r = 0; r < scenes.height; ++r)
-    for (int c = 0; c < scenes.width / 2; ++c) std::swap(image[r * scenes.width + c], image[r * scenes.width + scenes.width - 1 - c]);
-  for (auto& b : scenes.boxes[std::size_t(row)]) {
-    const float left = float(scenes.width) - b[3];
-    b[3]             = float(scenes.width) - b[1];
-    b[1]             = left;
+inline DetectionScenes CopyDetectionRows(const DetectionScenes &source,
+                                         const std::vector<int> &rows) {
+  for (auto row : rows)
+    if (row < 0 || row >= source.size())
+      throw std::out_of_range("detection row");
+  if (rows.empty()) {
+    DetectionScenes out;
+    out.height = source.height;
+    out.width = source.width;
+    return out;
   }
+  const auto data = TensorMosaicRows(source, rows);
+  std::vector<std::int64_t> local(rows.size());
+  std::iota(local.begin(), local.end(), 0);
+  return LegacyMosaicRows(nn::models::SelectTensorDetectionScenes(data, local));
 }
-
-}  // namespace detector
+inline void FlipDetectionScene(DetectionScenes &source, int row) {
+  if (row < 0 || row >= source.size())
+    throw std::out_of_range("detection flip row");
+  const auto data = TensorMosaicRows(source, {row});
+  const auto flipped = LegacyMosaicRows(nn::models::FlipTensorDetectionScenes(data, {0}));
+  const auto start =
+      source.pixels.begin() + std::ptrdiff_t(row * source.height * source.width);
+  std::copy(flipped.pixels.begin(), flipped.pixels.end(), start);
+  source.boxes[row] = flipped.boxes[0];
+  source.labels[row] = flipped.labels[0];
+}
+} // namespace detector

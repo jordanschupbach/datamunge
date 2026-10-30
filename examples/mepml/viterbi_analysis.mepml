@@ -55,7 +55,7 @@ gives); Viterbi optimizes the joint, respecting the transition structure.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The dynamic-programming recursion
@@ -178,7 +178,7 @@ then decode a longer stream and plot the recovered path.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

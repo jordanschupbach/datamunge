@@ -1,6 +1,6 @@
 # Native Python NN example. Sequence-to-sequence tanh recurrent autoencoder with a final-state-only bottleneck.
-"""CMD: just python-example recurrent_autoencoder
-Sequence-to-sequence tanh recurrent autoencoder with a final-state-only bottleneck.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/recurrent_autoencoder.py
+"""Sequence-to-sequence tanh recurrent autoencoder with a final-state-only bottleneck.
 
 Port of tflow's recurrent_autoencoder. Preparation (in ~/projects/tflow_examples):
 just autoencoder-assets; data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs

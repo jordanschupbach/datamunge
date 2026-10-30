@@ -1,0 +1,139 @@
+//? Title: Support Vector Machines: Hinge Loss and Random Features
+//? Subtitle: A finite Fourier feature map approximates an RBF kernel
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A classifier can seek a decision boundary with a margin rather than fit class probabilities.
+We inspect hinge-loss regions, fit a tiny linear margin model and check the Gaussian-kernel
+approximation supplied by random Fourier features. The finite-feature primal model is distinct
+from an exact kernel dual, and neither its margins nor its votes are probabilities.
+)
+\toc
+
+> The method
+
+For labels y in {-1,1} and score f=xᵀw+b, the regularised primal objective is
+
+$$
+J(w,b)=\frac1N\sum_i\max(0,1-y_i f(x_i))+\frac\lambda2\|w\|^2.
+$$
+\alttext(The mean hinge penalty is zero at margins at least one; a squared weight penalty controls the tradeoff.)
+
+The bias is unpenalised. Misclassification (margin <=0) differs from margin violation (margin<1).
+At the hinge kink a valid subgradient is used. For nonlinear decisions, concatenate cosine and
+sine features with Gaussian frequencies B and divide by sqrt(m). With
+B_ij distributed N(0,gamma/(2 pi²)), their expected inner product is exp(-gamma||x-x'||²).
+This follows from the characteristic function of a Gaussian. A finite draw approximates the
+kernel and may deviate; training a linear margin model on it solves a finite-feature problem.
+Feature evaluation costs O(NDm), and primal steps O(Nm).
+
+The concept diagram has a retained TikZ source in `diagrams/support_vector_machines_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/support_vector_machines_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/support_vector_machines_concept.tikz > build/support_vector_machines_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/support_vector_machines_concept.svg build/support_vector_machines_concept.dvi > build/support_vector_machines_concept.render.log 2>&1
+printf 'Rendered build/support_vector_machines_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/support_vector_machines_concept.svg from local TikZ source.
+// \image(figures/support_vector_machines_concept.svg)
+// result_end
+\caption(A finite Fourier feature map approximates an RBF kernel)
+\alttext(Signed margin; yf(x) Then Hinge penalty; \max(0,1-yf) Then Weight regularisation; linear or Fourier features.)
+
+> Simple examples
+
+Margins -1,0,.5,1,2 have hinge losses 2,1,.5,0,0. This exposes correctly classified points that still violate the unit margin.
+
+```{cpp, results="markdown", file="figures/support_vector_machines_hinge.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  const auto margin = n::tensor({-1, 0, .5, 1, 2}), loss = n::relu(1 - margin);
+  auto p = dm::graphics::RPlot::create();
+  p.lines(margin.to_vector<double>(), loss.to_vector<double>(), "hinge loss")
+      .title("Correct classification can still incur margin loss")
+      .x_label("signed margin")
+      .y_label("hinge loss");
+  std::filesystem::create_directories("build");
+  p.size(850, 420).save_svg("build/support_vector_machines_hinge.svg");
+  dm::dstruct::DataFrame t;
+  t.add_column("margin", margin.to_vector<double>());
+  t.add_column("hinge", loss.to_vector<double>());
+  std::print("{}\n", t.to_md());
+}
+```
+// result_begin: markdown
+| margin | hinge |
+| ---: | ---: |
+| -1.0 | 2.0 |
+| 0.0 | 1.0 |
+| 0.5 | 0.5 |
+| 1.0 | 0.0 |
+| 2.0 | 0.0 |
+
+\image(figures/support_vector_machines_hinge.svg)
+// result_end
+\caption(Hinge loss measures a unit-margin requirement rather than a calibrated probability.)
+\alttext(Hinge loss measures a unit-margin requirement rather than a calibrated probability.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  const auto x = n::tensor({-2, -1, 1, 2}, {4, 1}, n::DType::Float64),
+             y = n::tensor({-1, -1, 1, 1}, {4, 1}, n::DType::Float64);
+  auto w = n::zeros({1, 1}, n::DType::Float64).requires_grad_(),
+       b = n::scalar(0, n::DType::Float64).requires_grad_();
+  n::OptimizerConfig c;
+  c.kind = n::OptimizerKind::Adam;
+  n::Optimizer opt({w, b}, .02, c);
+  for (int i = 0; i < 400; ++i)
+    opt.minimize(n::mean(n::relu(1 - y * (n::matmul(x, w) + b))) + .05 * n::sum(n::square(w)));
+  const auto margin = y * (n::matmul(x, w) + b);
+  if (n::min(margin).item() <= 0)
+    return 1;
+  n::Generator rng(19);
+  const auto q = n::tensor({0, 0, .5, 0, 1, 0}, {3, 2}, n::DType::Float64);
+  const auto B =
+      n::normal({2, 2048}, 0, std::sqrt(1 / (2 * std::numbers::pi * std::numbers::pi)), rng,
+                n::DType::Float64);
+  const auto phi = n::gaussian_fourier_features(q, B) / std::sqrt(2048.);
+  std::print("Fitted weight {:.6f}, bias {:.6f}, signed margins {}.\n", w.item(), b.item(),
+             margin.to_vector<double>());
+  const auto kernel = n::matmul(phi, phi, false, true);
+  dm::dstruct::DataFrame t;
+  t.add_column("distance", std::vector<double>{0, .5, 1});
+  t.add_column("approx_kernel",
+               std::vector<double>{kernel.at({0, 0}), kernel.at({0, 1}), kernel.at({0, 2})});
+  t.add_column("exact_kernel", std::vector<double>{1, std::exp(-.25), std::exp(-1.)});
+  std::print("\n{}\n", t.to_md(8));
+}
+```
+// result_begin: markdown
+Fitted weight 1.004081, bias 0.000000, signed margins [2.0081627777914988, 1.0040813888957494, 1.0040813888957494, 2.0081627777914988].
+
+| distance | approx_kernel | exact_kernel |
+| ---: | ---: | ---: |
+| 0.0 | 1.00000000 | 1.00000000 |
+| 0.5 | 0.78525832 | 0.77880078 |
+| 1.0 | 0.37611267 | 0.36787944 |
+// result_end
+
+
+> Conclusion
+
+The hinge examples distinguish errors from margin violations, and the trained linear fixture
+separates its four observations. Fourier inner products approximate the specified Gaussian
+kernel; a single finite draw does not establish a uniform approximation bound or generalization.
+
+> References
+
+- [Cortes and Vapnik (1995), Support-vector networks](https://doi.org/10.1007/BF00994018).
+- [Rahimi and Recht (2007), Random Features for Large-Scale Kernel Machines](https://papers.nips.cc/paper/3182-random-features-for-large-scale-kernel-machines).

@@ -1,0 +1,107 @@
+//? Title: Frozen Eager Models: Reachable Weights Without Training State
+//? Subtitle: A snapshot contains values; the consumer still supplies the inference function
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A deployed predictor should use a fixed set of learned values without carrying optimizer slots
+or unused training parameters. We select the parameters reached by an executed output, detach
+and copy them, then check that live-model mutations do not change the saved predictor. In this
+eager library the artifact is NPZ weights and a contract, not a TensorFlow GraphDef.
+)
+\toc
+
+> The method
+
+For output f(x;theta), the recorded eager graph reveals which parameter tensors are connected
+to that output. inference_parameters asks for VJPs with allow_unused: an undefined gradient
+means disconnected; a defined zero gradient still means connected. Thus connectivity is not the
+same as sensitivity at a single probe. The exported computation in this example is
+
+$$
+f(x)=wx+b,\qquad (w,b)=(2,-1/2),\qquad f((-3,1/2,4))=(-13/2,1/2,15/2).
+$$
+\alttext(The affine function with slope two and intercept minus one half gives predictions minus six point five, point five and seven point five.)
+
+Selecting values excludes optimizer slots and disconnected parameters. Deep copies prevent
+later updates from changing the snapshot. The graph is only the executed branch: a different
+input-dependent branch may reach other parameters. This is neither static graph pruning nor
+serializing program code; the consumer must retain the same inference function and dtype/shape
+contract. Selection costs a backward traversal; storage costs the selected parameter bytes.
+
+The concept diagram has a retained TikZ source in `diagrams/frozen_graph_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/frozen_graph_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/frozen_graph_concept.tikz > build/frozen_graph_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/frozen_graph_concept.svg build/frozen_graph_concept.dvi > build/frozen_graph_concept.render.log 2>&1
+printf 'Rendered build/frozen_graph_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/frozen_graph_concept.svg from local TikZ source.
+// \image(figures/frozen_graph_concept.svg)
+// result_end
+\caption(A snapshot contains values; the consumer still supplies the inference function)
+\alttext(Executed eager output; f(x)=wx+b Then Reachable parameters; defined VJP, even zero Then Detached deep copies; NPZ + consumer code.)
+
+> Simple examples
+
+```{cpp, results="markdown", file="figures/frozen_graph_prediction.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;n::ParameterStore store;
+ auto w=store.get("w",{},n::init::constant(2)),b=store.get("b",{},n::init::constant(-.5));
+ store.get("unused",{8},n::init::ones());
+ const auto x=n::tensor({-3,.5,4}),y=x*w+b;
+ const auto frozen=n::inference_parameters(store,{y});
+ std::filesystem::create_directories("build");n::save_npz("build/frozen_graph_weights.npz",frozen);
+ {n::NoGradGuard guard;w.copy_(n::scalar(-100));b.copy_(n::scalar(100));}
+ n::ParameterStore serving;serving.load("build/frozen_graph_weights.npz",false);
+ const auto prediction=x*serving.at("w")+serving.at("b");
+ auto p=dm::graphics::RPlot::create();p.lines(x.to_vector<double>(),prediction.to_vector<double>(),"saved predictor")
+ .title("Saved weights remain independent of live mutation").x_label("x").y_label("prediction");
+ p.size(820,420).save_svg("build/frozen_graph_prediction.svg");
+ if(frozen.size()!=2||prediction.to_vector<double>()!=std::vector<double>({-6.5,.5,7.5}))return 1;
+ std::print("Store arrays: {}; exported arrays: {}.\n\nPredictions: {}.\n",store.size(),frozen.size(),prediction.to_vector<double>());
+}
+```
+// result_begin: markdown
+Store arrays: 3; exported arrays: 2.
+
+Predictions: [-6.5, 0.5, 7.5].
+\image(figures/frozen_graph_prediction.svg)
+// result_end
+\caption(Only the two connected scalar parameters reconstruct the affine predictions.)
+\alttext(Only the two connected scalar parameters reconstruct the affine predictions.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;n::ParameterStore store;
+ const auto w=store.get("connected_zero",{},n::init::ones());store.get("unused",{},n::init::ones());
+ const auto snapshot=n::inference_parameters(store,{w*0});
+ if(snapshot.size()!=1||snapshot[0].first!="connected_zero"||snapshot[0].second.requires_grad())return 1;
+ std::print("Zero derivative still retains connected parameter: {}.\n\nSnapshot requires_grad: {}.\n",snapshot[0].first,snapshot[0].second.requires_grad());
+}
+```
+// result_begin: markdown
+Zero derivative still retains connected parameter: connected_zero.
+
+Snapshot requires_grad: false.
+// result_end
+
+
+> Conclusion
+
+The selected values reproduce the chosen function and remain independent of live mutation.
+Zero gradients do not prove a parameter is unused. Since execution can depend on control flow,
+a single eager trace is not a universal inference signature or a portable executable model.
+
+> References
+
+- [TensorFlow: GraphDef constant conversion](https://www.tensorflow.org/api_docs/python/tf/compat/v1/graph_util/convert_variables_to_constants).
+- [NumPy NPY format specification](https://numpy.org/doc/stable/reference/generated/numpy.lib.format.html).

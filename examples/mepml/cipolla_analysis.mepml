@@ -40,7 +40,7 @@ suitable \(a\) is found in a couple of tries.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -106,7 +106,7 @@ quadratic residue modulo a prime \-\- the characteristic two-branch fold.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

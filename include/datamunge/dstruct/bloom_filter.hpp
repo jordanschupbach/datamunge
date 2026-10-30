@@ -15,6 +15,9 @@ class BloomFilter {
   void insert(const T& value) { for (std::size_t i = 0; i < hash_count_; ++i) bits_.set(index(value, i)); }
   bool may_contain(const T& value) const { for (std::size_t i = 0; i < hash_count_; ++i) if (!bits_.at(index(value, i))) return false; return true; }
   std::size_t bit_count() const noexcept { return bits_.size(); }
+  /// @brief Number of hash functions applied per inserted value, fixed at construction.
+  /// @return The hash count (always positive).
+  [[nodiscard]] std::size_t hash_count() const noexcept { return hash_count_; }
  private:
   std::size_t index(const T& value, std::size_t salt) const { const auto base = hash_(value); const auto mixed = base ^ (salt + 0x9e3779b97f4a7c15ULL + (base << 6U) + (base >> 2U)); return mixed % bits_.size(); }
   BitArray bits_; std::size_t hash_count_; Hash hash_{};

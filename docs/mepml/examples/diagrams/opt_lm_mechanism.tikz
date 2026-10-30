@@ -1,0 +1,12 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\large,box/.style={draw=blue!55!black,rounded corners,fill=blue!4,align=center,minimum width=4.2cm,minimum height=1.8cm},every edge/.style={draw,thick,->}]
+\node[box] (n0) at (0.0,0) {Residual linearisation\\$r+Js$};
+\node[box,fill=orange!8] (n1) at (5.6,0) {Damped normal solve\\$(J^TJ+\mu I)s=-J^Tr$};
+\node[box] (n2) at (11.2,0) {Test actual loss\\accept or increase $\mu$};
+\path (n0) edge (n1) (n1) edge (n2);
+\node[align=center,font=\normalsize] at (5.6,-2) {The proposed-step test and a final gradient check answer different questions.};
+\end{tikzpicture}
+\end{document}

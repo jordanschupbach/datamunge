@@ -1,0 +1,451 @@
+//? Title: Alpha-Beta Pruning: Minimax Without the Wasted Work
+//? Subtitle: Why the window is exact, the Knuth-Moore minimal tree, Pearl's branching factor, and the complete game of tic-tac-toe with datamunge's algorithms::alpha_beta
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Minimax values a game position by searching every line of play, so its cost
+grows as \(b^d\) for branching factor \(b\) and depth \(d\). Alpha-beta
+pruning returns the same value while skipping lines that cannot change it.
+We prove why the pruning is safe, derive the Knuth-Moore count of the leaves
+it must still examine with perfect move ordering,
+\(b^{\lceil d/2\rceil}+b^{\lfloor d/2\rfloor}-1\), and state Pearl's
+branching factor for random ordering. The library's `order_moves` reproduces
+the Knuth-Moore count exactly. On random trees, measured effective branching
+factors approach Pearl's values (1.618, 2.148 and 2.630 for \(b=2,3,4\)) from
+above. The data is the complete game tree of tic-tac-toe: 255 168 games and
+549 946 positions. Minimax confirms that the game is a draw. Alpha-beta
+reaches the same verdict from 7 330 of the 255 168 final positions in the
+natural move order, 781 with perfect ordering, and 84 100 with the worst.
+)
+
+\toc
+
+> The data: every game of tic-tac-toe
+
+`algorithms::tictactoe::game_tree()` builds the full game tree from the
+empty board. X moves first and is the maximising player. Every finished
+game is a leaf worth \(+1\) if X won, \(-1\) if O won and \(0\) for a draw.
+Squares are numbered 0 to 8 in reading order. The table splits the tree by
+X's opening square. Each count of games is the number of leaves, so it is
+also the number of final positions plain minimax evaluates.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  const auto tree = alg::tictactoe::game_tree();
+  const auto mm = alg::minimax(tree, true);
+  const auto ab = alg::alpha_beta(tree, true);
+  std::print("{} games, {} positions; minimax value {} (alpha-beta: {}).\n\n", mm.leaves_evaluated,
+             mm.nodes_visited, mm.value, ab.value);
+
+  std::print("| opening square | kind | games | X wins | O wins | draws | value |\n"
+             "| ---: | :--- | ---: | ---: | ---: | ---: | ---: |\n");
+  for (int square = 0; square < 9; ++square) {
+    const auto& child = tree.children[square];
+    long long wins[3] = {0, 0, 0};  // O win, draw, X win
+    auto count = [&](auto&& self, const alg::GameNode& n) -> void {
+      if (n.leaf) { ++wins[static_cast<int>(n.value) + 1]; return; }
+      for (const auto& c : n.children) self(self, c);
+    };
+    count(count, child);
+    const auto r = alg::minimax(child, false);
+    const char* kind = square == 4 ? "centre" : (square % 2 == 0 ? "corner" : "edge");
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n", square, kind, r.leaves_evaluated, wins[2],
+               wins[0], wins[1], r.value);
+  }
+}
+```
+// result_begin: markdown
+255168 games, 549946 positions; minimax value 0 (alpha-beta: 0).
+
+| opening square | kind | games | X wins | O wins | draws | value |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: |
+| 0 | corner | 27732 | 14652 | 7896 | 5184 | 0 |
+| 1 | edge | 29592 | 14232 | 10176 | 5184 | 0 |
+| 2 | corner | 27732 | 14652 | 7896 | 5184 | 0 |
+| 3 | edge | 29592 | 14232 | 10176 | 5184 | 0 |
+| 4 | centre | 25872 | 15648 | 5616 | 4608 | 0 |
+| 5 | edge | 29592 | 14232 | 10176 | 5184 | 0 |
+| 6 | corner | 27732 | 14652 | 7896 | 5184 | 0 |
+| 7 | edge | 29592 | 14232 | 10176 | 5184 | 0 |
+| 8 | corner | 27732 | 14652 | 7896 | 5184 | 0 |
+// result_end
+
+The totals are the classical counts: 255 168 games, of which 131 184 are
+X wins, 77 904 O wins and 46 080 draws. Opening in a corner leads to
+27 732 possible games, on an edge to 29 592 and in the centre to 25 872.
+Every opening has value 0, so with best play from both sides tic-tac-toe is
+a draw. X wins more of the *possible* games simply because X moves first
+and gets an extra mark. Minimax had to evaluate all 255 168 leaves to
+establish this.
+
+> Minimax and the alpha-beta window
+
+>> Minimax
+
+Write \(V(n)\) for the value of node \(n\) under best play. A leaf has its
+own score. A max node takes the largest child value and a min node the
+smallest:
+
+$$
+V(n)=\begin{cases}\text{score}(n) & n \text{ a leaf},\\ \max_{c}V(c) & \text{max to move},\\ \min_c V(c) & \text{min to move}.\end{cases}
+$$
+\alttext(V of n is the score of n at a leaf, the maximum of V of c over the children c when max is to move, and the minimum of V of c when min is to move.)
+
+Computing \(V\) this way touches every node.
+
+>> The window and why it is safe
+
+Alpha-beta evaluates a node with a *window* \((\alpha,\beta)\). Let
+\(F(n,\alpha,\beta)\) be the value the routine returns. The claim, by
+induction on height, is
+
+$$
+F\le\alpha \Rightarrow V\le F,\qquad
+\alpha<F<\beta \Rightarrow F=V,\qquad
+F\ge\beta \Rightarrow V\ge F .
+$$
+\alttext(If F is at most alpha then V is at most F; if F is strictly between alpha and beta then F equals V; if F is at least beta then V is at least F.)
+
+So inside the window the answer is exact, and outside it is a bound in the
+right direction. At a max node the routine raises \(\alpha\) to the best
+child value found so far and stops as soon as \(\alpha\ge\beta\). Stopping
+is safe: the node's value is already at least \(\beta\), which by the
+claim is all the caller needs. A min node one level up compares this value
+with its own \(\beta\), which came from a sibling line it already has, so
+it will never choose this node. The min node is symmetric. Started with
+\((-\infty,+\infty)\), the window never excludes the root value, so
+alpha-beta returns exactly \(V(\text{root})\).
+
+```
+ALPHA-BETA(n, maximizing, alpha, beta):
+    if n is a leaf: return score(n)
+    if maximizing:
+        best = -inf
+        for each child c:
+            best  = max(best, ALPHA-BETA(c, false, alpha, beta))
+            alpha = max(alpha, best)
+            if alpha >= beta: break          # cutoff
+        return best
+    else: the same with min, beta updated, and the same test
+```
+
+> How many leaves survive?
+
+>> Perfect ordering: the Knuth-Moore minimal tree
+
+Take a uniform tree with distinct leaf values, where every node's best child
+is searched first. Knuth and Moore (1975) sort the nodes that alpha-beta
+visits into three types:
+
+- *Type 1*: the root, and the first child of every type-1 node. These lie on
+  the principal variation and are searched with a full window. All their
+  children are visited.
+- *Type 2*: every other child of a type-1 node, and the first child of each
+  type-3 node. The first child of such a node already refutes the move
+  (it causes a cutoff), so only one child is visited.
+- *Type 3*: the visited child of a type-2 node. Its parent's bound cannot be
+  beaten by any of its children, so all of them are visited.
+
+Count the leaves by asking what each player has to *prove*. Let \(v\) be
+the root value. To show \(V\ge v\), max needs a *strategy*: one good move
+at each max node, but an answer to every move at each min node. The leaves
+of that strategy form a subtree that branches \(b\) ways at min levels
+only. The root is a max node, so min moves at depths \(1,3,5,\dots\) below
+\(d\), and there are \(\lfloor d/2\rfloor\) such levels. The proof has
+\(b^{\lfloor d/2\rfloor}\) leaves. To show \(V\le v\), min needs a strategy
+that branches at the \(\lceil d/2\rceil\) max levels, giving
+\(b^{\lceil d/2\rceil}\) leaves. With distinct leaf values the two proofs
+share exactly one leaf, the end of the principal variation. The type-1 and
+type-3 nodes above are exactly where these strategies branch. Hence
+
+$$
+L_{\min}(b,d)=b^{\lceil d/2\rceil}+b^{\lfloor d/2\rfloor}-1 .
+$$
+\alttext(The minimal number of leaves is b to the ceiling of d over 2, plus b to the floor of d over 2, minus 1.)
+
+Any correct algorithm must examine both proofs, so \(L_{\min}\) is also a
+lower bound for every ordering. Its growth rate is \(\sqrt b\) per ply, so
+perfect ordering lets alpha-beta search twice as deep for the same cost.
+
+>> Random ordering: Pearl's branching factor
+
+With children in random order and leaf values independent and continuous,
+Pearl (1982) showed that alpha-beta evaluates about \(R_b^{\,d}\) leaves for
+large \(d\), where
+
+$$
+R_b=\frac{\xi_b}{1-\xi_b},\qquad \xi_b^{\,b}+\xi_b-1=0,\ \ 0<\xi_b<1 .
+$$
+\alttext(R sub b equals xi sub b over 1 minus xi sub b, where xi sub b is the root between 0 and 1 of xi to the b plus xi minus 1 equals 0.)
+
+\(\xi_b\) is the fixed point of the probability that a uniform tree's
+minimax value lies below a given threshold, as the depth grows. For \(b=2\)
+the equation is \(\xi^2+\xi-1=0\), so \(\xi_2=(\sqrt5-1)/2\) and
+\(R_2=(1+\sqrt5)/2\), the golden ratio. For large \(b\),
+\(R_b\approx b^{3/4}\). Random order therefore sits between the minimal
+tree's \(\sqrt b\) and minimax's \(b\). `alpha_beta_branching_factor` solves
+the equation by bisection.
+
+>> Checking both results on uniform trees
+
+`random_game_tree(d, b, seed)` builds a uniform tree with independent
+Uniform(0, 1) leaves. `order_moves` sorts every node's children by their
+minimax values: best first for the minimal tree, worst first for the
+opposite. The first figure uses \(b=3\) and averages \(\log_{10}\) leaf
+counts over 30 trees per depth.
+
+```{cpp, results="markdown", file="figures/alpha_beta_ordering.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const int b = 3, trials = 30;
+  std::vector<double> depth, all, worst, given, best, km;
+  bool km_exact = true;
+  std::print("| depth | minimax b^d | worst first | random order | best first | Knuth-Moore |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (int d = 1; d <= 10; ++d) {
+    double lw = 0, lg = 0, lb = 0;
+    for (int t = 0; t < trials; ++t) {
+      const auto tree = alg::random_game_tree(d, b, 100 * d + t);
+      lw += std::log10(alg::alpha_beta(alg::order_moves(tree, true, alg::MoveOrder::WorstFirst), true).leaves_evaluated);
+      lg += std::log10(alg::alpha_beta(tree, true).leaves_evaluated);
+      const auto bf = alg::alpha_beta(alg::order_moves(tree, true, alg::MoveOrder::BestFirst), true);
+      lb += std::log10(bf.leaves_evaluated);
+      km_exact = km_exact && bf.leaves_evaluated == alg::minimal_tree_leaves(b, d);
+    }
+    depth.push_back(d);
+    all.push_back(d * std::log10(b));
+    worst.push_back(lw / trials);
+    given.push_back(lg / trials);
+    best.push_back(lb / trials);
+    km.push_back(std::log10(alg::minimal_tree_leaves(b, d)));
+    if (d % 2 == 0)
+      std::print("| {} | {} | {:.0f} | {:.0f} | {:.0f} | {} |\n", d, static_cast<long long>(std::pow(b, d)),
+                 std::pow(10, worst.back()), std::pow(10, given.back()), std::pow(10, best.back()),
+                 alg::minimal_tree_leaves(b, d));
+  }
+  std::print("\nBest-first count equals the Knuth-Moore formula in every one of the {} trees: {}.\n"
+             "Leaf counts are geometric means over {} trees.\n", 10 * trials, km_exact ? "yes" : "no", trials);
+
+  dm::graphics::RPlot::create()
+      .lines(depth, all, "minimax", dm::RGB{17, 24, 39}, 2.0)
+      .lines(depth, worst, "worst first", dm::RGB{220, 38, 38}, 2.0)
+      .lines(depth, given, "random", dm::RGB{37, 99, 235}, 2.0)
+      .lines(depth, km, "Knuth-Moore", dm::RGB{245, 158, 11}, 5.0)
+      .points(depth, best, "best first", dm::RGB{5, 150, 105}, 5.0)
+      .y_limits(0, 6.5)
+      .title("Leaves evaluated, b = 3")
+      .x_label("depth d")
+      .y_label("log10 leaves")
+      .size(860, 500)
+      .save_svg("build/alpha_beta_ordering.svg");
+}
+```
+// result_begin: markdown
+| depth | minimax b^d | worst first | random order | best first | Knuth-Moore |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 9 | 9 | 7 | 5 | 5 |
+| 4 | 81 | 79 | 45 | 17 | 17 |
+| 6 | 729 | 649 | 240 | 53 | 53 |
+| 8 | 6561 | 5168 | 1305 | 161 | 161 |
+| 10 | 59049 | 39680 | 6192 | 485 | 485 |
+
+Best-first count equals the Knuth-Moore formula in every one of the 300 trees: yes.
+Leaf counts are geometric means over 30 trees.
+\image(figures/alpha_beta_ordering.svg)
+// result_end
+
+\caption(Leaves evaluated against depth on a log scale, for uniform trees with \(b=3\). The green best-first points sit on the thick amber Knuth-Moore line. Random order (blue) grows more slowly than worst-first order (red), which in turn is well below minimax (black).)
+\alttext(Line plot of log10 leaves against depth from 1 to 10. Minimax is a straight line rising to log10 of 59049, about 4.8. Worst-first ordering rises almost as steeply, to about 4.6. Random ordering rises to about 3.8. Best-first points lie exactly on the Knuth-Moore line, which rises in a staircase to about 2.7.)
+
+Best-first ordering matched the Knuth-Moore count exactly in all 300
+trees. Ordering is everything here. At depth 10 the best order needs 485
+leaves, random order about 6 200 and the worst order about 40 000, out of
+59 049. Even the worst order prunes something, because bounds
+inherited from further up the tree still cut off deep lines.
+
+Pearl's formula is an asymptote, so the next block measures the local rate.
+For each depth it takes \(\sqrt{L(d)/L(d-2)}\), the growth per ply over two
+plies, which cancels the odd/even staircase. \(L\) is the geometric mean
+leaf count over 40 random-order trees.
+
+```{cpp, results="markdown", file="figures/alpha_beta_pearl.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const int trials = 40;
+  auto plot = dm::graphics::RPlot::create();
+  std::print("| b | deepest d | local rate at d | Pearl R_b | b^(3/4) | sqrt(b) |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  const std::vector<std::tuple<int, int, dm::RGB>> runs = {
+      {2, 18, dm::RGB{37, 99, 235}}, {3, 12, dm::RGB{220, 38, 38}}, {4, 9, dm::RGB{5, 150, 105}}};
+  for (const auto& [b, dmax, colour] : runs) {
+    std::vector<double> log_leaves(dmax + 1, 0.0), d_axis, rate, pearl;
+    for (int d = 1; d <= dmax; ++d)
+      for (int t = 0; t < trials; ++t)
+        log_leaves[d] += std::log(alg::alpha_beta(alg::random_game_tree(d, b, 7919 * d + t), true)
+                                      .leaves_evaluated) / trials;
+    const double R = alg::alpha_beta_branching_factor(b);
+    for (int d = 3; d <= dmax; ++d) {
+      d_axis.push_back(d);
+      rate.push_back(std::exp((log_leaves[d] - log_leaves[d - 2]) / 2));
+      pearl.push_back(R);
+    }
+    plot.lines(d_axis, rate, std::format("b = {}", b), colour, 2.0)
+        .lines(d_axis, pearl, "", colour, 1.0);
+    std::print("| {} | {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |\n", b, dmax, rate.back(), R,
+               std::pow(b, 0.75), std::sqrt(b));
+  }
+  plot.title("Local branching factor of alpha-beta, random order")
+      .x_label("depth d")
+      .y_label("sqrt(L(d) / L(d-2))")
+      .size(860, 500)
+      .save_svg("build/alpha_beta_pearl.svg");
+}
+```
+// result_begin: markdown
+| b | deepest d | local rate at d | Pearl R_b | b^(3/4) | sqrt(b) |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 18 | 1.686 | 1.618 | 1.682 | 1.414 |
+| 3 | 12 | 2.292 | 2.148 | 2.280 | 1.732 |
+| 4 | 9 | 2.712 | 2.630 | 2.828 | 2.000 |
+\image(figures/alpha_beta_pearl.svg)
+// result_end
+
+\caption(The local branching factor for \(b=2,3,4\) (thick lines) and Pearl's asymptotic value \(R_b\) (thin lines of the same colour). Each curve starts well above its asymptote and drifts down towards it as the trees deepen.)
+\alttext(Three thick noisy curves falling with depth: blue for b equal 2 from about 1.8 at depth 3 to about 1.65 to 1.7 beyond depth 13, above a thin line at 1.618; red for b equal 3 from about 2.5 to about 2.25 to 2.3, above a thin line at 2.148; green for b equal 4 from about 3.15 to about 2.7, above a thin line at 2.63.)
+
+Every measured rate is above Pearl's value and falling towards it. The
+approach is slow: at the deepest trees searched the gap is 0.07 for
+\(b=2\), 0.14 for \(b=3\) and 0.08 for \(b=4\). This is expected: Pearl's
+argument is a limit, and the probability \(\xi_b\) only settles once the
+tree is deep enough for the root value's distribution to sharpen. The
+finite-depth rates happen to sit close to \(b^{3/4}\), but that is a
+coincidence of the depths reachable here. Random order is clearly far from
+the \(\sqrt b\) of the minimal tree. Engines therefore invest heavily in
+move ordering (killer moves, history tables, iterative deepening), to move
+from \(R_b\) towards \(\sqrt b\).
+
+> Back to tic-tac-toe: ordering and windows
+
+Tic-tac-toe is not a uniform tree: the branching factor falls from 9 to 1,
+games end early, and the leaf values are only \(-1\), \(0\) and \(+1\). The
+last point matters. Ties mean that \(\alpha\ge\beta\) is often reached with
+equality, which the uniform-tree analysis excludes. The next block compares
+orderings on the full tree. It also tries narrow windows, which ask a yes/no
+question instead of computing a value. With the window \((-0.5,0.5)\),
+alpha-beta returns a value strictly inside it only if the game is a draw.
+With \((0.5,1.5)\) it asks whether X can force a win, and with
+\((-1.5,-0.5)\) whether O can.
+
+```{cpp, results="markdown", file="figures/alpha_beta_tictactoe.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto tree = alg::tictactoe::game_tree();
+  struct Row { std::string search; alg::GameResult r; };
+  const auto inf = std::numeric_limits<double>::infinity();
+  const std::vector<Row> rows = {
+      {"minimax", alg::minimax(tree, true)},
+      {"alpha-beta, worst first", alg::alpha_beta(alg::order_moves(tree, true, alg::MoveOrder::WorstFirst), true)},
+      {"alpha-beta, square order", alg::alpha_beta(tree, true, -inf, inf)},
+      {"alpha-beta, best first", alg::alpha_beta(alg::order_moves(tree, true, alg::MoveOrder::BestFirst), true)},
+      {"window (0.5, 1.5): can X force a win?", alg::alpha_beta(tree, true, 0.5, 1.5)},
+      {"window (-0.5, 0.5): is it a draw?", alg::alpha_beta(tree, true, -0.5, 0.5)},
+      {"window (-1.5, -0.5): can O force a win?", alg::alpha_beta(tree, true, -1.5, -0.5)},
+  };
+  std::print("| search | returned | leaves | positions | cutoffs | share of leaves |\n"
+             "| :--- | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> x, y;
+  std::vector<std::string> labels;
+  for (std::size_t i = 0; i < rows.size(); ++i) {
+    const auto& [name, r] = rows[i];
+    std::print("| {} | {} | {} | {} | {} | {:.2f}% |\n", name, r.value, r.leaves_evaluated, r.nodes_visited,
+               r.cutoffs, 100.0 * r.leaves_evaluated / 255168);
+    x.push_back(i + 1.0);
+    y.push_back(std::log10(r.leaves_evaluated));
+  }
+  dm::graphics::RPlot::create()
+      .bars(x, y, "", dm::RGB{37, 99, 235})
+      .x_ticks(x, {"minimax", "worst", "squares", "best", "X wins?", "draw?", "O wins?"})
+      .x_label("")
+      .title("Final positions evaluated, tic-tac-toe")
+      .y_label("log10 leaves")
+      .size(860, 480)
+      .save_svg("build/alpha_beta_tictactoe.svg");
+}
+```
+// result_begin: markdown
+| search | returned | leaves | positions | cutoffs | share of leaves |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| minimax | 0 | 255168 | 549946 | 0 | 100.00% |
+| alpha-beta, worst first | 0 | 84100 | 198837 | 90393 | 32.96% |
+| alpha-beta, square order | 0 | 7330 | 18297 | 8180 | 2.87% |
+| alpha-beta, best first | 0 | 781 | 2312 | 1060 | 0.31% |
+| window (0.5, 1.5): can X force a win? | 0 | 6988 | 17479 | 7839 | 2.74% |
+| window (-0.5, 0.5): is it a draw? | 0 | 6740 | 16811 | 7795 | 2.64% |
+| window (-1.5, -0.5): can O force a win? | 0 | 462 | 1132 | 520 | 0.18% |
+\image(figures/alpha_beta_tictactoe.svg)
+// result_end
+
+\caption(Leaves evaluated on the full tic-tac-toe tree on a log scale, for minimax, three move orders of alpha-beta and three narrow-window tests.)
+\alttext(Bar chart of log10 leaves. Minimax is tallest at about 5.4. Worst-first alpha-beta is about 4.9, square-order alpha-beta about 3.9, best-first about 2.9. The X-wins window test is about 3.8, the draw window test about 3.8, and the O-wins window test is lowest at about 2.7.)
+
+Every search agrees on the value 0. Square order, which tries squares in
+reading order, already avoids 97% of the final positions. The coarse
+values help: a tie with the bound already counts as a cutoff
+(\(\alpha\ge\beta\)), and with only three possible values ties are common.
+Perfect ordering needs only 781 leaves, 0.31% of the game. The worst order
+still prunes two thirds, because bounds inherited from above cut off deep
+lines, as on the uniform trees.
+
+The windows read as the bound rule says. For "can X force a win?" the
+result 0 is at most \(\alpha=0.5\), a fail low, so \(V\le0\) and the answer
+is no. For "can O force a win?" the result 0 is at least \(\beta=-0.5\), a
+fail high, so \(V\ge0\) and again the answer is no. That test is the
+cheapest of all, 462 leaves: X only has to show one line that avoids
+losing. The draw window returns 0 strictly inside \((-0.5,0.5)\), an exact
+answer, from 6 740 leaves, fewer than the 7 330 of the full window. Narrow
+windows prune more because \(\alpha\ge\beta\) is reached sooner, which is the
+idea behind aspiration search, PVS/NegaScout and MTD(f).
+
+> Summary
+
+- Alpha-beta returns the exact minimax value. Inside the window the answer
+  is exact; outside it is a bound in the right direction, so cutoffs are
+  safe.
+- With perfect ordering it examines
+  \(b^{\lceil d/2\rceil}+b^{\lfloor d/2\rfloor}-1\) leaves, about
+  \(\sqrt b\) per ply, and no algorithm can do with fewer.
+  `order_moves(…, MoveOrder::BestFirst)` reproduces the count exactly.
+- With random ordering on continuous leaves the rate is Pearl's
+  \(R_b=\xi_b/(1-\xi_b)\), close to \(b^{3/4}\). Measured rates approach it
+  slowly from above.
+- On the complete tic-tac-toe tree, alpha-beta proves the draw from 7 330 of
+  255 168 final positions in square order and 781 with perfect ordering.
+  Narrow windows answer yes/no questions more cheaply still.
+
+```{cpp, eval="no"}
+#include <dm/dm.hpp>
+namespace alg = dm::algorithms;
+
+auto tree = alg::tictactoe::game_tree();                   // or random_game_tree(d, b, seed)
+auto r    = alg::alpha_beta(tree, /*maximizing=*/true);    // r.value, r.leaves_evaluated, r.cutoffs
+auto best = alg::order_moves(tree, true, alg::MoveOrder::BestFirst);
+auto km   = alg::minimal_tree_leaves(3, 10);               // 3^5 + 3^5 - 1 = 485
+auto R3   = alg::alpha_beta_branching_factor(3);           // Pearl: 2.148
+```

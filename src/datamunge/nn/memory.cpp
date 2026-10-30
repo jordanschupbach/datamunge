@@ -1,12 +1,19 @@
+/// @file memory.cpp
+/// @brief Process-wide relaxed atomic accounting for tensor-buffer allocation lifetimes.
+
 #include "datamunge/nn/memory.hpp"
 
 #include <atomic>
 
 namespace datamunge::nn {
 
+/// @brief Atomic allocation counters shared by every tensor allocator in this process.
 namespace {
+/// @brief Sum of logical byte sizes of live tensor buffers; allocator overhead is excluded.
 std::atomic<std::int64_t> live_bytes{0};
+/// @brief Largest observed live-byte count since reset_peak_memory().
 std::atomic<std::int64_t> peak_bytes{0};
+/// @brief Number of live buffers, including those with zero logical bytes.
 std::atomic<std::int64_t> live_count{0};
 }  // namespace
 

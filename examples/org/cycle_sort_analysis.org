@@ -39,7 +39,7 @@ are the scarce resource.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Instrumented copy returning (writes, comparisons).
 static std::pair<long, long> cycle_counts(std::vector<int> a) {

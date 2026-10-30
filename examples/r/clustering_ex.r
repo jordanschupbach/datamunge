@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/clustering_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # Note: feature_columns is passed via the *_encoded constructor (encode_strings()) since
 # KMeans/AgglomerativeClustering/DBSCAN's vector<string> constructor overload is unreachable

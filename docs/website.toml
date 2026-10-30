@@ -1,0 +1,37 @@
+# The documentation website: scripts/website/build.py (`just docs`, `just docs-serve`).
+#
+# Doxygen parses the C++ (XML only); the website renders that XML as its API
+# reference, mep exports the mepml reports, and the guides below are Markdown.
+
+# Shown in the header; empty uses the project name from CMakeLists.txt.
+title = ""
+# One line under the title on the home page.
+tagline = "One C++ core, many languages: data structures, statistics, plots and more, with bindings everywhere."
+# Source links on API pages and links to repository files that are not pages
+# here. Empty: no source links.
+repository = "https://github.com/jordanschupbach/datamunge"
+branch = "main"
+# The home page's text, and the logo in the header (paths from the repository root).
+home = "README.md"
+logo = "assets/datamunge.png"
+
+# Guides: Markdown pages, in this order. `slug` is the page name (guides/<slug>.html).
+[[guides]]
+title = "Examples by language"
+slug = "examples"
+source = "docs/pages/examples.md"
+
+[[guides]]
+title = "SWIG bindings"
+slug = "bindings"
+source = "docs/bindings.md"
+
+[[guides]]
+title = "Writing mepml reports"
+slug = "mepml-reports"
+source = "docs/mepml/README.md"
+
+[[guides]]
+title = "Optimization roadmap"
+slug = "optimization-roadmap"
+source = "docs/pages/optimization-roadmap.md"

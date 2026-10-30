@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/ode_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # ODESolver has no facade DataFrame dependency, so it's %include-d directly rather than wrapped
 # -- see ode_ex.cpp for the C++-native custom-RHS path; R has no SWIG director support at all

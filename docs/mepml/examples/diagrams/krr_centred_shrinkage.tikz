@@ -1,0 +1,15 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta,positioning}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\large,box/.style={draw=blue!55!black,rounded corners,fill=blue!4,align=center,minimum width=3.5cm,minimum height=1.25cm},every edge/.style={draw,thick,->}]
+\node[box] (y) at (0,0) {Response $y$};
+\node[box] (mean) at (5,1.5) {Constant direction\\$\bar y\mathbf1$};
+\node[box] (center) at (5,-1.5) {Centred response\\$y_c=Cy$};
+\node[box,fill=orange!8] (keep) at (10,1.5) {Free intercept\\factor $1$};
+\node[box,fill=orange!8] (shrink) at (10,-1.5) {Kernel direction $u_j$\\factor $\dfrac{d_j}{d_j+\lambda}$};
+\node[box] (fit) at (15,0) {Fitted response\\$\widehat y=Sy$};
+\path (y) edge (mean) (y) edge (center) (mean) edge (keep) (center) edge (shrink) (keep) edge (fit) (shrink) edge (fit);
+\node[align=center,font=\normalsize] at (7.5,-3.2) {$K_c=CKC,\quad C=I-\mathbf1\mathbf1^T/n$\\The penalty shrinks centred directions; the mean is preserved.};
+\end{tikzpicture}
+\end{document}

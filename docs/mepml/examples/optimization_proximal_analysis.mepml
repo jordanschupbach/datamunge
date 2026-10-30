@@ -1,0 +1,434 @@
+//? Title: Proximal Gradient and FISTA: Loss, Thresholds and Stationarity
+//? Subtitle: Exact soft thresholding before a matched Iris lasso comparison
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A regression loss with an L1 penalty is convex but nonsmooth at zero coefficients.
+Ordinary smooth-gradient stationarity is therefore the wrong stopping target.
+We derive the proximal update and its soft-threshold map, check a two-coordinate
+solution, and show a rate that is stable for plain gradient steps but unstable for
+acceleration. Iris then supplies a matched raw-unit objective, compared with the
+independent coordinate-descent Lasso implementation across penalties.
+)
+\toc
+
+> The method
+
+Write F=f+g, where f has a Lipschitz gradient and g has an accessible proximal map.
+A quadratic upper model of f gives the proximal-gradient step. For the L1 penalty,
+each penalised coordinate has the soft-threshold solution:
+
+$$
+ x^+=\operatorname{prox}_{\eta g}(x-\eta\nabla f(x)),\qquad
+ \operatorname{prox}_{\eta\lambda|\cdot|}(z)
+ =\operatorname{sign}(z)\max(|z|-\eta\lambda,0).
+$$
+\alttext(A smooth-gradient step is followed by the proximal map. For L1, subtract eta times lambda from each magnitude and clamp at zero while retaining its sign.)
+
+The threshold follows by solving z-w+eta*lambda*sign(z)=0 in the positive and
+negative regions and checking the zero subgradient interval. An unpenalised
+intercept passes through unchanged. The library interface's gradient supplies
+only the smooth part; evaluate returns the entire composite objective.
+
+The retained TikZ diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Normal documentation exports use its saved local SVG.
+
+```{bash, file="figures/opt_proximal_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/opt_proximal_mechanism.tikz > build/opt_proximal_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/opt_proximal_mechanism.svg build/opt_proximal_mechanism.dvi > build/opt_proximal_mechanism.render.log 2>&1
+printf 'Rendered the optimization mechanism diagram.\n'
+```
+// result_begin:
+// Rendered the optimization mechanism diagram.
+// \image(figures/opt_proximal_mechanism.svg)
+// result_end
+\caption(The proximal map handles the nonsmooth term while a mapping norm checks the whole objective.)
+\alttext(A smooth-gradient trial is soft thresholded. An unpenalised intercept is left unchanged. The proximal-gradient mapping, rather than the raw smooth gradient, diagnoses composite stationarity.)
+
+ISTA repeats that map. FISTA instead evaluates gradients at extrapolated y points,
+uses t_next=(1+sqrt(1+4*t squared))/two and
+ y_next=x_next+(t-1)/t_next*(x_next-x). With a convex f, convex g and eta<=1/L,
+the standard accepted-iterate objective bounds are O(1/k) for ISTA and O(1/k squared)
+for FISTA. Those bounds do not assert that FISTA's extrapolated-point objective
+is monotone. This implementation has no backtracking, adaptive restart or monotone
+safeguard. Both stop on coordinate displacement; the post-run mapping is
+
+$$
+ G_\eta(x)=\frac{x-\operatorname{prox}_{\eta g}(x-\eta\nabla f(x))}{\eta}.
+$$
+\alttext(The proximal-gradient mapping is the displacement from the current point to one complete proximal-gradient update, divided by the step. Its zero norm expresses composite first-order stationarity.)
+
+For a convex problem, G_eta=zero is an optimality condition. A small coordinate
+change with a tiny rate need not imply a small mapping. Neither solver requests
+full objective values inside its loop: the recorder samples gradient-request
+points afterwards, and the final returned point is checked separately. Dense
+least-squares gradient cost is O(n*p), with O(p) optimizer state beyond the design.
+
+> Small worked example
+
+>> A two-coordinate lasso solution and its threshold map
+
+Let f=.25*((x0-3)^2+(x1+1)^2) and g=.5*(abs(x0)+abs(x1)). The exact solution is
+(2,0), with F=1.5. At this point the smooth gradient is (-.5,.5), not zero, but
+soft thresholding x-gradient(x) at .5 returns x unchanged. From the origin with
+eta one, ISTA's first point is (1,0) and after k steps x0=2*(1-2 to the -k),
+while x1 remains zero. The returned four-step point is (1.875,0). Gradient-request
+samples describe pre-update points for ISTA and look-ahead points for FISTA.
+
+```{cpp, results="markdown", file="figures/opt_proximal_threshold.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::L1LeastSquaresObjective f({{1, 0}, {0, 1}}, {3, -1}, .5);
+  const auto a = o::trace_optimize<o::ProximalFunction>(f, o::ProximalGradient({1, 4, 0}), {0, 0}),
+             b = o::trace_optimize<o::ProximalFunction>(f, o::FISTA({1, 4, 0}), {0, 0});
+  std::vector<double> z = dm::seql(-3, 3, 201).values(), threshold;
+  for (double v : z)
+    threshold.push_back(f.proximal({v, 0}, 1)[0]);
+  auto map = dm::graphics::RPlot::create()
+                 .line(z, z, "identity", {130, 130, 130})
+                 .line(z, threshold, "soft threshold", {40, 100, 190})
+                 .title("Threshold magnitude 0.5")
+                 .x_label("input coordinate")
+                 .y_label("proximal output")
+                 .x_limits(-3, 3)
+                 .y_limits(-3, 4.5)
+                 .legend({"identity", "proximal map"}, {{130, 130, 130}, {40, 100, 190}});
+  auto loss = o::optimization_comparison(f, {a, b}, {"ISTA", "FISTA"}, "gradient", 1.5)
+                  .title("Requested gradient points, four steps");
+  dm::graphics::RLayout::create(1, 2).add(map).add(loss).size(1100, 490).fit_panels().save_svg(
+      "build/opt_proximal_threshold.svg");
+  std::print(
+      "ISTA\n\n{}\n\nFISTA\n\n{}\n\nExact optimum: F={:.6g}, smooth-gradient norm={:.6g}, mapping "
+      "norm={:.6g}.\n",
+      a.summary().to_md(7),
+      b.summary().to_md(7),
+      f.evaluate({2, 0}),
+      std::hypot(f.gradient({2, 0})[0], f.gradient({2, 0})[1]),
+      o::proximal_mapping_norm(f, {2, 0}, 1));
+}
+```
+// result_begin: markdown
+ISTA
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.50391 | 1.50391 | 0.7526 | 9 |  | 1.875 | -0 |
+
+
+FISTA
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.5001 | 1.5001 | 0.714298 | 9 |  | 1.97976 | -0 |
+
+
+Exact optimum: F=1.5, smooth-gradient norm=0.707107, mapping norm=0.
+\image(figures/opt_proximal_threshold.svg)
+// result_end
+\caption(Soft thresholding gives exact zeros and a correct stationarity condition for the composite objective.)
+\alttext(The L1 proximal map has a flat zero region and shifted linear tails. Requested-point losses for four ISTA/FISTA steps are shown separately from the exact returned-point checks.)
+
+> Checking the rate assumption
+
+>> A rate stable for ISTA need not be stable for FISTA
+
+Use the smooth special case F=.5*x squared, lambda=zero and L=one. Plain ISTA is
+gradient descent, so eta=1.5 still contracts by -0.5. FISTA's extrapolation can be
+unstable at that same rate, which violates the standard eta<=1/L assumption.
+Compare eta=.5 and 1.5 over thirty updates from x=one. The display retains the
+actual requested-point losses; no acceleration theorem is asserted outside its
+rate assumptions, and a finite budget is not called convergence.
+
+```{cpp, results="markdown", file="figures/opt_proximal_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::L1LeastSquaresObjective      f({{1}}, {0}, 0);
+  std::vector<o::OptimizationRun> runs;
+  const std::vector<std::string>  labels{"ISTA .5", "FISTA .5", "ISTA 1.5", "FISTA 1.5"};
+  for (double rate : {.5, 1.5}) {
+    runs.push_back(
+        o::trace_optimize<o::ProximalFunction>(f, o::ProximalGradient({rate, 30, 0}), {1}));
+    runs.push_back(o::trace_optimize<o::ProximalFunction>(f, o::FISTA({rate, 30, 0}), {1}));
+  }
+  o::optimization_comparison(f, runs, labels, "gradient")
+      .title("A fixed-rate acceleration counterexample")
+      .size(850, 490)
+      .save_svg("build/opt_proximal_rates.svg");
+  for (std::size_t i = 0; i < runs.size(); ++i)
+    std::print(
+        "{}\n\n{}\n\nMapping norm: {:.6g}.\n\n",
+        labels[i],
+        runs[i].summary().to_md(7),
+        o::proximal_mapping_norm(f, runs[i].coordinates, .5));
+}
+```
+// result_begin: markdown
+ISTA .5
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 4.33681e-19 | 4.33681e-19 | 9.31323e-10 | 61 |  | 9.31323e-10 |
+
+
+Mapping norm: 9.31323e-10.
+
+FISTA .5
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 9.25145e-14 | 9.25145e-14 | 4.3015e-07 | 61 |  | -4.3015e-07 |
+
+
+Mapping norm: 4.3015e-07.
+
+ISTA 1.5
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 4.33681e-19 | 4.33681e-19 | 9.31323e-10 | 61 |  | 9.31323e-10 |
+
+
+Mapping norm: 9.31323e-10.
+
+FISTA 1.5
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 1295.42 | 1295.42 | 50.9003 | 61 |  | 50.9003 |
+
+
+Mapping norm: 50.9003.
+
+\image(figures/opt_proximal_rates.svg)
+// result_end
+\caption(The usual FISTA bound needs its Lipschitz step-size condition.)
+\alttext(Four requested-point loss traces compare two rates with and without extrapolation. Eta 1.5 can remain stable for plain gradient steps while the accelerated recurrence grows.)
+
+> Iris: match the objective before comparing solvers
+
+Predict Petal.Length from Sepal.Length, Sepal.Width and Petal.Width on all 150
+Iris flowers. This is a numerical optimisation comparison on a fixed training
+objective, not a held-out prediction study. All measurements use centimetres.
+We keep raw predictor units and explicitly turn scaling off in the Lasso reference;
+otherwise the same numeric penalty would define a different problem. The first
+design column is the unpenalised intercept. Both solvers minimise
+RSS/(2*n)+lambda*sum(abs(slopes)), with lambda=.1. The smooth gradient Lipschitz
+constant is the largest eigenvalue of X transpose X/n; eta=.01 is checked against
+that design before using the fixed-step routines. Coordinate-descent tolerances
+are tightened for the reference, and its native KKT diagnostics remain visible.
+
+```{cpp, results="markdown", file="figures/opt_proximal_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o                        = dm::optim;
+  const auto                 iris    = dm::datasets::iris();
+  const std::string          formula = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width";
+  auto                       data    = o::LeastSquaresObjective::from_data(iris, formula);
+  o::L1LeastSquaresObjective f(data.design(), data.response(), .1, false);
+  const double               L = data.mean_loss_lipschitz();
+  if (.01 * L > 1)
+    throw std::runtime_error("fixed proximal step exceeds 1/L");
+  std::print("Mean-loss L={:.9g}; eta*L={:.9g}.\n", L, .01 * L);
+  dm::stats::LassoOptions opts;
+  opts.lambda      = .1;
+  opts.standardize = false;
+  opts.tol         = 1e-10;
+  opts.max_iter    = 100000;
+  const dm::stats::Lasso reference(iris, formula, opts);
+  std::vector<double>    control{reference.intercept()};
+  control.insert(control.end(), reference.coefficients().begin(), reference.coefficients().end());
+  const auto a = o::trace_optimize<o::ProximalFunction>(
+                 f, o::ProximalGradient({.01, 20000, 1e-10}), std::vector<double>(4, 0)),
+             b = o::trace_optimize<o::ProximalFunction>(
+                 f, o::FISTA({.01, 20000, 1e-10}), std::vector<double>(4, 0));
+  o::optimization_comparison(f, {a, b}, {"ISTA", "FISTA"}, "gradient", f.evaluate(control))
+      .title("Iris: matched raw-unit lasso loss")
+      .size(850, 490)
+      .save_svg("build/opt_proximal_iris.svg");
+  std::print(
+      "{}\n\nReference diagnostics\n\n{}\n\nReference "
+      "slopes\n\n{}\n\nISTA\n\n{}\n\nFISTA\n\n{}\n\nMapping norms: ISTA={:.6g}, FISTA={:.6g}; "
+      "reference F={:.9g}.\n",
+      (iris | dm::group_by("Species") |
+       dm::summarise(dm::agg::n("n"), dm::agg::mean("Petal.Length", "mean_length_cm")))
+          .to_md(4),
+      reference.diagnostics().to_md(9),
+      reference.coefficient_table().to_md(7),
+      a.summary().to_md(7),
+      b.summary().to_md(7),
+      o::proximal_mapping_norm(f, a.coordinates, .01),
+      o::proximal_mapping_norm(f, b.coordinates, .01),
+      f.evaluate(control));
+}
+```
+// result_begin: markdown
+Mean-loss L=46.6024744; eta*L=0.466024744.
+| Species | n | mean_length_cm |
+| :--- | ---: | ---: |
+| setosa | 50 | 1.462 |
+| versicolor | 50 | 4.260 |
+| virginica | 50 | 5.552 |
+
+
+Reference diagnostics
+
+| alpha | lambda | iterations | converged | max_change | max_kkt_violation | loss | l1_norm | l2_squared | objective |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.1 | 73 | 1 | 0 | 0 | 0.081870221 | 2.1747364 | 2.77689129 | 0.299343862 |
+
+
+Reference slopes
+
+| predictor | coefficient | penalty_coefficient | center | scale |
+| :--- | ---: | ---: | ---: | ---: |
+| Sepal.Length | 0.5150334 | 0.5150334 | 5.8433333 | 1 |
+| Sepal.Width | -0.0767496 | -0.0767496 | 3.0573333 | 1 |
+| Petal.Width | 1.5829534 | 1.5829534 | 1.1993333 | 1 |
+
+
+ISTA
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 0.299478 | 0.299478 | 0.173171 | 40001 |  | -0.728643 | 0.489819 | -0.0953857 | 1.59879 |
+
+
+FISTA
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 | x2 | x3 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- | :--- |
+| 0.299344 | 0.299344 | 0.173205 | 40001 |  | -0.915075 | 0.514996 | -0.0767772 | 1.58298 |
+
+
+Mapping norms: ISTA=0.00140748, FISTA=2.08176e-06; reference F=0.299343862.
+\image(figures/opt_proximal_iris.svg)
+// result_end
+\caption(A solver comparison is meaningful only after matching units, intercept treatment and penalty convention.)
+\alttext(ISTA and FISTA sample the same raw-unit Iris lasso objective, with the coordinate-descent reference loss as a numerical control. Final mapping norms and reference KKT diagnostics accompany the plot.)
+
+>> Repeat the matched comparison along a penalty path
+
+Sweep six declared penalties, fitting FISTA from zero each time and comparing with
+the separately implemented coordinate-descent model. No warm-start cost advantage
+is claimed. Penalised slopes can become exactly zero; the intercept is never
+thresholded. The figure shows FISTA lines and reference points in identical units,
+plus the maximum coefficient difference. Correlated predictors can make coefficient
+accuracy more demanding than objective accuracy, so the table also prints each
+post-run mapping norm and the reference solver's convergence flag.
+
+```{cpp, results="markdown", file="figures/opt_proximal_path.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o                 = dm::optim;
+  const auto          iris    = dm::datasets::iris();
+  const std::string   formula = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width";
+  auto                data    = o::LeastSquaresObjective::from_data(iris, formula);
+  std::vector<double> penalty, error, mapping;
+  std::vector<std::vector<double>> fitted(3), control(3);
+  for (double lambda : {0., .01, .03, .1, .3, 1.}) {
+    o::L1LeastSquaresObjective f(data.design(), data.response(), lambda, false);
+    const auto                 run = o::trace_optimize<o::ProximalFunction>(
+        f, o::FISTA({.01, 20000, 1e-10}), std::vector<double>(4, 0));
+    dm::stats::LassoOptions opt;
+    opt.lambda      = lambda;
+    opt.standardize = false;
+    opt.tol         = 1e-10;
+    opt.max_iter    = 100000;
+    const dm::stats::Lasso ref(iris, formula, opt);
+    double                 e = std::abs(run.coordinates[0] - ref.intercept());
+    for (std::size_t j = 0; j < 3; ++j) {
+      fitted[j].push_back(run.coordinates[j + 1]);
+      control[j].push_back(ref.coefficients()[j]);
+      e = std::max(e, std::abs(run.coordinates[j + 1] - ref.coefficients()[j]));
+    }
+    penalty.push_back(lambda);
+    error.push_back(std::log10(std::max(1e-14, e)));
+    mapping.push_back(o::proximal_mapping_norm(f, run.coordinates, .01));
+    std::print(
+        "lambda={}: max coefficient difference={:.6g}, mapping norm={:.6g}, reference "
+        "converged={}.\n",
+        lambda,
+        e,
+        mapping.back(),
+        ref.converged());
+  }
+  const std::vector<std::string>       labels{"Sepal.Length", "Sepal.Width", "Petal.Width"};
+  const std::vector<dm::graphics::RGB> colors{{40, 100, 190}, {190, 100, 35}, {70, 145, 90}};
+  auto                                 path = dm::graphics::RPlot::create();
+  for (std::size_t j = 0; j < 3; ++j)
+    path.line(penalty, fitted[j], labels[j], colors[j])
+        .points(penalty, control[j], "coordinate control", colors[j], 3);
+  path.title("Slopes: FISTA lines and lasso points")
+      .x_label("lambda, raw measurement units")
+      .y_label("slope")
+      .x_limits(0, 1)
+      .y_limits(-1, 2.8)
+      .legend(labels, colors);
+  auto check = dm::graphics::RPlot::create()
+                   .line(penalty, error, "coefficient difference", {40, 100, 190})
+                   .title("Matched-solver coefficient check")
+                   .x_label("lambda")
+                   .y_label("log10 maximum difference, floor 1e-14")
+                   .x_limits(0, 1);
+  dm::graphics::RLayout::create(1, 2).add(path).add(check).size(1100, 490).fit_panels().save_svg(
+      "build/opt_proximal_path.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("lambda", penalty);
+  table.add_column("mapping_norm", mapping);
+  std::print("\n{}\n", table.to_md(10));
+}
+```
+// result_begin: markdown
+lambda=0: max coefficient difference=5.61388e-05, mapping norm=4.23191e-07, reference converged=true.
+lambda=0.01: max coefficient difference=7.81969e-05, mapping norm=5.89473e-07, reference converged=true.
+lambda=0.03: max coefficient difference=0.000122313, mapping norm=9.22038e-07, reference converged=true.
+lambda=0.1: max coefficient difference=0.000276156, mapping norm=2.08176e-06, reference converged=true.
+lambda=0.3: max coefficient difference=3.59375e-05, mapping norm=3.32233e-07, reference converged=true.
+lambda=1: max coefficient difference=0.00024426, mapping norm=2.25808e-06, reference converged=true.
+
+| lambda | mapping_norm |
+| ---: | ---: |
+| 0.00 | 0.000000423 |
+| 0.01 | 0.000000589 |
+| 0.03 | 0.000000922 |
+| 0.10 | 0.000002082 |
+| 0.30 | 0.000000332 |
+| 1.00 | 0.000002258 |
+
+\image(figures/opt_proximal_path.svg)
+// result_end
+\caption(Penalty paths compare matched optima while retaining finite-budget coefficient and stationarity errors.)
+\alttext(Three raw-unit slope paths show FISTA lines with coordinate-descent control points. A second panel shows the maximum coefficient difference for each declared penalty.)
+
+> Conclusions and references
+
+The exact threshold map and two-coordinate optimum show why the smooth gradient
+can remain nonzero at a correct lasso solution. The rate counterexample qualifies
+acceleration claims, and the Iris analysis matches scaling, intercept and penalty
+before comparing numerical solutions. A small displacement or a flat requested-point
+loss curve is supplemented by the proximal mapping norm. These training-objective
+checks do not estimate predictive generalisation or regularisation-selection uncertainty.
+
+- A. Beck and M. Teboulle (2009), [A Fast Iterative Shrinkage-Thresholding Algorithm for Linear Inverse Problems](https://doi.org/10.1137/080716542).
+- J. Friedman, T. Hastie and R. Tibshirani (2010), [Regularization Paths for Generalized Linear Models via Coordinate Descent](https://doi.org/10.18637/jss.v033.i01), the separate reference solver family.
+
+> Reading the numerical evidence
+
+`trace_optimize` calls the configured native optimizer through its stated abstract
+interface. It records callback requests without inserting fitting evaluations.
+Value calls can be rejected trials; gradient calls can be look-ahead points.
+`optimization_comparison` explicitly re-evaluates selected points afterwards on
+these pure objectives. Those diagnostic calls are excluded from fitting counts.
+Callback indices are neither accepted iterations nor wall time. The plotted gap
+uses the declared reference (minimum or stated lower bound) and a display floor of 1e-14; that floor does
+not modify any optimizer update. Returned coordinates, checked objective and
+appropriate stationarity/feasibility checks carry more information than a return
+from a finite iteration budget. Native APIs do not expose a uniform stop-status flag.
+The recorder retains exceptions and rejects nonfinite requested values/gradients;
+this makes failures visible rather than letting an instrumented run continue on NaN.
+

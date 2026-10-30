@@ -41,7 +41,7 @@ benefit at the \~16 significant digits a `double` holds: one term already reache
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double PI = 3.14159265358979323846;
 ```
@@ -96,7 +96,7 @@ the number of terms to see the \~14-digits-per-term collapse.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double PI = 3.14159265358979323846;
 

@@ -1,3 +1,5 @@
+/// @file adagrad.cpp
+/// @brief AdaGrad native update, trial and stopping implementation.
 #include <datamunge/optim/adagrad.hpp>
 
 #include <cmath>

@@ -56,7 +56,7 @@ into the original string) and the full Manacher radius array as
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * The '#'-interleaving trick

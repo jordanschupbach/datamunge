@@ -48,7 +48,7 @@ interpolation improves \-\- but it is the cheap default in graphics and geospati
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -124,7 +124,7 @@ to the exact surface. We also confirm exactness on a genuine bilinear function.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

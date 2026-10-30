@@ -39,6 +39,14 @@ public:
 
     [[nodiscard]] VStatisticResult run(const std::vector<double>& sample, const SymmetricKernel& kernel) const;
 
+    /// @brief The kernel degree m.
+    /// @return The degree passed to the constructor.
+    [[nodiscard]] std::size_t degree() const noexcept { return degree_; }
+
+    /// @brief The configured evaluation options.
+    /// @return The options passed to the constructor.
+    [[nodiscard]] const VStatisticOptions& options() const noexcept { return options_; }
+
 private:
     std::size_t degree_;
     VStatisticOptions options_;

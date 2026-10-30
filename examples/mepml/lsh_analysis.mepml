@@ -42,7 +42,7 @@ these vectors similar?" into "do their bit-signatures match?".
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > From bits to sublinear search: AND then OR
@@ -146,7 +146,7 @@ agreeing random-hyperplane bits, comparing against \(1-\theta/\pi\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -1,4 +1,5 @@
 # Native Python NN example. SGD, momentum and Nesterov equations and minibatches.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/sgd_momentum.py
 """Independent kernel formulas, synchronous gradients and shuffled regression."""
 import math
 from pydatamunge import nn

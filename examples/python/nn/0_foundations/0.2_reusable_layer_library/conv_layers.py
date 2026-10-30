@@ -1,4 +1,5 @@
 # Native Python NN example. Convolution variants checked against explicit reference loops.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/conv_layers.py
 """1-D/2-D/3-D, depthwise, separable, transpose and dilation demonstrations."""
 import itertools
 import math

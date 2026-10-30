@@ -1,6 +1,6 @@
 # Native Python NN example. Paired MNIST CNN batch-norm ablation trained and checked in Python.
-"""CMD: just python-example batch_norm_ablation
-Paired MNIST CNN experiments with and without batch normalization.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/batch_norm_ablation.py
+"""Paired MNIST CNN experiments with and without batch normalization.
 
 Port of tflow's batch_norm_ablation. Use the same 12,000 fitting rows,
 3,000 validation rows, initial convolution and dense weights, six epochs,
@@ -30,6 +30,7 @@ import math
 import os
 import time
 
+from pydatamunge.nn_components import dataset_assets
 from pydatamunge import nn
 from pydatamunge.nn_workflows import helper, options
 
@@ -136,8 +137,8 @@ def main(arguments=None):
         nn.set_num_threads(args["threads"])
     checks.require(args["epochs"] >= 0, "positive epochs required")
     epochs = args["epochs"] or checks.limit(6, 1)
-    training = nn.load_mnist(args["data"], "train")
-    test = nn.load_mnist(args["data"], "test")
+    training = dataset_assets.LoadMnist(args["data"], "train")
+    test = dataset_assets.LoadMnist(args["data"], "test")
     checks.require(training.images.shape()[0] == 60000 and test.images.shape()[0] == 10000,
                    "official MNIST row counts")
     train_x, test_x = nn.reshape(training.images, [60000, 784]), nn.reshape(test.images, [10000, 784])

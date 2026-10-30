@@ -1,4 +1,5 @@
 # Native R NN example. Batch statistics, moving state, deep stacks and gradients.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.2_reusable_layer_library/batch_norm.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
@@ -38,21 +39,26 @@ hand_check <- function() {
 moving_statistics <- function(steps) {
     p <- nn$ParameterStore();stats <- nn$ParameterStore();rng <- nn$Mt19937_64(2L)
     means <- c(1,2,3,4);stds <- c(1,2,.5,3)
+    expected_mean <- rep(0,4);expected_var <- rep(1,4)
     for (step in seq_len(steps)) {
-        nn$no_grad(function() nn$batch_norm(p,stats,"bn1",random_matrix(32L,4L,rng,means,stds),TRUE,configuration(.9)))
+        batch <- random_matrix(32L,4L,rng,means,stds)
+        nn$no_grad(function() nn$batch_norm(p,stats,"bn1",batch,TRUE,configuration(.9)))
+        values <- matrix(batch$values(),nrow=32L,ncol=4L,byrow=TRUE)
+        expected_mean <- .9*expected_mean+.1*colMeans(values)
+        expected_var <- .9*expected_var+.1*apply(values,2L,var)
+        stopifnot(max(abs(stats$at("bn1/moving_mean")$values()-expected_mean))<2e-5,
+                  max(abs(stats$at("bn1/moving_var")$values()-expected_var))<2e-5)
         if (step %in% c(1L,10L,30L,100L,steps)) {
             mm <- stats$at("bn1/moving_mean")$values();mv <- stats$at("bn1/moving_var")$values()
             cat("Statistics step",step,"moving mean:",mm,"moving variance:",mv,"\n")
         }
     }
-    if (steps==300L) stopifnot(max(abs(mm-c(1.021,2.041,2.990,4.014)))<2e-3,max(abs(mv-c(1.102,4.113,.234,8.317)))<2e-3)
     fresh <- random_matrix(4096L,4L,rng,means,stds)
     output <- nn$batch_norm(p,stats,"bn1",fresh,FALSE,configuration(.9))
     for (c in 0:3) {
         values <- vapply(0:4095,function(i) output$at(c(i,c)),numeric(1));average <- mean(values);std <- sqrt(mean(values*values)-average*average)
         expected <- vapply(0:4095,function(i) (fresh$at(c(i,c))-mm[c+1L])/sqrt(mv[c+1L]+EPS),numeric(1))
         error <- max(abs(values-expected));stopifnot(error<1e-5)
-        if (steps==300L) stopifnot(abs(average-c(-.041,-.021,.028,.002)[c+1L])<2e-3,abs(std-c(.963,.999,1.027,1.046)[c+1L])<2e-3)
         cat("Inference channel",c,"mean/std:",average,std,"moving-stat hand error:",error,"\n")
     }
 }
@@ -102,7 +108,7 @@ backward <- function() {
         worst
     })
     gmax <- max(abs(dx));sums <- vapply(0:(channels-1L),function(col) sum(vapply(0:(n-1L),function(i) gx$at(c(i,col)),numeric(1))),numeric(1))
-    stopifnot(max(ex,eg,eb)<1e-5,fd/gmax<1e-3,abs(gmax-2.40)<.01,max(abs(sums))<1e-5)
+    stopifnot(max(ex,eg,eb)<1e-5,fd/gmax<1e-3,is.finite(gmax),gmax>0,max(abs(sums))<1e-5)
     cat("Backward errors dx/gamma/beta:",ex,eg,eb,"finite difference:",fd,"relative:",fd/gmax,"gradient max:",gmax,"column sums:",sums,"\n")
 }
 

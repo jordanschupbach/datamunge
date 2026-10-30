@@ -1,0 +1,615 @@
+//? Title: Generalized Linear Models: Working Responses and Iris Probabilities
+//? Subtitle: Hand calculations, IRLS diagnostics, separation and held-out logistic prediction with datamunge
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A binary species label needs a probability in the interval zero to one; an event count
+needs a nonnegative mean. Ordinary regression does not enforce those different response
+ranges or their different mean–variance relationships. Generalized linear models connect
+a conditional mean to linear predictors through a link and fit it by iteratively
+reweighted least squares. We calculate two tiny fits by hand, inspect every working
+response and weight, check how repeated observations change uncertainty, and show why
+numerical convergence cannot certify a finite logistic maximum under separation.
+The iris analysis compares logistic models on the same training flowers and evaluates
+probabilities on a separate test split. A final deliberately artificial count response
+shows why rounding a measurement does not establish a Poisson sampling model. The
+petal model correctly classifies 29 of 30 held-out flowers, with Brier loss 0.0254 and
+log loss 0.0852; the sepal model classifies 22 correctly. These are results of one small,
+prespecified split.
+)
+
+\toc
+
+> The method
+
+>> A response family, a mean and a link
+
+For independent responses, a GLM specifies \(\mu_i=E(Y_i\mid x_i)\), a link
+\(g(\mu_i)=\eta_i=x_i^\top\beta\), and a variance function
+\(\operatorname{Var}(Y_i\mid x_i)=\phi V(\mu_i)/a_i\), where \(a_i>0\)
+is a prior weight. An intercept is included unless the formula removes it. The four
+fixed family/link pairs in `dm::stats::GLM` are:
+
+| Family | Link \(g(\mu)\) | Variance function \(V(\mu)\) | Response |
+| :--- | :--- | :--- | :--- |
+| Gaussian | \(\mu\) | \(1\) | finite continuous values |
+| Binomial | \(\log[\mu/(1-\mu)]\) | \(\mu(1-\mu)\) | exactly 0 or 1 |
+| Poisson | \(\log\mu\) | \(\mu\) | nonnegative counts |
+| Gamma | \(1/\mu\) | \(\mu^2\) | strictly positive values |
+
+These are R's default links; Gamma's inverse link is canonical up to sign and scale.
+The implementation fixes \(\phi=1\) for binomial and Poisson, and estimates it for
+Gaussian and Gamma. Categorical species labels must be encoded explicitly for a binomial
+fit. Prior weights are not automatically survey weights or exposure offsets, and the
+current API does not fit arbitrary links, offsets or grouped binomial proportions.
+
+>> Deriving the update
+
+Write the log density in exponential-family form
+
+$$
+ \ell(\beta,\phi)=\sum_i\frac{a_i\{y_i\theta_i-b(\theta_i)\}}{\phi}
+                    +c_i(y_i,\phi,a_i),\qquad
+ \mu_i=b'(\theta_i),\quad V(\mu_i)=b''(\theta_i).
+$$
+\alttext(The log likelihood separates a response times canonical parameter minus the cumulant, scaled by the prior weight and dispersion, from a remaining density term. The first two cumulant derivatives give the mean and variance function.)
+
+The chain rule gives a score proportional to
+\(X^\top\operatorname{diag}\{a_i/[V_i g'_i]\}(y-\mu)\).
+The expected information is \(X^\top W X/\phi\), where
+\(w_i=a_i/[V_i(g'_i)^2]\). A Fisher-scoring step can therefore be written
+as a weighted least-squares problem:
+
+$$
+ z_i=\eta_i+(y_i-\mu_i)g'(\mu_i),\qquad
+ w_i=\frac{a_i}{V(\mu_i)\,g'(\mu_i)^2},\qquad
+ \beta_{\rm new}=\arg\min_b\sum_i w_i(z_i-x_i^\top b)^2.
+$$
+\alttext(The working response is the old linear predictor plus the response error times the link derivative. The next coefficients minimize weighted squared differences from those working responses.)
+
+For logistic regression, \(w_i=a_i\mu_i(1-\mu_i)\); for Poisson,
+\(w_i=a_i\mu_i\). Gaussian identity-link weights are simply \(a_i\),
+and \(z_i=y_i\), recovering weighted least squares immediately. The library solves
+each weighted system by Householder QR. Later steps that leave the finite family domain
+or increase deviance are halved; an invalid first step throws because no preceding
+feasible coefficient vector is available. This is a guarded local optimizer, not a
+guarantee that every valid dataset admits a finite maximum.
+
+`working_data(k)` reconstructs the inputs to update \(k+1\), starting at zero.
+`iteration_history()` records completed updates, including any step fractions. Starting
+means follow R's family conventions: binomial \((a_i y_i+1/2)/(a_i+1)\), Poisson
+\(y_i+0.1\), and Gaussian/Gamma \(y_i\). Formula-null training rows are omitted
+jointly, and `kept_rows()` retains their original zero-based indices. Nonfinite retained
+values and nonpositive or nonfinite prior weights are errors.
+
+>> Deviance, uncertainty and numerical stopping
+
+For Bernoulli data and counts respectively, unit deviance is
+
+$$
+ d_B(y,\mu)=2\left[y\log\frac{y}{\mu}+(1-y)\log\frac{1-y}{1-\mu}\right],
+ \qquad d_P(y,\mu)=2\left[y\log\frac{y}{\mu}-(y-\mu)\right],
+ \qquad D=\sum_i a_i d(y_i,\mu_i).
+$$
+\alttext(Bernoulli deviance compares fitted and saturated binary likelihoods. Poisson deviance also subtracts the response minus fitted mean. Total deviance is their prior-weighted sum, with zero times log zero interpreted as zero.)
+
+The Gaussian unit deviance is \((y-\mu)^2\); Gamma uses
+\(2[-\log(y/\mu)+(y-\mu)/\mu]\). Raw deviance residuals are
+\(\operatorname{sign}(y_i-\mu_i)\sqrt{a_i d_i}\), so their squared sum is
+\(D\), including for weighted fits. The intercept-only null mean is the prior-weighted
+response mean. With no intercept, the null linear predictor is zero instead.
+
+At the returned fit, `covariance()` uses
+\(\widehat\phi(X^\top W X)^{-1}\); \(\widehat\phi=1\) for binomial/Poisson,
+and Pearson chi-square divided by \(n-p\) otherwise. Coefficient intervals are
+Wald intervals, using a normal reference for fixed dispersion and a residual-df Student
+reference otherwise. For a new design row \(x_0\), mean-response confidence limits are
+constructed on the link scale:
+
+$$
+ s_\eta^2=x_0^\top\widehat{\operatorname{Cov}}(\widehat\beta)x_0,
+ \qquad [L,U]=g^{-1}\{\eta_0\pm q_{1-\alpha/2}s_\eta\},
+ \qquad s_\mu=\left|(g^{-1})'(\eta_0)\right|s_\eta.
+$$
+\alttext(The link-scale variance is a quadratic form in the coefficient covariance. Transforming the two link-scale confidence endpoints gives mean-response limits; the delta method gives the response-scale standard error.)
+
+For a decreasing inverse link the endpoints are reordered. A Gamma interval crossing
+zero on the link scale has an infinite upper response limit; a point prediction with
+nonpositive Gamma linear predictor is rejected. Logistic limits stay between zero and
+one. These are pointwise intervals for a conditional mean, not intervals containing a
+future response with the stated probability.
+
+`converged()` means only that
+\(|D_{k+1}-D_k|/(0.1+|D_{k+1}|)<\texttt{tol}\). The iteration limit returns a
+finite last iterate with that flag false, when numerical systems remain solvable.
+`boundary()` flags binomial probabilities within \(10^{-8}\) of zero or one. It is a
+warning heuristic, not a formal separation test. Training probabilities are bounded at
+machine epsilon to keep computations finite; that guard does not supply a finite MLE.
+
+Canonical-link likelihoods have negative-semidefinite Hessians on their domains.
+Full rank gives strict curvature at an interior finite solution, but existence still
+requires suitable data overlap. Complete logistic separation lets coefficient norms grow
+while the likelihood approaches its supremum. Deviance changes can become tiny along
+that path, so numerical convergence and existence of a maximum are different claims.
+
+The current QR implementation explicitly accumulates an \(n\times n\) orthogonal
+matrix. For \(K\) iterations and \(p<n\) columns, fitting uses
+\(O(Kn^2p+Kp^3)\) work and \(O(n^2+np+Kp)\) storage, including the coefficient
+trace. This implementation is intended for modest dense problems.
+
+> Simple examples
+
+>> Eight binary responses in two groups
+
+At \(x=0\) observe \((0,0,0,1)\); at \(x=1\) observe \((0,1,1,1)\).
+The binomial score equations set each group's fitted probability to its sample proportion:
+
+$$
+ \widehat\mu_0=\tfrac14,\quad \widehat\mu_1=\tfrac34,\quad
+ \widehat\beta_0=-\log3,\quad \widehat\beta_1=2\log3,\quad
+ X^\top W X=\begin{pmatrix}1.5&0.75\\0.75&0.75\end{pmatrix},\quad
+ \operatorname{Cov}(\widehat\beta)=\begin{pmatrix}4/3&-4/3\\-4/3&8/3\end{pmatrix}.
+$$
+\alttext(The two fitted probabilities are one quarter and three quarters, giving intercept minus log three and slope twice log three. Each fitted observation has weight three sixteenths, yielding the displayed information and inverse matrices.)
+
+Initially, zero responses have \(\mu=1/4\), \(\eta=-\log3\) and
+\(z=-\log3-4/3\); one responses have the opposite \(\eta,z\). Every initial
+weight is \(3/16\). Averaging \(z\) within the groups makes the first intercept
+\(-[\log3+4/3]/2\) and slope \(\log3+4/3\). The table and figure expose that
+first update before giving the converged fit.
+
+```{cpp, results="markdown", file="figures/glm_binary_groups.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x",std::vector<double>{0,0,0,0,1,1,1,1});
+  d.add_column("y",std::vector<double>{0,0,0,1,0,1,1,1});
+  const dm::stats::GLM m(d,"y ~ x",{.family=dm::stats::GLMFamily::Binomial});
+  const auto w=m.working_data(), trace=m.iteration_history();
+  auto working=dm::graphics::RPlot::create();
+  working.points(w.numeric_column("row").values(),w.numeric_column("z").values(),"working z");
+  working.lines(std::vector<double>{0,3,4,7},std::vector<double>{trace.double_at("beta:(Intercept)",0),trace.double_at("beta:(Intercept)",0),
+      trace.double_at("beta:(Intercept)",0)+trace.double_at("beta:x",0),trace.double_at("beta:(Intercept)",0)+trace.double_at("beta:x",0)},"first eta");
+  working.title("Working response and first update").x_label("row (zero-based)").y_label("link scale").y_limits(-3,4.7);
+  auto path=dm::graphics::RPlot::create();
+  path.lines(trace.numeric_column("iteration").values(),trace.numeric_column("beta:(Intercept)").values(),"intercept",dm::RGB{37,99,235});
+  path.lines(trace.numeric_column("iteration").values(),trace.numeric_column("beta:x").values(),"slope",dm::RGB{220,38,38});
+  path.title("Approaching the exact coefficients").x_label("completed update").y_label("coefficient").y_limits(-1.5,3.6);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(working).add(path).size(1100,490).fit_panels().save_svg("build/glm_binary_groups.svg");
+  std::print("Initial working values:\n\n{}\n\nAccepted updates:\n\n{}\n\nFinal coefficients:\n\n{}\n",
+      w.to_md(),trace.select({"iteration","deviance","beta:(Intercept)","beta:x"}).to_md(),m.coefficient_table().to_md());
+}
+```
+// result_begin: markdown
+Initial working values:
+
+| row | response | mu | eta | weight | z |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0.25 | -1.099 | 0.188 | -2.432 |
+| 1 | 0 | 0.25 | -1.099 | 0.188 | -2.432 |
+| 2 | 0 | 0.25 | -1.099 | 0.188 | -2.432 |
+| 3 | 1 | 0.75 | 1.099 | 0.188 | 2.432 |
+| 4 | 0 | 0.25 | -1.099 | 0.188 | -2.432 |
+| 5 | 1 | 0.75 | 1.099 | 0.188 | 2.432 |
+| 6 | 1 | 0.75 | 1.099 | 0.188 | 2.432 |
+| 7 | 1 | 0.75 | 1.099 | 0.188 | 2.432 |
+
+
+Accepted updates:
+
+| iteration | deviance | beta:(Intercept) | beta:x |
+| ---: | ---: | ---: | ---: |
+| 1 | 9.018 | -1.216 | 2.432 |
+| 2 | 8.997 | -1.095 | 2.190 |
+| 3 | 8.997 | -1.099 | 2.197 |
+| 4 | 8.997 | -1.099 | 2.197 |
+
+
+Final coefficients:
+
+| term | estimate | std_error | statistic | p_value | lower | upper |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| (Intercept) | -1.099 | 1.155 | -0.951 | 0.341 | -3.362 | 1.165 |
+| x | 2.197 | 1.633 | 1.346 | 0.178 | -1.003 | 5.398 |
+
+\image(figures/glm_binary_groups.svg)
+// result_end
+
+\caption(Initial working values and each accepted update for the two-group binomial fit. Left: the first fitted link predictor is the group mean of the working responses. Right: coefficients settle at their closed-form values.)
+\alttext(Eight initial working responses take equal positive or negative magnitudes. Their first fitted link values form two group averages. A second panel shows the intercept and slope approaching minus log three and twice log three.)
+
+>> Four counts and one intercept
+
+For \(y=(0,1,2,5)\), the Poisson intercept score is
+\(\sum_i(y_i-\mu)=0\), so \(\widehat\mu=2\),
+\(\widehat\beta=\log2\), and \(\operatorname{Var}(\widehat\beta)=1/8\).
+The response-scale delta-method standard error is \(2/\sqrt8=1/\sqrt2\).
+The initial means are \((0.1,1.1,2.1,5.1)\), also the initial weights, and
+\(z_i=\log(y_i+0.1)-0.1/(y_i+0.1)\). Therefore the first coefficient is
+\(\sum_i(y_i+0.1)z_i/8.4\), directly checkable from the working table.
+
+At the solution, the linear terms in the deviance cancel:
+
+$$
+ D=2\left[-\log2+5\log(5/2)\right].
+$$
+\alttext(The Poisson deviance for counts zero, one, two and five at common fitted mean two is twice minus log two plus five times log two point five.)
+
+```{cpp, results="markdown", file="figures/glm_four_counts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d; d.add_column("y",std::vector<double>{0,1,2,5});
+  const dm::stats::GLM m(d,"y ~ 1",{.family=dm::stats::GLMFamily::Poisson});
+  const auto w=m.working_data(), trace=m.iteration_history();
+  auto observations=dm::graphics::RPlot::create();
+  observations.points(w.numeric_column("row").values(),w.numeric_column("response").values(),"count");
+  observations.abline_h(2).title("Four counts; fitted mean is two").x_label("row (zero-based)").y_label("count or mean").y_limits(-.3,6.3);
+  auto path=dm::graphics::RPlot::create();
+  path.lines(trace.numeric_column("iteration").values(),trace.numeric_column("beta:(Intercept)").values(),"IRLS");
+  path.abline_h(std::log(2.0)).title("Poisson intercept iterations").x_label("completed update").y_label("log mean").y_limits(.6,1.4);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(observations).add(path).size(1100,490).fit_panels().save_svg("build/glm_four_counts.svg");
+  std::print("Initial working state:\n\n{}\n\nFit:\n\n{}\n\nMean-response interval:\n\n{}\n",
+      w.to_md(),m.model_summary().select({"n","deviance","dispersion","iterations","converged"}).to_md(),
+      m.predict_frame(d,dm::stats::GLMPredictionInterval::Confidence).head(1).to_md());
+}
+```
+// result_begin: markdown
+Initial working state:
+
+| row | response | mu | eta | weight | z |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0.1 | -2.303 | 0.1 | -3.303 |
+| 1 | 1 | 1.1 | 0.095 | 1.1 | 0.004 |
+| 2 | 2 | 2.1 | 0.742 | 2.1 | 0.694 |
+| 3 | 5 | 5.1 | 1.629 | 5.1 | 1.610 |
+
+
+Fit:
+
+| n | deviance | dispersion | iterations | converged |
+| ---: | ---: | ---: | ---: | :--- |
+| 4 | 7.777 | 1 | 5 | yes |
+
+
+Mean-response interval:
+
+| fit | se_fit | lwr | upr |
+| ---: | ---: | ---: | ---: |
+| 2 | 0.707 | 1.000 | 3.999 |
+
+\image(figures/glm_four_counts.svg)
+// result_end
+
+\caption(Four observed counts, their common fitted mean, and the accepted Poisson intercept path. The prediction row gives a confidence interval for the common mean, not a count prediction interval.)
+\alttext(The four counts range from zero to five around a horizontal mean of two. The intercept converges to log two in a few updates.)
+
+> Checking the theory
+
+>> Repetition changes information, not the fitted probabilities
+
+Repeat the entire eight-row binary example \(r\) times. Its log likelihood and
+information multiply by \(r\), but its maximizer is unchanged. Consequently
+
+$$
+ \widehat\beta_1(r)=2\log3,\qquad
+ \operatorname{SE}\{\widehat\beta_1(r)\}=\sqrt{\frac8{3r}},\qquad
+ D(r)=rD(1).
+$$
+\alttext(Replicating all observations leaves the slope unchanged, divides its variance by the replication count and multiplies deviance by that count.)
+
+This is an information calculation for independent replicated responses with the same
+observed pattern. Copying the same flowers would not create new independent evidence.
+
+```{cpp, results="markdown", file="figures/glm_replication.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame base; base.add_column("x",std::vector<double>{0,0,0,0,1,1,1,1});
+  base.add_column("y",std::vector<double>{0,0,0,1,0,1,1,1});
+  std::vector<double> repeats,n,slope,se,reference,scaled_deviance;
+  for (int r : {1,2,4,8,16,32}) {
+    auto d=base; for(int j=1;j<r;++j) d=d.concat_rows(base);
+    const dm::stats::GLM m(d,"y ~ x",{.family=dm::stats::GLMFamily::Binomial});
+    repeats.push_back(r); n.push_back(d.nrows()); slope.push_back(m.coefficients()[1]);
+    se.push_back(m.standard_errors()[1]); reference.push_back(std::sqrt(8.0/(3*r)));
+    scaled_deviance.push_back(m.deviance()/r);
+  }
+  dm::dstruct::DataFrame out; out.add_column("repeats",repeats);out.add_column("n",n);out.add_column("slope",slope);
+  out.add_column("slope_SE",se);out.add_column("exact_SE",reference);out.add_column("deviance/repeats",scaled_deviance);
+  auto plot=dm::graphics::RPlot::create();
+  plot.lines(n,reference,"exact SE",dm::RGB{37,99,235}).points(n,se,"fitted SE",dm::RGB{220,38,38});
+  plot.title("Information grows with independent replication").x_label("total observations").y_label("slope standard error").y_limits(0,2);
+  std::filesystem::create_directories("build");plot.size(850,490).save_svg("build/glm_replication.svg");
+  std::print("{}\n",out.to_md());
+}
+```
+// result_begin: markdown
+| repeats | n | slope | slope_SE | exact_SE | deviance/repeats |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 8 | 2.197 | 1.633 | 1.633 | 8.997 |
+| 2 | 16 | 2.197 | 1.155 | 1.155 | 8.997 |
+| 4 | 32 | 2.197 | 0.816 | 0.816 | 8.997 |
+| 8 | 64 | 2.197 | 0.577 | 0.577 | 8.997 |
+| 16 | 128 | 2.197 | 0.408 | 0.408 | 8.997 |
+| 32 | 256 | 2.197 | 0.289 | 0.289 | 8.997 |
+
+\image(figures/glm_replication.svg)
+// result_end
+
+\caption(The fitted slope, scaled deviance and standard error under exact pattern replication. The line connects the closed-form standard errors at the displayed sample sizes.)
+\alttext(The fitted standard errors coincide with the closed-form values and shrink as one over the square root of the replication count.)
+
+>> A stopping flag does not rule out separation
+
+Now take \(x=(-2,-1,1,2)\), \(y=(0,0,1,1)\). For intercept zero and
+positive slope \(b\), every observed class is on the correct side, and
+
+$$
+ \ell(b)=-2\log(1+e^{-b})-2\log(1+e^{-2b})\longrightarrow0
+ \quad\text{as }b\longrightarrow\infty.
+$$
+\alttext(The separated logistic log likelihood is minus twice log one plus exp minus b, minus twice log one plus exp minus two b. It increases toward zero as the slope grows without bound.)
+
+Every finite \(b\) leaves \(\ell(b)<0\), proving that no finite MLE attains the
+supremum. The fitted path below remains numerically finite, but the rising slope and
+collapsing deviance show the degeneracy. The boundary flag and any convergence flag must
+be read together; neither the epsilon guard nor extra iterations repairs the statistical
+problem. Penalisation or bias reduction would define a different estimator.
+
+```{cpp, results="markdown", file="figures/glm_separation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d; d.add_column("x",std::vector<double>{-2,-1,1,2});
+  d.add_column("y",std::vector<double>{0,0,1,1});
+  const dm::stats::GLM m(d,"y ~ x",{.family=dm::stats::GLMFamily::Binomial,.max_iter=50});
+  const auto h=m.iteration_history();auto slope=dm::graphics::RPlot::create(),dev=dm::graphics::RPlot::create();
+  slope.lines(h.numeric_column("iteration").values(),h.numeric_column("beta:x").values());
+  slope.title("A coefficient keeps growing").x_label("completed update").y_label("slope");
+  dev.lines(h.numeric_column("iteration").values(),h.numeric_column("deviance").values());
+  dev.title("Deviance approaches its infimum").x_label("completed update").y_label("deviance");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(slope).add(dev).size(1100,490).fit_panels().save_svg("build/glm_separation.svg");
+  auto status=m.model_summary().select({"n","iterations","converged","boundary"});
+  status.add_column("deviance",std::vector<std::string>{std::format("{:.3e}",m.deviance())});
+  std::print("{}\n",status.to_md());
+}
+```
+// result_begin: markdown
+| n | iterations | converged | boundary | deviance |
+| ---: | ---: | :--- | :--- | :--- |
+| 4 | 23 | yes | yes | 3.567e-10 |
+
+\image(figures/glm_separation.svg)
+// result_end
+
+\caption(A separated four-point sample. Deviance convergence can occur while the slope has no finite population-likelihood maximizer; the status table reports what the numerical algorithm actually did.)
+\alttext(The slope rises steadily while deviance falls toward zero. The table separately reports iteration count, numerical convergence and a near-boundary probability warning.)
+
+> Iris: two overlapping species
+
+>> Fit probabilities on the original measurements
+
+`dm::datasets::iris()` contains 150 flowers, 50 from each species, with four measurements
+in centimetres. We retain the 100 versicolor and virginica flowers, encode virginica as
+one, and fit `y ~ Petal.Length + Petal.Width`. The response is an observed binary label,
+not a count made from a measurement. Setosa is excluded because its clean separation
+would turn this into the preceding nonexistence example rather than a regular coefficient
+analysis. These probabilities describe the balanced two-species sample; they do not
+establish prevalence or calibrated probabilities in another population.
+
+The following full-data fit is descriptive. Its curve holds petal width at 1.75 cm; each
+flower's fitted probability in the diagnostic panel uses its own length and width.
+The confidence band conditions on the model and the fixed query width. The full-data
+fit's boundary flag records extreme probabilities for some flowers. Both species still
+overlap near the boundary; that heuristic does not diagnose separation, and the finite
+coefficients agree with an independent R fit. Width 1.75 cm combined with very short
+petals lies away from much of the observed joint predictor support, so the curve's
+ends also illustrate conditional extrapolation.
+
+```{cpp, results="markdown", file="figures/glm_iris_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::iris().filter([](const auto& r){return r.get_string("Species")!="setosa";})
+      .mutate_with("y",[](const auto& r){return r.get_string("Species")=="virginica" ? 1.0 : 0.0;});
+  const dm::stats::GLM m(d,"y ~ Petal.Length + Petal.Width",{.family=dm::stats::GLMFamily::Binomial});
+  dm::dstruct::DataFrame grid; const auto length=dm::seql(3.0,7.0,201);
+  grid.add_column("Petal.Length",length.values());grid.add_column("Petal.Width",std::vector<double>(201,1.75));
+  const auto p=m.predict(grid,dm::stats::GLMPredictionInterval::Confidence);
+  auto curve=dm::graphics::RPlot::create();
+  curve.lines(length.values(),p.lower,"95% limits",dm::RGB{148,163,184});
+  curve.lines(length.values(),p.upper,"",dm::RGB{148,163,184});curve.lines(length.values(),p.fit,"mean");
+  curve.title("Petal width held at 1.75 cm").x_label("petal length (cm)").y_label("P(virginica)").y_limits(-.03,1.3);
+  auto residuals=m.plot_residuals_vs_fitted();residuals.title("Bernoulli deviance residuals").x_label("fitted P(virginica)");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(curve).add(residuals).size(1100,490).fit_panels().save_svg("build/glm_iris_fit.svg");
+  std::print("Species summary (cm):\n\n{}\n\nCoefficients:\n\n{}\n\nFit status:\n\n{}\n",
+      (d | dm::group_by("Species") | dm::summarise(dm::agg::n("n"),dm::agg::mean("Petal.Length","mean_length_cm"),dm::agg::mean("Petal.Width","mean_width_cm")) | dm::to_md(3)),m.coefficient_table().to_md(),
+      m.model_summary().select({"n","df","deviance","aic","iterations","converged","boundary"}).to_md());
+}
+```
+// result_begin: markdown
+Species summary (cm):
+
+| Species | n | mean_length_cm | mean_width_cm |
+| :--- | ---: | ---: | ---: |
+| versicolor | 50 | 4.260 | 1.326 |
+| virginica | 50 | 5.552 | 2.026 |
+
+
+Coefficients:
+
+| term | estimate | std_error | statistic | p_value | lower | upper |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| (Intercept) | -45.272 | 13.612 | -3.326 | 0.001 | -71.951 | -18.594 |
+| Petal.Length | 5.755 | 2.306 | 2.496 | 0.013 | 1.235 | 10.274 |
+| Petal.Width | 10.447 | 3.756 | 2.782 | 0.005 | 3.086 | 17.808 |
+
+
+Fit status:
+
+| n | df | deviance | aic | iterations | converged | boundary |
+| ---: | ---: | ---: | ---: | ---: | :--- | :--- |
+| 100 | 97 | 20.564 | 26.564 | 8 | yes | yes |
+
+\image(figures/glm_iris_fit.svg)
+// result_end
+
+\caption(Descriptive full-data logistic fit on the two overlapping iris species. Left: conditional probability and pointwise 95% mean-response limits at width 1.75 cm. Right: deviance residuals at each flower's own predictors.)
+\alttext(The conditional probability rises steeply with petal length. Mean-response confidence limits widen around the transition. Binary deviance residuals form two branches according to the observed label.)
+
+For a binary observation, the residual is
+\(\sqrt{-2\log\widehat p}\) when \(y=1\), and
+\(-\sqrt{-2\log(1-\widehat p)}\) when \(y=0\). The two curved branches are
+therefore algebraically required, not by themselves evidence of misspecification or
+normally distributed errors. A small training deviance does not estimate test accuracy.
+
+>> One prespecified train/test comparison
+
+We split once using `train_test_split(...,0.3,42,"Species")`, giving 35 training and
+15 test flowers per species. The three candidates are fixed in advance: intercept only,
+two sepals, and two petals. No response or fitted model sees the test labels during
+training. Their AIC values are comparable because they use the same binary responses,
+rows and Bernoulli likelihood. We do not compare these to a Gaussian density AIC on a
+zero/one vector: a probability mass and a density use different reference measures.
+
+Test probabilities are assessed by accuracy at the fixed threshold 0.5 and two proper
+probability losses:
+
+$$
+ \operatorname{Brier}=\frac1m\sum_i(\widehat p_i-y_i)^2,\qquad
+ \operatorname{logloss}=-\frac1m\sum_i\{y_i\log\widehat p_i+(1-y_i)\log(1-\widehat p_i)\}.
+$$
+\alttext(Brier loss averages squared probability errors. Log loss averages negative Bernoulli log probabilities of the observed classes. Lower values are better for both.)
+
+The petal model's 29 correct classifications exceed the sepal model's 22 on this split;
+its Brier loss 0.0254 and log loss 0.0852 are also lower. The training AIC ranking agrees
+here, but the test set was not used to choose formulas or thresholds.
+
+The score helper omits joint formula-null rows and reports their retained count. Its
+scores are unweighted, including if the model was trained with prior weights. These
+30 test flowers give one small, reproducible assessment, not a precise estimate of
+future performance or a tuning set for selecting thresholds.
+
+```{cpp, results="markdown", file="figures/glm_iris_holdout.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::iris().filter([](const auto& r){return r.get_string("Species")!="setosa";})
+      .mutate_with("y",[](const auto& r){return r.get_string("Species")=="virginica" ? 1.0 : 0.0;});
+  const auto [train,test]=dm::stats::train_test_split(d,.3,42,"Species");
+  const std::vector<std::string> formulas={"y ~ 1","y ~ Sepal.Length + Sepal.Width","y ~ Petal.Length + Petal.Width"};
+  const std::vector<std::string> names={"intercept","sepals","petals"};
+  dm::dstruct::DataFrame fits,scores;auto layout=dm::graphics::RLayout::create(1,2);
+  for(std::size_t j=0;j<formulas.size();++j) {
+    const dm::stats::GLM m(train,formulas[j],{.family=dm::stats::GLMFamily::Binomial});
+    auto fit=m.model_summary().select({"n","deviance","aic","converged","boundary"});
+    fit.add_column("model",std::vector<std::string>{names[j]});fits=j ? fits.concat_rows(fit) : fit;
+    auto score=m.binomial_score(test);score.add_column("model",std::vector<std::string>{names[j]});
+    scores=j ? scores.concat_rows(score) : score;
+    if(j) {
+      auto plot=dm::graphics::RPlot::create();
+      for(const std::string species : {"versicolor","virginica"}) {
+        const auto group=test.filter([&](const auto& r){return r.get_string("Species")==species;});
+        plot.points(group.numeric_column("Petal.Length").values(),m.predict(group),species,
+            species=="versicolor" ? dm::RGB{37,99,235} : dm::RGB{220,38,38});
+      }
+      plot.abline_h(.5).title(names[j]+": held-out probabilities").x_label("petal length (cm)").y_label("P(virginica)").y_limits(-.04,1.35);
+      layout.add(plot);
+    }
+  }
+  std::filesystem::create_directories("build");layout.size(1100,490).fit_panels().save_svg("build/glm_iris_holdout.svg");
+  std::print("Training fits:\n\n{}\n\nHeld-out scores:\n\n{}\n",fits.select({"model","n","deviance","aic","converged","boundary"}).to_md(),
+      scores.select({"model","n","accuracy","brier","log_loss"}).to_md());
+}
+```
+// result_begin: markdown
+Training fits:
+
+| model | n | deviance | aic | converged | boundary |
+| :--- | ---: | ---: | ---: | :--- | :--- |
+| intercept | 70 | 97.041 | 99.041 | yes | no |
+| sepals | 70 | 77.284 | 83.284 | yes | no |
+| petals | 70 | 16.001 | 22.001 | yes | no |
+
+
+Held-out scores:
+
+| model | n | accuracy | brier | log_loss |
+| :--- | ---: | ---: | ---: | ---: |
+| intercept | 30 | 0.500 | 0.250 | 0.693 |
+| sepals | 30 | 0.733 | 0.186 | 0.555 |
+| petals | 30 | 0.967 | 0.025 | 0.085 |
+
+\image(figures/glm_iris_holdout.svg)
+// result_end
+
+\caption(Training Bernoulli AIC and separate test scores for the three prespecified models. Panels show each test flower's fitted probability against its petal length; colours are observed species and the horizontal line is the fixed classification threshold.)
+\alttext(Two panels compare held-out probabilities from sepal and petal predictors. Observed species colours show mistakes around the one-half threshold, and the tables report accuracy, Brier loss and log loss.)
+
+>> A deliberate Poisson mismatch
+
+To retain the old example's count demonstration, define `count = nearbyint(Sepal.Length)`
+on all 150 flowers. These numbers are rounded centimetres, not counts of independently
+occurring events over a fixed exposure. A log-link fit can produce positive means, but
+that range property does not establish the Poisson variance assumption.
+
+For a correctly specified fixed-dispersion count model, Pearson chi-square divided by
+residual degrees of freedom is often used as a rough dispersion diagnostic. A very small
+ratio here reflects the restricted spread created by rounding lengths. Discrete bands
+in a residual plot are expected for a response with few distinct values; they do not
+by themselves establish adequacy. We show the ratio without estimating a free Poisson
+dispersion or using rounded measurements as biological count evidence.
+
+```{cpp, results="markdown", file="figures/glm_iris_rounded.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d=dm::datasets::iris().mutate_with("count",[](const auto& r){return std::nearbyint(r.get_double("Sepal.Length"));});
+  const dm::stats::GLM m(d,"count ~ Sepal.Width + Petal.Length",{.family=dm::stats::GLMFamily::Poisson});
+  double pearson=0;for(double r:m.pearson_residuals())pearson+=r*r;
+  auto status=m.model_summary().select({"n","df","deviance","dispersion","converged"});
+  status.add_column("Pearson_X2/df",std::vector<double>{pearson/m.degrees_of_freedom()});
+  auto fit=dm::graphics::RPlot::create();
+  fit.points(m.fitted_values(),d.numeric_column("count").values(),"rounded length");
+  fit.abline(0,1).title("Rounded lengths are not event counts").x_label("fitted mean").y_label("rounded sepal length").x_limits(3.5,8.5).y_limits(3.5,9.5);
+  auto residuals=m.plot_residuals_vs_fitted();residuals.title("Discrete deviance-residual bands");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1,2).add(fit).add(residuals).size(1100,490).fit_panels().save_svg("build/glm_iris_rounded.svg");
+  std::print("{}\n\n{}\n",status.to_md(),m.coefficient_table().select({"term","estimate","std_error"}).to_md());
+}
+```
+// result_begin: markdown
+| n | df | deviance | dispersion | converged | Pearson_X2/df |
+| ---: | ---: | ---: | ---: | :--- | ---: |
+| 150 | 147 | 4.792 | 1 | yes | 0.033 |
+
+
+| term | estimate | std_error |
+| :--- | ---: | ---: |
+| (Intercept) | 1.203 | 0.308 |
+| Sepal.Width | 0.085 | 0.086 |
+| Petal.Length | 0.079 | 0.021 |
+
+\image(figures/glm_iris_rounded.svg)
+// result_end
+
+\caption(A Poisson fit to rounded sepal lengths is an API illustration and a variance-assumption counterexample. Dispersion remains fixed at one by the chosen family; the separately computed Pearson ratio diagnoses the mismatch.)
+\alttext(Rounded sepal lengths form horizontal stripes against their fitted means. Deviance residuals form discrete bands, and the Pearson chi-square per residual degree of freedom is far below one.)
+
+> Conclusion
+
+The tiny group and count fits expose exactly what IRLS solves, while replication checks
+its information scaling. The separated sample demonstrates why a tiny deviance change
+cannot certify a finite logistic MLE. On iris, comparing models within a common Bernoulli
+likelihood and evaluating a separate test split gives interpretable probability scores.
+Mean-response confidence limits, training fit, numerical convergence and held-out prediction
+answer different questions. Neither a successful optimizer nor positive fitted means can
+validate an assumed response distribution; the rounded-length example makes that limit visible.
+
+> References
+
+- Nelder, J. A. and Wedderburn, R. W. M. (1972). [Generalized Linear Models|https://doi.org/10.2307/2344614]. ~Journal of the Royal Statistical Society, Series A~, 135(3), 370–384. Exponential-family formulation and iterative fitting.
+- Albert, A. and Anderson, J. A. (1984). [On the existence of maximum likelihood estimates in logistic regression models|https://doi.org/10.1093/biomet/71.1.1]. ~Biometrika~, 71(1), 1–10. Existence and separation.
+- R Core Team. [Fitting Generalized Linear Models|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/glm.html], [Family Objects|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/family.html] and [Akaike's An Information Criterion|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/AIC.html]. Defaults, diagnostic conventions and restrictions on likelihood comparison.
+- Fisher, R. A. (1936). [The use of multiple measurements in taxonomic problems|https://doi.org/10.1111/j.1469-1809.1936.tb02137.x]. ~Annals of Eugenics~, 7(2), 179–188. Iris measurements; the built-in dataset is used directly.
+

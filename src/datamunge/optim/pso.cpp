@@ -1,3 +1,5 @@
+/// @file pso.cpp
+/// @brief PSO native update, trial and stopping implementation.
 #include <datamunge/optim/pso.hpp>
 
 #include <algorithm>
@@ -7,16 +9,24 @@
 
 namespace datamunge::optim {
 
+/// @brief Private pso arithmetic, validation and local state.
 namespace {
 
+/// @brief One particle with its current velocity and best visited position.
 struct Particle {
-    std::vector<double> position;
-    std::vector<double> velocity;
-    std::vector<double> best_position;
-    double best_value{0.0};
-    double value{0.0};
+    std::vector<double> position; ///< Current clamped position.
+    std::vector<double> velocity; ///< Current velocity, limited relative to box width.
+    std::vector<double> best_position; ///< Best visited coordinates.
+    double best_value{0.0}; ///< Objective at the personal best.
+    double value{0.0}; ///< Objective at current position.
 };
 
+/// @brief Require nonempty coordinates, matching bounds and strict lower < upper.
+/// @param n Coordinate count.
+/// @param lower_bound Lower box endpoints.
+/// @param upper_bound Upper box endpoints.
+/// @param op Operation name for the exception text.
+/// @throws std::invalid_argument Empty dimensions, mismatched bounds or unordered endpoints.
 void validate_bounds(const std::size_t n, const std::vector<double>& lower_bound,
                       const std::vector<double>& upper_bound, const char* op) {
     if (n == 0) throw std::invalid_argument(std::string("PSO::") + op + ": coordinates must not be empty");

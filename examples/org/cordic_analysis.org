@@ -48,7 +48,7 @@ convergence radius of \(\sum_i\arctan(2^{-i})\approx1.743\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

@@ -1,0 +1,28 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usetikzlibrary{arrows.meta,angles,quotes}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\sffamily\large]
+\begin{scope}[scale=.65]
+\draw[->,gray] (-3.8,0)--(3.8,0);
+\draw[->,gray] (0,-3.8)--(0,3.8);
+\draw[->,very thick,blue!70] (-3.5,-3.5)--(3.5,3.5) node[above] {$v_1$};
+\draw[->,gray!70] (0,0)--(-2.5,2.5) node[above] {$v_2$};
+\foreach \x/\y in {-3/-1,-1/-3,1/3,3/1} \fill[blue!75] (\x,\y) circle (3pt);
+\coordinate (O) at (0,0);\coordinate (H) at (2,2);\coordinate (X) at (3,1);
+\fill[red!80!black] (H) circle (3pt);
+\draw[red!80!black,thick,dashed] (X)--(H);
+\pic[draw,angle radius=6pt] {right angle=O--H--X};
+\node[below right] at (O) {$\mu=0$};
+\node[below right] at (X) {$z_i=(3,1)$};
+\node[above left] at (H) {$\widehat z_i=(2,2)$};
+\end{scope}
+\node[draw,rounded corners,align=left,text width=5.5cm,inner sep=9pt] at (7.5,.25)
+ {Choose the origin\\and feature scales.\\[5pt]
+  Scores and projection:\\
+  $t_i=z_iV_k$, $\widehat z_i=t_iV_k^T$.\\[5pt]
+  Residuals are orthogonal\\in this chosen metric.\\[5pt]
+  Undo scaling and centring\\to restore original units.};
+\end{tikzpicture}
+\end{document}

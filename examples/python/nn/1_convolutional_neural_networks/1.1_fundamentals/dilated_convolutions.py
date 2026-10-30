@@ -1,6 +1,6 @@
 # Native Python NN example. Atrous convolutions: exact dilation, gridding and learning distant context.
-"""CMD: just python-example dilated_convolutions
-Atrous convolutions: exact dilation, gridding and learning distant context.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/dilated_convolutions.py
+"""Atrous convolutions: exact dilation, gridding and learning distant context.
 
 Port of tflow's dilated_convolutions. A 3x3 filter at rate d has effective
 width 2d+1 and nine learned taps per channel pair. Compare zero-expanded
@@ -20,7 +20,7 @@ recover the teacher; compare held-out MSE, never select on test examples.
 Inputs come from the same std::mt19937 streams as the C++ (bit-identical).
 Support arrays: output/nn/python/<mode>/visualizations/dilated_convolutions/supports.npz.
 
-C++ reference: examples/cpp/nn/1_convolutional_neural_networks/1.1_fundamentals/dilated_convolutions.cpp
+C++ reference: examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/dilated_convolutions.cpp
 """
 import math
 import struct

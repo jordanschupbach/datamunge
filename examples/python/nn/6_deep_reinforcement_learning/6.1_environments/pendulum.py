@@ -1,7 +1,6 @@
 # Native Python NN example. Pendulum: continuous-control swing-up.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/pendulum.py
 """Pendulum: continuous-control swing-up.
-
-CMD: just python-example pendulum
 
 Port of tflow's pendulum. Gymnasium's Pendulum-v1: torque in [-2, 2] is
 not enough to lift the pendulum directly, so a controller must pump energy

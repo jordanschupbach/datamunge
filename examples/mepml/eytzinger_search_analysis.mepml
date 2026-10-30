@@ -42,7 +42,7 @@ faster on large arrays despite doing the same number of comparisons.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -146,7 +146,7 @@ positions \(0,1,4,9\). Looking up 13 needs a single read, since it ~is~ the root
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

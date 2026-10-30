@@ -33,6 +33,7 @@ std::int64_t live_storage_count();
 /// bytes when it was created. Resets the process-wide peak when constructed.
 class PeakMemoryScope {
  public:
+  /// @brief Resets the process-wide peak and saves the current live byte count as a baseline.
   PeakMemoryScope();
   /// Live bytes when the scope began.
   [[nodiscard]] std::int64_t baseline() const noexcept { return baseline_; }
@@ -42,12 +43,16 @@ class PeakMemoryScope {
   [[nodiscard]] std::int64_t live_above_baseline() const;
 
  private:
+  /// @brief Live tensor-buffer bytes sampled at construction, not an owned allocation.
   std::int64_t baseline_;
 };
 
 namespace detail {
-/// Allocation hooks called by the Storage allocator in tensor.cpp.
+/// @brief Accounts for a newly allocated tensor buffer and raises the process-wide peak.
+/// @param nbytes Logical bytes owned by the allocation, excluding zero-size sentinel storage.
 void note_storage_alloc(std::int64_t nbytes);
+/// @brief Removes one tensor buffer and its logical byte size from live counters.
+/// @param nbytes Byte count previously supplied to note_storage_alloc() for this buffer.
 void note_storage_free(std::int64_t nbytes);
 }  // namespace detail
 

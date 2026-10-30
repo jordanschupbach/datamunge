@@ -3,12 +3,10 @@
 > DATAMUNGE
 
 ```{cpp, flags="$(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
-#include <iostream>
-#include <datamunge/datamunge.hpp>
+#include <dm/dm.hpp>
 
 int main() {
-  std::cout << "Hello, World!" << std::endl;
-  datamunge::hello();
+  dm::hello();
   return 0;
 }
 ```
@@ -94,7 +92,7 @@ just test-rust
 
 These blocks replicate the per-language examples under `examples/`.
 
->> C/C\+\+ (`examples/cpp/source/datamunge_ex.cpp`)
+>> C/C\+\+ (`examples/cpp/source/data/datamunge_ex.cpp`)
 
 ```{cpp, results="output", exports="both", flags="$(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <datamunge/datamunge.hpp>

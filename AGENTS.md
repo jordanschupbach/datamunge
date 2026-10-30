@@ -15,6 +15,25 @@ If you are working on this repo, optimize for:
 - minimal per-language glue (prefer SWIG + thin wrappers),
 - template-friendliness (easy to rename/fork without bespoke steps).
 
+## Repository skills
+
+Repository-specific skills are versioned in `skills/` so they travel with a fork.
+Read the applicable skill when working on its scope:
+
+- [change-library](skills/change-library/SKILL.md): core and binding changes,
+  native packaging, and the appropriate build/test workflows.
+- [maintain-docs](skills/maintain-docs/SKILL.md): Doxygen comments, generated
+  binding help, and coverage checks for changed symbols or documentation audits.
+
+Keep symbol documentation current with code changes. The checkable backlog and
+documentation standard live in [docs/documentation-plan.md](docs/documentation-plan.md).
+
+For literate report conversions, follow [docs/mepml/conversion-plan.md](docs/mepml/conversion-plan.md).
+Use a TikZ concept diagram near the introduction when it helps explain the topic;
+retain its editable source and repeatable rendering command. Save rendered images
+to a local `build/` directory and reference/copy those files into the report. Never
+print SVG XML, data URIs or base64 image content into report result blocks.
+
 ## Repo Principles
 
 - C/C++ is canonical: add features/fixes in the core first, then regenerate and

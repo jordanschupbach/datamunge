@@ -22,6 +22,7 @@
 // exposes that objective for unit checks.
 #pragma once
 
+#include "common/dataset_assets.hpp"
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -129,6 +130,21 @@ struct TrainingNetwork {
 using TrainingBuilder =
     std::function<TrainingNetwork(nn::ParameterStore& params, nn::ParameterStore& state, const nn::Tensor& x)>;
 
+/// sum(W^2) over the parameters of rank >= 2, in creation order (undefined when there are none).
+inline nn::Tensor L2Penalty(const nn::ParameterStore& params) {
+  nn::Tensor penalty;
+  for (const auto& p : params.parameters())
+    if (p.dim() >= 2) penalty = penalty.defined() ? penalty + nn::sum(nn::square(p)) : nn::sum(nn::square(p));
+  return penalty;
+}
+
+/// objective + 0.5 * l2 * L2Penalty(params) (the objective itself when l2 <= 0 or nothing is penalized).
+inline nn::Tensor WithL2(const nn::Tensor& objective, const nn::ParameterStore& params, double l2) {
+  if (l2 <= 0) return objective;
+  const nn::Tensor penalty = L2Penalty(params);
+  return penalty.defined() ? objective + 0.5 * l2 * penalty : objective;
+}
+
 /// tflow Classifier's training objective: (smoothed) cross-entropy of the
 /// training logits, plus weight * (smoothed) cross-entropy of every auxiliary
 /// head, plus 0.5 * l2 * sum(W^2) over parameters of rank >= 2.
@@ -143,13 +159,7 @@ inline nn::Tensor TrainingObjective(nn::ParameterStore& params, nn::ParameterSto
     objective = objective + weight * TrainingCrossEntropy(logits, y, cfg.classes, cfg.label_smoothing);
   }
   for (const auto& penalty : network.penalties) objective = objective + penalty;
-  if (cfg.l2 > 0) {
-    nn::Tensor penalty;
-    for (const auto& p : params.parameters())
-      if (p.dim() >= 2) penalty = penalty.defined() ? penalty + nn::sum(nn::square(p)) : nn::sum(nn::square(p));
-    if (penalty.defined()) objective = objective + 0.5 * cfg.l2 * penalty;
-  }
-  return objective;
+  return WithL2(objective, params, cfg.l2);
 }
 
 /// Wall-clock seconds per training epoch of the last TrainImages run (for reports).
@@ -184,11 +194,8 @@ inline bool ParseCifarOption(const std::string& key, const std::string& value, s
 
 /// The five official development batches and the separate test batch.
 inline std::pair<nn::ImageDataset, nn::ImageDataset> LoadCifar10(const std::filesystem::path& directory) {
-  check::Require(std::filesystem::exists(directory / "data_batch_1.bin"),
-                 "CIFAR-10 missing in " + directory.string() +
-                     "; run python3 scripts/fetch_datasets.py cifar10 --split both in tflow_examples, or set data=");
-  auto development = nn::load_cifar10(directory.string(), "train");
-  auto test        = nn::load_cifar10(directory.string(), "test");
+  auto development = dataset_assets::LoadCifar10(directory.string(), "train");
+  auto test        = dataset_assets::LoadCifar10(directory.string(), "test");
   check::Require(development.images.shape() == nn::Shape({50000, 32, 32, 3}) &&
                      test.images.shape() == nn::Shape({10000, 32, 32, 3}),
                  "official CIFAR-10 split sizes");

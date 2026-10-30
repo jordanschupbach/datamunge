@@ -1,5 +1,7 @@
 import math
 
+import pytest
+
 from pydatamunge import datamunge as dm
 
 
@@ -48,3 +50,56 @@ def test_psr_fixed_lambda_and_gcv():
     assert auto.gcv() <= dm.PSR(xs, ys, 40, 1e3).gcv()
     assert 2.0 < auto.effective_df() < 40.0
     assert dm.PSR(xs, ys, dm.seql(0.0, 1.0, 11)).basis_size() == 13
+
+
+def test_point_palette_recycling_and_subtitle_preserve_ownership():
+    import gc
+
+    plot = dm.RPlot.create().points_colored(
+        [1, 2, 3], [2, 3, 4], [dm.RGBA(10, 20, 30, 0.25), dm.RGB(40, 50, 60)]
+    ).subtitle("Palette <test>")
+    gc.collect()
+    assert plot.thisown
+    assert plot.subtitle_text() == "Palette <test>"
+    svg = plot.to_svg()
+    assert svg.count('fill="rgb(10,20,30)" fill-opacity="0.25"') == 2
+    assert svg.count('fill="rgb(40,50,60)"') == 1
+    assert "Palette &lt;test&gt;" in svg
+
+
+def test_fluent_plot_labels_retain_the_temporary_owner():
+    import gc
+
+    plot = (dm.RPlot.create().set_title("Iris <test>").set_subtitle("Species")
+            .set_xlab("Width").set_ylab("Length"))
+    gc.collect()
+    assert plot.thisown
+    assert plot.title_text() == "Iris <test>"
+    assert plot.subtitle_text() == "Species"
+    assert plot.x_label_text() == "Width"
+    assert plot.y_label_text() == "Length"
+    assert plot.set_title("") is plot
+    assert plot.title_text() == ""
+
+
+def test_scatter_constructor_and_histogram_validation():
+    plot = dm.RPlot([0.0, 1.0], [1.0, 2.0]).set_title("Samples").set_col("blue")
+    assert plot.thisown
+    assert plot.title_text() == "Samples"
+    assert "<circle" in plot.to_svg()
+    assert 'fill="rgb(0,0,255)"' in plot.to_svg()
+    assert dm.RPlot().title_text() == "datamunge plot"
+    with pytest.raises(ValueError):
+        dm.RPlot([1.0], [1.0, 2.0])
+    with pytest.raises(ValueError):
+        dm.RPlot.hist([float("nan")])
+    with pytest.raises(ValueError):
+        dm.RPlot.hist([float("inf")])
+    with pytest.raises(ValueError):
+        plot.set_col("unknown")
+    dm.set_seed(42)
+    uniform = dm.runif(0, 1, 10)
+    dm.set_seed(42)
+    assert uniform == dm.unif(0, 1, 10)
+    with pytest.raises(ValueError):
+        dm.runif(1, 0, 10)

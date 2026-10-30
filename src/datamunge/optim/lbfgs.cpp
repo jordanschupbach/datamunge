@@ -1,3 +1,5 @@
+/// @file lbfgs.cpp
+/// @brief LBFGS native update, trial and stopping implementation.
 #include <datamunge/optim/lbfgs.hpp>
 
 #include <array>

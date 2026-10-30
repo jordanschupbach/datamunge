@@ -1,0 +1,338 @@
+//? Title: The Banker's Algorithm: Avoiding Deadlock by Staying Safe
+//? Subtitle: Safe states, why the greedy safety check is exact, the geometry of unsafe states for two processes, and what avoidance costs in a simulated system, with datamunge's algorithms::banker_safety and algorithms::simulate_resource_allocation
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Dijkstra's banker's algorithm (1965) grants a resource request only if the system stays in a
+*safe state*: one from which every process can still finish, in some order, even if each asks for
+its full declared maximum. We prove that the greedy safety check, which finishes any process that
+fits, never misses a safe order, and that a safe state cannot deadlock. On the classic
+five-process textbook instance the state has 16 safe orders out of 120. For two processes sharing
+one resource type the unsafe states form a rectangle that we derive in closed form, and every
+deadlock lies inside it. Finally a simulation of four processes acquiring two resource types a unit
+at a time shows the trade-off: granting whatever is free deadlocks in every run once
+resources are tight, while the banker never deadlocks and completes more jobs per step even
+before the greedy policy gets stuck.
+)
+
+\toc
+
+> Safe states
+
+A system has \(n\) processes and \(m\) resource types. Process \(i\) holds
+\(\mathit{Alloc}_i\in\mathbb N^m\) and has declared a maximum claim \(\mathit{Max}_i\), so it may
+still ask for \(\mathit{Need}_i=\mathit{Max}_i-\mathit{Alloc}_i\). The free units are
+\(\mathit{Avail}\). The state is *safe* if there is an order \(p_1,\dots,p_n\) of the processes with
+
+$$
+\mathit{Need}_{p_k}\le\mathit{Avail}+\sum_{l<k}\mathit{Alloc}_{p_l}\qquad(k=1,\dots,n),
+$$
+\alttext(Need of p k is at most Avail plus the sum over l less than k of Alloc of p l, for k from 1 to n.)
+
+componentwise: even if every process asks for everything it may, each in turn can be given its
+whole need, run to completion and release its allocation.
+
+**A safe state cannot deadlock.** In a deadlock a set of processes each wait for units held by
+others in the set, forever. Take the first process of the set in a safe order: everything it
+could ask for fits in the free units plus what earlier processes (outside the set, so able to
+finish) release, so it is not stuck after all.
+
+**An unsafe state need not be deadlocked yet**, but some sequence of requests, each within the
+declared claims, leads to deadlock. The banker therefore refuses any request whose result is
+unsafe and makes the requester wait.
+
+>> The greedy check is exact
+
+The safety algorithm keeps a work vector \(W\), initially \(\mathit{Avail}\), and repeatedly picks
+*any* unfinished process with \(\mathit{Need}_i\le W\), adding \(\mathit{Alloc}_i\) to \(W\). It answers
+"safe" when all processes finish. Choosing the wrong process first cannot hurt: finishing a
+process only increases \(W\). Formally, suppose a safe order exists but greedy stops with a set
+\(F\) finished and \(W=\mathit{Avail}+\sum_{i\in F}\mathit{Alloc}_i\). Let \(p\) be the first process
+outside \(F\) in the safe order. All processes before \(p\) in that order are in \(F\), so
+\(\mathit{Need}_p\le\mathit{Avail}+\sum_{l<k}\mathit{Alloc}_{p_l}\le W\), and greedy could have finished
+\(p\). This contradiction shows greedy succeeds whenever any safe order exists, in \(O(n^2m)\) time.
+
+The number of safe orders can still be large, and `banker_count_safe_sequences()` counts them by
+a dynamic program over subsets: the work vector after finishing a set depends only on the set.
+
+```
+REQUEST(i, r):
+    if r > Need_i: error (claim exceeded)
+    if r > Avail: wait
+    pretend to grant: Alloc_i += r, Avail −= r
+    if the new state is safe: grant
+    else: undo and wait
+```
+
+> The textbook instance
+
+The block uses the five-process, three-resource example of Silberschatz, Galvin and Gagne, finds
+a safe order, counts all of them, and decides three requests in turn.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::vector<std::vector<int>> alloc = {{0, 1, 0}, {2, 0, 0}, {3, 0, 2}, {2, 1, 1}, {0, 0, 2}};
+  const std::vector<std::vector<int>> maxd = {{7, 5, 3}, {3, 2, 2}, {9, 0, 2}, {2, 2, 2}, {4, 3, 3}};
+  std::vector<int> avail = {3, 3, 2};
+  auto vec = [](const std::vector<int>& v) { return std::format("({}, {}, {})", v[0], v[1], v[2]); };
+  std::print("| process | Alloc | Max | Need |\n| ---: | --- | --- | --- |\n");
+  for (std::size_t i = 0; i < alloc.size(); ++i)
+    std::print("| P{} | {} | {} | {} |\n", i, vec(alloc[i]), vec(maxd[i]),
+               vec({maxd[i][0] - alloc[i][0], maxd[i][1] - alloc[i][1], maxd[i][2] - alloc[i][2]}));
+  const auto s = alg::banker_safety(alloc, maxd, avail);
+  std::print("\nAvailable {}. Safe: {}. Greedy order:", vec(avail), s.safe);
+  for (auto p : s.sequence) std::print(" P{}", p);
+  std::print(". Safe orders: {} of 120.\n\n", alg::banker_count_safe_sequences(alloc, maxd, avail));
+
+  std::print("| request | within need and available | grantable | safe orders afterwards |\n| --- | --- | --- | ---: |\n");
+  struct Req {
+    std::size_t p;
+    std::vector<int> r;
+  };
+  for (const Req& q : {Req{1, {1, 0, 2}}, Req{4, {3, 3, 0}}, Req{0, {0, 2, 0}}}) {
+    bool fits = true;
+    for (std::size_t j = 0; j < 3; ++j) fits = fits && q.r[j] <= maxd[q.p][j] - alloc[q.p][j] && q.r[j] <= avail[j];
+    const bool ok = alg::banker_request_grantable(q.p, q.r, alloc, maxd, avail);
+    auto a2 = alloc;
+    auto v2 = avail;
+    for (std::size_t j = 0; j < 3; ++j) {
+      a2[q.p][j] += q.r[j];
+      v2[j] -= q.r[j];
+    }
+    std::print("| P{} asks {} | {} | {} | {} |\n", q.p, vec(q.r), fits ? "yes" : "no", ok ? "**granted**" : "refused",
+               fits ? std::to_string(alg::banker_count_safe_sequences(a2, maxd, v2)) : "–");
+    if (ok) {
+      alloc = a2;
+      avail = v2;
+    }
+  }
+}
+```
+// result_begin: markdown
+| process | Alloc | Max | Need |
+| ---: | --- | --- | --- |
+| P0 | (0, 1, 0) | (7, 5, 3) | (7, 4, 3) |
+| P1 | (2, 0, 0) | (3, 2, 2) | (1, 2, 2) |
+| P2 | (3, 0, 2) | (9, 0, 2) | (6, 0, 0) |
+| P3 | (2, 1, 1) | (2, 2, 2) | (0, 1, 1) |
+| P4 | (0, 0, 2) | (4, 3, 3) | (4, 3, 1) |
+
+Available (3, 3, 2). Safe: true. Greedy order: P1 P3 P4 P0 P2. Safe orders: 16 of 120.
+
+| request | within need and available | grantable | safe orders afterwards |
+| --- | --- | --- | ---: |
+| P1 asks (1, 0, 2) | yes | **granted** | 8 |
+| P4 asks (3, 3, 0) | no | refused | – |
+| P0 asks (0, 2, 0) | yes | refused | 0 |
+// result_end
+
+The state is safe, and greedy finds the order P1, P3, P4, P0, P2: P1's need \((1,2,2)\) fits in
+\((3,3,2)\), and each finished process adds its allocation to the pool. It is one of 16 safe
+orders among the \(5!=120\); every one of them must start with P1 or P3, the only processes whose
+needs fit in the free units.
+
+Granting P1's request \((1,0,2)\) keeps the state safe but halves the safe orders to 8, since the
+free pool shrinks to \((2,3,0)\). P4's request \((3,3,0)\) cannot even be considered: only
+\((2,3,0)\) is free, so P4 simply waits. P0's request \((0,2,0)\) is for units that *are* free,
+yet the banker refuses it: it would leave \((2,1,0)\) free. P1, the only process whose need
+fitted before, still needs \((0,2,0)\), and with one unit of the second type free no process's
+need would fit. There are no safe orders
+afterwards. Nothing is deadlocked at that point, but if every process then asked for its full
+claim, none could proceed.
+
+> Two processes, one resource
+
+With one resource type of \(T\) units and two processes with claims \(M_1,M_2\le T\), the state is
+the pair of allocations \((a_1,a_2)\) with \(a_1+a_2\le T\). Process 1 can finish from here if
+\(M_1-a_1\le T-a_1-a_2\), that is \(a_2\le T-M_1\); after it releases, process 2 has all \(T\)
+units and finishes too. Symmetrically for process 2. So
+
+$$
+\text{unsafe}\iff a_1>T-M_2\ \text{ and }\ a_2>T-M_1 ,
+$$
+\alttext(The state is unsafe if and only if a 1 is greater than T minus M 2 and a 2 is greater than T minus M 1.)
+
+a rectangle in the corner of the triangle of feasible states. With unit requests, a deadlock
+is a state where no unit is free and neither process has its full claim, \(a_1+a_2=T\),
+\(a_1<M_1\), \(a_2<M_2\): the edge of the rectangle on the line \(a_1+a_2=T\). The block classifies
+every state for \(T=10\), \(M_1=7\), \(M_2=6\) with `banker_safety()` and `deadlocked_processes()`.
+
+```{cpp, results="markdown", file="figures/banker_states.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const int T = 10, M1 = 7, M2 = 6;
+  std::vector<double> xs, ys;
+  for (int a = 0; a <= M1; ++a) xs.push_back(a);
+  for (int b = 0; b <= M2; ++b) ys.push_back(b);
+  std::vector<std::vector<double>> z(xs.size(), std::vector<double>(ys.size(), std::nan("")));
+  int safe = 0, unsafe = 0, dead = 0, formula_agrees = 0, total = 0;
+  for (int a = 0; a <= M1; ++a)
+    for (int b = 0; b <= M2 && a + b <= T; ++b) {
+      const std::vector<std::vector<int>> alloc = {{a}, {b}}, maxd = {{M1}, {M2}};
+      const bool s = alg::banker_safety(alloc, maxd, {T - a - b}).safe;
+      // Each process not at its claim is waiting for one more unit.
+      const std::vector<std::vector<int>> req = {{a < M1 ? 1 : 0}, {b < M2 ? 1 : 0}};
+      const bool d = alg::deadlocked_processes(alloc, req, {T - a - b}).size() == 2;
+      z[a][b] = d ? 2 : (s ? 0 : 1);
+      safe += s;
+      unsafe += !s && !d;
+      dead += d;
+      formula_agrees += s == !(a > T - M2 && b > T - M1);
+      ++total;
+    }
+  std::print("Feasible states: {}. Safe: {}. Unsafe but not deadlocked: {}. Deadlocked: {}. "
+             "Closed form agrees with the safety algorithm on {} of {}.\n", total, safe, unsafe, dead, formula_agrees, total);
+  dm::graphics::RPlot::create()
+      .image(xs, ys, z, {dm::RGB{187, 247, 208}, dm::RGB{253, 186, 116}, dm::RGB{220, 38, 38}}, 0, 2)
+      .segments({3.5}, {6.5}, {7.5}, {2.5}, dm::RGB{17, 24, 39}, 1.0)
+      .legend({"safe", "unsafe", "deadlocked"}, {dm::RGB{187, 247, 208}, dm::RGB{253, 186, 116}, dm::RGB{220, 38, 38}})
+      .x_limits(-0.5, 8.5)
+      .y_limits(-0.5, 8.5)
+      .title("Two processes: T = 10, M1 = 7, M2 = 6")
+      .x_label("a1 (units held by process 1)")
+      .y_label("a2 (units held by process 2)")
+      .size(640, 600)
+      .save_svg("build/banker_states.svg");
+}
+```
+// result_begin: markdown
+Feasible states: 50. Safe: 47. Unsafe but not deadlocked: 1. Deadlocked: 2. Closed form agrees with the safety algorithm on 50 of 50.
+\image(figures/banker_states.svg)
+// result_end
+
+\caption(Every feasible state \((a_1,a_2)\) of two processes with claims 7 and 6 sharing 10 units: safe (green), unsafe but not yet deadlocked (orange), deadlocked (red). The black line marks \(a_1+a_2=10\).)
+\alttext(Grid of coloured cells with a1 from 0 to 7 across and a2 from 0 to 6 up, bounded above right by the line a1 plus a2 equals 10. Nearly all cells are green (safe). Cell (5, 4) is orange (unsafe), and cells (5, 5) and (6, 4), on the line, are red (deadlocked).)
+
+Of the 50 feasible states, 47 are safe, one, \((5,4)\), is unsafe but not deadlocked, and two,
+\((5,5)\) and \((6,4)\), are deadlocked: no unit is free and each process still needs more. The
+closed form agrees with the safety algorithm in all 50 states. The orange state shows why
+avoidance must look ahead. At \((5,4)\) one unit is free and either process may take it, but
+whichever does, the system lands on a red state. The banker refuses both requests at \((4,4)\)
+and \((5,3)\) that would enter \((5,4)\), so the unsafe corner is never entered. The safe region
+is large because the claims are modest; with \(M_1+M_2\le T\) the rectangle would be empty and
+every state safe.
+
+> What avoidance costs
+
+`simulate_resource_allocation()` runs four processes with claims (3, 2), (2, 3), (3, 3) and
+(2, 2) on two resource types. Each repeatedly runs jobs: it acquires its claim one random unit at
+a time, then releases everything. At each step a random process acts. Under
+*grant-if-available* a request is granted whenever a unit is free; under the *banker* it is
+granted only if the result is safe. The block varies the number of units of each type from 3
+(the largest single claim) to 10 (the sum of the claims) and runs each policy 200 times for
+5,000 steps.
+
+```{cpp, results="markdown", file="figures/banker_simulation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::vector<int>> claims = {{3, 2}, {2, 3}, {3, 3}, {2, 2}};
+  const std::size_t runs = 200, steps = 5000;
+  std::print("| units per type | grant-if-available: deadlocked runs | median steps to deadlock | jobs per 1,000 steps | "
+             "banker: deadlocked runs | jobs per 1,000 steps | refusals per job | utilisation (greedy / banker) |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |\n");
+  std::vector<double> k_axis, dead_rate, greedy_jobs, banker_jobs;
+  for (int k = 3; k <= 10; ++k) {
+    const std::vector<int> total = {k, k};
+    std::size_t greedy_dead = 0, banker_dead = 0;
+    double g_jobs = 0, g_steps = 0, b_jobs = 0, b_steps = 0, refusals = 0, g_util = 0, b_util = 0;
+    std::vector<double> to_deadlock;
+    for (std::size_t seed = 0; seed < runs; ++seed) {
+      const auto g = alg::simulate_resource_allocation(claims, total, alg::AllocationPolicy::GrantIfAvailable, steps, seed);
+      const auto b = alg::simulate_resource_allocation(claims, total, alg::AllocationPolicy::Banker, steps, seed);
+      greedy_dead += g.deadlocked;
+      banker_dead += b.deadlocked;
+      if (g.deadlocked) to_deadlock.push_back(static_cast<double>(g.steps));
+      g_jobs += g.jobs_finished;
+      g_steps += g.steps;
+      b_jobs += b.jobs_finished;
+      b_steps += b.steps;
+      refusals += b.denials;
+      g_util += g.utilisation / runs;
+      b_util += b.utilisation / runs;
+    }
+    std::ranges::sort(to_deadlock);
+    std::print("| {} | {} | {} | {:.1f} | {} | {:.1f} | {:.2f} | {:.2f} / {:.2f} |\n", k, greedy_dead,
+               to_deadlock.empty() ? std::string("–") : std::format("{:.0f}", to_deadlock[to_deadlock.size() / 2]),
+               1000 * g_jobs / g_steps, banker_dead, 1000 * b_jobs / b_steps, b_jobs ? refusals / b_jobs : 0.0, g_util, b_util);
+    k_axis.push_back(k);
+    dead_rate.push_back(static_cast<double>(greedy_dead) / runs);
+    greedy_jobs.push_back(1000 * g_jobs / g_steps);
+    banker_jobs.push_back(1000 * b_jobs / b_steps);
+  }
+  auto rate = dm::graphics::RPlot::create()
+                  .lines(k_axis, dead_rate, "", dm::RGB{220, 38, 38}, 2.0)
+                  .points(k_axis, dead_rate, "", dm::RGB{220, 38, 38}, 6.0)
+                  .y_limits(0, 1.05)
+                  .title("Runs ending in deadlock (grant-if-available)")
+                  .x_label("units of each resource type")
+                  .y_label("fraction of 200 runs");
+  auto jobs = dm::graphics::RPlot::create()
+                  .lines(k_axis, greedy_jobs, "", dm::RGB{220, 38, 38}, 2.0)
+                  .points(k_axis, greedy_jobs, "", dm::RGB{220, 38, 38}, 6.0)
+                  .lines(k_axis, banker_jobs, "", dm::RGB{37, 99, 235}, 2.0)
+                  .points(k_axis, banker_jobs, "", dm::RGB{37, 99, 235}, 6.0)
+                  .legend({"grant-if-available", "banker"}, {dm::RGB{220, 38, 38}, dm::RGB{37, 99, 235}})
+                  .title("Throughput while running")
+                  .x_label("units of each resource type")
+                  .y_label("jobs per 1,000 steps");
+  dm::graphics::RLayout::create(1, 2).add(rate).add(jobs).size(1200, 460).save_svg("build/banker_simulation.svg");
+}
+```
+// result_begin: markdown
+| units per type | grant-if-available: deadlocked runs | median steps to deadlock | jobs per 1,000 steps | banker: deadlocked runs | jobs per 1,000 steps | refusals per job | utilisation (greedy / banker) |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 3 | 200 | 8 | 9.2 | 0 | 55.1 | 7.53 | 0.55 / 0.67 |
+| 4 | 200 | 11 | 22.9 | 0 | 63.2 | 5.09 | 0.57 / 0.76 |
+| 5 | 200 | 18 | 42.0 | 0 | 80.9 | 2.22 | 0.60 / 0.80 |
+| 6 | 200 | 28 | 74.4 | 0 | 104.2 | 0.67 | 0.63 / 0.79 |
+| 7 | 200 | 116 | 124.0 | 0 | 132.6 | 0.13 | 0.66 / 0.72 |
+| 8 | 190 | 1055 | 155.6 | 0 | 156.4 | 0.01 | 0.63 / 0.63 |
+| 9 | 0 | – | 166.5 | 0 | 166.5 | 0.00 | 0.56 / 0.56 |
+| 10 | 0 | – | 168.7 | 0 | 168.7 | 0.00 | 0.50 / 0.50 |
+\image(figures/banker_simulation.svg)
+// result_end
+
+\caption(Left: fraction of 200 runs of 5,000 steps that deadlock under grant-if-available, by the number of units of each type. Right: jobs completed per 1,000 steps actually run, for both policies.)
+\alttext(Two panels against units of each resource type from 3 to 10. Left: the fraction of runs ending in deadlock under grant-if-available is 1 from 3 to 7 units, 0.95 at 8 and 0 at 9 and 10. Right: jobs per 1,000 steps for both policies rise with the number of units; the banker's curve is above the greedy one up to 7 units, from 55 against 9 at 3 units, and the two coincide from 8 units on at about 156 to 169.)
+
+With 7 or fewer units of each type, every one of the 200 greedy runs deadlocked, in a median of
+8 steps with 3 units and 116 steps with 7. With 8 units, 190 of 200 still did, though only after
+about a thousand steps. With 9 or 10 units no run deadlocked within 5,000 steps; at 10 the
+units cover every claim at once and deadlock is impossible. The banker never deadlocked at any
+size, as the theory guarantees.
+
+The price is refused requests: with 3 units the banker refused 7.5 requests for every completed
+job, falling to almost none once resources are plentiful. Surprisingly, the banker also
+completes *more* jobs per step while running, 55 against 9 per thousand steps at 3 units. The
+greedy policy spends its steps in unsafe states, with processes holding units and waiting on each
+other until the system freezes, while the banker keeps the resources with processes that can
+finish, which also shows in its higher utilisation (0.67 to 0.80 against 0.55 to 0.66). Once
+the units suffice, both policies behave the same.
+
+The catch, which limits the banker's use in practice, is the assumption behind it: every process
+must declare its maximum claim in advance, and the number of processes must be fixed.
+
+> Summary
+
+- A state is safe when some order lets every process obtain its full remaining claim; a safe
+  state cannot deadlock, and the greedy check finds a safe order whenever one exists, because
+  finishing a process only frees resources.
+- The textbook instance has 16 safe orders out of 120. The banker grants P1's request (8 safe
+  orders remain) and refuses P0's request for free units because no safe order would remain.
+- For two processes and one resource type the unsafe states form the rectangle
+  \(a_1>T-M_2,\ a_2>T-M_1\), and the deadlocks lie on its edge where no units are free.
+- In simulation, granting whatever is free deadlocked every run when resources were tight; the
+  banker never deadlocked and completed more jobs per step, at the cost of refusing requests.

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="183.825" height="279.351" viewBox="0 0 183.825 279.351" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">character cnn / learned CNN / 1</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="13">
+<text x="14" y="20" font-size="12" font-weight="bold">character cnn /</text>
+<text x="14" y="38" font-size="12" font-weight="bold">learned CNN / 1</text>
+<text x="102.45" y="70" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 136) rotate(-90)" text-anchor="middle">True class</text>
+<text x="42.45" y="113.9" text-anchor="end">0</text>
+<text transform="translate(76.45 200) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="82" data-value="82"><title>0 → 0: 82</title>
+<rect x="50.45" y="84" width="52" height="52" fill="rgb(57,113,236)" stroke="white"/>
+<text x="76.45" y="113.9" font-size="13" text-anchor="middle" fill="white">82</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="18" data-value="18"><title>0 → 1: 18</title>
+<rect x="102.45" y="84" width="52" height="52" fill="rgb(201,216,246)" stroke="white"/>
+<text x="128.45" y="113.9" font-size="13" text-anchor="middle" fill="#172033">18</text>
+</g>
+<text x="42.45" y="165.9" text-anchor="end">1</text>
+<text transform="translate(128.45 200) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="91" data-value="91"><title>1 → 0: 91</title>
+<rect x="50.45" y="136" width="52" height="52" fill="rgb(37,99,235)" stroke="white"/>
+<text x="76.45" y="165.9" font-size="13" text-anchor="middle" fill="white">91</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="9" data-value="9"><title>1 → 1: 9</title>
+<rect x="102.45" y="136" width="52" height="52" fill="rgb(221,231,248)" stroke="white"/>
+<text x="128.45" y="165.9" font-size="13" text-anchor="middle" fill="#172033">9</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="50.45" y="231.351" width="104" height="10" fill="url(#cm-scale)"/>
+<text x="50.45" y="256.351">0</text><text x="154.45" y="256.351" text-anchor="end">91</text>
+</g></svg>

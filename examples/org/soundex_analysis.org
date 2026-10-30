@@ -52,7 +52,7 @@ straddle an =H=, so they merge -- the code is =A261=, not =A226=.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

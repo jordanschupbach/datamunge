@@ -50,7 +50,7 @@ road is modeled by adding the edge in both directions.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Settling the frontier, and the relaxation step
@@ -218,7 +218,7 @@ distances from `A` are \(0, 3, 2, 8, 9, 11\) for `A,B,C,D,E,F`, with the fastest
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

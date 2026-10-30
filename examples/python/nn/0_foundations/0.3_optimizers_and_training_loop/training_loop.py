@@ -1,4 +1,5 @@
 # Native Python NN example. Resumable batching, weighted logging and explicit training.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/training_loop.py
 """Every epoch visits 103 rows once, including its seven-row final batch."""
 import math
 from pydatamunge import nn

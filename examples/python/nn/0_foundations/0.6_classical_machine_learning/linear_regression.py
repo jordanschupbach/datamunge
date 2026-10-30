@@ -1,4 +1,5 @@
 # Native Python NN example. Direct solvers and optimization are implemented here.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.6_classical_machine_learning/linear_regression.py
 """Fourier-feature regression: Cholesky, QR, SGD and an ill-conditioned design."""
 import math
 from pydatamunge import nn

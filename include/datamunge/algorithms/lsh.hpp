@@ -54,6 +54,18 @@ class CosineLSH {
             for (std::size_t t = 0; t < num_tables; ++t) buckets_[t][signature(data[i], t)].push_back(i);
     }
 
+    /// @brief Dimension of the indexed vectors.
+    /// @return The length of the first data vector (0 for empty data).
+    [[nodiscard]] std::size_t dimension() const noexcept { return dim_; }
+
+    /// @brief Number of hash tables.
+    /// @return The table count passed to the constructor.
+    [[nodiscard]] std::size_t num_tables() const noexcept { return tables_; }
+
+    /// @brief Random-hyperplane bits per table signature.
+    /// @return The bit width passed to the constructor.
+    [[nodiscard]] std::size_t bits_per_table() const noexcept { return bits_; }
+
     /// Approximate nearest neighbor of \p query by cosine similarity (index into the data, or
     /// SIZE_MAX if no candidate collided in any table). \p out_examined receives the candidate count.
     std::size_t query(const std::vector<double>& q, std::size_t* out_examined = nullptr) const {

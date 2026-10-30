@@ -1,9 +1,9 @@
 # Native R NN example. Whitespace, Unicode characters, learned BPE and greedy WordPiece.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/text_tokenization.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example text_tokenization
 # Port of tflow's text_tokenization. Learn ten BPE merges from a weighted toy
 # vocabulary, inspect segmentation of unseen word combinations, and reload a
 # saved merge model. Test Unicode scalar boundaries and invalid UTF-8,

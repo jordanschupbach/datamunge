@@ -58,7 +58,7 @@ every index beyond it is a leaf and a trivial one-element heap.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Sift-down: the one primitive
@@ -227,7 +227,7 @@ root at the tail \-\- pulling out `9`, `8`, `7`, `3`, `2` \-\- leaving
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

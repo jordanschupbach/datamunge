@@ -1,3 +1,6 @@
+/// @file optim.cpp
+/// @brief Stateful tensor optimizer rules, fused update kernels, and gradient aggregation/clipping.
+
 #include "datamunge/nn/optim.hpp"
 
 #include <algorithm>
@@ -69,6 +72,7 @@ void Optimizer::set_learning_rate(double learning_rate) {
 
 const char* Optimizer::slot_name(SlotKind kind) {
   static_assert(static_cast<std::size_t>(SlotKind::Count) == 11);
+  /// @brief Checkpoint slot-name table indexed by real SlotKind values, excluding Count.
   static constexpr const char* names[] = {
       "velocity", "accumulator", "variance", "accum", "accum_update", "m", "u", "v", "vmax", "row", "col"};
   return names[static_cast<std::size_t>(kind)];
@@ -84,9 +88,12 @@ Tensor& Optimizer::slot(SlotKind kind, std::size_t index, const Shape& shape, do
   return slots_.back().second;
 }
 
+/// @brief Norms and packed update kernels used without recording optimizer operations.
 namespace {
 
+/// @brief Returns the scalar L2 norm as a tensor, using the currently active grad mode.
 Tensor l2_norm(const Tensor& x) { return sqrt(sum(square(x))); }
+/// @brief Returns the scalar root-mean-square value as a tensor.
 Tensor rms(const Tensor& x) { return sqrt(mean(square(x))); }
 
 /// numerator / denominator where both are positive, else 1 (LAMB/LARS trust ratio).
@@ -94,10 +101,11 @@ double trust(double numerator, double denominator) {
   return numerator > 0 && denominator > 0 ? numerator / denominator : 1.0;
 }
 
-// Keep the arithmetic stages of the tensor expressions (including float32
-// rounding) while avoiding their intermediate buffers. Weight writes remain a
-// separate pass so duplicate/overlapping parameters and aliased gradients keep
-// the optimizer's synchronous semantics.
+/// @brief Produces a packed SGD/Adam/AdamW decrement and updates supplied moment slots in place.
+/// Preserves staged scalar rounding while avoiding intermediate tensors. Parameter
+/// writes occur in a later pass to preserve synchronous semantics for aliased inputs.
+/// @tparam T Matching scalar dtype of contiguous weights, gradients, and non-null slots.
+/// @tparam Kind SGD, Adam, or AdamW; Adam variants require both first/second moment slots.
 template<typename T, OptimizerKind Kind>
 Tensor fused_basic_update(
     const Tensor&          w,
@@ -155,6 +163,9 @@ Tensor fused_basic_update(
   return update;
 }
 
+/// @brief Produces packed decrements for momentum, adaptive-history, Lion, and scheduled Adam variants.
+/// Updates the non-null slots in place; callers provide the rule-specific slot layout,
+/// matching packed shapes/dtypes, and moment/schedule correction factors.
 template<typename T, OptimizerKind Kind>
 Tensor fused_other_update(
     const Tensor&                 w,
@@ -283,6 +294,8 @@ Tensor fused_other_update(
   return update;
 }
 
+/// @brief Updates LARS velocity from a packed gradient plus weight decay and returns its decrement.
+/// The supplied rate already includes the layer's local trust coefficient and ratio.
 template<typename T>
 Tensor fused_lars_update(
     const Tensor&          w,
@@ -312,6 +325,8 @@ Tensor fused_lars_update(
   return update;
 }
 
+/// @brief Divides each packed update element by divisor, then multiplies by multiplier in dtype T.
+/// The caller supplies nonzero divisor; storage version is incremented after mutation.
 template<typename T>
 void scale_fused_update(Tensor& update, double divisor, double multiplier) {
 #if defined(__clang__)
@@ -326,6 +341,7 @@ void scale_fused_update(Tensor& update, double divisor, double multiplier) {
   ++update.impl()->storage->version;
 }
 
+/// @brief Forms an AdamW direction, scales by its LAMB trust ratio and rate, and updates moments.
 template<typename T>
 Tensor fused_lamb_update(
     const Tensor&          w,
@@ -351,6 +367,8 @@ Tensor fused_lamb_update(
   return update;
 }
 
+/// @brief Forms a clipped Adafactor decrement and updates factored or unfactored variance slots.
+/// Non-null second selects row/column factoring; time is the positive one-based step.
 template<typename T>
 Tensor fused_adafactor_update(
     const Tensor&          w,
@@ -438,6 +456,7 @@ Tensor fused_adafactor_update(
   return update;
 }
 
+/// @brief Subtracts a matching packed decrement from a floating parameter and bumps its version.
 void apply_packed_update(Tensor& parameter, const Tensor& update) {
   detail::dispatch_float(parameter.dtype(), "Optimizer::step", [&](auto tag) {
     using T       = typename decltype(tag)::type;
@@ -554,6 +573,8 @@ void Optimizer::step(const std::vector<Tensor>& gradients) {
           })) {
         updates[i] = detail::dispatch_float(w.dtype(), "Optimizer::step", [&](auto tag) {
           using T = typename decltype(tag)::type;
+/// @def FUSED_CASE(kind)
+/// @brief Dispatches one optimizer enum arm to the matching fused update template.
 #define FUSED_CASE(kind)                               \
   case OptimizerKind::kind:                            \
     return fused_other_update<T, OptimizerKind::kind>( \

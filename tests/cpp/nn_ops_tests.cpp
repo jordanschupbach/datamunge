@@ -671,7 +671,7 @@ TEST(NnOps, ConcatSplitStack) {
   Tensor c0 = nn::concat({x, x}, 0);  // TF Concat([x,x],axis=0)
   EXPECT_EQ(c0.shape(), (Shape{4, 3}));
   expect_vals(c0, {1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6});
-  Tensor c1 = nn::concat({x, nn::tensor({{7}, {8}})}, 1);
+  Tensor c1 = nn::concat({x, nn::tensor({7, 8}, {2, 1})}, 1);
   expect_vals(c1, {1, 2, 3, 7, 4, 5, 6, 8});
   EXPECT_THROW(nn::concat({x, nn::zeros({3, 3})}, 1), std::invalid_argument);
   EXPECT_EQ(nn::concat({i32({1}), nn::tensor({2})}, 0).dtype(), DType::Float32);
@@ -805,7 +805,7 @@ TEST(NnOps, OneHot) {
 TEST(NnOps, IndexAdd) {
   Tensor r = nn::index_add(nn::zeros({3, 2}), 0, i64({0, 0, 2}), nn::tensor({{1, 1}, {2, 2}, {3, 3}}));
   expect_vals(r, {3, 3, 0, 0, 3, 3});
-  Tensor c = nn::index_add(nn::ones({2, 3}), 1, i64({2}), nn::tensor({{5}, {6}}));
+  Tensor c = nn::index_add(nn::ones({2, 3}), 1, i64({2}), nn::tensor({5, 6}, {2, 1}));
   expect_vals(c, {1, 1, 6, 1, 1, 7});
 }
 
@@ -869,7 +869,7 @@ TEST(NnOps, Matmul2D) {
   expect_vals(nn::matmul(a, a, true, false), {17, 22, 27, 22, 29, 36, 27, 36, 45});
   expect_vals(nn::matmul(b, a, true, true), {4, 10, 5, 11});
   // non-contiguous inputs
-  expect_vals(nn::matmul(a.transpose(), nn::tensor({{1}, {1}})), {5, 7, 9});
+  expect_vals(nn::matmul(a.transpose(), nn::tensor({1, 1}, {2, 1})), {5, 7, 9});
 }
 
 TEST(NnOps, MatmulBatched) {

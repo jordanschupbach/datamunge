@@ -1,9 +1,9 @@
 # Native R NN example. Atrous convolutions: exact dilation, gridding and learning distant context.
+# CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/dilated_convolutions.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example dilated_convolutions
 # A 3x3 filter at rate d has effective width 2d+1 and nine learned taps per
 # channel pair. Compare zero-expanded filters with native dilated nn$conv2d at
 # rates 1,2,3 under SAME/VALID padding, check input/filter derivatives
@@ -14,7 +14,7 @@ rm(.nn_common)
 # students on independent random images and compare held-out MSE. Inputs come
 # from the same std::mt19937 streams as the C++ (bit-identical).
 # Support arrays: output/nn/r/<mode>/visualizations/dilated_convolutions/supports.npz.
-# C++ reference: examples/cpp/nn/1_convolutional_neural_networks/1.1_fundamentals/dilated_convolutions.cpp
+# C++ reference: examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/dilated_convolutions.cpp
 
 nn_helper("checks")
 nn_helper("dilated")

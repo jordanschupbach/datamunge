@@ -35,7 +35,7 @@ Fermat alone is impractical for a general number, but unbeatable for balanced se
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -111,7 +111,7 @@ from tiny to large, counting the Fermat steps each needs.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

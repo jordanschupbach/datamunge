@@ -2087,17 +2087,17 @@ SWIGINTERN std::string *std_vector_Sl_std_string_Sg__to_array(std::vector< std::
 
   #include "datamunge/datamunge.hpp"
 
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::plot::RGB(); }
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::plot::RGB{r, g, b, alpha};
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
+    return new datamunge::graphics::RGB{r, g, b, alpha};
   }
-static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Scatter = static_cast< int >(datamunge::plot::DataSeries::Kind::Scatter);
-static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Line = static_cast< int >(datamunge::plot::DataSeries::Kind::Line);
-static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Bar = static_cast< int >(datamunge::plot::DataSeries::Kind::Bar);
-static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Box = static_cast< int >(datamunge::plot::DataSeries::Kind::Box);
-static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Polygon = static_cast< int >(datamunge::plot::DataSeries::Kind::Polygon);
-static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Text = static_cast< int >(datamunge::plot::DataSeries::Kind::Text);
-static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Segment = static_cast< int >(datamunge::plot::DataSeries::Kind::Segment);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Scatter = static_cast< int >(datamunge::graphics::DataSeries::Kind::Scatter);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Line = static_cast< int >(datamunge::graphics::DataSeries::Kind::Line);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Bar = static_cast< int >(datamunge::graphics::DataSeries::Kind::Bar);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Box = static_cast< int >(datamunge::graphics::DataSeries::Kind::Box);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Polygon = static_cast< int >(datamunge::graphics::DataSeries::Kind::Polygon);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Text = static_cast< int >(datamunge::graphics::DataSeries::Kind::Text);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Kind__Segment = static_cast< int >(datamunge::graphics::DataSeries::Kind::Segment);
 static int SWIG_ENUM__datamunge__stats__TrendType__None = static_cast< int >(datamunge::stats::TrendType::None);
 static int SWIG_ENUM__datamunge__stats__TrendType__Additive = static_cast< int >(datamunge::stats::TrendType::Additive);
 static int SWIG_ENUM__datamunge__stats__TrendType__AdditiveDamped = static_cast< int >(datamunge::stats::TrendType::AdditiveDamped);
@@ -10911,21 +10911,21 @@ SWIGEXT value _wrap_ShapeLayer_plot__SWIG_0datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
   std::size_t arg5 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
     arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg4 = caml_long_val(caml_list_nth(args,3));
@@ -10935,7 +10935,7 @@ SWIGEXT value _wrap_ShapeLayer_plot__SWIG_0datamunge (value args)
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -10948,27 +10948,27 @@ SWIGEXT value _wrap_ShapeLayer_plot__SWIG_1datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
     arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg4 = caml_long_val(caml_list_nth(args,3));
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -10981,23 +10981,23 @@ SWIGEXT value _wrap_ShapeLayer_plot__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
     arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -11010,19 +11010,19 @@ SWIGEXT value _wrap_ShapeLayer_plot__SWIG_3datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
     arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -11035,7 +11035,7 @@ SWIGEXT value _wrap_ShapeLayer_plot__SWIG_4datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ShapeLayer *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -11043,7 +11043,7 @@ SWIGEXT value _wrap_ShapeLayer_plot__SWIG_4datamunge (value args)
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -11101,7 +11101,7 @@ SWIGEXT value _wrap_ShapeLayer_plotdatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -11138,7 +11138,7 @@ SWIGEXT value _wrap_ShapeLayer_plotdatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -11159,7 +11159,7 @@ SWIGEXT value _wrap_ShapeLayer_plotdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -11197,7 +11197,7 @@ SWIGEXT value _wrap_ShapeLayer_plotdatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -11218,7 +11218,7 @@ SWIGEXT value _wrap_ShapeLayer_plotdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -11274,7 +11274,7 @@ SWIGEXT value _wrap_ShapeLayer_plotdatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -11295,7 +11295,7 @@ SWIGEXT value _wrap_ShapeLayer_plotdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -11349,10 +11349,10 @@ SWIGEXT value _wrap_ShapeLayer_plotdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'ShapeLayer_plot'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB,datamunge::plot::RGB,std::size_t,std::size_t) const\n"
-    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB,datamunge::plot::RGB,std::size_t) const\n"
-    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB,datamunge::plot::RGB) const\n"
-    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::graphics::RGB,datamunge::graphics::RGB,std::size_t,std::size_t) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::graphics::RGB,datamunge::graphics::RGB,std::size_t) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::graphics::RGB,datamunge::graphics::RGB) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::graphics::RGB) const\n"
     "    datamunge::ShapeLayer::plot() const\n");
 }
 
@@ -12060,7 +12060,7 @@ SWIGEXT value _wrap_GGPlot_geom_point__SWIG_0datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -12069,7 +12069,7 @@ SWIGEXT value _wrap_GGPlot_geom_point__SWIG_0datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg3 = caml_double_val(caml_list_nth(args,2));
@@ -12088,7 +12088,7 @@ SWIGEXT value _wrap_GGPlot_geom_point__SWIG_1datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   datamunge::GGPlot *result = 0 ;
   
   swig_result = Val_unit;
@@ -12096,7 +12096,7 @@ SWIGEXT value _wrap_GGPlot_geom_point__SWIG_1datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(*(&arg2)));
   {
@@ -12177,7 +12177,7 @@ SWIGEXT value _wrap_GGPlot_geom_pointdatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -12214,7 +12214,7 @@ SWIGEXT value _wrap_GGPlot_geom_pointdatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -12242,8 +12242,8 @@ SWIGEXT value _wrap_GGPlot_geom_pointdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_point'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_point(datamunge::plot::RGB,double)\n"
-    "    datamunge::GGPlot::geom_point(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_point(datamunge::graphics::RGB,double)\n"
+    "    datamunge::GGPlot::geom_point(datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_point()\n");
 }
 
@@ -12253,7 +12253,7 @@ SWIGEXT value _wrap_GGPlot_geom_line__SWIG_0datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -12262,7 +12262,7 @@ SWIGEXT value _wrap_GGPlot_geom_line__SWIG_0datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg3 = caml_double_val(caml_list_nth(args,2));
@@ -12281,7 +12281,7 @@ SWIGEXT value _wrap_GGPlot_geom_line__SWIG_1datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   datamunge::GGPlot *result = 0 ;
   
   swig_result = Val_unit;
@@ -12289,7 +12289,7 @@ SWIGEXT value _wrap_GGPlot_geom_line__SWIG_1datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(*(&arg2)));
   {
@@ -12370,7 +12370,7 @@ SWIGEXT value _wrap_GGPlot_geom_linedatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -12407,7 +12407,7 @@ SWIGEXT value _wrap_GGPlot_geom_linedatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -12435,8 +12435,8 @@ SWIGEXT value _wrap_GGPlot_geom_linedatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_line'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_line(datamunge::plot::RGB,double)\n"
-    "    datamunge::GGPlot::geom_line(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_line(datamunge::graphics::RGB,double)\n"
+    "    datamunge::GGPlot::geom_line(datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_line()\n");
 }
 
@@ -12446,7 +12446,7 @@ SWIGEXT value _wrap_GGPlot_geom_bar__SWIG_0datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   datamunge::GGPlot *result = 0 ;
   
   swig_result = Val_unit;
@@ -12454,7 +12454,7 @@ SWIGEXT value _wrap_GGPlot_geom_bar__SWIG_0datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_bar(SWIG_STD_MOVE(*(&arg2)));
   {
@@ -12535,7 +12535,7 @@ SWIGEXT value _wrap_GGPlot_geom_bardatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -12552,7 +12552,7 @@ SWIGEXT value _wrap_GGPlot_geom_bardatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_bar'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_bar(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_bar(datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_bar()\n");
 }
 
@@ -12562,7 +12562,7 @@ SWIGEXT value _wrap_GGPlot_geom_col__SWIG_0datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   datamunge::GGPlot *result = 0 ;
   
   swig_result = Val_unit;
@@ -12570,7 +12570,7 @@ SWIGEXT value _wrap_GGPlot_geom_col__SWIG_0datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_col(SWIG_STD_MOVE(*(&arg2)));
   {
@@ -12651,7 +12651,7 @@ SWIGEXT value _wrap_GGPlot_geom_coldatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -12668,7 +12668,7 @@ SWIGEXT value _wrap_GGPlot_geom_coldatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_col'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_col(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_col(datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_col()\n");
 }
 
@@ -12679,7 +12679,7 @@ SWIGEXT value _wrap_GGPlot_geom_histogram__SWIG_0datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
   std::size_t arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   datamunge::GGPlot *result = 0 ;
   
   swig_result = Val_unit;
@@ -12690,7 +12690,7 @@ SWIGEXT value _wrap_GGPlot_geom_histogram__SWIG_0datamunge (value args)
     arg2 = caml_long_val(caml_list_nth(args,1));
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
@@ -12845,7 +12845,7 @@ SWIGEXT value _wrap_GGPlot_geom_histogramdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -12863,7 +12863,7 @@ SWIGEXT value _wrap_GGPlot_geom_histogramdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_histogram'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_histogram(std::size_t,datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_histogram(std::size_t,datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_histogram(std::size_t)\n"
     "    datamunge::GGPlot::geom_histogram()\n");
 }
@@ -12874,7 +12874,7 @@ SWIGEXT value _wrap_GGPlot_geom_boxplot__SWIG_0datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   datamunge::GGPlot *result = 0 ;
   
   swig_result = Val_unit;
@@ -12882,7 +12882,7 @@ SWIGEXT value _wrap_GGPlot_geom_boxplot__SWIG_0datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_boxplot(SWIG_STD_MOVE(*(&arg2)));
   {
@@ -12963,7 +12963,7 @@ SWIGEXT value _wrap_GGPlot_geom_boxplotdatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -12980,7 +12980,7 @@ SWIGEXT value _wrap_GGPlot_geom_boxplotdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_boxplot'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_boxplot(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_boxplot(datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_boxplot()\n");
 }
 
@@ -12990,7 +12990,7 @@ SWIGEXT value _wrap_GGPlot_geom_smooth__SWIG_0datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   datamunge::GGPlot *result = 0 ;
   
   swig_result = Val_unit;
@@ -12998,7 +12998,7 @@ SWIGEXT value _wrap_GGPlot_geom_smooth__SWIG_0datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_smooth(SWIG_STD_MOVE(*(&arg2)));
   {
@@ -13079,7 +13079,7 @@ SWIGEXT value _wrap_GGPlot_geom_smoothdatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -13096,7 +13096,7 @@ SWIGEXT value _wrap_GGPlot_geom_smoothdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_smooth'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_smooth(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_smooth(datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_smooth()\n");
 }
 
@@ -13106,7 +13106,7 @@ SWIGEXT value _wrap_GGPlot_geom_area__SWIG_0datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   datamunge::GGPlot *result = 0 ;
   
   swig_result = Val_unit;
@@ -13114,7 +13114,7 @@ SWIGEXT value _wrap_GGPlot_geom_area__SWIG_0datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_area(SWIG_STD_MOVE(*(&arg2)));
   {
@@ -13195,7 +13195,7 @@ SWIGEXT value _wrap_GGPlot_geom_areadatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -13212,7 +13212,7 @@ SWIGEXT value _wrap_GGPlot_geom_areadatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_area'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_area(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_area(datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_area()\n");
 }
 
@@ -13224,7 +13224,7 @@ SWIGEXT value _wrap_GGPlot_geom_ribbon__SWIG_0datamunge (value args)
   datamunge::GGPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::string temp2 ;
   std::string temp3 ;
   datamunge::GGPlot *result = 0 ;
@@ -13250,7 +13250,7 @@ SWIGEXT value _wrap_GGPlot_geom_ribbon__SWIG_0datamunge (value args)
     }
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
@@ -13437,7 +13437,7 @@ SWIGEXT value _wrap_GGPlot_geom_ribbondatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -13456,7 +13456,7 @@ SWIGEXT value _wrap_GGPlot_geom_ribbondatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_ribbon'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_ribbon(std::string const &,std::string const &,datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_ribbon(std::string const &,std::string const &,datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_ribbon(std::string const &,std::string const &)\n");
 }
 
@@ -13466,7 +13466,7 @@ SWIGEXT value _wrap_GGPlot_geom_density__SWIG_0datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   datamunge::GGPlot *result = 0 ;
   
   swig_result = Val_unit;
@@ -13474,7 +13474,7 @@ SWIGEXT value _wrap_GGPlot_geom_density__SWIG_0datamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   result = (datamunge::GGPlot *) &(arg1)->geom_density(SWIG_STD_MOVE(*(&arg2)));
   {
@@ -13555,7 +13555,7 @@ SWIGEXT value _wrap_GGPlot_geom_densitydatamunge(value args) {
             }
             case C_ptr: {
               typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
               break;
             }
             default: _v = 0; break;
@@ -13572,7 +13572,7 @@ SWIGEXT value _wrap_GGPlot_geom_densitydatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_density'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::GGPlot::geom_density(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_density(datamunge::graphics::RGB)\n"
     "    datamunge::GGPlot::geom_density()\n");
 }
 
@@ -13827,7 +13827,7 @@ SWIGEXT value _wrap_GGPlot_scale_color_manualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GGPlot *arg1 = 0 ;
-  std::vector< datamunge::plot::RGB > *arg2 = 0 ;
+  std::vector< datamunge::graphics::RGB > *arg2 = 0 ;
   datamunge::GGPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -13838,9 +13838,9 @@ SWIGEXT value _wrap_GGPlot_scale_color_manualdatamunge (value args)
     arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
   }
   {
-    arg2 = (std::vector< datamunge::plot::RGB > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t);
+    arg2 = (std::vector< datamunge::graphics::RGB > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t);
   }
-  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB > const &)*arg2);
+  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::graphics::RGB > const &)*arg2);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
   }
@@ -15662,7 +15662,7 @@ SWIGEXT value _wrap_LM_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LM_plot_residuals_vs_fitted'");
@@ -15673,7 +15673,7 @@ SWIGEXT value _wrap_LM_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -15686,7 +15686,7 @@ SWIGEXT value _wrap_LM_plot_normal_qqdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LM_plot_normal_qq'");
@@ -15697,7 +15697,7 @@ SWIGEXT value _wrap_LM_plot_normal_qqdatamunge (value args)
   }
   result = ((datamunge::LM const *)arg1)->plot_normal_qq();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -15710,7 +15710,7 @@ SWIGEXT value _wrap_LM_plot_scale_locationdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LM_plot_scale_location'");
@@ -15721,7 +15721,7 @@ SWIGEXT value _wrap_LM_plot_scale_locationdatamunge (value args)
   }
   result = ((datamunge::LM const *)arg1)->plot_scale_location();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -15734,7 +15734,7 @@ SWIGEXT value _wrap_LM_plot_residuals_vs_leveragedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LM_plot_residuals_vs_leverage'");
@@ -15745,7 +15745,7 @@ SWIGEXT value _wrap_LM_plot_residuals_vs_leveragedatamunge (value args)
   }
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -21476,7 +21476,7 @@ SWIGEXT value _wrap_LDA_plot_discriminantsdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LDA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LDA_plot_discriminants'");
@@ -21487,7 +21487,7 @@ SWIGEXT value _wrap_LDA_plot_discriminantsdatamunge (value args)
   }
   result = ((datamunge::LDA const *)arg1)->plot_discriminants();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -23620,7 +23620,7 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_classificationdatamunge (value a
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DecisionTreeClassifier_plot_classification'");
@@ -23650,7 +23650,7 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_classificationdatamunge (value a
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -23668,7 +23668,7 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0datamung
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -23695,7 +23695,7 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0datamung
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -23712,7 +23712,7 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1datamung
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -23736,7 +23736,7 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1datamung
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -24628,7 +24628,7 @@ SWIGEXT value _wrap_DecisionTreeRegressor_plot_predicted_vs_actualdatamunge (val
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DecisionTreeRegressor_plot_predicted_vs_actual'");
@@ -24639,7 +24639,7 @@ SWIGEXT value _wrap_DecisionTreeRegressor_plot_predicted_vs_actualdatamunge (val
   }
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -24652,7 +24652,7 @@ SWIGEXT value _wrap_DecisionTreeRegressor_plot_residuals_vs_fitteddatamunge (val
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DecisionTreeRegressor_plot_residuals_vs_fitted'");
@@ -24663,7 +24663,7 @@ SWIGEXT value _wrap_DecisionTreeRegressor_plot_residuals_vs_fitteddatamunge (val
   }
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -26706,7 +26706,7 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_classificationdatamunge (value a
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RandomForestClassifier_plot_classification'");
@@ -26736,7 +26736,7 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_classificationdatamunge (value a
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -26754,7 +26754,7 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_decision_regions__SWIG_0datamung
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -26781,7 +26781,7 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_decision_regions__SWIG_0datamung
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -26798,7 +26798,7 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_decision_regions__SWIG_1datamung
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -26822,7 +26822,7 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_decision_regions__SWIG_1datamung
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -28706,7 +28706,7 @@ SWIGEXT value _wrap_RandomForestRegressor_plot_predicted_vs_actualdatamunge (val
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RandomForestRegressor_plot_predicted_vs_actual'");
@@ -28717,7 +28717,7 @@ SWIGEXT value _wrap_RandomForestRegressor_plot_predicted_vs_actualdatamunge (val
   }
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -28730,7 +28730,7 @@ SWIGEXT value _wrap_RandomForestRegressor_plot_residuals_vs_fitteddatamunge (val
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RandomForestRegressor_plot_residuals_vs_fitted'");
@@ -28741,7 +28741,7 @@ SWIGEXT value _wrap_RandomForestRegressor_plot_residuals_vs_fitteddatamunge (val
   }
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -30088,7 +30088,7 @@ SWIGEXT value _wrap_ElasticNet_plot_coefficient_pathdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ElasticNet_plot_coefficient_path'");
@@ -30099,7 +30099,7 @@ SWIGEXT value _wrap_ElasticNet_plot_coefficient_pathdatamunge (value args)
   }
   result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -30112,7 +30112,7 @@ SWIGEXT value _wrap_ElasticNet_plot_cv_curvedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ElasticNet_plot_cv_curve'");
@@ -30123,7 +30123,7 @@ SWIGEXT value _wrap_ElasticNet_plot_cv_curvedatamunge (value args)
   }
   result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -30136,7 +30136,7 @@ SWIGEXT value _wrap_ElasticNet_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ElasticNet_plot_predicted_vs_actual'");
@@ -30147,7 +30147,7 @@ SWIGEXT value _wrap_ElasticNet_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -30160,7 +30160,7 @@ SWIGEXT value _wrap_ElasticNet_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ElasticNet_plot_residuals_vs_fitted'");
@@ -30171,7 +30171,7 @@ SWIGEXT value _wrap_ElasticNet_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -31314,7 +31314,7 @@ SWIGEXT value _wrap_Ridge_plot_coefficient_pathdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Ridge_plot_coefficient_path'");
@@ -31325,7 +31325,7 @@ SWIGEXT value _wrap_Ridge_plot_coefficient_pathdatamunge (value args)
   }
   result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -31338,7 +31338,7 @@ SWIGEXT value _wrap_Ridge_plot_cv_curvedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Ridge_plot_cv_curve'");
@@ -31349,7 +31349,7 @@ SWIGEXT value _wrap_Ridge_plot_cv_curvedatamunge (value args)
   }
   result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -31362,7 +31362,7 @@ SWIGEXT value _wrap_Ridge_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Ridge_plot_predicted_vs_actual'");
@@ -31373,7 +31373,7 @@ SWIGEXT value _wrap_Ridge_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -31386,7 +31386,7 @@ SWIGEXT value _wrap_Ridge_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Ridge_plot_residuals_vs_fitted'");
@@ -31397,7 +31397,7 @@ SWIGEXT value _wrap_Ridge_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -32563,7 +32563,7 @@ SWIGEXT value _wrap_Lasso_plot_coefficient_pathdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Lasso_plot_coefficient_path'");
@@ -32574,7 +32574,7 @@ SWIGEXT value _wrap_Lasso_plot_coefficient_pathdatamunge (value args)
   }
   result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -32587,7 +32587,7 @@ SWIGEXT value _wrap_Lasso_plot_cv_curvedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Lasso_plot_cv_curve'");
@@ -32598,7 +32598,7 @@ SWIGEXT value _wrap_Lasso_plot_cv_curvedatamunge (value args)
   }
   result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -32611,7 +32611,7 @@ SWIGEXT value _wrap_Lasso_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Lasso_plot_predicted_vs_actual'");
@@ -32622,7 +32622,7 @@ SWIGEXT value _wrap_Lasso_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -32635,7 +32635,7 @@ SWIGEXT value _wrap_Lasso_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Lasso_plot_residuals_vs_fitted'");
@@ -32646,7 +32646,7 @@ SWIGEXT value _wrap_Lasso_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -33509,7 +33509,7 @@ SWIGEXT value _wrap_KNNClassifier_plot_classificationdatamunge (value args)
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KNNClassifier_plot_classification'");
@@ -33539,7 +33539,7 @@ SWIGEXT value _wrap_KNNClassifier_plot_classificationdatamunge (value args)
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -33557,7 +33557,7 @@ SWIGEXT value _wrap_KNNClassifier_plot_decision_regions__SWIG_0datamunge (value 
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -33584,7 +33584,7 @@ SWIGEXT value _wrap_KNNClassifier_plot_decision_regions__SWIG_0datamunge (value 
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -33601,7 +33601,7 @@ SWIGEXT value _wrap_KNNClassifier_plot_decision_regions__SWIG_1datamunge (value 
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -33625,7 +33625,7 @@ SWIGEXT value _wrap_KNNClassifier_plot_decision_regions__SWIG_1datamunge (value 
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -34612,7 +34612,7 @@ SWIGEXT value _wrap_KNNRegressor_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KNNRegressor_plot_predicted_vs_actual'");
@@ -34623,7 +34623,7 @@ SWIGEXT value _wrap_KNNRegressor_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -34636,7 +34636,7 @@ SWIGEXT value _wrap_KNNRegressor_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KNNRegressor_plot_residuals_vs_fitted'");
@@ -34647,7 +34647,7 @@ SWIGEXT value _wrap_KNNRegressor_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -37076,7 +37076,7 @@ SWIGEXT value _wrap_PCA_plot_scores__SWIG_0datamunge (value args)
   datamunge::PCA *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -37090,7 +37090,7 @@ SWIGEXT value _wrap_PCA_plot_scores__SWIG_0datamunge (value args)
   }
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -37104,7 +37104,7 @@ SWIGEXT value _wrap_PCA_plot_scores__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::PCA *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -37115,7 +37115,7 @@ SWIGEXT value _wrap_PCA_plot_scores__SWIG_1datamunge (value args)
   }
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -37128,7 +37128,7 @@ SWIGEXT value _wrap_PCA_plot_scores__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::PCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -37136,7 +37136,7 @@ SWIGEXT value _wrap_PCA_plot_scores__SWIG_2datamunge (value args)
   }
   result = ((datamunge::PCA const *)arg1)->plot_scores();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -37272,7 +37272,7 @@ SWIGEXT value _wrap_PCA_plot_scores_grouped__SWIG_0datamunge (value args)
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -37289,7 +37289,7 @@ SWIGEXT value _wrap_PCA_plot_scores_grouped__SWIG_0datamunge (value args)
   }
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -37304,7 +37304,7 @@ SWIGEXT value _wrap_PCA_plot_scores_grouped__SWIG_1datamunge (value args)
   datamunge::PCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -37318,7 +37318,7 @@ SWIGEXT value _wrap_PCA_plot_scores_grouped__SWIG_1datamunge (value args)
   }
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -37332,7 +37332,7 @@ SWIGEXT value _wrap_PCA_plot_scores_grouped__SWIG_2datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::PCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -37343,7 +37343,7 @@ SWIGEXT value _wrap_PCA_plot_scores_grouped__SWIG_2datamunge (value args)
   }
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -37506,7 +37506,7 @@ SWIGEXT value _wrap_PCA_plot_screedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::PCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'PCA_plot_scree'");
@@ -37517,7 +37517,7 @@ SWIGEXT value _wrap_PCA_plot_screedatamunge (value args)
   }
   result = ((datamunge::PCA const *)arg1)->plot_scree();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -38311,7 +38311,7 @@ SWIGEXT value _wrap_MDS_plot_embedding__SWIG_0datamunge (value args)
   datamunge::MDS *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -38325,7 +38325,7 @@ SWIGEXT value _wrap_MDS_plot_embedding__SWIG_0datamunge (value args)
   }
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -38339,7 +38339,7 @@ SWIGEXT value _wrap_MDS_plot_embedding__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::MDS *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -38350,7 +38350,7 @@ SWIGEXT value _wrap_MDS_plot_embedding__SWIG_1datamunge (value args)
   }
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -38363,7 +38363,7 @@ SWIGEXT value _wrap_MDS_plot_embedding__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::MDS *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -38371,7 +38371,7 @@ SWIGEXT value _wrap_MDS_plot_embedding__SWIG_2datamunge (value args)
   }
   result = ((datamunge::MDS const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -38507,7 +38507,7 @@ SWIGEXT value _wrap_MDS_plot_embedding_grouped__SWIG_0datamunge (value args)
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -38524,7 +38524,7 @@ SWIGEXT value _wrap_MDS_plot_embedding_grouped__SWIG_0datamunge (value args)
   }
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -38539,7 +38539,7 @@ SWIGEXT value _wrap_MDS_plot_embedding_grouped__SWIG_1datamunge (value args)
   datamunge::MDS *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -38553,7 +38553,7 @@ SWIGEXT value _wrap_MDS_plot_embedding_grouped__SWIG_1datamunge (value args)
   }
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -38567,7 +38567,7 @@ SWIGEXT value _wrap_MDS_plot_embedding_grouped__SWIG_2datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::MDS *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -38578,7 +38578,7 @@ SWIGEXT value _wrap_MDS_plot_embedding_grouped__SWIG_2datamunge (value args)
   }
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -39772,7 +39772,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding__SWIG_0datamunge (value args)
   datamunge::Isomap *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -39786,7 +39786,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding__SWIG_0datamunge (value args)
   }
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -39800,7 +39800,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::Isomap *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -39811,7 +39811,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding__SWIG_1datamunge (value args)
   }
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -39824,7 +39824,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Isomap *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -39832,7 +39832,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding__SWIG_2datamunge (value args)
   }
   result = ((datamunge::Isomap const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -39968,7 +39968,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding_grouped__SWIG_0datamunge (value args)
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -39985,7 +39985,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding_grouped__SWIG_0datamunge (value args)
   }
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -40000,7 +40000,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding_grouped__SWIG_1datamunge (value args)
   datamunge::Isomap *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -40014,7 +40014,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding_grouped__SWIG_1datamunge (value args)
   }
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -40028,7 +40028,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding_grouped__SWIG_2datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::Isomap *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -40039,7 +40039,7 @@ SWIGEXT value _wrap_Isomap_plot_embedding_grouped__SWIG_2datamunge (value args)
   }
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -41476,7 +41476,7 @@ SWIGEXT value _wrap_LLE_plot_embedding__SWIG_0datamunge (value args)
   datamunge::LLE *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -41490,7 +41490,7 @@ SWIGEXT value _wrap_LLE_plot_embedding__SWIG_0datamunge (value args)
   }
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -41504,7 +41504,7 @@ SWIGEXT value _wrap_LLE_plot_embedding__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::LLE *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -41515,7 +41515,7 @@ SWIGEXT value _wrap_LLE_plot_embedding__SWIG_1datamunge (value args)
   }
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -41528,7 +41528,7 @@ SWIGEXT value _wrap_LLE_plot_embedding__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LLE *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -41536,7 +41536,7 @@ SWIGEXT value _wrap_LLE_plot_embedding__SWIG_2datamunge (value args)
   }
   result = ((datamunge::LLE const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -41672,7 +41672,7 @@ SWIGEXT value _wrap_LLE_plot_embedding_grouped__SWIG_0datamunge (value args)
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -41689,7 +41689,7 @@ SWIGEXT value _wrap_LLE_plot_embedding_grouped__SWIG_0datamunge (value args)
   }
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -41704,7 +41704,7 @@ SWIGEXT value _wrap_LLE_plot_embedding_grouped__SWIG_1datamunge (value args)
   datamunge::LLE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -41718,7 +41718,7 @@ SWIGEXT value _wrap_LLE_plot_embedding_grouped__SWIG_1datamunge (value args)
   }
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -41732,7 +41732,7 @@ SWIGEXT value _wrap_LLE_plot_embedding_grouped__SWIG_2datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::LLE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -41743,7 +41743,7 @@ SWIGEXT value _wrap_LLE_plot_embedding_grouped__SWIG_2datamunge (value args)
   }
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -46050,7 +46050,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding__SWIG_0datamunge (value args)
   datamunge::TSNE *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -46064,7 +46064,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding__SWIG_0datamunge (value args)
   }
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -46078,7 +46078,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::TSNE *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -46089,7 +46089,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding__SWIG_1datamunge (value args)
   }
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -46102,7 +46102,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::TSNE *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -46110,7 +46110,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding__SWIG_2datamunge (value args)
   }
   result = ((datamunge::TSNE const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -46246,7 +46246,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding_grouped__SWIG_0datamunge (value args)
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -46263,7 +46263,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding_grouped__SWIG_0datamunge (value args)
   }
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -46278,7 +46278,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding_grouped__SWIG_1datamunge (value args)
   datamunge::TSNE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -46292,7 +46292,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding_grouped__SWIG_1datamunge (value args)
   }
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -46306,7 +46306,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding_grouped__SWIG_2datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::TSNE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -46317,7 +46317,7 @@ SWIGEXT value _wrap_TSNE_plot_embedding_grouped__SWIG_2datamunge (value args)
   }
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -47454,7 +47454,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding__SWIG_0datamunge (value ar
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -47468,7 +47468,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding__SWIG_0datamunge (value ar
   }
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -47482,7 +47482,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding__SWIG_1datamunge (value ar
   CAMLlocal2(swig_result,rv);
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -47493,7 +47493,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding__SWIG_1datamunge (value ar
   }
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -47506,7 +47506,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding__SWIG_2datamunge (value ar
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -47514,7 +47514,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding__SWIG_2datamunge (value ar
   }
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -47650,7 +47650,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0datamunge (
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -47667,7 +47667,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0datamunge (
   }
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -47682,7 +47682,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1datamunge (
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -47696,7 +47696,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1datamunge (
   }
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -47710,7 +47710,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2datamunge (
   CAMLlocal2(swig_result,rv);
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -47721,7 +47721,7 @@ SWIGEXT value _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2datamunge (
   }
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -49082,7 +49082,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding__SWIG_0datamunge (value args)
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -49096,7 +49096,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding__SWIG_0datamunge (value args)
   }
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -49110,7 +49110,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -49121,7 +49121,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding__SWIG_1datamunge (value args)
   }
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -49134,7 +49134,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::DiffusionMaps *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -49142,7 +49142,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding__SWIG_2datamunge (value args)
   }
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -49278,7 +49278,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0datamunge (value
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -49295,7 +49295,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0datamunge (value
   }
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -49310,7 +49310,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1datamunge (value
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -49324,7 +49324,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1datamunge (value
   }
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -49338,7 +49338,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2datamunge (value
   CAMLlocal2(swig_result,rv);
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -49349,7 +49349,7 @@ SWIGEXT value _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2datamunge (value
   }
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -51128,7 +51128,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding__SWIG_0datamunge (value args)
   datamunge::KernelPCA *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -51142,7 +51142,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding__SWIG_0datamunge (value args)
   }
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -51156,7 +51156,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::KernelPCA *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -51167,7 +51167,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding__SWIG_1datamunge (value args)
   }
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -51180,7 +51180,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KernelPCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -51188,7 +51188,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding__SWIG_2datamunge (value args)
   }
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -51324,7 +51324,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding_grouped__SWIG_0datamunge (value arg
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -51341,7 +51341,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding_grouped__SWIG_0datamunge (value arg
   }
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -51356,7 +51356,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding_grouped__SWIG_1datamunge (value arg
   datamunge::KernelPCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -51370,7 +51370,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding_grouped__SWIG_1datamunge (value arg
   }
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -51384,7 +51384,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding_grouped__SWIG_2datamunge (value arg
   CAMLlocal2(swig_result,rv);
   datamunge::KernelPCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -51395,7 +51395,7 @@ SWIGEXT value _wrap_KernelPCA_plot_embedding_grouped__SWIG_2datamunge (value arg
   }
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -53518,7 +53518,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding__SWIG_0datamunge (value args)
   datamunge::SammonMapping *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -53532,7 +53532,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding__SWIG_0datamunge (value args)
   }
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -53546,7 +53546,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::SammonMapping *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -53557,7 +53557,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding__SWIG_1datamunge (value args)
   }
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -53570,7 +53570,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::SammonMapping *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -53578,7 +53578,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding__SWIG_2datamunge (value args)
   }
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -53714,7 +53714,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding_grouped__SWIG_0datamunge (value
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -53731,7 +53731,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding_grouped__SWIG_0datamunge (value
   }
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -53746,7 +53746,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding_grouped__SWIG_1datamunge (value
   datamunge::SammonMapping *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -53760,7 +53760,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding_grouped__SWIG_1datamunge (value
   }
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -53774,7 +53774,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding_grouped__SWIG_2datamunge (value
   CAMLlocal2(swig_result,rv);
   datamunge::SammonMapping *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -53785,7 +53785,7 @@ SWIGEXT value _wrap_SammonMapping_plot_embedding_grouped__SWIG_2datamunge (value
   }
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -56736,7 +56736,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding__SWIG_0datamunge (value args)
   datamunge::UMAP *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -56750,7 +56750,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding__SWIG_0datamunge (value args)
   }
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -56764,7 +56764,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::UMAP *arg1 = 0 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -56775,7 +56775,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding__SWIG_1datamunge (value args)
   }
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -56788,7 +56788,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::UMAP *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -56796,7 +56796,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding__SWIG_2datamunge (value args)
   }
   result = ((datamunge::UMAP const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -56932,7 +56932,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding_grouped__SWIG_0datamunge (value args)
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -56949,7 +56949,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding_grouped__SWIG_0datamunge (value args)
   }
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -56964,7 +56964,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding_grouped__SWIG_1datamunge (value args)
   datamunge::UMAP *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -56978,7 +56978,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding_grouped__SWIG_1datamunge (value args)
   }
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -56992,7 +56992,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding_grouped__SWIG_2datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::UMAP *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -57003,7 +57003,7 @@ SWIGEXT value _wrap_UMAP_plot_embedding_grouped__SWIG_2datamunge (value args)
   }
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -60622,7 +60622,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_classificationdatamunge (value args)
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMClassifier_plot_classification'");
@@ -60652,7 +60652,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_classificationdatamunge (value args)
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -60670,7 +60670,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_decision_regions__SWIG_0datamunge (value 
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -60697,7 +60697,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_decision_regions__SWIG_0datamunge (value 
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -60714,7 +60714,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_decision_regions__SWIG_1datamunge (value 
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -60738,7 +60738,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_decision_regions__SWIG_1datamunge (value 
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -60907,7 +60907,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_training_deviancedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GBMClassifier *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMClassifier_plot_training_deviance'");
@@ -60918,7 +60918,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_training_deviancedatamunge (value args)
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -62336,7 +62336,7 @@ SWIGEXT value _wrap_GBMRegressor_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMRegressor_plot_predicted_vs_actual'");
@@ -62347,7 +62347,7 @@ SWIGEXT value _wrap_GBMRegressor_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -62360,7 +62360,7 @@ SWIGEXT value _wrap_GBMRegressor_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMRegressor_plot_residuals_vs_fitted'");
@@ -62371,7 +62371,7 @@ SWIGEXT value _wrap_GBMRegressor_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -62384,7 +62384,7 @@ SWIGEXT value _wrap_GBMRegressor_plot_training_deviancedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMRegressor_plot_training_deviance'");
@@ -62395,7 +62395,7 @@ SWIGEXT value _wrap_GBMRegressor_plot_training_deviancedatamunge (value args)
   }
   result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -64722,7 +64722,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_classificationdatamunge (value args)
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostClassifier_plot_classification'");
@@ -64752,7 +64752,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_classificationdatamunge (value args)
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -64770,7 +64770,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_decision_regions__SWIG_0datamunge (va
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -64797,7 +64797,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_decision_regions__SWIG_0datamunge (va
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -64814,7 +64814,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_decision_regions__SWIG_1datamunge (va
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -64838,7 +64838,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_decision_regions__SWIG_1datamunge (va
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -65007,7 +65007,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_training_deviancedatamunge (value arg
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::XGBoostClassifier *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostClassifier_plot_training_deviance'");
@@ -65018,7 +65018,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_training_deviancedatamunge (value arg
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -67313,7 +67313,7 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_predicted_vs_actualdatamunge (value ar
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostRegressor_plot_predicted_vs_actual'");
@@ -67324,7 +67324,7 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_predicted_vs_actualdatamunge (value ar
   }
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -67337,7 +67337,7 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_residuals_vs_fitteddatamunge (value ar
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostRegressor_plot_residuals_vs_fitted'");
@@ -67348,7 +67348,7 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_residuals_vs_fitteddatamunge (value ar
   }
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -67361,7 +67361,7 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_training_deviancedatamunge (value args
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostRegressor_plot_training_deviance'");
@@ -67372,7 +67372,7 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_training_deviancedatamunge (value args
   }
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -68279,7 +68279,7 @@ SWIGEXT value _wrap_KernelRegression_plot_fit__SWIG_0datamunge (value args)
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -68293,7 +68293,7 @@ SWIGEXT value _wrap_KernelRegression_plot_fit__SWIG_0datamunge (value args)
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -68307,7 +68307,7 @@ SWIGEXT value _wrap_KernelRegression_plot_fit__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -68318,7 +68318,7 @@ SWIGEXT value _wrap_KernelRegression_plot_fit__SWIG_1datamunge (value args)
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -68419,7 +68419,7 @@ SWIGEXT value _wrap_KernelRegression_plot_predicted_vs_actualdatamunge (value ar
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KernelRegression_plot_predicted_vs_actual'");
@@ -68430,7 +68430,7 @@ SWIGEXT value _wrap_KernelRegression_plot_predicted_vs_actualdatamunge (value ar
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -68443,7 +68443,7 @@ SWIGEXT value _wrap_KernelRegression_plot_residuals_vs_fitteddatamunge (value ar
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KernelRegression_plot_residuals_vs_fitted'");
@@ -68454,7 +68454,7 @@ SWIGEXT value _wrap_KernelRegression_plot_residuals_vs_fitteddatamunge (value ar
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -68467,7 +68467,7 @@ SWIGEXT value _wrap_KernelRegression_plot_cv_curvedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KernelRegression_plot_cv_curve'");
@@ -68478,7 +68478,7 @@ SWIGEXT value _wrap_KernelRegression_plot_cv_curvedatamunge (value args)
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -69821,7 +69821,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_0datamunge (value a
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
   double arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -69838,7 +69838,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_0datamunge (value a
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -69853,7 +69853,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_1datamunge (value a
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -69867,7 +69867,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_1datamunge (value a
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -69881,7 +69881,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_2datamunge (value a
   CAMLlocal2(swig_result,rv);
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -69892,7 +69892,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_2datamunge (value a
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -70048,7 +70048,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_predicted_vs_actualdatamunge 
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GaussianProcessRegression_plot_predicted_vs_actual'");
@@ -70059,7 +70059,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_predicted_vs_actualdatamunge 
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -70072,7 +70072,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_residuals_vs_fitteddatamunge 
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GaussianProcessRegression_plot_residuals_vs_fitted'");
@@ -70083,7 +70083,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_residuals_vs_fitteddatamunge 
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -70096,7 +70096,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_length_scale_profiledatamunge
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GaussianProcessRegression_plot_length_scale_profile'");
@@ -70107,7 +70107,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_length_scale_profiledatamunge
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -70651,7 +70651,7 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_classificationdatamunge (value arg
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'NaiveBayesClassifier_plot_classification'");
@@ -70681,7 +70681,7 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_classificationdatamunge (value arg
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -70699,7 +70699,7 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0datamunge 
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -70726,7 +70726,7 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0datamunge 
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -70743,7 +70743,7 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1datamunge 
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -70767,7 +70767,7 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1datamunge 
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -72623,7 +72623,7 @@ SWIGEXT value _wrap_GLM_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GLM_plot_residuals_vs_fitted'");
@@ -72634,7 +72634,7 @@ SWIGEXT value _wrap_GLM_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -72647,7 +72647,7 @@ SWIGEXT value _wrap_GLM_plot_normal_qqdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GLM_plot_normal_qq'");
@@ -72658,7 +72658,7 @@ SWIGEXT value _wrap_GLM_plot_normal_qqdatamunge (value args)
   }
   result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -72671,7 +72671,7 @@ SWIGEXT value _wrap_GLM_plot_scale_locationdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GLM_plot_scale_location'");
@@ -72682,7 +72682,7 @@ SWIGEXT value _wrap_GLM_plot_scale_locationdatamunge (value args)
   }
   result = ((datamunge::GLM const *)arg1)->plot_scale_location();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -72695,7 +72695,7 @@ SWIGEXT value _wrap_GLM_plot_residuals_vs_leveragedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GLM_plot_residuals_vs_leverage'");
@@ -72706,7 +72706,7 @@ SWIGEXT value _wrap_GLM_plot_residuals_vs_leveragedatamunge (value args)
   }
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -78880,7 +78880,7 @@ SWIGEXT value _wrap_RGB_r_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -78888,7 +78888,7 @@ SWIGEXT value _wrap_RGB_r_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
+    arg1 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
@@ -78904,7 +78904,7 @@ SWIGEXT value _wrap_RGB_r_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -78912,7 +78912,7 @@ SWIGEXT value _wrap_RGB_r_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
+    arg1 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
   }
   result = (int) ((arg1)->r);
   {
@@ -78927,7 +78927,7 @@ SWIGEXT value _wrap_RGB_g_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -78935,7 +78935,7 @@ SWIGEXT value _wrap_RGB_g_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
+    arg1 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
@@ -78951,7 +78951,7 @@ SWIGEXT value _wrap_RGB_g_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -78959,7 +78959,7 @@ SWIGEXT value _wrap_RGB_g_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
+    arg1 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
   }
   result = (int) ((arg1)->g);
   {
@@ -78974,7 +78974,7 @@ SWIGEXT value _wrap_RGB_b_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -78982,7 +78982,7 @@ SWIGEXT value _wrap_RGB_b_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
+    arg1 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
@@ -78998,7 +78998,7 @@ SWIGEXT value _wrap_RGB_b_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79006,7 +79006,7 @@ SWIGEXT value _wrap_RGB_b_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
+    arg1 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
   }
   result = (int) ((arg1)->b);
   {
@@ -79021,7 +79021,7 @@ SWIGEXT value _wrap_RGB_alpha_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   double arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79029,7 +79029,7 @@ SWIGEXT value _wrap_RGB_alpha_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
+    arg1 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -79045,7 +79045,7 @@ SWIGEXT value _wrap_RGB_alpha_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79053,7 +79053,7 @@ SWIGEXT value _wrap_RGB_alpha_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
+    arg1 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
   }
   result = (double) ((arg1)->alpha);
   {
@@ -79068,10 +79068,10 @@ SWIGEXT value _wrap_new_RGB__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   swig_result = Val_unit;
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_0();
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_0();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RGB);
   }
@@ -79088,7 +79088,7 @@ SWIGEXT value _wrap_new_RGB__SWIG_1datamunge (value args)
   int arg2 ;
   int arg3 ;
   double arg4 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   swig_result = Val_unit;
   {
@@ -79103,7 +79103,7 @@ SWIGEXT value _wrap_new_RGB__SWIG_1datamunge (value args)
   {
     arg4 = caml_double_val(caml_list_nth(args,3));
   }
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RGB);
   }
@@ -79119,7 +79119,7 @@ SWIGEXT value _wrap_new_RGB__SWIG_2datamunge (value args)
   int arg1 ;
   int arg2 ;
   int arg3 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   swig_result = Val_unit;
   {
@@ -79131,7 +79131,7 @@ SWIGEXT value _wrap_new_RGB__SWIG_2datamunge (value args)
   {
     arg3 = caml_long_val(caml_list_nth(args,2));
   }
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RGB);
   }
@@ -79246,9 +79246,9 @@ SWIGEXT value _wrap_new_RGBdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'new_RGB'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RGB::RGB()\n"
-    "    datamunge::plot::RGB::RGB(int,int,int,double)\n"
-    "    datamunge::plot::RGB::RGB(int,int,int)\n");
+    "    datamunge::graphics::RGB::RGB()\n"
+    "    datamunge::graphics::RGB::RGB(int,int,int,double)\n"
+    "    datamunge::graphics::RGB::RGB(int,int,int)\n");
 }
 
 
@@ -79256,14 +79256,14 @@ SWIGEXT value _wrap_delete_RGBdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'delete_RGB'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
+    arg1 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RGB);
   }
   delete arg1;
   rv = Val_unit;
@@ -79367,18 +79367,18 @@ SWIGEXT value _wrap_DataSeries_kind_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind arg2 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DataSeries_kind_set'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   {
-    arg2 = (datamunge::plot::DataSeries::Kind)caml_long_val_full(caml_list_nth(args,1),"datamunge::plot::DataSeries::Kind_marker");
+    arg2 = (datamunge::graphics::DataSeries::Kind)caml_long_val_full(caml_list_nth(args,1),"datamunge::graphics::DataSeries::Kind_marker");
   }
   if (arg1) (arg1)->kind = arg2;
   rv = Val_unit;
@@ -79391,19 +79391,19 @@ SWIGEXT value _wrap_DataSeries_kind_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DataSeries_kind_get'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
-  result = (datamunge::plot::DataSeries::Kind) ((arg1)->kind);
+  result = (datamunge::graphics::DataSeries::Kind) ((arg1)->kind);
   {
-    rv = caml_callback2(*caml_named_value(SWIG_MODULE "_int_to_enum"),*caml_named_value("datamunge::plot::DataSeries::Kind_marker"),Val_int((int)result));
+    rv = caml_callback2(*caml_named_value(SWIG_MODULE "_int_to_enum"),*caml_named_value("datamunge::graphics::DataSeries::Kind_marker"),Val_int((int)result));
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -79414,7 +79414,7 @@ SWIGEXT value _wrap_DataSeries_x_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79422,7 +79422,7 @@ SWIGEXT value _wrap_DataSeries_x_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   {
     arg2 = (std::vector< double > *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
@@ -79438,7 +79438,7 @@ SWIGEXT value _wrap_DataSeries_x_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79446,7 +79446,7 @@ SWIGEXT value _wrap_DataSeries_x_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   result = (std::vector< double > *)& ((arg1)->x);
   {
@@ -79461,7 +79461,7 @@ SWIGEXT value _wrap_DataSeries_y_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79469,7 +79469,7 @@ SWIGEXT value _wrap_DataSeries_y_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   {
     arg2 = (std::vector< double > *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
@@ -79485,7 +79485,7 @@ SWIGEXT value _wrap_DataSeries_y_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79493,7 +79493,7 @@ SWIGEXT value _wrap_DataSeries_y_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   result = (std::vector< double > *)& ((arg1)->y);
   {
@@ -79508,7 +79508,7 @@ SWIGEXT value _wrap_DataSeries_label_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   
@@ -79517,7 +79517,7 @@ SWIGEXT value _wrap_DataSeries_label_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1))) {
@@ -79538,7 +79538,7 @@ SWIGEXT value _wrap_DataSeries_label_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79546,7 +79546,7 @@ SWIGEXT value _wrap_DataSeries_label_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   result = (std::string *) & ((arg1)->label);
   {
@@ -79561,18 +79561,18 @@ SWIGEXT value _wrap_DataSeries_color_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DataSeries_color_set'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   {
-    arg2 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB);
+    arg2 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB);
   }
   if (arg1) (arg1)->color = *arg2;
   rv = Val_unit;
@@ -79585,17 +79585,17 @@ SWIGEXT value _wrap_DataSeries_color_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DataSeries_color_get'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RGB);
   }
@@ -79608,7 +79608,7 @@ SWIGEXT value _wrap_DataSeries_stroke_width_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79616,7 +79616,7 @@ SWIGEXT value _wrap_DataSeries_stroke_width_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -79632,7 +79632,7 @@ SWIGEXT value _wrap_DataSeries_stroke_width_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79640,7 +79640,7 @@ SWIGEXT value _wrap_DataSeries_stroke_width_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   result = (double) ((arg1)->stroke_width);
   {
@@ -79655,7 +79655,7 @@ SWIGEXT value _wrap_DataSeries_marker_size_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79663,7 +79663,7 @@ SWIGEXT value _wrap_DataSeries_marker_size_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -79679,7 +79679,7 @@ SWIGEXT value _wrap_DataSeries_marker_size_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79687,7 +79687,7 @@ SWIGEXT value _wrap_DataSeries_marker_size_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   result = (double) ((arg1)->marker_size);
   {
@@ -79702,7 +79702,7 @@ SWIGEXT value _wrap_DataSeries_bar_width_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79710,7 +79710,7 @@ SWIGEXT value _wrap_DataSeries_bar_width_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -79726,7 +79726,7 @@ SWIGEXT value _wrap_DataSeries_bar_width_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79734,7 +79734,7 @@ SWIGEXT value _wrap_DataSeries_bar_width_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   result = (double) ((arg1)->bar_width);
   {
@@ -79749,7 +79749,7 @@ SWIGEXT value _wrap_DataSeries_filled_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79757,7 +79757,7 @@ SWIGEXT value _wrap_DataSeries_filled_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
@@ -79773,7 +79773,7 @@ SWIGEXT value _wrap_DataSeries_filled_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79781,7 +79781,7 @@ SWIGEXT value _wrap_DataSeries_filled_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   result = (bool) ((arg1)->filled);
   {
@@ -79796,11 +79796,11 @@ SWIGEXT value _wrap_new_DataSeriesdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *result = 0 ;
+  datamunge::graphics::DataSeries *result = 0 ;
   
   if (caml_list_length(args) > 0) caml_invalid_argument("'new_DataSeries' takes no arguments");
   swig_result = Val_unit;
-  result = (datamunge::plot::DataSeries *)new datamunge::plot::DataSeries();
+  result = (datamunge::graphics::DataSeries *)new datamunge::graphics::DataSeries();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::DataSeries_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__DataSeries);
   }
@@ -79813,14 +79813,14 @@ SWIGEXT value _wrap_delete_DataSeriesdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'delete_DataSeries'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+    arg1 = (datamunge::graphics::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
   }
   delete arg1;
   rv = Val_unit;
@@ -79833,7 +79833,7 @@ SWIGEXT value _wrap_ABLine_vertical_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79841,7 +79841,7 @@ SWIGEXT value _wrap_ABLine_vertical_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
@@ -79857,7 +79857,7 @@ SWIGEXT value _wrap_ABLine_vertical_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79865,7 +79865,7 @@ SWIGEXT value _wrap_ABLine_vertical_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   result = (bool) ((arg1)->vertical);
   {
@@ -79880,7 +79880,7 @@ SWIGEXT value _wrap_ABLine_value_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79888,7 +79888,7 @@ SWIGEXT value _wrap_ABLine_value_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -79904,7 +79904,7 @@ SWIGEXT value _wrap_ABLine_value_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79912,7 +79912,7 @@ SWIGEXT value _wrap_ABLine_value_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   result = (double) ((arg1)->value);
   {
@@ -79927,7 +79927,7 @@ SWIGEXT value _wrap_ABLine_slope_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -79935,7 +79935,7 @@ SWIGEXT value _wrap_ABLine_slope_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -79951,7 +79951,7 @@ SWIGEXT value _wrap_ABLine_slope_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -79959,7 +79959,7 @@ SWIGEXT value _wrap_ABLine_slope_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   result = (double) ((arg1)->slope);
   {
@@ -79974,18 +79974,18 @@ SWIGEXT value _wrap_ABLine_color_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_color_set'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   {
-    arg2 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB);
+    arg2 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB);
   }
   if (arg1) (arg1)->color = *arg2;
   rv = Val_unit;
@@ -79998,17 +79998,17 @@ SWIGEXT value _wrap_ABLine_color_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_color_get'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RGB);
   }
@@ -80021,7 +80021,7 @@ SWIGEXT value _wrap_ABLine_stroke_width_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
@@ -80029,7 +80029,7 @@ SWIGEXT value _wrap_ABLine_stroke_width_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -80045,7 +80045,7 @@ SWIGEXT value _wrap_ABLine_stroke_width_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -80053,7 +80053,7 @@ SWIGEXT value _wrap_ABLine_stroke_width_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   result = (double) ((arg1)->stroke_width);
   {
@@ -80068,11 +80068,11 @@ SWIGEXT value _wrap_new_ABLinedatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *result = 0 ;
+  datamunge::graphics::ABLine *result = 0 ;
   
   if (caml_list_length(args) > 0) caml_invalid_argument("'new_ABLine' takes no arguments");
   swig_result = Val_unit;
-  result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
+  result = (datamunge::graphics::ABLine *)new datamunge::graphics::ABLine();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ABLine_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ABLine);
   }
@@ -80085,14 +80085,14 @@ SWIGEXT value _wrap_delete_ABLinedatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'delete_ABLine'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+    arg1 = (datamunge::graphics::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
   }
   delete arg1;
   rv = Val_unit;
@@ -80105,7 +80105,7 @@ SWIGEXT value _wrap_LegendEntry_label_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   
@@ -80114,7 +80114,7 @@ SWIGEXT value _wrap_LegendEntry_label_setdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
+    arg1 = (datamunge::graphics::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1))) {
@@ -80135,7 +80135,7 @@ SWIGEXT value _wrap_LegendEntry_label_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -80143,7 +80143,7 @@ SWIGEXT value _wrap_LegendEntry_label_getdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
+    arg1 = (datamunge::graphics::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
   }
   result = (std::string *) & ((arg1)->label);
   {
@@ -80158,18 +80158,18 @@ SWIGEXT value _wrap_LegendEntry_color_setdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LegendEntry_color_set'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
+    arg1 = (datamunge::graphics::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
   }
   {
-    arg2 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB);
+    arg2 = (datamunge::graphics::RGB *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB);
   }
   if (arg1) (arg1)->color = *arg2;
   rv = Val_unit;
@@ -80182,17 +80182,17 @@ SWIGEXT value _wrap_LegendEntry_color_getdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LegendEntry_color_get'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
+    arg1 = (datamunge::graphics::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
   }
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RGB);
   }
@@ -80205,11 +80205,11 @@ SWIGEXT value _wrap_new_LegendEntrydatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LegendEntry *result = 0 ;
+  datamunge::graphics::LegendEntry *result = 0 ;
   
   if (caml_list_length(args) > 0) caml_invalid_argument("'new_LegendEntry' takes no arguments");
   swig_result = Val_unit;
-  result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
+  result = (datamunge::graphics::LegendEntry *)new datamunge::graphics::LegendEntry();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::LegendEntry_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__LegendEntry);
   }
@@ -80222,14 +80222,14 @@ SWIGEXT value _wrap_delete_LegendEntrydatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'delete_LegendEntry'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
+    arg1 = (datamunge::graphics::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
   }
   delete arg1;
   rv = Val_unit;
@@ -80242,14 +80242,14 @@ SWIGEXT value _wrap_delete_Plotdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'delete_Plot'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   delete arg1;
   rv = Val_unit;
@@ -80262,17 +80262,17 @@ SWIGEXT value _wrap_Plot_sizedatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_size'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
@@ -80280,7 +80280,7 @@ SWIGEXT value _wrap_Plot_sizedatamunge (value args)
   {
     arg3 = caml_long_val(caml_list_nth(args,2));
   }
-  result = (datamunge::plot::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80293,16 +80293,16 @@ SWIGEXT value _wrap_Plot_titledatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_title'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1)))
@@ -80310,7 +80310,7 @@ SWIGEXT value _wrap_Plot_titledatamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80323,16 +80323,16 @@ SWIGEXT value _wrap_Plot_x_labeldatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_x_label'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1)))
@@ -80340,7 +80340,7 @@ SWIGEXT value _wrap_Plot_x_labeldatamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80353,16 +80353,16 @@ SWIGEXT value _wrap_Plot_y_labeldatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_y_label'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1)))
@@ -80370,7 +80370,7 @@ SWIGEXT value _wrap_Plot_y_labeldatamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80383,21 +80383,21 @@ SWIGEXT value _wrap_Plot_backgrounddatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_background'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80410,21 +80410,21 @@ SWIGEXT value _wrap_Plot_axis_colordatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_axis_color'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80437,21 +80437,21 @@ SWIGEXT value _wrap_Plot_grid_colordatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_grid_color'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80464,18 +80464,18 @@ SWIGEXT value _wrap_Plot_show_grid__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
   }
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid(arg2);
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid(arg2);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80488,14 +80488,14 @@ SWIGEXT value _wrap_Plot_show_grid__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid();
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80560,8 +80560,8 @@ SWIGEXT value _wrap_Plot_show_griddatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'Plot_show_grid'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::Plot::show_grid(bool)\n"
-    "    datamunge::plot::Plot::show_grid()\n");
+    "    datamunge::graphics::Plot::show_grid(bool)\n"
+    "    datamunge::graphics::Plot::show_grid()\n");
 }
 
 
@@ -80569,17 +80569,17 @@ SWIGEXT value _wrap_Plot_x_limitsdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_x_limits'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -80587,7 +80587,7 @@ SWIGEXT value _wrap_Plot_x_limitsdatamunge (value args)
   {
     arg3 = caml_double_val(caml_list_nth(args,2));
   }
-  result = (datamunge::plot::Plot *) &(arg1)->x_limits(arg2,arg3);
+  result = (datamunge::graphics::Plot *) &(arg1)->x_limits(arg2,arg3);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80600,17 +80600,17 @@ SWIGEXT value _wrap_Plot_y_limitsdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_y_limits'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -80618,7 +80618,7 @@ SWIGEXT value _wrap_Plot_y_limitsdatamunge (value args)
   {
     arg3 = caml_double_val(caml_list_nth(args,2));
   }
-  result = (datamunge::plot::Plot *) &(arg1)->y_limits(arg2,arg3);
+  result = (datamunge::graphics::Plot *) &(arg1)->y_limits(arg2,arg3);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80631,18 +80631,18 @@ SWIGEXT value _wrap_Plot_hide_axes__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
   }
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes(arg2);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80655,14 +80655,14 @@ SWIGEXT value _wrap_Plot_hide_axes__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80727,8 +80727,8 @@ SWIGEXT value _wrap_Plot_hide_axesdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'Plot_hide_axes'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::Plot::hide_axes(bool)\n"
-    "    datamunge::plot::Plot::hide_axes()\n");
+    "    datamunge::graphics::Plot::hide_axes(bool)\n"
+    "    datamunge::graphics::Plot::hide_axes()\n");
 }
 
 
@@ -80736,21 +80736,21 @@ SWIGEXT value _wrap_Plot_x_tick_labelsdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_x_tick_labels'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
   }
-  result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -80763,7 +80763,7 @@ SWIGEXT value _wrap_Plot_widthdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -80771,9 +80771,9 @@ SWIGEXT value _wrap_Plot_widthdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = ((datamunge::plot::Plot const *)arg1)->width();
+  result = ((datamunge::graphics::Plot const *)arg1)->width();
   {
     rv = caml_val_int(result);
   }
@@ -80786,7 +80786,7 @@ SWIGEXT value _wrap_Plot_heightdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -80794,9 +80794,9 @@ SWIGEXT value _wrap_Plot_heightdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = ((datamunge::plot::Plot const *)arg1)->height();
+  result = ((datamunge::graphics::Plot const *)arg1)->height();
   {
     rv = caml_val_int(result);
   }
@@ -80809,7 +80809,7 @@ SWIGEXT value _wrap_Plot_title_textdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -80817,9 +80817,9 @@ SWIGEXT value _wrap_Plot_title_textdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->title_text();
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->title_text();
   {
     rv = caml_val_string_len((*result).data(), (*result).size());
   }
@@ -80832,7 +80832,7 @@ SWIGEXT value _wrap_Plot_x_label_textdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -80840,9 +80840,9 @@ SWIGEXT value _wrap_Plot_x_label_textdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->x_label_text();
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->x_label_text();
   {
     rv = caml_val_string_len((*result).data(), (*result).size());
   }
@@ -80855,7 +80855,7 @@ SWIGEXT value _wrap_Plot_y_label_textdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -80863,9 +80863,9 @@ SWIGEXT value _wrap_Plot_y_label_textdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->y_label_text();
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->y_label_text();
   {
     rv = caml_val_string_len((*result).data(), (*result).size());
   }
@@ -80878,19 +80878,19 @@ SWIGEXT value _wrap_Plot_seriesdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::DataSeries > *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::DataSeries > *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_series'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)arg1)->series();
+  result = (std::vector< datamunge::graphics::DataSeries > *) &((datamunge::graphics::Plot const *)arg1)->series();
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< datamunge::plot::DataSeries > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< datamunge::graphics::DataSeries > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -80901,19 +80901,19 @@ SWIGEXT value _wrap_Plot_background_colordatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_background_color'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = ((datamunge::plot::Plot const *)arg1)->background_color();
+  result = ((datamunge::graphics::Plot const *)arg1)->background_color();
   {
-    datamunge::plot::RGB * temp = new datamunge::plot::RGB(result);
+    datamunge::graphics::RGB * temp = new datamunge::graphics::RGB(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RGB);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -80925,19 +80925,19 @@ SWIGEXT value _wrap_Plot_axes_colordatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_axes_color'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = ((datamunge::plot::Plot const *)arg1)->axes_color();
+  result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
   {
-    datamunge::plot::RGB * temp = new datamunge::plot::RGB(result);
+    datamunge::graphics::RGB * temp = new datamunge::graphics::RGB(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RGB);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -80949,19 +80949,19 @@ SWIGEXT value _wrap_Plot_major_grid_colordatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_major_grid_color'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = ((datamunge::plot::Plot const *)arg1)->major_grid_color();
+  result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
   {
-    datamunge::plot::RGB * temp = new datamunge::plot::RGB(result);
+    datamunge::graphics::RGB * temp = new datamunge::graphics::RGB(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RGB);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -80973,7 +80973,7 @@ SWIGEXT value _wrap_Plot_grid_visibledatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -80981,9 +80981,9 @@ SWIGEXT value _wrap_Plot_grid_visibledatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (bool)((datamunge::plot::Plot const *)arg1)->grid_visible();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->grid_visible();
   {
     rv = caml_val_bool(result);
   }
@@ -80996,7 +80996,7 @@ SWIGEXT value _wrap_Plot_has_x_limitsdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -81004,9 +81004,9 @@ SWIGEXT value _wrap_Plot_has_x_limitsdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_x_limits();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_x_limits();
   {
     rv = caml_val_bool(result);
   }
@@ -81019,7 +81019,7 @@ SWIGEXT value _wrap_Plot_has_y_limitsdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -81027,9 +81027,9 @@ SWIGEXT value _wrap_Plot_has_y_limitsdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_y_limits();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_y_limits();
   {
     rv = caml_val_bool(result);
   }
@@ -81042,7 +81042,7 @@ SWIGEXT value _wrap_Plot_x_mindatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -81050,9 +81050,9 @@ SWIGEXT value _wrap_Plot_x_mindatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_min();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_min();
   {
     rv = caml_val_double(result);
   }
@@ -81065,7 +81065,7 @@ SWIGEXT value _wrap_Plot_x_maxdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -81073,9 +81073,9 @@ SWIGEXT value _wrap_Plot_x_maxdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_max();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_max();
   {
     rv = caml_val_double(result);
   }
@@ -81088,7 +81088,7 @@ SWIGEXT value _wrap_Plot_y_mindatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -81096,9 +81096,9 @@ SWIGEXT value _wrap_Plot_y_mindatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_min();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_min();
   {
     rv = caml_val_double(result);
   }
@@ -81111,7 +81111,7 @@ SWIGEXT value _wrap_Plot_y_maxdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -81119,9 +81119,9 @@ SWIGEXT value _wrap_Plot_y_maxdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_max();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_max();
   {
     rv = caml_val_double(result);
   }
@@ -81134,7 +81134,7 @@ SWIGEXT value _wrap_Plot_axes_hiddendatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -81142,9 +81142,9 @@ SWIGEXT value _wrap_Plot_axes_hiddendatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->axes_hidden();
   {
     rv = caml_val_bool(result);
   }
@@ -81157,7 +81157,7 @@ SWIGEXT value _wrap_Plot_x_tick_label_listdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string > *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -81165,9 +81165,9 @@ SWIGEXT value _wrap_Plot_x_tick_label_listdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+  result = (std::vector< std::string > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_label_list();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::string > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_std__string_t);
   }
@@ -81180,19 +81180,19 @@ SWIGEXT value _wrap_Plot_reference_linesdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::ABLine > *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::ABLine > *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_reference_lines'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
+  result = (std::vector< datamunge::graphics::ABLine > *) &((datamunge::graphics::Plot const *)arg1)->reference_lines();
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< datamunge::plot::ABLine > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< datamunge::graphics::ABLine > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -81203,19 +81203,19 @@ SWIGEXT value _wrap_Plot_legend_entriesdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::LegendEntry > *result = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Plot_legend_entries'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
+  result = (std::vector< datamunge::graphics::LegendEntry > *) &((datamunge::graphics::Plot const *)arg1)->legend_entries();
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< datamunge::plot::LegendEntry > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< datamunge::graphics::LegendEntry > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -81226,7 +81226,7 @@ SWIGEXT value _wrap_Plot_to_svgdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -81234,9 +81234,9 @@ SWIGEXT value _wrap_Plot_to_svgdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = ((datamunge::plot::Plot const *)arg1)->to_svg();
+  result = ((datamunge::graphics::Plot const *)arg1)->to_svg();
   {
     rv = caml_val_string_len((&result)->data(),(&result)->size());
   }
@@ -81249,7 +81249,7 @@ SWIGEXT value _wrap_Plot_savedatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   
@@ -81258,7 +81258,7 @@ SWIGEXT value _wrap_Plot_savedatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1))) {
@@ -81268,7 +81268,7 @@ SWIGEXT value _wrap_Plot_savedatamunge (value args)
       SWIG_exception(SWIG_TypeError, "string expected");
     }
   }
-  ((datamunge::plot::Plot const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save((std::string const &)*arg2);
   rv = Val_unit;
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -81279,7 +81279,7 @@ SWIGEXT value _wrap_Plot_save_svgdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   
@@ -81288,7 +81288,7 @@ SWIGEXT value _wrap_Plot_save_svgdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1))) {
@@ -81298,7 +81298,7 @@ SWIGEXT value _wrap_Plot_save_svgdatamunge (value args)
       SWIG_exception(SWIG_TypeError, "string expected");
     }
   }
-  ((datamunge::plot::Plot const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save_svg((std::string const &)*arg2);
   rv = Val_unit;
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -81309,13 +81309,13 @@ SWIGEXT value _wrap_Plot_view__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1))) {
@@ -81325,7 +81325,7 @@ SWIGEXT value _wrap_Plot_view__SWIG_0datamunge (value args)
       SWIG_exception(SWIG_TypeError, "string expected");
     }
   }
-  ((datamunge::plot::Plot const *)arg1)->view((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->view((std::string const &)*arg2);
   rv = Val_unit;
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -81336,13 +81336,13 @@ SWIGEXT value _wrap_Plot_view__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  ((datamunge::plot::Plot const *)arg1)->view();
+  ((datamunge::graphics::Plot const *)arg1)->view();
   rv = Val_unit;
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -81416,8 +81416,8 @@ SWIGEXT value _wrap_Plot_viewdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'Plot_view'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::Plot::view(std::string const &) const\n"
-    "    datamunge::plot::Plot::view() const\n");
+    "    datamunge::graphics::Plot::view(std::string const &) const\n"
+    "    datamunge::graphics::Plot::view() const\n");
 }
 
 
@@ -81425,13 +81425,13 @@ SWIGEXT value _wrap_Plot_show__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1))) {
@@ -81441,7 +81441,7 @@ SWIGEXT value _wrap_Plot_show__SWIG_0datamunge (value args)
       SWIG_exception(SWIG_TypeError, "string expected");
     }
   }
-  ((datamunge::plot::Plot const *)arg1)->show((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->show((std::string const &)*arg2);
   rv = Val_unit;
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -81452,13 +81452,13 @@ SWIGEXT value _wrap_Plot_show__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+    arg1 = (datamunge::graphics::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  ((datamunge::plot::Plot const *)arg1)->show();
+  ((datamunge::graphics::Plot const *)arg1)->show();
   rv = Val_unit;
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -81532,8 +81532,8 @@ SWIGEXT value _wrap_Plot_showdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'Plot_show'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::Plot::show(std::string const &) const\n"
-    "    datamunge::plot::Plot::show() const\n");
+    "    datamunge::graphics::Plot::show(std::string const &) const\n"
+    "    datamunge::graphics::Plot::show() const\n");
 }
 
 
@@ -81541,11 +81541,11 @@ SWIGEXT value _wrap_new_Plotdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if (caml_list_length(args) > 0) caml_invalid_argument("'new_Plot' takes no arguments");
   swig_result = Val_unit;
-  result = (datamunge::plot::Plot *)new datamunge::plot::Plot();
+  result = (datamunge::graphics::Plot *)new datamunge::graphics::Plot();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
   }
@@ -81558,13 +81558,13 @@ SWIGEXT value _wrap_RPlot_createdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if (caml_list_length(args) > 0) caml_invalid_argument("'RPlot_create' takes no arguments");
   swig_result = Val_unit;
-  result = datamunge::plot::RPlot::create();
+  result = datamunge::graphics::RPlot::create();
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -81576,17 +81576,17 @@ SWIGEXT value _wrap_RPlot_sizedatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_size'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
@@ -81594,7 +81594,7 @@ SWIGEXT value _wrap_RPlot_sizedatamunge (value args)
   {
     arg3 = caml_long_val(caml_list_nth(args,2));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81607,16 +81607,16 @@ SWIGEXT value _wrap_RPlot_titledatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_title'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1)))
@@ -81624,7 +81624,7 @@ SWIGEXT value _wrap_RPlot_titledatamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81637,16 +81637,16 @@ SWIGEXT value _wrap_RPlot_x_labeldatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_x_label'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1)))
@@ -81654,7 +81654,7 @@ SWIGEXT value _wrap_RPlot_x_labeldatamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81667,16 +81667,16 @@ SWIGEXT value _wrap_RPlot_y_labeldatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_y_label'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1)))
@@ -81684,7 +81684,7 @@ SWIGEXT value _wrap_RPlot_y_labeldatamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81697,16 +81697,16 @@ SWIGEXT value _wrap_RPlot_xlabdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_xlab'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1)))
@@ -81714,7 +81714,7 @@ SWIGEXT value _wrap_RPlot_xlabdatamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81727,16 +81727,16 @@ SWIGEXT value _wrap_RPlot_ylabdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_ylab'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1)))
@@ -81744,7 +81744,7 @@ SWIGEXT value _wrap_RPlot_ylabdatamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81757,21 +81757,21 @@ SWIGEXT value _wrap_RPlot_backgrounddatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_background'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81784,21 +81784,21 @@ SWIGEXT value _wrap_RPlot_axis_colordatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_axis_color'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81811,21 +81811,21 @@ SWIGEXT value _wrap_RPlot_grid_colordatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_grid_color'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
-    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg2 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81838,18 +81838,18 @@ SWIGEXT value _wrap_RPlot_show_grid__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid(arg2);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81862,14 +81862,14 @@ SWIGEXT value _wrap_RPlot_show_grid__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid();
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81934,8 +81934,8 @@ SWIGEXT value _wrap_RPlot_show_griddatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_show_grid'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::show_grid(bool)\n"
-    "    datamunge::plot::RPlot::show_grid()\n");
+    "    datamunge::graphics::RPlot::show_grid(bool)\n"
+    "    datamunge::graphics::RPlot::show_grid()\n");
 }
 
 
@@ -81943,17 +81943,17 @@ SWIGEXT value _wrap_RPlot_x_limitsdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_x_limits'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -81961,7 +81961,7 @@ SWIGEXT value _wrap_RPlot_x_limitsdatamunge (value args)
   {
     arg3 = caml_double_val(caml_list_nth(args,2));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->x_limits(arg2,arg3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_limits(arg2,arg3);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -81974,17 +81974,17 @@ SWIGEXT value _wrap_RPlot_y_limitsdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_y_limits'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -81992,7 +81992,7 @@ SWIGEXT value _wrap_RPlot_y_limitsdatamunge (value args)
   {
     arg3 = caml_double_val(caml_list_nth(args,2));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->y_limits(arg2,arg3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_limits(arg2,arg3);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -82005,18 +82005,18 @@ SWIGEXT value _wrap_RPlot_hide_axes__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes(arg2);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -82029,14 +82029,14 @@ SWIGEXT value _wrap_RPlot_hide_axes__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes();
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -82101,8 +82101,8 @@ SWIGEXT value _wrap_RPlot_hide_axesdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_hide_axes'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::hide_axes(bool)\n"
-    "    datamunge::plot::RPlot::hide_axes()\n");
+    "    datamunge::graphics::RPlot::hide_axes(bool)\n"
+    "    datamunge::graphics::RPlot::hide_axes()\n");
 }
 
 
@@ -82110,21 +82110,21 @@ SWIGEXT value _wrap_RPlot_x_tick_labelsdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_x_tick_labels'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -82141,8 +82141,8 @@ SWIGEXT value _wrap_RPlot_plot__SWIG_0datamunge (value args)
   std::vector< double > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -82164,11 +82164,11 @@ SWIGEXT value _wrap_RPlot_plot__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -82184,7 +82184,7 @@ SWIGEXT value _wrap_RPlot_plot__SWIG_1datamunge (value args)
   std::vector< double > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -82205,9 +82205,9 @@ SWIGEXT value _wrap_RPlot_plot__SWIG_1datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -82222,7 +82222,7 @@ SWIGEXT value _wrap_RPlot_plot__SWIG_2datamunge (value args)
   std::vector< double > arg1 ;
   std::vector< double > arg2 ;
   std::string arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -82237,9 +82237,9 @@ SWIGEXT value _wrap_RPlot_plot__SWIG_2datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -82253,7 +82253,7 @@ SWIGEXT value _wrap_RPlot_plot__SWIG_3datamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
   std::vector< double > arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -82262,9 +82262,9 @@ SWIGEXT value _wrap_RPlot_plot__SWIG_3datamunge (value args)
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -82595,7 +82595,7 @@ SWIGEXT value _wrap_RPlot_plotdatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -82615,10 +82615,10 @@ SWIGEXT value _wrap_RPlot_plotdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_plot'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::plot(std::vector< double >,std::vector< double >,std::string,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::plot(std::vector< double >,std::vector< double >,std::string,std::string)\n"
-    "    datamunge::plot::RPlot::plot(std::vector< double >,std::vector< double >,std::string)\n"
-    "    datamunge::plot::RPlot::plot(std::vector< double >,std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::plot(std::vector< double >,std::vector< double >,std::string,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::plot(std::vector< double >,std::vector< double >,std::string,std::string)\n"
+    "    datamunge::graphics::RPlot::plot(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::graphics::RPlot::plot(std::vector< double >,std::vector< double >)\n");
 }
 
 
@@ -82629,8 +82629,8 @@ SWIGEXT value _wrap_RPlot_hist__SWIG_0datamunge (value args)
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -82646,11 +82646,11 @@ SWIGEXT value _wrap_RPlot_hist__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -82665,7 +82665,7 @@ SWIGEXT value _wrap_RPlot_hist__SWIG_1datamunge (value args)
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -82680,9 +82680,9 @@ SWIGEXT value _wrap_RPlot_hist__SWIG_1datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -82696,7 +82696,7 @@ SWIGEXT value _wrap_RPlot_hist__SWIG_2datamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
   std::size_t arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -82705,9 +82705,9 @@ SWIGEXT value _wrap_RPlot_hist__SWIG_2datamunge (value args)
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -82720,15 +82720,15 @@ SWIGEXT value _wrap_RPlot_hist__SWIG_3datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
     arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -82960,7 +82960,7 @@ SWIGEXT value _wrap_RPlot_histdatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -82979,10 +82979,10 @@ SWIGEXT value _wrap_RPlot_histdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_hist'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::hist(std::vector< double >,std::size_t,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::hist(std::vector< double >,std::size_t,std::string)\n"
-    "    datamunge::plot::RPlot::hist(std::vector< double >,std::size_t)\n"
-    "    datamunge::plot::RPlot::hist(std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::hist(std::vector< double >,std::size_t,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::hist(std::vector< double >,std::size_t,std::string)\n"
+    "    datamunge::graphics::RPlot::hist(std::vector< double >,std::size_t)\n"
+    "    datamunge::graphics::RPlot::hist(std::vector< double >)\n");
 }
 
 
@@ -82993,8 +82993,8 @@ SWIGEXT value _wrap_RPlot_barplot__SWIG_0datamunge (value args)
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83010,11 +83010,11 @@ SWIGEXT value _wrap_RPlot_barplot__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83029,7 +83029,7 @@ SWIGEXT value _wrap_RPlot_barplot__SWIG_1datamunge (value args)
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::string arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83044,9 +83044,9 @@ SWIGEXT value _wrap_RPlot_barplot__SWIG_1datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83060,7 +83060,7 @@ SWIGEXT value _wrap_RPlot_barplot__SWIG_2datamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83069,9 +83069,9 @@ SWIGEXT value _wrap_RPlot_barplot__SWIG_2datamunge (value args)
   {
     arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83084,15 +83084,15 @@ SWIGEXT value _wrap_RPlot_barplot__SWIG_3datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
     arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83336,7 +83336,7 @@ SWIGEXT value _wrap_RPlot_barplotdatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -83355,10 +83355,10 @@ SWIGEXT value _wrap_RPlot_barplotdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_barplot'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::barplot(std::vector< double >,std::vector< std::string >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::barplot(std::vector< double >,std::vector< std::string >,std::string)\n"
-    "    datamunge::plot::RPlot::barplot(std::vector< double >,std::vector< std::string >)\n"
-    "    datamunge::plot::RPlot::barplot(std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::barplot(std::vector< double >,std::vector< std::string >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::barplot(std::vector< double >,std::vector< std::string >,std::string)\n"
+    "    datamunge::graphics::RPlot::barplot(std::vector< double >,std::vector< std::string >)\n"
+    "    datamunge::graphics::RPlot::barplot(std::vector< double >)\n");
 }
 
 
@@ -83368,8 +83368,8 @@ SWIGEXT value _wrap_RPlot_boxplot__SWIG_0datamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83379,11 +83379,11 @@ SWIGEXT value _wrap_RPlot_boxplot__SWIG_0datamunge (value args)
     arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83397,7 +83397,7 @@ SWIGEXT value _wrap_RPlot_boxplot__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::string > arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83406,9 +83406,9 @@ SWIGEXT value _wrap_RPlot_boxplot__SWIG_1datamunge (value args)
   {
     arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
   }
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83421,15 +83421,15 @@ SWIGEXT value _wrap_RPlot_boxplot__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   std::vector< std::vector< double > > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
     arg1 = *((std::vector< std::vector< double > > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t)) ;
   }
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83581,7 +83581,7 @@ SWIGEXT value _wrap_RPlot_boxplotdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -83599,9 +83599,9 @@ SWIGEXT value _wrap_RPlot_boxplotdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_boxplot'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::boxplot(std::vector< std::vector< double > >,std::vector< std::string >,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::boxplot(std::vector< std::vector< double > >,std::vector< std::string >)\n"
-    "    datamunge::plot::RPlot::boxplot(std::vector< std::vector< double > >)\n");
+    "    datamunge::graphics::RPlot::boxplot(std::vector< std::vector< double > >,std::vector< std::string >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::boxplot(std::vector< std::vector< double > >,std::vector< std::string >)\n"
+    "    datamunge::graphics::RPlot::boxplot(std::vector< std::vector< double > >)\n");
 }
 
 
@@ -83611,8 +83611,8 @@ SWIGEXT value _wrap_RPlot_pie__SWIG_0datamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83622,11 +83622,11 @@ SWIGEXT value _wrap_RPlot_pie__SWIG_0datamunge (value args)
     arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
   }
   {
-    arg3 = *((std::vector< datamunge::plot::RGB > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t)) ;
+    arg3 = *((std::vector< datamunge::graphics::RGB > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t)) ;
   }
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83640,7 +83640,7 @@ SWIGEXT value _wrap_RPlot_pie__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83649,9 +83649,9 @@ SWIGEXT value _wrap_RPlot_pie__SWIG_1datamunge (value args)
   {
     arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
   }
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83664,15 +83664,15 @@ SWIGEXT value _wrap_RPlot_pie__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
     arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83824,7 +83824,7 @@ SWIGEXT value _wrap_RPlot_piedatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("std::vector< datamunge::plot::RGB >", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("std::vector< datamunge::graphics::RGB >", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -83842,9 +83842,9 @@ SWIGEXT value _wrap_RPlot_piedatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_pie'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::pie(std::vector< double >,std::vector< std::string >,std::vector< datamunge::plot::RGB >)\n"
-    "    datamunge::plot::RPlot::pie(std::vector< double >,std::vector< std::string >)\n"
-    "    datamunge::plot::RPlot::pie(std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::pie(std::vector< double >,std::vector< std::string >,std::vector< datamunge::graphics::RGB >)\n"
+    "    datamunge::graphics::RPlot::pie(std::vector< double >,std::vector< std::string >)\n"
+    "    datamunge::graphics::RPlot::pie(std::vector< double >)\n");
 }
 
 
@@ -83857,8 +83857,8 @@ SWIGEXT value _wrap_RPlot_curve__SWIG_0datamunge (value args)
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83880,11 +83880,11 @@ SWIGEXT value _wrap_RPlot_curve__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg6 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg6 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83901,7 +83901,7 @@ SWIGEXT value _wrap_RPlot_curve__SWIG_1datamunge (value args)
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83922,9 +83922,9 @@ SWIGEXT value _wrap_RPlot_curve__SWIG_1datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83940,7 +83940,7 @@ SWIGEXT value _wrap_RPlot_curve__SWIG_2datamunge (value args)
   double arg2 ;
   double arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83955,9 +83955,9 @@ SWIGEXT value _wrap_RPlot_curve__SWIG_2datamunge (value args)
   {
     arg4 = caml_long_val(caml_list_nth(args,3));
   }
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -83972,7 +83972,7 @@ SWIGEXT value _wrap_RPlot_curve__SWIG_3datamunge (value args)
   datamunge::Callback *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -83984,9 +83984,9 @@ SWIGEXT value _wrap_RPlot_curve__SWIG_3datamunge (value args)
   {
     arg3 = caml_double_val(caml_list_nth(args,2));
   }
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3);
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -84256,7 +84256,7 @@ SWIGEXT value _wrap_RPlot_curvedatamunge(value args) {
                     }
                     case C_ptr: {
                       typeinfo = (swig_type_info *)Int64_val(Field(argv[5], 1));
-                      _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                      _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                       break;
                     }
                     default: _v = 0; break;
@@ -84277,10 +84277,10 @@ SWIGEXT value _wrap_RPlot_curvedatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_curve'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::curve(datamunge::Callback &,double,double,std::size_t,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::curve(datamunge::Callback &,double,double,std::size_t,std::string)\n"
-    "    datamunge::plot::RPlot::curve(datamunge::Callback &,double,double,std::size_t)\n"
-    "    datamunge::plot::RPlot::curve(datamunge::Callback &,double,double)\n");
+    "    datamunge::graphics::RPlot::curve(datamunge::Callback &,double,double,std::size_t,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::curve(datamunge::Callback &,double,double,std::size_t,std::string)\n"
+    "    datamunge::graphics::RPlot::curve(datamunge::Callback &,double,double,std::size_t)\n"
+    "    datamunge::graphics::RPlot::curve(datamunge::Callback &,double,double)\n");
 }
 
 
@@ -84290,8 +84290,8 @@ SWIGEXT value _wrap_RPlot_qqnorm__SWIG_0datamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
   std::string arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RPlot result;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -84304,11 +84304,11 @@ SWIGEXT value _wrap_RPlot_qqnorm__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -84322,7 +84322,7 @@ SWIGEXT value _wrap_RPlot_qqnorm__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
   std::string arg2 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -84334,9 +84334,9 @@ SWIGEXT value _wrap_RPlot_qqnorm__SWIG_1datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -84349,15 +84349,15 @@ SWIGEXT value _wrap_RPlot_qqnorm__SWIG_2datamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   std::vector< double > arg1 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   swig_result = Val_unit;
   {
     arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * temp = new datamunge::graphics::RPlot(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -84509,7 +84509,7 @@ SWIGEXT value _wrap_RPlot_qqnormdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -84527,9 +84527,9 @@ SWIGEXT value _wrap_RPlot_qqnormdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_qqnorm'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::qqnorm(std::vector< double >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::qqnorm(std::vector< double >,std::string)\n"
-    "    datamunge::plot::RPlot::qqnorm(std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::qqnorm(std::vector< double >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::qqnorm(std::vector< double >,std::string)\n"
+    "    datamunge::graphics::RPlot::qqnorm(std::vector< double >)\n");
 }
 
 
@@ -84537,17 +84537,17 @@ SWIGEXT value _wrap_RPlot_points__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -84562,12 +84562,12 @@ SWIGEXT value _wrap_RPlot_points__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg6 = caml_double_val(caml_list_nth(args,5));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -84580,16 +84580,16 @@ SWIGEXT value _wrap_RPlot_points__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -84604,9 +84604,9 @@ SWIGEXT value _wrap_RPlot_points__SWIG_1datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -84619,15 +84619,15 @@ SWIGEXT value _wrap_RPlot_points__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -84641,7 +84641,7 @@ SWIGEXT value _wrap_RPlot_points__SWIG_2datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -84654,14 +84654,14 @@ SWIGEXT value _wrap_RPlot_points__SWIG_3datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -84669,7 +84669,7 @@ SWIGEXT value _wrap_RPlot_points__SWIG_3datamunge (value args)
   {
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -84682,17 +84682,17 @@ SWIGEXT value _wrap_RPlot_line__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -84707,12 +84707,12 @@ SWIGEXT value _wrap_RPlot_line__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg6 = caml_double_val(caml_list_nth(args,5));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -84725,16 +84725,16 @@ SWIGEXT value _wrap_RPlot_line__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -84749,9 +84749,9 @@ SWIGEXT value _wrap_RPlot_line__SWIG_1datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -84764,15 +84764,15 @@ SWIGEXT value _wrap_RPlot_line__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -84786,7 +84786,7 @@ SWIGEXT value _wrap_RPlot_line__SWIG_2datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -84799,14 +84799,14 @@ SWIGEXT value _wrap_RPlot_line__SWIG_3datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -84814,7 +84814,7 @@ SWIGEXT value _wrap_RPlot_line__SWIG_3datamunge (value args)
   {
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -85061,7 +85061,7 @@ SWIGEXT value _wrap_RPlot_linedatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -85164,7 +85164,7 @@ SWIGEXT value _wrap_RPlot_linedatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -85195,10 +85195,10 @@ SWIGEXT value _wrap_RPlot_linedatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_line'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::line(std::vector< double >,std::vector< double >,std::string)\n"
-    "    datamunge::plot::RPlot::line(std::vector< double >,std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::line(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::graphics::RPlot::line(std::vector< double >,std::vector< double >)\n");
 }
 
 
@@ -85206,17 +85206,17 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -85231,12 +85231,12 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg6 = caml_double_val(caml_list_nth(args,5));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -85249,16 +85249,16 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -85273,9 +85273,9 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_1datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -85288,15 +85288,15 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -85310,7 +85310,7 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_2datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -85323,14 +85323,14 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_3datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -85338,7 +85338,7 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_3datamunge (value args)
   {
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -85351,16 +85351,16 @@ SWIGEXT value _wrap_RPlot_points__SWIG_4datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -85369,12 +85369,12 @@ SWIGEXT value _wrap_RPlot_points__SWIG_4datamunge (value args)
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg5 = caml_double_val(caml_list_nth(args,4));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -85387,15 +85387,15 @@ SWIGEXT value _wrap_RPlot_points__SWIG_5datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -85404,9 +85404,9 @@ SWIGEXT value _wrap_RPlot_points__SWIG_5datamunge (value args)
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -85551,7 +85551,7 @@ SWIGEXT value _wrap_RPlot_pointsdatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -85713,7 +85713,7 @@ SWIGEXT value _wrap_RPlot_pointsdatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -85826,7 +85826,7 @@ SWIGEXT value _wrap_RPlot_pointsdatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -85929,7 +85929,7 @@ SWIGEXT value _wrap_RPlot_pointsdatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -85960,12 +85960,12 @@ SWIGEXT value _wrap_RPlot_pointsdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_points'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >,std::string)\n"
-    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >)\n"
-    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >,datamunge::plot::RGB)\n");
+    "    datamunge::graphics::RPlot::points(std::vector< double >,std::vector< double >,std::string,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::points(std::vector< double >,std::vector< double >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::points(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::graphics::RPlot::points(std::vector< double >,std::vector< double >)\n"
+    "    datamunge::graphics::RPlot::points(std::vector< double >,std::vector< double >,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::points(std::vector< double >,std::vector< double >,datamunge::graphics::RGB)\n");
 }
 
 
@@ -85973,16 +85973,16 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_4datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -85991,12 +85991,12 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_4datamunge (value args)
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg5 = caml_double_val(caml_list_nth(args,4));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -86009,15 +86009,15 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_5datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -86026,9 +86026,9 @@ SWIGEXT value _wrap_RPlot_lines__SWIG_5datamunge (value args)
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -86173,7 +86173,7 @@ SWIGEXT value _wrap_RPlot_linesdatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -86335,7 +86335,7 @@ SWIGEXT value _wrap_RPlot_linesdatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -86448,7 +86448,7 @@ SWIGEXT value _wrap_RPlot_linesdatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -86551,7 +86551,7 @@ SWIGEXT value _wrap_RPlot_linesdatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -86582,12 +86582,12 @@ SWIGEXT value _wrap_RPlot_linesdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_lines'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >,std::string)\n"
-    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >)\n"
-    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >,datamunge::plot::RGB)\n");
+    "    datamunge::graphics::RPlot::lines(std::vector< double >,std::vector< double >,std::string,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::lines(std::vector< double >,std::vector< double >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::lines(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::graphics::RPlot::lines(std::vector< double >,std::vector< double >)\n"
+    "    datamunge::graphics::RPlot::lines(std::vector< double >,std::vector< double >,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::lines(std::vector< double >,std::vector< double >,datamunge::graphics::RGB)\n");
 }
 
 
@@ -86595,17 +86595,17 @@ SWIGEXT value _wrap_RPlot_bars__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -86620,12 +86620,12 @@ SWIGEXT value _wrap_RPlot_bars__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg6 = caml_double_val(caml_list_nth(args,5));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -86638,16 +86638,16 @@ SWIGEXT value _wrap_RPlot_bars__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -86662,9 +86662,9 @@ SWIGEXT value _wrap_RPlot_bars__SWIG_1datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -86677,15 +86677,15 @@ SWIGEXT value _wrap_RPlot_bars__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -86699,7 +86699,7 @@ SWIGEXT value _wrap_RPlot_bars__SWIG_2datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -86712,14 +86712,14 @@ SWIGEXT value _wrap_RPlot_bars__SWIG_3datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -86727,7 +86727,7 @@ SWIGEXT value _wrap_RPlot_bars__SWIG_3datamunge (value args)
   {
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -86974,7 +86974,7 @@ SWIGEXT value _wrap_RPlot_barsdatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -87077,7 +87077,7 @@ SWIGEXT value _wrap_RPlot_barsdatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -87108,10 +87108,10 @@ SWIGEXT value _wrap_RPlot_barsdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_bars'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::bars(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::bars(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::bars(std::vector< double >,std::vector< double >,std::string)\n"
-    "    datamunge::plot::RPlot::bars(std::vector< double >,std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::bars(std::vector< double >,std::vector< double >,std::string,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::bars(std::vector< double >,std::vector< double >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::bars(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::graphics::RPlot::bars(std::vector< double >,std::vector< double >)\n");
 }
 
 
@@ -87119,7 +87119,7 @@ SWIGEXT value _wrap_RPlot_box__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -87127,13 +87127,13 @@ SWIGEXT value _wrap_RPlot_box__SWIG_0datamunge (value args)
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   double arg10 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -87157,12 +87157,12 @@ SWIGEXT value _wrap_RPlot_box__SWIG_0datamunge (value args)
     arg8 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,7),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg9 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,8),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg9 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,8),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg10 = caml_double_val(caml_list_nth(args,9));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -87175,7 +87175,7 @@ SWIGEXT value _wrap_RPlot_box__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -87183,12 +87183,12 @@ SWIGEXT value _wrap_RPlot_box__SWIG_1datamunge (value args)
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -87212,9 +87212,9 @@ SWIGEXT value _wrap_RPlot_box__SWIG_1datamunge (value args)
     arg8 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,7),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg9 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,8),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg9 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,8),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -87227,7 +87227,7 @@ SWIGEXT value _wrap_RPlot_box__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -87235,11 +87235,11 @@ SWIGEXT value _wrap_RPlot_box__SWIG_2datamunge (value args)
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -87262,7 +87262,7 @@ SWIGEXT value _wrap_RPlot_box__SWIG_2datamunge (value args)
   {
     arg8 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,7),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -87275,18 +87275,18 @@ SWIGEXT value _wrap_RPlot_box__SWIG_3datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
   double arg5 ;
   double arg6 ;
   double arg7 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -87306,7 +87306,7 @@ SWIGEXT value _wrap_RPlot_box__SWIG_3datamunge (value args)
   {
     arg7 = caml_double_val(caml_list_nth(args,6));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -87615,7 +87615,7 @@ SWIGEXT value _wrap_RPlot_boxdatamunge(value args) {
                           }
                           case C_ptr: {
                             typeinfo = (swig_type_info *)Int64_val(Field(argv[8], 1));
-                            _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                            _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                             break;
                           }
                           default: _v = 0; break;
@@ -87740,7 +87740,7 @@ SWIGEXT value _wrap_RPlot_boxdatamunge(value args) {
                           }
                           case C_ptr: {
                             typeinfo = (swig_type_info *)Int64_val(Field(argv[8], 1));
-                            _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                            _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                             break;
                           }
                           default: _v = 0; break;
@@ -87775,10 +87775,10 @@ SWIGEXT value _wrap_RPlot_boxdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_box'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::box(double,double,double,double,double,double,std::vector< double >,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::box(double,double,double,double,double,double,std::vector< double >,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::box(double,double,double,double,double,double,std::vector< double >)\n"
-    "    datamunge::plot::RPlot::box(double,double,double,double,double,double)\n");
+    "    datamunge::graphics::RPlot::box(double,double,double,double,double,double,std::vector< double >,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::box(double,double,double,double,double,double,std::vector< double >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::box(double,double,double,double,double,double,std::vector< double >)\n"
+    "    datamunge::graphics::RPlot::box(double,double,double,double,double,double)\n");
 }
 
 
@@ -87786,16 +87786,16 @@ SWIGEXT value _wrap_RPlot_abline__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -87804,12 +87804,12 @@ SWIGEXT value _wrap_RPlot_abline__SWIG_0datamunge (value args)
     arg3 = caml_double_val(caml_list_nth(args,2));
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg5 = caml_double_val(caml_list_nth(args,4));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -87822,15 +87822,15 @@ SWIGEXT value _wrap_RPlot_abline__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -87839,9 +87839,9 @@ SWIGEXT value _wrap_RPlot_abline__SWIG_1datamunge (value args)
     arg3 = caml_double_val(caml_list_nth(args,2));
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -87854,14 +87854,14 @@ SWIGEXT value _wrap_RPlot_abline__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -87869,7 +87869,7 @@ SWIGEXT value _wrap_RPlot_abline__SWIG_2datamunge (value args)
   {
     arg3 = caml_double_val(caml_list_nth(args,2));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -87970,7 +87970,7 @@ SWIGEXT value _wrap_RPlot_ablinedatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -88029,7 +88029,7 @@ SWIGEXT value _wrap_RPlot_ablinedatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -88059,9 +88059,9 @@ SWIGEXT value _wrap_RPlot_ablinedatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_abline'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::abline(double,double,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::abline(double,double,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::abline(double,double)\n");
+    "    datamunge::graphics::RPlot::abline(double,double,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::abline(double,double,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::abline(double,double)\n");
 }
 
 
@@ -88069,26 +88069,26 @@ SWIGEXT value _wrap_RPlot_abline_h__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg4 = caml_double_val(caml_list_nth(args,3));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88101,22 +88101,22 @@ SWIGEXT value _wrap_RPlot_abline_h__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88129,18 +88129,18 @@ SWIGEXT value _wrap_RPlot_abline_h__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88220,7 +88220,7 @@ SWIGEXT value _wrap_RPlot_abline_hdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -88268,7 +88268,7 @@ SWIGEXT value _wrap_RPlot_abline_hdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -88297,9 +88297,9 @@ SWIGEXT value _wrap_RPlot_abline_hdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_abline_h'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::abline_h(double,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::abline_h(double,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::abline_h(double)\n");
+    "    datamunge::graphics::RPlot::abline_h(double,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::abline_h(double,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::abline_h(double)\n");
 }
 
 
@@ -88307,26 +88307,26 @@ SWIGEXT value _wrap_RPlot_abline_v__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg4 = caml_double_val(caml_list_nth(args,3));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88339,22 +88339,22 @@ SWIGEXT value _wrap_RPlot_abline_v__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88367,18 +88367,18 @@ SWIGEXT value _wrap_RPlot_abline_v__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88458,7 +88458,7 @@ SWIGEXT value _wrap_RPlot_abline_vdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -88506,7 +88506,7 @@ SWIGEXT value _wrap_RPlot_abline_vdatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -88535,9 +88535,9 @@ SWIGEXT value _wrap_RPlot_abline_vdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_abline_v'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::abline_v(double,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::abline_v(double,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::abline_v(double)\n");
+    "    datamunge::graphics::RPlot::abline_v(double,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::abline_v(double,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::abline_v(double)\n");
 }
 
 
@@ -88545,26 +88545,26 @@ SWIGEXT value _wrap_RPlot_qqline__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg4 = caml_double_val(caml_list_nth(args,3));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88577,22 +88577,22 @@ SWIGEXT value _wrap_RPlot_qqline__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg3 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88605,18 +88605,18 @@ SWIGEXT value _wrap_RPlot_qqline__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88718,7 +88718,7 @@ SWIGEXT value _wrap_RPlot_qqlinedatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -88777,7 +88777,7 @@ SWIGEXT value _wrap_RPlot_qqlinedatamunge(value args) {
               }
               case C_ptr: {
                 typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                 break;
               }
               default: _v = 0; break;
@@ -88806,9 +88806,9 @@ SWIGEXT value _wrap_RPlot_qqlinedatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_qqline'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::qqline(std::vector< double >,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::qqline(std::vector< double >,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::qqline(std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::qqline(std::vector< double >,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::qqline(std::vector< double >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::qqline(std::vector< double >)\n");
 }
 
 
@@ -88816,25 +88816,25 @@ SWIGEXT value _wrap_RPlot_legenddatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_legend'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
   }
   {
-    arg3 = *((std::vector< datamunge::plot::RGB > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t)) ;
+    arg3 = *((std::vector< datamunge::graphics::RGB > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88847,17 +88847,17 @@ SWIGEXT value _wrap_RPlot_text__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -88872,12 +88872,12 @@ SWIGEXT value _wrap_RPlot_text__SWIG_0datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg6 = caml_double_val(caml_list_nth(args,5));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88890,16 +88890,16 @@ SWIGEXT value _wrap_RPlot_text__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -88914,9 +88914,9 @@ SWIGEXT value _wrap_RPlot_text__SWIG_1datamunge (value args)
     SWIG_exception(SWIG_TypeError, "string expected");
   }
   {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg5 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -88929,15 +88929,15 @@ SWIGEXT value _wrap_RPlot_text__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = caml_double_val(caml_list_nth(args,1));
@@ -88951,7 +88951,7 @@ SWIGEXT value _wrap_RPlot_text__SWIG_2datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -89095,7 +89095,7 @@ SWIGEXT value _wrap_RPlot_textdatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -89176,7 +89176,7 @@ SWIGEXT value _wrap_RPlot_textdatamunge(value args) {
                   }
                   case C_ptr: {
                     typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                     break;
                   }
                   default: _v = 0; break;
@@ -89207,9 +89207,9 @@ SWIGEXT value _wrap_RPlot_textdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_text'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::text(double,double,std::string,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::text(double,double,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::text(double,double,std::string)\n");
+    "    datamunge::graphics::RPlot::text(double,double,std::string,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::text(double,double,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::text(double,double,std::string)\n");
 }
 
 
@@ -89217,16 +89217,16 @@ SWIGEXT value _wrap_RPlot_polygon__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   bool arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -89235,12 +89235,12 @@ SWIGEXT value _wrap_RPlot_polygon__SWIG_0datamunge (value args)
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg5 = caml_long_val(caml_list_nth(args,4));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -89253,15 +89253,15 @@ SWIGEXT value _wrap_RPlot_polygon__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -89270,9 +89270,9 @@ SWIGEXT value _wrap_RPlot_polygon__SWIG_1datamunge (value args)
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg4 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -89285,14 +89285,14 @@ SWIGEXT value _wrap_RPlot_polygon__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -89300,7 +89300,7 @@ SWIGEXT value _wrap_RPlot_polygon__SWIG_2datamunge (value args)
   {
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -89445,7 +89445,7 @@ SWIGEXT value _wrap_RPlot_polygondatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -89526,7 +89526,7 @@ SWIGEXT value _wrap_RPlot_polygondatamunge(value args) {
                 }
                 case C_ptr: {
                   typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
-                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                   break;
                 }
                 default: _v = 0; break;
@@ -89556,9 +89556,9 @@ SWIGEXT value _wrap_RPlot_polygondatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_polygon'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::polygon(std::vector< double >,std::vector< double >,datamunge::plot::RGB,bool)\n"
-    "    datamunge::plot::RPlot::polygon(std::vector< double >,std::vector< double >,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::polygon(std::vector< double >,std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::polygon(std::vector< double >,std::vector< double >,datamunge::graphics::RGB,bool)\n"
+    "    datamunge::graphics::RPlot::polygon(std::vector< double >,std::vector< double >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::polygon(std::vector< double >,std::vector< double >)\n");
 }
 
 
@@ -89566,18 +89566,18 @@ SWIGEXT value _wrap_RPlot_segments__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   double arg7 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -89592,12 +89592,12 @@ SWIGEXT value _wrap_RPlot_segments__SWIG_0datamunge (value args)
     arg5 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg6 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg6 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
   {
     arg7 = caml_double_val(caml_list_nth(args,6));
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -89610,17 +89610,17 @@ SWIGEXT value _wrap_RPlot_segments__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
-  datamunge::plot::RPlot *result = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -89635,9 +89635,9 @@ SWIGEXT value _wrap_RPlot_segments__SWIG_1datamunge (value args)
     arg5 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
   {
-    arg6 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__plot__RGB)) ;
+    arg6 = *((datamunge::graphics::RGB *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -89650,16 +89650,16 @@ SWIGEXT value _wrap_RPlot_segments__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -89673,7 +89673,7 @@ SWIGEXT value _wrap_RPlot_segments__SWIG_2datamunge (value args)
   {
     arg5 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -89904,7 +89904,7 @@ SWIGEXT value _wrap_RPlot_segmentsdatamunge(value args) {
                     }
                     case C_ptr: {
                       typeinfo = (swig_type_info *)Int64_val(Field(argv[5], 1));
-                      _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                      _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                       break;
                     }
                     default: _v = 0; break;
@@ -90029,7 +90029,7 @@ SWIGEXT value _wrap_RPlot_segmentsdatamunge(value args) {
                     }
                     case C_ptr: {
                       typeinfo = (swig_type_info *)Int64_val(Field(argv[5], 1));
-                      _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                      _v = SWIG_TypeCheck("datamunge::graphics::RGB", typeinfo) != NULL;
                       break;
                     }
                     default: _v = 0; break;
@@ -90061,9 +90061,9 @@ SWIGEXT value _wrap_RPlot_segmentsdatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_segments'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::RPlot::segments(std::vector< double >,std::vector< double >,std::vector< double >,std::vector< double >,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::RPlot::segments(std::vector< double >,std::vector< double >,std::vector< double >,std::vector< double >,datamunge::plot::RGB)\n"
-    "    datamunge::plot::RPlot::segments(std::vector< double >,std::vector< double >,std::vector< double >,std::vector< double >)\n");
+    "    datamunge::graphics::RPlot::segments(std::vector< double >,std::vector< double >,std::vector< double >,std::vector< double >,datamunge::graphics::RGB,double)\n"
+    "    datamunge::graphics::RPlot::segments(std::vector< double >,std::vector< double >,std::vector< double >,std::vector< double >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::segments(std::vector< double >,std::vector< double >,std::vector< double >,std::vector< double >)\n");
 }
 
 
@@ -90071,11 +90071,11 @@ SWIGEXT value _wrap_new_RPlotdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if (caml_list_length(args) > 0) caml_invalid_argument("'new_RPlot' takes no arguments");
   swig_result = Val_unit;
-  result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
@@ -90088,14 +90088,14 @@ SWIGEXT value _wrap_delete_RPlotdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'delete_RPlot'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+    arg1 = (datamunge::graphics::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   delete arg1;
   rv = Val_unit;
@@ -90110,7 +90110,7 @@ SWIGEXT value _wrap_RLayout_createdatamunge (value args)
   CAMLlocal2(swig_result,rv);
   std::size_t arg1 ;
   std::size_t arg2 ;
-  datamunge::plot::RLayout result;
+  datamunge::graphics::RLayout result;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RLayout_create'");
@@ -90122,9 +90122,9 @@ SWIGEXT value _wrap_RLayout_createdatamunge (value args)
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
   }
-  result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RLayout * temp = new datamunge::plot::RLayout(result);
+    datamunge::graphics::RLayout * temp = new datamunge::graphics::RLayout(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RLayout_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RLayout);
   }
   swig_result = caml_list_append(swig_result,rv);
@@ -90136,21 +90136,21 @@ SWIGEXT value _wrap_RLayout_adddatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RLayout *arg1 = 0 ;
-  datamunge::plot::Plot *arg2 = 0 ;
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  datamunge::graphics::Plot *arg2 = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RLayout_add'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
+    arg1 = (datamunge::graphics::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
   {
-    arg2 = (datamunge::plot::Plot *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__Plot);
+    arg2 = (datamunge::graphics::Plot *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__Plot);
   }
-  result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
+  result = (datamunge::graphics::RLayout *) &(arg1)->add((datamunge::graphics::Plot const &)*arg2);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RLayout_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RLayout);
   }
@@ -90163,17 +90163,17 @@ SWIGEXT value _wrap_RLayout_sizedatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RLayout_size'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
+    arg1 = (datamunge::graphics::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
   {
     arg2 = caml_long_val(caml_list_nth(args,1));
@@ -90181,7 +90181,7 @@ SWIGEXT value _wrap_RLayout_sizedatamunge (value args)
   {
     arg3 = caml_long_val(caml_list_nth(args,2));
   }
-  result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RLayout_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RLayout);
   }
@@ -90194,7 +90194,7 @@ SWIGEXT value _wrap_RLayout_to_svgdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
@@ -90202,9 +90202,9 @@ SWIGEXT value _wrap_RLayout_to_svgdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
+    arg1 = (datamunge::graphics::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
-  result = ((datamunge::plot::RLayout const *)arg1)->to_svg();
+  result = ((datamunge::graphics::RLayout const *)arg1)->to_svg();
   {
     rv = caml_val_string_len((&result)->data(),(&result)->size());
   }
@@ -90217,7 +90217,7 @@ SWIGEXT value _wrap_RLayout_savedatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   
@@ -90226,7 +90226,7 @@ SWIGEXT value _wrap_RLayout_savedatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
+    arg1 = (datamunge::graphics::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1))) {
@@ -90236,7 +90236,7 @@ SWIGEXT value _wrap_RLayout_savedatamunge (value args)
       SWIG_exception(SWIG_TypeError, "string expected");
     }
   }
-  ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save((std::string const &)*arg2);
   rv = Val_unit;
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -90247,7 +90247,7 @@ SWIGEXT value _wrap_RLayout_save_svgdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   
@@ -90256,7 +90256,7 @@ SWIGEXT value _wrap_RLayout_save_svgdatamunge (value args)
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
+    arg1 = (datamunge::graphics::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
   {
     if (caml_ptr_check(caml_list_nth(args,1))) {
@@ -90266,7 +90266,7 @@ SWIGEXT value _wrap_RLayout_save_svgdatamunge (value args)
       SWIG_exception(SWIG_TypeError, "string expected");
     }
   }
-  ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
   rv = Val_unit;
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -90277,11 +90277,11 @@ SWIGEXT value _wrap_new_RLayoutdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   if (caml_list_length(args) > 0) caml_invalid_argument("'new_RLayout' takes no arguments");
   swig_result = Val_unit;
-  result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
+  result = (datamunge::graphics::RLayout *)new datamunge::graphics::RLayout();
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RLayout_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RLayout);
   }
@@ -90294,14 +90294,14 @@ SWIGEXT value _wrap_delete_RLayoutdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'delete_RLayout'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
+    arg1 = (datamunge::graphics::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
   delete arg1;
   rv = Val_unit;
@@ -123319,7 +123319,7 @@ static void *_p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__Differe
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::ProximalFunction *) x));
 }
 static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::RPlot *) x));
+    return (void *)((datamunge::graphics::Plot *)  ((datamunge::graphics::RPlot *) x));
 }
 static swig_type_info _swigt__p_datamunge__AgglomerativeClustering = {"_p_datamunge__AgglomerativeClustering", "datamunge::AgglomerativeClustering *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__BSplineRegression = {"_p_datamunge__BSplineRegression", "datamunge::BSplineRegression *", 0, 0, (void*)0, 0};
@@ -123483,13 +123483,13 @@ static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewton = {"_p_datam
 static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewtonOptions = {"_p_datamunge__optim__TrustRegionNewtonOptions", "datamunge::optim::TrustRegionNewtonOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimization = {"_p_datamunge__optim__WhaleOptimization", "datamunge::optim::WhaleOptimization *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimizationOptions = {"_p_datamunge__optim__WhaleOptimizationOptions", "datamunge::optim::WhaleOptimizationOptions *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::plot::ABLine *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::plot::DataSeries *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::plot::LegendEntry *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::plot::Plot *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::plot::RGB *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::plot::RLayout *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::plot::RPlot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::graphics::ABLine *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::graphics::DataSeries *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::graphics::LegendEntry *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::graphics::Plot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::graphics::RGB *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::graphics::RLayout *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::graphics::RPlot *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "datamunge::stats::ARIMA *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "datamunge::stats::ARIMAOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)0, 0};
@@ -123504,10 +123504,10 @@ static swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t
 static swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__size_t = {"_p_std__size_t", "std::size_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__uint64_t = {"_p_std__uint64_t", "std::uint64_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::plot::ABLine > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::plot::DataSeries > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::plot::LegendEntry > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::plot::RGB > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::graphics::ABLine > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::graphics::DataSeries > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::graphics::LegendEntry > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::graphics::RGB > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__size_t_t = {"_p_std__vectorT_std__size_t_t", "std::vector< std::size_t > *", 0, 0, (void*)0, 0};

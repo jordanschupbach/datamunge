@@ -36,7 +36,7 @@ scanline) are naturally ignored.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -92,7 +92,7 @@ We fill a 10x10 axis-aligned square (expect 100 pixels) and a right triangle wit
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

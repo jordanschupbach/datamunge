@@ -1,0 +1,457 @@
+//? Title: Integrated gradients:visible midpoint paths and completeness controls
+//? Requires: vanilla_saliency.mepml
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An endpoint derivative may miss a feature after a classifier score saturates. Integrate ordinary fixed-target derivatives from an explicit baseline to each genuine MNIST image,then check every numerical completeness residual and baseline,target and initialization control.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.11_interpretability/integrated_gradients.cpp`.
+
+> The method
+
+For a fixed raw scoreFand baseline x0,straight-line attribution integrates each ordinary coordinate derivative along the path:
+
+$$ IG_i=(x_i-x_{0i})\int_0^1\partial_iF(x_0+\alpha(x-x_0))\,d\alpha,\qquad\sum_iIG_i=F(x)-F(x_0). $$
+\alttext(Integrated attribution multiplies the input-baseline coordinate difference by the path-integrated ordinary derivative;the ideal sum equals the endpoint score change.)
+
+The equality follows by the chain rule and fundamental theorem along the path,including piecewise-linear regions almost everywhere. Finite midpoint quadrature approximates the integral;the baseline and target define the attribution question. All numerical preprocessing,derivatives,integrals,checks and plots remain tensors;no optimizer is needed for this frozen-model numerical integration.
+
+The editable concept diagram is `diagrams/integrated_gradients_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/integrated_gradients_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/integrated_gradients_concept.tikz > build/integrated_gradients_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/integrated_gradients_concept.svg build/integrated_gradients_concept.dvi > build/integrated_gradients_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/integrated_gradients_concept.svg)
+// result_end
+\caption(Integrated gradients:visible midpoint paths and completeness controls)
+\alttext(Observed image;  explicit baseline; then Ordinary gradients;  midpoint path; then Signed attribution;  completeness checks.)
+
+> Fixed raw scores and a chosen baseline
+
+A local endpoint derivative can vanish after a score saturates. Integrated
+gradients compare an observed inputxto an explicit baselinex0and accumulate
+ordinary derivatives along x0+alpha*(x-x0). The baseline is part of the question;
+black pixels and grey.1pixels can give different attributions for the same digit.
+Targets stay fixed along the entire path. No softmax,guided gate or loss gradient
+enters this report.
+
+Restore the exact shared MNIST classifier and its actual initial arrays from
+[vanilla saliency](vanilla_saliency.mepml),where96visible tensor Adam updates
+select the classifier on validation. Its88%held-out accuracy includes24errors.
+No classifier fitting occurs here. The same ten first held-out occurrences of
+true digits0..9and their original source IDs are retained for all controls.
+
+> Executed tensor architecture
+
+The diagram shows the forward MNIST CNN that the attribution or feature-optimization method inspects; the attribution algorithm is explained separately.
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/integrated_gradients_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(1103);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) { return m::SaliencyCnn(p, image).logits; },
+      "Integrated gradients:visible midpoint paths and completeness controls");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 28, 28, 1}), options);
+  diagram.save_svg("build/integrated_gradients_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+12 displayed nodes; 26826 reachable learned values.
+\image(figures/integrated_gradients_architecture.svg)
+// result_end
+\caption(Executed integrated gradients tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right integrated gradients architecture with rotated names and exact output shapes.)
+
+> A saturated score with exact midpoint attributions
+
+ForF(x)=clip(x0,0,1)+2*x1and baseline0,the first observed row[2,3,9]has
+attributions[1,6,0]. Its first endpoint derivative is0but its integrated
+attribution is1;the third coordinate is a dummy. The second row[.5,-1,4]
+has[.5,-2,0],summing-1.5. Equivalent ReLU implementations and callback batches
+1versus7give the same results. Equal input/baseline gives exactzero.
+```{cpp, results="markdown", file="figures/integrated_gradients_fixture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto input = n::from_vector(std::vector<float>{2, 3, 9, .5f, -1, 4}, {2, 3}),
+             base = n::zeros({2, 3}), targets = n::zeros({2}, n::DType::Int32);
+  auto score = [](const n::Tensor &x) {
+    return n::clip(n::slice_axis(x, 1, 0, 1), 0., 1.) + n::slice_axis(x, 1, 1, 2) * 2.;
+  };
+  auto derivative = [&](const n::Tensor &p, const n::Tensor &) {
+    auto x = p.detach().clone().requires_grad_();
+    return n::grad(n::sum(score(x)), {x})[0].detach();
+  };
+  const auto out = m::IntegratedGradients(input, base, targets, 64, 7, derivative);
+  std::print("Declared exact attributions {},sums {},endpoint derivatives {}.\n",
+             out.attribution, n::sum(out.attribution, {1}), derivative(input, targets));
+  auto a = dm::graphics::RPlot::create(), b = dm::graphics::RPlot::create();
+  a.points(n::arange(0, 3).to_vector<double>(),
+           n::select(out.attribution, 0, 0).to_vector<double>(), "IG", {37, 99, 235})
+      .points(n::arange(0, 3).to_vector<double>(),
+              n::select(derivative(input, targets), 0, 0).to_vector<double>(),
+              "endpoint derivative", {220, 38, 38})
+      .title("Saturation,linear coordinate,dummy")
+      .x_label("declared input coordinate")
+      .y_label("attribution/endpoint derivative");
+  b.lines(out.nodes.to_vector<double>(),
+          n::select(n::select(out.path_gradient, 1, 0), 1, 0).to_vector<double>(),
+          "saturated coordinate", {37, 99, 235})
+      .title("Every actual midpoint derivative")
+      .x_label("alpha from baseline to input")
+      .y_label("ordinary derivative at path node");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(a).add(b).size(1100, 500).fit_panels().save_svg(
+      "build/integrated_gradients_fixture.svg");
+}
+```
+// result_begin: markdown
+Declared exact attributions float32[2, 3] [[1, 6, 0], [0.5, -2, 0]],sums float32[2] [7, -1.5],endpoint derivatives float32[2, 3] [[0, 2, 0], [1, 2, 0]].
+\image(figures/integrated_gradients_fixture.svg)
+// result_end
+\caption(The exact saturated/linear/dummy fixture shows nonzero integrated attribution despite a zero endpoint derivative. Every64midpoint derivative is plotted;all six analytic attribution coordinates and equivalent implementations are checked natively.)
+\alttext(The exact saturated/linear/dummy fixture shows nonzero integrated attribution despite a zero endpoint derivative. Every64midpoint derivative is plotted;all six analytic attribution coordinates and equivalent implementations are checked natively.)
+
+> Real midpoint quadrature and all baseline/target/weight controls
+
+Tensor Double arithmetic constructs path points at alpha=(k+.5)/steps,then
+Float32model evaluation yields ordinary gradients. All actual path derivatives
+are retained in step-major/case-minor order. Double means produce Float32final
+attributions. The callback batches at most32path points;its gradient sums fixed
+raw scores to preserve per-observation scale.
+
+Start64nodes;check all40case/control completeness residuals against the declared
+numerical tolerance.01+.01*abs(scorechange). Double the quadrature until all
+pass or512nodes,then fail explicitly if the tolerance is still unmet. This is
+a numerical verification rule,not a new fitting or model-selection process.
+The32node primary result remains a fixed coarse reference. Refinement need not
+improve every individual residual monotonically at ReLU boundaries.
+```{cpp, results="markdown", file="figures/integrated_gradients_maps.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  dm::datasets::prepare_example_data("mnist-assets", cache.string());
+  const auto pools = m::LoadSaliency(cache / "saliency");
+  const auto &fit = pools[0];
+  const auto &validation = pools[1];
+  const auto &test = pools[2];
+
+  n::ParameterStore p(1103);
+  {
+    n::NoGradGuard guard;
+    m::SaliencyCnn(p, n::zeros({1, 28, 28, 1}));
+  }
+  auto predict = [&](const n::Tensor &images) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> parts;
+    for (std::int64_t start = 0; start < images.size(0); start += 32)
+      parts.push_back(
+          m::SaliencyCnn(p, n::slice_axis(images, 0, start,
+                                          std::min<std::int64_t>(start + 32, images.size(0))))
+              .logits);
+    return n::concat(parts, 0);
+  };
+
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_best.npz"))
+    p.set(key, value.clone());
+
+  std::vector<std::int64_t> chosen;
+  const auto labels = test.labels.to_vector<int>();
+  for (int digit = 0; digit < 10; ++digit) {
+    const auto it = std::find(labels.begin(), labels.end(), digit);
+    chosen.push_back(it - labels.begin());
+  }
+  const auto examples = m::SaliencyRows(test, chosen);
+  const auto z = predict(examples.images);
+  const auto sorted = n::argsort(z, true);
+  const auto targets = n::select(sorted, 1, 0).to(n::DType::Int32),
+             runners = n::select(sorted, 1, 1).to(n::DType::Int32);
+
+  const auto before = p.flatten();
+  n::ParameterStore random(1103);
+  {
+    n::NoGradGuard guard;
+    m::SaliencyCnn(random, n::zeros({1, 28, 28, 1}));
+  }
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_initial.npz"))
+    random.set(key, value.clone());
+  const auto random_before = random.flatten();
+  auto gradient = [&](const n::Tensor &points, const n::Tensor &classes) {
+    return m::VanillaInputGradient(
+        [&](const n::Tensor &x) {
+          return m::SaliencyCnn(p, x).logits;
+        },
+        points, classes);
+  };
+  auto initial_gradient = [&](const n::Tensor &points, const n::Tensor &classes) {
+    return m::VanillaInputGradient(
+        [&](const n::Tensor &x) {
+          return m::SaliencyCnn(random, x).logits;
+        },
+        points, classes);
+  };
+  const auto black = n::zeros(examples.images.shape()),
+             gray = n::full(examples.images.shape(), double(.1f));
+  const auto coarse =
+      m::IntegratedGradients(examples.images, black, targets, 32, 32, gradient);
+  std::vector<m::IntegratedResult> values;
+  std::vector<n::Tensor> deltas, residuals;
+  const std::vector<std::string> names{"primary", "runner", "gray", "initial"};
+  int steps = 64;
+  for (;;) {
+    values.clear();
+    deltas.clear();
+    residuals.clear();
+    bool complete = true;
+    for (int control = 0; control < 4; ++control) {
+      const auto base = control == 2 ? gray : black,
+                 classes = control == 1 ? runners : targets;
+      const auto fn = control == 3 ? m::InputGradientFunction(initial_gradient)
+                                   : m::InputGradientFunction(gradient);
+      const auto integral =
+          m::IntegratedGradients(examples.images, base, classes, steps, 32, fn);
+      n::Tensor scores, baseline_scores;
+      {
+        n::NoGradGuard guard;
+        auto &store = control == 3 ? random : p;
+        scores = m::SaliencyScore(m::SaliencyCnn(store, examples.images).logits, classes)
+                     .to(n::DType::Float64);
+        baseline_scores = m::SaliencyScore(m::SaliencyCnn(store, base).logits, classes)
+                              .to(n::DType::Float64);
+      }
+      const auto delta = scores - baseline_scores,
+                 residual =
+                     n::sum(integral.attribution.to(n::DType::Float64), {1, 2, 3}) - delta;
+      const auto tolerance = .01 + n::abs(delta) * .01;
+      complete = complete && n::all(n::less_equal(n::abs(residual), tolerance)).item<bool>();
+      values.push_back(integral);
+      deltas.push_back(delta);
+      residuals.push_back(residual);
+    }
+    if (complete)
+      break;
+    if (steps == 512)
+      return 1;
+    steps = std::min(512, steps * 2);
+  }
+  const auto endpoint = gradient(examples.images, targets) * examples.images;
+  const auto single = m::IntegratedGradients(
+      n::slice_axis(examples.images, 0, 0, 1), n::slice_axis(black, 0, 0, 1),
+      n::slice_axis(targets, 0, 0, 1), steps, 1, gradient);
+  const auto batching =
+      n::max(n::abs(single.attribution - n::slice_axis(values[0].attribution, 0, 0, 1)));
+  if (batching.item() > 2e-6 || before != p.flatten() || random_before != random.flatten())
+    return 1;
+  std::print("Selected{}midpoints for all40paths;single/batch "
+             "{:.9g};all16learned/controlarrays unchanged.\n",
+             steps, batching.item());
+  n::NamedTensors arrays{{"images", examples.images},
+                         {"source_ids", examples.source},
+                         {"targets", targets},
+                         {"runners", runners},
+                         {"black", black},
+                         {"gray_baseline", gray},
+                         {"endpoint_times_input", endpoint},
+                         {"coarse_attribution", coarse.attribution},
+                         {"coarse_path_gradient", coarse.path_gradient},
+                         {"nodes", values[0].nodes}};
+  auto peak = n::max(n::abs(endpoint));
+  for (const auto &v : values)
+    peak = n::maximum(peak, n::max(n::abs(v.attribution)));
+  std::vector<n::Tensor> display{examples.images};
+  for (int i = 0; i < 4; ++i) {
+    const auto prefix = names[i] + "_";
+    arrays.push_back({prefix + "attribution", values[i].attribution});
+    arrays.push_back({prefix + "mean_gradient", values[i].mean_gradient});
+    arrays.push_back({prefix + "path_gradient", values[i].path_gradient});
+    arrays.push_back({prefix + "delta", deltas[i]});
+    arrays.push_back({prefix + "residual", residuals[i]});
+    display.push_back(values[i].attribution / (peak * 2) + .5);
+  }
+  display.push_back(endpoint / (peak * 2) + .5);
+  n::save_npz("build/integrated_gradients_maps.npz", arrays);
+  std::print("Original case IDs {},fixed target/runner {}/{}.\n", examples.source, targets,
+             runners);
+  std::print(
+      "Primary L1changes vs endpoint/runner/gray/initial {:.9g}/{:.9g}/{:.9g}/{:.9g}.\n",
+      n::sum(n::abs(values[0].attribution - endpoint)).item(),
+      n::sum(n::abs(values[0].attribution - values[1].attribution)).item(),
+      n::sum(n::abs(values[0].attribution - values[2].attribution)).item(),
+      n::sum(n::abs(values[0].attribution - values[3].attribution)).item());
+  n::save_image_grid(n::concat(display, 0), "build/integrated_gradients_maps.png", 10, 0, 1, 2,
+                     .8, 4);
+}
+```
+// result_begin: markdown
+Selected64midpoints for all40paths;single/batch 7.4505806e-09;all16learned/controlarrays unchanged.
+Original case IDs int32[10] [66921, 63380, 68936, 62280, 62094, 65222, 61209, 61721, 69402, 62570],fixed target/runner int32[10] [0, 1, 2, 3, 9, 5, 6, 7, 8, 9]/int32[10] [2, 6, 3, 5, 4, 9, 1, 9, 5, 4].
+Primary L1changes vs endpoint/runner/gray/initial 8.06342411/83.9826889/55.5069809/73.4423523.
+\image(figures/integrated_gradients_maps.png)
+// result_end
+\caption(Columns:true digit0..9. Rows:actual image,primary black-baseline attribution,runner-up black-baseline attribution,grey.1baseline attribution,actual-initial-weight attribution,and endpoint-gradient-times-input. All attribution rows share one absolute peak,signed zero grey. Baseline/target/weight choices are explicit.)
+\alttext(Columns:true digit0..9. Rows:actual image,primary black-baseline attribution,runner-up black-baseline attribution,grey.1baseline attribution,actual-initial-weight attribution,and endpoint-gradient-times-input. All attribution rows share one absolute peak,signed zero grey. Baseline/target/weight choices are explicit.)
+
+> Every completeness residual and the coarse reference
+
+For each actual path,compare sum of signed attributions with its own fixed-target
+raw-score difference F(x)-F(x0). Completeness measures integration accuracy;it
+does not establish causal importance. The baseline changes both the integral
+and the right-hand side,so controls must use their own endpoint difference.
+All40case/path rows remain visible,alongside the unrefined32node primary residual.
+All four controls pass at64nodes;the maximum primary residual falls from
+.0401768225at32to.0196272538at64. It remains nonzero. The primary attribution
+L1difference from endpoint-gradient-times-input is8.06342411;runner,grey-baseline
+and actual-initial controls change it by83.9826889,55.5069809and73.4423523.
+These are measured dependencies of this classifier and baseline choice.
+```{cpp, results="markdown", file="figures/integrated_gradients_completeness.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  std::map<std::string, n::Tensor> a;
+  for (const auto &[key, value] : n::load_npz("build/integrated_gradients_maps.npz"))
+    a.emplace(key, value);
+  const auto coarse = n::sum(a.at("coarse_attribution").to(n::DType::Float64), {1, 2, 3}) -
+                      a.at("primary_delta");
+  std::print("| path | true digit | original source ID | raw score change | sum attribution | "
+             "residual | declared tolerance |\n|---|---:|---:|---:|---:|---:|---:|\n");
+  auto plot = dm::graphics::RPlot::create();
+  const std::vector<std::string> names{"primary", "runner", "gray", "initial"};
+  const std::vector<dm::graphics::RGB> colors{
+      {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {147, 51, 234}};
+  for (int path = 0; path < 4; ++path) {
+    const auto delta = a.at(names[path] + "_delta"),
+               residual = a.at(names[path] + "_residual"),
+               tolerance = .01 + n::abs(delta) * .01;
+    for (int i = 0; i < 10; ++i)
+      std::print("| {} | {} | {} | {:.9g} | {:.9g} | {:.9g} | {:.9g} |\n", names[path], i,
+                 a.at("source_ids").at({i}), delta.at({i}), delta.at({i}) + residual.at({i}),
+                 residual.at({i}), tolerance.at({i}));
+    plot.lines(n::arange(0, 10).to_vector<double>(),
+               (n::abs(residual) / tolerance).to_vector<double>(), names[path], colors[path]);
+  }
+  std::print(
+      "Coarse32node max primary residual {:.9g};selected{}node max primary residual {:.9g}.\n",
+      n::max(n::abs(coarse)).item(), a.at("nodes").numel(),
+      n::max(n::abs(a.at("primary_residual"))).item());
+  plot.title("All forty actual completeness checks")
+      .x_label("true digit0..9")
+      .y_label("absolute residual / declared tolerance")
+      .y_limits(0, 1.2);
+  plot.save_svg("build/integrated_gradients_completeness.svg");
+}
+```
+// result_begin: markdown
+| path | true digit | original source ID | raw score change | sum attribution | residual | declared tolerance |
+|---|---:|---:|---:|---:|---:|---:|
+| primary | 0 | 66921 | 9.86810288 | 9.88773013 | 0.0196272538 | 0.108681029 |
+| primary | 1 | 63380 | 3.06782556 | 3.06675687 | -0.0010686859 | 0.0406782556 |
+| primary | 2 | 68936 | 8.8448518 | 8.84991732 | 0.00506552085 | 0.098448518 |
+| primary | 3 | 62280 | 3.16543012 | 3.18087436 | 0.015444241 | 0.0416543012 |
+| primary | 4 | 62094 | 2.15866026 | 2.16450789 | 0.00584762219 | 0.0315866026 |
+| primary | 5 | 65222 | 5.95051463 | 5.95012255 | -0.000392075512 | 0.0695051463 |
+| primary | 6 | 61209 | 2.51992255 | 2.5096138 | -0.0103087511 | 0.0351992255 |
+| primary | 7 | 61721 | 1.7112518 | 1.71675003 | 0.00549823043 | 0.027112518 |
+| primary | 8 | 69402 | 6.5752458 | 6.56513491 | -0.0101108909 | 0.075752458 |
+| primary | 9 | 62570 | 3.37706369 | 3.37946938 | 0.00240569278 | 0.0437706369 |
+| runner | 0 | 66921 | 4.62604118 | 4.62108655 | -0.00495462386 | 0.0562604118 |
+| runner | 1 | 63380 | -0.117849171 | -0.117651376 | 0.000197795366 | 0.0111784917 |
+| runner | 2 | 68936 | 3.48367106 | 3.48600956 | 0.00233849848 | 0.0448367106 |
+| runner | 3 | 62280 | 2.11656345 | 2.12019341 | 0.00362995386 | 0.0311656345 |
+| runner | 4 | 62094 | 2.02065652 | 2.02516762 | 0.00451110283 | 0.0302065652 |
+| runner | 5 | 65222 | 0.946019739 | 0.946484145 | 0.000464406112 | 0.0194601974 |
+| runner | 6 | 61209 | 1.38985187 | 1.39383624 | 0.00398436832 | 0.0238985187 |
+| runner | 7 | 61721 | 0.653162092 | 0.654471215 | 0.00130912257 | 0.0165316209 |
+| runner | 8 | 69402 | 2.89919285 | 2.89061568 | -0.00857717855 | 0.0389919285 |
+| runner | 9 | 62570 | 0.623309053 | 0.615713355 | -0.00759569817 | 0.0162330905 |
+| gray | 0 | 66921 | 8.96298432 | 8.95729727 | -0.00568704965 | 0.0996298432 |
+| gray | 1 | 63380 | 5.04005039 | 5.03895371 | -0.00109667548 | 0.0604005039 |
+| gray | 2 | 68936 | 6.80426764 | 6.80505474 | 0.000787094323 | 0.0780426764 |
+| gray | 3 | 62280 | 1.70171404 | 1.70238491 | 0.00067087309 | 0.0270171404 |
+| gray | 4 | 62094 | 1.81161624 | 1.80244282 | -0.00917342561 | 0.0281161624 |
+| gray | 5 | 65222 | 4.90408754 | 4.90318666 | -0.000900880349 | 0.0590408754 |
+| gray | 6 | 61209 | 3.4520455 | 3.44462849 | -0.007417012 | 0.044520455 |
+| gray | 7 | 61721 | 0.984574914 | 0.980178046 | -0.00439686832 | 0.0198457491 |
+| gray | 8 | 69402 | 5.21478164 | 5.21017122 | -0.00461042083 | 0.0621478164 |
+| gray | 9 | 62570 | 3.03001952 | 3.03064187 | 0.000622353236 | 0.0403001952 |
+| initial | 0 | 66921 | 0.0531620085 | 0.0531621426 | 1.34055881e-07 | 0.0105316201 |
+| initial | 1 | 63380 | -0.0756738037 | -0.0756737854 | 1.82881195e-08 | 0.010756738 |
+| initial | 2 | 68936 | 0.481224179 | 0.481224203 | 2.32794264e-08 | 0.0148122418 |
+| initial | 3 | 62280 | 0.334854603 | 0.334854573 | -2.9349394e-08 | 0.013348546 |
+| initial | 4 | 62094 | -0.439651728 | -0.439651816 | -8.82927225e-08 | 0.0143965173 |
+| initial | 5 | 65222 | 0.830083489 | 0.830083473 | -1.65236997e-08 | 0.0183008349 |
+| initial | 6 | 61209 | -0.0976542234 | -0.0976542112 | 1.22845449e-08 | 0.0109765422 |
+| initial | 7 | 61721 | -0.05356282 | -0.0535627893 | 3.07032786e-08 | 0.0105356282 |
+| initial | 8 | 69402 | -0.175785139 | -0.175785134 | 5.41695044e-09 | 0.0117578514 |
+| initial | 9 | 62570 | -0.541296721 | -0.541296811 | -9.06693458e-08 | 0.0154129672 |
+Coarse32node max primary residual 0.0401768225;selected64node max primary residual 0.0196272538.
+\image(figures/integrated_gradients_completeness.svg)
+// result_end
+\caption(Every actual case/control completeness check uses its own endpoint score change and fixed tolerance. Ratios below1verify the declared finite-quadrature accuracy;they do not prove explanation quality or monotonic refinement.)
+\alttext(Every actual case/control completeness check uses its own endpoint score change and fixed tolerance. Ratios below1verify the declared finite-quadrature accuracy;they do not prove explanation quality or monotonic refinement.)
+
+
+> Conclusion
+
+Saturation and dummy-coordinate fixtures make the mechanism hand-checkable. Genuine fixed-weight MNIST paths retain every sampled derivative and all completeness errors;baseline,target and initialization changes alter the question and the result. Numerical completeness is an integration check,not causal validation.
+
+> References
+
+- [Sundararajan,Taly and Yan(2017),Axiomatic Attribution for Deep Networks](https://arxiv.org/abs/1703.01365).

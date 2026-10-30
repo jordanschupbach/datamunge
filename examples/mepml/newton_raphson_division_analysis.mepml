@@ -38,7 +38,7 @@ with a small exact integer correction so the result is bit-for-bit identical to 
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -101,7 +101,7 @@ error \(|1-D\,x_k|\) across iterations to expose the doubling of correct bits.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

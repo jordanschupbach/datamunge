@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/dataframe_ex.r
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # Note: plain R character vectors work fine for vector<string> *parameters* everywhere
 # (select, sort_by, group_by_sum, feature-column lists, ...) except specifically

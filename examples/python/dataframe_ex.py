@@ -1,3 +1,4 @@
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/dataframe_ex.py
 from pydatamunge import datamunge
 
 

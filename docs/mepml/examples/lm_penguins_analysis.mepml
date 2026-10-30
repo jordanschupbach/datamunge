@@ -1,0 +1,1044 @@
+//? Title: Linear Regression: Penguin Body Mass
+//? Subtitle: Least squares as a projection, the t and F tests and the confidence and prediction intervals derived, checked on five points and by simulation, and a body-mass model for the Palmer penguins, using datamunge's stats::LM
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+We often want to explain a numeric outcome from a few measurements and groupings: how heavy is
+a penguin, given its bill, its flipper and its species? A good answer gives each effect with an
+uncertainty, tests whether a group of terms matters, and predicts new cases with an honest
+interval. The linear model fitted by least squares does all of this with closed-form formulas.
+We derive the estimator as a projection, the t and F tests, the two kinds of interval and the
+influence diagnostics, and check every formula by hand on five points. A simulation confirms
+that the intervals cover 95% under the model's assumptions and shows how they fail when the
+error variance grows with \(x\). On the Palmer penguins, bill length, bill depth, flipper length
+and species explain 85% of the variance in body mass. The data show Simpson's paradox: across
+all penguins a deeper bill goes with a *lighter* bird, but within every species it goes with a
+heavier one. The residuals also reveal the most important missing variable, sex, whose effect
+differs between species.
+)
+
+\toc
+
+> The problem
+
+We observe \(n\) cases, each with a response \(y_i\) and predictors. A formula such as
+`body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species` turns the
+predictors into the rows \(x_i^\top\) of an \(n\times p\) *design matrix* \(X\): a column of ones for
+the intercept, one column per numeric predictor, and one indicator column per non-baseline level
+of each factor. The *linear model* is
+
+$$
+y=X\beta+\varepsilon,\qquad \varepsilon\sim N(0,\sigma^2I_n),
+$$
+\alttext(y equals X times beta plus epsilon, where epsilon is normal with mean 0 and covariance sigma squared times the n by n identity.)
+
+with unknown coefficients \(\beta\in\mathbb R^p\) and error variance \(\sigma^2\). We want to
+estimate \(\beta\) and \(\sigma\), say how precise the estimates are, test hypotheses such as "species
+does not matter once the measurements are known", predict the response of new cases, and find
+the cases the fit depends on most. We assume \(X\) has full column rank \(p<n\).
+
+> The method
+
+>> Least squares is a projection
+
+The least-squares estimate minimises the residual sum of squares
+\(\mathrm{RSS}(\beta)=\lVert y-X\beta\rVert^2\). Setting the gradient \(-2X^\top(y-X\beta)\) to zero gives
+the *normal equations* and their solution:
+
+$$
+X^\top X\hat\beta=X^\top y,\qquad \hat\beta=(X^\top X)^{-1}X^\top y.
+$$
+\alttext(X transpose X times beta hat equals X transpose y, so beta hat equals the inverse of X transpose X times X transpose y.)
+
+The fitted values are \(\hat y=X\hat\beta=Hy\) with the *hat matrix* \(H=X(X^\top X)^{-1}X^\top\).
+\(H\) is symmetric and \(H^2=H\), so it is the orthogonal projection onto the column space of
+\(X\): \(\hat y\) is the closest point to \(y\) that the model can produce, and the residuals
+\(e=y-\hat y=(I-H)y\) are orthogonal to every column of \(X\). With an intercept column this
+means the residuals sum to zero.
+
+The diagonal entries \(h_{ii}\) are the *leverages*. Because \(H\) is a projection of rank \(p\),
+
+$$
+0\le h_{ii}\le1,\qquad \sum_{i=1}^n h_{ii}=\operatorname{tr}H=\operatorname{tr}\big((X^\top X)^{-1}X^\top X\big)=p.
+$$
+\alttext(Each h i i lies between 0 and 1, and the sum of the h i i equals the trace of H, which equals the trace of the p by p identity, which is p.)
+
+The average leverage is \(p/n\). Since \(\hat y_i=\sum_jh_{ij}y_j\), \(h_{ii}\) is the weight of
+\(y_i\) in its own fitted value: a case with \(h_{ii}\) near 1 pulls the fit through itself. For
+simple regression \(h_{ii}=1/n+(x_i-\bar x)^2/S_{xx}\) with \(S_{xx}=\sum_i(x_i-\bar x)^2\), so leverage
+measures how far \(x_i\) is from the centre of the data.
+
+>> The sampling distribution
+
+Substituting \(y=X\beta+\varepsilon\) gives \(\hat\beta=\beta+(X^\top X)^{-1}X^\top\varepsilon\), a linear
+function of a normal vector, so
+
+$$
+\hat\beta\sim N\big(\beta,\ \sigma^2(X^\top X)^{-1}\big).
+$$
+\alttext(beta hat is normal with mean beta and covariance sigma squared times the inverse of X transpose X.)
+
+The estimate is unbiased whatever the error distribution, provided the errors have mean zero.
+The residuals are \(e=(I-H)\varepsilon\), and \(I-H\) is a projection of rank \(n-p\), so
+\(\mathrm{RSS}=\varepsilon^\top(I-H)\varepsilon\sim\sigma^2\chi^2_{n-p}\). This gives the unbiased variance estimate
+\(\hat\sigma^2=\mathrm{RSS}/(n-p)\) (`sigma()` returns \(\hat\sigma\)). Because \(He\) and \((I-H)\varepsilon\)
+are uncorrelated normal vectors, \(\hat\beta\) and \(\hat\sigma^2\) are independent. The
+standard error of \(\hat\beta_j\) is \(\mathrm{SE}_j=\hat\sigma\sqrt{[(X^\top X)^{-1}]_{jj}}\), and
+
+$$
+t_j=\frac{\hat\beta_j-\beta_j}{\mathrm{SE}_j}\sim t_{n-p},
+$$
+\alttext(t j equals beta hat j minus beta j, divided by the standard error of beta hat j, and follows a t distribution with n minus p degrees of freedom.)
+
+a standard normal divided by an independent \(\sqrt{\chi^2_{n-p}/(n-p)}\). Setting \(\beta_j=0\) gives
+the t test in every regression table, and inverting it gives the confidence interval
+\(\hat\beta_j\pm t_{n-p,0.975}\,\mathrm{SE}_j\).
+
+>> F tests for groups of terms
+
+A factor with \(k\) levels contributes \(k-1\) columns, so "species does not matter" is a
+hypothesis about several coefficients at once. Let a *reduced* model drop \(q\) columns of the
+*full* model. Its residual sum of squares can only be larger, and under the reduced model
+
+$$
+F=\frac{(\mathrm{RSS}_0-\mathrm{RSS}_1)/q}{\mathrm{RSS}_1/(n-p)}\sim F_{q,\,n-p},
+$$
+\alttext(F equals the drop in residual sum of squares from the reduced to the full model divided by q, over the full model's residual sum of squares divided by n minus p. It follows an F distribution with q and n minus p degrees of freedom.)
+
+because the numerator and denominator are independent \(\chi^2\) variables divided by their degrees
+of freedom (the two RSS differences live in orthogonal subspaces). `stats::anova(reduced, full)`
+computes this test. Dropping every column but the intercept gives the overall F statistic of the
+summary, and \(R^2=1-\mathrm{RSS}/\mathrm{TSS}\), with \(\mathrm{TSS}=\sum_i(y_i-\bar y)^2\), is the fraction
+of variance the model explains. `LM::anova()` adds the terms one at a time in formula order and
+reports each drop in RSS. These *sequential* sums of squares add up to \(\mathrm{TSS}-\mathrm{RSS}\), but
+each depends on the terms before it.
+
+>> Confidence and prediction intervals
+
+At a new point \(x_0\) the estimated mean \(\hat y_0=x_0^\top\hat\beta\) has variance
+\(\sigma^2q_0\), with \(q_0=x_0^\top(X^\top X)^{-1}x_0\). A new *observation* \(y_0=x_0^\top\beta+\varepsilon_0\)
+adds its own independent error. The two intervals are
+
+$$
+\text{mean: }\ \hat y_0\pm t_{n-p,0.975}\,\hat\sigma\sqrt{q_0},\qquad
+\text{new observation: }\ \hat y_0\pm t_{n-p,0.975}\,\hat\sigma\sqrt{1+q_0}.
+$$
+\alttext(The confidence interval for the mean is y hat 0 plus or minus the t quantile times sigma hat times the square root of q 0. The prediction interval for a new observation is y hat 0 plus or minus the t quantile times sigma hat times the square root of 1 plus q 0.)
+
+As \(n\) grows, \(q_0\to0\) and the confidence interval shrinks to a point, but the prediction
+interval never gets narrower than about \(\pm1.96\sigma\). Both are narrowest at the centre of the
+data, where \(q_0=1/n\) for simple regression. `LM::predict()` returns either interval.
+
+>> Diagnostics
+
+The residuals do not all have the same variance: \(\operatorname{Var}(e_i)=\sigma^2(1-h_{ii})\), smaller for
+high-leverage cases because the fit is pulled towards them. The *standardized residual*
+\(r_i=e_i/(\hat\sigma\sqrt{1-h_{ii}})\) corrects this. The *studentized residual* \(t_i\) also replaces
+\(\hat\sigma\) by \(\hat\sigma_{(i)}\), the estimate from the fit without case \(i\). It follows
+\(t_{n-p-1}\) exactly and can be computed without refitting:
+\(t_i=r_i\sqrt{(n-p-1)/(n-p-r_i^2)}\).
+
+*Cook's distance* measures how far \(\hat\beta\) moves when case \(i\) is deleted, in the metric of its
+own covariance:
+
+$$
+D_i=\frac{(\hat\beta_{(i)}-\hat\beta)^\top X^\top X(\hat\beta_{(i)}-\hat\beta)}{p\,\hat\sigma^2}=\frac{r_i^2}{p}\,\frac{h_{ii}}{1-h_{ii}}.
+$$
+\alttext(Cook's distance D i equals the quadratic form of the change in beta hat when case i is deleted, with matrix X transpose X, divided by p times sigma hat squared. It equals r i squared over p, times h i i over 1 minus h i i.)
+
+So influence needs both a large residual and high leverage. A case with \(D_i\) near 1 moves
+\(\hat\beta\) to the edge of its 50% confidence region. Plotting \(r_i\) against \(h_{ii}\) with the curves
+\(D=0.5\) and \(D=1\) (which are \(r=\pm\sqrt{Dp(1-h)/h}\)) shows both at once.
+
+>> Comparing models that are not nested
+
+The F test needs nested models. To compare others, the information criteria trade fit against
+size. The maximised log-likelihood of a linear model is
+\(\ell=-\tfrac n2\big(\log(2\pi\,\mathrm{RSS}/n)+1\big)\), and with \(k=p+1\) parameters (including
+\(\sigma\)),
+\(\mathrm{AIC}=-2\ell+2k\) and \(\mathrm{BIC}=-2\ell+k\log n\). Lower is better.
+
+>> Computation
+
+`stats::LM` builds \(X\) from the formula and the data frame and drops rows with a missing value
+in any column it uses, as R's `na.omit` does. It solves the least-squares problem through a
+Cholesky factorisation of \(X^\top X\) (\(O(np^2+p^3)\)) and computes the leverages from the stored
+\((X^\top X)^{-1}\) in \(O(np^2)\). Every number below has been checked against R's `lm`,
+`anova`, `confint`, `predict`, `hatvalues` and `cooks.distance`.
+
+> Simple examples
+
+>> Five points by hand
+
+Take \(x=(1,2,3,4,5)\) and \(y=(1,3,2,5,4)\). Then \(\bar x=\bar y=3\), \(S_{xx}=10\) and
+\(S_{xy}=\sum(x_i-3)(y_i-3)=4+0+0+2+2=8\), so the slope is \(S_{xy}/S_{xx}=0.8\) and the intercept
+\(3-0.8\cdot3=0.6\). The fitted values are \(1.4,2.2,3.0,3.8,4.6\), the residuals
+\(-0.4,0.8,-1.0,1.2,-0.6\), and \(\mathrm{RSS}=3.6\). With \(n-p=3\), \(\hat\sigma^2=1.2\),
+\(\mathrm{SE}(\text{slope})=\sqrt{1.2/10}=0.346\) and \(t=0.8/0.346=2.31\). The leverages are
+\(1/5+(x_i-3)^2/10=0.6,0.3,0.2,0.3,0.6\), which sum to \(p=2\). At \(x_0=3\), \(q_0=1/5\) and
+\(t_{3,0.975}=3.182\), so the prediction interval is \(3\pm3.182\sqrt{1.2\cdot1.2}=3\pm3.819\).
+
+```{cpp, results="markdown", file="figures/lm_five_points.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+using dm::stats::PredictionInterval;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto x = dm::c(1.0, 2.0, 3.0, 4.0, 5.0), y = dm::c(1.0, 3.0, 2.0, 5.0, 4.0);
+  const DF data{{"x", DF::numeric_column_type(x)}, {"y", DF::numeric_column_type(y)}};
+  const dm::stats::LM model(data, "y ~ x");
+
+  DF cases;
+  cases.add_column("x", x);
+  cases.add_column("y", y);
+  cases.add_column("fitted", model.fitted_values());
+  cases.add_column("residual", model.residuals());
+  cases.add_column("leverage", model.leverage());
+  cases.add_column("standardized", model.standardized_residuals());
+  cases.add_column("Cook's D", model.cooks_distance());
+  std::print("{}\n\n", cases.to_md());
+
+  const auto se = model.standard_errors();
+  const auto ci = model.confidence_intervals();
+  std::print("Slope {:.4f}, SE {:.4f}, t {:.4f}, p {:.4f}, 95% CI [{:.4f}, {:.4f}]; ", model.coefficients()[1],
+             se[1], model.t_values()[1], model.p_values()[1], ci[1].lower, ci[1].upper);
+  std::print("sigma {:.4f}, RSS {:.4f}, R^2 {:.4f}.\n\n", model.sigma(), model.rss(), model.r_squared());
+
+  const auto seq = dm::seql(-1.0, 7.0, 81);
+  const std::vector<double> grid(seq.begin(), seq.end());
+  const DF new_x{{"x", DF::numeric_column_type(grid)}};
+  const auto mean = model.predict(new_x, PredictionInterval::Confidence);
+  const auto obs = model.predict(new_x, PredictionInterval::Prediction);
+  const std::size_t at3 = 40;  // grid[40] == 3
+  std::print("At x = 3: fit {:.4f}, mean interval [{:.4f}, {:.4f}], new-observation interval [{:.4f}, {:.4f}].\n",
+             mean.fit[at3], mean.lower[at3], mean.upper[at3], obs.lower[at3], obs.upper[at3]);
+
+  auto band = [&](const dm::stats::LmPrediction& p) {
+    std::vector<double> px = grid, py = p.upper;
+    px.insert(px.end(), grid.rbegin(), grid.rend());
+    py.insert(py.end(), p.lower.rbegin(), p.lower.rend());
+    return std::pair{px, py};
+  };
+  auto plot = dm::graphics::RPlot::create();
+  const auto [ox, oy] = band(obs);
+  const auto [mx, my] = band(mean);
+  plot.polygon(ox, oy, dm::RGB{37, 99, 235, 0.12}).polygon(mx, my, dm::RGB{37, 99, 235, 0.3});
+  plot.lines(grid, mean.fit, dm::RGB{37, 99, 235}, 2.5);
+  plot.points(x, y, dm::RGB{17, 24, 39}, 6.0);
+  plot.segments(x, model.fitted_values(), x, y, dm::RGB{220, 38, 38}, 1.5);
+  plot.text(5.3, 9.4, "new observation", dm::RGB{37, 99, 235}, 14.0)
+      .text(5.75, 6.75, "mean", dm::RGB{37, 99, 235}, 14.0);
+  plot.x_limits(-1.0, 7.0).y_limits(-5.5, 11.0).title("Five points: fit and 95% intervals")
+      .x_label("x").y_label("y").size(900, 520);
+  plot.save("build/lm_five_points.svg");
+}
+```
+// result_begin: markdown
+| x | y | fitted | residual | leverage | standardized | Cook's D |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 1.4 | -0.4 | 0.6 | -0.577 | 0.250 |
+| 2 | 3 | 2.2 | 0.8 | 0.3 | 0.873 | 0.163 |
+| 3 | 2 | 3.0 | -1.0 | 0.2 | -1.021 | 0.130 |
+| 4 | 5 | 3.8 | 1.2 | 0.3 | 1.309 | 0.367 |
+| 5 | 4 | 4.6 | -0.6 | 0.6 | -0.866 | 0.562 |
+
+
+Slope 0.8000, SE 0.3464, t 2.3094, p 0.1041, 95% CI [-0.3024, 1.9024]; sigma 1.0954, RSS 3.6000, R^2 0.6400.
+
+At x = 3: fit 3.0000, mean interval [1.4409, 4.5591], new-observation interval [-0.8189, 6.8189].
+\image(figures/lm_five_points.svg)
+// result_end
+
+\caption(The fitted line \(\hat y=0.6+0.8x\) with residuals in red, the 95% confidence band for the mean (dark) and the 95% prediction band for a new observation (light). Table: the fit, residual, leverage, standardized residual and Cook's distance of each point.)
+\alttext(Five black points at 1 1, 2 3, 3 2, 4 5 and 5 4 with a blue line rising from about minus 0.2 at x equals minus 1 to 6.2 at x equals 7. Red vertical segments join each point to the line. A dark blue band around the line is narrowest at x equals 3 and flares out towards both ends. A much wider light blue band, the prediction band, spans roughly minus 1 to 7 at x equals 3 and widens further at the ends.)
+
+The library reproduces each hand computation. The slope is not significant at the 5% level: with
+three residual degrees of freedom the \(t\) quantile is 3.18, not 1.96, and the interval for the
+slope includes 0. Both bands are hyperbolas narrowest at \(\bar x=3\), and the prediction band is
+much wider than the confidence band: at \(x=3\) its half-width is \(t\hat\sigma\sqrt{1.2}\), against
+\(t\hat\sigma\sqrt{0.2}\) for the mean. The end points have the highest leverage, 0.6, three times
+that of the middle point, and so the smallest residual variance.
+
+>> One influential point
+
+Add a sixth point at \((12,2)\), far to the right of the others and below the line. Its leverage is
+high because \(x=12\) is far from the new mean, and its residual is large, so its Cook's distance
+is large.
+
+```{cpp, results="markdown", file="figures/lm_influence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto x = dm::c(1.0, 2.0, 3.0, 4.0, 5.0, 12.0), y = dm::c(1.0, 3.0, 2.0, 5.0, 4.0, 2.0);
+  const DF six{{"x", DF::numeric_column_type(x)}, {"y", DF::numeric_column_type(y)}};
+  const DF five = six.head(5);
+  const dm::stats::LM with(six, "y ~ x"), without(five, "y ~ x");
+
+  DF cases;
+  cases.add_column("x", x);
+  cases.add_column("y", y);
+  cases.add_column("leverage", with.leverage());
+  cases.add_column("standardized", with.standardized_residuals());
+  cases.add_column("studentized", with.studentized_residuals());
+  cases.add_column("Cook's D", with.cooks_distance());
+  std::print("{}\n\n", cases.to_md());
+  std::print("Without (12, 2): y = {:.3f} + {:.3f} x. With it: y = {:.3f} + {:.3f} x.\n",
+             without.coefficients()[0], without.coefficients()[1], with.coefficients()[0], with.coefficients()[1]);
+
+  auto lines = dm::graphics::RPlot::create();
+  // Draw each line only where it is inside the plot, 0 <= x <= 13 and 0 <= y <= 10.
+  for (const auto& [model, colour] : {std::pair{&without, dm::RGB{148, 163, 184}}, std::pair{&with, dm::RGB{220, 38, 38}}}) {
+    const double a = model->coefficients()[0], b = model->coefficients()[1];
+    const double x_end = b > 0 ? std::min(13.0, (10.0 - a) / b) : 13.0;
+    lines.lines({0.0, x_end}, {a, a + b * x_end}, colour, 2.0);
+  }
+  lines.points(x, y, dm::RGB{17, 24, 39}, 6.0).text(11.2, 2.6, "(12, 2)", dm::RGB{17, 24, 39}, 14.0);
+  lines.text(8.6, 8.3, "without", dm::RGB{100, 116, 139}, 14.0).text(9.4, 3.9, "with", dm::RGB{220, 38, 38}, 14.0);
+  lines.x_limits(0.0, 13.0).y_limits(0.0, 10.0).title("Fits with and without (12, 2)").x_label("x").y_label("y");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(lines).add(with.plot_residuals_vs_leverage()).size(1100, 480).fit_panels();
+  fig.save_svg("build/lm_influence.svg");
+}
+```
+// result_begin: markdown
+| x | y | leverage | standardized | studentized | Cook's D |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 0.325 | -1.339 | -1.561 | 0.431 |
+| 2 | 3 | 0.247 | 0.128 | 0.111 | 0.003 |
+| 3 | 2 | 0.196 | -0.558 | -0.503 | 0.038 |
+| 4 | 5 | 0.170 | 1.447 | 1.816 | 0.214 |
+| 5 | 4 | 0.170 | 0.776 | 0.729 | 0.062 |
+| 12 | 2 | 0.892 | -1.634 | -2.455 | 11.082 |
+
+
+Without (12, 2): y = 0.600 + 0.800 x. With it: y = 2.804 + 0.006 x.
+\image(figures/lm_influence.svg)
+// result_end
+
+\caption(Left: least-squares lines without (grey) and with (red) the point \((12,2)\). Right: `plot_residuals_vs_leverage()` for the six-point fit, with the Cook's distance contours \(D=0.5\) and \(D=1\) and the three most influential points labelled by row. Table: the diagnostics of the six-point fit.)
+\alttext(Left: six points, five near a rising line and one at 12, 2 far to the right. The grey line without that point rises steeply; the red line with it is almost flat. Right: standardized residuals against leverage. Five points have leverage below 0.35; the sixth has leverage near 0.8 and a large negative standardized residual, and lies beyond both dashed Cook's distance curves at 0.5 and 1.)
+
+One point changes the slope from 0.8 to 0.006. Its studentized residual, \(-2.46\), is not extreme
+for a \(t_3\) variable, because the line has moved towards the point. Its leverage, 0.89, is what
+makes it dangerous, and Cook's distance, 11, combines the two: it lies far beyond the \(D=1\)
+contour, while every other point is inside \(D=0.5\).
+
+> Checking the theory
+
+The derivations promise four things under the model: \(\hat\beta\) is unbiased with standard
+deviation \(\sigma/\sqrt{S_{xx}}\) for the slope, \(t\) follows \(t_{n-p}\), and both intervals cover 95%
+of the time. We simulate \(y_i=1+0.5x_i+\varepsilon_i\) at \(x_i=1,\dots,20\) (\(n=20\),
+\(S_{xx}=665\)), 4,000 times for each of three error laws with standard deviation about 2:
+
+- *normal*: \(\varepsilon_i\sim N(0,4)\), the model's assumption;
+- *heavy-tailed*: \(\varepsilon_i=(2/\sqrt3)\,T_i\) with \(T_i\sim t_3\), variance 4 but frequent outliers;
+- *heteroscedastic*: \(\varepsilon_i\sim N\big(0,(2x_i/10.5)^2\big)\), a spread growing from 0.19 to 3.8.
+
+For each fit we record the slope, its standard error and whether its 95% interval covers 0.5,
+and we draw a new observation at every \(x_i\) to check the 95% prediction intervals.
+
+```{cpp, results="markdown", file="figures/lm_simulation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+using dm::stats::PredictionInterval;
+
+int main() {
+  std::filesystem::create_directories("build");
+  constexpr int n = 20, reps = 4000;
+  std::vector<double> x(n);
+  for (int i = 0; i < n; ++i) x[i] = i + 1;
+  const DF at_x{{"x", DF::numeric_column_type(x)}};
+  std::mt19937_64 rng(20261028);
+  std::normal_distribution<double> z(0.0, 1.0);
+  std::student_t_distribution<double> t3(3.0);
+  const std::vector<std::string> laws = {"normal", "heavy-tailed", "heteroscedastic"};
+  auto noise = [&](int law, double xi) {
+    if (law == 0) return 2.0 * z(rng);
+    if (law == 1) return 2.0 / std::sqrt(3.0) * t3(rng);
+    return 2.0 * xi / 10.5 * z(rng);
+  };
+
+  std::vector<std::string> name, mean_slope, sd_slope, mean_se, ci_cover, pi_cover, pi_ends;
+  std::vector<std::vector<double>> pi_by_x(3, std::vector<double>(n));
+  std::vector<double> t_normal;
+  for (int law = 0; law < 3; ++law) {
+    std::vector<double> slopes, ses;
+    int ci_hits = 0;
+    std::vector<int> pi_hits(n);
+    for (int r = 0; r < reps; ++r) {
+      std::vector<double> y(n);
+      for (int i = 0; i < n; ++i) y[i] = 1.0 + 0.5 * x[i] + noise(law, x[i]);
+      const DF data{{"x", DF::numeric_column_type(x)}, {"y", DF::numeric_column_type(y)}};
+      const dm::stats::LM model(data, "y ~ x");
+      const double b = model.coefficients()[1], se = model.standard_errors()[1];
+      slopes.push_back(b);
+      ses.push_back(se);
+      const auto ci = model.confidence_intervals()[1];
+      ci_hits += ci.lower <= 0.5 && 0.5 <= ci.upper;
+      if (law == 0) t_normal.push_back((b - 0.5) / se);
+      const auto pi = model.predict(at_x, PredictionInterval::Prediction);
+      for (int i = 0; i < n; ++i) {
+        const double y_new = 1.0 + 0.5 * x[i] + noise(law, x[i]);
+        pi_hits[i] += pi.lower[i] <= y_new && y_new <= pi.upper[i];
+      }
+    }
+    double pi_total = 0;
+    for (int i = 0; i < n; ++i) {
+      pi_by_x[law][i] = double(pi_hits[i]) / reps;
+      pi_total += pi_by_x[law][i] / n;
+    }
+    name.push_back(laws[law]);
+    mean_slope.push_back(std::format("{:.4f}", dm::mean(slopes)));
+    sd_slope.push_back(std::format("{:.4f}", dm::sd(slopes)));
+    mean_se.push_back(std::format("{:.4f}", dm::mean(ses)));
+    ci_cover.push_back(std::format("{:.3f}", double(ci_hits) / reps));
+    pi_cover.push_back(std::format("{:.3f}", pi_total));
+    pi_ends.push_back(std::format("{:.3f} / {:.3f}", pi_by_x[law][0], pi_by_x[law][n - 1]));
+  }
+  DF table;
+  table.add_column("errors", name);
+  table.add_column("mean slope", mean_slope);
+  table.add_column("sd of slope", sd_slope);
+  table.add_column("mean SE", mean_se);
+  table.add_column("slope CI coverage", ci_cover);
+  table.add_column("PI coverage", pi_cover);
+  table.add_column("PI coverage at x = 1 / 20", pi_ends);
+  std::print("{}\n\n", table.to_md());
+  std::print("Theory: slope 0.5, sd 2 / sqrt(665) = {:.4f}; coverage 0.95. ", 2.0 / std::sqrt(665.0));
+  std::print("Normal errors: {:.3f} of t statistics beyond the t(18) 2.5% quantiles, {:.3f} beyond +/-1.96.\n",
+             double(std::ranges::count_if(t_normal, [](double t) { return std::abs(t) > 2.100922; })) / reps,
+             double(std::ranges::count_if(t_normal, [](double t) { return std::abs(t) > 1.959964; })) / reps);
+
+  // Left: density histogram of the slope t statistics against t(18) and N(0, 1).
+  const double width = 0.25;
+  std::vector<double> centre, height;
+  for (double lo = -4.5; lo < 4.5 - 1e-9; lo += width) {
+    centre.push_back(lo + width / 2);
+    height.push_back(double(std::ranges::count_if(t_normal, [&](double t) { return lo <= t && t < lo + width; })) /
+                     (reps * width));
+  }
+  const auto grid = dm::seql(-4.5, 4.5, 181);
+  std::vector<double> t_density, z_density;
+  for (const double g : grid) {
+    t_density.push_back(dm::random::student_t_pdf(g, 18.0));
+    z_density.push_back(dm::random::normal_pdf(g));
+  }
+  auto hist = dm::graphics::RPlot::create();
+  hist.bars(centre, height, "", dm::RGB{147, 197, 253}, width);
+  hist.lines(grid, z_density, "N(0, 1)", dm::RGB{148, 163, 184}, 2.0).lines(grid, t_density, "t(18)", dm::RGB{37, 99, 235}, 2.5);
+  hist.x_limits(-4.5, 4.5).y_limits(0.0, 0.5).title("Slope t statistic, normal errors").x_label("t").y_label("density");
+
+  // Right: prediction-interval coverage at each x.
+  const std::vector<dm::RGB> colour = {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+  auto cover = dm::graphics::RPlot::create();
+  cover.abline_h(0.95, dm::RGB{17, 24, 39}, 1.0);
+  for (int law = 0; law < 3; ++law)
+    cover.lines(x, pi_by_x[law], laws[law], colour[law], 2.0).points(x, pi_by_x[law], colour[law], 3.5);
+  cover.x_limits(0.0, 21.0).y_limits(0.55, 1.05).title("95% prediction interval coverage")
+      .x_label("x").y_label("coverage");
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(hist).add(cover).size(1100, 480).fit_panels();
+  fig.save_svg("build/lm_simulation.svg");
+}
+```
+// result_begin: markdown
+| errors | mean slope | sd of slope | mean SE | slope CI coverage | PI coverage | PI coverage at x = 1 / 20 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| normal | 0.4993 | 0.0797 | 0.0764 | 0.946 | 0.949 | 0.947 / 0.947 |
+| heavy-tailed | 0.4996 | 0.0777 | 0.0699 | 0.955 | 0.935 | 0.932 / 0.933 |
+| heteroscedastic | 0.4992 | 0.0948 | 0.0861 | 0.931 | 0.930 | 1.000 / 0.779 |
+
+
+Theory: slope 0.5, sd 2 / sqrt(665) = 0.0776; coverage 0.95. Normal errors: 0.054 of t statistics beyond the t(18) 2.5% quantiles, 0.070 beyond +/-1.96.
+\image(figures/lm_simulation.svg)
+// result_end
+
+\caption(Left: the slope's \(t\) statistic over 4,000 fits with normal errors, against the \(t_{18}\) density (blue) and the standard normal (grey). Right: coverage of the 95% prediction interval at each \(x\) for the three error laws; the black line is 0.95. Table: the slope's mean and standard deviation over the fits, the mean reported standard error, and the coverage of the slope's confidence interval and of the prediction intervals.)
+\alttext(Left: a histogram of t statistics centred on 0 that follows the blue t density with 18 degrees of freedom; the grey normal curve is slightly taller in the middle and thinner in the tails. Right: three coverage curves against x from 1 to 20. The normal curve stays on the line and the heavy-tailed curve about 0.015 below it. The heteroscedastic curve starts at 1 for small x, crosses 0.95 near x equals 12, and falls to about 0.78 at x equals 20.)
+
+With normal errors every promise holds: the slope is unbiased, its spread matches
+\(\sigma/\sqrt{S_{xx}}\), the reported standard error is right on average, and both intervals cover
+95%. The \(t\) statistics follow \(t_{18}\), not the normal: 5% of them fall outside \(\pm2.10\), but more
+than 5% fall outside \(\pm1.96\). With heavy-tailed errors the slope is still unbiased and its
+interval still covers about 95%, because \(\hat\beta\) is a weighted average of many errors. The
+prediction intervals cover only about 93.5% at every \(x\): they rest on the distribution of one new
+error, which no averaging makes normal, and \(\hat\sigma\) is usually too small, because the rare
+large errors that make the variance 4 are missing from most samples (the mean standard error is
+0.070 against a true 0.078). The heteroscedastic errors break
+the prediction intervals: they use one \(\hat\sigma\) everywhere, so they are far too wide at small
+\(x\) (coverage 1.000 at \(x=1\)) and far too narrow at large \(x\) (0.779 at \(x=20\)), although the
+overall coverage, 0.930, looks almost acceptable. The
+slope's standard error is also wrong under heteroscedasticity, because
+\(\operatorname{Var}(\hat\beta)=(X^\top X)^{-1}X^\top\Sigma X(X^\top X)^{-1}\) no longer reduces to
+\(\sigma^2(X^\top X)^{-1}\). A scale-location plot, as in the next section, is how this shows up in
+real data.
+
+> A dataset example: Palmer penguins
+
+>> The data
+
+`dm::datasets::penguins()` is the Palmer Archipelago data of Gorman, Williams and Fraser (2014),
+as in the `palmerpenguins` R package: 344 penguins of three species, with bill length and depth,
+flipper length, body mass, sex, island and year. Two birds have no measurements and eleven have
+no recorded sex.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const auto penguins = dm::datasets::penguins();
+  std::map<std::string, std::vector<std::vector<double>>> by_species;
+  for (std::size_t i = 0; i < penguins.nrows(); ++i) {
+    if (penguins.is_null("body_mass_g", i)) continue;
+    auto& cols = by_species[penguins.optional_string_at("species", i).value()];
+    cols.resize(4);
+    for (int j = 0; const auto* name : {"body_mass_g", "bill_length_mm", "bill_depth_mm", "flipper_length_mm"})
+      cols[j++].push_back(penguins.optional_double_at(name, i).value());
+  }
+  std::vector<std::string> species;
+  std::vector<double> count, mass, mass_sd, bill_length, bill_depth, flipper;
+  for (const auto& [name, cols] : by_species) {
+    species.push_back(name);
+    count.push_back(cols[0].size());
+    mass.push_back(dm::mean(cols[0]));
+    mass_sd.push_back(dm::sd(cols[0]));
+    bill_length.push_back(dm::mean(cols[1]));
+    bill_depth.push_back(dm::mean(cols[2]));
+    flipper.push_back(dm::mean(cols[3]));
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("species", species);
+  table.add_column("n", count);
+  table.add_column("mass (g)", mass);
+  table.add_column("sd mass", mass_sd);
+  table.add_column("bill length (mm)", bill_length);
+  table.add_column("bill depth (mm)", bill_depth);
+  table.add_column("flipper (mm)", flipper);
+  dm::dstruct::DataFrame::MarkdownOptions options;
+  options.digits = 1;
+  std::print("{}\n", table.to_md(options));
+}
+```
+// result_begin: markdown
+| species | n | mass (g) | sd mass | bill length (mm) | bill depth (mm) | flipper (mm) |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Adelie | 151 | 3700.7 | 458.6 | 38.8 | 18.3 | 190.0 |
+| Chinstrap | 68 | 3733.1 | 384.3 | 48.8 | 18.4 | 195.8 |
+| Gentoo | 123 | 5076.0 | 504.1 | 47.5 | 15.0 | 217.2 |
+// result_end
+
+\caption(Penguins with measurements, by species: count, mean and standard deviation of body mass, and mean bill length, bill depth and flipper length.)
+
+Gentoo penguins are about 1.4 kg heavier than the other two species and have the longest
+flippers but the *shallowest* bills. Adelie and Chinstrap penguins have the same mean mass and bill
+depth but differ by 10 mm in bill length.
+
+>> The fitted model
+
+We model body mass on the three measurements and species. Adelie is the baseline level (first
+alphabetically), so the two species coefficients are differences from an Adelie penguin with the
+same measurements. We also fit two smaller models: flipper length alone, and the three
+measurements without species.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const auto penguins = dm::datasets::penguins();
+  const dm::stats::LM flipper(dm::formula("body_mass_g ~ flipper_length_mm"), penguins);
+  const dm::stats::LM measures(dm::formula("body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm"), penguins);
+  const dm::stats::LM full(dm::formula("body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species"),
+                           penguins);
+
+  const auto coef = full.coefficient_frame();
+  std::vector<std::string> p_text;
+  auto format_p = [](double p) { return p < 1e-16 ? std::string("< 1e-16") : std::format("{:.2e}", p); };
+  for (const double p : full.p_values()) p_text.push_back(format_p(p));
+  dm::dstruct::DataFrame table;
+  table.add_column("term", full.coefficient_names());
+  for (const auto* column : {"estimate", "std_error", "t_value", "lower", "upper"}) {
+    std::vector<double> values;
+    for (std::size_t j = 0; j < coef.nrows(); ++j) values.push_back(coef.optional_double_at(column, j).value());
+    table.add_column(column, values);
+  }
+  table.add_column("p_value", p_text);
+  dm::dstruct::DataFrame::MarkdownOptions options;
+  options.digits = 2;
+  std::print("{}\n\n", table.to_md(options));
+  std::print("n = {} ({} rows dropped), sigma = {:.1f} g on {} df, R^2 = {:.4f}, adjusted {:.4f}, F = {:.1f} on {} and {} df.\n\n",
+             full.observations(), penguins.nrows() - full.observations(), full.sigma(), full.degrees_of_freedom(),
+             full.r_squared(), full.adjusted_r_squared(), full.f_statistic(), full.rank() - 1, full.degrees_of_freedom());
+
+  std::vector<std::string> name = {"flipper only", "three measurements", "measurements + species"};
+  std::vector<double> p, r2, adj, sigma, aic, bic;
+  for (const auto* model : {&flipper, &measures, &full}) {
+    p.push_back(model->rank());
+    r2.push_back(model->r_squared());
+    adj.push_back(model->adjusted_r_squared());
+    sigma.push_back(model->sigma());
+    aic.push_back(model->aic());
+    bic.push_back(model->bic());
+  }
+  dm::dstruct::DataFrame compare;
+  compare.add_column("model", name);
+  compare.add_column("p", p);
+  compare.add_column("R^2", r2);
+  compare.add_column("adj. R^2", adj);
+  compare.add_column("sigma (g)", sigma);
+  compare.add_column("AIC", aic);
+  compare.add_column("BIC", bic);
+  options.digits = 4;
+  options.column_digits = {{"sigma (g)", 1}, {"AIC", 1}, {"BIC", 1}};
+  std::print("{}\n\n", compare.to_md(options));
+
+  const auto test = dm::stats::anova(measures, full);
+  std::print("Species given the measurements: F = {:.2f} on {} and {} df, p {} (RSS {:.0f} -> {:.0f}).\n",
+             test.f_value, test.df, test.full_df, test.p_value < 1e-16 ? "< 1e-16" : std::format("= {:.2e}", test.p_value),
+             test.reduced_rss, test.full_rss);
+}
+```
+// result_begin: markdown
+| term | estimate | std_error | t_value | lower | upper | p_value |
+| :--- | ---: | ---: | ---: | ---: | ---: | :--- |
+| (Intercept) | -4327.33 | 494.87 | -8.74 | -5300.75 | -3353.90 | < 1e-16 |
+| bill_length_mm | 41.47 | 7.16 | 5.79 | 27.38 | 55.56 | 1.62e-08 |
+| bill_depth_mm | 140.33 | 18.98 | 7.40 | 103.00 | 177.66 | 1.14e-12 |
+| flipper_length_mm | 20.24 | 3.11 | 6.52 | 14.13 | 26.35 | 2.61e-10 |
+| speciesChinstrap | -513.25 | 82.14 | -6.25 | -674.82 | -351.67 | 1.25e-09 |
+| speciesGentoo | 934.89 | 140.78 | 6.64 | 657.97 | 1211.80 | 1.26e-10 |
+
+
+n = 342 (2 rows dropped), sigma = 315.9 g on 336 df, R^2 = 0.8471, adjusted 0.8449, F = 372.4 on 5 and 336 df.
+
+| model | p | R^2 | adj. R^2 | sigma (g) | AIC | BIC |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| flipper only | 2 | 0.7590 | 0.7583 | 394.3 | 5062.9 | 5074.4 |
+| three measurements | 4 | 0.7615 | 0.7594 | 393.4 | 5063.3 | 5082.5 |
+| measurements + species | 6 | 0.8471 | 0.8449 | 315.9 | 4915.2 | 4942.0 |
+
+
+Species given the measurements: F = 94.13 on 2 and 336 df, p < 1e-16 (RSS 52311359 -> 33526673).
+// result_end
+
+\caption(Top: coefficients of the full model with standard errors, \(t\) values, 95% confidence limits and \(p\)-values. Bottom: the three models' size, fit and information criteria.)
+
+The full model explains 85% of the variance in body mass with a residual standard error of
+316 g. Each extra millimetre of flipper adds about 20 g and each millimetre of bill depth
+about 140 g, holding the other variables and species fixed. A Gentoo penguin is about 935 g
+heavier than an Adelie penguin with the same measurements, and a Chinstrap about 513 g lighter.
+Species is significant given the measurements (the F test above), and the full model has the lowest
+AIC and BIC, by about 150 and 130 points. Bill length and depth add almost nothing to flipper
+length when species is left out: the three-measurement model has a higher AIC than flipper
+length alone. These coefficients match R's
+`lm(body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species, penguins)`
+to every printed digit.
+
+>> Simpson's paradox in bill depth
+
+The bill-depth coefficient depends on whether species is in the model. Across all penguins
+deeper bills go with lighter birds, because the heavy Gentoos have shallow bills. Within each
+species the relation is positive.
+
+```{cpp, results="markdown", file="figures/lm_penguins_simpson.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto penguins = dm::datasets::penguins();
+  const std::vector<std::string> species = {"Adelie", "Chinstrap", "Gentoo"};
+  const std::vector<dm::RGB> colour = {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+  const dm::stats::LM full(dm::formula("body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species"),
+                           penguins);
+  const dm::stats::LM marginal(dm::formula("body_mass_g ~ bill_depth_mm"), penguins);
+
+  std::vector<std::string> fit = {"all penguins, depth only"};
+  std::vector<double> slope = {marginal.coefficients()[1]}, lower = {marginal.confidence_intervals()[1].lower},
+                      upper = {marginal.confidence_intervals()[1].upper};
+  auto depth = dm::graphics::RPlot::create();
+  auto flipper = dm::graphics::RPlot::create();
+  for (std::size_t s = 0; s < species.size(); ++s) {
+    const auto group = penguins.filter([&](const auto& row) {
+      return !row.is_null("body_mass_g") && row.get_string("species") == species[s];
+    });
+    std::vector<double> d, f, m, l;
+    for (std::size_t i = 0; i < group.nrows(); ++i) {
+      l.push_back(group.optional_double_at("bill_length_mm", i).value());
+      d.push_back(group.optional_double_at("bill_depth_mm", i).value());
+      f.push_back(group.optional_double_at("flipper_length_mm", i).value());
+      m.push_back(group.optional_double_at("body_mass_g", i).value());
+    }
+    const dm::stats::LM within(dm::formula("body_mass_g ~ bill_depth_mm"), group);
+    fit.push_back(species[s] + ", depth only");
+    slope.push_back(within.coefficients()[1]);
+    lower.push_back(within.confidence_intervals()[1].lower);
+    upper.push_back(within.confidence_intervals()[1].upper);
+    depth.points(d, m, species[s], colour[s], 3.0);
+    const auto [d_lo, d_hi] = std::ranges::minmax(d);
+    depth.lines({d_lo, d_hi}, {within.coefficients()[0] + within.coefficients()[1] * d_lo,
+                               within.coefficients()[0] + within.coefficients()[1] * d_hi}, colour[s], 2.5);
+
+    // The full model's line for this species, at the species' mean bill length and depth.
+    const auto [f_lo, f_hi] = std::ranges::minmax(f);
+    using DF = dm::dstruct::DataFrame;
+    const DF ends{{"flipper_length_mm", DF::numeric_column_type(dm::c(f_lo, f_hi))},
+                  {"bill_length_mm", DF::numeric_column_type(std::vector<double>(2, dm::mean(l)))},
+                  {"bill_depth_mm", DF::numeric_column_type(std::vector<double>(2, dm::mean(d)))},
+                  {"species", DF::string_column_type(std::vector<std::string>(2, species[s]))}};
+    flipper.points(f, m, species[s], colour[s], 3.0).lines({f_lo, f_hi}, full.predict(ends), colour[s], 2.5);
+  }
+  const dm::stats::LM measures(dm::formula("body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm"), penguins);
+  fit.push_back("three measurements");
+  slope.push_back(measures.coefficients()[2]);
+  lower.push_back(measures.confidence_intervals()[2].lower);
+  upper.push_back(measures.confidence_intervals()[2].upper);
+  fit.push_back("full model");
+  slope.push_back(full.coefficients()[2]);
+  lower.push_back(full.confidence_intervals()[2].lower);
+  upper.push_back(full.confidence_intervals()[2].upper);
+
+  const auto b = marginal.coefficients();
+  depth.lines({13.1, 21.5}, {b[0] + b[1] * 13.1, b[0] + b[1] * 21.5}, dm::RGB{17, 24, 39}, 2.5)
+      .text(20.6, 2950, "all penguins", dm::RGB{17, 24, 39}, 14.0);
+  depth.x_limits(13.0, 22.0).y_limits(2500, 6800).title("Mass against bill depth")
+      .x_label("bill depth (mm)").y_label("body mass (g)");
+  flipper.x_limits(170, 235).y_limits(2500, 7200).title("Full model at species-mean bills")
+      .x_label("flipper length (mm)").y_label("body mass (g)");
+
+  dm::dstruct::DataFrame table;
+  table.add_column("fit", fit);
+  table.add_column("bill-depth slope (g/mm)", slope);
+  table.add_column("95% lower", lower);
+  table.add_column("95% upper", upper);
+  dm::dstruct::DataFrame::MarkdownOptions options;
+  options.digits = 1;
+  std::print("{}\n", table.to_md(options));
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(depth).add(flipper).size(1100, 500).fit_panels();
+  fig.save_svg("build/lm_penguins_simpson.svg");
+}
+```
+// result_begin: markdown
+| fit | bill-depth slope (g/mm) | 95% lower | 95% upper |
+| :--- | ---: | ---: | ---: |
+| all penguins, depth only | -191.6 | -229.8 | -153.5 |
+| Adelie, depth only | 217.2 | 167.3 | 267.0 |
+| Chinstrap, depth only | 204.6 | 138.4 | 270.9 |
+| Gentoo, depth only | 369.4 | 305.2 | 433.7 |
+| three measurements | 20.0 | -6.9 | 47.0 |
+| full model | 140.3 | 103.0 | 177.7 |
+
+\image(figures/lm_penguins_simpson.svg)
+// result_end
+
+\caption(Left: body mass against bill depth by species, with each species' own regression line and the line through all penguins (black). Right: body mass against flipper length with the full model's three parallel lines, each drawn at its species' mean bill length and depth over its range of flipper lengths. Table: the bill-depth slope and its 95% interval in each fit.)
+\alttext(Left: three clouds of points. Gentoo, red, sits at bill depths 13 to 17.5 mm and masses 4,000 to 6,300 g; Adelie, blue, and Chinstrap, green, overlap at depths 16 to 21.5 mm and masses 2,700 to 4,800 g. Each species' line rises with depth, but the black line through all penguins falls from about 4,950 g at 13 mm to about 3,350 g at 21.5 mm. Right: mass rises with flipper length in all three species; three short parallel lines follow the clouds, the red Gentoo line well above the blue and green ones.)
+
+The slope through all penguins is negative and its interval excludes zero; every within-species
+slope is positive, with intervals well above zero. Neither is wrong: they answer different
+questions. The marginal slope compares penguins of different species, and species drives both
+mass and bill shape. The full model's coefficient, 140 g/mm, is a within-species comparison at
+fixed bill length and flipper length. The three-measurement model without species gets only
+20 g/mm, with an interval that includes zero: flipper length separates Gentoos from the rest, but
+not well enough to remove the confounding. A regression coefficient is only interpretable relative to the
+other terms in the model.
+
+>> The analysis of variance
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const dm::stats::LM full(dm::formula("body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species"),
+                           dm::datasets::penguins());
+  dm::dstruct::DataFrame::MarkdownOptions options;
+  options.digits = 1;
+  options.column_digits = {{"p_value", 4}};
+  std::print("{}\n\n", full.anova_frame().to_md(options));
+  double ss = 0;
+  for (const auto& row : full.anova()) ss += row.sum_sq;
+  std::print("Sum of the sums of squares: {:.1f}; TSS: {:.1f}.\n", ss, full.rss() / (1 - full.r_squared()));
+}
+```
+// result_begin: markdown
+| term | df | sum_sq | mean_sq | f_value | p_value |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| bill_length_mm | 1 | 77669071.8 | 77669071.8 | 778.4 | 0 |
+| bill_depth_mm | 1 | 25591769.6 | 25591769.6 | 256.5 | 0 |
+| flipper_length_mm | 1 | 63735497.1 | 63735497.1 | 638.7 | 0 |
+| species | 2 | 18784685.7 | 9392342.8 | 94.1 | 0 |
+| Residuals | 336 | 33526673.2 | 99781.8 | NA | NA |
+
+
+Sum of the sums of squares: 219307697.4; TSS: 219307697.4.
+// result_end
+
+\caption(Sequential analysis of variance for the full model: each term's sum of squares is the drop in RSS when it is added after the terms above it.)
+
+The sums of squares add up to the total sum of squares. All \(p\)-values are below \(10^{-16}\), so they
+print as 0. The order matters: bill length comes first and is credited with 78 million of the 219
+million, including the part it shares with flipper length and species. Species enters last, so its
+row is the same test as `anova(measures, full)` above.
+
+>> Diagnostics
+
+```{cpp, results="markdown", file="figures/lm_penguins_diagnostics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto penguins = dm::datasets::penguins();
+  const dm::stats::LM full(dm::formula("body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species"),
+                           penguins);
+  full.plot_diagnostics().save_svg("build/lm_penguins_diagnostics.svg");
+
+  auto top = [&](const std::vector<double>& score) {
+    std::vector<std::size_t> idx(score.size());
+    std::iota(idx.begin(), idx.end(), 0);
+    std::ranges::sort(idx, [&](std::size_t a, std::size_t b) { return std::abs(score[a]) > std::abs(score[b]); });
+    idx.resize(3);
+    return idx;
+  };
+  const std::vector<std::pair<std::string, const std::vector<double>*>> measures = {
+      {"studentized residual", &full.studentized_residuals()},
+      {"leverage", &full.leverage()},
+      {"Cook's distance", &full.cooks_distance()}};
+  std::vector<std::string> measure, row, species, value;
+  for (const auto& [name, score] : measures) {
+    for (const auto i : top(*score)) {
+      const auto data_row = full.fitted_rows()[i];
+      measure.push_back(name);
+      row.push_back(std::to_string(data_row + 1));
+      species.push_back(penguins.optional_string_at("species", data_row).value());
+      value.push_back(std::format("{:.4f}", (*score)[i]));
+    }
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("largest", measure);
+  table.add_column("row", row);
+  table.add_column("species", species);
+  table.add_column("value", value);
+  std::print("{}\n\n", table.to_md());
+  const auto [r_min, r_max] = std::ranges::minmax(full.residuals());
+  std::print("Residuals range from {:.1f} to {:.1f} g. ", r_min, r_max);
+  std::print("Average leverage p/n = {:.4f}; Bonferroni 5% cut-off for |studentized| over {} cases: {:.3f}.\n",
+             double(full.rank()) / full.observations(), full.observations(),
+             dm::random::student_t_quantile(1 - 0.025 / full.observations(), full.degrees_of_freedom() - 1.0));
+}
+```
+// result_begin: markdown
+| largest | row | species | value |
+| :--- | :--- | :--- | :--- |
+| studentized residual | 170 | Gentoo | 3.3784 |
+| studentized residual | 40 | Adelie | 2.9749 |
+| studentized residual | 166 | Gentoo | 2.8147 |
+| leverage | 294 | Chinstrap | 0.1015 |
+| leverage | 186 | Gentoo | 0.0579 |
+| leverage | 15 | Adelie | 0.0577 |
+| Cook's distance | 82 | Adelie | 0.0257 |
+| Cook's distance | 297 | Chinstrap | 0.0221 |
+| Cook's distance | 40 | Adelie | 0.0209 |
+
+
+Residuals range from -836.0 to 1045.9 g. Average leverage p/n = 0.0175; Bonferroni 5% cut-off for |studentized| over 342 cases: 3.842.
+\image(figures/lm_penguins_diagnostics.svg)
+// result_end
+
+\caption(`LM::plot_diagnostics()` for the full model, R's four standard panels: residuals against fitted values and the scale-location plot with lowess smoothers (red), the normal Q-Q plot of the standardized residuals with its quartile line, and standardized residuals against leverage. Points are labelled by data row. Table: the three most extreme cases on each measure.)
+\alttext(Four panels. Residuals against fitted values: a band of points from about 3,000 to 6,000 g fitted, residuals mostly within plus or minus 600 g, the red smoother close to zero throughout. Normal Q-Q: points close to the line except a slight upward bend at the right end. Scale-location: the red smoother is nearly flat with a slight rise. Residuals against leverage: all leverages are below about 0.1, standardized residuals between about minus 2.7 and 3.4, and no point is near a Cook's distance contour, which lies outside the plotted area.)
+
+The diagnostics show no serious problem. The residual smoother is flat, so no curvature is
+missing, and the scale-location smoother rises only slightly, so the variance is close to
+constant across the range of fitted masses. The Q-Q plot bends up at the right end: a few
+penguins are heavier than the model predicts, by up to 1,046 g. The largest studentized
+residual, 3.38, is below the Bonferroni cut-off of 3.84, so it is not a significant outlier among 342
+cases. The largest leverage, 0.10 for a Chinstrap in row 294, is about six times the average, but
+its residual is small. The largest Cook's distance is 0.026, far below 0.5, so no single penguin
+drives the fit.
+
+>> What the residuals miss: sex
+
+The model has no term for sex, and male penguins are larger. If sex matters beyond what the
+measurements capture, the residuals should differ between the sexes.
+
+```{cpp, results="markdown", file="figures/lm_penguins_sex.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto known = dm::datasets::penguins().filter([](const auto& row) { return !row.is_null("sex"); });
+  const std::string terms = "body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species";
+  const dm::stats::LM without(dm::formula(terms), known), with(dm::formula(terms + " + sex"), known);
+
+  std::vector<std::vector<double>> groups;
+  std::vector<std::string> names, species;
+  std::vector<double> n_female, n_male, actual_gap, fitted_gap, residual_gap;
+  for (const auto* s : {"Adelie", "Chinstrap", "Gentoo"}) {
+    double mass[2] = {}, fit[2] = {}, res[2] = {}, count[2] = {};
+    for (int k = 0; const auto* sex : {"female", "male"}) {
+      std::vector<double> r;
+      for (std::size_t i = 0; i < without.observations(); ++i) {
+        const auto row = without.fitted_rows()[i];
+        if (known.optional_string_at("species", row) != s || known.optional_string_at("sex", row) != sex) continue;
+        r.push_back(without.residuals()[i]);
+        mass[k] += known.optional_double_at("body_mass_g", row).value();
+        fit[k] += without.fitted_values()[i];
+      }
+      count[k] = r.size();
+      res[k] = dm::mean(r);
+      groups.push_back(r);
+      names.push_back(std::format("{} {}", s, k == 0 ? "F" : "M"));
+      ++k;
+    }
+    species.push_back(s);
+    n_female.push_back(count[0]);
+    n_male.push_back(count[1]);
+    actual_gap.push_back(mass[1] / count[1] - mass[0] / count[0]);
+    fitted_gap.push_back(fit[1] / count[1] - fit[0] / count[0]);
+    residual_gap.push_back(res[1] - res[0]);
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("species", species);
+  table.add_column("females", n_female);
+  table.add_column("males", n_male);
+  table.add_column("male - female mass (g)", actual_gap);
+  table.add_column("same, fitted (g)", fitted_gap);
+  table.add_column("same, residuals (g)", residual_gap);
+  dm::dstruct::DataFrame::MarkdownOptions options;
+  options.digits = 1;
+  std::print("{}\n\n", table.to_md(options));
+
+  const dm::stats::LM interaction(dm::formula(terms + " + sex + species:sex"), known);
+  const auto test = dm::stats::anova(without, with);
+  const auto test2 = dm::stats::anova(with, interaction);
+  std::print("On the {} penguins with known sex, adding sex gives F = {:.2f} on {} and {} df (p = {:.2e}), "
+             "a male coefficient of {:.1f} g, sigma {:.1f} -> {:.1f} g and AIC {:.1f} -> {:.1f}. ",
+             known.nrows(), test.f_value, test.df, test.full_df, test.p_value, with.coefficients().back(),
+             without.sigma(), with.sigma(), without.aic(), with.aic());
+  std::print("Letting the sex effect differ by species gives F = {:.2f} on {} and {} df (p = {:.2e}), "
+             "sigma {:.1f} g and AIC {:.1f}.\n",
+             test2.f_value, test2.df, test2.full_df, test2.p_value, interaction.sigma(), interaction.aic());
+
+  const std::vector<dm::RGB> colour = {{147, 197, 253}, {37, 99, 235}, {134, 239, 172},
+                                       {22, 163, 74},   {252, 165, 165}, {220, 38, 38}};
+  auto plot = dm::graphics::RPlot::boxplot(groups, names, colour);
+  plot.abline_h(0.0, dm::RGB{17, 24, 39}, 1.0);
+  plot.title("Residuals of the model without sex").x_label("").y_label("residual (g)").y_limits(-950, 1150).size(900, 480);
+  plot.save("build/lm_penguins_sex.svg");
+}
+```
+// result_begin: markdown
+| species | females | males | male - female mass (g) | same, fitted (g) | same, residuals (g) |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Adelie | 73 | 73 | 674.7 | 423.5 | 251.2 |
+| Chinstrap | 34 | 34 | 411.8 | 580.9 | -169.2 |
+| Gentoo | 58 | 61 | 805.1 | 543.8 | 261.3 |
+
+
+On the 333 penguins with known sex, adding sex gives F = 66.40 on 1 and 326 df (p = 7.99e-15), a male coefficient of 389.9 g, sigma 314.8 -> 287.3 g and AIC 4783.7 -> 4723.9. Letting the sex effect differ by species gives F = 13.07 on 2 and 324 df (p = 3.47e-06), sigma 277.3 g and AIC 4702.1.
+\image(figures/lm_penguins_sex.svg)
+// result_end
+
+\caption(Residuals of the full model (without sex) for each species and sex, on the 333 penguins with known sex. Table: by species, the mean mass difference between males and females, the difference the model predicts from their measurements, and the difference in mean residuals.)
+\alttext(Six box plots in pairs: Adelie female and male, Chinstrap female and male, Gentoo female and male. For Adelie and Gentoo the female box sits below the zero line and the male box above it, with medians near minus 130 and plus 120 g. For Chinstrap the order is reversed: the female median is above zero and the male median below.)
+
+In Adelie and Gentoo penguins the males are about 250 g heavier, relative to the females, than
+their measurements predict. Chinstraps go the other way: males are 412 g heavier than females, but
+their longer bills and flippers predict 581 g, so the model overestimates male Chinstraps. Adding a
+single sex term is highly significant and lowers the residual standard error by about 30 g, and
+letting its effect differ by species (`species:sex`) is significant again. The diagnostic plots
+did not reveal any of this: a residual plot against fitted values cannot show a variable that is
+not in the model. Plotting the residuals against candidate variables can.
+
+>> Predicting new penguins
+
+Finally, we predict the mass of a typical penguin of each species, with the species' mean
+measurements, using the model without sex (so that a bird of unknown sex can be predicted).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+using DF = dm::dstruct::DataFrame;
+using dm::stats::PredictionInterval;
+
+int main() {
+  const dm::stats::LM full(dm::formula("body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species"),
+                           dm::datasets::penguins());
+  const DF typical{{"species", DF::string_column_type(std::vector<std::string>{"Adelie", "Chinstrap", "Gentoo"})},
+                   {"bill_length_mm", DF::numeric_column_type(dm::c(38.8, 48.8, 47.5))},
+                   {"bill_depth_mm", DF::numeric_column_type(dm::c(18.3, 18.4, 15.0))},
+                   {"flipper_length_mm", DF::numeric_column_type(dm::c(190.0, 196.0, 217.0))}};
+  const auto mean = full.predict(typical, PredictionInterval::Confidence);
+  const auto obs = full.predict(typical, PredictionInterval::Prediction);
+  DF table;
+  table.add_column("species", std::vector<std::string>{"Adelie", "Chinstrap", "Gentoo"});
+  table.add_column("fit (g)", mean.fit);
+  table.add_column("mean: lower", mean.lower);
+  table.add_column("mean: upper", mean.upper);
+  table.add_column("new bird: lower", obs.lower);
+  table.add_column("new bird: upper", obs.upper);
+  dm::dstruct::DataFrame::MarkdownOptions options;
+  options.digits = 0;
+  std::print("{}\n", table.to_md(options));
+}
+```
+// result_begin: markdown
+| species | fit (g) | mean: lower | mean: upper | new bird: lower | new bird: upper |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Adelie | 3695 | 3645 | 3746 | 3072 | 4319 |
+| Chinstrap | 3732 | 3657 | 3808 | 3106 | 4358 |
+| Gentoo | 5075 | 5018 | 5131 | 4451 | 5698 |
+// result_end
+
+\caption(Predicted body mass of a penguin with its species' mean bill length, bill depth and flipper length, with 95% intervals for the mean mass of such penguins and for one new penguin.)
+
+The mean of such penguins is known to within about 50 to 75 g, but a single new penguin can be
+anywhere in a range of about \(\pm620\) g, because the prediction interval keeps the full residual
+variance. The Chinstrap interval for the mean is the widest: Chinstraps are the smallest group
+(68 birds), so its coefficient is the least precise.
+
+> Conclusion
+
+Least squares projects the response onto the span of the design matrix, and from that geometry
+follow the estimator, its covariance, the \(t\) and \(F\) tests, the two kinds of interval, leverage
+and Cook's distance. Each formula was checked by hand on five points, and a sixth point at
+\((12,2)\) showed how one high-leverage case can flatten a line. The simulation confirmed the exact
+\(t_{n-p}\) distribution and the 95% coverage under normal errors, and showed which promises
+survive when the assumptions fail: the slope interval tolerates heavy tails, but the prediction
+intervals fail when the variance changes with \(x\), too wide where the variance is small and too
+narrow where it is large.
+
+On the Palmer penguins, three measurements and species explain 85% of the variance in body
+mass. The bill-depth coefficient reverses sign once species is included, an instance of
+Simpson's paradox, so coefficients must be read relative to the other terms. The standard
+diagnostics found no outliers, curvature or influential points, but a residual plot against a
+variable outside the model found the main omission, sex, worth a further 30 g of residual
+standard error, with an effect that differs by species.
+
+Limits: the inference assumes independent cases, a correct mean structure and constant variance.
+The heteroscedastic simulation shows that a single \(\hat\sigma\) misstates prediction uncertainty
+when the spread varies; weighted least squares (`LmOptions::weights_column`) or a transformation of
+the response are the usual remedies. The sequential ANOVA depends on the order of the terms. And
+the model describes associations in these colonies, not the effect of changing a penguin's bill.
+
+> References
+
+- Cook, R. D. (1977). Detection of influential observation in linear regression. *Technometrics*, 19(1), 15–18.
+- Akaike, H. (1974). A new look at the statistical model identification. *IEEE Transactions on Automatic Control*, 19(6), 716–723.
+- Chambers, J. M. (1992). Linear models. In J. M. Chambers and T. J. Hastie (eds.), *Statistical Models in S*, chapter 4. Wadsworth & Brooks/Cole.
+- Cleveland, W. S. (1979). Robust locally weighted regression and smoothing scatterplots. *Journal of the American Statistical Association*, 74(368), 829–836.
+- Gorman, K. B., Williams, T. D. and Fraser, W. R. (2014). Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus *Pygoscelis*). *PLoS ONE*, 9(3), e90081.
+- Horst, A. M., Hill, A. P. and Gorman, K. B. (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0.
+- Schwarz, G. (1978). Estimating the dimension of a model. *Annals of Statistics*, 6(2), 461–464.
+- Seber, G. A. F. and Lee, A. J. (2003). *Linear Regression Analysis*, 2nd edition. Wiley.
+- Simpson, E. H. (1951). The interpretation of interaction in contingency tables. *Journal of the Royal Statistical Society, Series B*, 13(2), 238–241.
+- White, H. (1980). A heteroskedasticity-consistent covariance matrix estimator and a direct test for heteroskedasticity. *Econometrica*, 48(4), 817–838.

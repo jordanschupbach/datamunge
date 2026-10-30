@@ -1,0 +1,459 @@
+//? Title: Derivative-Free Search: Simplexes and Covariance Adaptation
+//? Subtitle: An exact reflection/expansion step, rotated bowls and finite seed scans
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A black-box objective may be inexpensive to evaluate but offer no usable
+derivatives. Search must then choose informative trial points and decide when
+its local geometry has stopped changing. We derive a hand-checkable Nelder–Mead
+step, compare simplex and covariance-adaptation searches on known quadratics,
+and retain local-basin and seed/population sensitivity on the original bumpy and
+Rastrigin objectives. Best observed trials are distinguished from global guarantees.
+)
+\toc
+
+> The method
+
+Nelder–Mead stores p+one simplex vertices. It orders their values, computes the
+centroid of all but the worst, and reflects the worst through that centroid.
+A particularly good reflection can be expanded; an unsuccessful one can be
+contracted or followed by a simplex shrink. The initial displacement on axis j is
+initial_simplex_scale*max(one,abs(x0_j)), so the numerical starting point and units
+shape the initial search. The native stop test combines simplex diameter and
+objective spread; neither by itself proves stationarity. Simplex storage is
+O(p squared), while each comparison uses objective evaluations rather than gradients.
+
+The retained TikZ diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Normal documentation exports use its saved local SVG.
+
+```{bash, file="figures/opt_derivative_free_mechanism.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/opt_derivative_free_mechanism.tikz > build/opt_derivative_free_mechanism.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/opt_derivative_free_mechanism.svg build/opt_derivative_free_mechanism.dvi > build/opt_derivative_free_mechanism.render.log 2>&1
+printf 'Rendered the optimization mechanism diagram.\n'
+```
+// result_begin:
+// Rendered the optimization mechanism diagram.
+// \image(figures/opt_derivative_free_mechanism.svg)
+// result_end
+\caption(Derivative-free methods adapt a trial-point geometry from observed objective values.)
+\alttext(A simplex or Gaussian distribution proposes points. Objective comparisons rank them. The algorithm replaces simplex vertices or updates Gaussian mean, covariance and scale.)
+
+CMA-ES samples x_i=m+sigma*B*D*z_i with standard-normal z and a covariance factor
+B*D. Ranked elites update m, evolution paths and covariance through weighted
+rank-one/rank-mu contributions; a separate path adapts sigma. In this dense
+implementation the default offspring count is four+floor(three*log(p)), six in
+two dimensions, and covariance eigensolves use numerical eigenvalue floors.
+It is unbounded and stochastic: covariance adaptation does not prevent a small
+population from collapsing into a local basin. Covariance storage is O(p squared),
+with dense eigensolve work in addition to population objective calls. Normal draws
+and seeded populations are reproducible in this build, not promised bit-identical
+across standard-library implementations.
+
+> Small worked example
+
+>> One simplex iteration reaches a scalar quadratic minimum
+
+For f=(x-three)^2, start at zero and set initial_simplex_scale=one. Initial
+vertices zero and one have values nine and four. Their one-dimensional centroid
+excluding the worst is one. Reflection through it proposes two, value one;
+expansion proposes three, value zero, and wins. A single native iteration therefore
+returns three after four objective requests. This exact example checks the geometric
+update without using a derivative.
+
+```{cpp, results="markdown", file="figures/opt_derivative_simplex.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective f({2}, {3});
+  o::NelderMeadOptions  opt;
+  opt.initial_simplex_scale  = 1;
+  opt.max_iterations         = 1;
+  const auto          run    = o::trace_optimize<o::ArbitraryFunction>(f, o::NelderMead(opt), {0});
+  const auto          trials = run.trace.values();
+  std::vector<double> x      = dm::seql(-1, 5, 201).values(), y;
+  for (double v : x)
+    y.push_back(f.evaluate({v}));
+  auto plot =
+      dm::graphics::RPlot::create()
+          .line(x, y, "objective", {130, 130, 130})
+          .points(
+              trials.numeric_column("x0").values(),
+              trials.numeric_column("value").values(),
+              "0, 1, reflection, expansion",
+              {40, 100, 190},
+              4)
+          .title("One Nelder-Mead reflection and expansion")
+          .x_label("trial x")
+          .y_label("objective")
+          .x_limits(-1, 5)
+          .y_limits(0, 20)
+          .legend({"quadratic", "four requested values"}, {{130, 130, 130}, {40, 100, 190}});
+  plot.size(850, 490).save_svg("build/opt_derivative_simplex.svg");
+  std::print("{}\n\n{}\n", run.summary().to_md(7), trials.to_md(7));
+}
+```
+// result_begin: markdown
+| value | checked_value | gradient_norm | callbacks | exception | x0 |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| 0 | 0 | nan | 4 |  | 3 |
+
+
+| event | value | gradient_norm | term_gradients | x0 |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 9 | nan | 0 | 0 |
+| 2 | 4 | nan | 0 | 1 |
+| 3 | 1 | nan | 0 | 2 |
+| 4 | 0 | nan | 0 | 3 |
+
+\image(figures/opt_derivative_simplex.svg)
+// result_end
+\caption(Four objective comparisons reproduce an exact simplex reflection/expansion calculation.)
+\alttext(The initial vertices zero and one are followed by reflection at two and expansion at the quadratic minimizer three. No derivative callback is used.)
+
+> Checking the search geometry
+
+>> Diagonal versus rotated quadratics
+
+Use eigenvalues (2,200), centre zero and start (3,-4), once aligned with axes and
+once rotated by pi/4. Both minima are zero; only the orientation changes.
+Nelder–Mead keeps its default .05 simplex displacement and 2000-iteration budget;
+CMA-ES keeps its seed-42 six-offspring default and 500-generation budget.
+Plot the running best evaluated trial versus objective-call index. These are not
+accepted-mean trajectories, and different evaluation counts are not elapsed-time
+measurements. Covariance adaptation's mechanism is assessed on declared inputs,
+not treated as an unconditional rotation-invariant global convergence claim.
+
+```{cpp, results="markdown", file="figures/opt_derivative_rotation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::QuadraticObjective aligned({2, 200}, {0, 0}),
+      rotated({2, 200}, {0, 0}, 0, std::numbers::pi / 4);
+  std::vector<dm::graphics::RPlot> plots;
+  for (auto* f : {&aligned, &rotated}) {
+    const auto a = o::trace_optimize<o::ArbitraryFunction>(*f, o::NelderMead(), {3, -4}),
+               b = o::trace_optimize<o::ArbitraryFunction>(*f, o::CMAES(), {3, -4});
+    plots.push_back(
+        o::optimization_comparison(*f, {a, b}, {"simplex", "CMA-ES"}, "value", 0, true)
+            .title(f == &aligned ? "Axis-aligned stiff bowl" : "Same eigenvalues, rotated bowl"));
+    std::print(
+        "{}\n\nNelder-Mead\n\n{}\n\nCMA-ES\n\n{}\n\n",
+        f == &aligned ? "aligned" : "rotated",
+        a.summary().to_md(7),
+        b.summary().to_md(7));
+  }
+  dm::graphics::RLayout::create(1, 2)
+      .add(plots[0])
+      .add(plots[1])
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/opt_derivative_rotation.svg");
+}
+```
+// result_begin: markdown
+aligned
+
+Nelder-Mead
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.89853e-17 | 1.89853e-17 | nan | 147 |  | 1.36833e-09 | 4.13678e-10 |
+
+
+CMA-ES
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 2.5478e-17 | 2.5478e-17 | nan | 727 |  | -2.00669e-09 | 4.63154e-10 |
+
+
+rotated
+
+Nelder-Mead
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 2.487e-17 | 2.487e-17 | nan | 148 |  | -3.38746e-09 | -3.52659e-09 |
+
+
+CMA-ES
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.50613e-17 | 1.50613e-17 | nan | 673 |  | -1.30616e-09 | -7.99306e-10 |
+
+
+\image(figures/opt_derivative_rotation.svg)
+// result_end
+\caption(Known quadratic minima separate search orientation from an unknown application answer.)
+\alttext(Best-evaluated simplex and CMA-ES values are shown for the same stiff spectrum before and after rotation. Budgets and objective-call counts remain explicit.)
+
+>> Multimodal surfaces and local basins
+
+The bumpy surface is (x0-three)^2+(x1+one)^2+five*sin(x0)*cos(x1). It is bounded
+below by minus five, but the best value found by a finite search is not proved to
+be its global minimum. The figure uses this *lower bound* as its declared reference.
+Rastrigin is sum_j(x_j squared+ten*(one-cos(two*pi*x_j))); every term is nonnegative,
+so its global minimum zero at the origin is exact.
+
+Compare default simplex and seed-42 CMA-ES with seed-42 PSO on these two surfaces.
+The first start is (0,0), the second (3,-4). PSO spreads its 40 initial particles
+through a box, [-8,8] for bumpy and [-5.12,5.12] for Rastrigin; CMA starts with SD .5
+around its mean, while the simplex is initially local. The domains, initial
+coverage, populations and budgets differ, so this illustrates search behaviour
+rather than a controlled universal ranking. Small best values and different basin
+endpoints are retained in the tables.
+
+```{cpp, results="markdown", file="figures/opt_derivative_basins.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  std::vector<dm::graphics::RPlot> plots;
+  for (const std::string family : {"bumpy", "rastrigin"}) {
+    o::SmoothBenchmark        f(family);
+    const std::vector<double> start =
+        family == "bumpy" ? std::vector<double>{0, 0} : std::vector<double>{3, -4};
+    const double bound = family == "bumpy" ? 8 : 5.12;
+    const auto   a     = o::trace_optimize<o::ArbitraryFunction>(f, o::NelderMead(), start),
+               b       = o::trace_optimize<o::ArbitraryFunction>(f, o::CMAES(), start),
+               c       = o::trace_optimize<o::ArbitraryFunction>(
+                   f,
+                   o::PSO(),
+                   start,
+                   std::vector<double>(2, -bound),
+                   std::vector<double>(2, bound));
+    plots.push_back(
+        o::optimization_comparison(
+            f, {a, b, c}, {"simplex", "CMA-ES", "PSO"}, "value", family == "bumpy" ? -5 : 0, true)
+            .title(
+                family == "bumpy" ? "Bumpy: reference is lower bound -5"
+                                  : "Rastrigin: known minimum zero"));
+    for (const auto* run : {&a, &b, &c}) {
+      auto g = f.gradient(run->coordinates);
+      std::print(
+          "{}\n\n{}\n\nSeparate analytic gradient norm: {:.6g}.\n\n",
+          family,
+          run->summary().to_md(7),
+          std::hypot(g[0], g[1]));
+    }
+  }
+  dm::graphics::RLayout::create(1, 2)
+      .add(plots[0])
+      .add(plots[1])
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/opt_derivative_basins.svg");
+}
+```
+// result_begin: markdown
+bumpy
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| -0.414926 | -0.414926 | nan | 123 |  | 2.07934 | -2.42849 |
+
+
+Separate analytic gradient norm: 3.40662e-08.
+
+bumpy
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| -0.414926 | -0.414926 | nan | 679 |  | 2.07934 | -2.42849 |
+
+
+Separate analytic gradient norm: 4.51374e-08.
+
+bumpy
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| -2.23469 | -2.23469 | nan | 3441 |  | 4.18809 | -0.319751 |
+
+
+Separate analytic gradient norm: 3.93606e-05.
+
+rastrigin
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 24.8738 | 24.8738 | nan | 109 |  | 2.98486 | -3.97978 |
+
+
+Separate analytic gradient norm: 1.9607e-06.
+
+rastrigin
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 2.89284 | 2.89284 | nan | 637 |  | 0.114972 | 0.0440129 |
+
+
+Separate analytic gradient norm: 45.1921.
+
+rastrigin
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 9.02034e-12 | 9.02034e-12 | nan | 6081 |  | -1.35918e-08 | -2.12787e-07 |
+
+
+Separate analytic gradient norm: 8.46024e-05.
+
+\image(figures/opt_derivative_basins.svg)
+// result_end
+\caption(A local basin and a low best-observed value are different findings from global optimality.)
+\alttext(Three best-trial envelopes compare local simplex, covariance adaptation and a broadly initialised particle swarm. Bumpy uses a conservative lower-bound reference; Rastrigin uses its exact zero minimum.)
+
+>> Keep the complete seed and population scan
+
+Fix seeds {one,two,seven,42,123} before inspection and compare CMA-ES's default six
+offspring with 40 offspring, both capped at 500 generations. Every row is retained,
+including a local-basin result. A larger population spends more evaluations per
+generation and changes the adaptation constants. Five outcomes cannot establish
+reliability across arbitrary seeds or objectives; hitting a known zero within a
+numerical tolerance is a finite observed success, not a proof about the algorithm.
+The plot floors only its displayed loss at 1e-14.
+
+```{cpp, results="markdown", file="figures/opt_derivative_seeds.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace o = dm::optim;
+  o::SmoothBenchmark               f("rastrigin");
+  const std::vector<std::uint64_t> seeds{1, 2, 7, 42, 123};
+  std::vector<double>              index, small, large;
+  for (std::size_t i = 0; i < seeds.size(); ++i) {
+    index.push_back(i);
+    for (std::size_t population : {0, 40}) {
+      o::CMAESOptions opt;
+      opt.seed            = seeds[i];
+      opt.population_size = population;
+      const auto run      = o::trace_optimize<o::ArbitraryFunction>(f, o::CMAES(opt), {3, -4});
+      (population ? large : small).push_back(std::log10(std::max(1e-14, run.checked_value)));
+      std::print(
+          "seed={}, offspring={}\n\n{}\n\n",
+          seeds[i],
+          population ? population : 6,
+          run.summary().to_md(7));
+    }
+  }
+  auto plot = dm::graphics::RPlot::create()
+                  .line(index, small, "six offspring", {40, 100, 190})
+                  .points(index, small, "six", {40, 100, 190}, 4)
+                  .line(index, large, "forty offspring", {190, 100, 35})
+                  .points(index, large, "forty", {190, 100, 35}, 4)
+                  .title("CMA-ES: declared seed and population scan")
+                  .x_label("seed")
+                  .x_ticks(index, {"1", "2", "7", "42", "123"})
+                  .y_label("log10 final loss, floor 1e-14")
+                  .y_limits(-15, 6)
+                  .legend({"six offspring", "forty offspring"}, {{40, 100, 190}, {190, 100, 35}});
+  plot.size(850, 490).save_svg("build/opt_derivative_seeds.svg");
+}
+```
+// result_begin: markdown
+seed=1, offspring=6
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 4.97479 | 4.97479 | nan | 625 |  | 1.98991 | -0.994959 |
+
+
+seed=1, offspring=40
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.77636e-15 | 1.77636e-15 | nan | 2161 |  | -3.33317e-09 | -1.54174e-10 |
+
+
+seed=2, offspring=6
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 24.8738 | 24.8738 | nan | 445 |  | 2.98486 | -3.97978 |
+
+
+seed=2, offspring=40
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | nan | 2121 |  | 5.80169e-10 | 5.19371e-10 |
+
+
+seed=7, offspring=6
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 1.77636e-15 | 1.77636e-15 | nan | 631 |  | -2.77261e-09 | 2.21328e-10 |
+
+
+seed=7, offspring=40
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | nan | 2001 |  | 4.02674e-10 | 1.35267e-09 |
+
+
+seed=42, offspring=6
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 2.89284 | 2.89284 | nan | 637 |  | 0.114972 | 0.0440129 |
+
+
+seed=42, offspring=40
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 0 | 0 | nan | 2401 |  | 8.51007e-10 | 1.51139e-09 |
+
+
+seed=123, offspring=6
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 24.8738 | 24.8738 | nan | 505 |  | 2.98486 | -3.97978 |
+
+
+seed=123, offspring=40
+
+| value | checked_value | gradient_norm | callbacks | exception | x0 | x1 |
+| :--- | :--- | :--- | ---: | :--- | :--- | :--- |
+| 24.8738 | 24.8738 | nan | 1201 |  | 2.98486 | -3.97978 |
+
+
+\image(figures/opt_derivative_seeds.svg)
+// result_end
+\caption(Population size and seed are explicit experimental factors with different evaluation costs.)
+\alttext(Five declared seeds are compared at six and forty offspring. The complete table retains objective values, callback counts and returned coordinates, including any local minima.)
+
+> Conclusions and references
+
+The one-step simplex calculation provides an exact implementation control.
+Rotated quadratics isolate geometry, while the bumpy and Rastrigin cases retain
+basin and initialization differences. The seed scan is complete but finite.
+Neither a collapsed simplex, a tiny CMA search scale, nor a best-trial envelope
+certifies a global optimum. These generated objectives need no external dataset;
+their exact minima or stated lower bounds make the limits of each claim visible.
+
+- J. A. Nelder and R. Mead (1965), [A Simplex Method for Function Minimization](https://doi.org/10.1093/comjnl/7.4.308).
+- N. Hansen and A. Ostermeier (2001), [Completely Derandomized Self-Adaptation in Evolution Strategies](https://doi.org/10.1162/106365601750190398).
+
+> Reading the numerical evidence
+
+`trace_optimize` calls the configured native optimizer through its stated abstract
+interface. It records callback requests without inserting fitting evaluations.
+Value calls can be rejected trials; gradient calls can be look-ahead points.
+`optimization_comparison` explicitly re-evaluates selected points afterwards on
+these pure objectives. Those diagnostic calls are excluded from fitting counts.
+Callback indices are neither accepted iterations nor wall time. The plotted gap
+uses the declared reference (minimum or stated lower bound) and a display floor of 1e-14; that floor does
+not modify any optimizer update. Returned coordinates, checked objective and
+appropriate stationarity/feasibility checks carry more information than a return
+from a finite iteration budget. Native APIs do not expose a uniform stop-status flag.
+The recorder retains exceptions and rejects nonfinite requested values/gradients;
+this makes failures visible rather than letting an instrumented run continue on NaN.
+

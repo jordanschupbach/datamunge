@@ -4,13 +4,14 @@
 #include <datamunge/plot/plot.hpp>
 
 #include <algorithm>
+#include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <iterator>
 #include <string>
 #include <vector>
 
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 namespace {
 std::string read_file(const std::filesystem::path& path) {
@@ -414,6 +415,19 @@ TEST(RLayout, SavesSvgWithOneNestedSvgPerPanel) {
   std::filesystem::remove(path);
 }
 
+TEST(PlotSvg, TextColourIsNotOverriddenByStylesheet) {
+  // A stylesheet rule "text{fill:...}" beats the fill attribute in every renderer, so the
+  // default colour must only target text without its own fill.
+  auto p = RPlot::plot({0.0, 1.0}, {0.0, 1.0}, "p", "pts");
+  p.text(0.5, 0.5, "white", RGB{255, 255, 255});
+  const std::string svg = p.to_svg();
+  EXPECT_NE(svg.find("fill=\"rgb(255,255,255)\""), std::string::npos);
+  EXPECT_NE(svg.find("text:not([fill]){fill:"), std::string::npos);
+  const auto rule = svg.find("text{font-family:");
+  ASSERT_NE(rule, std::string::npos);
+  EXPECT_EQ(svg.substr(rule, svg.find('}', rule) - rule).find("fill"), std::string::npos);
+}
+
 TEST(PlotSvg, ToSvgReturnsSameDocumentAsSaveSvg) {
   const auto out_dir = std::filesystem::temp_directory_path();
   const auto path = out_dir / "datamunge_plot_to_svg_test.svg";
@@ -451,4 +465,93 @@ TEST(RLayout, ToSvgReturnsSameDocumentAsSaveSvg) {
   EXPECT_EQ(svg, read_file(path));
 
   std::filesystem::remove(path);
+}
+
+// --- boxplot colours, raster boxes, ticks and grid ---------------------------
+
+TEST(PlotBoxplot, PerGroupColorsAreRecycled) {
+  const std::vector<RGB> colors = {{78, 121, 167}, {242, 142, 43}};
+  auto p = RPlot::boxplot({{1, 2, 3}, {2, 3, 4}, {3, 4, 5}}, {"a", "b", "c"}, colors);
+  ASSERT_EQ(p.series().size(), 3U);
+  EXPECT_EQ(p.series()[0].color.r, 78);
+  EXPECT_EQ(p.series()[1].color.r, 242);
+  EXPECT_EQ(p.series()[2].color.r, 78);
+  EXPECT_THROW(RPlot::boxplot({{1, 2}}, {"a"}, std::vector<RGB>{}), std::invalid_argument);
+}
+
+TEST(PlotBoxplot, RasterOutputDrawsBoxes) {
+  // If the raster renderer skipped Box series, recolouring the boxes would not change the PNG.
+  const auto dir = std::filesystem::temp_directory_path();
+  const auto red = dir / "datamunge_box_red.png";
+  const auto blue = dir / "datamunge_box_blue.png";
+  RPlot::boxplot({{1, 2, 3, 4, 5, 20}}, {"g"}, RGB{220, 38, 38}).save(red.string());
+  RPlot::boxplot({{1, 2, 3, 4, 5, 20}}, {"g"}, RGB{37, 99, 235}).save(blue.string());
+  std::ifstream a(red, std::ios::binary);
+  std::ifstream b(blue, std::ios::binary);
+  const std::string red_bytes((std::istreambuf_iterator<char>(a)), std::istreambuf_iterator<char>());
+  const std::string blue_bytes((std::istreambuf_iterator<char>(b)), std::istreambuf_iterator<char>());
+  EXPECT_FALSE(red_bytes.empty());
+  EXPECT_NE(red_bytes, blue_bytes);
+  std::filesystem::remove(red);
+  std::filesystem::remove(blue);
+}
+
+TEST(PlotTicks, PrettyTicksAreTheDefault) {
+  auto p = RPlot::create();
+  EXPECT_TRUE(p.pretty_ticks_enabled());
+  p.line({0.0, 100.0}, {0.0, 1.0});
+  const std::string svg = p.to_svg();
+  EXPECT_NE(svg.find(">40</text>"), std::string::npos);
+  EXPECT_NE(svg.find(">0.4</text>"), std::string::npos);
+}
+
+TEST(PlotTicks, GridLinesSitOnTheTicks) {
+  auto p = RPlot::create();
+  p.line({0.0, 100.0}, {0.0, 1.0});
+  const std::string svg = p.to_svg();
+  // Every x tick label's x coordinate also starts a vertical grid line.
+  const std::string marker = "text-anchor=\"middle\">";
+  std::size_t checked = 0;
+  for (const std::string label : {"0", "20", "40", "60", "80", "100"}) {
+    const auto at = svg.find(marker + label + "</text>");
+    ASSERT_NE(at, std::string::npos) << label;
+    const auto x_at = svg.rfind("<text x=\"", at);
+    const auto x_end = svg.find('"', x_at + 9);
+    const std::string x = svg.substr(x_at + 9, x_end - x_at - 9);
+    EXPECT_NE(svg.find("<line x1=\"" + x + "\""), std::string::npos) << "no grid line at x=" << x;
+    ++checked;
+  }
+  EXPECT_EQ(checked, 6U);
+}
+
+TEST(PlotColors, ViridisEndpointsAndInterpolation) {
+  const auto v = viridis_colors(10);
+  ASSERT_EQ(v.size(), 10u);
+  EXPECT_EQ(v.front().r, 68);
+  EXPECT_EQ(v.front().g, 1);
+  EXPECT_EQ(v.front().b, 84);
+  EXPECT_EQ(v.back().r, 253);
+  EXPECT_EQ(v.back().g, 231);
+  EXPECT_EQ(v.back().b, 37);
+  const auto mid = viridis_colors(3)[1];  // halfway between anchors 5 and 6
+  EXPECT_EQ(mid.r, 35);
+  EXPECT_EQ(mid.g, 144);
+  EXPECT_EQ(mid.b, 140);
+  EXPECT_EQ(viridis_colors(1).size(), 1u);
+  EXPECT_THROW(viridis_colors(0), std::invalid_argument);
+}
+
+TEST(PlotColors, ValueColorsScalesMissingAndConstantValues) {
+  const std::vector<RGB> palette{RGB{0, 0, 0}, RGB{100, 100, 100}, RGB{200, 200, 200}};
+  const auto c = value_colors({1.0, 2.0, 3.0, std::nan("")}, palette);
+  EXPECT_EQ(c[0].r, 0);
+  EXPECT_EQ(c[1].r, 100);
+  EXPECT_EQ(c[2].r, 200);
+  EXPECT_EQ(c[3].r, 190);
+  const auto flat = value_colors({4.0, 4.0}, palette);
+  EXPECT_EQ(flat[0].r, 100);
+  const auto clamped = value_colors({-5.0, 0.5, 9.0}, palette, 0.0, 1.0);
+  EXPECT_EQ(clamped[0].r, 0);
+  EXPECT_EQ(clamped[1].r, 100);
+  EXPECT_EQ(clamped[2].r, 200);
 }

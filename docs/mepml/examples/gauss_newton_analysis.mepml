@@ -1,0 +1,834 @@
+//? Title: Gauss–Newton: Local Least Squares and Full-Step Limits
+//? Subtitle: Exact updates, convergence rates and the NIST Misra1a benchmark
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Fitting a nonlinear curve means choosing parameters that make its predictions close
+to measured responses. A good starting guess can lead to an accurate fit in a few
+updates, while a poor one can make the error much larger. Gauss–Newton repeatedly
+solves a linear least-squares approximation without computing residual Hessians.
+We derive its direction, work through tiny exact examples, compare quadratic and
+linear local convergence, and show a full step that increases error dramatically.
+A three-parameter sinusoid retains the original report's generated-data check.
+NIST's observed 14-row adsorption dataset then provides certified parameter and SSE
+references. Analytic and scaled central-difference fits match those references;
+raw-rate differences reveal unit sensitivity. Local linear accuracy, numerical
+stopping, parameter identification and
+predictive validity are evaluated as separate questions.
+)
+\toc
+
+> The method
+
+>> Linearize the residual vector
+
+Given coordinates \(x_i\), observed responses \(y_i\), model \(m(p,x)\) and parameter
+vector \(p\in\mathbb R^n\), define \(r_i(p)=m(p,x_i)-y_i\). For \(m\) observations,
+minimize the unweighted sum of squared residuals, or its half-scaled equivalent:
+
+$$
+ S(p)=\sum_{i=1}^m r_i(p)^2,\quad \phi(p)=\tfrac12 S(p),\qquad
+ \nabla\phi=J^Tr,\quad
+ \nabla^2\phi=J^TJ+\sum_i r_i\nabla^2r_i,
+ \quad J_{ij}=\frac{\partial r_i}{\partial p_j}.
+$$
+\alttext(The objective is the sum of squared model-minus-observed residuals. Half that objective has gradient J transpose r and Hessian J transpose J plus a residual-weighted sum of residual Hessians.)
+
+Full Newton uses both Hessian terms. Gauss–Newton replaces the residual function by
+its first-order approximation and solves
+
+$$
+ \delta=\arg\min_d\|r+Jd\|_2^2,\qquad
+ J^TJ\delta=-J^Tr,\qquad p_{k+1}=p_k+\delta_k.
+$$
+\alttext(The Gauss–Newton direction minimizes the squared norm of the linearized residual. Its normal equations equate J transpose J times the step to minus J transpose r. The basic algorithm takes the entire step.)
+
+The normal equations describe the solution algebraically; the native implementation
+solves the rectangular problem by Householder QR. It first scales each nonzero
+Jacobian column to unit Euclidean norm, solves for a scaled step, then restores the
+original parameter units. This avoids explicitly forming \(J^TJ\), whose condition
+number is the square of that of a full-rank \(J\). Column normalization helps unit
+imbalance but cannot separate parallel columns or repair an uninformative experiment.
+Numerically rank-deficient scaled Jacobians are rejected explicitly.
+
+The TikZ diagram shows a curved residual as a function of one parameter. Solving
+its tangent model produces a candidate, not a promise about the actual residual at
+that candidate. Regeneration needs LaTeX, PGF/TikZ, standalone, Latin Modern and
+dvisvgm. Documentation export uses the saved SVG.
+
+```{bash, results="output", file="figures/gn_tangent_geometry.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/gn_tangent_geometry.tikz > build/gn_tangent_geometry.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/gn_tangent_geometry.svg build/gn_tangent_geometry.dvi > build/gn_tangent_geometry.render.log 2>&1
+printf 'Rendered the local residual-tangent diagram.\n'
+```
+// result_begin:
+// Rendered the local residual-tangent diagram.
+// \image(figures/gn_tangent_geometry.svg)
+// result_end
+\caption(The linearized residual predicts a zero that differs from the true nonlinear root.)
+\alttext(A blue parabola represents r(p)=p squared minus two. At p=one its residual is minus one. A red tangent crosses zero at p=one and a half, while the nonlinear root is square root of two. The actual residual at the tangent prediction is one quarter.)
+
+>> A descent direction can still produce an uphill full step
+
+For a full-column-rank Jacobian and a nonzero least-squares direction,
+
+$$
+ \nabla\phi^T\delta=(J^Tr)^T\delta
+ =-\delta^TJ^TJ\delta=-\|J\delta\|_2^2<0.
+$$
+\alttext(The directional derivative of half-SSE along a nonzero full-rank Gauss–Newton direction is minus the squared norm of J times the direction, so sufficiently small positive steps lower the objective.)
+
+This proves decrease for sufficiently small positive step lengths. It does not prove
+that the full multiplier one is sufficiently small. The basic routine takes full
+steps without a line search, trust region, damping, parameter bounds or acceptance
+test; increasing SSE remains visible in the trace. Levenberg–Marquardt modifies the
+local problem with damping, but that is a different algorithm and is not silently
+substituted here. This report concerns unweighted least squares; changing the loss
+or observation weights changes the problem.
+
+>> Local convergence depends on both rank and residual curvature
+
+Suppose \(p_*\) is a stationary solution with full-column-rank \(J_*\), and the residual
+Jacobian is sufficiently smooth nearby. For the exact-derivative iteration map,
+
+$$
+ T'(p_*)=-(J_*^TJ_*)^{-1}C_*,\qquad
+ C_*=\sum_i r_i(p_*)\nabla^2r_i(p_*).
+$$
+\alttext(The derivative of the Gauss–Newton iteration at a stationary point is minus inverse J transpose J times the residual-weighted residual Hessian.)
+
+If the iteration derivative is a local contraction, convergence is locally linear.
+Small residuals help only when the Jacobian remains well-conditioned and residual
+curvature is controlled. At a zero-residual solution \(C_*=0\), giving local quadratic
+convergence under the usual smoothness and rank assumptions. A small residual alone
+is not a guarantee. Finite-difference errors and rounding eventually disturb these
+asymptotic rates. Nonzero residuals can also have \(C_*=0\); they do not invariably
+force a merely linear rate.
+
+>> Native contracts and numerical work
+
+`gauss_newton(model,x,y,start,max_iter,tol)` uses central finite differences. The
+analytic overload additionally accepts a callback returning one parameter-ordered
+Jacobian row. Coordinates, responses, parameters and model/derivative outputs must
+be finite; the input vectors are nonempty, lengths match, and observations must be
+at least as numerous as parameters. Missing values are rejected rather than omitted.
+Callbacks must return repeatable values and be defined at every visited point;
+callback exceptions propagate. Central differences also need both nearby perturbed
+parameters to remain in the domain. Their step is
+\(h_j=\sqrt[3]{\epsilon}\max(1,|p_j|)\), using the actual representable plus-minus span.
+Analytic derivatives avoid these perturbations and their truncation/cancellation error.
+
+The routine preserves the original call signature and the original `params`,
+`iterations`, `sse` result fields. `gauss_newton_linearize()` exposes the local
+residuals, Jacobian, proposed step, current gradient norm and predicted SSE.
+`trace()` records the initial state and every completed update. `sse` and residuals
+always correspond to the returned parameters, including when the update budget is
+exhausted. `iterations` counts completed updates; a zero budget evaluates only the
+initial state and its proposed next step.
+
+Stopping checks whether the proposed next-step norm is at most `tol`, a positive
+absolute tolerance in the supplied parameter units. `step_tolerance_met` names this
+specific event. A small step is not a proof of a small gradient, a minimum, unique
+parameters or a global optimum. Changing parameter units changes this stopping
+criterion even though the exact full least-squares direction transforms consistently.
+`gradient_inf` is the infinity norm of \(J^Tr\), the gradient of half-SSE in those units.
+This uses the supplied or approximate Jacobian: it is an approximate gradient with
+finite differences. The trace's `step_norm` describes the incoming completed update; `next_step_norm`
+and `linearized_sse` describe the proposed outgoing update at that row.
+
+After column normalization, QR uses rank threshold
+\(\max(m,n)\epsilon\max_j|R_{jj}|\). Its numerical-rank check concerns the local
+linearization, not global identification. A rank failure raises an exception even
+at a small residual. A nonfinite full-step evaluation is also reported as an error;
+there is no backtracking recovery.
+
+The existing QR implementation forms an explicit \(m\)-by-\(m\) orthogonal factor.
+Each evaluated state therefore costs \(O(mn^2+m^2n)\) linear-algebra work and
+\(O(m^2+mn)\) temporary storage, plus \(m(1+2n)\) scalar model calls for central
+finite differences, or \(m\) model and \(m\) analytic-row calls. The trace requires
+\(O((k+1)n)\) storage after \(k\) updates. A compact QR could avoid the explicit-Q
+cost for large datasets; the present implementation is suited to small dense fits.
+
+> Simple examples
+
+>> Three exact points: linear least squares in one full update
+
+Let \(m(p,x)=p_0+p_1x\), coordinates \((-1,0,1)\), responses \((0,2,4)\), and start
+\((0,0)\). The residual is \((0,-2,-4)\), with Jacobian rows \((1,x_i)\). Therefore
+\(J^TJ=\operatorname{diag}(3,2)\) and \(-J^Tr=(6,4)\), so \(\delta=(2,2)\).
+The linearization is exact everywhere: one full update recovers the line, with
+zero residual in exact arithmetic. The trace evaluates the final state before
+reporting its SSE. Its proposed next step is essentially zero.
+
+```{cpp, results="markdown", file="figures/gn_linear_step.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::vector<double> x = {-1, 0, 1}, y = {0, 2, 4};
+  const auto model    = [](const std::vector<double>& p, double x) { return p[0] + p[1] * x; };
+  const auto jacobian = [](const std::vector<double>&, double x) {
+    return std::vector<double>{1, x};
+  };
+  const auto local = dm::algorithms::gauss_newton_linearize(model, jacobian, x, y, {0, 0});
+  const auto fit   = dm::algorithms::gauss_newton(model, jacobian, x, y, {0, 0}, 1);
+  auto       left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  left.points(x, y, "observed", {220, 38, 38}, 5)
+      .line({-1, 1}, {0, 4}, "one-step fit", {37, 99, 235})
+      .title("One update recovers the line")
+      .x_label("x")
+      .y_label("response")
+      .y_limits(-1, 6);
+  right.points(x, local.residuals, "initial residual", {220, 38, 38}, 5)
+      .points(x, fit.residuals, "final residual", {37, 99, 235}, 5)
+      .title("The linear model is exact")
+      .x_label("x")
+      .y_label("model minus observed")
+      .y_limits(-4.5, 2);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gn_linear_step.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("x", x);
+  table.add_column("observed", y);
+  table.add_column("initial_residual", local.residuals);
+  table.add_column("J_intercept", local.jacobian.col(0));
+  table.add_column("J_slope", local.jacobian.col(1));
+  std::print(
+      "Local step: ({:.8f}, {:.8f}).\n\nLocal problem:\n\n{}\n\nEvaluated parameter "
+      "states:\n\n{}\n",
+      local.step[0],
+      local.step[1],
+      table.to_md(8),
+      fit.trace().to_md(8));
+}
+```
+// result_begin: markdown
+Local step: (2.00000000, 2.00000000).
+
+Local problem:
+
+| x | observed | initial_residual | J_intercept | J_slope |
+| ---: | ---: | ---: | ---: | ---: |
+| -1 | 0 | 0 | 1 | -1 |
+| 0 | 2 | -2 | 1 | 0 |
+| 1 | 4 | -4 | 1 | 1 |
+
+
+Evaluated parameter states:
+
+| iteration | sse | gradient_inf | step_norm | next_step_norm | linearized_sse | p0 | p1 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 20 | 6 | 0.00000000 | 2.82842712 | 0 | 0 | 0 |
+| 1 | 0 | 0 | 2.82842712 | 0.00000000 | 0 | 2 | 2 |
+
+\image(figures/gn_linear_step.svg)
+// result_end
+\caption(A linear residual model is solved in one full update, with final-state diagnostics evaluated at the returned parameters.)
+\alttext(The observed three points and fitted line appear on the left. Initial and final residuals appear on the right. Tables show every Jacobian row, the exact update and the initial/final parameter states.)
+
+>> One nonlinear residual: the tangent predicts the next parameter
+
+Fit \(m(p,0)=p^2\) to one response \(y=2\), starting from \(p=1\). The residual is
+−1 and its derivative is 2. Thus \(\delta=-r/J=1/2\), and the first parameter is 1.5.
+The tangent predicts residual zero, but the actual residual there is .25, giving
+SSE .0625. Subsequent updates converge to the positive root \(\sqrt2\); a negative
+start can reach the negative root, so zero residual does not identify the sign.
+
+The first program below intentionally allows just one update. Its final SSE and
+residual describe \(p=1.5\), and its stopping flag remains false because the proposed
+next update has magnitude \(1/12\). The longer trace shows that evaluating the
+returned state and satisfying a stopping test are different matters.
+
+```{cpp, results="markdown", file="figures/gn_scalar_tangent.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto model    = [](const std::vector<double>& p, double) { return p[0] * p[0]; };
+  const auto jacobian = [](const std::vector<double>& p, double) {
+    return std::vector<double>{2 * p[0]};
+  };
+  const auto first = dm::algorithms::gauss_newton(model, jacobian, {0}, {2}, {1}, 1, 1e-14);
+  const auto fit   = dm::algorithms::gauss_newton(model, jacobian, {0}, {2}, {1}, 20, 1e-14);
+  auto       left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  std::vector<double> p, r, tangent;
+  for (int i = 0; i <= 100; ++i) {
+    const double u = .6 + 1.3 * i / 100;
+    p.push_back(u);
+    r.push_back(u * u - 2);
+    tangent.push_back(-1 + 2 * (u - 1));
+  }
+  left.line(p, r, "nonlinear residual", {37, 99, 235})
+      .line(p, tangent, "tangent at p=1", {220, 38, 38})
+      .line({.6, 1.9}, {0, 0}, "zero", {100, 116, 139})
+      .points({1, 1.5}, {-1, .25}, "", {37, 99, 235}, 5)
+      .title("Tangent zero versus actual residual")
+      .x_label("parameter p")
+      .y_label("residual p squared minus two")
+      .y_limits(-2, 4);
+  const auto trace = fit.trace();
+  right
+      .line(
+          trace.numeric_column("iteration").values(),
+          trace.numeric_column("p0").values(),
+          "iterates",
+          {37, 99, 235})
+      .line(
+          {0, double(fit.iterations)},
+          {std::sqrt(2.), std::sqrt(2.)},
+          "positive root",
+          {220, 38, 38})
+      .title("Full updates approach the positive root")
+      .x_label("completed updates")
+      .y_label("parameter p")
+      .y_limits(.95, 1.8);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gn_scalar_tangent.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 8;
+  fmt.scientific = {"sse", "gradient_inf", "step_norm", "next_step_norm", "linearized_sse"};
+  std::print(
+      "One-update budget: completed {}; step tolerance met {}; returned SSE {:.8f}.\nLonger fit: "
+      "completed {}; step tolerance met {}.\n\n{}\n",
+      first.iterations,
+      first.step_tolerance_met,
+      first.sse,
+      fit.iterations,
+      fit.step_tolerance_met,
+      trace.to_md(fmt));
+}
+```
+// result_begin: markdown
+One-update budget: completed 1; step tolerance met false; returned SSE 0.06250000.
+Longer fit: completed 5; step tolerance met true.
+
+| iteration | sse | gradient_inf | step_norm | next_step_norm | linearized_sse | p0 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1.00000000e+00 | 2.00000000e+00 | 0.00000000e+00 | 5.00000000e-01 | 0.00000000e+00 | 1.00000000 |
+| 1 | 6.25000000e-02 | 7.50000000e-01 | 5.00000000e-01 | 8.33333333e-02 | 1.92592994e-34 | 1.50000000 |
+| 2 | 4.82253086e-05 | 1.96759259e-02 | 8.33333333e-02 | 2.45098039e-03 | 2.54427552e-37 | 1.41666667 |
+| 3 | 3.60877120e-11 | 1.69912496e-05 | 2.45098039e-03 | 2.12389982e-06 | 4.05678642e-45 | 1.41421569 |
+| 4 | 2.03456396e-23 | 1.27579433e-11 | 2.12389982e-06 | 1.59474291e-12 | 3.52496477e-56 | 1.41421356 |
+| 5 | 1.97215226e-31 | 1.25607397e-15 | 1.59474291e-12 | 1.57009246e-16 | 8.10670187e-65 | 1.41421356 |
+
+\image(figures/gn_scalar_tangent.svg)
+// result_end
+\caption(The one-step linear model predicts zero residual but the actual nonlinear residual remains one quarter.)
+\alttext(A residual parabola and its tangent show the mismatch at parameter one and a half. The second panel plots parameter states converging to square root of two. The table retains current SSE, gradient, incoming step, proposed next step and predicted SSE.)
+
+> Checking the theory
+
+>> Compare exact quadratic and linear error recurrences
+
+For the zero-residual square-root fit, the iteration is
+\(p_{k+1}=(p_k+2/p_k)/2\). With \(e_k=p_k-\sqrt2\), direct algebra gives
+\(e_{k+1}=e_k^2/(2p_k)\): the error is quadratic until rounding dominates.
+
+For a nonzero-residual example, fit model values \((p,p^2)\) at coordinates \((0,1)\)
+to observations \((0,1)\). The objective is \(S=p^2+(p^2-1)^2\), whose positive
+minimum is \(p_*=1/\sqrt2\) with \(S_*=3/4\). Its Jacobian is \((1,2p)^T\), and
+
+$$
+ p_{k+1}=p_k-\frac{p_k(2p_k^2-1)}{1+4p_k^2},\qquad
+ J_*^TJ_*=3,\quad C_*=-1,\quad T'(p_*)=\frac13.
+$$
+\alttext(The nonzero-residual scalar update subtracts p times two p squared minus one, divided by one plus four p squared. At the positive solution the Jacobian squared norm is three and the residual curvature term is minus one, giving a limiting error ratio of one third.)
+
+Both fits use exact derivatives and start at one. The first plot floors absolute
+parameter errors at 1e-16 only for logarithmic display. The second shows the nonzero
+case's observed error ratio before subtraction of nearly equal floating-point
+numbers makes that ratio unreliable. The native trace and printed errors are kept
+unfloored. These examples test explicit recurrences; they do not establish the rate
+for every nonlinear fit.
+
+```{cpp, results="markdown", file="figures/gn_local_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto square   = [](const std::vector<double>& p, double) { return p[0] * p[0]; };
+  const auto square_j = [](const std::vector<double>& p, double) {
+    return std::vector<double>{2 * p[0]};
+  };
+  const auto curved = [](const std::vector<double>& p, double x) {
+    return x == 0 ? p[0] : p[0] * p[0];
+  };
+  const auto curved_j = [](const std::vector<double>& p, double x) {
+    return std::vector<double>{x == 0 ? 1 : 2 * p[0]};
+  };
+  const auto zero = dm::algorithms::gauss_newton(square, square_j, {0}, {2}, {1}, 30, 1e-14);
+  const auto nonzero =
+      dm::algorithms::gauss_newton(curved, curved_j, {0, 1}, {0, 1}, {1}, 40, 1e-14);
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  dm::dstruct::DataFrame                                      table;
+  const std::vector<const dm::algorithms::GaussNewtonResult*> fits = {&zero, &nonzero};
+  const std::vector<double>            roots                       = {std::sqrt(2.), std::sqrt(.5)};
+  const std::vector<std::string>       labels = {"zero residual", "nonzero residual"};
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {220, 38, 38}};
+  for (std::size_t j = 0; j < 2; ++j) {
+    std::vector<double>      iteration, error, logerror;
+    std::vector<std::string> name;
+    for (const auto& row : fits[j]->history) {
+      iteration.push_back(row.iteration);
+      error.push_back(std::abs(row.params[0] - roots[j]));
+      logerror.push_back(std::log10(std::max(1e-16, error.back())));
+      name.push_back(labels[j]);
+    }
+    left.line(iteration, logerror, labels[j], colors[j]);
+    dm::dstruct::DataFrame rows;
+    rows.add_column("problem", name);
+    rows.add_column("iteration", iteration);
+    rows.add_column("absolute_error", error);
+    table = table.ncols() ? table.concat_rows(rows.head(6)) : rows.head(6);
+    if (j == 1) {
+      std::vector<double> steps, ratios;
+      for (std::size_t i = 0; i + 1 < error.size() && i < 11; ++i) {
+        steps.push_back(i);
+        ratios.push_back(error[i + 1] / error[i]);
+      }
+      right.points(steps, ratios, "observed ratio", colors[j], 5)
+          .line({0, 10}, {1. / 3, 1. / 3}, "limit 1/3", {100, 116, 139});
+    }
+  }
+  left.title("Two local error rates")
+      .x_label("completed updates")
+      .y_label("log10 absolute error, floor -16")
+      .y_limits(-16, 2);
+  right.title("Nonzero residual: ratio approaches 1/3")
+      .x_label("update k to k+1")
+      .y_label("absolute error ratio")
+      .y_limits(.25, .65);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gn_local_rates.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 9;
+  fmt.scientific = {"absolute_error"};
+  std::print(
+      "First six raw errors for each problem:\n\n{}\n\nNonzero-residual final state:\n\n{}\n",
+      table.to_md(fmt),
+      nonzero.trace().tail(1).to_md(10));
+}
+```
+// result_begin: markdown
+First six raw errors for each problem:
+
+| problem | iteration | absolute_error |
+| :--- | ---: | ---: |
+| zero residual | 0 | 4.142135624e-01 |
+| zero residual | 1 | 8.578643763e-02 |
+| zero residual | 2 | 2.453104294e-03 |
+| zero residual | 3 | 2.123901415e-06 |
+| zero residual | 4 | 1.594724353e-12 |
+| zero residual | 5 | 0.000000000e+00 |
+| nonzero residual | 0 | 2.928932188e-01 |
+| nonzero residual | 1 | 9.289321881e-02 |
+| nonzero residual | 2 | 2.997187050e-02 |
+| nonzero residual | 3 | 9.862825975e-03 |
+| nonzero residual | 4 | 3.272813587e-03 |
+| nonzero residual | 5 | 1.089272832e-03 |
+
+
+Nonzero-residual final state:
+
+| iteration | sse | gradient_inf | step_norm | next_step_norm | linearized_sse | p0 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 28 | 0.75 | 0 | 0 | 0 | 0.75 | 0.707106781 |
+
+\image(figures/gn_local_rates.svg)
+// result_end
+\caption(Exact scalar recurrences distinguish quadratic zero-residual convergence from a one-third linear error ratio.)
+\alttext(Logarithmic parameter-error traces show the two local rates. The second panel shows eleven error ratios for the nonzero-residual problem against the one-third limit. Tables contain unfloored early errors and the nonzero-residual final state.)
+
+>> Overshoot and local rank failure are different problems
+
+Fit \(p^2\) to one response one, starting from \(p=.1\). The direction is
+\((1-p^2)/(2p)=4.95\), so the full step reaches 5.05. The local linear residual is
+zero there, but the actual SSE jumps from .9801 to 600.37250625. The direction was
+a descent direction; the chosen full step was too long. Later full steps recover
+in this particular example, which is no guarantee for other starts or models.
+
+Starting at exactly zero is a different failure: the Jacobian vanishes, so the local
+least-squares direction is not identified. The native routine raises a rank error.
+Two identical Jacobian columns likewise prevent a unique full-rank step. Adding
+a stopping test or a more accurate linear solve does not resolve these cases.
+
+```{cpp, results="markdown", file="figures/gn_overshoot.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto model    = [](const std::vector<double>& p, double) { return p[0] * p[0]; };
+  const auto jacobian = [](const std::vector<double>& p, double) {
+    return std::vector<double>{2 * p[0]};
+  };
+  const auto fit   = dm::algorithms::gauss_newton(model, jacobian, {0}, {1}, {.1}, 20, 1e-14);
+  const auto trace = fit.trace();
+  auto       left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  std::vector<double> parameter, loss, logloss;
+  for (int i = 0; i <= 120; ++i) {
+    const double p = 5.3 * i / 120;
+    parameter.push_back(p);
+    loss.push_back(std::pow(p * p - 1, 2));
+  }
+  for (const auto& row : fit.history)
+    logloss.push_back(std::log10(std::max(1e-16, row.sse)));
+  left.line(parameter, loss, "actual SSE", {37, 99, 235})
+      .points(
+          {.1, 5.05},
+          {fit.history[0].sse, fit.history[1].sse},
+          "first full update",
+          {220, 38, 38},
+          6)
+      .title("The first full step overshoots")
+      .x_label("parameter p")
+      .y_label("sum of squared residuals")
+      .y_limits(0, 1100);
+  right.line(trace.numeric_column("iteration").values(), logloss, "actual SSE", {37, 99, 235})
+      .points(trace.numeric_column("iteration").values(), logloss, "", {37, 99, 235}, 4)
+      .title("Recovery here does not imply robustness")
+      .x_label("completed updates")
+      .y_label("log10 SSE, floor -16")
+      .y_limits(-16, 8);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gn_overshoot.svg");
+  std::print("Zero-start rank failure: ");
+  try {
+    (void)dm::algorithms::gauss_newton(model, jacobian, {0}, {1}, {0});
+  } catch (const std::runtime_error& e) {
+    std::print("{}\n", e.what());
+  }
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 8;
+  fmt.scientific = {"sse", "gradient_inf", "step_norm", "next_step_norm", "linearized_sse"};
+  std::print("\nAll visited states (no objective-increase filtering):\n\n{}\n", trace.to_md(fmt));
+}
+```
+// result_begin: markdown
+Zero-start rank failure: gauss_newton: zero Jacobian column (rank deficient)
+
+All visited states (no objective-increase filtering):
+
+| iteration | sse | gradient_inf | step_norm | next_step_norm | linearized_sse | p0 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 9.80100000e-01 | 1.98000000e-01 | 0.00000000e+00 | 4.95000000e+00 | 6.12766397e-33 | 0.10000000 |
+| 1 | 6.00372506e+02 | 2.47475250e+02 | 4.95000000e+00 | 2.42599010e+00 | 4.25426189e-30 | 5.05000000 |
+| 2 | 3.46382623e+01 | 3.08868425e+01 | 2.42599010e+00 | 1.12145689e+00 | 1.06925975e-31 | 2.62400990 |
+| 3 | 1.58172265e+00 | 3.77941833e+00 | 1.12145689e+00 | 4.18509545e-01 | 2.14233845e-34 | 1.50255301 |
+| 4 | 3.06776062e-02 | 3.79740945e-01 | 4.18509545e-01 | 8.07856162e-02 | 8.94852421e-35 | 1.08404347 |
+| 5 | 4.25927977e-05 | 1.30951551e-02 | 8.07856162e-02 | 3.25256153e-03 | 1.47880978e-37 | 1.00325785 |
+| 6 | 1.11918553e-10 | 2.11584250e-05 | 3.25256153e-03 | 5.28955028e-06 | 6.04583654e-45 | 1.00000529 |
+| 7 | 7.82846633e-22 | 5.59587932e-11 | 5.28955028e-06 | 1.39896983e-11 | 1.28682248e-54 | 1.00000000 |
+| 8 | 0.00000000e+00 | 0.00000000e+00 | 1.39896983e-11 | 0.00000000e+00 | 0.00000000e+00 | 1.00000000 |
+
+\image(figures/gn_overshoot.svg)
+// result_end
+\caption(A full step can sharply increase actual error despite predicting a perfect local fit; zero derivative instead causes rank failure.)
+\alttext(The left plot shows the objective curve and the first jump from parameter .1 to 5.05. The right shows every actual SSE along the subsequent trajectory on a logarithmic scale with a display floor. The complete trace includes the initial increase and proposed local losses.)
+
+>> Recover a generated three-parameter sinusoid
+
+Retain the original report's model \(a\sin(bx+c)\): forty exact values on
+\(x_i=.15i\) generated from \((a,b,c)=(3,1.2,.5)\), starting from \((2.5,1,.3)\).
+Its analytic Jacobian row is
+\((\sin(bx+c),ax\cos(bx+c),a\cos(bx+c))\). Compare analytic and default central-difference
+fits using the same stopping tolerance. The table reports actual final SSE and
+stationarity diagnostics, while the curve plot uses the analytic fit.
+
+This is a consistency test with known inputs, not a noisy-data performance estimate.
+Frequency and phase can have other basins, phase is periodic, and a sign change in
+amplitude can be offset by a phase shift. Recovering this representative from this
+start does not establish global uniqueness or reliable recovery from arbitrary guesses.
+
+```{cpp, results="markdown", file="figures/gn_sinusoid.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto model = [](const std::vector<double>& p, double x) {
+    return p[0] * std::sin(p[1] * x + p[2]);
+  };
+  const auto jacobian = [](const std::vector<double>& p, double x) {
+    const double t = p[1] * x + p[2];
+    return std::vector<double>{std::sin(t), p[0] * x * std::cos(t), p[0] * std::cos(t)};
+  };
+  std::vector<double> x, y;
+  for (int i = 0; i < 40; ++i) {
+    x.push_back(.15 * i);
+    y.push_back(model({3, 1.2, .5}, x.back()));
+  }
+  const auto analytic =
+                 dm::algorithms::gauss_newton(model, jacobian, x, y, {2.5, 1, .3}, 100, 1e-12),
+             numeric       = dm::algorithms::gauss_newton(model, x, y, {2.5, 1, .3}, 100, 1e-12);
+  auto                left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  std::vector<double> grid, curve;
+  for (int i = 0; i <= 200; ++i) {
+    grid.push_back(6. * i / 200);
+    curve.push_back(model(analytic.params, grid.back()));
+  }
+  left.points(x, y, "generated data", {220, 38, 38}, 4)
+      .line(grid, curve, "analytic-J fit", {37, 99, 235})
+      .x_limits(-.1, 6.4)
+      .title("Recover the generated sinusoid")
+      .x_label("x")
+      .y_label("response")
+      .y_limits(-3.5, 5.5);
+  dm::dstruct::DataFrame                                      table;
+  const std::vector<const dm::algorithms::GaussNewtonResult*> fits = {&analytic, &numeric};
+  const std::vector<std::string>       names  = {"analytic J", "central differences"};
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {220, 38, 38}};
+  for (std::size_t j = 0; j < 2; ++j) {
+    std::vector<double> losses;
+    for (const auto& row : fits[j]->history)
+      losses.push_back(std::log10(std::max(1e-28, row.sse)));
+    right.line(fits[j]->trace().numeric_column("iteration").values(), losses, names[j], colors[j]);
+    auto row = fits[j]->trace().tail(1);
+    row.add_column("derivatives", std::vector<std::string>{names[j]});
+    row.add_column(
+        "step_tolerance_met", std::vector<double>{fits[j]->step_tolerance_met ? 1. : 0.});
+    table = table.ncols() ? table.concat_rows(row) : row;
+  }
+  right.title("Two derivative routes agree")
+      .x_label("completed updates")
+      .y_label("log10 SSE, floor -28")
+      .y_limits(-28, 6);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gn_sinusoid.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 10;
+  fmt.scientific = {"sse", "gradient_inf", "next_step_norm"};
+  std::print(
+      "True representative: (3, 1.2, .5).\n\n{}\n",
+      table
+          .select(
+              {"derivatives",
+               "iteration",
+               "step_tolerance_met",
+               "sse",
+               "gradient_inf",
+               "next_step_norm",
+               "p0",
+               "p1",
+               "p2"})
+          .to_md(fmt));
+}
+```
+// result_begin: markdown
+True representative: (3, 1.2, .5).
+
+| derivatives | iteration | step_tolerance_met | sse | gradient_inf | next_step_norm | p0 | p1 | p2 |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| analytic J | 5 | 1 | 1.0210960231e-24 | 1.2553109890e-11 | 2.1741434472e-13 | 3 | 1.2 | 0.5 |
+| central differences | 5 | 1 | 1.0210960231e-24 | 1.2553109886e-11 | 2.1741434472e-13 | 3 | 1.2 | 0.5 |
+
+\image(figures/gn_sinusoid.svg)
+// result_end
+\caption(The original sinusoid is recovered from its declared starting point using analytic and central-difference Jacobians.)
+\alttext(Generated points and the recovered smooth curve appear beside actual-SSE traces for two derivative routes. The table reports stopping flags, final parameters, SSE, current gradient and proposed next-step norm; the log plot alone floors tiny SSE for display.)
+
+> NIST Misra1a: observed data with a certified fit
+
+>> Model, units and starting values
+
+`dm::datasets::misra1a()` contains fourteen measured pressure/volume pairs from
+Misra's 1978 monomolecular-adsorption study, in NIST source order, with no missing
+values. The source does not specify measurement units, so we retain its numeric
+units without inventing labels. NIST uses the two-parameter saturation model
+
+$$
+ y=A(1-e^{-b x})+\varepsilon,\qquad
+ q=1000b,\quad m(A,q,x)=-A\,\operatorname{expm1}(-qx/1000),\qquad
+ J=\left(1-e^{-qx/1000},\; A\frac{x}{1000}e^{-qx/1000}\right).
+$$
+\alttext(The adsorption model rises towards amplitude A with rate b. The report fits q equal to one thousand times b and uses expm1 to evaluate one minus the exponential accurately. Its Jacobian contains the amplitude derivative and the scaled-rate derivative.)
+
+Fitting \((A,q)\) avoids placing the tiny raw rate beside an amplitude near 239.
+The nonlinear model and unweighted objective are unchanged; the absolute parameter
+step tolerance is expressed in these chosen units. NIST's two starts become
+\((500,.1)\) and \((250,.5)\). The certified estimates are
+\(A=238.94212918\), \(b=.00055015643181\), with SSE .12455138894.
+Use all fourteen observations for numerical certification, with no test split and
+no parameter or model selection. Agreement with these reference numbers measures
+solver accuracy on this benchmark, not prediction on unseen experiments.
+
+The distant start can take an unphysical negative-amplitude intermediate step and
+greatly increase SSE. No positivity constraint or acceptance rule prevents that.
+Both analytic-start traces below are retained in full. Compare their final values
+with a central-difference fit from the second start. A stopped flag describes the
+specified step tolerance; inspect the gradient and certified objective alongside it.
+
+A fourth fit uses the raw rate b with default central differences. Here the fixed
+scale floor makes the finite-difference perturbation about 1.1% of b near the
+solution, versus about .0011% of q. Its amplitude differs by roughly 2.86e-5
+from the certified value despite nearly identical fitted curves and SSE. QR column
+normalization cannot remove derivative truncation error already present in the
+Jacobian. Analytic derivatives or a suitable parameterization address it.
+
+```{cpp, results="markdown", file="figures/gn_misra1a.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto d = dm::datasets::misra1a();
+  const auto x = d.numeric_column("pressure").values(), y = d.numeric_column("volume").values();
+  const auto model = [](const std::vector<double>& p, double x) {
+    return -p[0] * std::expm1(-p[1] * x / 1000);
+  };
+  const auto jacobian = [](const std::vector<double>& p, double x) {
+    const double t = x / 1000;
+    return std::vector<double>{-std::expm1(-p[1] * t), p[0] * t * std::exp(-p[1] * t)};
+  };
+  const auto far       = dm::algorithms::gauss_newton(model, jacobian, x, y, {500, .1}, 100, 1e-10),
+             near      = dm::algorithms::gauss_newton(model, jacobian, x, y, {250, .5}, 100, 1e-10),
+             numeric   = dm::algorithms::gauss_newton(model, x, y, {250, .5}, 100, 1e-9);
+  const auto raw_model = [](const std::vector<double>& p, double x) {
+    return -p[0] * std::expm1(-p[1] * x);
+  };
+  const auto raw_numeric = dm::algorithms::gauss_newton(raw_model, x, y, {250, .0005}, 100, 1e-9);
+  auto       left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  std::vector<double> grid, curve;
+  for (int i = 0; i <= 200; ++i) {
+    grid.push_back(800. * i / 200);
+    curve.push_back(model(near.params, grid.back()));
+  }
+  left.points(x, y, "observed", {220, 38, 38}, 5)
+      .line(grid, curve, "fitted adsorption", {37, 99, 235})
+      .title("NIST observed adsorption data")
+      .x_label("pressure, source units")
+      .y_label("volume, source units")
+      .y_limits(0, 130);
+  right.points(x, near.residuals, "model minus observed", {37, 99, 235}, 5)
+      .line({50, 800}, {0, 0}, "zero", {100, 116, 139})
+      .title("Residuals at the fitted solution")
+      .x_label("pressure, source units")
+      .y_label("volume residual, source units")
+      .x_limits(50, 800)
+      .y_limits(-.25, .45);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/gn_misra1a.svg");
+  const std::vector<const dm::algorithms::GaussNewtonResult*> fits = {
+      &far, &near, &numeric, &raw_numeric};
+  const std::vector<std::string> names = {
+      "analytic, NIST start 1",
+      "analytic, NIST start 2",
+      "central, NIST start 2",
+      "central, raw b"};
+  dm::dstruct::DataFrame table;
+  for (std::size_t j = 0; j < fits.size(); ++j) {
+    auto row = fits[j]->trace().tail(1).select(
+        {"iteration", "sse", "gradient_inf", "next_step_norm", "p0"});
+    row.add_column("fit", std::vector<std::string>{names[j]});
+    row.add_column("b", std::vector<double>{fits[j]->params[1] / (j == 3 ? 1 : 1000)});
+    row.add_column(
+        "step_tolerance_met", std::vector<double>{fits[j]->step_tolerance_met ? 1. : 0.});
+    table = table.ncols() ? table.concat_rows(row) : row;
+  }
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 11;
+  fmt.scientific = {"sse", "gradient_inf", "next_step_norm", "b"};
+  std::print(
+      "Start-2 analytic fit: A={:.11f}, b={:.14f}, SSE={:.14f}.\n\n",
+      near.params[0],
+      near.params[1] / 1000,
+      near.sse);
+  std::print(
+      "All fourteen measured observations:\n\n{}\n\nFinal fits (p0=A; reported rate in original b "
+      "units):\n\n{}\n\nFull "
+      "analytic trace from start 1:\n\n{}\n\nFull analytic trace from start 2:\n\n{}\n",
+      d.to_md(2),
+      table.to_md(fmt),
+      far.trace().to_md(fmt),
+      near.trace().to_md(fmt));
+}
+```
+// result_begin: markdown
+Start-2 analytic fit: A=238.94212917890, b=0.00055015643181, SSE=0.12455138894441.
+
+All fourteen measured observations:
+
+| pressure | volume |
+| ---: | ---: |
+| 77.6 | 10.07 |
+| 114.9 | 14.73 |
+| 141.1 | 17.94 |
+| 190.8 | 23.93 |
+| 239.9 | 29.61 |
+| 289.0 | 35.18 |
+| 332.8 | 40.02 |
+| 378.4 | 44.82 |
+| 434.8 | 50.76 |
+| 477.3 | 55.05 |
+| 536.8 | 61.01 |
+| 593.1 | 66.40 |
+| 689.1 | 75.47 |
+| 760.0 | 81.78 |
+
+
+Final fits (p0=A; reported rate in original b units):
+
+| iteration | sse | gradient_inf | next_step_norm | p0 | fit | b | step_tolerance_met |
+| ---: | ---: | ---: | ---: | ---: | :--- | ---: | ---: |
+| 9 | 1.24551388944e-01 | 1.12923151732e-11 | 1.19823685796e-11 | 238.9421292 | analytic, NIST start 1 | 5.50156431806e-04 | 1 |
+| 5 | 1.24551388944e-01 | 2.10784063814e-11 | 3.91235332619e-11 | 238.9421292 | analytic, NIST start 2 | 5.50156431806e-04 | 1 |
+| 5 | 1.24551388944e-01 | 1.57809267390e-10 | 4.87183805314e-10 | 238.9421292 | central, NIST start 2 | 5.50156431807e-04 | 1 |
+| 5 | 1.24551388946e-01 | 2.58030707911e-08 | 4.33445714549e-10 | 238.9421006 | central, raw b | 5.50156508669e-04 | 1 |
+
+
+Full analytic trace from start 1:
+
+| iteration | sse | gradient_inf | step_norm | next_step_norm | linearized_sse | p0 | p1 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1.07801901639e+04 | 7.86968744499e+04 | 0.000000000 | 4.26709486722e+03 | 0.269459411 | 500.0000000 | 0.100000000 |
+| 1 | 2.73012706052e+07 | 1.73381411410e+07 | 4267.094867222 | 3.95520063875e+03 | 0.365379916 | -3767.0947466 | 1.114425747 |
+| 2 | 5.48880883463e+03 | 1.22187385104e+04 | 3955.200638752 | 1.90400215340e+00 | 0.388950482 | 188.1058921 | 1.135569549 |
+| 3 | 6.83878932948e+01 | 1.59880869678e+03 | 1.904002153 | 4.33712622329e+01 | 0.137639809 | 186.2520150 | 0.701560216 |
+| 4 | 8.72696252545e+01 | 2.55249657651e+03 | 43.371262233 | 9.28250190918e+00 | 0.124589211 | 229.6229835 | 0.541930347 |
+| 5 | 1.32633363378e-01 | 2.54707038637e+01 | 9.282501909 | 3.60973922333e-02 | 0.124551485 | 238.9054814 | 0.550571913 |
+| 6 | 1.24551390270e-01 | 8.47572985974e-03 | 0.036097392 | 5.51337057563e-04 | 0.124551389 | 238.9415764 | 0.550157808 |
+| 7 | 1.24551388944e-01 | 4.74167311949e-07 | 0.000551337 | 1.45719523913e-06 | 0.124551389 | 238.9421277 | 0.550156436 |
+| 8 | 1.24551388944e-01 | 2.19454601019e-09 | 0.000001457 | 4.14977717677e-09 | 0.124551389 | 238.9421292 | 0.550156432 |
+| 9 | 1.24551388944e-01 | 1.12923151732e-11 | 0.000000004 | 1.19823685796e-11 | 0.124551389 | 238.9421292 | 0.550156432 |
+
+
+Full analytic trace from start 2:
+
+| iteration | sse | gradient_inf | step_norm | next_step_norm | linearized_sse | p0 | p1 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 4.47712768227e+01 | 2.03191778399e+03 | 0.000000000 | 1.29870725842e+01 | 0.125964219 | 250.0000000 | 0.500000000 |
+| 1 | 1.17813192720e+00 | 2.87639080905e+02 | 12.987072584 | 1.92582854570e+00 | 0.124552772 | 237.0130304 | 0.551730072 |
+| 2 | 1.24565754569e-01 | 1.07380387576e+00 | 1.925828546 | 3.27570036545e-03 | 0.124551389 | 238.9388583 | 0.550151837 |
+| 3 | 1.24551388944e-01 | 2.02889477943e-06 | 0.003275700 | 4.84528469721e-06 | 0.124551389 | 238.9421340 | 0.550156419 |
+| 4 | 1.24551388944e-01 | 7.28693548471e-09 | 0.000004845 | 1.37513344005e-08 | 0.124551389 | 238.9421292 | 0.550156432 |
+| 5 | 1.24551388944e-01 | 2.10784063814e-11 | 0.000000014 | 3.91235332619e-11 | 0.124551389 | 238.9421292 | 0.550156432 |
+
+\image(figures/gn_misra1a.svg)
+// result_end
+\caption(All measured rows are used to compare numerical estimates with the NIST reference; the distant-start overshoot is retained.)
+\alttext(The left panel shows fourteen observed pressure/volume pairs and the fitted saturation curve, using source units. The right shows fitted-minus-observed residuals. Tables contain all observations, both analytic-start and central-difference final fits, and both complete analytic trajectories including any SSE increases.)
+
+> Conclusion
+
+Gauss–Newton uses least-squares structure to obtain a local direction without
+residual Hessians. QR improves the numerical linear solve, while full-step overshoot
+and rank failure remain distinct nonlinear and identification concerns. The exact
+scalar recurrences show both quadratic and linear convergence under their stated
+conditions, and the generated sinusoid checks a multivariate parameter fit.
+
+NIST supplies observed data and certified parameter/SSE references for a direct
+numerical accuracy comparison. The scaled analytic fit returns A=238.94212917890,
+b=.00055015643181 and SSE=.12455138894441, matching the certified values to their
+reported precision. Default differences in raw rate units show a small derivative
+bias that becomes visible in the parameter table. The distant-start trace demonstrates why a successful
+final answer does not imply safe intermediate steps. Step-size stopping, low SSE,
+stationarity, unique parameters and predictive validity each require their own
+assessment. Difficult fits may need better parameterization, improved experimental
+information, or an explicitly safeguarded method.
+
+> References
+
+- B. W. Rust (2002), “Fitting Nature's Basic Functions Part III: Exponentials,
+  Sinusoids and Nonlinear Least Squares”, Computing in Science & Engineering 4(4).
+  https://www.nist.gov/publications/fitting-natures-basic-functions-part-iii-exponentials-sinusoids-and-nonlinear-least.
+- D. Bindel (2026), “Nonlinear least squares”, Cornell CS 4220 lecture notes,
+  https://www.cs.cornell.edu/courses/cs4220/2026sp/lec/2026-04-10.html.
+  Derivation of the local error map and conditions on residual size and Jacobian rank.
+- NIST/ITL Statistical Reference Datasets, “Misra1a”, observed adsorption data,
+  starting values and certified estimates; Misra (1978),
+  https://www.itl.nist.gov/div898/strd/nls/data/LINKS/DATA/Misra1a.dat.
+

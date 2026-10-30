@@ -1,0 +1,173 @@
+//? Title: Nearest Neighbors: Distances, Ties and Exact Matches
+//? Subtitle: Choose the metric and aggregation rule before interpreting a prediction
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A new observation can be predicted from nearby labelled examples without fitting a global
+parametric function. We inspect tied neighbors on a line, contrast uniform and inverse-distance
+regression, and evaluate a fixed Iris classifier on held-out rows. Stable distance and vote ties
+are part of a reproducible prediction contract.
+)
+\toc
+
+> The method
+
+Nearest neighbours stores reference observations and has no learned global parameters.
+There is therefore no optimizer or training loop. Tensor distances, selection, weighted
+aggregation and training-only scaling implement the full prediction workflow.
+
+For each query, select the k smallest training distances. Regression averages neighbor targets;
+classification accumulates class votes. Inverse-distance weighting uses 1/d, except that exact
+matches receive all mass when any selected distance is zero:
+
+$$
+\widehat f(x)=\frac{\sum_{i\in N_k(x)}w_i y_i}{\sum_{i\in N_k(x)}w_i},\qquad
+w_i=1/d_i\ \text{when all selected distances are positive}.
+$$
+\alttext(A weighted-neighbor regression is the weighted sum of neighbor responses divided by their total weight.)
+
+The tensor helper breaks distance ties by reference-row order and class-vote ties by integer
+class ID. Exact matches alone receive equal weight. Otherwise inverse weights use a
+squared-distance floor of 1e-20. The Iris example computes standardisation from reference
+rows only, then freezes it for all queries. This direct search materialises [Q,N,D]
+differences; pairwise distances cost O(QND), followed by selection. Chunk large queries.
+High dimension can weaken local distance contrast.
+
+The concept diagram has a retained TikZ source in `diagrams/nearest_neighbors_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/nearest_neighbors_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/nearest_neighbors_concept.tikz > build/nearest_neighbors_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/nearest_neighbors_concept.svg build/nearest_neighbors_concept.dvi > build/nearest_neighbors_concept.render.log 2>&1
+printf 'Rendered build/nearest_neighbors_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/nearest_neighbors_concept.svg from local TikZ source.
+// \image(figures/nearest_neighbors_concept.svg)
+// result_end
+\caption(Choose the metric and aggregation rule before interpreting a prediction)
+\alttext(Frozen training metric; scale from training rows Then Nearest k rows; stable distance ties Then Votes or target mean; handle zero distance.)
+
+> Simple examples
+
+Training points 0 and 2 have targets 0 and 10. At query .5, uniform k=2 predicts 5; inverse-distance weights 2 and 2/3 predict 2.5. At a duplicate exact match, only zero-distance rows contribute.
+
+```{cpp, results="markdown", file="figures/nearest_neighbors_weights.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto dtype = n::DType::Float64;
+  const auto references = n::tensor({0, 2}, {2, 1}, dtype),
+             targets = n::tensor({0, 10}, {2}, dtype);
+  const auto query = n::tensor({0, .5, 1, 1.5, 2}, {5, 1}, dtype);
+  const n::ml::TensorNeighbors uniform(references, query, 2),
+      weighted(references, query, 2, true);
+  const auto a = uniform.regress(targets), b = weighted.regress(targets);
+  if (n::max(n::abs(b - n::tensor({0, 2.5, 5, 7.5, 10}, {5}, dtype))).item() > 1e-10)
+    return 1;
+  auto p = dm::graphics::RPlot::create();
+  p.lines(query.to_vector<double>(), a.to_vector<double>(), "uniform", {37, 99, 235})
+      .lines(query.to_vector<double>(), b.to_vector<double>(), "weighted", {234, 88, 12})
+      .points({0, 2}, {0, 10}, "reference inputs", {22, 163, 74}, 6)
+      .title("Tensor distances and weighted gathered targets")
+      .x_label("query x")
+      .y_label("prediction");
+  std::filesystem::create_directories("build");
+  p.y_limits(-1, 13).size(850, 420).save_svg("build/nearest_neighbors_weights.svg");
+  dm::dstruct::DataFrame t;
+  t.add_column("x", query.to_vector<double>());
+  t.add_column("uniform", a.to_vector<double>());
+  t.add_column("weighted", b.to_vector<double>());
+  std::print("{}\n", t.to_md());
+}
+```
+// result_begin: markdown
+| x | uniform | weighted |
+| ---: | ---: | ---: |
+| 0.0 | 5 | 0.0 |
+| 0.5 | 5 | 2.5 |
+| 1.0 | 5 | 5.0 |
+| 1.5 | 5 | 7.5 |
+| 2.0 | 5 | 10.0 |
+
+\image(figures/nearest_neighbors_weights.svg)
+// result_end
+\caption(Exact-match predictions use matching rows; otherwise inverse-distance weights interpolate these two targets.)
+\alttext(Exact-match predictions use matching rows; otherwise inverse-distance weights interpolate these two targets.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto x = n::tensor({0, 0, 2}, {3, 1}), q = n::tensor({0}, {1, 1});
+  const n::ml::TensorNeighbors regression(x, q, 3, true), classification(x, q, 2);
+  const auto predicted = regression.regress(n::tensor({2, 4, 20}));
+  const auto label = classification.classify(n::from_vector(std::vector<int64_t>{0, 1, 1}), 2);
+  if (std::abs(predicted.item() - 3) > 1e-6 || label.item() != 0)
+    return 1;
+  std::print("Exact-match prediction {}; tied class vote {}; neighbour indices {}.\n",
+             predicted.item(), label.item(), classification.indices.to_vector<int64_t>());
+}
+```
+// result_begin: markdown
+Exact-match prediction 3; tied class vote 0; neighbour indices [0, 1].
+// result_end
+
+> A dataset example
+
+A fixed k=5 model uses only the petal measurements. The seeded stratified three-fold partition reserves fold zero before inference; this single split does not tune k.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto iris = dm::datasets::iris();
+  const auto names = iris.get_column<std::string>("Species").values();
+  std::vector<std::string> levels = names;
+  std::sort(levels.begin(), levels.end());
+  levels.erase(std::unique(levels.begin(), levels.end()), levels.end());
+  std::vector<double> values;
+  std::vector<int> ids;
+  for (size_t i = 0; i < iris.nrows(); ++i) {
+    values.push_back(iris.get_column("Petal.Length").values()[i]);
+    values.push_back(iris.get_column("Petal.Width").values()[i]);
+    ids.push_back(std::find(levels.begin(), levels.end(), names[i]) - levels.begin());
+  }
+  const auto x = n::from_vector(values, {150, 2}),
+             y = n::from_vector(std::vector<int64_t>(ids.begin(), ids.end()));
+  const auto fold = n::ml::StratifiedKFold(ids, 3, 17)[0];
+  const std::vector<int64_t> tr(fold.training.begin(), fold.training.end()),
+      te(fold.validation.begin(), fold.validation.end());
+  const auto tx = n::take_rows(x, tr), test = n::take_rows(x, te);
+  const auto mean = n::mean(tx, {0}, true),
+             scale = n::sqrt(n::mean(n::square(tx - mean), {0}, true));
+  const n::ml::TensorNeighbors neighbors((tx - mean) / scale, (test - mean) / scale, 5);
+  const auto prediction = neighbors.classify(n::take_rows(y, tr), 3);
+  const double accuracy =
+      n::mean(n::cast(n::equal(prediction, n::take_rows(y, te)), n::DType::Float64)).item();
+  std::print("{} reference rows, {} held-out rows; tensor-neighbour accuracy {:.6f}.\n",
+             tx.size(0), test.size(0), accuracy);
+}
+```
+// result_begin: markdown
+100 reference rows, 50 held-out rows; tensor-neighbour accuracy 0.960000.
+// result_end
+
+
+> Conclusion
+
+The exact two-point calculation, duplicate policy and class tie rule match the native predictions.
+The Iris result is a single fixed held-out evaluation. Choosing k, metric or predictors would
+require a validation procedure that also refits scaling inside its training partitions.
+
+> References
+
+- [Cover and Hart (1967), Nearest neighbor pattern classification](https://doi.org/10.1109/TIT.1967.1053964).

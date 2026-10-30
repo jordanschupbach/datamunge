@@ -126,3 +126,46 @@ TEST(RealTime, OverloadedSetMissesDeadline) {
     auto                r     = edf_simulate(tasks, 30);
     EXPECT_TRUE(r.deadline_missed);
 }
+
+TEST(BankerExtensions, CountsSafeSequencesAndDetectsDeadlock) {
+    using namespace datamunge::algorithms;
+    // Brute-force count of safe sequences for the classic instance.
+    const auto alloc = banker_alloc();
+    const auto maxd  = banker_max();
+    const std::vector<int> avail = {3, 3, 2};
+    std::vector<std::size_t> perm(alloc.size());
+    for (std::size_t i = 0; i < perm.size(); ++i) perm[i] = i;
+    std::uint64_t brute = 0;
+    do {
+        std::vector<int> work = avail;
+        bool ok = true;
+        for (auto p : perm) {
+            for (std::size_t j = 0; j < work.size(); ++j) ok = ok && maxd[p][j] - alloc[p][j] <= work[j];
+            if (!ok) break;
+            for (std::size_t j = 0; j < work.size(); ++j) work[j] += alloc[p][j];
+        }
+        brute += ok;
+    } while (std::next_permutation(perm.begin(), perm.end()));
+    EXPECT_EQ(banker_count_safe_sequences(alloc, maxd, avail), brute);
+    EXPECT_GT(brute, 0u);
+
+    // Two processes each holding one unit and wanting the other's: deadlock.
+    const auto stuck = deadlocked_processes({{1, 0}, {0, 1}}, {{0, 1}, {1, 0}}, {0, 0});
+    EXPECT_EQ(stuck.size(), 2u);
+    EXPECT_TRUE(deadlocked_processes({{1, 0}, {0, 1}}, {{0, 1}, {1, 0}}, {1, 0}).empty());
+}
+
+TEST(BankerExtensions, BankerPolicyNeverDeadlocks) {
+    using namespace datamunge::algorithms;
+    const std::vector<std::vector<int>> claims = {{3, 2}, {2, 3}, {3, 3}, {2, 2}};
+    const std::vector<int>              total  = {5, 5};
+    std::size_t naive_deadlocks = 0;
+    for (std::uint64_t seed = 0; seed < 40; ++seed) {
+        const auto b = simulate_resource_allocation(claims, total, AllocationPolicy::Banker, 3000, seed);
+        EXPECT_FALSE(b.deadlocked);
+        EXPECT_GT(b.jobs_finished, 10u);
+        naive_deadlocks += simulate_resource_allocation(claims, total, AllocationPolicy::GrantIfAvailable, 3000, seed).deadlocked;
+    }
+    EXPECT_GT(naive_deadlocks, 0u);
+    EXPECT_THROW(simulate_resource_allocation({{6, 0}}, {5, 5}, AllocationPolicy::Banker, 10, 1), std::invalid_argument);
+}

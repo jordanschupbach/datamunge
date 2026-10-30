@@ -1,6 +1,6 @@
 # Native Python NN example. Receptive-field geometry and trained CNN feature derivatives in Python.
-"""CMD: just python-example receptive_fields
-Receptive fields and trained CNN feature maps, with numerical validation.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/receptive_fields.py
+"""Receptive fields and trained CNN feature maps, with numerical validation.
 
 Port of tflow's receptive_fields. Preparation: just python-example cnn_mnist
 (writes <output root>/models/cnn_mnist/best.npz), then run this example;
@@ -24,6 +24,7 @@ import os
 import struct
 from pathlib import Path
 
+from pydatamunge.nn_components import dataset_assets
 from pydatamunge import nn
 from pydatamunge.nn_workflows import data_root, helper, options, output_root
 
@@ -92,7 +93,7 @@ def main(arguments=None):
     field = geometry()
     support_checks(field)
     checks.require(Path(args["checkpoint"]).exists(), "run cnn_mnist first to create trained checkpoint")
-    dataset = nn.load_mnist(args["data"], "test")
+    dataset = dataset_assets.LoadMnist(args["data"], "test")
     count = int(dataset.images.shape()[0])
     pixels = nn.reshape(dataset.images, [count, 784])
 

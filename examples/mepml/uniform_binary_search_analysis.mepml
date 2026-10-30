@@ -39,7 +39,7 @@ was favoured on machines where division was slow and is still handy for tight, p
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -106,7 +106,7 @@ schedule, showing how the running index climbs by ever-smaller powers of two tow
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

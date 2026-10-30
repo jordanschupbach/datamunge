@@ -1,3 +1,5 @@
+/// @file nadam.cpp
+/// @brief Nadam native update, trial and stopping implementation.
 #include <datamunge/optim/nadam.hpp>
 
 #include <cmath>

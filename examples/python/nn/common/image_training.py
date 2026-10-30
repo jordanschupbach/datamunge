@@ -15,6 +15,7 @@ import os
 from pathlib import Path
 from types import SimpleNamespace
 
+from pydatamunge.nn_components import dataset_assets
 from pydatamunge import nn
 
 
@@ -131,11 +132,8 @@ def apply_cifar_options(args, cfg):
 def load_cifar10(directory):
     """The five official development batches and the separate test batch."""
     directory = Path(directory)
-    if not (directory / "data_batch_1.bin").exists():
-        raise RuntimeError("CIFAR-10 missing in " + str(directory) +
-                           "; run python3 scripts/fetch_datasets.py cifar10 --split both in tflow_examples, or set data=")
-    development = nn.load_cifar10(str(directory), "train")
-    test = nn.load_cifar10(str(directory), "test")
+    development = dataset_assets.LoadCifar10(str(directory), "train")
+    test = dataset_assets.LoadCifar10(str(directory), "test")
     if list(development.images.shape()) != [50000, 32, 32, 3] or list(test.images.shape()) != [10000, 32, 32, 3]:
         raise RuntimeError("official CIFAR-10 split sizes")
     return development, test

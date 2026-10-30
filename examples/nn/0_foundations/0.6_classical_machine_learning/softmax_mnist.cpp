@@ -2,7 +2,7 @@
 // A 7,850-parameter linear softmax classifier on the original MNIST dataset.
 //
 // Port of tflow's softmax_mnist. Preparation (in ~/projects/tflow_examples):
-// python3 scripts/fetch_datasets.py mnist --split both; the data are read from
+// dm::datasets::fetch("mnist"); the data are read from
 // $DATAMUNGE_DATA_DIR/mnist (default ~/projects/tflow_examples/output/datasets).
 // Flatten normalized 28x28 images, form ten logits with a single dense layer,
 // and minimize sparse cross entropy with Adam and L2 on weights. Split only
@@ -14,6 +14,7 @@
 // option is dropped; nn runs on the CPU). Dataset loading, seeded batching and
 // training are implemented below using the common MNIST data utilities.
 
+#include "common/dataset_assets.hpp"
 #include "common/mnist.hpp"
 
 int main(int argc, char** argv) {
@@ -55,14 +56,9 @@ int main(int argc, char** argv) {
           "positive epochs, batch and learning rate required");
       batch  = example_runtime::Limit(batch, 16);
       example_runtime::Describe();
-      check::Require(
-          std::filesystem::exists(dir / "train-images-idx3-ubyte") ||
-              std::filesystem::exists(dir / "train-images-idx3-ubyte.gz"),
-          "MNIST missing in " + dir.string() +
-              "; run python3 scripts/fetch_datasets.py mnist --split both in tflow_examples, or "
-              "set data=");
-      const auto train = nn::load_mnist(dir.string(), "train");
-      const auto test  = nn::load_mnist(dir.string(), "test");
+      dataset_assets::EnsureMnist(dir.string());
+      const auto train = dataset_assets::LoadMnist(dir.string(), "train");
+      const auto test  = dataset_assets::LoadMnist(dir.string(), "test");
       check::Require(
           train.images.shape() == nn::Shape({60000, 28, 28, 1}) &&
               test.images.shape() == nn::Shape({10000, 28, 28, 1}),

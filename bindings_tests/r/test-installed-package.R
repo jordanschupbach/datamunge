@@ -6,3 +6,40 @@ test_that("tensor values survive collection of temporary SWIG objects", {
   expect_equal(as.numeric(result$values()), c(2, 5, 5, 8))
   expect_error(result$reshape(as.integer(3)))
 })
+
+test_that("plot palettes recycle and subtitle chains retain their owner", {
+  colors <- RGBVector()
+  colors$push_back(RGB(10L, 20L, 30L, 0.25))
+  colors$push_back(RGB(40L, 50L, 60L))
+  plot <- RPlot_create()$points_colored(c(1, 2, 3), c(2, 3, 4), colors)$subtitle("Palette <test>")
+  rm(colors)
+  gc()
+  expect_identical(plot$subtitle_text(), "Palette <test>")
+  svg <- plot$to_svg()
+  expect_match(svg, "Palette &lt;test&gt;", fixed = TRUE)
+  expect_length(gregexpr('fill="rgb(10,20,30)" fill-opacity="0.25"', svg, fixed = TRUE)[[1]], 2L)
+})
+
+test_that("fluent plot labels retain their temporary owner", {
+  plot <- RPlot_create()$set_title("Iris <test>")$set_subtitle("Species")$
+    set_xlab("Width")$set_ylab("Length")
+  gc()
+  expect_identical(plot$title_text(), "Iris <test>")
+  expect_identical(plot$subtitle_text(), "Species")
+  expect_identical(plot$x_label_text(), "Width")
+  expect_identical(plot$y_label_text(), "Length")
+  plot$set_title("")
+  expect_identical(plot$title_text(), "")
+})
+
+test_that("scatter constructors and histogram validation use the core", {
+  plot <- RPlot(c(0, 1), c(1, 2))$set_title("Samples")$set_col("blue")
+  gc()
+  expect_identical(plot$title_text(), "Samples")
+  expect_match(plot$to_svg(), "<circle", fixed = TRUE)
+  expect_match(plot$to_svg(), 'fill="rgb(0,0,255)"', fixed = TRUE)
+  expect_error(RPlot(c(1), c(1, 2)))
+  expect_error(RPlot_hist(c(NaN)))
+  expect_error(RPlot_hist(c(Inf)))
+  expect_error(plot$set_col("unknown"))
+})

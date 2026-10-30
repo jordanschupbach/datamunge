@@ -1,0 +1,456 @@
+//? Title: Baby-Step Giant-Step: Discrete Logarithms by Meeting in the Middle
+//? Subtitle: Shanks's square-root algorithm, the table size that minimises its work, and how fast it breaks small Diffie–Hellman keys, with datamunge's algorithms::baby_step_giant_step_trace
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a prime \(p\), a base \(g\) and a target \(h\), the *discrete logarithm* problem asks for
+\(x\) with \(g^x\equiv h\pmod p\). Trying every exponent takes up to \(p-1\) multiplications.
+Shanks's baby-step giant-step algorithm splits \(x=im+j\), tabulates the \(m\) "baby steps"
+\(g^j\), and walks "giant steps" \(h\,g^{-mi}\) until one lands in the table. We derive its cost,
+\(m+\lceil n/m\rceil\) in the worst case and \(m+n/(2m)\) on average for a group of order \(n\),
+so the best table holds \(\sqrt n\) entries for the worst case but only \(\sqrt{n/2}\) for the
+average. A sweep over table sizes at \(p=1{,}000{,}003\) matches both formulas. Across primes from
+\(10^3\) to \(10^{12}\) the measured work grows as \(p^{0.500}\), and a 40-bit Diffie–Hellman
+secret falls in about a tenth of a second on this machine. Finally, when \(g\) generates only a subgroup of
+prime order \(q\), searching that subgroup costs \(\sqrt q\) instead of \(\sqrt p\), which is the
+idea behind the Pohlig–Hellman algorithm.
+)
+
+\toc
+
+> Meeting in the middle
+
+Let \(g\) have order \(n\) modulo \(p\), so \(g^n\equiv1\) and the powers \(g^0,\dots,g^{n-1}\) are
+distinct. When \(g\) is a primitive root, \(n=p-1\). Every \(x\in[0,n)\) can be written by the
+division algorithm as
+
+$$
+x=i\,m+j,\qquad 0\le j<m,\qquad 0\le i<\lceil n/m\rceil .
+$$
+\alttext(x equals i times m plus j, with j from 0 to m minus 1 and i from 0 to the ceiling of n over m, minus 1.)
+
+Multiplying \(g^{im+j}\equiv h\) by \(g^{-im}\) separates the two unknowns:
+
+$$
+g^{\,j}\;\equiv\;h\cdot\bigl(g^{-m}\bigr)^{i}\pmod p .
+$$
+\alttext(g to the j is congruent to h times g to the minus m, all to the i, modulo p.)
+
+The left side depends only on \(j\), the right only on \(i\). The algorithm stores the \(m\)
+*baby steps* \(g^j\) in a hash table, then computes the *giant steps* \(h,\ hg^{-m},\ hg^{-2m},\dots\),
+one multiplication each, and looks each up. A hit at giant step \(i\) and table entry \(j\) gives
+\(x=im+j\). Because the table keeps the smallest \(j\) for each value and \(i\) increases, the first
+hit is the smallest solution. If \(h\) is not a power of \(g\), no giant step can hit, and after
+\(\lceil n/m\rceil\) steps the algorithm reports that no logarithm exists.
+
+```
+BABY-STEP-GIANT-STEP(g, h, p, n, m):
+    table ← {}
+    e ← 1
+    for j = 0 .. m−1:  table[e] ← j (keep the first);  e ← e·g mod p      # baby steps
+    stride ← g^(−m) mod p                                                 # = g^(p−1−m)
+    γ ← h
+    for i = 0 .. ⌈n/m⌉−1:                                                 # giant steps
+        if γ ∈ table: return i·m + table[γ]
+        γ ← γ · stride mod p
+    return NONE
+```
+
+`dm::algorithms::baby_step_giant_step_trace()` runs exactly this, with the group order and the
+table size as optional arguments, and records the steps it took. The first block solves
+\(2^x\equiv17\pmod{101}\).
+
+```{cpp, results="markdown", file="figures/baby_step_giant_step_collision.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::uint64_t g = 2, h = 17, p = 101;
+  const auto t = alg::baby_step_giant_step_trace(g, h, p, 0, 0, true);
+  std::print("Order of 2 mod 101: {}; table size m = {}.\n\n", alg::element_order(g, p), t.table_size);
+
+  std::print("| step | baby \\(2^j\\) | giant \\(17\\cdot2^{{-10i}}\\) |\n| ---: | ---: | ---: |\n");
+  for (std::size_t k = 0; k < t.baby.size(); ++k)
+    std::print("| {} | {} | {} |\n", k, t.baby[k], k < t.giant.size() ? std::to_string(t.giant[k]) : "");
+  std::print("\nMatch: giant step i = {} equals baby step j = {}, so x = {}·{} + {} = {}; check 2^{} mod 101 = {}.\n",
+             t.giant_index, t.baby_index, t.giant_index, t.table_size, t.baby_index, t.exponent, t.exponent,
+             alg::mod_pow(g, t.exponent, p));
+  std::print("Work: {} baby steps + {} giant steps = {}, against {} for trying exponents in order.\n",
+             t.baby_steps, t.giant_steps, t.baby_steps + t.giant_steps, t.exponent + 1);
+
+  std::vector<double> bx, by, gx, gy;
+  for (std::size_t k = 0; k < t.baby.size(); ++k) {
+    bx.push_back(static_cast<double>(t.baby[k]));
+    by.push_back(static_cast<double>(k));
+  }
+  for (std::size_t k = 0; k < t.giant.size(); ++k) {
+    gx.push_back(static_cast<double>(t.giant[k]));
+    gy.push_back(static_cast<double>(k));
+  }
+  const double hit = static_cast<double>(t.giant.back());
+  dm::graphics::RPlot::create()
+      .segments({hit}, {static_cast<double>(t.baby_index)}, {hit}, {static_cast<double>(t.giant_index)},
+                dm::RGB{202, 138, 4}, 3.0)
+      .lines(bx, by, "", dm::RGB{147, 197, 253}, 1.0)
+      .points(bx, by, "", dm::RGB{37, 99, 235}, 9.0)
+      .lines(gx, gy, "", dm::RGB{252, 165, 165}, 1.0)
+      .points(gx, gy, "", dm::RGB{220, 38, 38}, 9.0)
+      .legend({"baby steps (j)", "giant steps (i)", "match"},
+              {dm::RGB{37, 99, 235}, dm::RGB{220, 38, 38}, dm::RGB{202, 138, 4}})
+      .x_limits(0, 101)
+      .y_limits(-0.5, 12)
+      .title("Baby-step giant-step for 2^x = 17 (mod 101)")
+      .x_label("residue mod 101")
+      .y_label("step index (j or i)")
+      .size(900, 500)
+      .save_svg("build/baby_step_giant_step_collision.svg");
+}
+```
+// result_begin: markdown
+Order of 2 mod 101: 100; table size m = 10.
+
+| step | baby \(2^j\) | giant \(17\cdot2^{-10i}\) |
+| ---: | ---: | ---: |
+| 0 | 1 | 17 |
+| 1 | 2 | 95 |
+| 2 | 4 | 14 |
+| 3 | 8 | 1 |
+| 4 | 16 |  |
+| 5 | 32 |  |
+| 6 | 64 |  |
+| 7 | 27 |  |
+| 8 | 54 |  |
+| 9 | 7 |  |
+
+Match: giant step i = 3 equals baby step j = 0, so x = 3·10 + 0 = 30; check 2^30 mod 101 = 17.
+Work: 10 baby steps + 4 giant steps = 14, against 31 for trying exponents in order.
+\image(figures/baby_step_giant_step_collision.svg)
+// result_end
+
+\caption(The ten baby steps \(2^j\bmod101\) (blue) and the four giant steps \(17\cdot2^{-10i}\bmod101\) (red), each at its residue (horizontal) and step index (vertical), joined in order. The yellow line joins the giant step and baby step that share residue 1.)
+\alttext(Scatter plot with residue mod 101 across and step index up. Ten blue baby steps zig-zag upwards from residue 1 at j equals 0 through 2, 4, 8, 16, 32, 64, 27, 54 and 7. Four red giant steps go from 17 at i equals 0 to 95, 14 and finally 1 at i equals 3. A yellow vertical line at residue 1 joins the last giant step to the first baby step.)
+
+Since \(2\) has order 100 modulo 101, it is a primitive root and \(n=p-1=100\), so \(m=10\).
+The fourth giant step, \(17\cdot2^{-30}\equiv1\), matches the baby step \(2^0=1\), giving
+\(x=3\cdot10+0=30\), and indeed \(2^{30}\equiv17\pmod{101}\). The search used 10 baby steps and 4
+giant steps, 14 multiplications against the 31 needed to try \(2^0,2^1,\dots,2^{30}\) in order.
+The baby steps scatter across the residues with no visible order. That is the point: nothing
+about \(g^j\bmod p\) reveals \(j\) except the table, which is why the logarithm is hard.
+
+> Choosing the table size
+
+>> Worst case and average case
+
+With \(m\) baby steps, the table costs \(m\) multiplications and \(m\) entries of memory. The
+solution \(x\) is found at giant step \(i=\lfloor x/m\rfloor\), after \(\lfloor x/m\rfloor+1\) lookups,
+and no more than \(\lceil n/m\rceil\) are ever needed. The worst-case work is therefore
+
+$$
+W(m)=m+\Bigl\lceil\frac nm\Bigr\rceil\approx m+\frac nm,\qquad W'(m)=1-\frac n{m^2}=0\ \Rightarrow\ m^*=\sqrt n,\quad W(m^*)=2\sqrt n .
+$$
+\alttext(W of m equals m plus the ceiling of n over m, approximately m plus n over m. Its derivative 1 minus n over m squared is zero at m star equals root n, where W equals 2 root n.)
+
+If the secret \(x\) is uniform on \([0,n)\), the expected number of giant steps is
+\(\mathbb E\lfloor x/m\rfloor+1\approx n/(2m)+\tfrac12\). The expected work is
+
+$$
+A(m)\approx m+\frac n{2m}+\frac12,\qquad m^\dagger=\sqrt{n/2},\qquad A(m^\dagger)\approx\sqrt{2n}\approx1.41\sqrt n .
+$$
+\alttext(A of m is approximately m plus n over 2 m plus one half. It is minimised at m dagger equals root of n over 2, where A is about root 2 n, about 1.41 root n.)
+
+At \(m=\sqrt n\) the average is \(1.5\sqrt n\), only 6% above the optimum, so the textbook choice
+protects the worst case at little cost to the average. The table is the expensive part in
+practice: memory, not time, limits baby-step giant-step, and that is what Pollard's rho and
+kangaroo methods remove.
+
+The block solves 400 random logarithms modulo \(p=1{,}000{,}003\) (\(n=p-1\), \(\sqrt n\approx1000\))
+for 25 table sizes from 30 to 30,000.
+
+```{cpp, results="markdown", file="figures/baby_step_giant_step_tradeoff.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <random>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::uint64_t p = 1000003, n = p - 1, g = alg::primitive_root(p);
+  std::mt19937_64 rng(2026);
+  std::vector<std::uint64_t> secrets(400);
+  for (auto& x : secrets) x = rng() % n;
+
+  std::vector<double> lm, mean_work, max_work, worst_theory, mean_theory;
+  for (int k = 0; k <= 24; ++k) {
+    const auto m = static_cast<std::uint64_t>(std::round(30.0 * std::pow(1000.0, k / 24.0)));
+    double total = 0, worst = 0;
+    for (auto x : secrets) {
+      const auto t = alg::baby_step_giant_step_trace(g, alg::mod_pow(g, x, p), p, n, m);
+      if (!t.exists || t.exponent != x) std::print("mismatch at m = {}\n", m);
+      const double w = static_cast<double>(t.baby_steps + t.giant_steps);
+      total += w;
+      worst = std::max(worst, w);
+    }
+    const double md = static_cast<double>(m);
+    lm.push_back(std::log10(md));
+    mean_work.push_back(std::log10(total / secrets.size()));
+    max_work.push_back(std::log10(worst));
+    worst_theory.push_back(std::log10(md + std::ceil(n / md)));
+    mean_theory.push_back(std::log10(md + n / (2 * md) + 0.5));
+  }
+  const double sn = std::sqrt(static_cast<double>(n));
+  std::print("primitive root g = {}; sqrt(n) = {:.1f}, sqrt(n/2) = {:.1f}\n\n", g, sn, sn / std::sqrt(2.0));
+  std::print("| \\(m\\) | mean work | \\(m+n/(2m)+\\tfrac12\\) | max work | \\(m+\\lceil n/m\\rceil\\) |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t k = 0; k < lm.size(); k += 3)
+    std::print("| {:.0f} | {:.0f} | {:.0f} | {:.0f} | {:.0f} |\n", std::pow(10, lm[k]), std::pow(10, mean_work[k]),
+               std::pow(10, mean_theory[k]), std::pow(10, max_work[k]), std::pow(10, worst_theory[k]));
+  for (std::uint64_t m : {static_cast<std::uint64_t>(std::round(sn / std::sqrt(2.0))), static_cast<std::uint64_t>(std::ceil(sn))}) {
+    double total = 0;
+    for (auto x : secrets)
+      total += static_cast<double>(alg::baby_step_giant_step_trace(g, alg::mod_pow(g, x, p), p, n, m).giant_steps + m);
+    std::print("\nAt m = {}: mean work {:.0f} = {:.3f} sqrt(n).", m, total / secrets.size(), total / secrets.size() / sn);
+  }
+  std::print("\n");
+
+  dm::graphics::RPlot::create()
+      .lines(lm, worst_theory, "", dm::RGB{252, 165, 165}, 4.0)
+      .points(lm, max_work, "", dm::RGB{220, 38, 38}, 6.0)
+      .lines(lm, mean_theory, "", dm::RGB{147, 197, 253}, 4.0)
+      .points(lm, mean_work, "", dm::RGB{37, 99, 235}, 6.0)
+      .abline_v(std::log10(sn), dm::RGB{17, 24, 39}, 1.0)
+      .legend({"largest of 400", "m + ceil(n/m)", "mean of 400", "m + n/(2m) + 1/2"},
+              {dm::RGB{220, 38, 38}, dm::RGB{252, 165, 165}, dm::RGB{37, 99, 235}, dm::RGB{147, 197, 253}})
+      .y_limits(3, 5)
+      .title("Work against table size, p = 1,000,003")
+      .x_label("log10 m (baby steps); black line at sqrt(n)")
+      .y_label("log10 (baby + giant steps)")
+      .size(900, 520)
+      .save_svg("build/baby_step_giant_step_tradeoff.svg");
+}
+```
+// result_begin: markdown
+primitive root g = 2; sqrt(n) = 1000.0, sqrt(n/2) = 707.1
+
+| \(m\) | mean work | \(m+n/(2m)+\tfrac12\) | max work | \(m+\lceil n/m\rceil\) |
+| ---: | ---: | ---: | ---: | ---: |
+| 30 | 16297 | 16697 | 33182 | 33364 |
+| 71 | 6945 | 7114 | 14079 | 14156 |
+| 169 | 3057 | 3128 | 6054 | 6087 |
+| 400 | 1621 | 1651 | 2887 | 2901 |
+| 949 | 1464 | 1476 | 1997 | 2003 |
+| 2250 | 2467 | 2473 | 2693 | 2695 |
+| 5335 | 5427 | 5429 | 5522 | 5523 |
+| 12651 | 12690 | 12691 | 12730 | 12731 |
+| 30000 | 30017 | 30017 | 30034 | 30034 |
+
+At m = 707: mean work 1398 = 1.398 sqrt(n).
+At m = 1001: mean work 1489 = 1.489 sqrt(n).
+\image(figures/baby_step_giant_step_tradeoff.svg)
+// result_end
+
+\caption(Total steps (baby plus giant) against the table size \(m\) on log scales, for 400 random secrets modulo \(p=1{,}000{,}003\). Points: measured maximum (red) and mean (blue). Light curves: the worst-case and average formulas. The black line marks \(m=\sqrt n\).)
+\alttext(Two U-shaped curves on log scales against log10 m from 1.5 to 4.5. The red worst-case points follow m plus ceiling n over m, with minimum near 2000 steps at m equals 1000. The blue mean points follow m plus n over 2 m plus one half, lower on the left, with minimum near 1400 steps at m about 700. On the right the two curves merge along the line work equals m.)
+
+Every one of the 10,000 runs returned the planted secret, and the measurements sit on the
+formulas: the largest work over 400 secrets is within 1% of \(m+\lceil n/m\rceil\) at every
+table size, and the mean is within 3% of \(m+n/(2m)+\tfrac12\) everywhere. The two curves
+reach their minima at different places. The worst case is lowest at \(m=\sqrt n=1000\), where it
+is \(2\sqrt n\approx2000\). The mean is lowest near \(m=707=\sqrt{n/2}\), at
+\(1.40\sqrt n\), against \(1.49\sqrt n\) at \(m=1001\), as derived. To the right of the
+minimum the table dominates and both curves approach \(W=m\); to the left the giant steps
+dominate, and the average is half the worst case because the secret is, on average, halfway
+through the range.
+
+> Scaling and Diffie–Hellman
+
+Diffie–Hellman key exchange publishes \(g\) and \(A=g^a\bmod p\) and keeps \(a\) secret. Anyone who
+can solve \(g^x\equiv A\) recovers \(a\), so baby-step giant-step sets a floor on the size of
+\(p\): its \(O(\sqrt p)\) work must be out of reach. The block takes the first prime above
+\(10^k\) for \(k=3,\dots,12\), uses its smallest primitive root, and recovers 20 random secrets
+per prime, timing each. Trying exponents one by one is timed up to \(10^8\).
+
+```{cpp, results="markdown", file="figures/baby_step_giant_step_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <chrono>
+#include <random>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  using clock = std::chrono::steady_clock;
+  std::mt19937_64 rng(7);
+  std::vector<double> lp, lsteps, ltime, lp_brute, lbrute;
+
+  std::print("| \\(p\\) | \\(g\\) | mean steps | steps / \\(\\sqrt p\\) | BSGS ms | brute-force ms |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (int k = 3; k <= 12; ++k) {
+    std::uint64_t p = static_cast<std::uint64_t>(std::pow(10.0, k)) + 1;
+    while (!alg::is_probable_prime(p)) ++p;
+    const std::uint64_t g = alg::primitive_root(p);
+    double steps = 0, ms = 0, brute_ms = 0;
+    const int trials = 20, brute_trials = k <= 8 ? 5 : 0;
+    for (int t = 0; t < trials; ++t) {
+      const std::uint64_t secret = rng() % (p - 1), A = alg::mod_pow(g, secret, p);
+      const auto t0 = clock::now();
+      const auto r = alg::baby_step_giant_step_trace(g, A, p);
+      ms += std::chrono::duration<double, std::milli>(clock::now() - t0).count();
+      if (r.exponent != secret) std::print("mismatch at p = {}\n", p);
+      steps += static_cast<double>(r.baby_steps + r.giant_steps);
+      if (t < brute_trials) {
+        const auto b0 = clock::now();
+        std::uint64_t x = 0, v = 1;
+        while (v != A) {
+          v = static_cast<std::uint64_t>(static_cast<unsigned __int128>(v) * g % p);
+          ++x;
+        }
+        brute_ms += std::chrono::duration<double, std::milli>(clock::now() - b0).count();
+        if (x != secret) std::print("brute force mismatch\n");
+      }
+    }
+    steps /= trials;
+    ms /= trials;
+    lp.push_back(std::log10(static_cast<double>(p)));
+    lsteps.push_back(std::log10(steps));
+    ltime.push_back(std::log10(ms));
+    if (brute_trials) {
+      brute_ms /= brute_trials;
+      lp_brute.push_back(lp.back());
+      lbrute.push_back(std::log10(brute_ms));
+    }
+    std::print("| {} | {} | {:.0f} | {:.3f} | {:.3f} | {} |\n", p, g, steps, steps / std::sqrt(static_cast<double>(p)), ms,
+               brute_trials ? std::format("{:.3f}", brute_ms) : std::string("–"));
+  }
+  // Least-squares slope of log steps and log time against log p.
+  auto slope = [](const std::vector<double>& x, const std::vector<double>& y, std::size_t from) {
+    double mx = 0, my = 0, sxy = 0, sxx = 0;
+    const double n = static_cast<double>(x.size() - from);
+    for (std::size_t i = from; i < x.size(); ++i) { mx += x[i] / n; my += y[i] / n; }
+    for (std::size_t i = from; i < x.size(); ++i) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) * (x[i] - mx); }
+    return sxy / sxx;
+  };
+  std::print("\nSlope of log10 steps on log10 p: {:.3f}. Slope of log10 time (p ≥ 10^6): {:.3f}. "
+             "Slope of brute-force time (p ≥ 10^5): {:.3f}.\n",
+             slope(lp, lsteps, 0), slope(lp, ltime, 3), slope(lp_brute, lbrute, 2));
+
+  dm::graphics::RPlot::create()
+      .lines(lp, ltime, "", dm::RGB{37, 99, 235}, 2.0)
+      .points(lp, ltime, "", dm::RGB{37, 99, 235}, 6.0)
+      .lines(lp_brute, lbrute, "", dm::RGB{220, 38, 38}, 2.0)
+      .points(lp_brute, lbrute, "", dm::RGB{220, 38, 38}, 6.0)
+      .legend({"baby-step giant-step", "trying every exponent"}, {dm::RGB{37, 99, 235}, dm::RGB{220, 38, 38}})
+      .y_limits(-4, 4)
+      .title("Time to recover a Diffie-Hellman secret")
+      .x_label("log10 p")
+      .y_label("log10 milliseconds (mean)")
+      .size(900, 500)
+      .save_svg("build/baby_step_giant_step_scaling.svg");
+}
+```
+// result_begin: markdown
+| \(p\) | \(g\) | mean steps | steps / \(\sqrt p\) | BSGS ms | brute-force ms |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1009 | 11 | 48 | 1.511 | 0.002 | 0.002 |
+| 10007 | 5 | 152 | 1.516 | 0.006 | 0.021 |
+| 100003 | 2 | 462 | 1.462 | 0.017 | 0.194 |
+| 1000003 | 2 | 1500 | 1.500 | 0.054 | 1.359 |
+| 10000019 | 6 | 4972 | 1.572 | 0.155 | 22.766 |
+| 100000007 | 5 | 15580 | 1.558 | 0.539 | 270.065 |
+| 1000000007 | 5 | 48506 | 1.534 | 1.681 | – |
+| 10000000019 | 2 | 143222 | 1.432 | 7.358 | – |
+| 100000000003 | 2 | 477706 | 1.511 | 30.401 | – |
+| 1000000000039 | 3 | 1555227 | 1.555 | 169.468 | – |
+
+Slope of log10 steps on log10 p: 0.500. Slope of log10 time (p ≥ 10^6): 0.579. Slope of brute-force time (p ≥ 10^5): 1.066.
+\image(figures/baby_step_giant_step_scaling.svg)
+// result_end
+
+\caption(Mean time to recover a secret exponent against the size of the prime, on log scales: baby-step giant-step (blue) and trying exponents in order (red, up to \(10^8\)).)
+\alttext(Line chart of log10 mean milliseconds against log10 p. The red brute-force line rises with slope about 1 from minus 3 at p equals 1000 to plus 2.3 at 10 to the 8. The blue baby-step giant-step line rises with slope about one half, from minus 3 to plus 2 at 10 to the 12.)
+
+The number of steps is \(1.43\sqrt p\) to \(1.57\sqrt p\) at every size, close to the
+\(1.5\sqrt p\) expected at \(m=\sqrt n\), and its log-log slope is 0.500. Time grows a little
+faster (slope 0.56 from \(10^6\)) because the hash table outgrows the processor caches: at
+\(10^{12}\) it holds a million entries, and the time per step rises from about 20 ns to 65 ns.
+Trying exponents in order has slope 0.99, as expected for \(O(p)\), and is already 600 times
+slower at \(10^8\).
+
+A 40-bit prime (about \(10^{12}\)) gives no security: its secret falls in about 0.1 s. Each
+extra factor of 100 in \(p\) costs 10 times more time and memory, so a 2048-bit prime would need
+about \(2^{1024}\) steps. Real attacks on such primes use the index calculus instead, which is why
+recommended Diffie–Hellman primes are so much larger than \(\sqrt p\) alone would suggest.
+
+> Searching a subgroup
+
+The order of any \(g\) divides \(p-1\) (Lagrange's theorem). If \(g\) has prime order \(q\), then
+\(x\) only matters modulo \(q\), and the search can use \(n=q\): \(\sqrt q\) baby steps and at most
+\(\sqrt q\) giant steps, however large \(p\) is. Pohlig and Hellman turned this into an attack on
+any \(p\) for which \(p-1\) has only small prime factors: solve the logarithm in each prime-order
+subgroup and combine the answers with the Chinese remainder theorem. That is why Diffie–Hellman
+uses a *safe prime* \(p=2q+1\) with \(q\) prime, or a large prime-order subgroup.
+
+The block builds a 12-digit prime \(p=kq+1\) around the prime \(q=1{,}000{,}003\), takes
+\(g_q=g^{(p-1)/q}\), which has order \(q\), and compares searching with \(n=p-1\) and with \(n=q\).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <random>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  const std::uint64_t q = 1000003;
+  std::uint64_t k = 1000000;
+  while (!alg::is_probable_prime(k * q + 1)) ++k;
+  const std::uint64_t p = k * q + 1, g = alg::primitive_root(p), gq = alg::mod_pow(g, (p - 1) / q, p);
+  std::print("p = {} = {}·q + 1, primitive root g = {}, g_q = g^((p-1)/q) = {} has order {}.\n\n", p, k, g, gq,
+             alg::element_order(gq, p));
+
+  std::mt19937_64 rng(11);
+  double full = 0, sub = 0;
+  const int trials = 20;
+  for (int t = 0; t < trials; ++t) {
+    const std::uint64_t x = rng() % q, h = alg::mod_pow(gq, x, p);
+    const auto a = alg::baby_step_giant_step_trace(gq, h, p);     // n = p - 1
+    const auto b = alg::baby_step_giant_step_trace(gq, h, p, q);  // n = q
+    if (a.exponent != x || b.exponent != x) std::print("mismatch\n");
+    full += static_cast<double>(a.baby_steps + a.giant_steps);
+    sub += static_cast<double>(b.baby_steps + b.giant_steps);
+  }
+  std::print("| search size \\(n\\) | table size \\(m\\) | mean steps |\n| --- | ---: | ---: |\n");
+  std::print("| \\(p-1\\) | {} | {:.0f} |\n", alg::baby_step_giant_step_trace(gq, 1, p).table_size, full / trials);
+  std::print("| \\(q\\) | {} | {:.0f} |\n", alg::baby_step_giant_step_trace(gq, 1, p, q).table_size, sub / trials);
+}
+```
+// result_begin: markdown
+p = 1000047000133 = 1000044·q + 1, primitive root g = 2, g_q = g^((p-1)/q) = 866621728031 has order 1000003.
+
+| search size \(n\) | table size \(m\) | mean steps |
+| --- | ---: | ---: |
+| \(p-1\) | 1000024 | 1000025 |
+| \(q\) | 1001 | 1493 |
+// result_end
+
+Searching the subgroup of order \(q\) took 1,493 steps on average, \(1.49\sqrt q\). Searching
+as if \(g_q\) generated the whole group took about a million: the table of \(\sqrt{p-1}\approx10^6\)
+entries is built in full even though \(g_q\) has only \(q\) distinct powers, so the work is the
+table, and one giant step then always hits. Knowing the order of \(g\) saves a factor of 670
+here. The prime \(p=1{,}000{,}047{,}000{,}133\) is weak in exactly this way:
+\(p-1=1{,}000{,}044\cdot q\), and Pohlig–Hellman would solve logarithms to the base \(g\) one
+subgroup at a time.
+
+> Summary
+
+- Writing \(x=im+j\) turns \(g^x\equiv h\) into the collision \(g^j\equiv h\,g^{-mi}\) between
+  \(m\) stored baby steps and at most \(\lceil n/m\rceil\) giant steps.
+- The worst-case work \(m+n/m\) is minimised at \(m=\sqrt n\) (\(2\sqrt n\)), the mean
+  \(m+n/(2m)\) at \(m=\sqrt{n/2}\) (\(1.41\sqrt n\)); a sweep at \(p=1{,}000{,}003\) matches
+  both.
+- From \(10^3\) to \(10^{12}\) the work grows exactly as \(\sqrt p\); a 40-bit Diffie–Hellman
+  secret falls in about 0.1 s, against about half an hour for trying exponents in order.
+- Memory, \(\sqrt n\) table entries, is the real limit, and searching a prime-order subgroup
+  costs \(\sqrt q\) rather than \(\sqrt p\), the basis of Pohlig–Hellman.

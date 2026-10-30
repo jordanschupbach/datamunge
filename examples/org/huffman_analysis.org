@@ -42,7 +42,7 @@ symbols can always be made deepest siblings without loss. The resulting average 
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

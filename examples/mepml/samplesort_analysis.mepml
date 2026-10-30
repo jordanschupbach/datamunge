@@ -41,7 +41,7 @@ bucket; detecting that a bucket did not shrink and sorting it directly keeps the
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -101,7 +101,7 @@ which oversampled splitters keep close to equal.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

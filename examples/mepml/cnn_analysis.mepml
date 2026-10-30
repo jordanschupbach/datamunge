@@ -269,7 +269,7 @@ flattened pixels \-\- a fully-connected network.
 The entire analysis is one C\+\+ program against `datamunge`:
 `linalg::DenseMatrix` for the images, `stats::CNNClassifier` for the model
 (and `stats::MLPClassifier` plus `dstruct::DataFrame` for the
-fully-connected baseline), and `plot::RPlot` for every figure. No external
+fully-connected baseline), and `graphics::RPlot` for every figure. No external
 deep-learning framework is used.
 
 >> Program, presented as a literate whole
@@ -304,7 +304,7 @@ using datamunge::stats::CNNClassifier;
 using datamunge::stats::CNNClassifierOptions;
 using datamunge::stats::MLPClassifier;
 using datamunge::stats::MLPClassifierOptions;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr std::size_t H = 12, W = 12;
 
@@ -607,7 +607,7 @@ using datamunge::stats::CNNClassifier;
 using datamunge::stats::CNNClassifierOptions;
 using datamunge::stats::MLPClassifier;
 using datamunge::stats::MLPClassifierOptions;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr std::size_t H = 12, W = 12;
 

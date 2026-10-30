@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="799.65" height="485.9" viewBox="0 0 799.65 485.9" role="img" data-model-layout="left-to-right" data-model-style="LeNet" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Network in Network / report configuration</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">Network in Network / report configuration</text>
+<text x="24" y="51" font-size="12">8 nodes | 17058 unique learned values | LeNet / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#64B5CD"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#5ABF9A"/><text x="302" y="69" font-size="11">Pooling</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="432" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path class="feature-connector" d="M 125.25 154 L 149.25 154 M 125.25 255.25 L 149.25 271" stroke="#64B5CD" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="0" data-to="1" d="M 125.25 204.625 C 137.25 204.625 137.25 212.5 149.25 212.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 266.25 154 L 290.25 154 M 266.25 271 L 290.25 223" stroke="#5ABF9A" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="1" data-to="2" d="M 266.25 212.5 C 278.25 212.5 278.25 188.5 290.25 188.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 359.25 154 L 383.25 154 M 359.25 223 L 383.25 244" stroke="#64B5CD" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="2" data-to="3" d="M 359.25 188.5 C 371.25 188.5 371.25 199 383.25 199" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 473.25 154 L 497.25 154 M 473.25 244 L 497.25 220" stroke="#5ABF9A" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="3" data-to="4" d="M 473.25 199 C 485.25 199 485.25 187 497.25 187" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 563.25 154 L 589.9 154 M 563.25 220 L 589.9 195.5" stroke="#64B5CD" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="4" data-to="5" d="M 563.25 187 C 576.575 187 576.575 174.75 589.9 174.75" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 631.4 154 L 671.95 154 M 631.4 195.5 L 671.95 251" stroke="#5ABF9A" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="5" data-to="6" d="M 631.4 174.75 C 651.675 174.75 651.675 202.5 671.95 202.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 690.95 154 L 742.75 154 M 690.95 251 L 742.75 251" stroke="#6C8194" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="6" data-to="7" d="M 690.95 202.5 C 716.85 202.5 716.85 202.5 742.75 202.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 32 x 32 x 3]</title>
+<g id="model-glyph-0" data-left="24" data-right="125.25" data-face-width="96" data-face-height="96" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 24 159.25 L 29.25 154" fill="none"/>
+<rect class="feature-plane" data-plane="2" x="29.25" y="154" width="96" height="96" fill="#E69F00"/>
+<rect class="feature-plane" data-plane="1" x="26.625" y="156.625" width="96" height="96" fill="#E69F00"/>
+<rect class="feature-plane" data-plane="0" x="24" y="159.25" width="96" height="96" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(74.625 345.575) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 32 x 32 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>MLPconv block 1 [1 x 32 x 32 x 12]</title>
+<g id="model-glyph-1" data-left="149.25" data-right="266.25" data-face-width="96" data-face-height="96" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 149.25 175 L 170.25 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="170.25" y="154" width="96" height="96" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="4" x="166.05" y="158.2" width="96" height="96" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="3" x="161.85" y="162.4" width="96" height="96" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="2" x="157.65" y="166.6" width="96" height="96" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="1" x="153.45" y="170.8" width="96" height="96" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="0" x="149.25" y="175" width="96" height="96" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(207.75 365.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MLPconv block 1</text>
+<text x="0" y="12.35" font-size="13">[1 x 32 x 32 x 12]</text>
+</g></g>
+<g data-node="2" data-category="Pooling"><title>Max pool 1 [1 x 16 x 16 x 12]</title>
+<g id="model-glyph-2" data-left="290.25" data-right="359.25" data-face-width="48" data-face-height="48" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 290.25 175 L 311.25 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="311.25" y="154" width="48" height="48" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="4" x="307.05" y="158.2" width="48" height="48" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="3" x="302.85" y="162.4" width="48" height="48" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="2" x="298.65" y="166.6" width="48" height="48" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="1" x="294.45" y="170.8" width="48" height="48" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="0" x="290.25" y="175" width="48" height="48" fill="#5ABF9A"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(324.75 317.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Max pool 1</text>
+<text x="0" y="12.35" font-size="13">[1 x 16 x 16 x 12]</text>
+</g></g>
+<g data-node="3" data-category="Convolution"><title>MLPconv block 2 [1 x 16 x 16 x 24]</title>
+<g id="model-glyph-3" data-left="383.25" data-right="473.25" data-face-width="48" data-face-height="48" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 383.25 196 L 425.25 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="425.25" y="154" width="48" height="48" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="4" x="416.85" y="162.4" width="48" height="48" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="3" x="408.45" y="170.8" width="48" height="48" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="2" x="400.05" y="179.2" width="48" height="48" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="1" x="391.65" y="187.6" width="48" height="48" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="0" x="383.25" y="196" width="48" height="48" fill="#64B5CD"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(428.25 338.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MLPconv block 2</text>
+<text x="0" y="12.35" font-size="13">[1 x 16 x 16 x 24]</text>
+</g></g>
+<g data-node="4" data-category="Pooling"><title>Max pool 2 [1 x 8 x 8 x 24]</title>
+<g id="model-glyph-4" data-left="497.25" data-right="563.25" data-face-width="24" data-face-height="24" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 497.25 196 L 539.25 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="539.25" y="154" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="4" x="530.85" y="162.4" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="3" x="522.45" y="170.8" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="2" x="514.05" y="179.2" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="1" x="505.65" y="187.6" width="24" height="24" fill="#5ABF9A"/>
+<rect class="feature-plane" data-plane="0" x="497.25" y="196" width="24" height="24" fill="#5ABF9A"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(530.25 306.1) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Max pool 2</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 24]</text>
+</g></g>
+<g data-node="5" data-category="Convolution"><title>MLPconv block 3 / class maps [1 x 8 x 8 x 10]</title>
+<g id="model-glyph-5" data-left="589.9" data-right="631.4" data-face-width="24" data-face-height="24" data-depth="17.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 589.9 171.5 L 607.4 154" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="607.4" y="154" width="24" height="24" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="4" x="603.9" y="157.5" width="24" height="24" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="3" x="600.4" y="161" width="24" height="24" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="2" x="596.9" y="164.5" width="24" height="24" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="1" x="593.4" y="168" width="24" height="24" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="0" x="589.9" y="171.5" width="24" height="24" fill="#64B5CD"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(610.65 332.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MLPconv block 3 / class maps</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 10]</text>
+</g></g>
+<g data-node="6" data-category="Pooling"><title>Global spatial average [1 x 10]</title>
+<g id="model-glyph-6" data-left="671.95" data-right="690.95" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 671.95 155 L 672.95 154" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="671.95" y="155" width="18" height="96" fill="#5ABF9A"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(681.45 362.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Global spatial average</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+<g data-node="7" data-category="Output"><title>Output [1 x 10]</title>
+<g id="model-glyph-7" data-left="742.75" data-right="761.75" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 742.75 155 L 743.75 154" fill="none"/>
+<rect class="feature-plane" data-plane="0" x="742.75" y="155" width="18" height="96" fill="#6C8194"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(752.25 303.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+</g></svg>

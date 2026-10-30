@@ -22,6 +22,10 @@ public:
     ///        to the mode found, and returns the log-posterior density there.
     double optimize(optim::DifferentiableFunction& log_posterior, std::vector<double>& coordinates) const;
 
+    /// @brief The options this MAP was configured with.
+    /// @return The stored options.
+    [[nodiscard]] const MAPOptions& options() const noexcept { return options_; }
+
 private:
     MAPOptions options_;
 };

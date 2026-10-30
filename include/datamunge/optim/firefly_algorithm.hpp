@@ -39,6 +39,10 @@ public:
     double optimize(ArbitraryFunction& function, std::vector<double>& coordinates,
                      const std::vector<double>& lower_bound, const std::vector<double>& upper_bound) const;
 
+    /// @brief The options this FireflyAlgorithm was configured with.
+    /// @return The stored options.
+    [[nodiscard]] const FireflyAlgorithmOptions& options() const noexcept { return options_; }
+
 private:
     FireflyAlgorithmOptions options_;
 };

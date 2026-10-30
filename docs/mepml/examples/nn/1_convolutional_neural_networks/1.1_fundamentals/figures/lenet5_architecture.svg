@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1314.5" height="559.25" viewBox="0 0 1314.5 559.25" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">LeNet-5: sparse C3 and learned subsampling</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">LeNet-5: sparse C3 and learned subsampling</text>
+<text x="24" y="51" font-size="12">10 nodes | 60000 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#F0E442"/><text x="172" y="69" font-size="11">Activation</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#8B80C9"/><text x="302" y="69" font-size="11">Block</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="432" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="56.9,154 118.8,154 118.8,299 56.9,299" fill="#8B80C9" fill-opacity="0.08"/>
+<path data-from="0" data-to="1" d="M 56.9 226.5 C 87.85 226.5 87.85 226.5 118.8 226.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="263.8,154 311.8,154 311.8,283.2 263.8,299" fill="#F0E442" fill-opacity="0.08"/>
+<path data-from="1" data-to="2" d="M 263.8 226.5 C 287.8 226.5 287.8 218.6 311.8 218.6" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="441,154 496.2,154 496.2,220.2 441,283.2" fill="#8B80C9" fill-opacity="0.08"/>
+<path data-from="2" data-to="3" d="M 441 218.6 C 468.6 218.6 468.6 187.1 496.2 187.1" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="562.4,154 631.133,154 631.133,207.533 562.4,220.2" fill="#8B80C9" fill-opacity="0.08"/>
+<path data-from="3" data-to="4" d="M 562.4 187.1 C 596.767 187.1 596.767 180.767 631.133 180.767" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="684.667,154 770.983,154 770.983,185.033 684.667,207.533" fill="#8B80C9" fill-opacity="0.08"/>
+<path data-from="4" data-to="5" d="M 684.667 180.767 C 727.825 180.767 727.825 169.517 770.983 169.517" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="802.017,154 880.85,154 880.85,222.5 802.017,185.033" fill="#F0E442" fill-opacity="0.08"/>
+<path data-from="5" data-to="6" d="M 802.017 169.517 C 841.433 169.517 841.433 188.25 880.85 188.25" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="949.35,154 1034.2,154 1034.2,170.429 949.35,222.5" fill="#F0E442" fill-opacity="0.08"/>
+<path data-from="6" data-to="7" d="M 949.35 188.25 C 991.775 188.25 991.775 162.214 1034.2 162.214" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1053.2,154 1154.35,154 1154.35,156.837 1053.2,170.429" fill="#8B80C9" fill-opacity="0.08"/>
+<path data-from="7" data-to="8" d="M 1053.2 162.214 C 1103.78 162.214 1103.78 155.418 1154.35 155.418" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1173.35,154 1257.6,154 1257.6,156.837 1173.35,156.837" fill="#6C8194" fill-opacity="0.08"/>
+<path data-from="8" data-to="9" d="M 1173.35 155.418 C 1215.47 155.418 1215.47 155.418 1257.6 155.418" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 784]</title>
+<g id="model-glyph-0" data-left="37.9" data-right="56.9" data-face-width="18" data-face-height="144" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="37.9,155 38.9,154 56.9,154 55.9,155" fill="#E69F00"/>
+<polygon class="volume-side" points="55.9,155 56.9,154 56.9,298 55.9,299" fill="#E69F00"/>
+<rect class="volume-front" x="37.9" y="155" width="18" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(47.4 355.525) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 784]</text>
+</g></g>
+<g data-node="1" data-category="Block"><title>Pad and intensity rescale [1 x 32 x 32 x 1]</title>
+<g id="model-glyph-1" data-left="118.8" data-right="263.8" data-face-width="144" data-face-height="144" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="118.8,155 119.8,154 263.8,154 262.8,155" fill="#8B80C9"/>
+<polygon class="volume-side" points="262.8,155 263.8,154 263.8,298 262.8,299" fill="#8B80C9"/>
+<rect class="volume-front" x="118.8" y="155" width="144" height="144" fill="#8B80C9"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(191.3 423.125) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Pad and intensity rescale</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 32 x 32 x 1]</text>
+</g></g>
+<g data-node="2" data-category="Activation"><title>C1: 5x5, scaled tanh [1 x 28 x 28 x 6]</title>
+<g id="model-glyph-2" data-left="311.8" data-right="441" data-face-width="126" data-face-height="126" data-depth="3.2" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="311.8,157.2 315,154 441,154 437.8,157.2" fill="#F0E442"/>
+<polygon class="volume-side" points="437.8,157.2 441,154 441,280 437.8,283.2" fill="#F0E442"/>
+<rect class="volume-front" x="311.8" y="157.2" width="126" height="126" fill="#F0E442"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(376.4 386.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">C1: 5x5, scaled tanh</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 28 x 28 x 6]</text>
+<text x="0" y="29.25" font-size="13">156 learned values</text>
+</g></g>
+<g data-node="3" data-category="Block"><title>S2: learned subsampling [1 x 14 x 14 x 6]</title>
+<g id="model-glyph-3" data-left="496.2" data-right="562.4" data-face-width="63" data-face-height="63" data-depth="3.2" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="496.2,157.2 499.4,154 562.4,154 559.2,157.2" fill="#8B80C9"/>
+<polygon class="volume-side" points="559.2,157.2 562.4,154 562.4,217 559.2,220.2" fill="#8B80C9"/>
+<rect class="volume-front" x="496.2" y="157.2" width="63" height="63" fill="#8B80C9"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(529.3 335.875) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">S2: learned subsampling</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 14 x 14 x 6]</text>
+<text x="0" y="29.25" font-size="13">12 learned values</text>
+</g></g>
+<g data-node="4" data-category="Block"><title>C3: 60 sparse connections [1 x 10 x 10 x 16]</title>
+<g id="model-glyph-4" data-left="631.133" data-right="684.667" data-face-width="45" data-face-height="45" data-depth="8.53333" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="631.133,162.533 639.667,154 684.667,154 676.133,162.533" fill="#8B80C9"/>
+<polygon class="volume-side" points="676.133,162.533 684.667,154 684.667,199 676.133,207.533" fill="#8B80C9"/>
+<rect class="volume-front" x="631.133" y="162.533" width="45" height="45" fill="#8B80C9"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(657.9 331.658) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">C3: 60 sparse connections</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 10 x 10 x 16]</text>
+<text x="0" y="29.25" font-size="13">1516 learned values</text>
+</g></g>
+<g data-node="5" data-category="Block"><title>S4: learned subsampling [1 x 5 x 5 x 16]</title>
+<g id="model-glyph-5" data-left="770.983" data-right="802.017" data-face-width="22.5" data-face-height="22.5" data-depth="8.53333" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="770.983,162.533 779.517,154 802.017,154 793.483,162.533" fill="#8B80C9"/>
+<polygon class="volume-side" points="793.483,162.533 802.017,154 802.017,176.5 793.483,185.033" fill="#8B80C9"/>
+<rect class="volume-front" x="770.983" y="162.533" width="22.5" height="22.5" fill="#8B80C9"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(786.5 300.708) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">S4: learned subsampling</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 5 x 5 x 16]</text>
+<text x="0" y="29.25" font-size="13">32 learned values</text>
+</g></g>
+<g data-node="6" data-category="Activation"><title>C5: 5x5, scaled tanh [1 x 1 x 1 x 120]</title>
+<g id="model-glyph-6" data-left="880.85" data-right="949.35" data-face-width="4.5" data-face-height="4.5" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="880.85,218 944.85,154 949.35,154 885.35,218" fill="#F0E442"/>
+<polygon class="volume-side" points="885.35,218 949.35,154 949.35,158.5 885.35,222.5" fill="#F0E442"/>
+<rect class="volume-front" x="880.85" y="218" width="4.5" height="4.5" fill="#F0E442"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(915.1 325.5) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">C5: 5x5, scaled tanh</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 1 x 1 x 120]</text>
+<text x="0" y="29.25" font-size="13">48120 learned values</text>
+</g></g>
+<g data-node="7" data-category="Activation"><title>F6: 84, scaled tanh [1 x 84]</title>
+<g id="model-glyph-7" data-left="1034.2" data-right="1053.2" data-face-width="18" data-face-height="15.4286" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1034.2,155 1035.2,154 1053.2,154 1052.2,155" fill="#F0E442"/>
+<polygon class="volume-side" points="1052.2,155 1053.2,154 1053.2,169.429 1052.2,170.429" fill="#F0E442"/>
+<rect class="volume-front" x="1034.2" y="155" width="18" height="15.4286" fill="#F0E442"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(1043.7 273.429) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">F6: 84, scaled tanh</text>
+<text x="0" y="-4.55" font-size="13">Composite stage</text>
+<text x="0" y="12.35" font-size="13">[1 x 84]</text>
+<text x="0" y="29.25" font-size="13">10164 learned values</text>
+</g></g>
+<g data-node="8" data-category="Block"><title>Fixed-prototype RBF logits [1 x 10]</title>
+<g id="model-glyph-8" data-left="1154.35" data-right="1173.35" data-face-width="18" data-face-height="1.83673" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1154.35,155 1155.35,154 1173.35,154 1172.35,155" fill="#8B80C9"/>
+<polygon class="volume-side" points="1172.35,155 1173.35,154 1173.35,155.837 1172.35,156.837" fill="#8B80C9"/>
+<rect class="volume-front" x="1154.35" y="155" width="18" height="1.83673" fill="#8B80C9"/>
+</g>
+<g id="model-label-8" data-node-label="8" transform="translate(1163.85 285.187) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Fixed-prototype RBF logits</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 10]</text>
+</g></g>
+<g data-node="9" data-category="Output"><title>Output [1 x 10]</title>
+<g id="model-glyph-9" data-left="1257.6" data-right="1276.6" data-face-width="18" data-face-height="1.83673" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1257.6,155 1258.6,154 1276.6,154 1275.6,155" fill="#6C8194"/>
+<polygon class="volume-side" points="1275.6,155 1276.6,154 1276.6,155.837 1275.6,156.837" fill="#6C8194"/>
+<rect class="volume-front" x="1257.6" y="155" width="18" height="1.83673" fill="#6C8194"/>
+</g>
+<g id="model-label-9" data-node-label="9" transform="translate(1267.1 209.137) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+</g></svg>

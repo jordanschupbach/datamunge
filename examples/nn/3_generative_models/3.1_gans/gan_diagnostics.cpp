@@ -29,6 +29,7 @@
 // <variant>_frechet.npz, <variant>.png, metrics.json) go to
 // output/nn/models/gan_diagnostics. Options: data=PATH features=PATH out=PATH.
 
+#include "common/dataset_assets.hpp"
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -103,7 +104,7 @@ gan::Arrays LoadNpz(const std::filesystem::path& path) {
 void Run(const std::filesystem::path& data, const std::filesystem::path& recorded, const std::filesystem::path& root) {
   std::filesystem::create_directories(root);
   Algebra(root);
-  const auto test = nn::load_cifar10(data.string(), "test"), train = nn::load_cifar10(data.string(), "train");
+  const auto test = dataset_assets::LoadCifar10(data.string(), "test"), train = dataset_assets::LoadCifar10(data.string(), "train");
   std::vector<std::int64_t> rows;
   for (int i = 64; i < 96; ++i) rows.push_back(i);
   const Tensor ref = Pixels(Rows(test.images, rows));

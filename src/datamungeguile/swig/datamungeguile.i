@@ -58,6 +58,7 @@
 %ignore datamunge::stats::LDAPrediction;
 %ignore datamunge::datasets::iris;
 %ignore datamunge::datasets::penguins;
+%ignore datamunge::datasets::tooth_growth;
 %ignore datamunge::stats::SVM;
 %ignore datamunge::stats::SVMOptions;
 %ignore datamunge::stats::SVMPrediction;
@@ -131,6 +132,7 @@
 %ignore datamunge::bayes::student_t_lpdf;
 %ignore datamunge::bayes::bernoulli_logit_lpmf;
 %ignore datamunge::bayes::poisson_log_lpmf;
+%ignore datamunge::bayes::laplace_lpdf;
 // Guile's std_vector.i scalar fast-path (specialize_stl_vector) is keyed to a fixed list of
 // exact literal spellings (unsigned long, double, std::string, ...) and doesn't textually
 // match the "std::size_t" typedef even though they're the same underlying type on this
@@ -244,6 +246,7 @@ namespace std {
 %include "datamunge/optim/rbf_gaussian_process_surrogate.hpp"
 %include "datamunge/bayes/map.hpp"
 %include "datamunge/bayes/hmc.hpp"
+%ignore datamunge::bayes::NUTS::sample_chains;
 %include "datamunge/bayes/nuts.hpp"
 %include "datamunge/bayes/rwm.hpp"
 %include "datamunge/bayes/gibbs.hpp"

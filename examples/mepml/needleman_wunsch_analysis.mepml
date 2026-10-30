@@ -43,7 +43,7 @@ via an `AlignmentScoring`.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The dynamic program
@@ -190,7 +190,7 @@ diagonal steps and one upward (gap) step.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

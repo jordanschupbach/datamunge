@@ -41,7 +41,7 @@ remains, and so on. Two linear-time DFS passes give the whole decomposition in \
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

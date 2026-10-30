@@ -59,7 +59,7 @@ the digit alphabet, so each key has exactly \(d = 8\) digits.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Repeated stable counting sort, least digit first

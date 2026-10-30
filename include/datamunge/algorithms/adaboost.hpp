@@ -52,9 +52,16 @@ struct AdaBoostModel {
     std::vector<double>        weak_error;      ///< Weighted error \f$\varepsilon_t\f$ of each weak learner.
 };
 
+/// @brief Implementation helpers for adaboost_train().
 namespace detail {
 
-/// Best weighted-error decision stump for the current example weights.
+/// \brief Best weighted-error decision stump for the current example weights.
+///
+/// For each feature the examples are sorted once and the thresholds swept in increasing order
+/// while accumulating the weight of each class on the "<=" side, so a feature costs
+/// \f$O(n\log n)\f$ rather than \f$O(n^2)\f$. Candidate thresholds are one below the minimum,
+/// the midpoints between consecutive distinct values, and the maximum; ties keep the first
+/// stump found (by feature, then threshold, then polarity +1 before -1).
 inline DecisionStump train_stump(const std::vector<std::vector<double>>& X, const std::vector<int>& y,
                                  const std::vector<double>& w, double& best_error) {
     const std::size_t n   = X.size();
@@ -62,30 +69,34 @@ inline DecisionStump train_stump(const std::vector<std::vector<double>>& X, cons
     DecisionStump     best;
     best_error = std::numeric_limits<double>::infinity();
 
-    for (std::size_t j = 0; j < dim; ++j) {
-        // Candidate thresholds: sorted unique values of feature j, plus one below the minimum.
-        std::vector<double> vals;
-        vals.reserve(n);
-        for (std::size_t i = 0; i < n; ++i) vals.push_back(X[i][j]);
-        std::sort(vals.begin(), vals.end());
-        vals.erase(std::unique(vals.begin(), vals.end()), vals.end());
-        std::vector<double> thresholds;
-        thresholds.push_back(vals.front() - 1.0);  // everything on the ">" side
-        for (std::size_t k = 0; k + 1 < vals.size(); ++k) thresholds.push_back(0.5 * (vals[k] + vals[k + 1]));
-        thresholds.push_back(vals.back());
+    double pos_total = 0.0, neg_total = 0.0;
+    for (std::size_t i = 0; i < n; ++i) (y[i] > 0 ? pos_total : neg_total) += w[i];
 
-        for (double thr : thresholds)
-            for (int pol : {1, -1}) {
-                double err = 0.0;
-                for (std::size_t i = 0; i < n; ++i) {
-                    const int pred = (X[i][j] <= thr) ? pol : -pol;
-                    if (pred != y[i]) err += w[i];
-                }
-                if (err < best_error) {
-                    best_error = err;
-                    best       = {j, thr, pol, 0.0};
-                }
+    std::vector<std::size_t> order(n);
+    for (std::size_t j = 0; j < dim; ++j) {
+        for (std::size_t i = 0; i < n; ++i) order[i] = i;
+        std::sort(order.begin(), order.end(), [&](std::size_t a, std::size_t b) { return X[a][j] < X[b][j]; });
+        double     left_pos = 0.0, left_neg = 0.0;
+        const auto consider = [&](double thr) {
+            // Polarity +1 predicts +1 on the "<=" side; polarity -1 the reverse.
+            const double err_plus  = left_neg + (pos_total - left_pos);
+            const double err_minus = left_pos + (neg_total - left_neg);
+            if (err_plus < best_error) {
+                best_error = err_plus;
+                best       = {j, thr, 1, 0.0};
             }
+            if (err_minus < best_error) {
+                best_error = err_minus;
+                best       = {j, thr, -1, 0.0};
+            }
+        };
+        consider(X[order.front()][j] - 1.0);  // everything on the ">" side
+        std::size_t k = 0;
+        while (k < n) {
+            const double v = X[order[k]][j];
+            for (; k < n && X[order[k]][j] == v; ++k) (y[order[k]] > 0 ? left_pos : left_neg) += w[order[k]];
+            consider(k < n ? 0.5 * (v + X[order[k]][j]) : v);
+        }
     }
     return best;
 }
@@ -111,6 +122,7 @@ inline AdaBoostModel adaboost_train(const std::vector<std::vector<double>>& feat
     if (n == 0) return model;
 
     std::vector<double> w(n, 1.0 / static_cast<double>(n));
+    std::vector<double> score(n, 0.0);
 
     for (std::size_t t = 0; t < num_rounds; ++t) {
         double        eps   = 0.0;
@@ -133,13 +145,11 @@ inline AdaBoostModel adaboost_train(const std::vector<std::vector<double>>& feat
         if (norm > 0.0)
             for (double& wi : w) wi /= norm;
 
-        // Ensemble training error so far.
+        // Ensemble training error so far, from the running scores F_i = sum_t alpha_t h_t(x_i).
         std::size_t wrong = 0;
         for (std::size_t i = 0; i < n; ++i) {
-            double s = 0.0;
-            for (const auto& st : model.stumps) s += st.alpha * static_cast<double>(st.classify(features[i]));
-            const int pred = s >= 0.0 ? 1 : -1;
-            if (pred != labels[i]) ++wrong;
+            score[i] += stump.alpha * static_cast<double>(stump.classify(features[i]));
+            if ((score[i] >= 0.0 ? 1 : -1) != labels[i]) ++wrong;
         }
         model.training_error.push_back(static_cast<double>(wrong) / static_cast<double>(n));
         if (eps < kEpsFloor) break;  // a perfect stump already separates the (reweighted) data

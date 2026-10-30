@@ -37,7 +37,7 @@ for writes (expensive), the opposite bias to insertion sort.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Instrumented copy returning (comparisons, swaps).
 static std::pair<long, long> selection_counts(std::vector<int> a) {

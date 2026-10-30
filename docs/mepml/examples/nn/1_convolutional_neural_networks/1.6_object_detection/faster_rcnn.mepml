@@ -1,0 +1,529 @@
+//? Title: Faster R-CNN learned proposals and joint training
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A shared-feature detector still needs a way to propose object locations. This report replaces classical proposals with a tensor region proposal network, checks anchor assignment and the full approximate joint Adam loop, and plots selected held-out proposals and detections alongside validation learning curves.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/faster_rcnn.cpp`.
+
+> The method
+
+Faster R-CNN shares image features between an anchor-scoring/refining RPN and a Fast R-CNN head. The training objective sums proposal and region losses. Discrete proposal selection is detached, so the shared backbone receives both tasks while RPN-specific parameters learn from their own targets. The compact source architecture is fitted fully below.
+
+The editable concept diagram is `diagrams/faster_rcnn_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/faster_rcnn_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/faster_rcnn_concept.tikz > build/faster_rcnn_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/faster_rcnn_concept.svg build/faster_rcnn_concept.dvi > build/faster_rcnn_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/faster_rcnn_concept.svg)
+// result_end
+\caption(Faster R-CNN learned proposals and joint training)
+\alttext(Shared image features; Score nine anchors; then Detached proposals; Sample and pool RoIs; then RPN plus head loss; Explicit joint Adam.)
+
+> Executed tensor architecture
+
+One fixed ROI probes the box/class head alongside the image backbone. The diagram traces tensor prediction branches; proposal selection and NMS are discrete postprocessing.
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/faster_rcnn_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(17), state(18);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        const auto features = m::StrideFourDetectionBackbone(p, image);
+        const auto boxes    = n::tensor({0., 0., 16., 16.}, {1, 4});
+        const auto ids      = n::zeros({1}, n::DType::Int64);
+        const auto head     = m::DetectionRoiHead(p, features, boxes / 64., ids);
+        const auto rpn      = m::BuildRpn(p, {{features, 64, 16, 9}});
+        return n::concat(
+            {head.logits.reshape({1, -1}),
+             head.deltas.reshape({1, -1}),
+             rpn.objectness_logits.reshape({1, -1}),
+             rpn.deltas.reshape({1, -1})},
+            1);
+      },
+      "Faster R-CNN learned proposals and joint training");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 1}), options);
+  diagram.save_svg("build/faster_rcnn_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+26 displayed nodes; 1026624 reachable learned values.
+\image(figures/faster_rcnn_architecture.svg)
+// result_end
+\caption(Executed faster rcnn tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right faster rcnn architecture with rotated names and exact output shapes.)
+
+> Simple example: anchors on a shared stride grid
+
+At each of 16x16 stride-four feature cells, the RPN scores nine anchors: sizes
+12, 20 and 30, each at height/width ratios .5, 1 and 2. That makes 2304 anchors.
+The anchor centred at feature row 5, column 7 with size 20 and ratio one is
+`[12,20,32,40]` in pixel `(ymin,xmin,ymax,xmax)` coordinates.
+
+A maximum IoU at least .7 makes an anchor positive; below .3 means negative;
+the interval between is ignored. Each overlapping target also forces its best
+anchor positive, with later targets winning conflicts. Matching is discrete.
+The maps below show maximum overlap and the fraction of positive anchor types
+at every cell for a target exactly equal to that known anchor.
+
+```{cpp, results="markdown", file="figures/faster_rcnn_anchors.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  const auto anchors = n::anchor_grid(16, 16, 4, {12, 20, 30}, {.5, 1, 2});
+  const int index = (5 * 16 + 7) * 9 + 4;
+  const auto target = n::slice_axis(anchors, 0, index, index + 1),
+             iou = n::box_iou(anchors, target);
+  const auto match = n::match_boxes(iou, .7, .3, true);
+  if (match.at({index}) != 0 || n::max(n::abs(n::encode_boxes(target, target))).item() > 1e-6)
+    return 1;
+  const auto overlap = n::max(iou.reshape({16, 16, 9}), {2}),
+             positive = n::mean(
+                 n::greater_equal(match, 0.).to(n::DType::Float32).reshape({16, 16, 9}), {2});
+  auto a = n::plot_tensor_map(n::reverse(overlap, {0}), 0, 1);
+  a.title("Best anchor IoU per cell")
+      .x_label("feature column")
+      .y_label("feature row")
+      .x_limits(-.5, 15.5)
+      .y_limits(-.5, 15.5);
+  auto b = n::plot_tensor_map(n::reverse(positive, {0}), 0, 1);
+  b.title("Positive fraction of nine anchors")
+      .x_label("feature column")
+      .y_label("feature row")
+      .x_limits(-.5, 15.5)
+      .y_limits(-.5, 15.5);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1200, 550).fit_panels().save_svg(
+      "build/faster_rcnn_anchors.svg");
+  std::print("2304 anchors; selected target [{:.0f},{:.0f},{:.0f},{:.0f}] at index {}. "
+             "Positive {}, ignored {}, negative {}; self-encoding is zero.\n",
+             target.at({0, 0}), target.at({0, 1}), target.at({0, 2}), target.at({0, 3}), index,
+             n::count_nonzero(n::greater_equal(match, 0.)).item(),
+             n::count_nonzero(n::equal(match, -2.)).item(),
+             n::count_nonzero(n::equal(match, -1.)).item());
+}
+```
+// result_begin: markdown
+2304 anchors; selected target [12,20,32,40] at index 787. Positive 1, ignored 132, negative 2171; self-encoding is zero.
+\image(figures/faster_rcnn_anchors.svg)
+// result_end
+\caption(The target matches one known anchor exactly. The overlap map and positive-anchor fractions reveal which neighboring cells/types contribute; green denotes zero and white one.)
+\alttext(The target matches one known anchor exactly. The overlap map and positive-anchor fractions reveal which neighboring cells/types contribute; green denotes zero and white one.)
+
+> Actual digit-scene data
+
+The bounded split matches the preceding detector reports: 64 fit and 16 validation
+scenes from the first 2048 official MNIST training digits, seed 11; eight test
+scenes from the first 512 official test digits, seed 22. Tensor bilinear sampling,
+byte quantization, tight-box reductions and maximum compositing generate 64x64
+images. Green boxes below are actual training annotations. Neither classical
+component proposals nor test targets enter the learned proposal model.
+
+```{cpp, results="markdown", file="figures/faster_rcnn_scenes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto train = n::load_mnist((cache / "mnist").string(), "train");
+  n::models::DetectionSceneConfig cfg;
+  cfg.scenes = 80;
+  cfg.seed = 11;
+  const auto scenes = n::models::MakeTensorDetectionScenes(
+      n::slice_axis(train.images, 0, 0, 2048), n::slice_axis(train.labels, 0, 0, 2048), cfg);
+
+  std::vector<n::Tensor> boxes(scenes.boxes.begin(), scenes.boxes.begin() + 8);
+  const auto preview = n::models::DrawDetectionBoxes(n::slice_axis(scenes.images, 0, 0, 8),
+                                                     boxes, {.1, 1., .2});
+  std::filesystem::create_directories("build");
+  n::save_image_grid(preview, "build/faster_rcnn_scenes.png", 4, 0., 1., 4, 1., 2);
+  std::int64_t objects = 0;
+  for (const auto &b : scenes.boxes)
+    objects += b.shape()[0];
+  std::print("80 generated training/validation scenes; {} accepted digits. Preview: first "
+             "eight training scenes with tight green boxes.\n",
+             objects);
+}
+```
+// result_begin: markdown
+80 generated training/validation scenes; 195 accepted digits. Preview: first eight training scenes with tight green boxes.
+\image(figures/faster_rcnn_scenes.png)
+// result_end
+\caption(The actual first eight training scenes with tight green ground-truth boxes. Digits can touch; RPN learning replaces connected-component proposals rather than assuming isolated foreground components.)
+\alttext(The actual first eight training scenes with tight green ground-truth boxes. Digits can touch; RPN learning replaces connected-component proposals rather than assuming isolated foreground components.)
+
+> Approximate joint RPN and RoI optimization
+
+The shared four-convolution backbone produces 16x16x64 features. The RPN adds a
+128-channel 3x3 ReLU layer, nine 1x1 objectness scores and 36 box offsets per cell.
+A shared RoI head pools 14x14 bilinear samples to 7x7 and uses two 256-unit dense
+ReLUs, eleven classes and ten class-specific regressors. The complete source
+model has 1026624 learned scalars, all created before Adam. There is no batch norm,
+dropout, moving model state or pretrained checkpoint.
+
+Each training step uses one backbone/RPN forward pass. It detaches proposals
+from those predictions: top 300 scores, decoded boxes clipped to the image,
+minimum side four, then IoU .7 NMS to at most 100. Equal score ties prefer the
+lower anchor index, an explicit stable choice where the source partial sort did
+not promise ties. The head samples 64 regions per image, at most one quarter
+foreground, adding ground-truth and random boxes only while fitting.
+
+RPN targets sample up to 128 anchors/image, at most half positive. The RPN loss
+is stable logistic BCE plus positive-anchor Smooth-L1, separately normalized by
+sample counts. The RoI loss is mean class CE plus positive selected-class
+Smooth-L1. The visible objective adds these two losses and `.00005*sum(kernel²)`;
+biases are excluded. Adam uses .001, two images per minibatch and five epochs (160 updates,
+kept short so the report builds quickly).
+Validation inclusive VOC AP50 selects the checkpoint, with strict improvement.
+
+This is **approximate joint training**: head gradients reach the shared features,
+and RPN gradients flow through its own losses. The head does not differentiate
+through proposal ranking, decoding, matching or NMS into RPN parameters. The
+code shows the detached proposal call between the differentiable forward and
+losses. Validation/test proposals use only the RPN, with no appended targets.
+
+```{cpp, results="markdown", file="figures/faster_rcnn_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto train = n::load_mnist((cache / "mnist").string(), "train");
+  m::DetectionSceneConfig cfg;
+  cfg.scenes = 80;
+  cfg.seed = 11;
+  const auto scenes = m::MakeTensorDetectionScenes(
+      n::slice_axis(train.images, 0, 0, 2048), n::slice_axis(train.labels, 0, 0, 2048), cfg);
+
+  const auto anchors = n::anchor_grid(16, 16, 4, {12, 20, 30}, {.5, 1, 2});
+  std::vector<std::int64_t> fit_rows(64), val_rows(16);
+  std::iota(fit_rows.begin(), fit_rows.end(), 0);
+  std::iota(val_rows.begin(), val_rows.end(), 64);
+  n::ParameterStore p(17);
+  {
+    n::NoGradGuard guard;
+    const auto f = m::StrideFourDetectionBackbone(p, n::zeros({1, 64, 64, 1}));
+    m::BuildRpn(p, {{f, 64, 16, 9}});
+    m::DetectionRoiHead(p, f, n::tensor({0., 0., 1., 1.}, {1, 4}),
+                        n::from_vector(std::vector<std::int64_t>{0}));
+  }
+  if (p.count() != 1026624)
+    return 1;
+  // Model inference borrows p/anchors; proposals and head predictions share this same forward pass.
+  const auto detect = [&](const m::TensorDetectionScenes &data,
+                          const std::vector<std::int64_t> &rows) {
+    n::NoGradGuard guard;
+    const auto features = m::StrideFourDetectionBackbone(
+        p, 2. * n::gather(data.images, n::from_vector(rows)) - 1.);
+    const auto rpn = m::BuildRpn(p, {{features, 64, 16, 9}});
+    const auto proposals = m::ComputeDetectionProposals(rpn, anchors, 64, 64);
+    const auto packed = m::PackDetectionRois(proposals);
+    if (!packed.indices.numel())
+      return std::make_pair(m::SuppressDetectionCandidates(n::zeros({0, 4}), n::zeros({0}),
+                                                           n::zeros({0}, n::DType::Int64),
+                                                           n::zeros({0}, n::DType::Int64)),
+                            proposals);
+    const auto head = m::DetectionRoiHead(p, features, packed.rois, packed.indices);
+    return std::make_pair(
+        m::DecodeDetectionRoiOutputs(head, packed.pixels,
+                                     n::gather(n::from_vector(rows), packed.indices)),
+        proposals);
+  };
+  // Record conversion only presents existing tensor annotations; it performs no box arithmetic.
+  const auto truth_records = [](const m::TensorDetectionScenes &data,
+                                const std::vector<std::int64_t> &rows) {
+    std::vector<m::DetectionEvaluationTruth> truth;
+    for (auto i : rows) {
+      const auto boxes = n::boxes_to_vector(data.boxes[i]);
+      const auto labels = data.labels[i].to_vector<int>();
+      for (std::size_t j = 0; j < boxes.size(); ++j)
+        truth.push_back({int(i), labels[j], boxes[j]});
+    }
+    return truth;
+  };
+  const auto val_truth = truth_records(scenes, val_rows);
+  std::vector<int> val_ids(val_rows.begin(), val_rows.end());
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(p, .001, config);
+  n::BatchOrder order(64, 2, 29);
+  n::Generator sampling(7);
+  std::vector<n::Tensor> kernels;
+  for (const auto &v : p.parameters())
+    if (v.dim() >= 2)
+      kernels.push_back(v);
+  std::filesystem::create_directories("build");
+  const std::string checkpoint = "build/faster_rcnn_best.npz";
+  std::vector<double> epochs, losses, validation, rpn_losses, roi_losses, recall50_trace,
+      recall70_trace;
+  double best = -1;
+  int selected = 0, steps = 0;
+  std::print("| epoch | joint loss | RPN loss | RoI loss | val AP50 | val RPN recall .5 "
+             "|\n|---:|---:|---:|---:|---:|---:|\n");
+  for (int epoch = 1; epoch <= 5; ++epoch) {
+    order.begin_epoch();
+    double total = 0, total_rpn = 0, total_roi = 0;
+    std::size_t seen = 0;
+    for (auto rows = order.next(); !rows.empty(); rows = order.next()) {
+      const auto features = m::StrideFourDetectionBackbone(
+          p, 2. * n::gather(scenes.images, n::from_vector(rows)) - 1.);
+      const auto rpn = m::BuildRpn(p, {{features, 64, 16, 9}});
+      // This call detaches proposal geometry; the differentiable rpn result is retained for its loss.
+      const auto proposals = m::ComputeDetectionProposals(rpn, anchors, 64, 64);
+      const auto batch = m::SampleDetectionRois(scenes, rows, proposals, sampling);
+      const auto targets = m::MakeDetectionRpnTargets(anchors, scenes, rows, sampling);
+      const auto head = m::DetectionRoiHead(p, features, batch.rois, batch.indices);
+      const auto region_loss =
+          m::DetectionRoiLoss(head, batch.labels, batch.targets, batch.mask);
+      const auto proposal_loss =
+          m::RpnLoss(rpn, targets.labels, targets.weights, targets.targets, targets.positives);
+      const auto joint = region_loss + proposal_loss;
+      n::Tensor penalty = n::zeros({});
+      for (const auto &kernel : kernels)
+        penalty = penalty + n::sum(n::square(kernel));
+      if (!std::isfinite(joint.item()))
+        return 1;
+      total += joint.item() * rows.size();
+      total_rpn += proposal_loss.item() * rows.size();
+      total_roi += region_loss.item() * rows.size();
+      seen += rows.size();
+      adam.minimize(joint + .00005 * penalty);
+      ++steps;
+    }
+    const auto diagnostic = detect(scenes, val_rows);
+    const auto prediction = diagnostic.first;
+    const auto metric = m::EvaluateDetectionDataset(m::DetectionEvaluationRecords(prediction),
+                                                    val_truth, val_ids, false, true);
+    epochs.push_back(epoch);
+    losses.push_back(total / double(seen));
+    validation.push_back(metric.ap50.item());
+    rpn_losses.push_back(total_rpn / double(seen));
+    roi_losses.push_back(total_roi / double(seen));
+    double val50 = 0, val70 = 0;
+    for (std::size_t i = 0; i < val_rows.size(); ++i)
+      if (diagnostic.second[i].shape()[0] && scenes.boxes[val_rows[i]].shape()[0]) {
+        const auto overlap =
+            n::max(n::box_iou(diagnostic.second[i], scenes.boxes[val_rows[i]]), {0});
+        val50 += n::count_nonzero(n::greater_equal(overlap, .5)).item();
+        val70 += n::count_nonzero(n::greater_equal(overlap, .7)).item();
+      }
+    recall50_trace.push_back(val50 / val_truth.size());
+    recall70_trace.push_back(val70 / val_truth.size());
+    if (metric.ap50.item() > best) {
+      best = metric.ap50.item();
+      selected = epoch;
+      p.save(checkpoint);
+    }
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n", epoch, losses.back(),
+               rpn_losses.back(), roi_losses.back(), validation.back(), recall50_trace.back());
+  }
+  p.load(checkpoint);
+  const auto restored = m::EvaluateDetectionDataset(
+      m::DetectionEvaluationRecords(detect(scenes, val_rows).first), val_truth, val_ids, false,
+      true);
+  if (std::abs(restored.ap50.item() - best) > 1e-12)
+    return 1;
+  const auto digits = n::load_mnist((cache / "mnist").string(), "test");
+  cfg.scenes = 8;
+  cfg.seed = 22;
+  const auto test = m::MakeTensorDetectionScenes(n::slice_axis(digits.images, 0, 0, 512),
+                                                 n::slice_axis(digits.labels, 0, 0, 512), cfg);
+  std::vector<std::int64_t> test_rows(8);
+  std::iota(test_rows.begin(), test_rows.end(), 0);
+  std::vector<int> test_ids(test_rows.begin(), test_rows.end());
+  const auto diagnostic = detect(test, test_rows);
+  const auto output = diagnostic.first;
+  double covered50 = 0, covered70 = 0;
+  std::int64_t count = 0;
+  for (int i = 0; i < 8; ++i) {
+    const auto &boxes = diagnostic.second[i];
+    count += boxes.shape()[0];
+    if (boxes.shape()[0] && test.boxes[i].shape()[0]) {
+      const auto overlap = n::max(n::box_iou(boxes, test.boxes[i]), {0});
+      covered50 += n::count_nonzero(n::greater_equal(overlap, .5)).item();
+      covered70 += n::count_nonzero(n::greater_equal(overlap, .7)).item();
+    }
+  }
+  const auto records = m::DetectionEvaluationRecords(output);
+  const auto truth = truth_records(test, test_rows);
+  const auto voc = m::EvaluateDetectionDataset(records, truth, test_ids, false, true),
+             coco = m::EvaluateDetectionDataset(records, truth, test_ids, true);
+  // Group integer output row indices to draw the actual selected predictions.
+  std::vector<n::Tensor> predicted_boxes;
+  const auto image_ids = output.images.to_vector<int>();
+  for (int image = 0; image < 8; ++image) {
+    std::vector<std::int64_t> index;
+    for (std::size_t j = 0; j < image_ids.size(); ++j)
+      if (image_ids[j] == image)
+        index.push_back(std::int64_t(j));
+    predicted_boxes.push_back(n::gather(output.boxes, n::from_vector(index)));
+  }
+  const auto green = m::DrawDetectionBoxes(test.images, test.boxes, {.1, 1., .2}),
+             red = m::DrawDetectionBoxes(test.images, predicted_boxes, {1., .1, .1}),
+             raw = test.images * n::ones({1, 1, 1, 3});
+  const auto sheet = n::where(n::any(n::not_equal(green, raw), {3}, true), green, red);
+  n::save_image_grid(sheet, "build/faster_rcnn_detections.png", 4, 0., 1., 4, 1., 2);
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file("build/faster_rcnn_detections.png",
+                             "figures/faster_rcnn_detections.png",
+                             std::filesystem::copy_options::overwrite_existing);
+  std::vector<n::Tensor> top;
+  for (const auto &boxes : diagnostic.second)
+    top.push_back(n::slice_axis(boxes, 0, 0, std::min<std::int64_t>(10, boxes.shape()[0])));
+  const auto proposal_sheet = m::DrawDetectionBoxes(test.images, top, {1., .1, .1});
+  const auto proposal_preview =
+      n::where(n::any(n::not_equal(green, raw), {3}, true), green, proposal_sheet);
+  n::save_image_grid(proposal_preview, "build/faster_rcnn_proposals.png", 4, 0., 1., 4, 1., 2);
+  std::filesystem::copy_file("build/faster_rcnn_proposals.png",
+                             "figures/faster_rcnn_proposals.png",
+                             std::filesystem::copy_options::overwrite_existing);
+  auto a = dm::graphics::RPlot::create();
+  a.lines(epochs, losses, "RPN plus RoI", {37, 99, 235})
+      .title("Faster R-CNN joint objective")
+      .x_label("epoch")
+      .y_label("unregularized joint loss")
+      .y_limits(0, 1.3 * *std::max_element(losses.begin(), losses.end()));
+  auto parts = dm::graphics::RPlot::create();
+  parts.lines(epochs, rpn_losses, "RPN", {220, 38, 38})
+      .lines(epochs, roi_losses, "RoI", {37, 99, 235})
+      .title("Both fitted loss components")
+      .x_label("epoch")
+      .y_label("mean sampled objective")
+      .y_limits(0, 1.3 * std::max(*std::max_element(rpn_losses.begin(), rpn_losses.end()),
+                                  *std::max_element(roi_losses.begin(), roi_losses.end())));
+  auto b = dm::graphics::RPlot::create();
+  b.lines(epochs, validation, "validation AP50", {22, 163, 74})
+      .title("Validation detection selection")
+      .x_label("epoch")
+      .y_label("AP50")
+      .y_limits(0, 1.3);
+  auto coverage = dm::graphics::RPlot::create();
+  coverage.lines(epochs, recall50_trace, "recall at .5", {37, 99, 235})
+      .lines(epochs, recall70_trace, "recall at .7", {220, 38, 38})
+      .title("Validation proposal coverage")
+      .x_label("epoch")
+      .y_label("fraction of true boxes covered")
+      .y_limits(0, 1.35);
+  dm::graphics::RLayout::create(2, 2)
+      .add(a)
+      .add(parts)
+      .add(b)
+      .add(coverage)
+      .size(1200, 1000)
+      .fit_panels()
+      .save_svg("build/faster_rcnn_training.svg");
+  std::print("{} learned scalars, {} Adam updates; selected epoch {}, validation AP50 {:.6f}. "
+             "Test: {} scenes, {} digits, {:.3f} proposals/image, proposal recall .5/.7 "
+             "{:.6f}/{:.6f}; inclusive VOC AP50 {:.6f}, COCO AP75 {:.6f}, AP50:95 {:.6f}; {} "
+             "detections. One shared backbone evaluation per image; no moving state.\n",
+             p.count(), steps, selected, best, 8, truth.size(), double(count) / 8.,
+             covered50 / truth.size(), covered70 / truth.size(), voc.ap50.item(),
+             coco.ap75.item(), coco.ap.item(), records.size());
+}
+```
+// result_begin: markdown
+| epoch | joint loss | RPN loss | RoI loss | val AP50 | val RPN recall .5 |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 5.065677 | 2.428689 | 2.636989 | 0.016797 | 0.969697 |
+| 2 | 4.288624 | 1.424145 | 2.864479 | 0.006814 | 1.000000 |
+| 3 | 3.866297 | 1.123286 | 2.743011 | 0.186458 | 0.969697 |
+| 4 | 3.334174 | 0.858848 | 2.475326 | 0.302578 | 1.000000 |
+| 5 | 2.937619 | 0.635285 | 2.302334 | 0.414584 | 1.000000 |
+1026624 learned scalars, 160 Adam updates; selected epoch 5, validation AP50 0.414584. Test: 8 scenes, 23 digits, 100.000 proposals/image, proposal recall .5/.7 1.000000/0.695652; inclusive VOC AP50 0.308554, COCO AP75 0.062168, AP50:95 0.145654; 249 detections. One shared backbone evaluation per image; no moving state.
+\image(figures/faster_rcnn_training.svg)
+// result_end
+\caption(The visible joint Adam loop fits RPN and RoI objectives, while detached proposals are reused from the same forward pass. Validation AP selects the checkpoint; proposal recall is measured independently at .5 and .7 IoU.)
+\alttext(The visible joint Adam loop fits RPN and RoI objectives, while detached proposals are reused from the same forward pass. Validation AP selects the checkpoint; proposal recall is measured independently at .5 and .7 IoU.)
+
+\image(figures/faster_rcnn_proposals.png)
+\caption(First ten selected learned RPN proposals per held-out image, in red, with green truth. This preview limits boxes for readability; the head uses the full post-NMS budget of up to 100 per image. RPN proposals are class agnostic.)
+\alttext(Eight actual test digit scenes showing ten learned proposal boxes each and green targets.)
+
+\image(figures/faster_rcnn_detections.png)
+\caption(Actual selected Faster R-CNN detections in red, green targets drawn above coincident outlines. Boxes can be misclassified, duplicated across classes, merged or missed; red is not a correctness label.)
+\alttext(Eight actual held-out digit scenes with green truth and red class-specific refined detections.)
+
+
+> Conclusion
+
+All 1026624 learned scalars are fitted in 160 Adam updates. Validation selects
+the last epoch, 5, at AP50 0.414584, and validation AP is still rising, so this
+short fit is far from converged. The eight test scenes contain 23 digits: 100 learned
+proposals/image cover 1.000000/0.695652 of targets at IoU 0.5/0.7. Final detection
+AP50 is 0.308554, AP75 is 0.062168 and AP50:95 is 0.145654, with 249 retained
+class-specific detections. The RPN already covers every target at IoU .5 while the
+RoI head's classification, refinement and false positives limit AP. The validation/test gap and small
+sample preclude an architecture ranking.
+
+The known-anchor fixture establishes assignment geometry, and the visible fit separates proposal learning from region classification/regression. Selected proposal and detection galleries use the same held-out scene pixels, with no ground-truth proposal additions at inference. Metrics describe this bounded digit-scene run; they do not establish the paper's detector accuracy or speed.
+
+> References
+
+- [Ren et al. (2015), Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks](https://arxiv.org/abs/1506.01497).
+- [Girshick (2015), Fast R-CNN](https://arxiv.org/abs/1504.08083).
+- [COCO official box evaluator](https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocotools/cocoeval.py).

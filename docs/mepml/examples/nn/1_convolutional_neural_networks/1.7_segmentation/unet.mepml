@@ -1,0 +1,473 @@
+//? Title: U-Net cropped skips and learned decoding
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Pixel classification needs fine boundaries as well as broad spatial context. U-Net combines a contracting CNN with learned decoding and aligned encoder skips; this report checks crops and gradients before a visible compact Adam fit and held-out mask evaluation.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segmentation/unet.cpp`.
+
+> The method
+
+Encoder pooling increases context while learned transposed convolutions restore spatial resolution. Concatenated,cropped skip features preserve detail for each decoder pair. Original valid geometry and compact SAME geometry remain explicit and separately checked.
+
+The editable concept diagram is `diagrams/unet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/unet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/unet_concept.tikz > build/unet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/unet_concept.svg build/unet_concept.dvi > build/unet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/unet_concept.svg)
+// result_end
+\caption(U-Net cropped skips and learned decoding)
+\alttext(Contracting encoder; Save spatial skips; then Learned upsampling; Crop and join skips; then Pixel class logits; Explicit Adam loop.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/unet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(17), state(18);
+  m::UnetConfig     c;
+  c.classes        = 4;
+  c.input_channels = 3;
+  c.base_width     = 8;
+  c.valid          = false;
+  c.dropout        = 0;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) { return n::models::Unet(p, image, c).logits; },
+      "U-Net cropped skips and learned decoding");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 3}), options);
+  diagram.save_svg("build/unet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+37 displayed nodes; 485844 reachable learned values.
+\image(figures/unet_architecture.svg)
+// result_end
+\caption(Executed unet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right unet architecture with rotated names and exact output shapes.)
+
+> Cropped skips and learned up-convolutions
+
+U-Net contracts through two3x3 ReLU convolutions and2x2 pooling per level,
+then expands with learned2x2 stride2 transposed convolutions. Each decoder
+concatenates its upsampled features with the floor-centred cropped encoder
+skip before another convolution pair. For odd excess sizes, extra pixels
+remain on the bottom/right. The crop differentiates source pixels only;
+reference tensor values merely supply the requested shape.
+
+Original valid-pair geometry maps572 pixels to388, with four pooling levels
+and base64 channels. The compact model uses base8,SAME pairs,RGB/four classes
+and no dropout; sides divisible by16 retain their size. The full architecture
+has dropout.5 at the deepest encoder and bottleneck during training. Up-convolution
+weights are learned, unlike FCN's frozen bilinear filters.
+
+```{cpp, results="markdown", file="figures/unet_crop.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  auto source = n::arange(0, 7 * 9).reshape({1, 7, 9, 1}).requires_grad_();
+  const auto crop = m::UnetCenterCropTo(source, n::zeros({1, 4, 6, 2}));
+  const auto g = n::grad(n::sum(crop), {source})[0];
+  for (int r = 0; r < 7; ++r)
+    for (int c = 0; c < 9; ++c) {
+      const double expected = r >= 1 && r < 5 && c >= 1 && c < 7 ? 1 : 0;
+      if (g.at({0, r, c, 0}) != expected)
+        return 1;
+    }
+  if (crop.at({0, 0, 0, 0}) != 10 || m::UnetOutputSide(572) != 388 ||
+      m::UnetOutputSide(188) != 4)
+    return 1;
+  auto a = n::plot_tensor_map(n::reverse(source.detach().reshape({7, 9}), {0}), 0, 62),
+       b = n::plot_tensor_map(n::reverse(g.reshape({7, 9}), {0}), 0, 1);
+  a.title("Known7 by9 skip values");
+  b.title("Crop gradient footprint");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1200, 550).fit_panels().save_svg(
+      "build/unet_crop.svg");
+  std::print("Floor-centred7x9->4x6 crop starts row1,column1;all63 source derivatives exact. "
+             "Original572->388 and executable188->4 geometry pass.\n");
+}
+```
+// result_begin: markdown
+Floor-centred7x9->4x6 crop starts row1,column1;all63 source derivatives exact. Original572->388 and executable188->4 geometry pass.
+\image(figures/unet_crop.svg)
+// result_end
+\caption(A numbered skip tensor and the exact derivative footprint of a4x6 floor-centred crop. Uneven excess leaves two pixels on bottom/right and one on top/left.)
+\alttext(A numbered skip tensor and the exact derivative footprint of a4x6 floor-centred crop. Uneven excess leaves two pixels on bottom/right and one on top/left.)
+
+> Executable original graph and compact alignment
+
+The full31,030,658-parameter grayscale/two-class graph executes all46 learned
+tensor gradients at188->4 pixels below. This is a graph check with initialized
+weights,not a biomedical training result. Native checks also require every
+compact learned gradient to be nonzero and verify96/112/128-pixel alignment.
+The compact SAME model retains all four encoder/decoder levels.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  {
+    n::ParameterStore p(17);
+    const auto net =
+        n::models::Unet(p, n::sin(.13 * n::arange(0, 188 * 188)).reshape({1, 188, 188, 1}));
+    const auto g = n::grad(n::mean(n::square(net.logits)), p.parameters());
+    if (p.count() != 31030658 || g.size() != 46 || net.logits.shape() != n::Shape{1, 4, 4, 2})
+      return 1;
+    for (const auto &v : g)
+      if (!v.defined() || !std::isfinite(n::sum(n::square(v.to(n::DType::Float64))).item()))
+        return 1;
+    std::print("Full valid U-Net:{} learned scalars,all{} finite defined tensor "
+               "gradients,188->4 output.\n",
+               p.count(), g.size());
+  }
+  n::ParameterStore p(17);
+  n::models::UnetConfig c;
+  c.classes = 4;
+  c.input_channels = 3;
+  c.base_width = 8;
+  c.valid = false;
+  c.dropout = 0;
+  for (int side : {96, 112, 128}) {
+    const auto net = n::models::Unet(p, n::zeros({1, side, side, 3}), c);
+    if (net.logits.shape() != n::Shape{1, side, side, 4})
+      return 1;
+  }
+  std::print("Compact SAME U-Net:{} learned scalars,exact96/112/128px output alignment,no BN "
+             "state.\n",
+             p.count());
+}
+```
+// result_begin: markdown
+Full valid U-Net:31030658 learned scalars,all46 finite defined tensor gradients,188->4 output.
+Compact SAME U-Net:485844 learned scalars,exact96/112/128px output alignment,no BN state.
+// result_end
+
+> Actual shape images and masks
+
+The tensor shape generator creates64 fitting/16 validation/16 test96-pixel
+RGB images with independent seeds11/22/33. Circle,rectangle and triangle
+brightness/noise/tint have the same distributions, so labels require spatial
+context. Later objects occlude earlier masks. This tensor RNG adaptation has
+different fixed-seed pixels from the original mt19937 generator; it preserves
+the procedural conventions rather than byte-for-byte samples. Four actual
+fitting image/mask pairs appear below. The mask palette is background dark,
+circle red,rectangle green,triangle blue.
+
+```{cpp, results="markdown", file="figures/unet_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto data = m::TensorSegmentationShapes(64, 96, 11);
+  std::vector<n::Tensor> gallery;
+  const auto colored = m::ColorSegmentationLabels(n::slice_axis(data.labels, 0, 0, 4));
+  for (int i = 0; i < 4; ++i) {
+    gallery.push_back(n::slice_axis(data.images, 0, i, i + 1));
+    gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+  }
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::concat(gallery, 0), "build/unet_data.png", 2, 0., 1., 3, 1., 2);
+  const auto weights = m::SegmentationClassWeights(data.labels, 4);
+  std::print(
+      "64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. "
+      "Fit-only inverse-square-root pseudocount weights {:.6f}/{:.6f}/{:.6f}/{:.6f}. "
+      "Noise,tint and brightness are class-independent; later objects occlude earlier masks. "
+      "Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.\n",
+      weights.at({0}), weights.at({1}), weights.at({2}), weights.at({3}));
+}
+```
+// result_begin: markdown
+64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. Fit-only inverse-square-root pseudocount weights 1.149431/3.477891/3.045941/4.357872. Noise,tint and brightness are class-independent; later objects occlude earlier masks. Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.
+\image(figures/unet_data.png)
+// result_end
+\caption(Actual first four fitting RGB images and aligned truth masks. Class-independent photometry makes spatial structure necessary for identifying the shape.)
+\alttext(Actual first four fitting RGB images and aligned truth masks. Class-independent photometry makes spatial structure necessary for identifying the shape.)
+
+> Whole-model explicit Adam and restored test masks
+
+The fit-only weight for class c is `1/sqrt((count_c+1)/fit_pixels)`. Pixel
+CE is normalized by the sum of selected pixel weights, using stable tensor
+log-softmax. Every leaf is warmed before Adam(.001); the visible loop performs
+16 epochs of batch 4, 256 updates per model, which keeps the documentation build short. Explicit `.00005*sum(kernel²)` matches
+half the source L2 coefficient. Kernels,biases and score layers are optimized;
+there are no BN moving moments. Validation mean IoU strictly selects the learned
+checkpoint, then restoration reproduces the selected score before test evaluation.
+Mean IoU includes background and classes present in truth or prediction; classes
+absent from both are excluded. Test metrics never select epochs or fit weights.
+
+```{cpp, results="markdown", file="figures/unet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <print>
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  namespace m             = n::models;
+  n::set_num_threads(2);
+  const auto fit        = m::TensorSegmentationShapes(64, 96, 11),
+             validation = m::TensorSegmentationShapes(16, 96, 22),
+             test       = m::TensorSegmentationShapes(16, 96, 33);
+  const auto weights    = m::SegmentationClassWeights(fit.labels, 4);
+  // 16 epochs of 16 batches keep the documentation build short.
+  const int           n_epochs = 16;
+  std::vector<double> epochs;
+  for (int epoch = 1; epoch <= n_epochs; ++epoch)
+    epochs.push_back(epoch);
+  auto loss_plot = dm::graphics::RPlot::create(), score_plot = dm::graphics::RPlot::create();
+  const std::array<dm::graphics::RGB, 3> colors = {{{37, 99, 235}, {22, 163, 74}, {220, 38, 38}}};
+  int                                    color_index = 0;
+  double                                 max_loss    = 0;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  for (int variant : {1}) {
+    n::ParameterStore p(17);
+    m::UnetConfig     config;
+    config.classes        = 4;
+    config.input_channels = 3;
+    config.base_width     = 8;
+    config.valid          = false;
+    config.dropout        = 0;
+    const auto forward    = [&](const n::Tensor& images, bool training) {
+      return m::Unet(p, images, config, training).logits;
+    };
+    // Create every learnable convolution/score leaf before Adam captures the store.
+    {
+      n::NoGradGuard guard;
+      forward(n::slice_axis(fit.images, 0, 0, 1), false);
+    }
+    n::OptimizerConfig adam_config;
+    adam_config.kind = n::OptimizerKind::Adam;
+    n::Optimizer           adam(p, .001, adam_config);
+    n::BatchOrder          batches(64, 4, 29);
+    std::vector<n::Tensor> kernels;
+    for (const auto& leaf : p.parameters())
+      if (leaf.dim() > 1)
+        kernels.push_back(leaf);
+    const std::string   prefix   = "build/unet_" + std::to_string(variant);
+    double              best     = -1;
+    int                 selected = 0, updates = 0;
+    std::vector<double> losses, miou;
+    const auto          evaluate = [&](const m::TensorSegmentationData& data) {
+      n::NoGradGuard guard;
+      auto           confusion = n::zeros({4, 4}, n::DType::Int64);
+      for (int first = 0; first < data.images.shape()[0]; first += 8) {
+        const auto end    = std::min<std::int64_t>(first + 8, data.images.shape()[0]);
+        const auto logits = forward(n::slice_axis(data.images, 0, first, end), false);
+        confusion =
+            confusion + m::SegmentationPredictionMetrics(
+                            n::argmax(logits, 3), n::slice_axis(data.labels, 0, first, end), 4)
+                            .confusion;
+      }
+      return m::SegmentationConfusionMetrics(confusion);
+    };
+    std::print(
+        "Variant{}: {} learned scalars, no BN state. Fit-only weights "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}.\n",
+        variant,
+        p.count(),
+        weights.at({0}),
+        weights.at({1}),
+        weights.at({2}),
+        weights.at({3}));
+    std::print(
+        "| variant | epoch | weighted pixel CE | validation mIoU |\n|---:|---:|---:|---:|\n");
+    for (int epoch = 1; epoch <= n_epochs; ++epoch) {
+      batches.begin_epoch();
+      double      total = 0;
+      std::size_t seen  = 0;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto batch   = m::TensorSegmentationBatch(fit, n::from_vector(rows));
+        const auto logits  = forward(batch.first, true);
+        const auto ce      = m::SegmentationCrossEntropy(logits, batch.second, 4, weights);
+        n::Tensor  penalty = n::zeros({});
+        for (const auto& kernel : kernels)
+          penalty = penalty + n::sum(n::square(kernel));
+        if (!std::isfinite(ce.item()))
+          return 1;
+        total += ce.item() * rows.size();
+        seen += rows.size();
+        adam.minimize(ce + .00005 * penalty);
+        ++updates;
+      }
+      const auto metric = evaluate(validation);
+      losses.push_back(total / double(seen));
+      miou.push_back(metric.mean_iou.item());
+      if (miou.back() > best) {
+        best     = miou.back();
+        selected = epoch;
+        p.save(prefix + "_best.npz");
+      }
+      std::print("| {} | {} | {:.6f} | {:.6f} |\n", variant, epoch, losses.back(), miou.back());
+    }
+    p.load(prefix + "_best.npz");
+    const auto restored = evaluate(validation), metric = evaluate(test);
+    const auto count_matrix = n::ConfusionMatrix::from_counts(metric.confusion);
+    const auto index        = std::to_string(rendered_confusions++);
+    count_matrix.save_svg(
+        "build/unet_confusion_api_" + index + ".svg",
+        {.title = "Selected-checkpoint pixel counts"});
+    count_matrix.save_svg(
+        "build/unet_confusion_api_" + index + "_normalized.svg",
+        {.title         = "Selected-checkpoint pixel recall",
+         .normalization = n::ConfusionMatrixNormalization::True});
+
+    if (std::abs(restored.mean_iou.item() - best) > 1e-12 || updates != 16 * n_epochs)
+      return 1;
+    n::NoGradGuard         guard;
+    std::vector<n::Tensor> gallery;
+    const auto prediction = n::argmax(forward(n::slice_axis(test.images, 0, 0, 4), false), 3);
+    const auto truth      = m::ColorSegmentationLabels(n::slice_axis(test.labels, 0, 0, 4)),
+               colored    = m::ColorSegmentationLabels(prediction);
+    for (int i = 0; i < 4; ++i) {
+      gallery.push_back(n::slice_axis(test.images, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(truth, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+    }
+    const auto image_name = "unet_predictions_" + std::to_string(variant) + ".png";
+    n::save_image_grid(n::concat(gallery, 0), "build/" + image_name, 3, 0., 1., 3, 1., 2);
+    std::filesystem::copy_file(
+        "build/" + image_name,
+        "figures/" + image_name,
+        std::filesystem::copy_options::overwrite_existing);
+    const auto color = colors[color_index++];
+    const auto name  = "U-Net " + std::to_string(variant);
+    loss_plot.lines(epochs, losses, name, color);
+    score_plot.lines(epochs, miou, name, color);
+    max_loss = std::max(max_loss, *std::max_element(losses.begin(), losses.end()));
+    std::print(
+        "Variant{} restored epoch{}: validation mIoU {:.6f}; test pixel accuracy "
+        "{:.6f}, mean IoU {:.6f}; per-class IoU(background,circle,rectangle,triangle) "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}. {} explicit Adam updates.\n",
+        variant,
+        selected,
+        best,
+        metric.pixel_accuracy.item(),
+        metric.mean_iou.item(),
+        metric.iou.at({0}),
+        metric.iou.at({1}),
+        metric.iou.at({2}),
+        metric.iou.at({3}),
+        updates);
+  }
+  loss_plot.title("Compact U-Net weighted pixel loss")
+      .x_label("epoch")
+      .y_label("unregularized weighted CE")
+      .y_limits(0, max_loss * 1.3);
+  score_plot.title("Validation mean IoU selection")
+      .x_label("epoch")
+      .y_label("present-class mIoU")
+      .y_limits(0, 1.3);
+  dm::graphics::RLayout::create(1, 2)
+      .add(loss_plot)
+      .add(score_plot)
+      .size(1200, 550)
+      .fit_panels()
+      .save_svg("build/unet_training.svg");
+}
+```
+// result_begin: markdown
+Variant1: 485844 learned scalars, no BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 1 | 1 | 1.322412 | 0.274175 |
+| 1 | 2 | 1.067102 | 0.335722 |
+| 1 | 3 | 0.779070 | 0.339579 |
+| 1 | 4 | 0.657949 | 0.341405 |
+| 1 | 5 | 0.617961 | 0.345936 |
+| 1 | 6 | 0.596921 | 0.350124 |
+| 1 | 7 | 0.577292 | 0.351951 |
+| 1 | 8 | 0.569108 | 0.359556 |
+| 1 | 9 | 0.546487 | 0.373826 |
+| 1 | 10 | 0.547665 | 0.386808 |
+| 1 | 11 | 0.497928 | 0.414377 |
+| 1 | 12 | 0.462185 | 0.371851 |
+| 1 | 13 | 0.457945 | 0.508090 |
+| 1 | 14 | 0.422393 | 0.456071 |
+| 1 | 15 | 0.406055 | 0.539435 |
+| 1 | 16 | 0.361911 | 0.564009 |
+Variant1 restored epoch16: validation mIoU 0.564009; test pixel accuracy 0.923299, mean IoU 0.629215; per-class IoU(background,circle,rectangle,triangle) 0.998191/0.288039/0.628234/0.602395. 256 explicit Adam updates.
+\image(figures/unet_training.svg)
+// result_end
+\caption(All compact U-Net encoder,decoder,up-convolution and class-score leaves fit 256 visible Adam updates. Validation mean IoU selects the checkpoint; there is no BN state.)
+\alttext(All compact U-Net encoder,decoder,up-convolution and class-score leaves fit 256 visible Adam updates. Validation mean IoU selects the checkpoint; there is no BN state.)
+
+The compact model has 485,844 learned scalars. Validation mean IoU is still rising
+at the last epoch, so epoch 16 is selected with validation mean IoU .564009; test pixel
+accuracy is .923299 and mean IoU .629215. Background IoU is .998191, but circle IoU is
+only .288039, compared with .628234 for rectangles and .602395 for triangles. High pixel
+accuracy therefore does not imply equally strong foreground-class recognition, and this
+short fit has not converged.
+
+\image(figures/unet_predictions_1.png)
+\caption(Each row shows one actual test image,its truth mask and the compact U-Net prediction after validation-selected restoration. Colors and pixel ranges match the fitting-data preview; mistakes are retained.)
+\alttext(Four held-out U-Net image/truth/prediction triples.)
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/unet_confusion_api_0.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/unet_confusion_api_0_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Exact crop derivatives and full original graph checks precede compact whole-model fitting. Actual shape masks,fit-only weights and validation-selected restoration make the held-out results reproducible without implying a biomedical benchmark.
+
+> References
+
+- [Ronneberger,Fischer and Brox(2015), U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597).

@@ -55,6 +55,14 @@ class BloomFilter {
         return std::pow(1.0 - std::exp(exponent), k_);
     }
 
+    /// @brief Size of the bit array (m).
+    /// @return The number of bits.
+    [[nodiscard]] int num_bits() const noexcept { return m_; }
+
+    /// @brief Hash probes per element (k).
+    /// @return The number of hash functions.
+    [[nodiscard]] int num_hashes() const noexcept { return k_; }
+
     /// \brief Optimal hash count for m bits and n elements: round((m/n) ln 2).
     static int optimal_num_hashes(int m, int n) {
         if (n == 0) return 1;

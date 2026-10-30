@@ -1,0 +1,349 @@
+//? Title: Bidirectional Search
+//? Subtitle: Searching from both ends: the stopping rules that make it exact, how much it saves as a function of how fast balls grow, and measurements on a handwritten-digit graph and the Maunga Whau volcano
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Bidirectional search finds a shortest path by growing one search from the start and one from the goal until they meet. We derive the stopping rules that make it exact: finish the whole layer in breadth-first search, and stop when the heap tops sum to the best path seen in Dijkstra's algorithm. Stopping at the first contact is wrong, and the library's earlier implementation, which did so, returned invalid paths for 9% of random graphs. How much the method saves depends on how fast balls grow: the exponent is halved when growth is exponential, but the saving is only a constant \(2^{D-1}\) when growth is polynomial of degree \(D\). On a 10-nearest-neighbour graph of 1,797 handwritten digits, where balls grow by a factor of 15 then 5 per hop, bidirectional BFS does 4 to 20 times less work, and a ball-growth model predicts it. On the Maunga Whau volcano, a planar grid, the saving for short routes is the predicted factor 2. For routes across the grid it falls to about 1, because the map edge clips the single large search.
+)
+
+\toc
+
+> The idea
+
+To find a shortest path from \(s\) to \(t\), breadth-first search and Dijkstra's algorithm grow a
+ball around \(s\) until it reaches \(t\). *Bidirectional search* (Pohl 1971) grows two balls at once,
+one around \(s\) along the edges and one around \(t\) along the reversed edges, and stops when they meet.
+Each ball only needs radius about \(d/2\), where \(d\) is the distance from \(s\) to \(t\).
+
+How much that saves depends on how ball sizes grow with radius. Let \(|B(r)|\) be the number of
+vertices within distance \(r\).
+
+- **Exponential growth**, \(|B(r)|\approx b^r\), as in a tree with branching factor \(b\). One ball of
+  radius \(d\) costs \(b^d\), and two of radius \(d/2\) cost \(2b^{d/2}\). The saving is \(b^{d/2}/2\), so
+  the exponent is halved.
+- **Polynomial growth**, \(|B(r)|\approx cr^D\), as in a \(D\)-dimensional grid or road network. The
+  ratio is \(c\,d^D/\big(2c(d/2)^D\big)=2^{D-1}\), a constant: 2 in the plane and 4 in space,
+  whatever the distance.
+
+The method does nothing about the work inside each ball. It only exploits the gap between one
+large ball and two small ones, so that gap is what the measurements below look at.
+
+> Stopping correctly
+
+The searches must not simply stop the first time they touch.
+
+>> Unweighted graphs
+
+`algorithms::bidirectional_bfs` grows the side with the smaller frontier by one *complete* layer at
+a time. While expanding a layer it records every edge \(u\to v\) whose end \(v\) is already labelled by
+the other side, which offers a path of length \(d_s(u)+1+d_t(v)\). It stops after the first layer that
+finds any such edge and returns the best one.
+
+Why the whole layer? Suppose the forward side has completed layers up to depth \(k\) and the backward
+side up to \(j\), and none has met. Any path of length \(L\le k+j\) contains a vertex with
+\(d_s(v)\le k\) *and* \(d_t(v)\le j\): take the vertex \(\min(k,L)\) edges along it. That vertex would
+already carry both labels. So the shortest path has length at least \(k+j+1\). Expanding layer \(k+1\)
+finds every path of length exactly \(k+j+1\): each passes through an edge from forward layer \(k\) to a
+vertex at backward depth \(j\). The first edge found in the layer need not be the best, since it may
+reach a backward vertex at depth \(j\) while another edge reaches one at depth \(j-1\). That is why the
+layer is finished and the minimum taken.
+
+The rule matters in practice. The library's earlier `bidirectional_search` shared one queue between
+the two sides and stopped at the first edge that touched. On 3,000 random graphs it returned a path
+that was not valid in 9% of cases. It now calls `bidirectional_bfs`, and the tests check it against
+plain BFS on 3,000 random graphs, directed and undirected.
+
+>> Weighted graphs
+
+`algorithms::bidirectional_dijkstra` runs Dijkstra forward from \(s\) and backward from \(t\), each
+time advancing the side whose heap top \(k_s\) or \(k_t\) is smaller. Whenever it scans an edge
+\(u\to v\) with weight \(w\) and \(v\) has a label on the other side, it updates
+
+$$
+\mu=\min\big(\mu,\;d_s(u)+w+d_t(v)\big).
+$$
+\alttext(mu equals the minimum of mu and d s of u plus w plus d t of v.)
+
+It stops as soon as \(k_s+k_t\ge\mu\). The proof is a one-liner. A path not yet seen joins a vertex
+unsettled on the forward side to one unsettled on the backward side, so its length is at least
+\(k_s+k_t\ge\mu\).
+
+The natural alternative, stopping at the first vertex settled by both sides and returning the path
+through it, is wrong. Take \(s\) and \(t\) joined directly by an edge of length 5, and also through \(x\)
+by two edges of length 3. Both searches settle \(x\) at distance 3 before either settles the other
+terminal at 5, so \(x\) is the first vertex settled twice, and the path through it costs 6. The rule
+above finds the direct edge, because scanning \(s\)'s edges already set \(\mu=5\). One of the library
+tests encodes this example.
+
+> A graph with fast growth: handwritten digits
+
+`dm::datasets::digits()` holds 1,797 images of handwritten digits as 64 pixel intensities. We join
+every image to its 10 nearest neighbours (`geometry::knn_lists`) and ignore edge direction. The
+result is a sparse graph in which a few hops connect any image to similar ones, and longer paths
+cross between digits. We measure ball growth from 50 random centres and run plain BFS and
+bidirectional BFS between 400 random pairs.
+
+```{cpp, results="markdown", file="figures/bidir_digits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <random>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto digits = dm::datasets::digits();
+  const std::size_t n = digits.nrows();
+  std::vector<std::vector<double>> x(n, std::vector<double>(64));
+  for (int j = 0; j < 64; ++j) {
+    const auto column = digits.get_column("pixel_" + std::to_string(j)).values();
+    for (std::size_t i = 0; i < n; ++i) x[i][j] = column[i];
+  }
+  std::vector<std::pair<std::size_t, std::size_t>> edges;
+  const auto lists = dm::geometry::knn_lists(x, 10);
+  for (std::size_t u = 0; u < n; ++u)
+    for (int v : lists[u]) edges.emplace_back(u, v);
+
+  std::mt19937_64 rng(1971);
+  std::uniform_int_distribution<std::size_t> pick(0, n - 1);
+  const std::size_t max_r = 12;
+  std::vector<double> mean_ball(max_r + 1, 0.0);
+  for (int c = 0; c < 50; ++c) {
+    const auto b = alg::ball_sizes(n, edges, pick(rng), max_r);
+    for (std::size_t r = 0; r <= max_r; ++r) mean_ball[r] += b[r] / 50.0;
+  }
+  std::print("Mean ball size \\(|B(r)|\\) over 50 centres, and growth factor \\(|B(r)|/|B(r-1)|\\):\n\n| \\(r\\) |");
+  for (std::size_t r = 0; r <= 10; ++r) std::print(" {} |", r);
+  std::print("\n| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n| \\(|B(r)|\\) |");
+  for (std::size_t r = 0; r <= 10; ++r) std::print(" {:.0f} |", mean_ball[r]);
+  std::print("\n| growth |  |");
+  for (std::size_t r = 1; r <= 10; ++r) std::print(" {:.2f} |", mean_ball[r] / mean_ball[r - 1]);
+  std::print("\n\n");
+
+  struct Bucket { double count = 0, one = 0, two = 0; };
+  std::vector<Bucket> by_distance(20);
+  std::vector<double> dx, ratio;
+  std::size_t mismatches = 0, reachable = 0;
+  for (int p = 0; p < 400; ++p) {
+    const std::size_t s = pick(rng), t = pick(rng);
+    const auto one = alg::bfs_pair_search(n, edges, s, t);
+    const auto two = alg::bidirectional_bfs(n, edges, s, t);
+    mismatches += one.found != two.found || (one.found && one.distance != two.distance);
+    if (!one.found || s == t) continue;
+    ++reachable;
+    auto& b = by_distance[static_cast<std::size_t>(one.distance)];
+    b.count += 1, b.one += one.expanded(), b.two += two.expanded();
+    dx.push_back(one.distance + std::uniform_real_distribution<double>(-0.2, 0.2)(rng));
+    ratio.push_back(std::log10(static_cast<double>(one.expanded()) / two.expanded()));
+  }
+  std::print("{} of 400 pairs are connected; bidirectional and plain BFS disagree on the distance in {} pairs.\n\n"
+             "| distance \\(d\\) | pairs | BFS: vertices expanded | bidirectional | ratio | model BFS | model bidirectional | model ratio |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n", reachable, mismatches);
+  for (std::size_t d = 1; d < by_distance.size(); ++d) {
+    const auto& b = by_distance[d];
+    if (b.count < 3) continue;
+    // Model: BFS expands B(d-1) and about half of layer d; the bidirectional search expands
+    // B(a) on one side and B(b-1) on the other with a + b = d - 1, split as evenly as is cheapest.
+    const auto ball = [&](long r) { return r < 0 ? 0.0 : mean_ball[static_cast<std::size_t>(r)]; };
+    const double one_model = (ball(static_cast<long>(d) - 1) + ball(static_cast<long>(d))) / 2;
+    double two_model = 1e300;
+    for (long a = 0; a <= static_cast<long>(d) - 1; ++a) two_model = std::min(two_model, ball(a) + ball(static_cast<long>(d) - 2 - a));
+    std::print("| {} | {:.0f} | {:.0f} | {:.0f} | {:.1f} | {:.0f} | {:.0f} | {:.1f} |\n", d, b.count, b.one / b.count,
+               b.two / b.count, b.one / b.two, one_model, two_model, one_model / two_model);
+  }
+  dm::graphics::RPlot::create()
+      .points(dx, ratio, "", dm::RGB{37, 99, 235}, 3.0)
+      .abline_h(0, dm::RGB{148, 163, 184}, 1.0)
+      .y_limits(-0.5, 2.5)
+      .title("Digit graph: work saved by searching from both ends")
+      .x_label("shortest-path distance (hops), jittered")
+      .y_label("log10 (BFS work / bidirectional work)")
+      .size(760, 440)
+      .save_svg("build/bidir_digits.svg");
+}
+```
+// result_begin: markdown
+Mean ball size \(|B(r)|\) over 50 centres, and growth factor \(|B(r)|/|B(r-1)|\):
+
+| \(r\) | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| \(|B(r)|\) | 1 | 15 | 71 | 183 | 380 | 711 | 1134 | 1486 | 1698 | 1781 | 1796 |
+| growth |  | 14.88 | 4.74 | 2.59 | 2.08 | 1.87 | 1.60 | 1.31 | 1.14 | 1.05 | 1.01 |
+
+400 of 400 pairs are connected; bidirectional and plain BFS disagree on the distance in 0 pairs.
+
+| distance \(d\) | pairs | BFS: vertices expanded | bidirectional | ratio | model BFS | model bidirectional | model ratio |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 3 | 13 | 1 | 12.7 | 8 | 1 | 7.9 |
+| 2 | 11 | 39 | 2 | 19.5 | 43 | 2 | 21.4 |
+| 3 | 14 | 139 | 13 | 10.7 | 127 | 16 | 8.0 |
+| 4 | 37 | 314 | 28 | 11.1 | 281 | 30 | 9.5 |
+| 5 | 76 | 570 | 75 | 7.6 | 545 | 85 | 6.4 |
+| 6 | 101 | 967 | 133 | 7.3 | 923 | 141 | 6.5 |
+| 7 | 74 | 1226 | 203 | 6.0 | 1310 | 253 | 5.2 |
+| 8 | 44 | 1502 | 284 | 5.3 | 1592 | 365 | 4.4 |
+| 9 | 32 | 1687 | 348 | 4.9 | 1739 | 562 | 3.1 |
+| 10 | 7 | 1745 | 400 | 4.4 | 1788 | 760 | 2.4 |
+\image(figures/bidir_digits.svg)
+// result_end
+
+\caption(For 400 random pairs in the digit graph: the ratio of vertices expanded by plain BFS to those expanded by bidirectional BFS, on a log scale, against the distance between the pair.)
+\alttext(Scatter plot of log10 work ratio against path distance from 1 to 11 hops. All 400 points lie above zero. At distances 1 to 4 most ratios are between 10 and 30 (log 1 to 1.5); the ratios fall steadily with distance, to about 4 to 6 (log 0.6 to 0.8) at distances 8 to 11, with less scatter.)
+
+The digit graph grows very fast near each vertex. One hop reaches 14 neighbours on average, because every image keeps its own 10 nearest and is also kept by others. Two hops reach 71 and three 183. The growth factor then falls as balls start to fill the 1,797 vertices, and ten hops reach almost everything. This is the exponential regime, cut short by the finite graph, and bidirectional search pays off accordingly. Both searches agree on every distance, and the bidirectional one expands 11 to 20 times fewer vertices for pairs 2 to 4 hops apart, and still 4 to 5 times fewer at 9 to 10 hops.
+
+The model columns predict the work from the mean ball sizes alone. BFS expands everything closer than the goal and, on average, half of the goal's layer. The bidirectional search expands \(B(a)\) around one end and \(B(b-1)\) around the other with \(a+b=d-1\). The model tracks the measurements up to 8 hops. For more distant pairs the measured saving is larger than the model predicts. Pairs that far apart lie at the edge of the graph, where balls are smaller than average, and always expanding the smaller frontier exploits the side that grows slowly. The model also explains why the ratio falls with distance. The saving \(|B(d)|/2|B(d/2)|\) needs \(B(d)\) to keep growing, and here it stops growing at the size of the graph.
+
+> A graph with slow growth: walking on a volcano
+
+`dm::datasets::volcano()` gives the heights of Maunga Whau on an \(87\times61\) grid with 10 m
+spacing. `algorithms::terrain_from_frame` and `terrain_edges` turn it into a directed graph
+with an edge to each of the 8 neighbouring cells. An edge costs its length plus 8.3 m for every
+metre climbed (Naismith's rule), so climbing costs more than descending and the graph really is
+directed. This is a planar graph, so \(D=2\) and the predicted saving is about 2.
+
+```{cpp, results="markdown", file="figures/bidir_volcano.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <random>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto volcano = dm::datasets::volcano();
+  const auto grid = alg::terrain_from_frame(volcano, "x", "y", "elevation", 8.3);
+  const auto edges = alg::terrain_edges(grid);
+  const std::size_t n = grid.rows * grid.cols;
+
+  // One route across the cone, south-east foot to north-west foot.
+  const std::size_t start = 80 * grid.cols + 5, goal = 5 * grid.cols + 55;
+  const auto one = alg::dijkstra_pair_search(n, edges, start, goal);
+  const auto two = alg::bidirectional_dijkstra(n, edges, start, goal);
+  std::print("| search | cost | vertices settled | forward | backward | edges scanned |\n| :--- | ---: | ---: | ---: | ---: | ---: |\n"
+             "| Dijkstra | {:.1f} | {} | {} | – | {} |\n| bidirectional Dijkstra | {:.1f} | {} | {} | {} | {} |\n\n",
+             one.distance, one.expanded(), one.forward_expanded, one.edges_scanned, two.distance, two.expanded(),
+             two.forward_expanded, two.backward_expanded, two.edges_scanned);
+
+  // Which cells each search settles: rerun the searches' frontiers via cost-from / cost-to-go maps.
+  const auto from_start = alg::terrain_cost_from(grid, start);
+  const auto to_goal = alg::terrain_cost_to_go(grid, goal);
+  double forward_radius = 0, backward_radius = 0;
+  {
+    std::vector<double> f = from_start, b = to_goal;
+    std::ranges::sort(f);
+    std::ranges::sort(b);
+    forward_radius = f[two.forward_expanded - 1];
+    backward_radius = b[two.backward_expanded - 1];
+  }
+  std::vector<std::vector<double>> category(grid.rows, std::vector<double>(grid.cols, 0.0));
+  std::size_t uni = 0;
+  for (std::size_t c = 0; c < n; ++c) {
+    double v = 0;
+    if (from_start[c] <= one.distance) v = 1, ++uni;
+    if (from_start[c] <= forward_radius) v = 2;
+    if (to_goal[c] <= backward_radius) v = 3;
+    category[c / grid.cols][c % grid.cols] = v;
+  }
+  std::print("Settled cells are those within cost {:.1f} of the start for Dijkstra ({} cells), and within "
+             "{:.1f} of the start or {:.1f} of the goal for the bidirectional search; {:.1f} + {:.1f} = {:.1f} "
+             "\\(\\ge\\) the optimum.\n\n", one.distance, uni, forward_radius, backward_radius, forward_radius,
+             backward_radius, forward_radius + backward_radius);
+
+  // Many random pairs.
+  std::mt19937_64 rng(1959);
+  std::uniform_int_distribution<std::size_t> pick(0, n - 1);
+  std::vector<double> dist, ratio;
+  double total_one = 0, total_two = 0;
+  for (int p = 0; p < 300; ++p) {
+    const std::size_t s = pick(rng), t = pick(rng);
+    if (s == t) continue;
+    const auto a = alg::dijkstra_pair_search(n, edges, s, t);
+    const auto b = alg::bidirectional_dijkstra(n, edges, s, t);
+    if (std::abs(a.distance - b.distance) > 1e-9 * a.distance) std::print("MISMATCH {} {}\n", s, t);
+    dist.push_back(a.distance);
+    ratio.push_back(static_cast<double>(a.expanded()) / b.expanded());
+    total_one += a.expanded(), total_two += b.expanded();
+  }
+  const auto band = [&](double lo, double hi) {
+    std::vector<double> out;
+    for (std::size_t i = 0; i < ratio.size(); ++i)
+      if (dist[i] >= lo && dist[i] < hi) out.push_back(ratio[i]);
+    return out;
+  };
+  const auto median = [](std::vector<double> v) {
+    std::ranges::sort(v);
+    return v[v.size() / 2];
+  };
+  std::vector<double> sorted = ratio;
+  std::ranges::sort(sorted);
+  std::print("Over {} random pairs, all with equal costs from both searches: Dijkstra settles {:.0f} cells on "
+             "average and bidirectional Dijkstra {:.0f}, a ratio of {:.2f}. Per pair, the ratio has median {:.2f} "
+             "and quartiles {:.2f} and {:.2f}; it is below 1 for {} pairs. For the {} pairs with optimal cost under 300 the "
+             "median ratio is {:.2f}, and for the {} above 900 it is {:.2f}.\n", ratio.size(), total_one / ratio.size(),
+             total_two / ratio.size(), total_one / total_two, sorted[sorted.size() / 2], sorted[sorted.size() / 4],
+             sorted[3 * sorted.size() / 4], std::ranges::count_if(ratio, [](double r) { return r < 1; }),
+             band(0, 300).size(), median(band(0, 300)), band(900, 1e9).size(), median(band(900, 1e9)));
+
+  std::vector<double> xs, ys;
+  for (std::size_t i = 0; i < grid.rows; ++i) xs.push_back(grid.cell_size * i);
+  for (std::size_t j = 0; j < grid.cols; ++j) ys.push_back(grid.cell_size * j);
+  std::vector<double> px, py;
+  for (std::size_t c : two.path) px.push_back(grid.cell_size * (c / grid.cols)), py.push_back(grid.cell_size * (c % grid.cols));
+  const std::vector<dm::RGB> palette = {{241, 245, 249}, {203, 213, 225}, {147, 197, 253}, {253, 186, 116}};
+  auto map = dm::graphics::RPlot::create()
+                 .image(xs, ys, category, palette, 0, 3)
+                 .lines(px, py, "", dm::RGB{17, 24, 39}, 2.0)
+                 .legend({"Dijkstra only", "forward", "backward"}, {palette[1], palette[2], palette[3]})
+                 .y_limits(0, 700)
+                 .title("Cells settled on one route")
+                 .x_label("x (m)")
+                 .y_label("y (m)");
+  auto scatter = dm::graphics::RPlot::create()
+                     .points(dist, ratio, "", dm::RGB{37, 99, 235}, 3.0)
+                     .abline_h(2, dm::RGB{220, 38, 38}, 1.0)
+                     .abline_h(1, dm::RGB{148, 163, 184}, 1.0)
+                     .y_limits(0, 4)
+                     .title("300 random pairs (red line: 2)")
+                     .x_label("optimal cost")
+                     .y_label("Dijkstra work / bidirectional work");
+  dm::graphics::RLayout::create(1, 2).add(map).add(scatter).size(1300, 480).save_svg("build/bidir_volcano.svg");
+}
+```
+// result_begin: markdown
+| search | cost | vertices settled | forward | backward | edges scanned |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Dijkstra | 1290.9 | 4449 | 4449 | – | 34807 |
+| bidirectional Dijkstra | 1290.9 | 4508 | 1837 | 2671 | 35332 |
+
+Settled cells are those within cost 1290.9 of the start for Dijkstra (4449 cells), and within 645.3 of the start or 645.3 of the goal for the bidirectional search; 645.3 + 645.3 = 1290.6 \(\ge\) the optimum.
+
+Over 300 random pairs, all with equal costs from both searches: Dijkstra settles 2554 cells on average and bidirectional Dijkstra 1964, a ratio of 1.30. Per pair, the ratio has median 1.31 and quartiles 1.09 and 1.80; it is below 1 for 47 pairs. For the 64 pairs with optimal cost under 300 the median ratio is 2.04, and for the 61 above 900 it is 1.15.
+\image(figures/bidir_volcano.svg)
+// result_end
+
+\caption(Left: cells settled on the route from the south-east to the north-west foot of the volcano. Grey cells are settled only by one-directional Dijkstra, blue by the forward half and orange by the backward half of the bidirectional search; the black line is the optimal route. Right: the ratio of cells settled by the two searches for 300 random pairs, against the cost of the optimal route.)
+\alttext(Two panels. Left: a map of the 870 by 610 metre grid. A blue region, cells settled by the forward search, covers the right third of the map around the start at the bottom right. An orange region, cells settled by the backward search, covers the upper left around the goal. A grey band between them, running diagonally from the bottom middle to the top right, marks cells that only one-directional Dijkstra settles. The optimal route, a black line, runs north from the start, then north-west, along the northern edge to the goal, skirting the summit. Right: a scatter of work ratio against optimal cost from 0 to 1500. For costs under 300 the ratios spread between about 1 and 3.3, centred near 2; as cost grows they fall towards 1, and some pairs lie below 1, down to about 0.7.)
+
+On the route across the cone the two searches find the same cost, 1,290.9, but the bidirectional one settles slightly *more* cells: 4,508 against 4,449. Alternating by the smaller heap top kept both radii at 645.3, half the optimum, as the stopping rule requires. The two half-cost regions are not smaller than the one full-cost region, because the full-cost region is clipped by the map. A one-directional search to cost 1,290.9 already covers 84% of the 5,307 cells, so it cannot grow any further, while the two half-searches have room to grow into corners that the route never visits.
+
+Over 300 random pairs, bidirectional Dijkstra saves 23% of the work on average (a ratio of 1.30). The ratio depends on the route length, as the planar model predicts. For the 64 pairs with optimal cost under 300, whose searches stay inside the map, the median ratio is 2.04, exactly the \(2^{D-1}\) of a two-dimensional graph. For the 61 pairs above 900 it is 1.15, and in 47 pairs the bidirectional search does more work. Uphill costs make the regions of equal cost lopsided, which probably explains why the ratios for short routes spread between 1 and 3.
+
+> Summary
+
+- Searching from both ends replaces one ball of radius \(d\) by two of radius \(d/2\). With exponential growth \(b^r\) the work drops from \(b^d\) to \(2b^{d/2}\). With polynomial growth \(r^D\) the saving is a constant \(2^{D-1}\).
+- Exactness needs the right stopping rule. BFS must finish the layer in which the frontiers first touch, and Dijkstra must continue until \(k_s+k_t\ge\mu\), returning the best path \(\mu\) seen across any scanned edge, not the path through the first vertex settled twice. The library's earlier `bidirectional_search` stopped at the first contact and returned invalid paths for 9% of random graphs. It now uses `bidirectional_bfs`.
+- On the digit graph, where balls grow 15-fold and then 5-fold per hop, bidirectional BFS expands 4 to 20 times fewer vertices, and a model built only from mean ball sizes predicts the saving.
+- On the volcano grid the saving is the planar factor 2 for routes that stay inside the map. It disappears for routes across it, because the map boundary limits the single large search more than the two small ones.
+- `algorithms::bidirectional_bfs`, `bidirectional_dijkstra`, the baselines `bfs_pair_search` and `dijkstra_pair_search`, and `ball_sizes` are in `<datamunge/algorithms/bidirectional_search.hpp>`. All of them report their work counters.
+
+> References
+
+- Pohl, I. (1971). Bi-directional search. *Machine Intelligence* 6, 127–140.
+- Goldberg, A. V. and Harrelson, C. (2005). Computing the shortest path: A* search meets graph
+  theory. *Proceedings of the 16th ACM-SIAM Symposium on Discrete Algorithms*, 156–165.
+- Holte, R. C., Felner, A., Sharon, G. and Sturtevant, N. R. (2016). Bidirectional search that is
+  guaranteed to meet in the middle. *Proceedings of AAAI-16*, 3411–3417.
+- Russell, S. and Norvig, P. (2021). *Artificial Intelligence: A Modern Approach*, 4th edition,
+  Section 3.4.5. Pearson.

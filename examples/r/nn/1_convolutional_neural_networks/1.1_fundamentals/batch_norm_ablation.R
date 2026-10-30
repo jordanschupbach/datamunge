@@ -1,10 +1,10 @@
 # Native R NN example. Paired MNIST CNN batch-norm ablation trained and checked in R.
+# CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/batch_norm_ablation.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example batch_norm_ablation
 # Paired MNIST CNN experiments with and without batch normalization.
 #
 # Port of tflow's batch_norm_ablation. Use the same 12,000 fitting rows,
@@ -120,8 +120,8 @@ main <- function(arguments = commandArgs(TRUE)) {
     if (args$threads > 0L) nn$set_num_threads(args$threads)
     nn_require(args$epochs >= 0L, "positive epochs required")
     epochs <- if (args$epochs > 0L) args$epochs else nn_limit(6L, 1L)
-    training <- nn$load_mnist(args$data, "train")
-    test <- nn$load_mnist(args$data, "test")
+    training <- nn_components$dataset_assets$LoadMnist(args$data, "train")
+    test <- nn_components$dataset_assets$LoadMnist(args$data, "test")
     nn_require(as.numeric(training$images$shape())[1L] == 60000 && as.numeric(test$images$shape())[1L] == 10000,
                "official MNIST row counts")
     train_x <- nn$reshape(training$images, c(60000L, 784L))

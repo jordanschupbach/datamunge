@@ -34,7 +34,7 @@ power of two \-\- a negligible loss for a large gain in simplicity.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 inline int rice_len(std::uint64_t n, int k) { return (int)(n >> k) + 1 + k; }
 ```
@@ -99,7 +99,7 @@ geometric source (value \(n\) with probability \(\propto (1/2)^{n/8}\), mean abo
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 inline int rice_len(std::uint64_t n, int k) { return (int)(n >> k) + 1 + k; }
 

@@ -41,7 +41,7 @@ get subtly wrong, which is why a "basic" geometry component prefers it.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

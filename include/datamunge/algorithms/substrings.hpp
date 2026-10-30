@@ -38,18 +38,31 @@ MaxSubarray kadane(const std::vector<int>& a);
 /// @return one longest common (contiguous) substring; empty if the sequences share no element.
 std::vector<int> longest_common_substring(const std::vector<int>& a, const std::vector<int>& b);
 
-/// @brief *Wildcard (glob) matching* of a whole @p text against a @p pattern containing the
-///        wildcards @c '*' (matches any run of characters, including empty) and @c '?' (matches
-///        exactly one character); all other characters match literally. This is the
-///        non-recursive, linear-in-practice Krauss-style two-pointer algorithm (the recursive
-///        variant is Salz's @c wildmat): it scans left to right, and on hitting a @c '*' remembers
-///        the position so it can backtrack the star to swallow one more character if a later literal
-///        mismatch occurs. The whole text must be consumed (anchored match).
+/// @brief Case-sensitive whole-string byte matching with only star and question-mark metacharacters.
 ///
-/// @param text    the string to test.
-/// @param pattern the wildcard pattern.
-/// @return true iff @p pattern matches the entire @p text.
-bool wildcard_match(const std::string& text, const std::string& pattern);
+/// '*' matches any byte sequence, including empty; '?' matches exactly one
+/// byte. Other bytes, including slash, dot, brackets and backslash, are literal.
+/// There is no escaping, bracket class, path flag, case folding or Unicode
+/// character decoding. Embedded NULs are supported. A pattern star remains a
+/// wildcard even when the current text byte is itself '*'. Empty text matches
+/// only an empty pattern or a sequence of stars. Inputs are borrowed and unchanged.
+/// The shared last-star scan uses O(1) auxiliary storage and O((n+1)*(m+1))
+/// worst-case time for n text bytes and m pattern bytes; it can rescan suffixes.
+/// Concurrent calls share no state.
+/// @param text Byte string to match in its entirety.
+/// @param pattern Restricted glob pattern; no substring search is implied.
+/// @return True exactly when the complete text is accepted.
+/// @par Example
+/// @code
+/// const bool match=dm::algorithms::wildcard_match("*ba","*a"); // true
+/// const bool anchored=dm::algorithms::wildcard_match("surname, Mr. Name","Mr.*"); // false
+/// @endcode
+/// @par References
+/// - K. J. Krauss, Matching Wildcards: An Improved Algorithm for Big Data,
+///   https://developforperformance.com/MatchingWildcards_AnImprovedAlgorithmForBigData.html
+///   (non-recursive matching family; this is a simpler length-aware last-star scan).
+/// @see wildcard_match_stats(), wildcard_match_trace(), wildcard_dp_table()
+bool wildcard_match(const std::string& text,const std::string& pattern);
 
 /// @brief One node of a @ref SuffixTree. An edge into this node spans text positions
 ///        @c [start, end] inclusive; an @ref end of -1 is the sentinel "current leaf end", i.e. the

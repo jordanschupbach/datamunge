@@ -662,6 +662,7 @@ void Formula::parse() {
 
     bool                      has_intercept = true;
     std::vector<std::string> ordered_terms;
+    std::vector<std::string> removed_terms;  // "- x" terms, also applied to the expansion of "."
 
     for (const auto& [sign, raw] : signed_terms) {
         if (raw == "1") { has_intercept = (sign != '-'); continue; }
@@ -671,9 +672,12 @@ void Formula::parse() {
             if (sign == '+') {
                 if (std::find(ordered_terms.begin(), ordered_terms.end(), term) == ordered_terms.end())
                     ordered_terms.push_back(term);
+                std::erase(removed_terms, term);
             } else {
                 const auto it = std::find(ordered_terms.begin(), ordered_terms.end(), term);
                 if (it != ordered_terms.end()) ordered_terms.erase(it);
+                if (std::find(removed_terms.begin(), removed_terms.end(), term) == removed_terms.end())
+                    removed_terms.push_back(term);
             }
         }
     }
@@ -683,6 +687,7 @@ void Formula::parse() {
 
     intercept_requested_ = has_intercept;
     raw_terms_            = std::move(ordered_terms);
+    removed_terms_        = std::move(removed_terms);
 }
 
 DesignInfo Formula::resolve(const dstruct::DataFrame& data, ResponseKind response_kind, bool force_no_intercept) const {
@@ -699,6 +704,8 @@ DesignInfo Formula::resolve(const dstruct::DataFrame& data, ResponseKind respons
         if (raw == ".") {
             for (const auto& col : data.columns()) {
                 if (col == response_name_) continue;
+                // R: "y ~ . - x" drops x from the columns that "." stands for.
+                if (std::find(removed_terms_.begin(), removed_terms_.end(), col) != removed_terms_.end()) continue;
                 if (std::find(terms.begin(), terms.end(), col) == terms.end()) terms.push_back(col);
             }
         } else if (std::find(terms.begin(), terms.end(), raw) == terms.end()) {

@@ -44,7 +44,7 @@ representative toward itself.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Partitioning Around Medoids (PAM)
@@ -134,7 +134,7 @@ inside the blobs \-\- not pulled toward the outliers.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

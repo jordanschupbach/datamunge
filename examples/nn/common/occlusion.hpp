@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstdint>
 #include <datamunge/nn/nn.hpp>
+#include <datamunge/nn/occlusion.hpp>
 #include <functional>
 #include <map>
 #include <string>
@@ -23,14 +24,7 @@ struct OcclusionSpec {
 };
 
 /// Patch starts 0, stride, ... plus a final edge anchor so every pixel is covered.
-inline std::vector<int> OcclusionAnchors(int length, int patch, int stride) {
-  check::Require(length > 0 && patch > 0 && patch <= length && stride > 0 && stride <= patch,
-                 "patch inside image;stride<=patch guarantees full coverage");
-  std::vector<int> starts;
-  for (int i = 0; i <= length - patch; i += stride) starts.push_back(i);
-  if (starts.back() != length - patch) starts.push_back(length - patch);
-  return starts;
-}
+inline auto OcclusionAnchors(int length,int patch,int stride){return nn::models::OcclusionAnchors(length,patch,stride);}
 
 /// Host arrays (row-major) of every patch/case: rectangles [P, 4] (top, left, h, w),
 /// coverage [H, W], logits [N, C] / [P, N, C], scores [N] / [P, N], drops [P, N],
@@ -49,88 +43,17 @@ struct OcclusionResult {
 };
 using PredictionFunction = std::function<Tensor(const Tensor&)>;
 
-inline OcclusionResult OcclusionSensitivity(const Tensor& input, const Tensor& replacement, const Tensor& target,
-                                            const OcclusionSpec& spec, int batch, const PredictionFunction& predict) {
-  check::Require(input.dtype() == nn::DType::Float32 && input.dim() == 4 && input.numel() > 0 &&
-                     input.shape() == replacement.shape() && replacement.dtype() == nn::DType::Float32 &&
-                     target.dtype() == nn::DType::Int32 && target.shape() == nn::Shape{input.size(0)} && batch > 0,
-                 "matching nonempty NHWC input/replacement/fixed targets");
-  OcclusionResult out;
-  out.n = int(input.size(0));
-  out.h = int(input.size(1));
-  out.w = int(input.size(2));
-  out.c = int(input.size(3));
-  const int  n = out.n, h = out.h, w = out.w, c = out.c;
-  const auto ys = OcclusionAnchors(h, spec.height, spec.stride_y), xs = OcclusionAnchors(w, spec.width, spec.stride_x);
-  out.patches = int(ys.size() * xs.size());
-  out.coverage.assign(std::size_t(h) * w, 0);
-  for (int y : ys)
-    for (int x : xs) {
-      out.rectangles.insert(out.rectangles.end(), {y, x, spec.height, spec.width});
-      for (int a = y; a < y + spec.height; ++a)
-        for (int b = x; b < x + spec.width; ++b) ++out.coverage[a * w + b];
-    }
-  for (int v : out.coverage) check::Require(v > 0, "all image pixels covered including appended edge anchors");
-  const Tensor original = predict(input);
-  check::Require(original.dtype() == nn::DType::Float32 && original.dim() == 2 && original.size(0) == n,
-                 "prediction returns class logits");
-  out.classes         = int(original.size(1));
-  const int classes   = out.classes;
-  out.original_logits = original.contiguous().to_vector<float>();
-  const auto x = input.contiguous().to_vector<float>(), r = replacement.contiguous().to_vector<float>();
-  const auto t = target.contiguous().to_vector<int>();
-  const int  patches = out.patches;
-  out.original_score.resize(n);
-  out.occluded_score.resize(std::size_t(patches) * n);
-  out.occluded_logits.resize(std::size_t(patches) * n * classes);
-  out.drops.resize(std::size_t(patches) * n);
-  out.pixel_mean.assign(std::size_t(n) * h * w, 0.0);
-  const std::int64_t image_size = std::int64_t(h) * w * c;
-  out.occluded_inputs.resize(std::size_t(patches) * n * image_size);
-  for (int b = 0; b < n; ++b) {
-    check::Require(t[b] >= 0 && t[b] < classes, "fixed target class range");
-    out.original_score[b] = out.original_logits[b * classes + t[b]];
-  }
-  for (int start = 0; start < patches * n; start += batch) {
-    const int          count = std::min(batch, patches * n - start);
-    std::vector<float> points(std::size_t(count) * image_size);
-    for (int j = 0; j < count; ++j) {
-      const int flat = start + j, patch = flat / n, b = flat % n;
-      std::copy_n(x.data() + b * image_size, image_size, points.data() + j * image_size);
-      const int top = out.rectangles[patch * 4], left = out.rectangles[patch * 4 + 1];
-      for (int y = top; y < top + spec.height; ++y)
-        for (int a = left; a < left + spec.width; ++a)
-          for (int ch = 0; ch < c; ++ch) {
-            const std::int64_t offset    = (std::int64_t(y) * w + a) * c + ch;
-            points[j * image_size + offset] = r[b * image_size + offset];
-          }
-      std::copy_n(points.data() + j * image_size, image_size, out.occluded_inputs.data() + flat * image_size);
-    }
-    const Tensor z = predict(nn::from_vector(points, {count, h, w, c}));
-    check::Require(z.dtype() == nn::DType::Float32 && z.shape() == nn::Shape({count, classes}), "all occluded prediction logits aligned");
-    const auto zv = z.contiguous().to_vector<float>();
-    for (int j = 0; j < count; ++j) {
-      const int flat = start + j, patch = flat / n, b = flat % n;
-      for (int cls = 0; cls < classes; ++cls) {
-        const float value = zv[j * classes + cls];
-        check::Require(std::isfinite(value), "finite every occluded class score");
-        out.occluded_logits[(std::size_t(patch) * n + b) * classes + cls] = value;
-      }
-      const float score                          = zv[j * classes + t[b]];
-      out.occluded_score[std::size_t(patch) * n + b] = score;
-      const double delta                         = double(out.original_score[b]) - score;
-      out.drops[std::size_t(patch) * n + b]      = delta;
-      const int top = out.rectangles[patch * 4], left = out.rectangles[patch * 4 + 1];
-      for (int y = top; y < top + spec.height; ++y)
-        for (int a = left; a < left + spec.width; ++a) out.pixel_mean[(std::size_t(b) * h + y) * w + a] += delta;
-    }
-  }
-  for (int b = 0; b < n; ++b)
-    for (int y = 0; y < h; ++y)
-      for (int a = 0; a < w; ++a) out.pixel_mean[(std::size_t(b) * h + y) * w + a] /= out.coverage[y * w + a];
-  return out;
-}
-
+inline OcclusionResult OcclusionSensitivity(const Tensor&input,const Tensor&replacement,const Tensor&target,const OcclusionSpec&spec,int batch,const PredictionFunction&predict){const auto x=nn::models::OcclusionSensitivity(input,replacement,target,{spec.height,spec.width,spec.stride_y,spec.stride_x},batch,predict);OcclusionResult out;out.patches=x.patches;out.n=x.n;out.h=x.h;out.w=x.w;out.c=x.c;out.classes=x.classes;
+out.rectangles=x.rectangles.to_vector<int>();
+out.coverage=x.coverage.to_vector<int>();
+out.original_logits=x.original_logits.to_vector<float>();
+out.occluded_logits=x.occluded_logits.to_vector<float>();
+out.original_score=x.original_score.to_vector<float>();
+out.occluded_score=x.occluded_score.to_vector<float>();
+out.occluded_inputs=x.occluded_inputs.to_vector<float>();
+out.drops=x.drops.to_vector<double>();
+out.pixel_mean=x.pixel_mean.to_vector<double>();
+return out;}
 /// The result's arrays as tensors under tflow's names (prefix + "_rectangles", ...).
 inline void Export(const OcclusionResult& r, const std::string& prefix, std::map<std::string, Tensor>& arrays) {
   const std::int64_t P = r.patches, N = r.n, H = r.h, W = r.w, C = r.c, K = r.classes;

@@ -1,0 +1,76 @@
+#version 450
+// Native offscreen scene pass: exact procedural intersections, GGX and shadow rays.
+layout(local_size_x=8,local_size_y=8) in;
+struct Object {vec4 position_kind;vec4 rotation;vec4 scale;vec4 color_metallic;vec4 material;};
+layout(set=0,binding=0,std430) readonly buffer Objects {Object objects[];};
+layout(set=0,binding=1,std430) writeonly buffer Direct {vec4 direct_color[];};
+layout(set=0,binding=2,std430) writeonly buffer Geometry {vec4 normal_depth[];};
+layout(set=0,binding=3,std430) writeonly buffer Ambient {vec4 ambient_color[];};
+layout(push_constant) uniform Parameters {
+  vec4 camera_position;vec4 camera_rotation;vec4 camera;uvec4 output_size;
+  vec4 bounds;vec4 ao;vec4 flags;vec4 background;
+} p;
+const float pi=3.141592653589793;
+vec3 rotate(vec4 q,vec3 v){return v+2.0*cross(q.yzw,cross(q.yzw,v)+q.x*v);}
+vec3 ray(ivec2 pixel){
+  vec2 uv=(vec2(pixel)+.5)/vec2(p.output_size.xy);
+  vec2 local=(uv-p.bounds.xy)/p.bounds.zw;
+  return normalize(rotate(p.camera_rotation,vec3((2*local.x-1)*p.camera.x*p.camera.y,(1-2*local.y)*p.camera.x,-1)));
+}
+bool slab(vec3 ro,vec3 rd,int kind,out float near_t,out float far_t,out vec3 near_n,out vec3 far_n){
+  near_t=-1e30;far_t=1e30;near_n=vec3(0);far_n=vec3(0);
+  int count=kind==0?6:8;
+  for(int i=0;i<count;++i){
+    vec3 n;
+    if(kind==0){n=vec3(0);n[i/2]=(i%2)==0?1:-1;}
+    else n=vec3((i&1)==0?1:-1,(i&2)==0?1:-1,(i&4)==0?1:-1);
+    float den=dot(n,rd),gap=.5-dot(n,ro);
+    if(abs(den)<1e-10){if(gap<0)return false;continue;}
+    float t=gap/den;
+    if(den<0){if(t>near_t){near_t=t;near_n=n;}}
+    else if(t<far_t){far_t=t;far_n=n;}
+    if(near_t>far_t)return false;
+  }
+  return far_t>=0;
+}
+bool intersect(int index,vec3 origin,vec3 direction,float minimum,float maximum,out float t,out vec3 normal){
+  Object o=objects[index];vec4 q=normalize(o.rotation),inverse=vec4(q.x,-q.yzw);
+  vec3 ro=rotate(inverse,origin-o.position_kind.xyz)/o.scale.xyz,rd=rotate(inverse,direction)/o.scale.xyz;
+  vec3 local_n;
+  int kind=int(o.position_kind.w);
+  if(kind==1){
+    float a=dot(rd,rd),b=dot(ro,rd),c=dot(ro,ro)-.25,d=b*b-a*c;
+    if(d<0)return false;
+    t=(-b-sqrt(max(d,0)))/a;if(t<minimum)t=(-b+sqrt(max(d,0)))/a;
+    if(t<minimum||t>maximum)return false;local_n=ro+rd*t;
+  }else{
+    float n,f;vec3 nn,fn;if(!slab(ro,rd,kind,n,f,nn,fn))return false;
+    t=n;local_n=nn;if(t<minimum){t=f;local_n=fn;}if(t<minimum||t>maximum)return false;
+  }
+  normal=normalize(rotate(q,local_n/o.scale.xyz));return true;
+}
+float visibility(int self,vec3 point,vec3 normal,vec3 light){
+  vec3 origin=point+normal*.003;
+  for(uint i=0;i<p.output_size.z;++i){if(int(i)==self)continue;float t;vec3 n;if(intersect(int(i),origin,light,.001,1e7,t,n))return 0;}
+  return 1;
+}
+vec3 ggx(vec3 albedo,float metallic,float roughness,vec3 normal,vec3 view,vec3 light){
+  vec3 sum=view+light,half_v=sum/max(length(sum),.000001);float nl=max(dot(normal,light),0),nv=max(dot(normal,view),0),nh=max(dot(normal,half_v),0),vh=max(dot(view,half_v),0);
+  float alpha=roughness*roughness,a2=alpha*alpha,den=nh*nh*(a2-1)+1;
+  float distribution=a2/(pi*den*den),k=(roughness+1)*(roughness+1)/8;
+  float geometry=(nv/(nv*(1-k)+k))*(nl/(nl*(1-k)+k));
+  vec3 f0=mix(vec3(.04),albedo,metallic),f=f0+(1-f0)*pow(1-vh,5);
+  vec3 specular=distribution*geometry*f/max(4*nv*nl,.0001),diffuse=(1-f)*(1-metallic)*albedo/pi;
+  return (diffuse+specular)*nl;
+}
+void main(){
+  ivec2 pixel=ivec2(gl_GlobalInvocationID.xy);if(any(greaterThanEqual(pixel,ivec2(p.output_size.xy))))return;
+  uint index=uint(pixel.y)*p.output_size.x+uint(pixel.x);vec2 uv=(vec2(pixel)+.5)/vec2(p.output_size.xy);
+  if(any(lessThan(uv,p.bounds.xy))||any(greaterThanEqual(uv,p.bounds.xy+p.bounds.zw))){direct_color[index]=vec4(p.background.rgb,1);ambient_color[index]=vec4(0);normal_depth[index]=vec4(0);return;}
+  vec3 direction=ray(pixel),normal=vec3(0);float nearest=p.camera.w;int hit=-1;
+  for(uint i=0;i<p.output_size.z;++i){float t;vec3 n;if(intersect(int(i),p.camera_position.xyz,direction,p.camera.z,nearest,t,n)){nearest=t;normal=n;hit=int(i);}}
+  if(hit<0){direct_color[index]=vec4(p.background.rgb,1);ambient_color[index]=vec4(0);normal_depth[index]=vec4(0);return;}
+  Object o=objects[hit];vec3 albedo=o.color_metallic.rgb,point=p.camera_position.xyz+direction*nearest,light=normalize(vec3(-.35,.8,.55));
+  vec3 color=ggx(albedo,o.color_metallic.w,o.material.x,normal,-direction,light)*vec3(4.2,4,3.6)*visibility(hit,point,normal,light)+albedo*o.material.y;
+  direct_color[index]=vec4(color,1);ambient_color[index]=vec4(albedo*.12*(1-.5*o.color_metallic.w),1);normal_depth[index]=vec4(normal,nearest);
+}

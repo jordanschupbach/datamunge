@@ -1,0 +1,537 @@
+//? Title: The Biconjugate Gradient Method
+//? Subtitle: Krylov solving without symmetry: BiCG derived from two-sided Lanczos, its breakdowns (one of them hiding inside PageRank), and its convergence against power iteration, BiCGSTAB and GMRES on the PageRank system of a nearest-neighbour graph of handwritten digits
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The biconjugate gradient method extends conjugate gradients to non-symmetric systems by pairing the Krylov space of \(A\) with a shadow space of \(A^\top\). We derive its recurrences from two-sided Lanczos and show where its two kinds of breakdown come from. We then use it to compute PageRank on the directed 10-nearest-neighbour graph of 1,797 handwritten digits. That system contains a trap: the all-ones vector is an eigenvector of \(A^\top\), so the textbook shadow vector makes BiCG break down at its first step, and BiCGSTAB from \(x_0=0\) fails to converge as damping approaches one. With a random shadow vector BiCG needs 76 matrix products where power iteration needs 146 at \(\alpha=0.85\), and 406 where it needs 24,028 at \(\alpha=0.999\).
+)
+
+\toc
+
+> From CG to BiCG
+
+Conjugate gradient solves \(Ax=b\) for symmetric positive definite \(A\) with short recurrences.
+Each step needs one product with \(A\) and a few vectors of memory, and the error is minimised
+in the \(A\)-norm over the Krylov space \(\mathcal K_k(A,r_0)=\operatorname{span}\{r_0,Ar_0,\dots,A^{k-1}r_0\}\).
+Both properties rest on symmetry. Lanczos's three-term recurrence builds an orthonormal basis of
+\(\mathcal K_k\) in which \(A\) is tridiagonal. For a non-symmetric \(A\), the orthonormal basis
+(Arnoldi) gives a full Hessenberg matrix instead. GMRES uses it, but its memory and work grow
+with every step.
+
+>> Two-sided Lanczos
+
+The biconjugate gradient method (Lanczos 1952, Fletcher 1976) keeps short recurrences by giving
+up orthogonality. It builds two sequences: residuals \(r_k\in\mathcal K_{k+1}(A,r_0)\) and *shadow residuals*
+\(\tilde r_k\in\mathcal K_{k+1}(A^\top,\tilde r_0)\), required to be *bi-orthogonal*,
+
+$$
+\tilde r_i^{\top}r_j=0\quad(i\ne j),\qquad \tilde p_i^{\top}Ap_j=0\quad(i\ne j),
+$$
+\alttext(r tilde i transpose r j equals 0 for i not equal to j, and p tilde i transpose A p j equals 0 for i not equal to j.)
+
+with search directions \(p_k\) and \(\tilde p_k\). Equivalently, \(x_k\in x_0+\mathcal K_k(A,r_0)\) is chosen so that
+\(r_k\perp\mathcal K_k(A^\top,\tilde r_0)\), a *Petrov–Galerkin* condition. Because \(\tilde r_i^\top Ar_j=(A^\top\tilde r_i)^\top r_j\)
+and \(A^\top\tilde r_i\) lies in \(\mathcal K_{i+2}(A^\top,\tilde r_0)\), the matrix \(\tilde R^\top AR\) is tridiagonal, and the recurrences
+are short, exactly as in CG.
+
+>> The recurrences
+
+Write \(x_{k+1}=x_k+\alpha_kp_k\), so \(r_{k+1}=r_k-\alpha_kAp_k\), and mirror it with
+\(\tilde r_{k+1}=\tilde r_k-\alpha_kA^\top\tilde p_k\). Requiring \(\tilde p_k^\top r_{k+1}=0\), and using
+\(\tilde p_k^\top r_k=\tilde r_k^\top r_k\) (the earlier \(\tilde p_i\) are orthogonal to \(r_k\)), gives
+
+$$
+\alpha_k=\frac{\tilde r_k^{\top}r_k}{\tilde p_k^{\top}Ap_k}.
+$$
+\alttext(alpha k equals r tilde k transpose r k, divided by p tilde k transpose A p k.)
+
+New directions \(p_{k+1}=r_{k+1}+\beta_kp_k\) and \(\tilde p_{k+1}=\tilde r_{k+1}+\beta_k\tilde p_k\) must be
+bi-conjugate to the old ones, and only the last condition is not automatic:
+
+$$
+\beta_k=\frac{\tilde r_{k+1}^{\top}r_{k+1}}{\tilde r_k^{\top}r_k}.
+$$
+\alttext(beta k equals r tilde k plus 1 transpose r k plus 1, divided by r tilde k transpose r k.)
+
+Each step costs one product with \(A\) and one with \(A^\top\). In exact arithmetic the residual is
+zero after at most \(n\) steps, unless the method breaks down first. If \(A\) is symmetric and
+\(\tilde r_0=r_0\), the two sequences coincide and BiCG is CG. `algorithms::biconjugate_gradient` takes \(A\) and
+\(A^\top\) as functions, so a sparse matrix never needs to be stored densely, and it records
+\(\|r_k\|/\|b\|\) at every step.
+
+>> Two kinds of breakdown
+
+The two divisions can fail with \(A\) perfectly non-singular.
+
+- **Pivot breakdown**, \(\tilde p_k^\top Ap_k=0\). For \(A=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)\) and \(b=e_1\),
+  \(p_0=\tilde p_0=e_1\) and \(Ap_0=e_2\), so the first denominator is zero. A is orthogonal, and GMRES solves the
+  system in two steps.
+- **Lanczos (serious) breakdown**, \(\tilde r_k^\top r_k=0\) with \(r_k\ne0\). The extreme case is a shadow
+  space that stops growing, when \(\tilde r_0\) spans an \(A^\top\)-invariant subspace. The PageRank system below is
+  such a case.
+
+Look-ahead Lanczos steps over the singular steps (Parlett, Taylor and Liu 1985). The simple
+remedy, used here, is a different shadow vector, usually a random one.
+
+> PageRank on a nearest-neighbour graph
+
+`dm::datasets::digits()` holds 1,797 handwritten digits as 64-pixel images. We join every image
+to its 10 nearest neighbours (`geometry::knn_lists`), giving a *directed* graph, since being
+among my neighbours does not make me one of yours. Let \(P\) be the random walk that moves to a
+uniformly chosen out-neighbour, so \(P_{uv}=1/10\) for each edge \(u\to v\). PageRank with damping
+\(\alpha\) is the stationary distribution of the walk that follows \(P\) with probability \(\alpha\)
+and jumps to a uniformly random image otherwise. It solves
+
+$$
+\big(I-\alpha P^{\top}\big)x=\frac{1-\alpha}{n}\mathbf 1,
+$$
+\alttext(I minus alpha P transpose, times x, equals 1 minus alpha over n times the all-ones vector.)
+
+a sparse, non-symmetric system with 11 non-zeros per column. `algorithms::page_rank_system` builds
+\(A=I-\alpha P^\top\), its transpose and the right-hand side.
+
+>> Where the eigenvalues lie
+
+If \(Pv=\mu v\) then \(A^\top v=(1-\alpha\mu)v\), so the spectrum of \(A\) is \(\{1-\alpha\mu\}\). Since \(P\) is
+stochastic, \(|\mu|\le1\): the eigenvalues of \(A\) lie in the disc of radius \(\alpha\) about 1, at
+distance at least \(1-\alpha\) from the origin. *Power iteration* \(x_{k+1}=\alpha P^\top x_k+b\) (the classic
+PageRank algorithm, Richardson's iteration on this system) shrinks the error by a factor \(\alpha\)
+per step at worst, needing about \(\log\varepsilon/\log\alpha\) steps: 142 for \(\varepsilon=10^{-10}\) at \(\alpha=0.85\), and 2,292 at
+\(\alpha=0.99\). A Krylov method instead builds a residual polynomial \(q_k\) with \(q_k(0)=1\) that is small on
+the whole spectrum. A few eigenvalues near \(1-\alpha\) cost one root each, and the rest are handled
+at the rate of the smaller disc that contains them. The digits graph has such outliers. Images
+of one digit mostly point at the same digit, so the walk nearly splits into ten slowly mixing
+blocks, and \(P\) has about ten eigenvalues close to 1.
+
+>> The left eigenvector trap
+
+Because \(P\) is row-stochastic, \(P\mathbf 1=\mathbf 1\), and so \(A^\top\mathbf 1=(1-\alpha)\mathbf 1\). The all-ones vector, which is
+also the direction of \(b\), is an eigenvector of \(A^\top\). With the textbook choice \(\tilde r_0=r_0=b\), the
+shadow space \(\mathcal K_k(A^\top,b)\) is the line through \(\mathbf 1\) for every \(k\). Then
+
+$$
+\alpha_0=\frac{b^\top b}{b^\top Ab}=\frac{b^\top b}{(1-\alpha)\,b^\top b}=\frac1{1-\alpha},\qquad
+\tilde r_1=\tilde r_0-\alpha_0A^\top\tilde r_0=\tilde r_0-\frac{1-\alpha}{1-\alpha}\tilde r_0=0 ,
+$$
+\alttext(alpha 0 equals b transpose b over b transpose A b, which equals 1 over 1 minus alpha. Then r tilde 1 equals r tilde 0 minus alpha 0 times A transpose r tilde 0, which is zero.)
+
+while \(r_1\ne0\): a serious breakdown at the first step. In floating point, \(\tilde r_1\) is rounding noise
+rather than zero, and an unguarded BiCG carries on with that noise as an accidental random
+shadow. BiCGSTAB fixes \(\tilde r_0=r_0\) for good. `biconjugate_gradient` detects a shadow that has
+collapsed far faster than the residual and reports a breakdown.
+
+```{cpp, results="markdown", file="figures/bicg_spectrum.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto digits = dm::datasets::digits();
+  const std::size_t n = digits.nrows();
+  std::vector<std::vector<double>> x(n, std::vector<double>(64));
+  for (int j = 0; j < 64; ++j) {
+    const auto column = digits.get_column("pixel_" + std::to_string(j)).values();
+    for (std::size_t i = 0; i < n; ++i) x[i][j] = column[i];
+  }
+  const auto label = digits.get_column("digit").values();
+  const auto lists = dm::geometry::knn_lists(x, 10);
+  std::vector<std::pair<std::size_t, std::size_t>> edges;
+  std::vector<int> in_degree(n, 0);
+  std::size_t cross = 0;
+  for (std::size_t u = 0; u < n; ++u)
+    for (int v : lists[u]) {
+      edges.emplace_back(u, v);
+      ++in_degree[v];
+      cross += label[v] != label[u];
+    }
+  std::print("{} images, {} directed edges; {:.1f}% of edges join different digits. In-degree ranges from {} to {} "
+             "({} images are nobody's neighbour).\n\n", n, edges.size(), 100.0 * cross / edges.size(),
+             std::ranges::min(in_degree), std::ranges::max(in_degree), std::ranges::count(in_degree, 0));
+
+  // Spectrum of P^T by a full Arnoldi run (with reorthogonalisation) and its Ritz values.
+  const auto sys = alg::page_rank_system(n, edges, 0.85);
+  const auto apply_Pt = [&](const std::vector<double>& v) {
+    auto y = sys.matrix.spmv(v);  // (I - 0.85 P^T) v
+    for (std::size_t i = 0; i < n; ++i) y[i] = (v[i] - y[i]) / 0.85;
+    return y;
+  };
+  std::vector<double> start(n);
+  for (std::size_t i = 0; i < n; ++i) start[i] = std::sin(i + 1.0);
+  const auto ritz = alg::ritz_pairs(alg::arnoldi_iteration(apply_Pt, start, static_cast<int>(n), true), false);
+  std::vector<double> re, im;
+  int near_one = 0, complex_count = 0;
+  double max_imag = 0;
+  for (const auto& r : ritz) {
+    re.push_back(r.value.real());
+    im.push_back(r.value.imag());
+    near_one += std::abs(r.value) > 0.95;
+    complex_count += std::abs(r.value.imag()) > 1e-9;
+    max_imag = std::max(max_imag, std::abs(r.value.imag()));
+  }
+  std::print("Arnoldi found {} eigenvalues of \\(P\\) (it stops when the Krylov space is invariant). {} have "
+             "\\(|\\mu|>0.95\\); {} are complex, with imaginary parts up to {:.3f}. The largest moduli:",
+             ritz.size(), near_one, complex_count, max_imag);
+  for (int i = 0; i < 12; ++i) std::print(" {:.4f}", std::abs(ritz[i].value));
+  std::print(".\n\n");
+
+  // PageRank itself.
+  const auto rank = alg::page_rank(n, edges, 0.85, 1e-14, 100000);
+  std::vector<double> mass(10, 0.0), count(10, 0.0);
+  for (std::size_t i = 0; i < n; ++i) {
+    mass[static_cast<int>(label[i])] += rank[i];
+    count[static_cast<int>(label[i])] += 1;
+  }
+  std::print("| digit |");
+  for (int d = 0; d < 10; ++d) std::print(" {} |", d);
+  std::print("\n| --- |");
+  for (int d = 0; d < 10; ++d) std::print(" ---: |");
+  std::print("\n| share of images |");
+  for (int d = 0; d < 10; ++d) std::print(" {:.3f} |", count[d] / n);
+  std::print("\n| share of PageRank, \\(\\alpha=0.85\\) |");
+  for (int d = 0; d < 10; ++d) std::print(" {:.3f} |", mass[d]);
+  double sum_r = 0, sum_d = 0, srr = 0, sdd = 0, srd = 0;
+  for (std::size_t i = 0; i < n; ++i) sum_r += rank[i], sum_d += in_degree[i];
+  for (std::size_t i = 0; i < n; ++i) {
+    const double a = rank[i] - sum_r / n, b = in_degree[i] - sum_d / n;
+    srr += a * a, sdd += b * b, srd += a * b;
+  }
+  std::print("\n\nCorrelation of PageRank with in-degree: {:.3f}. The top image has PageRank {:.2f} times the "
+             "average.\n", srd / std::sqrt(srr * sdd), std::ranges::max(rank) * n);
+
+  std::vector<double> cx, cy;
+  for (int t = 0; t <= 200; ++t) {
+    cx.push_back(std::cos(t * 2 * std::numbers::pi / 200));
+    cy.push_back(std::sin(t * 2 * std::numbers::pi / 200));
+  }
+  dm::graphics::RPlot::create()
+      .lines(cx, cy, "", dm::RGB{148, 163, 184}, 1.0)
+      .points(re, im, "", dm::RGB{37, 99, 235}, 3.0)
+      .x_limits(-1.1, 1.1)
+      .y_limits(-1.1, 1.1)
+      .title("Eigenvalues of the digit random walk P")
+      .x_label("real part")
+      .y_label("imaginary part")
+      .size(600, 560)
+      .save_svg("build/bicg_spectrum.svg");
+}
+```
+// result_begin: markdown
+1797 images, 17970 directed edges; 3.5% of edges join different digits. In-degree ranges from 0 to 35 (16 images are nobody's neighbour).
+
+Arnoldi found 1776 eigenvalues of \(P\) (it stops when the Krylov space is invariant). 14 have \(|\mu|>0.95\); 1528 are complex, with imaginary parts up to 0.127. The largest moduli: 1.0000 1.0000 0.9999 0.9998 0.9997 0.9997 0.9995 0.9973 0.9966 0.9906 0.9874 0.9793.
+
+| digit | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| share of images | 0.099 | 0.101 | 0.098 | 0.102 | 0.101 | 0.101 | 0.101 | 0.100 | 0.097 | 0.100 |
+| share of PageRank, \(\alpha=0.85\) | 0.099 | 0.118 | 0.096 | 0.101 | 0.099 | 0.101 | 0.101 | 0.104 | 0.084 | 0.096 |
+
+Correlation of PageRank with in-degree: 0.897. The top image has PageRank 4.51 times the average.
+\image(figures/bicg_spectrum.svg)
+// result_end
+
+\caption(Eigenvalues of the random walk \(P\) on the directed 10-nearest-neighbour graph of the digits, from a full Arnoldi run, with the unit circle in grey.)
+\alttext(Scatter plot of about 1,800 eigenvalues inside the unit circle. Most form a dense cloud on the real axis between minus 0.35 and plus 0.3, with imaginary parts up to about 0.13; a thin tail of nearly real eigenvalues stretches to the right and ends in a cluster at 1.)
+
+Only 3.5% of the nearest-neighbour edges cross between digits, so the walk on \(P\) is nearly ten separate walks. The spectrum shows it. Twelve eigenvalues have modulus above 0.979, and two equal 1 to four decimals. A stochastic matrix has eigenvalue 1 once for each closed set of states, so the walk has at least two groups of images that it can enter but never leave. The bulk sits in a small cloud around \(-0.1\), well inside the unit disc. Most eigenvalues are complex, since \(P\) is not symmetric, but none is far from the real axis. For \(A=I-\alpha P^\top\), the bulk maps to a cloud near 1 and the cluster near \(\mu=1\) maps to about a dozen eigenvalues near \(1-\alpha\). The power method has to wait for \(\alpha^k\) to shrink. A Krylov method has to spend roughly one step per isolated eigenvalue before converging at the much faster rate of the cloud.
+
+PageRank itself is dominated by in-degree (correlation 0.90). The share by digit is close to the share of images, except that ones collect more (0.118) and eights less (0.084). The top image has 4.5 times the average PageRank.
+
+> Convergence at \(\alpha=0.85\)
+
+We now solve the PageRank system at the usual \(\alpha=0.85\) to a relative residual of \(10^{-10}\) with:
+
+- power iteration;
+- BiCG with the textbook shadow \(\tilde r_0=b\), and with a random positive shadow;
+- BiCGSTAB (van der Vorst 1992, `linalg::bicgstab`), from \(x_0=0\) and from a random probability vector;
+- full GMRES (`linalg::gmres`).
+
+The two library solvers report only their final residual, so their histories are traced by
+re-running with an iteration cap of \(1,2,3,\dots\). Work is counted in products with \(A\) or \(A^\top\).
+
+```{cpp, results="markdown", file="figures/bicg_convergence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <random>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto digits = dm::datasets::digits();
+  const std::size_t n = digits.nrows();
+  std::vector<std::vector<double>> x(n, std::vector<double>(64));
+  for (int j = 0; j < 64; ++j) {
+    const auto column = digits.get_column("pixel_" + std::to_string(j)).values();
+    for (std::size_t i = 0; i < n; ++i) x[i][j] = column[i];
+  }
+  const auto lists = dm::geometry::knn_lists(x, 10);
+  std::vector<std::pair<std::size_t, std::size_t>> edges;
+  for (std::size_t u = 0; u < n; ++u)
+    for (int v : lists[u]) edges.emplace_back(u, v);
+  const double alpha = 0.85, tol = 1e-10;
+  const auto sys = alg::page_rank_system(n, edges, alpha);
+  const auto A = [&](const std::vector<double>& v) { return sys.matrix.spmv(v); };
+  const auto At = [&](const std::vector<double>& v) { return sys.transpose.spmv(v); };
+  const double bnorm = std::sqrt(std::inner_product(sys.rhs.begin(), sys.rhs.end(), sys.rhs.begin(), 0.0));
+  const auto rel_residual = [&](const std::vector<double>& v) {
+    const auto Av = A(v);
+    double s = 0;
+    for (std::size_t i = 0; i < n; ++i) s += (sys.rhs[i] - Av[i]) * (sys.rhs[i] - Av[i]);
+    return std::sqrt(s) / bnorm;
+  };
+  const auto reference = alg::page_rank(n, edges, alpha, 1e-15, 100000);
+
+  std::mt19937_64 rng(1952);
+  std::uniform_real_distribution<double> u(0.5, 1.5);
+  std::vector<double> shadow(n), x0(n);
+  for (auto& v : shadow) v = u(rng);
+  for (auto& v : x0) v = u(rng);
+  const double x0_sum = std::accumulate(x0.begin(), x0.end(), 0.0);
+  for (auto& v : x0) v /= x0_sum;
+
+  struct Curve { std::string name; std::vector<double> work, log_res; };
+  std::vector<Curve> curves;
+  std::print("| method | stopped after | products | final relative residual | true residual | max error vs `page_rank` |\n"
+             "| :--- | ---: | ---: | ---: | ---: | ---: |\n");
+  const auto report = [&](const std::string& name, const std::string& stop, int products, double final_res,
+                          const std::vector<double>& sol) {
+    double err = 0;
+    for (std::size_t i = 0; i < n; ++i) err = std::max(err, std::abs(sol[i] - reference[i]));
+    std::print("| {} | {} | {} | {:.1e} | {:.1e} | {:.1e} |\n", name, stop, products, final_res, rel_residual(sol), err);
+  };
+
+  // Power iteration x <- alpha P^T x + b.
+  {
+    Curve c{"power iteration", {}, {}};
+    std::vector<double> v(n, 0.0);
+    int k = 0;
+    for (double res = 1.0; res > tol && k < 100000; ++k) {
+      const auto Av = A(v);
+      res = 0;
+      for (std::size_t i = 0; i < n; ++i) res += (sys.rhs[i] - Av[i]) * (sys.rhs[i] - Av[i]);
+      res = std::sqrt(res) / bnorm;
+      c.work.push_back(k);
+      c.log_res.push_back(std::log10(res));
+      if (res <= tol) break;
+      for (std::size_t i = 0; i < n; ++i) v[i] += sys.rhs[i] - Av[i];  // = alpha P^T v + b
+    }
+    report("power iteration", std::format("{} steps", k), k, std::pow(10.0, c.log_res.back()), v);
+    curves.push_back(c);
+  }
+  // BiCG with the textbook shadow, then with a random one.
+  for (bool random_shadow : {false, true}) {
+    const auto run = alg::biconjugate_gradient(A, At, sys.rhs, 2000, tol, random_shadow ? shadow : std::vector<double>{});
+    const std::string name = random_shadow ? "BiCG, random shadow" : "BiCG, shadow \\(b\\)";
+    report(name, std::format("{} steps{}", run.iterations, run.breakdown ? ", breakdown" : ""), run.products,
+           run.residual_history.back(), run.x);
+    if (random_shadow) {
+      Curve c{name, {}, {}};
+      for (std::size_t k = 0; k < run.residual_history.size(); ++k) {
+        c.work.push_back(2.0 * k);
+        c.log_res.push_back(std::log10(run.residual_history[k]));
+      }
+      curves.push_back(c);
+    }
+  }
+  // BiCGSTAB from 0 (shadow = b) and from a random start; GMRES. Histories by re-running with caps.
+  const auto trace = [&](const std::string& name, auto solve, int per_step) {
+    Curve c{name, {0.0}, {0.0}};
+    dm::linalg::SolverResult<double> last;
+    for (std::size_t cap = 1; cap <= 400; ++cap) {
+      last = solve(cap);
+      c.work.push_back(static_cast<double>(per_step * last.iterations));
+      c.log_res.push_back(std::log10(std::max(last.residual_norm, 1e-300)));
+      if (last.converged || last.iterations < cap) break;
+    }
+    report(name, std::format("{} steps{}", last.iterations, last.converged ? "" : ", not converged"),
+           per_step * static_cast<int>(last.iterations), last.residual_norm, last.x);
+    curves.push_back(c);
+  };
+  for (bool random_start : {false, true}) {
+    trace(random_start ? "BiCGSTAB, random \\(x_0\\)" : "BiCGSTAB, \\(x_0=0\\)",
+          [&](std::size_t cap) {
+            dm::linalg::SolverOptions o;
+            o.tol = tol;
+            o.max_iter = cap;
+            return dm::linalg::bicgstab(sys.matrix, sys.rhs, random_start ? x0 : std::vector<double>{}, o);
+          }, 2);
+  }
+  trace("GMRES", [&](std::size_t cap) {
+    dm::linalg::SolverOptions o;
+    o.tol = tol;
+    o.max_iter = cap;
+    return dm::linalg::gmres(sys.matrix, sys.rhs, {}, o, 0);
+  }, 1);
+
+  auto plot = dm::graphics::RPlot::create();
+  const std::vector<dm::RGB> colors = {{148, 163, 184}, {37, 99, 235}, {220, 38, 38}, {217, 119, 6}, {22, 163, 74}};
+  for (std::size_t i = 0; i < curves.size(); ++i) plot.lines(curves[i].work, curves[i].log_res, "", colors[i], 2.0);
+  plot.legend({"power iteration", "BiCG, random shadow", "BiCGSTAB, x0 = 0", "BiCGSTAB, rand. x0", "GMRES"}, colors)
+      .abline_h(-10, dm::RGB{17, 24, 39}, 1.0)
+      .x_limits(0, 185)
+      .y_limits(-11, 4)
+      .title("PageRank system, alpha = 0.85")
+      .x_label("products with A or its transpose")
+      .y_label("log10 relative residual")
+      .size(820, 460)
+      .save_svg("build/bicg_convergence.svg");
+}
+```
+// result_begin: markdown
+| method | stopped after | products | final relative residual | true residual | max error vs `page_rank` |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| power iteration | 146 steps | 146 | 9.6e-11 | 9.6e-11 | 5.2e-13 |
+| BiCG, shadow \(b\) | 1 steps, breakdown | 2 | 3.3e+00 | 3.3e+00 | 2.0e-03 |
+| BiCG, random shadow | 39 steps | 78 | 4.5e-11 | 4.5e-11 | 5.8e-14 |
+| BiCGSTAB, \(x_0=0\) | 90 steps | 180 | 9.1e-11 | 9.1e-11 | 5.3e-13 |
+| BiCGSTAB, random \(x_0\) | 20 steps | 40 | 7.4e-11 | 7.4e-11 | 2.1e-13 |
+| GMRES | 36 steps | 36 | 6.2e-11 | 6.2e-11 | 1.6e-13 |
+\image(figures/bicg_convergence.svg)
+// result_end
+
+\caption(Relative residual against products with \(A\) or \(A^\top\) for the PageRank system at \(\alpha=0.85\). BiCG uses a random shadow vector. The black line is the tolerance \(10^{-10}\).)
+\alttext(Line chart of log10 relative residual against matrix products, from 0 to 185. Power iteration falls in a straight line, reaching minus 10 at 146 products. GMRES falls smoothly and reaches minus 10 at 36. BiCGSTAB from a random start follows close to GMRES and reaches it at 40. BiCG with a random shadow zig-zags downward and reaches it at 78. BiCGSTAB from zero is erratic, with a large jump up after 70 products, and reaches minus 10 only at 180.)
+
+All the converged runs agree with the reference `page_rank` to \(6\times10^{-13}\) or better, and their recursively updated residuals agree with the true residuals \(\|b-Ax\|/\|b\|\). The ranking follows the theory:
+
+- **BiCG with \(\tilde r_0=b\)** stops after one step with a breakdown, exactly as derived above. Its iterate is still \(x_1=b/(1-\alpha)\), which has the wrong scale and a residual of 3.3.
+- **BiCG with a random shadow** converges in 39 steps (78 products), about half the work of power iteration. Its residual is not monotone: BiCG minimises nothing, and the peaks are steps where \(\tilde r_k^\top r_k\) happened to be small.
+- **GMRES** is the benchmark, because it minimises \(\|r_k\|\) over the same Krylov space: 36 products, but it stores all 36 basis vectors and the orthogonalisation cost grows with \(k^2\).
+- **BiCGSTAB from \(x_0=0\)** has \(\tilde r_0=r_0=b\), the bad shadow. It does not break down outright, since its smoothing step moves \(r_k\) away from the eigenvector, but it needs 180 products with large jumps. From a random probability vector it needs 40, close to GMRES, and with constant memory.
+
+> As damping approaches one
+
+The interesting regime is \(\alpha\to1\), where power iteration needs about \(1/(1-\alpha)\) times longer, and
+the near-unit eigenvalues of \(P\) put eigenvalues of \(A\) close to zero. We count the products
+needed to reach \(10^{-10}\) for \(\alpha\) from 0.5 to 0.999.
+
+```{cpp, results="markdown", file="figures/bicg_damping.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <random>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto digits = dm::datasets::digits();
+  const std::size_t n = digits.nrows();
+  std::vector<std::vector<double>> x(n, std::vector<double>(64));
+  for (int j = 0; j < 64; ++j) {
+    const auto column = digits.get_column("pixel_" + std::to_string(j)).values();
+    for (std::size_t i = 0; i < n; ++i) x[i][j] = column[i];
+  }
+  const auto lists = dm::geometry::knn_lists(x, 10);
+  std::vector<std::pair<std::size_t, std::size_t>> edges;
+  for (std::size_t u = 0; u < n; ++u)
+    for (int v : lists[u]) edges.emplace_back(u, v);
+  std::mt19937_64 rng(1976);
+  std::uniform_real_distribution<double> u(0.5, 1.5);
+  std::vector<double> shadow(n), x0(n);
+  for (auto& v : shadow) v = u(rng);
+  for (auto& v : x0) v = u(rng);
+  const double x0_sum = std::accumulate(x0.begin(), x0.end(), 0.0);
+  for (auto& v : x0) v /= x0_sum;
+  const double tol = 1e-10;
+
+  std::print("| \\(\\alpha\\) | power iteration | \\(\\lceil\\log\\varepsilon/\\log\\alpha\\rceil\\) | BiCG, random shadow | BiCGSTAB, \\(x_0=0\\) | BiCGSTAB, random \\(x_0\\) | GMRES |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> lx, lp, lb, ls, lg;
+  for (double alpha : {0.5, 0.85, 0.95, 0.99, 0.999}) {
+    const auto sys = alg::page_rank_system(n, edges, alpha);
+    const auto A = [&](const std::vector<double>& v) { return sys.matrix.spmv(v); };
+    const auto At = [&](const std::vector<double>& v) { return sys.transpose.spmv(v); };
+    const double bnorm = std::sqrt(std::inner_product(sys.rhs.begin(), sys.rhs.end(), sys.rhs.begin(), 0.0));
+    std::vector<double> v(n, 0.0);
+    int power = 0;
+    for (; power < 200000; ++power) {
+      const auto Av = A(v);
+      double res = 0;
+      for (std::size_t i = 0; i < n; ++i) res += (sys.rhs[i] - Av[i]) * (sys.rhs[i] - Av[i]);
+      if (std::sqrt(res) / bnorm <= tol) break;
+      for (std::size_t i = 0; i < n; ++i) v[i] += sys.rhs[i] - Av[i];
+    }
+    const auto bicg = alg::biconjugate_gradient(A, At, sys.rhs, 5000, tol, shadow);
+    dm::linalg::SolverOptions o;
+    o.tol = tol;
+    o.max_iter = 5000;
+    const auto stab0 = dm::linalg::bicgstab(sys.matrix, sys.rhs, {}, o);
+    const auto stab = dm::linalg::bicgstab(sys.matrix, sys.rhs, x0, o);
+    const auto gm = dm::linalg::gmres(sys.matrix, sys.rhs, {}, o, 0);
+    const auto cell = [](const auto& r, int per) {
+      if (r.converged) return std::format("{}", per * static_cast<int>(r.iterations));
+      return std::isfinite(static_cast<double>(r.residual_norm))
+                 ? std::format("fails ({:.0e})", static_cast<double>(r.residual_norm))
+                 : std::string("fails (NaN)");
+    };
+    std::print("| {} | {} | {:.0f} | {} | {} | {} | {} |\n", alpha, power, std::ceil(std::log(tol) / std::log(alpha)),
+               bicg.converged ? std::format("{}", bicg.products) : "fails", cell(stab0, 2), cell(stab, 2), cell(gm, 1));
+    lx.push_back(std::log10(1 / (1 - alpha)));
+    lp.push_back(std::log10(power));
+    lb.push_back(std::log10(bicg.products));
+    ls.push_back(stab.converged ? std::log10(2.0 * stab.iterations) : std::nan(""));
+    lg.push_back(std::log10(gm.iterations));
+  }
+  auto plot = dm::graphics::RPlot::create()
+                  .lines(lx, lp, "power iteration", dm::RGB{148, 163, 184}, 2.5)
+                  .points(lx, lp, "", dm::RGB{148, 163, 184}, 6.0)
+                  .lines(lx, lb, "BiCG", dm::RGB{37, 99, 235}, 2.5)
+                  .points(lx, lb, "", dm::RGB{37, 99, 235}, 6.0)
+                  .lines(lx, lg, "GMRES", dm::RGB{22, 163, 74}, 2.5)
+                  .points(lx, lg, "", dm::RGB{22, 163, 74}, 6.0);
+  std::vector<double> sx, sy;
+  for (std::size_t i = 0; i < ls.size(); ++i)
+    if (!std::isnan(ls[i])) sx.push_back(lx[i]), sy.push_back(ls[i]);
+  plot.points(sx, sy, "BiCGSTAB", dm::RGB{217, 119, 6}, 8.0)
+      .y_limits(0.8, 6)
+      .title("Work to reach 1e-10 against 1 / (1 - alpha)")
+      .x_label("log10 1 / (1 - alpha)")
+      .y_label("log10 products with A or its transpose")
+      .size(820, 460)
+      .save_svg("build/bicg_damping.svg");
+}
+```
+// result_begin: markdown
+| \(\alpha\) | power iteration | \(\lceil\log\varepsilon/\log\alpha\rceil\) | BiCG, random shadow | BiCGSTAB, \(x_0=0\) | BiCGSTAB, random \(x_0\) | GMRES |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.5 | 34 | 34 | 34 | 24 | 20 | 16 |
+| 0.85 | 146 | 142 | 76 | 180 | 38 | 36 |
+| 0.95 | 464 | 449 | 140 | 1514 | 76 | 63 |
+| 0.99 | 2381 | 2292 | 252 | fails (NaN) | 168 | 120 |
+| 0.999 | 24028 | 23015 | 406 | fails (NaN) | 382 | 170 |
+\image(figures/bicg_damping.svg)
+// result_end
+
+\caption(Products with \(A\) or \(A^\top\) needed to reach a relative residual of \(10^{-10}\) against \(1/(1-\alpha)\), on log scales. BiCG uses a random shadow vector and BiCGSTAB a random starting vector.)
+\alttext(Log-log plot of products needed against 1 over 1 minus alpha, for alpha 0.5, 0.85, 0.95, 0.99 and 0.999. Power iteration rises with slope about 1, from 34 to 24,028. BiCG rises much more slowly, from 34 to 406. GMRES is lowest, from 16 to 170. BiCGSTAB from a random start lies between GMRES and BiCG, from 20 to 382.)
+
+Power iteration tracks its bound \(\lceil\log\varepsilon/\log\alpha\rceil\) to within 5%, so its work grows like \(1/(1-\alpha)\): a thousand-fold increase from \(\alpha=0.5\) to \(0.999\) costs 700 times more products. The Krylov methods grow far more slowly, roughly as the square root of \(1/(1-\alpha)\): 12 times for BiCG and 11 times for GMRES over the same range, so at \(\alpha=0.999\) BiCG is 59 times cheaper than power iteration. The reason is the polynomial argument above. Pushing \(\alpha\) towards 1 moves the dozen outlying eigenvalues towards zero, but each still costs only about one Krylov step to remove, and the bulk barely moves.
+
+BiCGSTAB from \(x_0=0\) is the warning. Its cost grows from 24 to 1,514 products by \(\alpha=0.95\), and at \(\alpha=0.99\) and \(0.999\) it produces NaN: with \(\tilde r_0\) along the eigenvector \(\mathbf 1\) of \(A^\top\), its inner products lose all information. Starting from a random probability vector, which changes \(r_0\) and so \(\tilde r_0\), it converges at every \(\alpha\) with work close to BiCG's.
+
+> Summary
+
+- BiCG is the Petrov–Galerkin method on \(\mathcal K_k(A,r_0)\) against \(\mathcal K_k(A^\top,\tilde r_0)\). Bi-orthogonality makes \(\tilde R^\top AR\) tridiagonal, which gives CG-like two-term recurrences at the price of a product with \(A^\top\) per step and no minimisation property.
+- It can break down with \(A\) non-singular, either when \(\tilde p_k^\top Ap_k=0\) or when \(\tilde r_k^\top r_k=0\). On PageRank the default shadow \(\tilde r_0=b\) is a left eigenvector of \(A\), and BiCG breaks down at its first step, with \(\alpha_0=1/(1-\alpha)\) and \(\tilde r_1=0\) exactly. The same choice makes BiCGSTAB from zero fail as \(\alpha\to1\). A random shadow vector, or a random starting vector for BiCGSTAB, removes the problem.
+- On the digit graph, power iteration needs about \(1/(1-\alpha)\) times more work as damping rises, while BiCG, BiCGSTAB and GMRES grow roughly with its square root, because only a dozen eigenvalues of \(A\) approach zero. GMRES needs the fewest products. BiCG and BiCGSTAB need about 2 to 2.4 times as many, with constant memory.
+- `algorithms::biconjugate_gradient` is matrix-free, takes an optional shadow vector, and reports breakdowns instead of returning a silently wrong answer. `algorithms::page_rank_system` builds the sparse PageRank system and its transpose, and `geometry::knn_lists` builds the nearest-neighbour graph.
+
+> References
+
+- Lanczos, C. (1952). Solution of systems of linear equations by minimized iterations. *Journal
+  of Research of the National Bureau of Standards* 49, 33–53.
+- Fletcher, R. (1976). Conjugate gradient methods for indefinite systems. *Numerical Analysis
+  Dundee 1975*, Lecture Notes in Mathematics 506, 73–89.
+- Parlett, B. N., Taylor, D. R. and Liu, Z. A. (1985). A look-ahead Lanczos algorithm for
+  unsymmetric matrices. *Mathematics of Computation* 44, 105–124.
+- van der Vorst, H. A. (1992). Bi-CGSTAB: a fast and smoothly converging variant of Bi-CG for the
+  solution of nonsymmetric linear systems. *SIAM Journal on Scientific and Statistical
+  Computing* 13, 631–644.
+- Saad, Y. (2003). *Iterative Methods for Sparse Linear Systems*, 2nd edition. SIAM, Chapter 7.
+- Langville, A. N. and Meyer, C. D. (2006). *Google's PageRank and Beyond*. Princeton University
+  Press.
+- Sleijpen, G. L. G. and Fokkema, D. R. (1993). BiCGstab(\(\ell\)) for linear equations involving
+  unsymmetric matrices with complex spectrum. *Electronic Transactions on Numerical Analysis* 1,
+  11–32.

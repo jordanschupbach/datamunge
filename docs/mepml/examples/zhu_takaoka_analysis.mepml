@@ -1,0 +1,310 @@
+//? Title: Zhu–Takaoka Search: When a Pair of Bytes Buys a Longer Shift
+//? Subtitle: Safe digram bounds, actual comparison counts and searching Titanic passenger names
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Zhu–Takaoka combines Boyer–Moore's good-suffix rule with a shift indexed by
+the final two bytes of a text window. We derive the digram table, including
+its easily missed prefix-overlap case, and show why taking the larger of
+two safe bounds preserves every occurrence. A compiled matcher searches
+`dm::datasets::titanic()` names independently, reports actual byte comparisons,
+and exposes each alignment's chosen shift. Naive search and Horspool give
+reference results and work counts on the same records. The comparison
+includes the algorithm named in the title; preprocessing cost and
+periodic worst cases are kept explicit.
+)
+
+\toc
+
+> The data: names are separate records
+
+The built-in Titanic dataset contains 891 passengers and 12 columns. Its
+`Name` column has surnames, titles, given names and parenthesised names.
+This gives natural exact-substring queries with different lengths and
+frequencies. Search is case-sensitive on bytes; no linguistic tokenisation
+or Unicode normalisation is implied. Each name is searched separately, so
+a match cannot run from the end of one passenger's name into the next.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto passengers = dm::datasets::titanic();
+  std::print("{}\n", passengers.select({"PassengerId", "Name"}).head(8).to_md());
+  std::print("\n| records | dataset columns |\n| ---: | ---: |\n| {} | {} |\n", passengers.nrows(), passengers.ncols());
+}
+```
+// result_begin: markdown
+| PassengerId | Name |
+| ---: | :--- |
+| 1 | Braund, Mr. Owen Harris |
+| 2 | Cumings, Mrs. John Bradley (Florence Briggs Thayer) |
+| 3 | Heikkinen, Miss. Laina |
+| 4 | Futrelle, Mrs. Jacques Heath (Lily May Peel) |
+| 5 | Allen, Mr. William Henry |
+| 6 | Moran, Mr. James |
+| 7 | McCarthy, Mr. Timothy J |
+| 8 | Palsson, Master. Gosta Leonard |
+
+
+| records | dataset columns |
+| ---: | ---: |
+| 891 | 12 |
+// result_end
+\caption(The first eight passenger names and the shape of the source dataset.)
+
+> The method: right-to-left comparison with two safe bounds
+
+For pattern \(P\) of length \(m\ge2\), align its first byte with text
+position \(s\). Compare \(P\) against \(T[s,\ldots,s+m-1]\) from
+right to left. On a mismatch, inspect the final window digram
+\((a,b)=(T[s+m-2],T[s+m-1])\).
+
+Consider a possible occurrence starting \(d>0\) bytes later. If
+\(1\le d\le m-2\), the old trailing digram must align with
+\((P[m-2-d],P[m-1-d])\). If \(d=m-1\), only the old final byte
+remains in the pattern, so it must equal \(P[0]\). A shift of \(m\)
+places both old bytes before the candidate. The smallest permitted shift is
+therefore
+
+$$
+D(a,b)=\min\left(\{m\}
+\cup\{m-1:b=P[0]\}
+\cup\{m-1-i:1\le i\le m-2,\ (P[i-1],P[i])=(a,b)\}\right).
+$$
+\alttext(The digram shift is the minimum of the full pattern length, the prefix-overlap shift m minus 1 when the final byte equals the first pattern byte, and distances to internal occurrences of the same digram.)
+
+Initialise every entry to \(m\), set the column for \(P[0]\) to
+\(m-1\), then visit internal digrams from left to right, overwriting
+entries with decreasing distances. The terminal pattern digram is
+excluded: its zero distance would prevent forward progress.
+
+For `Miss.` the internal digrams `Mi`, `is` and `ss` permit shifts 3, 2
+and 1. Any pair ending in `M` permits prefix overlap at shift 4. Most
+remaining pairs permit shift 5, including `s.`: a candidate with the same
+terminal pair still has to move by a positive distance.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("{}\n", dm::algorithms::ZhuTakaoka("Miss.").digram_table("Mis.").to_md());
+}
+```
+// result_begin: markdown
+| first_byte | last_byte | shift |
+| ---: | ---: | ---: |
+| 77 | 77 | 4 |
+| 77 | 105 | 3 |
+| 77 | 115 | 5 |
+| 77 | 46 | 5 |
+| 105 | 77 | 4 |
+| 105 | 105 | 5 |
+| 105 | 115 | 2 |
+| 105 | 46 | 5 |
+| 115 | 77 | 4 |
+| 115 | 105 | 5 |
+| 115 | 115 | 1 |
+| 115 | 46 | 5 |
+| 46 | 77 | 4 |
+| 46 | 105 | 5 |
+| 46 | 115 | 5 |
+| 46 | 46 | 5 |
+// result_end
+\caption(The 16 digram shifts over M, i, s and full stop, represented by byte codes 77, 105, 115 and 46.)
+
+>> Combining the digram bound with a strong good suffix
+
+Suppose the comparison mismatches at pattern index \(j\), after matching
+\(P[j+1,\ldots,m-1]\). The strong good-suffix shift \(G_j\) moves to
+the next occurrence of that suffix preceded by a different byte. If none
+exists, it aligns the longest possible suffix with a pattern prefix.
+Candidates starting before \(G_j\) contradict either the matched suffix
+or the mismatching predecessor. Independently, candidates starting before
+\(D(a,b)\) contradict the trailing pair. Hence
+
+$$
+\Delta=\max\{G_j,D(a,b)\}
+$$
+\alttext(The chosen shift is the maximum of the strong good-suffix shift and the two-byte shift.)
+
+is safe: any start smaller than the maximum violates at least one necessary
+condition. After a full match, use the full-match good-suffix shift, equal
+to \(m-\ell\), where \(\ell\) is the length of the longest proper
+border of the pattern. This preserves overlapping matches: `aa` in `aaaa`
+occurs at offsets 0, 1 and 2.
+
+>> Work and storage
+
+Preprocessing takes \(O(m+\sigma^2)\) time and space for alphabet size
+\(\sigma=256\). The digram table has 65 536 integer entries: 256 KiB
+when `int` is four bytes. Horspool uses 256 shifts instead. A compiled
+`ZhuTakaoka` object pays the digram cost once and reuses it for every record;
+the one-shot `zhu_takaoka_search` rebuilds the tables each call.
+
+At most \(n-m+1\) alignments are visited, with up to \(m\) comparisons
+at each: the safe worst-case bound is \(O(nm)\). For repeated `a` text
+and pattern, every alignment matches and the full-match shift is one, so
+this bound is attained. A useful average shift does not prove linear
+worst-case complexity or a speed advantage on short records.
+
+For a fixed pattern with \(d\) distinct internal digrams, an independently
+uniform window-end pair over \(\sigma\) symbols is absent from that set
+with probability exactly \(1-d/\sigma^2\). Absent pairs usually license
+long shifts, subject to prefix overlap. Passenger names are structured,
+and visited window ends are selected by previous shifts, so this toy
+probability is not a performance prediction for this dataset.
+
+> Following an actual search through one name
+
+The third name contains `Miss.`. The trace is produced by the same search
+loop used by `search` and `scan`. It counts successful byte equality tests
+and the failed test ending an alignment, while excluding size checks and
+preprocessing. A complete match uses only the good-suffix shift, so its
+reported digram contribution is zero.
+
+```{cpp, results="markdown", file="figures/zhu_takaoka_shifts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto passengers = dm::datasets::titanic();
+  const auto& name = passengers.string_at("Name", 2);
+  const dm::algorithms::ZhuTakaoka matcher("Miss.");
+  std::print("{}\n\n", name);
+  const auto trace = matcher.trace(name);
+  std::print("{}\n", trace.to_md());
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .bars(trace.get_column("offset").values(), trace.get_column("advance").values(),
+            "selected advance", dm::RGB{147, 197, 253})
+      .points(trace.get_column("offset").values(), trace.get_column("digram_shift").values(),
+              "digram bound", dm::RGB{220, 38, 38}, 5)
+      .points(trace.get_column("offset").values(), trace.get_column("suffix_shift").values(),
+              "suffix bound", dm::RGB{22, 163, 74}, 4)
+      .title("Which shift wins at each visited name window?")
+      .x_label("alignment offset in bytes").y_label("advance in bytes")
+      .size(900, 480).save_svg("build/zhu_takaoka_shifts.svg");
+}
+```
+// result_begin: markdown
+Heikkinen, Miss. Laina
+
+| offset | matched_suffix | comparisons | match | digram_shift | suffix_shift | advance |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 1 | 0 | 5 | 1 | 5 |
+| 5 | 0 | 1 | 0 | 5 | 1 | 5 |
+| 10 | 0 | 1 | 0 | 1 | 1 | 1 |
+| 11 | 5 | 5 | 1 | 0 | 5 | 5 |
+| 16 | 0 | 1 | 0 | 5 | 1 | 5 |
+
+\image(figures/zhu_takaoka_shifts.svg)
+// result_end
+\caption(The actual alignment trace on a passenger name, showing the digram bound, suffix bound and selected advance.)
+\alttext(A bar chart of selected shifts at visited byte offsets, with points for the digram and suffix bounds. Each selected shift equals the larger applicable bound.)
+
+> Comparing actual scans over the complete dataset
+
+The corpus helper precomputes each pattern's tables once and searches all
+891 records. It reports counts from naive left-to-right search, Horspool,
+and Zhu–Takaoka, comparing their complete position vectors record by
+record. `agrees_with_naive=1` confirms this comparison, not just equality
+of aggregate match totals. These are exact substring queries: `William`
+can occur in a given name, a parenthesised name or a surname.
+
+```{cpp, results="markdown", file="figures/zhu_takaoka_comparisons.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto comparison = dm::algorithms::string_search_comparison(
+      dm::datasets::titanic(), "Name", {"Mr.", "Mrs.", "Miss.", "Master.", "William"});
+  std::print("{}\n", comparison.to_md());
+  const auto totals = comparison.select({"method", "comparisons", "alignments"}) |
+      dm::group_by("method") | dm::summarise_each(dm::sum);
+  std::print("\n{}\n", totals.to_md());
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::barplot(totals.get_column("comparisons").values(),
+                             totals.get_column<std::string>("method").values(), "byte comparisons")
+      .title("Five queries over the same 891 passenger names")
+      .y_label("total scan comparisons, excluding preprocessing")
+      .size(900, 480).save_svg("build/zhu_takaoka_comparisons.svg");
+}
+```
+// result_begin: markdown
+| pattern | method | records | bytes | matches | alignments | comparisons | agrees_with_naive |
+| :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Mr. | naive | 891 | 24026 | 517 | 22244 | 24020 | 1 |
+| Mr. | Horspool | 891 | 24026 | 517 | 8308 | 9491 | 1 |
+| Mr. | Zhu-Takaoka | 891 | 24026 | 517 | 7930 | 9037 | 1 |
+| Mrs. | naive | 891 | 24026 | 125 | 21353 | 23256 | 1 |
+| Mrs. | Horspool | 891 | 24026 | 125 | 6348 | 7166 | 1 |
+| Mrs. | Zhu-Takaoka | 891 | 24026 | 125 | 5842 | 6350 | 1 |
+| Miss. | naive | 891 | 24026 | 182 | 20462 | 22143 | 1 |
+| Miss. | Horspool | 891 | 24026 | 182 | 4854 | 5802 | 1 |
+| Miss. | Zhu-Takaoka | 891 | 24026 | 182 | 4609 | 5499 | 1 |
+| Master. | naive | 891 | 24026 | 40 | 18680 | 20087 | 1 |
+| Master. | Horspool | 891 | 24026 | 40 | 3565 | 3997 | 1 |
+| Master. | Zhu-Takaoka | 891 | 24026 | 40 | 3120 | 3521 | 1 |
+| William | naive | 891 | 24026 | 70 | 18680 | 19193 | 1 |
+| William | Horspool | 891 | 24026 | 70 | 3394 | 3895 | 1 |
+| William | Zhu-Takaoka | 891 | 24026 | 70 | 3097 | 3574 | 1 |
+
+
+| method | comparisons | alignments |
+| :--- | ---: | ---: |
+| naive | 108699 | 101419 |
+| Horspool | 30351 | 26469 |
+| Zhu-Takaoka | 27981 | 24598 |
+
+\image(figures/zhu_takaoka_comparisons.svg)
+// result_end
+\caption(Actual match, alignment and comparison counts for all three methods, followed by totals for the five queries. Every method searches identical unmodified records.)
+\alttext(A bar chart comparing total byte-equality tests by naive search, Horspool and Zhu–Takaoka across five passenger-name queries.)
+
+All 15 method/query combinations agree record by record. Across the five
+queries, naive search performs 108 699 comparisons, Horspool 30 351 and
+Zhu–Takaoka 27 981. The digram rule saves about 7.8% relative to Horspool
+on these records. Its advantage is a measured property of these queries,
+not a guarantee for every name corpus or pattern.
+
+Counts exclude allocation and table construction, and are not elapsed-time
+benchmarks. The larger digram table can lose on cache or setup costs even
+when it saves comparisons. Reusing a matcher is particularly relevant for
+many short strings such as these names.
+
+> Testing the periodic limit
+
+The worst-case construction needs no random generator. For pattern
+`aaaa` in `aaaaaaaa`, every possible alignment matches, all four bytes
+are compared, and the period-one good-suffix shift advances by one.
+This diagnostic is a theoretical counterexample, separate from the dataset
+analysis.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto result = dm::algorithms::ZhuTakaoka("aaaa").scan("aaaaaaaa");
+  std::print("| alignments | matches | comparisons | m(n-m+1) |\n| ---: | ---: | ---: | ---: |\n"
+             "| {} | {} | {} | {} |\n", result.alignments, result.positions.size(), result.comparisons, 4*(8-4+1));
+}
+```
+// result_begin: markdown
+| alignments | matches | comparisons | m(n-m+1) |
+| ---: | ---: | ---: | ---: |
+| 5 | 5 | 20 | 20 |
+// result_end
+\caption(The repeated-byte case attains m times n minus m plus one comparisons, while preserving every overlapping match.)
+
+> Conclusion
+
+A two-byte shift supplies a stronger necessary condition than a single
+byte in many windows. The prefix-overlap case and strong good-suffix rule
+are both needed to move safely. Actual instrumented scans show whether
+that extra information reduces work on these passenger names; the trace
+explains each chosen advance. The larger preprocessing table and periodic
+worst case remain relevant even when the comparison chart is favourable.
+
+> References
+
+- R. F. Zhu and T. Takaoka (1987). *On improving the average case of the Boyer–Moore string matching algorithm*.
+  Journal of Information Processing 10(3), 173–177. https://ipsj.ixsq.nii.ac.jp/records/59825
+- R. N. Horspool (1980). *Practical fast searching in strings*.
+  Software: Practice and Experience 10(6), 501–506. https://doi.org/10.1002/spe.4380100608
+- C. Charras and T. Lecroq. *Exact String Matching Algorithms: Zhu–Takaoka algorithm*.
+  https://www-igm.univ-mlv.fr/~lecroq/string/node20.html

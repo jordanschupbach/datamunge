@@ -1,0 +1,516 @@
+//? Title: Kernel Regression: Local Weights, Bandwidth and Coverage
+//? Subtitle: Worked Nadaraya–Watson smoothers, a known-function check and held-out iris predictions
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A response may vary smoothly with predictors without following one global line or a
+chosen parametric curve. We want predictions that borrow information locally while
+showing when nearby observations are scarce. Nadaraya–Watson kernel regression forms
+nonnegative weighted response averages, with bandwidth setting their locality.
+Three-point calculations expose the weights, boundary bias and the distinction between
+ordinary and leave-one-out fits. Duplicate predictors prevent interpolation of every
+response as bandwidth vanishes. A compact-window example shows why bandwidths must not
+be ranked after silently dropping unsupported validation rows. We then check a known
+function and analyse iris petal length from petal width, separating full-data smoothing
+and conditional bandwidth tuning from an independent 120/30 train/test split. Coverage,
+local effective sample size and extrapolation behaviour accompany error summaries.
+)
+
+\toc
+
+> The method
+
+>> A local constant minimizes a weighted least-squares problem
+
+For training predictors \(x_i\in\mathbb R^p\), responses \(y_i\) and query \(x\),
+choose a positive bandwidth \(h\) and nonnegative radial kernel. In the metric used by
+this implementation, \(u_i=\|z(x)-z(x_i)\|_2/h\), where \(z\) is the frozen resolved
+formula design, optionally standardized. Differentiating the local constant objective gives
+
+$$
+ \hat m_h(x)=\arg\min_c\sum_i K(u_i)(y_i-c)^2
+ =\frac{\sum_iK(u_i)y_i}{\sum_iK(u_i)}
+ =\sum_iw_i(x)y_i,\qquad w_i(x)=\frac{K(u_i)}{\sum_jK(u_j)}.
+$$
+\alttext(The local constant minimizes a weighted sum of squared residuals. Differentiating sets the weighted residual sum to zero, giving normalized nonnegative weights and a weighted response average.)
+
+If the denominator is positive, weights sum to one. Constants are reproduced exactly,
+and predictions lie between the smallest and largest observed response. This prevents
+ordinary local-constant regression from extending a linear trend beyond the observed
+response range. It does not reproduce every affine function: at a boundary, most available
+predictors lie to one side of the query. A Taylor expansion gives the first-order term
+\(m'(x)\sum_iw_i(x)(x_i-x)\), which need not vanish. Under regular one-dimensional
+sampling, symmetry gives interior bias of order \(h^2\); one-sided boundary weighting can
+leave bias of order \(h\). Local linear regression addresses that term, but it is a
+different estimator from the one fitted here.
+
+>> Kernel shape, units and scaling
+
+The four kernels use the Euclidean radius \(u\ge0\):
+
+$$
+ K_G(u)=e^{-u^2/2},\quad K_E(u)=\tfrac34(1-u^2)\mathbf1_{u<1},\quad
+ K_U(u)=\mathbf1_{u\le1},\quad K_T(u)=(1-u)\mathbf1_{u<1}.
+$$
+\alttext(Gaussian weights decay exponentially in squared radius. Epanechnikov and triangular weights taper to zero at radius one, while uniform weights include that boundary.)
+
+Multiplying a kernel by any positive normalizing constant does not change the average.
+Compact support is a ball in the resolved predictor space, not a product box across
+coordinates. Gaussian product kernels with a common bandwidth give the same weights as
+this radial Gaussian; compact product kernels generally do not.
+
+With standardization enabled, the fit uses training-column means and population SDs:
+\(z_{ij}=(X_{ij}-\bar X_j)/\sqrt{n^{-1}\sum_i(X_{ij}-\bar X_j)^2}\).
+Exact constant columns use scale one. The bandwidth is then dimensionless. With scaling
+disabled it is in raw design units; a single scalar is scientifically meaningful only
+with a defensible metric across columns. Formula transformations and dummy coding also
+change that metric. No intercept column is needed for local averaging.
+
+Training nulls in required predictors or the response are omitted jointly; retained
+values must be finite. `kept_row_indices()` preserves original zero-based row alignment.
+Prediction keeps every query row: missing/nonfinite predictors or empty compact windows
+give NaN and an explicit status in `prediction_details()`. Unknown categorical levels
+raise an error. A Gaussian has mathematical support everywhere, but support is not data
+proximity or a guarantee of useful extrapolation. Relative log weights preserve its
+normalized local mean even when all original exponentials would underflow.
+
+>> The smoother matrix and conditional complexity
+
+For a fixed design and fixed \(h\), ordinary predictions at training points satisfy
+\(\hat y=Sy\), where \(S_{ij}=w_j(x_i)\). Its rows sum to one, but S generally is
+neither symmetric nor an orthogonal projection. `smoothing_matrix()` exposes it.
+Diagonal entries measure own-response influence and \(\operatorname{tr}(S)\) is the
+conditional linear-smoother degrees of freedom. Bandwidth selection depends on responses,
+so this trace does not include the complexity cost of searching for h.
+
+For independent homoskedastic errors with variance \(\sigma^2\), fixed query weights give
+
+$$
+ \operatorname{Var}(\hat m_h(x)\mid X)=\sigma^2\sum_iw_i(x)^2
+ =\frac{\sigma^2}{n_{\rm eff}(x)},\qquad
+ n_{\rm eff}(x)=\frac1{\sum_iw_i(x)^2}.
+$$
+\alttext(Conditional variance is the error variance times squared normalized weights. The reciprocal squared-weight sum is a local effective sample size, between one and the number of observations.)
+
+This is a concentration diagnostic, not a confidence interval: it does not estimate
+noise variance or account for smoothing bias, heteroskedasticity or tuning. Small local
+neighbourhoods and multiple predictors can make effective sample sizes small; under a
+regular p-dimensional design the number of local points is roughly proportional to
+\(nh^p\), expressing the dimensionality penalty.
+
+>> Deleting a response is different from fitting it
+
+At fixed preprocessing and bandwidth, removing only observation i yields
+
+$$
+ \hat y_i^{(-i)}=\frac{\hat y_i-S_{ii}y_i}{1-S_{ii}},\qquad
+ y_i-\hat y_i^{(-i)}=\frac{y_i-\hat y_i}{1-S_{ii}}.
+$$
+\alttext(The leave-one-out mean removes the observation's own contribution and renormalizes the remaining weights. The residual identity divides the ordinary residual by one minus its leverage.)
+
+This identity requires positive remaining weight. Numerically, \(S_{ii}\) can round to
+one at tiny bandwidths even though a Gaussian deletion still has a well-defined relative
+weighted mean. The implementation therefore computes deletions directly, excluding the
+row before normalizing. `fitted_values()` retains its historical deletion meaning;
+`full_fitted_values()` explicitly exposes ordinary full-sample fits.
+
+With distinct predictor locations and positive self-weight, ordinary predictions tend
+toward interpolation as \(h\to0\). With duplicates they instead approach each duplicate
+location's response mean; deleting one flower retains the other flowers at that width.
+As \(h\to\infty\), full fits tend toward the global response mean and deletion fits
+toward the corresponding mean excluding each observation. A small apparent error is a
+description of the smoother, not a test-set performance estimate.
+
+>> Bandwidth selection must compare the same validation rows
+
+Negative `bandwidth` requests a search. The default grid has 50 log-spaced values from
+\(0.01\sqrt p\) to \(2\sqrt p\) in the chosen metric units; an explicit positive
+`bandwidth_candidates` vector overrides that grid. The first minimum in caller order wins.
+The grid is finite, not a global optimization guarantee, and boundary choices deserve inspection.
+
+For each candidate, `bandwidth_diagnostics()` reports deletion coverage, conditional MSE
+on finite predictions and a selection objective. The objective is the mean square error
+only when all n deletion predictions are finite; otherwise it is infinity. A wholly
+ineligible grid raises an error. This prevents a narrow compact kernel from winning by
+refusing its difficult rows. Fixed-bandwidth models may still have partial coverage;
+`rmse()` and `r_squared()` then describe the covered subset, and `model_summary()` shows
+its size. No coverage or zero response variation gives an undefined R-squared, not one.
+
+The full-training design, transforms and scaling stay fixed during these deletions.
+This is conditional response-deletion CV, not a refit of the whole preprocessing pipeline
+inside each fold. Its minimum is also optimistically selected on those same responses.
+The held-out iris analysis below fits all preprocessing and selects h using training
+rows only, then evaluates the untouched test rows. Its training-mean baseline uses no test
+responses to make predictions; evaluation R-squared uses test-response variation only
+as its stated denominator.
+
+Fixed-bandwidth training costs \(O(n^2p)\), a B-candidate search \(O(Bn^2p)\), and m
+new queries \(O(mnp)\). The model stores \(O(np+n+B)\) values. Explicit weight/smoother
+matrices add \(O(mn)\) or \(O(n^2)\) output storage; they are diagnostics rather than a
+required dense-matrix implementation of every prediction.
+
+> Simple examples
+
+>> Three points reveal the exact weights
+
+Use \(x=(-1,0,1)\), \(y=(0,1,0)\), raw units and Gaussian \(h=1\). Let
+\(a=e^{-1/2}\), \(b=e^{-2}\). The ordinary smoother matrix is
+
+$$
+ S=\begin{pmatrix}
+ 1/(1+a+b)&a/(1+a+b)&b/(1+a+b)\\
+ a/(1+2a)&1/(1+2a)&a/(1+2a)\\
+ b/(1+a+b)&a/(1+a+b)&1/(1+a+b)
+ \end{pmatrix}.
+$$
+\alttext(The middle query gives equal Gaussian weights to its two neighbours. Endpoint queries have one unit self-weight, one e-to-minus-one-half weight and one e-to-minus-two weight, all normalized by their row sum.)
+
+Thus \(\hat y_1=1/(1+2a)\) at the central point, whereas its deleted prediction is
+zero because both remaining responses are zero. At an endpoint the ordinary fit is
+\(a/(1+a+b)\), while deletion gives \(a/(a+b)\). The full matrix is row-stochastic,
+but its differently normalized rows demonstrate why it is not generally symmetric.
+
+```{cpp, results="markdown", file="figures/kreg_three_points.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{-1,0,1});d.add_column("y",std::vector<double>{0,1,0});
+  dm::stats::KernelRegressionOptions o;o.bandwidth=1;o.standardize=false;const dm::stats::KernelRegression m(d,"y ~ x",o);
+  const auto s=m.smoothing_matrix();dm::dstruct::DataFrame weights;for(std::size_t j=0;j<3;++j)weights.add_column("weight_"+std::to_string(j),s.col(j));
+  auto local=dm::graphics::RPlot::create(),fits=dm::graphics::RPlot::create();local.bars({-1,0,1},s.row(1),"weights at x = 0",{37,99,235},.5).title("Normalized central-query weights").x_label("training x").y_label("weight").y_limits(0,.7);
+  fits.points({-1,0,1},{0,1,0},"actual",{0,0,0}).points({-1,0,1},m.full_fitted_values(),"ordinary fit",{37,99,235}).points({-1,0,1},m.fitted_values(),"deleted fit",{220,38,38});fits.title("Fitting a response versus deleting it").x_label("x").y_label("response").y_limits(-.1,1.65);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(local).add(fits).size(1100,490).fit_panels().save_svg("build/kreg_three_points.svg");
+  std::print("Smoother rows:\n\n{}\n\n{}\n",weights.to_md(6),m.training_details().select({"row","actual","full_fit","loo_fit","leverage","effective_n"}).to_md(6));
+}
+```
+// result_begin: markdown
+Smoother rows:
+
+| weight_0 | weight_1 | weight_2 |
+| ---: | ---: | ---: |
+| 0.574097 | 0.348207 | 0.077696 |
+| 0.274069 | 0.451863 | 0.274069 |
+| 0.077696 | 0.348207 | 0.574097 |
+
+
+| row | actual | full_fit | loo_fit | leverage | effective_n |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0.348207 | 0.817574 | 0.574097 | 2.188795 |
+| 1 | 1 | 0.451863 | 0.000000 | 0.451863 | 2.821613 |
+| 2 | 0 | 0.348207 | 0.817574 | 0.574097 | 2.188795 |
+
+\image(figures/kreg_three_points.svg)
+// result_end
+
+\caption(The matrix and plotted weights are computed by the library. Ordinary and deleted predictions differ even in a three-point example.)
+\alttext(Three central-query weights sum to one. A second panel distinguishes observed responses from ordinary full-sample and directly deleted predictions at each location.)
+
+>> Boundary bias and limited extrapolation
+
+Now take \(x=y=(0,1,2)\), Gaussian \(h=1\), without standardization. The true line
+passes through every observation, but the ordinary fit at zero is
+\((a+2b)/(1+a+b)>0\). At one, symmetric weights reproduce one. Far to the right,
+relative Gaussian weights concentrate on the largest predictor and the mean tends to
+two; far left it tends to zero. This is a stable prediction rule with poor linear
+extrapolation, not evidence that the response is known precisely outside the data.
+
+```{cpp, results="markdown", file="figures/kreg_boundary.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{0,1,2});d.add_column("y",std::vector<double>{0,1,2});dm::stats::KernelRegressionOptions o;o.bandwidth=1;o.standardize=false;const dm::stats::KernelRegression m(d,"y ~ x",o);
+  const auto x=dm::seql(-1,3,241);dm::dstruct::DataFrame q;q.add_column("x",x.values());const auto detail=m.prediction_details(q);
+  auto fit=dm::graphics::RPlot::create(),concentration=dm::graphics::RPlot::create();fit.lines(x.values(),x.values(),"true line",{0,0,0}).lines(x.values(),m.predict(q),"local constant",{37,99,235}).points({0,1,2},{0,1,2},"training",{220,38,38});fit.title("A local constant bends at boundaries").x_label("query x").y_label("response").y_limits(-1.2,4.5);
+  concentration.lines(x.values(),detail.numeric_column("effective_n").values(),"effective n",{37,99,235}).title("Weight concentration changes with x").x_label("query x").y_label("1 / sum(weight squared)").y_limits(0,4);
+  dm::dstruct::DataFrame extreme;extreme.add_column("x",std::vector<double>{-1000,0,1,2,1000});
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(fit).add(concentration).size(1100,490).fit_panels().save_svg("build/kreg_boundary.svg");
+  auto table=m.prediction_details(extreme);table.add_column("x",extreme.numeric_column("x").values());std::print("{}\n",table.select({"x","prediction","effective_n","nearest_distance","status"}).to_md(6));
+}
+```
+// result_begin: markdown
+| x | prediction | effective_n | nearest_distance | status |
+| ---: | ---: | ---: | ---: | :--- |
+| -1000 | 0.000000 | 1.000000 | 1000 | ok |
+| 0 | 0.503599 | 2.188795 | 0 | ok |
+| 1 | 1.000000 | 2.821613 | 0 | ok |
+| 2 | 1.496401 | 2.188795 | 0 | ok |
+| 1000 | 2.000000 | 1.000000 | 998 | ok |
+
+\image(figures/kreg_boundary.svg)
+// result_end
+
+\caption(Local averaging reproduces constants, not arbitrary lines. Gaussian weights remain numerically usable far from the data, where nearest distance and effective sample size reveal the limited support.)
+\alttext(A straight true line and a curved local-constant fit disagree at the boundaries. A second panel shows the local effective sample size peaking near the centre.)
+
+>> Duplicates and incomplete validation coverage
+
+Use \(x=(0,0,10)\), \(y=(0,2,100)\) and a raw-unit uniform window. At \(h=0.1\),
+ordinary predictions at x=0 average the two responses to one; they cannot interpolate both.
+Deleting one duplicate leaves the other, giving predictions two and zero. Deleting the
+isolated x=10 row leaves no support. Conditional deletion MSE is only four on two rows,
+so silently omitting the third row would make this candidate look excellent.
+
+At \(h=11\), every deletion has both remaining observations available. Predictions
+are 51, 50 and 1, giving full-coverage MSE \((51^2+48^2+99^2)/3=4902\).
+The objective correctly treats the incomplete h=0.1 candidate as ineligible, rather than
+pretending that four and 4902 measure the same validation experiment.
+
+```{cpp, results="markdown", file="figures/kreg_coverage.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+dm::dstruct::DataFrame d;d.add_column("x",std::vector<double>{0,0,10});d.add_column("y",std::vector<double>{0,2,100});dm::stats::KernelRegressionOptions o;o.kernel=dm::stats::KernelRegressionKernel::Uniform;o.bandwidth=.1;o.standardize=false;const dm::stats::KernelRegression narrow(d,"y ~ x",o);
+  o.bandwidth=-1;o.bandwidth_candidates={.1,11};const dm::stats::KernelRegression selected(d,"y ~ x",o);const auto path=selected.bandwidth_diagnostics();
+  auto points=dm::graphics::RPlot::create(),coverage=dm::graphics::RPlot::create();points.points({0,0,10},{0,2,100},"training",{37,99,235}).title("Two duplicates and one isolated point").x_label("x").y_label("response").x_limits(-1,11).y_limits(-10,140);
+  coverage.bars({1,2},path.numeric_column("coverage").values(),"LOO coverage",{37,99,235},.5).title("Bandwidth candidates cover different rows").x_label("1: h=0.1; 2: h=11").y_label("fraction predicted").x_limits(.5,2.5).y_limits(0,1.4);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(points).add(coverage).size(1100,490).fit_panels().save_svg("build/kreg_coverage.svg");
+  std::print("Narrow-window training diagnostics:\n\n{}\n\nSearch, chosen h = {}:\n\n{}\n",narrow.training_details().select({"row","actual","full_fit","loo_fit","leverage"}).to_md(6),selected.bandwidth(),path.to_md(6));
+}
+```
+// result_begin: markdown
+Narrow-window training diagnostics:
+
+| row | actual | full_fit | loo_fit | leverage |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 1 | 2 | 0.5 |
+| 1 | 2 | 1 | 0 | 0.5 |
+| 2 | 100 | 100 | nan | 1.0 |
+
+
+Search, chosen h = 11:
+
+| bandwidth | loo_n | coverage | conditional_mse | objective_mse | eligible | selected |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.1 | 2 | 0.666667 | 4 | inf | 0 | 0 |
+| 11.0 | 3 | 1.000000 | 4902 | 4902 | 1 | 1 |
+
+\image(figures/kreg_coverage.svg)
+// result_end
+
+\caption(Coverage is part of the selection rule. An unsupported deletion is not an accurate prediction with zero loss.)
+\alttext(Two observations share x zero while a third is far away at x ten. Candidate coverage rises from two-thirds at the narrow window to one at the broad window; tables retain the missing prediction and infinite selection objective.)
+
+> Checking the theory on a known function
+
+We fix 31 equally spaced predictor locations in [0,1], the target \(m(x)=\sin(2\pi x)\)
+and deterministic contamination \(0.2\cos(20\pi x)\). This is a transparent finite-design
+stress check, not a random-noise Monte Carlo experiment or an estimate of statistical
+bias and variance. Training responses contain the oscillation, while the dense reference
+grid uses the known smooth target. Every candidate uses the same raw-coordinate bandwidth,
+training design and complete Gaussian deletion coverage.
+
+We compare apparent RMSE, conditional deletion RMSE against contaminated training responses,
+and dense-grid RMSE against the true function. They are three different targets. The
+selected bandwidth minimizes the declared deletion criterion, not the withheld function
+error; their rankings need not agree. The same fixed data also show the deterioration
+from excessive smoothing and the attraction of apparent interpolation at tiny h.
+
+```{cpp, results="markdown", file="figures/kreg_known_function.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+const auto x=dm::seql(0,1,31),truth=dm::sin(x*(2*std::acos(-1.0))),y=truth+.2*dm::cos(x*(20*std::acos(-1.0)));dm::dstruct::DataFrame d;d.add_column("x",x.values());d.add_column("y",y.values());
+  const auto gx=dm::seql(0,1,301);dm::dstruct::DataFrame reference;reference.add_column("x",gx.values());reference.add_column("y",dm::sin(gx*(2*std::acos(-1.0))).values());
+  dm::stats::KernelRegressionOptions o;o.standardize=false;o.bandwidth_candidates={.005,.01,.02,.04,.08,.16,.32,.64};const dm::stats::KernelRegression chosen(d,"y ~ x",o);dm::dstruct::DataFrame rows;std::vector<double> logh,apparent,loo,known;
+  for(double h:o.bandwidth_candidates){o.bandwidth=h;const dm::stats::KernelRegression m(d,"y ~ x",o);auto row=m.model_summary().select({"bandwidth","apparent_rmse","loo_rmse"});row.add_column("true_function_rmse",std::vector<double>{m.score(reference).double_at("rmse",0)});rows=rows.ncols()?rows.concat_rows(row):row;logh.push_back(std::log10(h));apparent.push_back(row.double_at("apparent_rmse",0));loo.push_back(row.double_at("loo_rmse",0));known.push_back(row.double_at("true_function_rmse",0));}
+  auto fit=dm::graphics::RPlot::create(),loss=dm::graphics::RPlot::create();fit.points(x.values(),y.values(),"contaminated",{148,163,184}).lines(gx.values(),reference.numeric_column("y").values(),"known target",{0,0,0}).lines(gx.values(),chosen.predict(reference),"chosen fit",{37,99,235});fit.title("A known smooth target and fixed ripple").x_label("x").y_label("response").y_limits(-1.4,2);
+  loss.lines(logh,apparent,"apparent",{22,163,74}).lines(logh,loo,"deleted responses",{220,38,38}).lines(logh,known,"known function",{37,99,235});loss.title("Three losses answer different questions").x_label("log10 bandwidth").y_label("RMSE").y_limits(0,1.1);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(fit).add(loss).size(1100,490).fit_panels().save_svg("build/kreg_known_function.svg");std::print("Chosen conditional-CV h = {}.\n\n{}\n",chosen.bandwidth(),rows.to_md(6));
+}
+```
+// result_begin: markdown
+Chosen conditional-CV h = 0.04.
+
+| bandwidth | apparent_rmse | loo_rmse | true_function_rmse |
+| ---: | ---: | ---: | ---: |
+| 0.005 | 0.000000 | 0.222422 | 0.140374 |
+| 0.010 | 0.001592 | 0.222422 | 0.122999 |
+| 0.020 | 0.070549 | 0.222699 | 0.066227 |
+| 0.040 | 0.140864 | 0.221920 | 0.034845 |
+| 0.080 | 0.186617 | 0.235107 | 0.108118 |
+| 0.160 | 0.313538 | 0.351466 | 0.265923 |
+| 0.320 | 0.494567 | 0.523177 | 0.471696 |
+| 0.640 | 0.635741 | 0.661037 | 0.627444 |
+
+\image(figures/kreg_known_function.svg)
+// result_end
+
+\caption(A fixed sinusoidal target separates smoothing geometry from response-deletion tuning. No uncertainty distribution is inferred from this deterministic construction.)
+\alttext(A smooth sine curve, oscillating training observations and the selected local-mean fit appear together. A second panel compares apparent, deletion and true-function errors across bandwidths.)
+
+> Iris petal measurements
+
+>> Data and a full-data smoothing illustration
+
+`dm::datasets::iris()` has 150 complete flowers, 50 per species, four measurements in
+centimetres and a species label. We use the numeric formula `Petal.Length ~ Petal.Width`.
+Species helps describe the sample and stratify the later split; it is not a predictor.
+Petal width takes repeated recorded values, so the distinct-location interpolation
+argument does not apply to every response separately.
+
+The next fit uses all 150 rows to illustrate the curve, training-only standardization,
+bandwidth path and local influence. Its conditional deletion RMSE is a training selection
+diagnostic. Because h is chosen using these same deletion losses, the minimum is not
+an independent estimate of the selected model's test performance. The bandwidth plot
+uses log10 h and only finite full-coverage objectives.
+
+```{cpp, results="markdown", file="figures/kreg_iris_fit.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+const auto d=dm::datasets::iris();const dm::stats::KernelRegression m(d,"Petal.Length ~ Petal.Width");
+  const auto summary=d|dm::group_by("Species")|dm::summarise(dm::agg::n("n"),dm::agg::mean("Petal.Width","mean_width_cm"),dm::agg::mean("Petal.Length","mean_length_cm"));
+  auto fit=m.plot_fit(d).title("Iris local means from all 150 flowers").y_limits(0,9),cv=m.plot_cv_curve().title("Conditional bandwidth selection");
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(fit).add(cv).size(1100,490).fit_panels().save_svg("build/kreg_iris_fit.svg");
+  std::print("{} flowers, {} columns; {} distinct recorded petal widths.\n\n{}\n\n{}\n",d.nrows(),d.ncols(),dm::unique(d.numeric_column("Petal.Width").values()).size(),summary|dm::to_md(3),m.model_summary().select({"bandwidth","loo_coverage","loo_rmse","loo_r_squared","apparent_rmse","effective_df","search_boundary"}).to_md(6));
+}
+```
+// result_begin: markdown
+150 flowers, 5 columns; 22 distinct recorded petal widths.
+
+| Species | n | mean_width_cm | mean_length_cm |
+| :--- | ---: | ---: | ---: |
+| setosa | 50 | 0.246 | 1.462 |
+| versicolor | 50 | 1.326 | 4.260 |
+| virginica | 50 | 2.026 | 5.552 |
+
+
+| bandwidth | loo_coverage | loo_rmse | loo_r_squared | apparent_rmse | effective_df | search_boundary |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.166324 | 1 | 0.390554 | 0.950725 | 0.370136 | 7.079904 | 0 |
+
+\image(figures/kreg_iris_fit.svg)
+// result_end
+
+\caption(The full-data fit and conditional bandwidth path are descriptive training diagnostics. The separate holdout below evaluates the frozen procedure.)
+\alttext(Petal lengths and a smoothed curve are plotted against petal width. A second panel marks the selected finite deletion-loss minimum on a log-bandwidth axis; tables give species summaries and conditional complexity.)
+
+The full-data Gaussian choice is h = 0.166324 standardized units, with complete deletion
+coverage, conditional RMSE 0.390554 cm and trace(S) about 7.08. Apparent RMSE is
+0.370136 cm. These conditional values describe the chosen smoother and are kept separate
+from the next test-set calculation.
+
+>> Train first, then evaluate untouched flowers
+
+We prespecify a 120/30 split using `train_test_split(iris,.2,42,"Species")`, leaving ten
+test flowers per species. The Gaussian width-only model is the primary procedure.
+Three other kernels on that same predictor, and a Gaussian width-plus-sepal-length model,
+are declared sensitivity comparisons. Each learns its means/scales and searches its own
+bandwidth grid on the training frame only. Test outcomes do not choose h, predictors or
+kernel. Comparing their test scores is descriptive on one small shared split, not a
+stable ranking of methods across populations.
+
+The baseline predicts the training response mean for every test flower. `score()` reports
+coverage, RMSE, MAE and R-squared, with errors conditional on available predictions.
+We retain coverage in every comparison because full training-deletion coverage does not
+ensure a compact kernel covers every future query. The historical species-stratified
+sample is not a random treatment experiment or a general population prevalence sample.
+
+```{cpp, results="markdown", file="figures/kreg_iris_holdout.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+const auto [train,test]=dm::stats::train_test_split(dm::datasets::iris(),.2,42,"Species");dm::dstruct::DataFrame results;
+  const std::vector<dm::stats::KernelRegressionKernel> kernels={dm::stats::KernelRegressionKernel::Gaussian,dm::stats::KernelRegressionKernel::Epanechnikov,dm::stats::KernelRegressionKernel::Uniform,dm::stats::KernelRegressionKernel::Triangular};
+  const std::vector<std::string> labels={"Gaussian width","Epanechnikov width","Uniform width","Triangular width"};
+  for(std::size_t i=0;i<kernels.size();++i){dm::stats::KernelRegressionOptions o;o.kernel=kernels[i];const dm::stats::KernelRegression m(train,"Petal.Length ~ Petal.Width",o);auto row=m.score(test);row.add_column("model",std::vector<std::string>{labels[i]});row.add_column("bandwidth",std::vector<double>{m.bandwidth()});row.add_column("training_loo_rmse",std::vector<double>{m.rmse()});results=i?results.concat_rows(row):row;}
+  const dm::stats::KernelRegression wider(train,"Petal.Length ~ Petal.Width + Sepal.Length"),primary(train,"Petal.Length ~ Petal.Width");auto extra=wider.score(test);extra.add_column("model",std::vector<std::string>{"Gaussian width + sepal"});extra.add_column("bandwidth",std::vector<double>{wider.bandwidth()});extra.add_column("training_loo_rmse",std::vector<double>{wider.rmse()});results=results.concat_rows(extra);
+  const auto actual=test.numeric_column("Petal.Length").values(),prediction=primary.predict(test);auto comparison=dm::graphics::RPlot::create(),residual=dm::graphics::RPlot::create();comparison.points(actual,prediction,"Gaussian width",{37,99,235}).abline(0,1).title("Thirty held-out flowers").x_label("actual petal length (cm)").y_label("prediction (cm)").y_limits(0,9);
+  auto details=primary.prediction_details(test);details.add_column("residual",test.numeric_column("Petal.Length").values());details=details.mutate_with("residual",[](const auto& r){return r.get_double("residual")-r.get_double("prediction");});residual.points(test.numeric_column("Petal.Width").values(),details.numeric_column("residual").values(),"test residual",{37,99,235}).abline_h(0).title("Errors against the held-out predictor").x_label("petal width (cm)").y_label("actual - prediction (cm)").y_limits(-2,3);
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(comparison).add(residual).size(1100,490).fit_panels().save_svg("build/kreg_iris_holdout.svg");
+  std::print("{} training, {} test rows.\n\n{}\n",train.nrows(),test.nrows(),results.select({"model","bandwidth","training_loo_rmse","n_predicted","coverage","rmse","mae","r_squared","mean_baseline_rmse"}).to_md(6));
+}
+```
+// result_begin: markdown
+120 training, 30 test rows.
+
+| model | bandwidth | training_loo_rmse | n_predicted | coverage | rmse | mae | r_squared | mean_baseline_rmse |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Gaussian width | 0.149278 | 0.371281 | 30 | 1 | 0.456914 | 0.347127 | 0.932084 | 1.753375 |
+| Epanechnikov width | 0.318210 | 0.371309 | 30 | 1 | 0.456002 | 0.347820 | 0.932355 | 1.753375 |
+| Uniform width | 0.285597 | 0.373496 | 30 | 1 | 0.452298 | 0.344064 | 0.933449 | 1.753375 |
+| Triangular width | 0.395033 | 0.370813 | 30 | 1 | 0.456933 | 0.348079 | 0.932078 | 1.753375 |
+| Gaussian width + sepal | 0.292004 | 0.261549 | 30 | 1 | 0.273813 | 0.228794 | 0.975610 | 1.753375 |
+
+\image(figures/kreg_iris_holdout.svg)
+// result_end
+
+\caption(Every reported test prediction uses a model trained and tuned on 120 flowers. The same training-mean baseline and coverage columns accompany all five prespecified sensitivity comparisons.)
+\alttext(Held-out Gaussian predictions are compared with actual petal lengths and an identity line. A second panel shows test residuals against width, while the table reports all candidate procedures and coverage.)
+
+The primary width-only Gaussian has test RMSE 0.456914 cm, compared with 1.753375 cm
+for the training-mean baseline; its selected training deletion RMSE is 0.371281 cm.
+All five candidates cover all 30 test flowers. On this split, width-only kernel RMSEs
+range from 0.452298 to 0.456933 cm, while adding sepal length gives 0.273813 cm. These
+are prespecified sensitivity results on one test set, not a new test-set-driven selection.
+
+>> Local concentration and extrapolation
+
+Finally inspect the full-data Gaussian model over a wider width range. Smooth-looking
+curves can hide sparse support. `nearest_distance` is the distance to the closest training
+point in the frozen standardized design; `effective_n` measures weight concentration.
+Neither supplies an uncertainty interval or validates predictions for biologically
+unrepresented flowers. A compact uniform model is included only to expose its explicit
+no-support status on the same selected query rows, with its own training-selected h.
+
+```{cpp, results="markdown", file="figures/kreg_iris_support.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+const auto d=dm::datasets::iris();const dm::stats::KernelRegression gaussian(d,"Petal.Length ~ Petal.Width");dm::stats::KernelRegressionOptions o;o.kernel=dm::stats::KernelRegressionKernel::Uniform;const dm::stats::KernelRegression compact(d,"Petal.Length ~ Petal.Width",o);
+  const auto x=dm::seql(-1,4,301);dm::dstruct::DataFrame grid;grid.add_column("Petal.Width",x.values());const auto local=gaussian.prediction_details(grid);auto curve=dm::graphics::RPlot::create(),support=dm::graphics::RPlot::create();curve.points(d.numeric_column("Petal.Width").values(),d.numeric_column("Petal.Length").values(),"training flowers",{148,163,184}).lines(x.values(),gaussian.predict(grid),"Gaussian mean",{37,99,235}).title("Smoothness does not justify extrapolation").x_label("petal width (cm)").y_label("petal length (cm)").y_limits(0,9);
+  support.lines(x.values(),local.numeric_column("effective_n").values(),"effective n",{37,99,235}).title("Local response-weight concentration").x_label("petal width (cm)").y_label("1 / sum(weight squared)").y_limits(0,70);
+  dm::dstruct::DataFrame query;query.add_column("Petal.Width",std::vector<double>{-1,.2,.8,1.5,2.5,4,10});auto a=gaussian.prediction_details(query),b=compact.prediction_details(query);a.add_column("width_cm",query.numeric_column("Petal.Width").values());b.add_column("width_cm",query.numeric_column("Petal.Width").values());
+  std::filesystem::create_directories("build");dm::graphics::RLayout::create(1,2).add(curve).add(support).size(1100,490).fit_panels().save_svg("build/kreg_iris_support.svg");std::print("Gaussian:\n\n{}\n\nCompact uniform:\n\n{}\n",a.select({"width_cm","prediction","effective_n","nearest_distance","status"}).to_md(6),b.select({"width_cm","prediction","effective_n","nearest_distance","status"}).to_md(6));
+}
+```
+// result_begin: markdown
+Gaussian:
+
+| width_cm | prediction | effective_n | nearest_distance | status |
+| ---: | ---: | ---: | ---: | :--- |
+| -1.0 | 1.380279 | 5.043254 | 1.447954 | ok |
+| 0.2 | 1.443555 | 44.102274 | 0.000000 | ok |
+| 0.8 | 3.327990 | 10.222591 | 0.263264 | ok |
+| 1.5 | 4.641988 | 34.666078 | 0.000000 | ok |
+| 2.5 | 5.723081 | 11.257558 | 0.000000 | ok |
+| 4.0 | 5.933303 | 3.000365 | 1.974483 | ok |
+| 10.0 | 5.933333 | 3.000000 | 9.872414 | ok |
+
+
+Compact uniform:
+
+| width_cm | prediction | effective_n | nearest_distance | status |
+| ---: | ---: | ---: | ---: | :--- |
+| -1.0 | nan | nan | 1.447954 | no_support |
+| 0.2 | 1.454167 | 48 | 0.000000 | ok |
+| 0.8 | 3.375000 | 8 | 0.263264 | ok |
+| 1.5 | 4.535897 | 39 | 0.000000 | ok |
+| 2.5 | 5.692857 | 14 | 0.000000 | ok |
+| 4.0 | nan | nan | 1.974483 | no_support |
+| 10.0 | nan | nan | 9.872414 | no_support |
+
+\image(figures/kreg_iris_support.svg)
+// result_end
+
+\caption(A Gaussian mean can remain defined far from the observed predictor range. The tables expose concentration/proximity and distinguish a compact kernel refusing an unsupported query.)
+\alttext(A Gaussian curve extends beyond the observed iris widths while staying within the response range. A second panel plots local effective sample size; tables compare Gaussian and compact-window query status.)
+
+At a queried width of 10 cm, the Gaussian prediction is 5.933333 cm and effective_n
+is three: its limiting response average comes from the tied widest training flowers.
+The nearest standardized design distance is about 9.87, so those three weights do not
+represent nearby observations. The uniform kernel explicitly reports no support there.
+
+> Conclusion
+
+Kernel regression is a local-constant weighted average, not a guarantee of interpolation,
+linear extrapolation or calibrated uncertainty. The small examples make its row-normalized
+weights, leverage, duplicate-location behaviour and deletion coverage inspectable.
+Bandwidth selection must use the same validation targets for every candidate. A known
+function separates apparent, deletion and reference errors; iris then separates training
+selection from a genuinely held-out evaluation. Coverage and local concentration remain
+part of the result even when an aggregate RMSE looks attractive.
+
+> References
+
+- Nadaraya, E. A. (1964). [On Estimating Regression|https://doi.org/10.1137/1109020]. ~Theory of Probability and Its Applications~, 9(1), 141–142.
+- Watson, G. S. (1964). [Smooth Regression Analysis|https://www.jstor.org/stable/25049340]. ~Sankhyā: The Indian Journal of Statistics, Series A~, 26(4), 359–372.
+- Hastie, T. and Loader, C. (1993). [Local Regression: Automatic Kernel Carpentry|https://sites.stat.washington.edu/courses/stat527/s13/readings/hastieloader93.pdf]. ~Statistical Science~, 8(2), 120–143. Local-constant boundary limitations and the local-linear alternative.
+- statsmodels developers. [KernelReg|https://www.statsmodels.org/stable/generated/statsmodels.nonparametric.kernel_regression.KernelReg.html]. Documents the `reg_type="lc"` local-constant setting; the default local-linear estimator and its bandwidth selection describe a different procedure.
+- R Core Team. [ksmooth|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ksmooth.html]. The same local-mean family, but a different bandwidth convention based on kernel quartiles; its numerical bandwidth is not interchangeable with h here.
+- Fisher, R. A. (1936). [The use of multiple measurements in taxonomic problems|https://doi.org/10.1111/j.1469-1809.1936.tb02137.x]. ~Annals of Eugenics~, 7(2), 179–188. Embedded iris measurements.
+

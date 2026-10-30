@@ -34,7 +34,7 @@ every live object has been evacuated and from-space (all the garbage) is discard
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -94,7 +94,7 @@ unreachable garbage objects 7 and 8. Cheney copies the seven live objects breadt
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

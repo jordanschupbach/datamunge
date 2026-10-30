@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="259.8" height="366.786" viewBox="0 0 259.8 366.786" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">Selected-checkpoint pixel counts</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">Selected-checkpoint pixel</text>
+<text x="14" y="38" font-size="12" font-weight="bold">counts</text>
+<text x="145.8" y="70" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 180) rotate(-90)" text-anchor="middle">True class</text>
+<text x="41.8" y="111.6" text-anchor="end">0</text>
+<text transform="translate(73.8 288) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="110011" data-value="110011"><title>0 → 0: 110011</title>
+<rect x="49.8" y="84" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="73.8" y="111.077" font-size="10.2564" text-anchor="middle" fill="white">110011</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="771" data-value="771"><title>0 → 1: 771</title>
+<rect x="97.8" y="84" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="121.8" y="111.6" font-size="12" text-anchor="middle" fill="#172033">771</text>
+</g>
+<g data-true="0" data-predicted="2" data-count="960" data-value="960"><title>0 → 2: 960</title>
+<rect x="145.8" y="84" width="48" height="48" fill="rgb(239,244,249)" stroke="white"/>
+<text x="169.8" y="111.6" font-size="12" text-anchor="middle" fill="#172033">960</text>
+</g>
+<g data-true="0" data-predicted="3" data-count="405" data-value="405"><title>0 → 3: 405</title>
+<rect x="193.8" y="84" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="217.8" y="111.6" font-size="12" text-anchor="middle" fill="#172033">405</text>
+</g>
+<text x="41.8" y="159.6" text-anchor="end">1</text>
+<text transform="translate(121.8 288) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="896" data-value="896"><title>1 → 0: 896</title>
+<rect x="49.8" y="132" width="48" height="48" fill="rgb(239,244,249)" stroke="white"/>
+<text x="73.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">896</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="4897" data-value="4897"><title>1 → 1: 4897</title>
+<rect x="97.8" y="132" width="48" height="48" fill="rgb(232,239,248)" stroke="white"/>
+<text x="121.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">4897</text>
+</g>
+<g data-true="1" data-predicted="2" data-count="3465" data-value="3465"><title>1 → 2: 3465</title>
+<rect x="145.8" y="132" width="48" height="48" fill="rgb(235,240,249)" stroke="white"/>
+<text x="169.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">3465</text>
+</g>
+<g data-true="1" data-predicted="3" data-count="1034" data-value="1034"><title>1 → 3: 1034</title>
+<rect x="193.8" y="132" width="48" height="48" fill="rgb(239,244,249)" stroke="white"/>
+<text x="217.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">1034</text>
+</g>
+<text x="41.8" y="207.6" text-anchor="end">2</text>
+<text transform="translate(169.8 288) rotate(-60)" text-anchor="end">2</text>
+<g data-true="2" data-predicted="0" data-count="1761" data-value="1761"><title>2 → 0: 1761</title>
+<rect x="49.8" y="180" width="48" height="48" fill="rgb(238,243,249)" stroke="white"/>
+<text x="73.8" y="207.6" font-size="12" text-anchor="middle" fill="#172033">1761</text>
+</g>
+<g data-true="2" data-predicted="1" data-count="8559" data-value="8559"><title>2 → 1: 8559</title>
+<rect x="97.8" y="180" width="48" height="48" fill="rgb(225,234,248)" stroke="white"/>
+<text x="121.8" y="207.6" font-size="12" text-anchor="middle" fill="#172033">8559</text>
+</g>
+<g data-true="2" data-predicted="2" data-count="9792" data-value="9792"><title>2 → 2: 9792</title>
+<rect x="145.8" y="180" width="48" height="48" fill="rgb(223,232,248)" stroke="white"/>
+<text x="169.8" y="207.6" font-size="12" text-anchor="middle" fill="#172033">9792</text>
+</g>
+<g data-true="2" data-predicted="3" data-count="135" data-value="135"><title>2 → 3: 135</title>
+<rect x="193.8" y="180" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="217.8" y="207.6" font-size="12" text-anchor="middle" fill="#172033">135</text>
+</g>
+<text x="41.8" y="255.6" text-anchor="end">3</text>
+<text transform="translate(217.8 288) rotate(-60)" text-anchor="end">3</text>
+<g data-true="3" data-predicted="0" data-count="633" data-value="633"><title>3 → 0: 633</title>
+<rect x="49.8" y="228" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="73.8" y="255.6" font-size="12" text-anchor="middle" fill="#172033">633</text>
+</g>
+<g data-true="3" data-predicted="1" data-count="657" data-value="657"><title>3 → 1: 657</title>
+<rect x="97.8" y="228" width="48" height="48" fill="rgb(240,244,249)" stroke="white"/>
+<text x="121.8" y="255.6" font-size="12" text-anchor="middle" fill="#172033">657</text>
+</g>
+<g data-true="3" data-predicted="2" data-count="1270" data-value="1270"><title>3 → 2: 1270</title>
+<rect x="145.8" y="228" width="48" height="48" fill="rgb(239,243,249)" stroke="white"/>
+<text x="169.8" y="255.6" font-size="12" text-anchor="middle" fill="#172033">1270</text>
+</g>
+<g data-true="3" data-predicted="3" data-count="2210" data-value="2210"><title>3 → 3: 2210</title>
+<rect x="193.8" y="228" width="48" height="48" fill="rgb(237,242,249)" stroke="white"/>
+<text x="217.8" y="255.6" font-size="12" text-anchor="middle" fill="#172033">2210</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="49.8" y="318.786" width="192" height="10" fill="url(#cm-scale)"/>
+<text x="49.8" y="343.786">0</text><text x="241.8" y="343.786" text-anchor="end">110011</text>
+</g></svg>

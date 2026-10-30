@@ -47,7 +47,7 @@ adversarial one the projection caps it at bisection's iteration count.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

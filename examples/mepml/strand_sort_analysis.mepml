@@ -35,7 +35,7 @@ presortedness, much like a natural merge sort discovers existing runs.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Count the strands strand sort would extract from `v`.
 static int count_strands(std::vector<int> input) {
@@ -113,7 +113,7 @@ showing the pass count collapse as order increases.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Count the strands strand sort would extract from `v`.
 static int count_strands(std::vector<int> input) {

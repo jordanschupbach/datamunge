@@ -1,0 +1,161 @@
+//? Title: Audio Features: From Samples to Log-Mel Bands
+//? Subtitle: Windowing controls leakage; zero-padding changes the grid, not the information
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A sampled waveform is too long and phase-sensitive to use directly as a compact audio feature.
+We turn local windows into frequency powers and then into log-mel bands. Tiny exact frames
+expose the FFT convention; a generated 1 kHz tone tests window gain, framing and the silence
+floor. WAV round trips quantify the separate PCM storage error.
+)
+\toc
+
+> The method
+
+For a frame of length \(L\), hop \(H\) and FFT length \(N\ge L\), the periodic Hann window is
+\(w_n=(1-\cos(2\pi n/L))/2\). The unnormalised transform and power are
+
+$$
+X_{t,k}=\sum_{n=0}^{L-1}x_{tH+n}w_n e^{-2\pi i kn/N},\qquad P_{t,k}=|X_{t,k}|^2.
+$$
+\alttext(Each frame is windowed, transformed without forward normalisation, and squared in magnitude.)
+
+Without padding or centring, a signal of length S has max(0,1+floor((S-L)/H)) frames.
+A real transform keeps bins 0 through floor(N/2). For even N, Parseval requires doubling
+interior one-sided powers but keeping DC and Nyquist once; divide their sum by N.
+The mel coordinate is \(1127\log(1+f/700)\). Unit-height triangles are equally spaced
+in mel, their weighted powers are summed, and a natural-log floor prevents log(0).
+These are powers, not amplitudes or decibels; no sample-rate conversion occurs.
+FFT cost is O(frames N log N); multiplying a dense B-band filter bank costs O(frames N B).
+
+The concept diagram has a retained TikZ source in `diagrams/audio_features_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/audio_features_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/audio_features_concept.tikz > build/audio_features_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/audio_features_concept.svg build/audio_features_concept.dvi > build/audio_features_concept.render.log 2>&1
+printf 'Rendered build/audio_features_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/audio_features_concept.svg from local TikZ source.
+// \image(figures/audio_features_concept.svg)
+// result_end
+\caption(Windowing controls leakage; zero-padding changes the grid, not the information)
+\alttext(Samples; x_n Then Periodic Hann + FFT; P=|X|^2 Then Mel triangles + floor; \log\max(PW,\epsilon).)
+
+> Simple examples
+
+A four-sample impulse at index one with a rectangular window has complex bins -i at k=1 and -1 at k=2. Hann windowing halves its amplitude.
+
+```{cpp, results="markdown", file="figures/audio_features_impulse.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  const auto x=n::tensor({0,1,0,0},{4},n::DType::Float64);
+  const auto rectangular=n::stft(x,4,4,4,n::ones({4},n::DType::Float64));
+  const auto hann=n::stft(x,4,4,4);
+  auto p=dm::graphics::RPlot::create();
+  p.lines({0,1,2},n::power_spectrogram(rectangular).to_vector<double>(),"rectangle",{37,99,235})
+   .lines({0,1,2},n::power_spectrogram(hann).to_vector<double>(),"Hann",{234,88,12})
+   .title("One impulse, two windows").x_label("FFT bin").y_label("power").y_limits(0,1.3);
+  std::filesystem::create_directories("build");
+  p.size(800,420).save_svg("build/audio_features_impulse.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("bin",std::vector<double>{0,1,2});
+  table.add_column("real",rectangular.real.to_vector<double>());
+  table.add_column("imag",rectangular.imag.to_vector<double>());
+  table.add_column("Hann_power",n::power_spectrogram(hann).to_vector<double>());
+  std::print("{}\n",table.to_md(6));
+}
+```
+// result_begin: markdown
+| bin | real | imag | Hann_power |
+| ---: | ---: | ---: | ---: |
+| 0 | 1 | 0 | 0.25 |
+| 1 | 0 | -1 | 0.25 |
+| 2 | -1 | 0 | 0.25 |
+
+\image(figures/audio_features_impulse.svg)
+// result_end
+\caption(Window gain changes power before mel aggregation.)
+\alttext(Window gain changes power before mel aggregation.)
+
+> Checking the theory
+
+A periodic 1 kHz sine sampled at 8 kHz lies at bin 32 of a 256-point FFT. The Hann peak amplitude is A L/4 = 24 for A=.375. Doubling N moves the same peak to bin 64.
+
+```{cpp, results="markdown", file="figures/audio_features_padding.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  const auto x=n::sin(n::arange(0,2048,1,n::DType::Float64)*(2*std::numbers::pi*1000/8000))*.375;
+  dm::dstruct::DataFrame table; std::vector<double> lengths,frames,peak,energy,error;
+  auto p=dm::graphics::RPlot::create();
+  for(int size:{256,512}) {
+    const auto spectrum=n::stft(x,256,128,size);
+    const auto power=n::power_spectrogram(spectrum);
+    const auto row=n::take_rows(power,{0}).to_vector<double>();
+    std::vector<double> hz, plotted; double sum=0; size_t best=0;
+    for(size_t k=0;k<row.size();++k) {
+      if(k*8000./size>=850 && k*8000./size<=1150){hz.push_back(k*8000./size);plotted.push_back(row[k]);} sum+=row[k]*(k==0||k==row.size()-1?1:2)/size;
+      if(row[k]>row[best]) best=k;
+    }
+    const auto windowed=n::slice_axis(x,0,0,256)*n::hann_window(256,true,n::DType::Float64);
+    const double expected=n::sum(n::square(windowed)).item();
+    if(std::abs(sum-expected)>1e-9 || best*8000./size!=1000) return 1;
+    lengths.push_back(size);frames.push_back(power.size(0));peak.push_back(best);energy.push_back(sum);error.push_back(std::abs(sum-expected));
+    p.lines(hz,plotted,std::to_string(size)+" point FFT",size==256?dm::graphics::RGB{37,99,235}:dm::graphics::RGB{234,88,12});
+  }
+  p.title("Zero-padding samples the same spectral lobe").x_label("Hz").y_label("power");
+  std::filesystem::create_directories("build"); p.size(850,430).save_svg("build/audio_features_padding.svg");
+  table.add_column("FFT_length",lengths);table.add_column("frames",frames);table.add_column("peak_bin",peak);
+  table.add_column("Parseval_energy",energy);table.add_column("absolute_error",error);std::print("{}\n",table.to_md(9));
+}
+```
+// result_begin: markdown
+| FFT_length | frames | peak_bin | Parseval_energy | absolute_error |
+| ---: | ---: | ---: | ---: | ---: |
+| 256 | 15 | 32 | 6.75 | 0 |
+| 512 | 15 | 64 | 6.75 | 0 |
+
+\image(figures/audio_features_padding.svg)
+// result_end
+\caption(Both FFT grids locate the same 1 kHz tone; one-sided Parseval recovers window energy.)
+\alttext(Both FFT grids locate the same 1 kHz tone; one-sided Parseval recovers window energy.)
+
+>> Storage and the silence floor
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n=dm::nn;
+  const auto samples=n::tensor({-.5,-.1,0,.1,.5},{5,1});
+  const auto wave=n::decode_wav(n::encode_wav(samples,8000));
+  const auto weights=n::linear_to_mel_weight_matrix(20,129,8000,0,4000);
+  const auto silent=n::log_mel_spectrogram(n::power_spectrogram(n::stft(n::zeros({256}),256,128,256)),weights);
+  const double error=n::max(n::abs(wave.samples-samples)).item();
+  if(error>1./32768 || std::abs(n::mean(silent).item()-std::log(1e-6))>2e-6) return 1;
+  std::print("PCM16 maximum error: {:.9f}; sample rate: {} Hz.\n\nSilence log-mel mean: {:.6f}; short-signal frames: {}.\n",
+    error,wave.sample_rate,n::mean(silent).item(),n::stft(n::zeros({10}),256,128,256).real.size(0));
+}
+```
+// result_begin: markdown
+PCM16 maximum error: 0.000006102; sample rate: 8000 Hz.
+
+Silence log-mel mean: -13.815511; short-signal frames: 0.
+// result_end
+
+
+> Conclusion
+
+The impulse makes the window's gain explicit. The tone checks both the bin-frequency mapping
+and the one-sided energy convention, while silence remains finite. These features discard
+phase and depend on window, hop, band edges and log floor; they do not by themselves recognise sound.
+
+> References
+
+- [TensorFlow signal STFT conventions](https://www.tensorflow.org/api_docs/python/tf/signal/stft).
+- [TensorFlow mel weight matrix](https://www.tensorflow.org/api_docs/python/tf/signal/linear_to_mel_weight_matrix).

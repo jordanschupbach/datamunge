@@ -41,7 +41,7 @@ assignments blur toward uniform. The standard choice is \(m=2\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Alternating optimization
@@ -135,7 +135,7 @@ transition, in contrast to the hard 0/1 step a crisp method would impose.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

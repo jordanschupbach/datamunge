@@ -1,0 +1,12 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\large,box/.style={draw=blue!55!black,rounded corners,fill=blue!4,align=center,minimum width=4.2cm,minimum height=1.8cm},every edge/.style={draw,thick,->}]
+\node[box] (n0) at (0.0,0) {Choose request point\\current or look-ahead};
+\node[box,fill=orange!8] (n1) at (5.6,0) {Choose direction\\axis, block, conjugate};
+\node[box] (n2) at (11.2,0) {Test the step\\update or line search};
+\path (n0) edge (n1) (n1) edge (n2);
+\node[align=center,font=\normalsize] at (5.6,-2) {Coordinate geometry and callback work both change when the search mechanism changes.};
+\end{tikzpicture}
+\end{document}

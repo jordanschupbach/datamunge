@@ -47,7 +47,7 @@ and VF2 add stronger refinement and candidate-set pruning; this is the backtrack
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -114,7 +114,7 @@ mapping, then confirm the mapping preserves every pattern edge.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -1,0 +1,597 @@
+//? Title: CondenseNet: Tensor Pruning, Packed Groups and Explicit Optimization
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Learned group convolutions select reusable dense features before conversion into grouped filters.
+We inspect tensor mask updates, verify packed values and every derivative, then fit the complete
+42-layer dense body with a visible Adam, group-lasso and pruning loop.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/condensenet.cpp`.
+
+> The method
+
+The CIFAR-86 configuration has three dense stages with 14 layers each and growth 8/16/32.
+A 16-channel stem precedes BN/ReLU, a learned 1×1 bottleneck with 4k outputs, then
+BN/ReLU and a 3×3 four-group convolution adding k new channels by concatenation.
+Transitions average-pool without compression. Final BN/ReLU, global mean and a biased
+10-class classifier use all 800 final channels. The full training form has 1451594 learned
+scalars and 1273850 BN/mask/stage scalars before its scalar step counter is created.
+
+For C=4 condensation and G=4 output groups, outputs kG+g share a mask for group g.
+Importance is the sum of absolute masked weights over that group's outputs. At each of
+three stages, the least important Cin/C still-live inputs are removed per group. Stable
+ranking resolves equal scores by input index; jumping forward in progress catches up every
+missing stage, and moving backwards never resurrects a connection. All production ranking,
+mask updates and packed kernel gathering use tensors, preserving Float32/Float64 types.
+The host sort below exists only as an independent oracle.
+
+$$L=L_{\mathrm{NLL}}+\lambda\sum_{\ell,i,g}\sqrt{\max(\sum_k(W_{\ell,i,kG+g}M_{\ell,i,g})^2,10^{-6})}
++\frac{10^{-4}}2\sum_{W\text{ kernels}}\lVert W\rVert_2^2.$$
+\alttext(The optimized loss combines cross entropy, group lasso on live learned-group weights, and kernel L2.)
+
+Each forward clones its current mask and computes its loss with that snapshot. It then updates
+stored masks using PRE-optimizer weights for the NEXT forward. Progress is the pre-forward
+step divided by total steps, with target stage min(C−1,floor(2(C−1)progress)). In 18 updates,
+the forward at step 9 (the 10th update) stores stage three; the next forward first uses it.
+Lasso is included while the snapshot's old stage is below three. BN uses epsilon 1e-5;
+learned affine state and moving moments are separate. Frozen diagnostic state disables both
+BN and mask/step updates. Training snapshots include parameters, BN, masks, stages and step.
+Pruned entries remain dense parameters; L2 and Adam may still change them behind zero masks.
+
+Packing gathers each group's surviving inputs and corresponding BN vectors, packs its kernel,
+uses a core grouped convolution, and restores the original interleaved output channel order
+with PaperChannelShuffle. The Float64 fixture checks outputs and ALL input/filter/BN derivatives.
+This is a converted single-layer demonstration. The separate converted-network cost helper
+is ANALYTICAL: its default additionally assumes a half-width final classifier. No fitted
+classifier feature-selection algorithm or fully converted network is claimed. Keeping all 800
+features costs 4000 extra parameters and MACs in the CIFAR budget. MACs exclude BN, pooling,
+activations, gathers and memory traffic; dense masked training does not realize packed speedups.
+
+The visible subset fit retains all stage depths and widths. It uses 48 fit, 32 validation and
+32 official-test images; 3 batch-eight epochs (18 updates) of Adam(.001), explicit lasso and kernel L2,
+with padded crops/flips. Inference restores the lowest validation-NLL checkpoint with ALL state,
+which can precede full condensation. Its saved stages are printed separately from final training
+stages. This deliberately tiny single-seed CPU run (kept short so the report builds in seconds)
+shows the mechanics only; it does not reproduce paper accuracy or a mobile latency study.
+
+The editable concept diagram is `diagrams/condensenet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/condensenet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/condensenet_concept.tikz > build/condensenet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/condensenet_concept.svg build/condensenet_concept.dvi > build/condensenet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/condensenet_concept.svg)
+// result_end
+\caption(CondenseNet: Tensor Pruning, Packed Groups and Explicit Optimization)
+\alttext(Dense feature reuse; Tensor masks; then Gather and pack; Grouped convolution; then Full C86 fit; Adam plus group lasso.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/condensenet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::CondenseNetConfig cfg;
+  n::ParameterStore            p(17), state(17);
+  n::Module                    architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::CondenseNet(p, state, image, cfg, false, 18).logits;
+      },
+      "CondenseNet: Tensor Pruning, Packed Groups and Explicit Optimization");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/condensenet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+10 displayed nodes; 1451594 reachable learned values.
+\image(figures/condensenet_architecture.svg)
+// result_end
+\caption(Executed condensenet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right condensenet architecture with rotated names and exact output shapes.)
+
+> Pruning schedule and independent oracle
+
+```{cpp, results="markdown", file="figures/condensenet_masks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), state(17, type);
+  std::vector<n::models::MobileLayer> layers;
+  n::models::CondenseContext c{p, state, layers, false};
+  {
+    n::NoGradGuard guard;
+    n::models::LearnedGroupConv(c, "g", n::ones({2, 5, 5, 16}, type), 16, 4, 4);
+  }
+  // Independent host oracle only: production importance, ranking and masks stay tensors.
+  const auto weights = p.at("g/W").reshape({16, 16}).to_vector<double>();
+  std::vector<double> expected(256, 1), stages{0}, retained{16};
+  for (int stage = 1; stage <= 3; ++stage) {
+    for (int group = 0; group < 4; ++group) {
+      std::vector<std::pair<double, int>> order;
+      for (int i = 0; i < 16; ++i) {
+        double score = 0;
+        for (int k = 0; k < 4; ++k)
+          score += std::abs(weights[i * 16 + k * 4 + group]);
+        if (expected[i * 16 + group])
+          order.push_back({score, i});
+      }
+      std::stable_sort(order.begin(), order.end());
+      for (int j = 0; j < 4; ++j)
+        for (int k = 0; k < 4; ++k)
+          expected[order[j].second * 16 + k * 4 + group] = 0;
+    }
+    n::models::UpdateCondensation(p, state, "g", 4, 4, stage / 6.0 + .00001);
+    const auto oracle = n::from_vector(expected, {16, 16});
+    if (n::max(n::abs(state.at("g/mask") - oracle)).item() != 0)
+      return 1;
+    stages.push_back(stage);
+    retained.push_back(n::sum(n::slice_axis(state.at("g/mask"), 1, 0, 1)).item());
+  }
+  auto curve = dm::graphics::RPlot::create();
+  curve.lines(stages, retained, "inputs per group", {37, 99, 235})
+      .title("Four inputs removed per stage")
+      .x_label("condensation stage")
+      .y_label("retained input channels")
+      .y_limits(0, 20);
+  auto mask =
+      n::plot_tensor_map(state.at("g/mask"), 0, 1).title("Learned binary mask, 16 by 16");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(curve)
+      .add(mask)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/condensenet_masks.svg");
+  n::ParameterStore ties(19, type), ts(19, type);
+  std::vector<n::models::MobileLayer> log;
+  n::models::CondenseContext tc{ties, ts, log, false};
+  {
+    n::NoGradGuard guard;
+    n::models::LearnedGroupConv(tc, "g", n::ones({2, 5, 5, 16}, type), 16, 4, 4);
+  }
+  ties.set("g/W", n::ones({1, 1, 16, 16}, type));
+  n::models::UpdateCondensation(ties, ts, "g", 4, 4, .5);
+  for (int i = 0; i < 16; ++i)
+    for (int o = 0; o < 16; ++o)
+      if (ts.at("g/mask").at({i, o}) != (i >= 12 ? 1 : 0))
+        return 1;
+  std::print("All three tensor pruning stages agree with an independent importance oracle: "
+             "16/12/8/4 inputs per group. A jump to progress .5 catches up all stages; equal "
+             "scores prune lower input indices first.\n");
+}
+```
+// result_begin: markdown
+All three tensor pruning stages agree with an independent importance oracle: 16/12/8/4 inputs per group. A jump to progress .5 catches up all stages; equal scores prune lower input indices first.
+\image(figures/condensenet_masks.svg)
+// result_end
+\caption(Mask columns interleave output groups. Each group retains four of sixteen inputs after three pruning stages. The host sort is an independent checking oracle; production importance, stable ranking and mask updates use tensors.)
+\alttext(Mask columns interleave output groups. Each group retains four of sixteen inputs after three pruning stages. The host sort is an independent checking oracle; production importance, stable ranking and mask updates use tensors.)
+
+> Packing with preserved derivatives
+
+```{cpp, results="markdown", file="figures/condensenet_packing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), state(17, type);
+  std::vector<n::models::MobileLayer> layers;
+  n::models::CondenseContext c{p, state, layers, false};
+  const auto x = n::sin(.17 * n::arange(0, 2 * 5 * 5 * 16).to(type) + .3)
+                     .reshape({2, 5, 5, 16})
+                     .detach()
+                     .requires_grad_();
+  {
+    n::NoGradGuard guard;
+    n::models::LearnedGroupConv(c, "g", x, 16, 4, 4);
+  }
+  for (double progress : {.17, .34, .5})
+    n::models::UpdateCondensation(p, state, "g", 4, 4, progress);
+  state.set("g/bn/moving_mean", n::linspace(-.2, .2, 16, type));
+  state.set("g/bn/moving_var", n::linspace(.7, 1.2, 16, type));
+  p.set("g/bn/gamma", n::linspace(.8, 1.1, 16, type));
+  p.set("g/bn/beta", n::linspace(-.1, .1, 16, type));
+  const auto masked = n::models::LearnedGroupConv(c, "g", x, 16, 4, 4).output;
+  auto vars = p.parameters();
+  vars.insert(vars.begin(), x);
+  const auto expected = n::grad(n::mean(n::square(masked)), vars);
+  const auto packed = n::models::Condense(p.at("g/W"), state.at("g/mask"), 4);
+  if (packed.weight.dtype() != type || packed.weight.shape() != n::Shape{1, 1, 4, 16} ||
+      packed.index.size() != 16)
+    return 1;
+  const auto indices = n::from_vector(packed.index);
+  auto pick = [&](const n::ParameterStore &store, const std::string &leaf) {
+    return n::gather(store.at("g/bn/" + leaf), indices, 0);
+  };
+  const auto normalized =
+      n::relu((n::gather(x, indices, 3) - pick(state, "moving_mean")) *
+                  n::rsqrt(pick(state, "moving_var") + 1e-5) * pick(p, "gamma") +
+              pick(p, "beta"));
+  auto opts = n::conv_options(1, n::Padding::Valid);
+  opts.groups = 4;
+  const auto converted =
+      n::models::PaperChannelShuffle(n::conv2d(normalized, packed.weight, opts), 16, 4);
+  double error = n::max(n::abs(converted - masked)).item();
+  const auto actual = n::grad(n::mean(n::square(converted)), vars);
+  for (size_t i = 0; i < actual.size(); ++i)
+    error = std::max(error, n::max(n::abs(actual[i] - expected[i])).item());
+  if (error > 1e-10)
+    return 1;
+  auto channel = [](const n::Tensor &t) {
+    return n::slice_axis(n::slice_axis(t, 0, 0, 1), 3, 0, 1).reshape({5, 5});
+  };
+  const double lo = n::min(masked).item(), hi = n::max(masked).item();
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(n::plot_tensor_map(channel(masked), lo, hi).title("Dense masked layer"))
+      .add(n::plot_tensor_map(channel(converted), lo, hi)
+               .title("Gather, grouped filter, output shuffle"))
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/condensenet_packing.svg");
+  std::print("Packed Float64 kernel [1,1,4,16]; nontrivial BN state/affine values gathered "
+             "with inputs. Outputs and all input/filter/BN derivatives agree; maximum "
+             "absolute error {:.12f}.\n",
+             error);
+}
+```
+// result_begin: markdown
+Packed Float64 kernel [1,1,4,16]; nontrivial BN state/affine values gathered with inputs. Outputs and all input/filter/BN derivatives agree; maximum absolute error 0.000000000000.
+\image(figures/condensenet_packing.svg)
+// result_end
+\caption(Packing gathers live input IDs and their BN statistics/affine values, filters them in contiguous groups, then restores the original interleaved output order. We compare every derivative, including duplicated gathered inputs, using Float64 tensors.)
+\alttext(Packing gathers live input IDs and their BN statistics/affine values, filters them in contiguous groups, then restores the original interleaved output order. We compare every derivative, including duplicated gathered inputs, using Float64 tensors.)
+
+> Complete model and explicit budget assumptions
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17), state(17);
+  n::models::CondenseNetConfig cfg;
+  cfg.update_stats = false;
+  n::Generator gen(29);
+  const auto x = n::normal({2, 32, 32, 3}, 0, .2, gen);
+  {
+    n::NoGradGuard guard;
+    const auto out = n::models::CondenseNet(p, state, x, cfg);
+    if (out.channels != 800)
+      return 1;
+  }
+  if (p.count() != 1451594 || state.count() != 1273850)
+    return 1;
+  const auto out = n::models::CondenseNet(p, state, x, cfg, true, 100);
+  if (out.penalties.size() != 42 || state.at("condense/step").item() != 0)
+    return 1;
+  auto objective = n::mean(n::square(out.logits));
+  for (const auto &penalty : out.penalties)
+    objective = objective + penalty;
+  const auto gradients = n::grad(objective, p.parameters());
+  for (const auto &g : gradients)
+    if (!std::isfinite(n::sum(n::abs(g)).item()))
+      return 1;
+  const auto half = n::models::ConvertedCondenseNetCost(cfg, 32),
+             whole = n::models::ConvertedCondenseNetCost(cfg, 32, false);
+  if (half.parameters != 516202 || half.macs != 62377888 ||
+      whole.parameters - half.parameters != 4000)
+    return 1;
+  std::print("Full CIFAR C86: {} learned / {} BN-mask-stage scalars before training; 42 dense "
+             "layers, 800 final channels, {} finite parameter-tensor gradients.\n",
+             p.count(), state.count() - 1, gradients.size());
+  std::print(
+      "Analytical fully converted CIFAR budget with assumed 400-feature classifier: {} "
+      "parameters / {} MACs. Keeping all 800 classifier features: {} parameters / {} MACs.\n",
+      half.parameters, half.macs, whole.parameters, whole.macs);
+  for (int groups : {4, 8}) {
+    n::models::CondenseNetConfig large;
+    large.stages = {4, 6, 8, 10, 8};
+    large.growth = {8, 16, 32, 64, 128};
+    large.groups = large.condense = groups;
+    large.classes = 1000;
+    large.imagenet = true;
+    const auto budget = n::models::ConvertedCondenseNetCost(large, 224);
+    if (budget.parameters != (groups == 4 ? 4773944 : 2935416) ||
+        budget.macs != (groups == 4 ? 516640576 : 261545792))
+      return 1;
+    std::print("Analytical ImageNet G=C={}: {} parameters / {} MACs, assuming half-width "
+               "classifier; no full converted network is executed here.\n",
+               groups, budget.parameters, budget.macs);
+  }
+}
+```
+// result_begin: markdown
+Full CIFAR C86: 1451594 learned / 1273850 BN-mask-stage scalars before training; 42 dense layers, 800 final channels, 383 finite parameter-tensor gradients.
+Analytical fully converted CIFAR budget with assumed 400-feature classifier: 516202 parameters / 62377888 MACs. Keeping all 800 classifier features: 520202 parameters / 62381888 MACs.
+Analytical ImageNet G=C=4: 4773944 parameters / 516640576 MACs, assuming half-width classifier; no full converted network is executed here.
+Analytical ImageNet G=C=8: 2935416 parameters / 261545792 MACs, assuming half-width classifier; no full converted network is executed here.
+// result_end
+
+> Original images and visible optimization
+
+```{cpp, results="markdown", file="figures/condensenet_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/condensenet_inputs.png", 5, 0., 1., 4,
+                     1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/condensenet_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/condensenet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 48), ty = n::slice_axis(labels, 0, 0, 48);
+  const auto vx = 2 * n::slice_axis(images, 0, 48, 80) - 1, vy = n::slice_axis(labels, 0, 48, 80);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 32) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 32);
+  n::models::CondenseNetConfig cfg;
+  n::ParameterStore            p(17), state(17);
+  auto                         output = [&](const n::Tensor& image, bool training) {
+    return n::models::CondenseNet(p, state, image, cfg, training, 18).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 1451594 || state.count() != 1273850)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(48, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/condensenet_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 3; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto network =
+          n::models::CondenseNet(p, state, 2 * n::concat(transformed, 0) - 1, cfg, true, 18);
+      const auto nll       = n::sparse_softmax_cross_entropy(network.logits, target);
+      auto       objective = nll;
+      for (const auto& penalty : network.penalties)
+        objective = objective + penalty;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  auto stage_range = [&]() {
+    double lo = 3, hi = 0;
+    for (const auto& name : state.names())
+      if (name.ends_with("/stage")) {
+        lo = std::min(lo, state.at(name).item());
+        hi = std::max(hi, state.at(name).item());
+      }
+    return std::pair{lo, hi};
+  };
+  const auto final_stage = stage_range();
+  std::print(
+      "Final training step {}, mask stages [{},{}].\n",
+      state.at("condense/step").item(),
+      final_stage.first,
+      final_stage.second);
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  const auto selected_stage = stage_range();
+  std::print(
+      "Selected checkpoint step {}, mask stages [{},{}].\n",
+      state.at("condense/step").item(),
+      selected_stage.first,
+      selected_stage.second);
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/condensenet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "condensenet / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 32)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("CondenseNet-86, all 42 dense layers")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/condensenet_training.svg");
+  std::print(
+      "48 fit / 32 validation / 32 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+Final training step 18, mask stages [3,3].
+Selected checkpoint step 6, mask stages [1,1].
+48 fit / 32 validation / 32 official-test rows; 1451594 learned scalars, 1273851 moving scalars; 18 explicit Adam updates.
+Selected epoch 1; validation NLL 2.301555; inference training NLL 2.162721; test NLL 2.338217; test accuracy 0.062500.
+\image(figures/condensenet_training.svg)
+// result_end
+\caption(Explicit 3-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 3-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)
+
+
+> Observed subset result
+
+The selected epoch 1 checkpoint has validation NLL 2.301555, inference training NLL
+2.162721 and official-test NLL 2.338217, with 2/32 correct predictions (6.25%), i.e. no
+better than chance: three epochs on 48 images are far too few to learn CIFAR-10 classes.
+All 18 training updates ran, and the final masks reached stage three, but the selected
+step-6 checkpoint still has stage-one masks, illustrating that the lowest-validation
+checkpoint can precede full condensation; validation NLL does not improve after epoch 1
+in this tiny experiment. The packed
+equivalence check and analytical budgets do not establish that this fitted dense model
+achieves mobile inference speedups.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/condensenet_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Learned masks prune feature reuse while a packed grouped layer preserves the masked function
+and derivatives. Explicit optimization exposes group lasso, the next-forward pruning schedule
+and stateful checkpoint selection. Analytical conversion budgets remain separate from the
+executed single-layer packing and dense subset fit.
+
+> References
+
+- [Huang et al. (2018), CondenseNet: An Efficient DenseNet using Learned Group Convolutions](https://arxiv.org/abs/1711.09224).
+- [Released CondenseNet implementation](https://github.com/ShichenLiu/CondenseNet).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

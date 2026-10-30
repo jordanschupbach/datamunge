@@ -191,28 +191,28 @@ std::vector<double> XGBoostRegressor::predict(const dstruct::DataFrame& newdata)
     return result;
 }
 
-plot::RPlot XGBoostRegressor::plot_predicted_vs_actual() const {
-    auto plot = plot::RPlot::create();
+graphics::RPlot XGBoostRegressor::plot_predicted_vs_actual() const {
+    auto plot = graphics::RPlot::create();
     plot.points(training_y_, fitted_, "predictions");
     plot.title("Predicted vs Actual").x_label("Actual").y_label("Predicted");
     return plot;
 }
 
-plot::RPlot XGBoostRegressor::plot_residuals_vs_fitted() const {
+graphics::RPlot XGBoostRegressor::plot_residuals_vs_fitted() const {
     std::vector<double> residuals(training_y_.size());
     for (std::size_t i = 0; i < training_y_.size(); ++i) residuals[i] = training_y_[i] - fitted_[i];
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     plot.points(fitted_, residuals, "residuals");
     plot.title("Residuals vs Fitted").x_label("Fitted values").y_label("Residuals");
     return plot;
 }
 
-plot::RPlot XGBoostRegressor::plot_training_deviance() const {
+graphics::RPlot XGBoostRegressor::plot_training_deviance() const {
     std::vector<double> iteration(training_deviance_.size());
     for (std::size_t i = 0; i < training_deviance_.size(); ++i) iteration[i] = static_cast<double>(i + 1);
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     plot.line(iteration, training_deviance_, "training MSE");
     plot.title("Training Deviance").x_label("Boosting iteration").y_label("Mean squared error");
     return plot;

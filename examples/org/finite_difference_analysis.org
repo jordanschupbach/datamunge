@@ -42,7 +42,7 @@ grid halves \(h\) and *quarters* the \(O(h^2)\) error.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

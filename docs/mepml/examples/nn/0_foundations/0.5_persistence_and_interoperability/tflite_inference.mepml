@@ -1,0 +1,107 @@
+//? Title: Inference Buffers: Fixed Storage and Repeated Calls
+//? Subtitle: Stable public buffers do not imply allocation-free internal execution
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A caller integrating a predictor into a native loop needs known input/output sizes and stable
+buffer ownership. We repeatedly fill one input tensor and copy predictions into one output
+tensor, including a return to the first input. This eager CPU example illustrates buffer
+contracts; it does not parse or execute a TFLite FlatBuffer.
+)
+\toc
+
+> The method
+
+For one row with two Float32 inputs and one output, the public buffers contain 8 and 4 bytes.
+The consumer keeps their tensor handles alive and replaces contents in place. The same affine
+weights are reused for every call:
+
+$$
+\mathrm{output}_{1\times1}\leftarrow\mathrm{input}_{1\times2}W_{2\times1}+b_1.
+$$
+\alttext(The output buffer receives the two-feature affine computation without replacing its storage.)
+
+A NoGradGuard prevents graph recording. affine_inference returns a temporary tensor, which is
+copied into the persistent output buffer; matrix multiplication may allocate temporaries. Thus
+stable public addresses do not establish allocation-free inference, compilation, quantization,
+delegate acceleration or TFLite compatibility. Model initialization and input validation occur
+before the repeated calls; each call costs O(input_width times output_width) in this fixture.
+
+The concept diagram has a retained TikZ source in `diagrams/tflite_inference_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/tflite_inference_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/tflite_inference_concept.tikz > build/tflite_inference_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/tflite_inference_concept.svg build/tflite_inference_concept.dvi > build/tflite_inference_concept.render.log 2>&1
+printf 'Rendered build/tflite_inference_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/tflite_inference_concept.svg from local TikZ source.
+// \image(figures/tflite_inference_concept.svg)
+// result_end
+\caption(Stable public buffers do not imply allocation-free internal execution)
+\alttext(Persistent input; 2 Float32 = 8 bytes Then Native affine function; temporary result Then Persistent output; 1 Float32 = 4 bytes.)
+
+> Simple examples
+
+```{cpp, results="markdown", file="figures/tflite_inference_reuse.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;auto input=n::zeros({1,2}),output=n::zeros({1,1});
+ const auto w=n::tensor({.75,-1.5},{2,1}),b=n::tensor({.25});
+ const auto* in_address=input.data_ptr<float>();const auto* out_address=output.data_ptr<float>();
+ const std::vector<std::vector<double>> queries{{0,0},{1,0},{0,1},{2,-3},{0,0}};
+ std::vector<double> actual,expected,index;
+ for(size_t i=0;i<queries.size();++i){n::NoGradGuard guard;input.copy_(n::from_vector(queries[i],{1,2}));output.copy_(n::affine_inference(input,w,b));
+ actual.push_back(output.item());expected.push_back(.75*queries[i][0]-1.5*queries[i][1]+.25);index.push_back(i);
+ if(input.data_ptr<float>()!=in_address||output.data_ptr<float>()!=out_address||actual.back()!=expected.back())return 1;}
+ auto p=dm::graphics::RPlot::create();p.lines(index,actual,"reused output buffer")
+ .title("The first input gives the same result after reuse").x_label("call index").y_label("prediction");
+ std::filesystem::create_directories("build");p.size(820,420).save_svg("build/tflite_inference_reuse.svg");
+ dm::dstruct::DataFrame t;t.add_column("call",index);t.add_column("expected",expected);t.add_column("actual",actual);std::print("{}\n\nPublic buffers: {} input bytes, {} output bytes; addresses unchanged.\n",t.to_md(),input.numel()*sizeof(float),output.numel()*sizeof(float));
+}
+```
+// result_begin: markdown
+| call | expected | actual |
+| ---: | ---: | ---: |
+| 0 | 0.25 | 0.25 |
+| 1 | 1.00 | 1.00 |
+| 2 | -1.25 | -1.25 |
+| 3 | 6.25 | 6.25 |
+| 4 | 0.25 | 0.25 |
+
+
+Public buffers: 8 input bytes, 4 output bytes; addresses unchanged.
+\image(figures/tflite_inference_reuse.svg)
+// result_end
+\caption(Repeated inputs produce repeated outputs with stable input and output storage.)
+\alttext(Repeated inputs produce repeated outputs with stable input and output storage.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;int bad=0;const auto w=n::tensor({.75,-1.5},{2,1});
+ try{n::affine_inference(n::zeros({1,2}),w,n::zeros({2}));}catch(const std::invalid_argument&){++bad;}
+ try{n::decode_npz(std::vector<unsigned char>(16,0));}catch(const std::exception&){++bad;}
+ if(bad!=2)return 1;std::print("Bad bias shape and invalid model archive rejected: {}.\n",bad);
+}
+```
+// result_begin: markdown
+Bad bias shape and invalid model archive rejected: 2.
+// result_end
+
+
+> Conclusion
+
+The public input and output addresses remain stable across five calls, and returning to the first
+input reproduces its output. The internal eager operation still allocates a result. For real TFLite
+files, a TFLite interpreter and its own allocation/signature API are required.
+
+> References
+
+- [LiteRT C++ inference guide](https://ai.google.dev/edge/litert/inference).

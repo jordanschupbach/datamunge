@@ -35,3 +35,4 @@
 ^src/index\.js$
 ^src/godatamunge_legacy(/|$)
 ^src/nn_python_wrap\.cpp$
+^data-raw$

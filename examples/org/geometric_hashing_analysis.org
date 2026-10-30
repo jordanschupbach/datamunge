@@ -46,7 +46,7 @@ model-based object recognition in computer vision.
 #include <vector>
 
 using namespace datamunge::geometry;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static Point2D apply_sim(const Point2D& p, double s, double a, double tx, double ty) {
     const double c = s * std::cos(a), d = s * std::sin(a);

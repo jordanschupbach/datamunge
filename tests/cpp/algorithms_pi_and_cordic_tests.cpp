@@ -69,3 +69,25 @@ TEST(Cordic, KnownAngles) {
     EXPECT_NEAR(cordic_sincos(kPi / 2.0).sin, 1.0, 1e-9);
     EXPECT_NEAR(cordic_sincos(kPi).cos, -1.0, 1e-9);
 }
+
+TEST(PiHexDigits, ExactMachinDigitsAndBbpAgree) {
+    using namespace datamunge::algorithms;
+    EXPECT_EQ(pi_hex_digits(40), "243F6A8885A308D313198A2E03707344A4093822");
+    const std::string exact = pi_hex_digits(3000);
+    ASSERT_EQ(exact.size(), 3000U);
+    EXPECT_EQ(exact.substr(2990), "9B043556F1");  // checked against MPFR
+    // Eight digits per evaluation are reliable this far out; a tenth digit occasionally is not.
+    for (int n = 0; n + 8 <= 3000; n += 8) EXPECT_EQ(bbp_pi_hex_digits(n, 8), exact.substr(n, 8)) << n;
+    EXPECT_EQ(bbp_pi_hex_digits(0, 6), "243F6A");
+    const double f = bbp_pi_fraction(0);
+    EXPECT_NEAR(f, 0.14159265358979312, 1e-15);
+    EXPECT_THROW(bbp_pi_hex_digits(0, 13), std::invalid_argument);
+    EXPECT_THROW(pi_hex_digits(0), std::invalid_argument);
+}
+
+TEST(PiHexDigits, DeepPositionMatchesPublishedDigits) {
+    using namespace datamunge::algorithms;
+    // Hex digits of pi starting at 1-based position 10^6 are 26C65E52CB4593 (Bailey, Borwein
+    // and Plouffe 1997; confirmed with MPFR). Double precision gets the first 10 right.
+    EXPECT_EQ(bbp_pi_hex_digits(999999, 10), "26C65E52CB");
+}

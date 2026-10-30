@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="949.333" height="630.7" viewBox="0 0 949.333 630.7" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Depthwise and pointwise convolution</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">Depthwise and pointwise convolution</text>
+<text x="24" y="51" font-size="12">4 nodes | 82 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#64B5CD"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="302" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="200,154 248,154 248,362 200,330" fill="#64B5CD" fill-opacity="0.08"/>
+<path data-from="0" data-to="1" d="M 200 242 C 224 242 224 258 248 258" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="456,154 504,154 504,340.667 456,362" fill="#64B5CD" fill-opacity="0.08"/>
+<path data-from="1" data-to="2" d="M 456 258 C 480 258 480 247.333 504 247.333" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="690.667,154 738.667,154 738.667,340.667 690.667,340.667" fill="#6C8194" fill-opacity="0.08"/>
+<path data-from="2" data-to="3" d="M 690.667 247.333 C 714.667 247.333 714.667 247.333 738.667 247.333" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 8 x 8 x 3]</title>
+<g id="model-glyph-0" data-left="24" data-right="200" data-face-width="144" data-face-height="144" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="24,186 56,154 200,154 168,186" fill="#E69F00"/>
+<polygon class="volume-side" points="168,186 200,154 200,298 168,330" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="186" width="144" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(112 411.875) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>separable/depthwise [1 x 8 x 8 x 6]</title>
+<g id="model-glyph-1" data-left="248" data-right="456" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="248,218 312,154 456,154 392,218" fill="#64B5CD"/>
+<polygon class="volume-side" points="392,218 456,154 456,298 392,362" fill="#64B5CD"/>
+<rect class="volume-front" x="248" y="218" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(352 490.35) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-29.9" font-size="13" font-weight="600">separable/depthwise</text>
+<text x="0" y="-13" font-size="13">DepthwiseConv2D k3 s1 d1 /</text>
+<text x="0" y="3.9" font-size="13">identity</text>
+<text x="0" y="20.8" font-size="13">[1 x 8 x 8 x 6]</text>
+<text x="0" y="37.7" font-size="13">54 learned values</text>
+</g></g>
+<g data-node="2" data-category="Convolution"><title>separable/pointwise [1 x 8 x 8 x 4]</title>
+<g id="model-glyph-2" data-left="504" data-right="690.667" data-face-width="144" data-face-height="144" data-depth="42.6667" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="504,196.667 546.667,154 690.667,154 648,196.667" fill="#64B5CD"/>
+<polygon class="volume-side" points="648,196.667 690.667,154 690.667,298 648,340.667" fill="#64B5CD"/>
+<rect class="volume-front" x="504" y="196.667" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(597.333 469.017) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">separable/pointwise</text>
+<text x="0" y="-4.55" font-size="13">Conv2D k1 s1 d1 / identity</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 4]</text>
+<text x="0" y="29.25" font-size="13">28 learned values</text>
+</g></g>
+<g data-node="3" data-category="Output"><title>Output [1 x 8 x 8 x 4]</title>
+<g id="model-glyph-3" data-left="738.667" data-right="925.333" data-face-width="144" data-face-height="144" data-depth="42.6667" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="738.667,196.667 781.333,154 925.333,154 882.667,196.667" fill="#6C8194"/>
+<polygon class="volume-side" points="882.667,196.667 925.333,154 925.333,298 882.667,340.667" fill="#6C8194"/>
+<rect class="volume-front" x="738.667" y="196.667" width="144" height="144" fill="#6C8194"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(832 422.542) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 4]</text>
+</g></g>
+</g></svg>

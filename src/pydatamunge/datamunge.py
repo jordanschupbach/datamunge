@@ -676,554 +676,6 @@ class SVector(object):
 
 # Register SVector in _datamunge:
 _datamunge.SVector_swigregister(SVector)
-class RGB(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    r = property(_datamunge.RGB_r_get, _datamunge.RGB_r_set)
-    g = property(_datamunge.RGB_g_get, _datamunge.RGB_g_set)
-    b = property(_datamunge.RGB_b_get, _datamunge.RGB_b_set)
-    alpha = property(_datamunge.RGB_alpha_get, _datamunge.RGB_alpha_set)
-
-    def __init__(self, *args):
-        _datamunge.RGB_swiginit(self, _datamunge.new_RGB(*args))
-    __swig_destroy__ = _datamunge.delete_RGB
-
-# Register RGB in _datamunge:
-_datamunge.RGB_swigregister(RGB)
-class DataSeries(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    Kind_Scatter = _datamunge.DataSeries_Kind_Scatter
-    Kind_Line = _datamunge.DataSeries_Kind_Line
-    Kind_Bar = _datamunge.DataSeries_Kind_Bar
-    Kind_Box = _datamunge.DataSeries_Kind_Box
-    Kind_Polygon = _datamunge.DataSeries_Kind_Polygon
-    Kind_Text = _datamunge.DataSeries_Kind_Text
-    Kind_Segment = _datamunge.DataSeries_Kind_Segment
-    kind = property(_datamunge.DataSeries_kind_get, _datamunge.DataSeries_kind_set)
-    x = property(_datamunge.DataSeries_x_get, _datamunge.DataSeries_x_set)
-    y = property(_datamunge.DataSeries_y_get, _datamunge.DataSeries_y_set)
-    label = property(_datamunge.DataSeries_label_get, _datamunge.DataSeries_label_set)
-    color = property(_datamunge.DataSeries_color_get, _datamunge.DataSeries_color_set)
-    stroke_width = property(_datamunge.DataSeries_stroke_width_get, _datamunge.DataSeries_stroke_width_set)
-    marker_size = property(_datamunge.DataSeries_marker_size_get, _datamunge.DataSeries_marker_size_set)
-    bar_width = property(_datamunge.DataSeries_bar_width_get, _datamunge.DataSeries_bar_width_set)
-    filled = property(_datamunge.DataSeries_filled_get, _datamunge.DataSeries_filled_set)
-
-    def __init__(self):
-        _datamunge.DataSeries_swiginit(self, _datamunge.new_DataSeries())
-    __swig_destroy__ = _datamunge.delete_DataSeries
-
-# Register DataSeries in _datamunge:
-_datamunge.DataSeries_swigregister(DataSeries)
-class ABLine(object):
-    r"""A straight reference line spanning the full plotting area, as drawn by R's `abline()`."""
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    vertical = property(_datamunge.ABLine_vertical_get, _datamunge.ABLine_vertical_set)
-    value = property(_datamunge.ABLine_value_get, _datamunge.ABLine_value_set)
-    slope = property(_datamunge.ABLine_slope_get, _datamunge.ABLine_slope_set)
-    color = property(_datamunge.ABLine_color_get, _datamunge.ABLine_color_set)
-    stroke_width = property(_datamunge.ABLine_stroke_width_get, _datamunge.ABLine_stroke_width_set)
-
-    def __init__(self):
-        _datamunge.ABLine_swiginit(self, _datamunge.new_ABLine())
-    __swig_destroy__ = _datamunge.delete_ABLine
-
-# Register ABLine in _datamunge:
-_datamunge.ABLine_swigregister(ABLine)
-class LegendEntry(object):
-    r"""
-    One manually-specified legend row, as drawn by R's `legend()`. When a plot has any manual
-    entries, they replace the default auto-generated (one-row-per-labeled-series) legend.
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    label = property(_datamunge.LegendEntry_label_get, _datamunge.LegendEntry_label_set)
-    color = property(_datamunge.LegendEntry_color_get, _datamunge.LegendEntry_color_set)
-
-    def __init__(self):
-        _datamunge.LegendEntry_swiginit(self, _datamunge.new_LegendEntry())
-    __swig_destroy__ = _datamunge.delete_LegendEntry
-
-# Register LegendEntry in _datamunge:
-_datamunge.LegendEntry_swigregister(LegendEntry)
-class Plot(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    __swig_destroy__ = _datamunge.delete_Plot
-
-    def size(self, width, height):
-        val = _datamunge.Plot_size(self, width, height)
-        val = self 
-
-        return val
-
-
-    def title(self, value):
-        val = _datamunge.Plot_title(self, value)
-        val = self 
-
-        return val
-
-
-    def x_label(self, value):
-        val = _datamunge.Plot_x_label(self, value)
-        val = self 
-
-        return val
-
-
-    def y_label(self, value):
-        val = _datamunge.Plot_y_label(self, value)
-        val = self 
-
-        return val
-
-
-    def background(self, color):
-        val = _datamunge.Plot_background(self, color)
-        val = self 
-
-        return val
-
-
-    def axis_color(self, color):
-        val = _datamunge.Plot_axis_color(self, color)
-        val = self 
-
-        return val
-
-
-    def grid_color(self, color):
-        val = _datamunge.Plot_grid_color(self, color)
-        val = self 
-
-        return val
-
-
-    def show_grid(self, enabled=True):
-        val = _datamunge.Plot_show_grid(self, enabled)
-        val = self 
-
-        return val
-
-
-    def x_limits(self, min_x, max_x):
-        val = _datamunge.Plot_x_limits(self, min_x, max_x)
-        val = self 
-
-        return val
-
-
-    def y_limits(self, min_y, max_y):
-        val = _datamunge.Plot_y_limits(self, min_y, max_y)
-        val = self 
-
-        return val
-
-
-    def hide_axes(self, enabled=True):
-        val = _datamunge.Plot_hide_axes(self, enabled)
-        val = self 
-
-        return val
-
-
-    def x_tick_labels(self, labels):
-        val = _datamunge.Plot_x_tick_labels(self, labels)
-        val = self 
-
-        return val
-
-
-    def width(self):
-        return _datamunge.Plot_width(self)
-
-    def height(self):
-        return _datamunge.Plot_height(self)
-
-    def title_text(self):
-        return _datamunge.Plot_title_text(self)
-
-    def x_label_text(self):
-        return _datamunge.Plot_x_label_text(self)
-
-    def y_label_text(self):
-        return _datamunge.Plot_y_label_text(self)
-
-    def series(self):
-        return _datamunge.Plot_series(self)
-
-    def background_color(self):
-        return _datamunge.Plot_background_color(self)
-
-    def axes_color(self):
-        return _datamunge.Plot_axes_color(self)
-
-    def major_grid_color(self):
-        return _datamunge.Plot_major_grid_color(self)
-
-    def grid_visible(self):
-        return _datamunge.Plot_grid_visible(self)
-
-    def has_x_limits(self):
-        return _datamunge.Plot_has_x_limits(self)
-
-    def has_y_limits(self):
-        return _datamunge.Plot_has_y_limits(self)
-
-    def x_min(self):
-        return _datamunge.Plot_x_min(self)
-
-    def x_max(self):
-        return _datamunge.Plot_x_max(self)
-
-    def y_min(self):
-        return _datamunge.Plot_y_min(self)
-
-    def y_max(self):
-        return _datamunge.Plot_y_max(self)
-
-    def axes_hidden(self):
-        return _datamunge.Plot_axes_hidden(self)
-
-    def x_tick_label_list(self):
-        return _datamunge.Plot_x_tick_label_list(self)
-
-    def reference_lines(self):
-        return _datamunge.Plot_reference_lines(self)
-
-    def legend_entries(self):
-        return _datamunge.Plot_legend_entries(self)
-
-    def to_svg(self):
-        r"""Renders the plot as a standalone SVG document and returns it as a string."""
-        return _datamunge.Plot_to_svg(self)
-
-    def save(self, path):
-        return _datamunge.Plot_save(self, path)
-
-    def save_svg(self, path):
-        return _datamunge.Plot_save_svg(self, path)
-
-    def view(self, *args):
-        return _datamunge.Plot_view(self, *args)
-
-    def show(self, *args):
-        return _datamunge.Plot_show(self, *args)
-
-    def __init__(self):
-        _datamunge.Plot_swiginit(self, _datamunge.new_Plot())
-
-# Register Plot in _datamunge:
-_datamunge.Plot_swigregister(Plot)
-class RPlot(Plot):
-    r"""
-    A single R-base-graphics-style plot (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,
-    `curve()`, `qqnorm()`, ...) plus the chainable "add to current plot" verbs R exposes as
-    separate top-level functions (`points()`, `lines()`, `abline()`, `legend()`, `text()`, ...).
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    @staticmethod
-    def create():
-        return _datamunge.RPlot_create()
-
-    def size(self, width, height):
-        r"""Plot's setters, returning RPlot& so they chain with the RPlot verbs below."""
-        val = _datamunge.RPlot_size(self, width, height)
-        val = self 
-
-        return val
-
-
-    def title(self, value):
-        val = _datamunge.RPlot_title(self, value)
-        val = self 
-
-        return val
-
-
-    def x_label(self, value):
-        val = _datamunge.RPlot_x_label(self, value)
-        val = self 
-
-        return val
-
-
-    def y_label(self, value):
-        val = _datamunge.RPlot_y_label(self, value)
-        val = self 
-
-        return val
-
-
-    def xlab(self, value):
-        r"""R-style aliases for x_label() / y_label()."""
-        val = _datamunge.RPlot_xlab(self, value)
-        val = self 
-
-        return val
-
-
-    def ylab(self, value):
-        val = _datamunge.RPlot_ylab(self, value)
-        val = self 
-
-        return val
-
-
-    def background(self, color):
-        val = _datamunge.RPlot_background(self, color)
-        val = self 
-
-        return val
-
-
-    def axis_color(self, color):
-        val = _datamunge.RPlot_axis_color(self, color)
-        val = self 
-
-        return val
-
-
-    def grid_color(self, color):
-        val = _datamunge.RPlot_grid_color(self, color)
-        val = self 
-
-        return val
-
-
-    def show_grid(self, enabled=True):
-        val = _datamunge.RPlot_show_grid(self, enabled)
-        val = self 
-
-        return val
-
-
-    def x_limits(self, min_x, max_x):
-        val = _datamunge.RPlot_x_limits(self, min_x, max_x)
-        val = self 
-
-        return val
-
-
-    def y_limits(self, min_y, max_y):
-        val = _datamunge.RPlot_y_limits(self, min_y, max_y)
-        val = self 
-
-        return val
-
-
-    def hide_axes(self, enabled=True):
-        val = _datamunge.RPlot_hide_axes(self, enabled)
-        val = self 
-
-        return val
-
-
-    def x_tick_labels(self, labels):
-        val = _datamunge.RPlot_x_tick_labels(self, labels)
-        val = self 
-
-        return val
-
-
-    @staticmethod
-    def plot(*args):
-        r"""Mimics R's `plot(x, y, type = "p"|"l"|"b")`."""
-        return _datamunge.RPlot_plot(*args)
-
-    @staticmethod
-    def hist(*args):
-        r"""Mimics R's `hist(x, breaks = bins)`. Bin edges are equal-width over the data range."""
-        return _datamunge.RPlot_hist(*args)
-
-    @staticmethod
-    def barplot(*args):
-        r"""Mimics R's `barplot(heights, names.arg = names)`."""
-        return _datamunge.RPlot_barplot(*args)
-
-    @staticmethod
-    def boxplot(*args):
-        r"""Mimics R's `boxplot(...)` over one or more groups."""
-        return _datamunge.RPlot_boxplot(*args)
-
-    @staticmethod
-    def pie(*args):
-        r"""Mimics R's `pie(x, labels = names)`."""
-        return _datamunge.RPlot_pie(*args)
-
-    @staticmethod
-    def curve(*args):
-        r"""Mimics R's `curve(expr, from, to)`; `f` is sampled at `n` evenly-spaced points."""
-        return _datamunge.RPlot_curve(*args)
-
-    @staticmethod
-    def qqnorm(*args):
-        r"""Mimics R's `qqnorm(y)`: plots sample quantiles of `data` against standard-normal quantiles."""
-        return _datamunge.RPlot_qqnorm(*args)
-
-    def line(self, *args):
-        val = _datamunge.RPlot_line(self, *args)
-        val = self 
-
-        return val
-
-
-    def points(self, *args):
-        r"""
-        *Overload 1:*
-        Unlabeled shorthands: `points(x, y, {r, g, b}, size)` / `lines(x, y, {r, g, b}, width)`.
-
-        |
-
-        *Overload 2:*
-        Unlabeled shorthands: `points(x, y, {r, g, b}, size)` / `lines(x, y, {r, g, b}, width)`.
-        """
-        val = _datamunge.RPlot_points(self, *args)
-        val = self 
-
-        return val
-
-
-    def lines(self, *args):
-        val = _datamunge.RPlot_lines(self, *args)
-        val = self 
-
-        return val
-
-
-    def bars(self, *args):
-        r"""Lower-level bar primitive at arbitrary x positions (`barplot()`/`hist()` build on this)."""
-        val = _datamunge.RPlot_bars(self, *args)
-        val = self 
-
-        return val
-
-
-    def box(self, *args):
-        r"""Lower-level box-and-whisker primitive at an arbitrary x position (`boxplot()` builds on this)."""
-        val = _datamunge.RPlot_box(self, *args)
-        val = self 
-
-        return val
-
-
-    def abline(self, *args):
-        val = _datamunge.RPlot_abline(self, *args)
-        val = self 
-
-        return val
-
-
-    def abline_h(self, *args):
-        val = _datamunge.RPlot_abline_h(self, *args)
-        val = self 
-
-        return val
-
-
-    def abline_v(self, *args):
-        val = _datamunge.RPlot_abline_v(self, *args)
-        val = self 
-
-        return val
-
-
-    def qqline(self, *args):
-        r"""
-        Mimics R's `qqline()`: draws the line through the 1st and 3rd sample/theoretical quartiles
-        of `data`, the same data that was passed to `qqnorm()`.
-        """
-        val = _datamunge.RPlot_qqline(self, *args)
-        val = self 
-
-        return val
-
-
-    def legend(self, labels, colors):
-        val = _datamunge.RPlot_legend(self, labels, colors)
-        val = self 
-
-        return val
-
-
-    def text(self, *args):
-        val = _datamunge.RPlot_text(self, *args)
-        val = self 
-
-        return val
-
-
-    def polygon(self, *args):
-        val = _datamunge.RPlot_polygon(self, *args)
-        val = self 
-
-        return val
-
-
-    def segments(self, *args):
-        val = _datamunge.RPlot_segments(self, *args)
-        val = self 
-
-        return val
-
-
-    def __init__(self):
-        _datamunge.RPlot_swiginit(self, _datamunge.new_RPlot())
-    __swig_destroy__ = _datamunge.delete_RPlot
-
-# Register RPlot in _datamunge:
-_datamunge.RPlot_swigregister(RPlot)
-class RLayout(object):
-    r"""
-    Tiles independently-built `Plot` objects into one multi-panel figure, mimicking R's
-    `par(mfrow = c(rows, cols))`.
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    @staticmethod
-    def create(rows, cols):
-        return _datamunge.RLayout_create(rows, cols)
-
-    def add(self, panel):
-        val = _datamunge.RLayout_add(self, panel)
-        val = self 
-
-        return val
-
-
-    def size(self, width, height):
-        val = _datamunge.RLayout_size(self, width, height)
-        val = self 
-
-        return val
-
-
-    def to_svg(self):
-        r"""Renders the multi-panel figure as a standalone SVG document and returns it as a string."""
-        return _datamunge.RLayout_to_svg(self)
-
-    def save(self, path):
-        return _datamunge.RLayout_save(self, path)
-
-    def save_svg(self, path):
-        return _datamunge.RLayout_save_svg(self, path)
-
-    def __init__(self):
-        _datamunge.RLayout_swiginit(self, _datamunge.new_RLayout())
-    __swig_destroy__ = _datamunge.delete_RLayout
-
-# Register RLayout in _datamunge:
-_datamunge.RLayout_swigregister(RLayout)
 class RGBVector(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -1317,6 +769,3219 @@ class RGBVector(object):
 
 # Register RGBVector in _datamunge:
 _datamunge.RGBVector_swigregister(RGBVector)
+class RGB(object):
+    r"""
+    A plotting color: 8-bit red, green, and blue channels plus an alpha opacity,
+           the C++ counterpart of R's `rgb(r, g, b, alpha, maxColorValue = 255)`.
+
+    An aggregate, so brace-initialize it: `dm::RGB{255, 0, 0}` is opaque red and
+    `dm::RGB{255, 0, 0, 0.5}` is half-transparent red. A default-constructed RGB is the
+    library's dark-slate ink `{31, 41, 55}`, fully opaque. Channels are not validated: keep
+    them in [0, 255] (both the raster and SVG renderers clamp out-of-range channels), and
+    keep alpha in [0, 1] (both renderers clamp it). Every plotting API takes RGB by value,
+    and `dm::c(...)` of several RGBs builds a palette usable with `select()` and set_col().
+
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto gold = dm::RGB{255, 215, 0};
+        const auto glass = dm::RGBA{37, 99, 235, 0.3};  // translucent blue
+        const dm::RGB ink;                              // {31, 41, 55}, opaque
+        std::print("{} {} {}\n", gold.r, glass.alpha, ink.r);  // 255 0.3 31
+        const auto palette = dm::c(gold, glass);       // a dm::Vector<dm::RGB>
+    See also: dm::RGBA, dm::Plot::set_col(), dm::points()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    r = property(_datamunge.RGB_r_get, _datamunge.RGB_r_set)
+    g = property(_datamunge.RGB_g_get, _datamunge.RGB_g_set)
+    b = property(_datamunge.RGB_b_get, _datamunge.RGB_b_set)
+    alpha = property(_datamunge.RGB_alpha_get, _datamunge.RGB_alpha_set)
+
+    def __init__(self, *args):
+        _datamunge.RGB_swiginit(self, _datamunge.new_RGB(*args))
+    __swig_destroy__ = _datamunge.delete_RGB
+
+# Register RGB in _datamunge:
+_datamunge.RGB_swigregister(RGB)
+class DataSeries(object):
+    r"""
+    One drawn layer of a plot (points, a line, bars, a box, a polygon, a label, or
+           segments), as stored by RPlot's layer verbs and read back through Plot::series().
+
+    A plain aggregate holding data coordinates and styling. Which fields matter depends on
+    kind; each Kind value documents how it reads x, y, and the other fields. Layers are drawn
+    in insertion order, after the reference lines, and every layer's coordinates widen the
+    automatic axis ranges (bars also pull the y range down or up to 0). A nonempty label puts
+    the layer in the automatic legend unless it is a Text layer. User code normally creates
+    layers through RPlot verbs (points(), lines(), bars(), ...) and only reads this struct.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        auto plt = dm::Plot().points(dm::c(1.0, 2.0), dm::c(3.0, 4.0), "pts");
+        const dm::graphics::DataSeries& s = plt.series()[0];
+        std::print("{} {} {} {}\n", s.kind == dm::graphics::DataSeries::Kind::Scatter, s.x.size(),
+                   s.label, s.marker_size);  // true 2 pts 4
+    See also: Plot::series(), RPlot::points(), RPlot::lines()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    Kind_Scatter = _datamunge.DataSeries_Kind_Scatter
+    r"""One marker (radius marker_size px) per (x[i], y[i]); colors from point_colors when set."""
+    Kind_Line = _datamunge.DataSeries_Kind_Line
+    r"""A polyline joining (x[i], y[i]) in order, stroke_width px wide (R's `lines()`)."""
+    Kind_Bar = _datamunge.DataSeries_Kind_Bar
+    r"""Vertical bars from y = 0 to y[i], centered on x[i], bar_width data units wide."""
+    Kind_Box = _datamunge.DataSeries_Kind_Box
+    r"""
+    One box-and-whisker at x[0]: y = {whisker_lo, q1, median, q3, whisker_hi,
+           outliers...}; bar_width is the box width in data units.
+    """
+    Kind_Polygon = _datamunge.DataSeries_Kind_Polygon
+    r"""A closed polygon through (x[i], y[i]); filled selects fill vs. outline only."""
+    Kind_Text = _datamunge.DataSeries_Kind_Text
+    r"""
+    A centered text label at (x[0], y[0]); label holds the text and marker_size the
+           font size in pixels. Never listed in the automatic legend.
+    """
+    Kind_Segment = _datamunge.DataSeries_Kind_Segment
+    r"""
+    Disconnected segments joining (x[2i], y[2i]) to (x[2i+1], y[2i+1]), stroke_width px
+           wide (R's `segments()`).
+    """
+    kind = property(_datamunge.DataSeries_kind_get, _datamunge.DataSeries_kind_set)
+    x = property(_datamunge.DataSeries_x_get, _datamunge.DataSeries_x_set, doc=r"""Horizontal data coordinates; meaning depends on kind.""")
+    y = property(_datamunge.DataSeries_y_get, _datamunge.DataSeries_y_set, doc=r"""Vertical data coordinates; meaning depends on kind.""")
+    label = property(_datamunge.DataSeries_label_get, _datamunge.DataSeries_label_set, doc=r"""Legend text (or the drawn text for Kind::Text); empty omits it.""")
+    color = property(_datamunge.DataSeries_color_get, _datamunge.DataSeries_color_set)
+    stroke_width = property(_datamunge.DataSeries_stroke_width_get, _datamunge.DataSeries_stroke_width_set)
+    marker_size = property(_datamunge.DataSeries_marker_size_get, _datamunge.DataSeries_marker_size_set)
+    bar_width = property(_datamunge.DataSeries_bar_width_get, _datamunge.DataSeries_bar_width_set)
+    filled = property(_datamunge.DataSeries_filled_get, _datamunge.DataSeries_filled_set)
+    point_colors = property(_datamunge.DataSeries_point_colors_get, _datamunge.DataSeries_point_colors_set, doc=r"""Optional scatter palette, recycled in input order; empty uses color for every point.""")
+
+    def __init__(self):
+        _datamunge.DataSeries_swiginit(self, _datamunge.new_DataSeries())
+    __swig_destroy__ = _datamunge.delete_DataSeries
+
+# Register DataSeries in _datamunge:
+_datamunge.DataSeries_swigregister(DataSeries)
+class ABLine(object):
+    r"""
+    A straight reference line across the whole plotting area, as drawn by R's
+           `abline(a, b)`, `abline(h =)` and `abline(v =)`.
+
+    A sloped or horizontal line is y = value + slope * x evaluated at both ends of the visible
+    x range; a vertical line sits at x = value and ignores slope. Reference lines are drawn
+    beneath every DataSeries. Vertical lines widen the automatic x range to include them;
+    sloped and horizontal lines never change the axis ranges. Created by RPlot::abline(),
+    abline_h(), abline_v(), and qqline(); read back through Plot::reference_lines().
+
+    Title: Example
+
+    .. code-block:: c++
+
+        auto plt = dm::Plot(dm::c(0.0, 1.0), dm::c(0.0, 2.0)).abline(0.5, 2.0).abline_v(0.25);
+        const auto& lines = plt.reference_lines();
+        std::print("{} {} {}\n", lines[0].slope, lines[1].vertical, lines[1].value);  // 2 true 0.25
+
+    Title: References
+    - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+
+    See also: RPlot::abline(), Plot::reference_lines()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    vertical = property(_datamunge.ABLine_vertical_get, _datamunge.ABLine_vertical_set)
+    value = property(_datamunge.ABLine_value_get, _datamunge.ABLine_value_set)
+    slope = property(_datamunge.ABLine_slope_get, _datamunge.ABLine_slope_set)
+    color = property(_datamunge.ABLine_color_get, _datamunge.ABLine_color_set)
+    stroke_width = property(_datamunge.ABLine_stroke_width_get, _datamunge.ABLine_stroke_width_set)
+
+    def __init__(self):
+        _datamunge.ABLine_swiginit(self, _datamunge.new_ABLine())
+    __swig_destroy__ = _datamunge.delete_ABLine
+
+# Register ABLine in _datamunge:
+_datamunge.ABLine_swigregister(ABLine)
+class LegendEntry(object):
+    r"""
+    One manually specified legend row, as drawn by R's `legend()`.
+
+    When a plot has any manual entries, they replace the default auto-generated
+    (one-row-per-labeled-series) legend. Each row is a color swatch followed by the label,
+    stacked from the top-right corner of the plotting area in insertion order.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).legend({"data"}, {dm::RGB{0, 0, 255}});
+        std::print("{} {}\n", plt.legend_entries()[0].label, plt.legend_entries()[0].color.b);  // data 255
+
+    Title: References
+    - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
+
+    See also: RPlot::legend(), dm::legend(), Plot::legend_entries()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    label = property(_datamunge.LegendEntry_label_get, _datamunge.LegendEntry_label_set, doc=r"""Row text.""")
+    color = property(_datamunge.LegendEntry_color_get, _datamunge.LegendEntry_color_set)
+
+    def __init__(self):
+        _datamunge.LegendEntry_swiginit(self, _datamunge.new_LegendEntry())
+    __swig_destroy__ = _datamunge.delete_LegendEntry
+
+# Register LegendEntry in _datamunge:
+_datamunge.LegendEntry_swigregister(LegendEntry)
+class Plot(object):
+    r"""
+    Renderer-facing state shared by every 2-D plot: canvas, labels, axes, and series.
+
+    User code works with the derived RPlot (spelled `dm::Plot`), whose setters return `RPlot&`;
+    this base holds the data, the read-only accessors, and the output functions to_svg(),
+    save(), and show(). The base-class setters below return `Plot&` and are what RPlot's
+    same-named setters forward to; call the RPlot forms in user code so chains keep the RPlot
+    type. A `const Plot&` is also what RLayout::add() accepts and RLayout::panel() returns.
+
+    Every output function renders from the stored state, so it throws std::runtime_error for a
+    plot with no data series (reference lines and legend rows alone are not enough) or a canvas
+    too small for its margins. Plots are copyable values with no shared state; distinct plots may
+    be used from different threads, but one plot must not be mutated while it is rendered.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::graphics::Plot& base = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 4.0)).set_title("Base");
+        std::print("{} {}x{}\n", base.title_text(), base.width(), base.height());  // Base 960x640
+    See also: RPlot, RLayout
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_Plot
+
+    def size(self, width, height):
+        r"""
+        Base-class form of RPlot::size(): sets the canvas size in pixels (default 960x640).
+        :type width: std::size_t
+        :param width:  Canvas width in pixels.
+        :type height: std::size_t
+        :param height:  Canvas height in pixels.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::size()
+        """
+        val = _datamunge.Plot_size(self, width, height)
+        val = self 
+
+        return val
+
+
+    def title(self, value):
+        r"""
+        Base-class form of RPlot::title(): sets the main heading; empty removes it.
+        :type value: string
+        :param value:  Heading text (moved into the plot).
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::set_title()
+        """
+        val = _datamunge.Plot_title(self, value)
+        val = self 
+
+        return val
+
+
+    def subtitle(self, value):
+        r"""
+        Sets an optional subtitle displayed beneath the title; owns the supplied text.
+        :type value: string
+        :param value:  Subtitle text; empty removes it.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::set_subtitle()
+        """
+        val = _datamunge.Plot_subtitle(self, value)
+        val = self 
+
+        return val
+
+
+    def x_label(self, value):
+        r"""
+        Base-class form of RPlot::x_label(): sets the horizontal-axis label.
+        :type value: string
+        :param value:  Label text (moved into the plot).
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::set_xlab()
+        """
+        val = _datamunge.Plot_x_label(self, value)
+        val = self 
+
+        return val
+
+
+    def y_label(self, value):
+        r"""
+        Base-class form of RPlot::y_label(): sets the vertical-axis label.
+        :type value: string
+        :param value:  Label text (moved into the plot).
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::set_ylab()
+        """
+        val = _datamunge.Plot_y_label(self, value)
+        val = self 
+
+        return val
+
+
+    def background(self, color):
+        r"""
+        Base-class form of RPlot::background(): sets the canvas fill color.
+        :type color: :py:class:`RGB`
+        :param color:  Fill for the whole canvas (default white).
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::background()
+        """
+        val = _datamunge.Plot_background(self, color)
+        val = self 
+
+        return val
+
+
+    def axis_color(self, color):
+        r"""
+        Base-class form of RPlot::axis_color(): sets the axis-line and text color.
+        :type color: :py:class:`RGB`
+        :param color:  Color for axis lines, ticks, axis labels, title, and subtitle.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::axis_color()
+        """
+        val = _datamunge.Plot_axis_color(self, color)
+        val = self 
+
+        return val
+
+
+    def grid_color(self, color):
+        r"""
+        Base-class form of RPlot::grid_color(): sets the grid-line color.
+        :type color: :py:class:`RGB`
+        :param color:  Grid-line color (default light gray `{229, 231, 235}`).
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::grid_color()
+        """
+        val = _datamunge.Plot_grid_color(self, color)
+        val = self 
+
+        return val
+
+
+    def show_grid(self, enabled=True):
+        r"""
+        Base-class form of RPlot::show_grid(): turns the background grid on or off.
+        :type enabled: boolean, optional
+        :param enabled:  True (the default) draws the grid.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::show_grid()
+        """
+        val = _datamunge.Plot_show_grid(self, enabled)
+        val = self 
+
+        return val
+
+
+    def x_limits(self, min_x, max_x):
+        r"""
+        Base-class form of RPlot::x_limits(): fixes the visible x range.
+        :type min_x: float
+        :param min_x:  Left edge of the plotting area, in data units.
+        :type max_x: float
+        :param max_x:  Right edge; must be greater than ``min_x``.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  Unless `max_x > min_x` (NaN fails); the plot is unchanged.
+        See also: RPlot::x_limits()
+        """
+        val = _datamunge.Plot_x_limits(self, min_x, max_x)
+        val = self 
+
+        return val
+
+
+    def y_limits(self, min_y, max_y):
+        r"""
+        Base-class form of RPlot::y_limits(): fixes the visible y range.
+        :type min_y: float
+        :param min_y:  Bottom edge of the plotting area, in data units.
+        :type max_y: float
+        :param max_y:  Top edge; must be greater than ``min_y``.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  Unless `max_y > min_y` (NaN fails); the plot is unchanged.
+        See also: RPlot::y_limits()
+        """
+        val = _datamunge.Plot_y_limits(self, min_y, max_y)
+        val = self 
+
+        return val
+
+
+    def hide_axes(self, enabled=True):
+        r"""
+        Base-class form of RPlot::hide_axes(): hides or restores axes, ticks, grid, and axis labels.
+        :type enabled: boolean, optional
+        :param enabled:  True (the default) hides them.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::hide_axes()
+        """
+        val = _datamunge.Plot_hide_axes(self, enabled)
+        val = self 
+
+        return val
+
+
+    def x_tick_labels(self, labels):
+        r"""
+        Base-class form of RPlot::x_tick_labels(): labels the x axis at 0, 1, 2, ...
+        :type labels: std::vector< std::string,std::allocator< std::string > >
+        :param labels:  Tick texts; empty restores the numeric ticks.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::x_tick_labels()
+        """
+        val = _datamunge.Plot_x_tick_labels(self, labels)
+        val = self 
+
+        return val
+
+
+    def x_ticks(self, positions, labels):
+        r"""
+        Replaces the numeric x ticks with ``labels`` drawn at data positions ``positions``.
+        :type positions: std::vector< double,std::allocator< double > >
+        :param positions:  x data coordinates of the ticks.
+        :type labels: std::vector< std::string,std::allocator< std::string > >
+        :param labels:  Tick texts, one per position.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument If the two vectors differ in length.
+        See also: RPlot::x_ticks()
+        """
+        return _datamunge.Plot_x_ticks(self, positions, labels)
+
+    def y_tick_labels(self, labels):
+        r"""
+        Replaces the numeric y ticks with ``labels`` drawn at y = 0, 1, 2, ...
+        :type labels: std::vector< std::string,std::allocator< std::string > >
+        :param labels:  Tick texts; empty restores the numeric ticks.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::y_tick_labels()
+        """
+        return _datamunge.Plot_y_tick_labels(self, labels)
+
+    def y_ticks(self, positions, labels):
+        r"""
+        Replaces the numeric y ticks with ``labels`` drawn at data positions ``positions``.
+        :type positions: std::vector< double,std::allocator< double > >
+        :param positions:  y data coordinates of the ticks.
+        :type labels: std::vector< std::string,std::allocator< std::string > >
+        :param labels:  Tick texts, one per position.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument If the two vectors differ in length.
+        See also: RPlot::y_ticks()
+        """
+        return _datamunge.Plot_y_ticks(self, positions, labels)
+
+    def margins(self, left, right, top, bottom):
+        r"""
+        Overrides the automatic outer margins (in pixels) around the plotting area, e.g. for
+               small multi-panel tiles. The defaults leave room for a title, axis labels, and ticks;
+               tight margins suit panels whose title and axis labels are empty.
+        :type left: float
+        :param left:  Left margin in pixels (default 90).
+        :type right: float
+        :param right:  Right margin in pixels (default 24).
+        :type top: float
+        :param top:  Top margin in pixels (default 72, plus 24 when a subtitle is set).
+        :type bottom: float
+        :param bottom:  Bottom margin in pixels (default 84).
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument If any margin is negative or non-finite.
+        See also: RPlot::margins()
+        """
+        return _datamunge.Plot_margins(self, left, right, top, bottom)
+
+    def tick_font_size(self, pixels):
+        r"""
+        Sets the tick-label font size in pixels (default 12); the raster viewer draws ticks
+               at half-size glyphs when this is below 12.
+        :type pixels: float
+        :param pixels:  Font size in pixels.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument If ``pixels`` is not positive and finite.
+        See also: RPlot::tick_font_size()
+        """
+        return _datamunge.Plot_tick_font_size(self, pixels)
+
+    def pretty_ticks(self, enabled=True):
+        r"""
+        Places numeric ticks at round values (steps of 1, 2 or 5 times a power of ten, like
+               R's `pretty()`) instead of six evenly spaced ticks across the range (default on).
+        :type enabled: boolean, optional
+        :param enabled:  True turns round ticks on; false restores six even ticks.
+        :rtype: :py:class:`Plot`
+        :return: This plot, for chaining.
+        See also: RPlot::pretty_ticks()
+        """
+        return _datamunge.Plot_pretty_ticks(self, enabled)
+
+    def width(self):
+        r"""
+        Returns the canvas width in pixels (default 960).
+        :rtype: std::size_t
+        :return: Width set by size().
+        """
+        return _datamunge.Plot_width(self)
+
+    def height(self):
+        r"""
+        Returns the canvas height in pixels (default 640).
+        :rtype: std::size_t
+        :return: Height set by size().
+        """
+        return _datamunge.Plot_height(self)
+
+    def title_text(self):
+        r"""
+        Borrows the main heading ("datamunge plot" until set) for the lifetime of this plot.
+        :rtype: string
+        :return: The current title; empty when the heading was cleared.
+        """
+        return _datamunge.Plot_title_text(self)
+
+    def subtitle_text(self):
+        r"""
+        Borrows the subtitle for the lifetime of this plot.
+        :rtype: string
+        :return: The current subtitle; empty (the default) when none is drawn.
+        """
+        return _datamunge.Plot_subtitle_text(self)
+
+    def x_label_text(self):
+        r"""
+        Borrows the horizontal-axis label ("x" until set) for the lifetime of this plot.
+        :rtype: string
+        :return: The current x-axis label.
+        """
+        return _datamunge.Plot_x_label_text(self)
+
+    def y_label_text(self):
+        r"""
+        Borrows the vertical-axis label ("y" until set) for the lifetime of this plot.
+        :rtype: string
+        :return: The current y-axis label.
+        """
+        return _datamunge.Plot_y_label_text(self)
+
+    def series(self):
+        r"""
+        Borrows the drawn layers (points, lines, bars, ...) in the order they were added.
+        :rtype: std::vector< datamunge::graphics::DataSeries,std::allocator< datamunge::graphics::DataSeries > >
+        :return: The series list; references are invalidated by adding another layer.
+        """
+        return _datamunge.Plot_series(self)
+
+    def background_color(self):
+        r"""
+        Returns the canvas fill color set by background().
+        :rtype: :py:class:`RGB`
+        :return: The background color (default white `{255, 255, 255}`).
+        """
+        return _datamunge.Plot_background_color(self)
+
+    def axes_color(self):
+        r"""
+        Returns the axis and text color set by axis_color().
+        :rtype: :py:class:`RGB`
+        :return: The axis color (default gray `{55, 65, 81}`).
+        """
+        return _datamunge.Plot_axes_color(self)
+
+    def major_grid_color(self):
+        r"""
+        Returns the grid-line color set by grid_color().
+        :rtype: :py:class:`RGB`
+        :return: The grid color (default light gray `{229, 231, 235}`).
+        """
+        return _datamunge.Plot_major_grid_color(self)
+
+    def grid_visible(self):
+        r"""
+        Reports whether the background grid is drawn (see show_grid()).
+        :rtype: boolean
+        :return: True (the default) when the grid is drawn.
+        """
+        return _datamunge.Plot_grid_visible(self)
+
+    def has_x_limits(self):
+        r"""
+        Reports whether x_limits() fixed the x range.
+        :rtype: boolean
+        :return: False (the default) while the x range is fitted to the data.
+        """
+        return _datamunge.Plot_has_x_limits(self)
+
+    def has_y_limits(self):
+        r"""
+        Reports whether y_limits() fixed the y range.
+        :rtype: boolean
+        :return: False (the default) while the y range is fitted to the data.
+        """
+        return _datamunge.Plot_has_y_limits(self)
+
+    def x_min(self):
+        r"""
+        Returns the fixed left x limit; meaningful only when has_x_limits() is true.
+        :rtype: float
+        :return: The stored lower x limit (0 until x_limits() is called).
+        """
+        return _datamunge.Plot_x_min(self)
+
+    def x_max(self):
+        r"""
+        Returns the fixed right x limit; meaningful only when has_x_limits() is true.
+        :rtype: float
+        :return: The stored upper x limit (1 until x_limits() is called).
+        """
+        return _datamunge.Plot_x_max(self)
+
+    def y_min(self):
+        r"""
+        Returns the fixed bottom y limit; meaningful only when has_y_limits() is true.
+        :rtype: float
+        :return: The stored lower y limit (0 until y_limits() is called).
+        """
+        return _datamunge.Plot_y_min(self)
+
+    def y_max(self):
+        r"""
+        Returns the fixed top y limit; meaningful only when has_y_limits() is true.
+        :rtype: float
+        :return: The stored upper y limit (1 until y_limits() is called).
+        """
+        return _datamunge.Plot_y_max(self)
+
+    def axes_hidden(self):
+        r"""
+        Reports whether hide_axes() suppressed axes, ticks, grid, and axis labels.
+        :rtype: boolean
+        :return: False (the default) when axes are drawn.
+        """
+        return _datamunge.Plot_axes_hidden(self)
+
+    def x_tick_label_list(self):
+        r"""
+        Borrows the custom x tick texts; empty means numeric ticks.
+        :rtype: std::vector< std::string,std::allocator< std::string > >
+        :return: Labels set by x_tick_labels() or x_ticks().
+        """
+        return _datamunge.Plot_x_tick_label_list(self)
+
+    def x_tick_position_list(self):
+        r"""
+        Data positions of x_tick_label_list(); empty means 0, 1, 2, ...
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: Positions set by x_ticks(); cleared by x_tick_labels().
+        """
+        return _datamunge.Plot_x_tick_position_list(self)
+
+    def y_tick_label_list(self):
+        r"""
+        Borrows the custom y tick texts; empty means numeric ticks.
+        :rtype: std::vector< std::string,std::allocator< std::string > >
+        :return: Labels set by y_tick_labels() or y_ticks().
+        """
+        return _datamunge.Plot_y_tick_label_list(self)
+
+    def y_tick_position_list(self):
+        r"""
+        Data positions of y_tick_label_list(); empty means 0, 1, 2, ...
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: Positions set by y_ticks(); cleared by y_tick_labels().
+        """
+        return _datamunge.Plot_y_tick_position_list(self)
+
+    def reference_lines(self):
+        r"""
+        Borrows the reference lines added by abline(), abline_h(), abline_v(), and qqline().
+        :rtype: std::vector< datamunge::graphics::ABLine,std::allocator< datamunge::graphics::ABLine > >
+        :return: Lines in insertion order; references are invalidated by adding another line.
+        """
+        return _datamunge.Plot_reference_lines(self)
+
+    def legend_entries(self):
+        r"""
+        Borrows the manual legend rows added by legend(); empty means an automatic legend.
+        :rtype: std::vector< datamunge::graphics::LegendEntry,std::allocator< datamunge::graphics::LegendEntry > >
+        :return: Manual entries in insertion order.
+        """
+        return _datamunge.Plot_legend_entries(self)
+
+    def has_custom_margins(self):
+        r"""
+        True once margins() has been called; the renderer then uses the explicit margins.
+        :rtype: boolean
+        :return: False (the default) while the automatic margins apply.
+        """
+        return _datamunge.Plot_has_custom_margins(self)
+
+    def margin_left(self):
+        r"""
+        Returns the left margin in pixels; used only when has_custom_margins() is true.
+        :rtype: float
+        :return: The stored left margin (default 90).
+        """
+        return _datamunge.Plot_margin_left(self)
+
+    def margin_right(self):
+        r"""
+        Returns the right margin in pixels; used only when has_custom_margins() is true.
+        :rtype: float
+        :return: The stored right margin (default 24).
+        """
+        return _datamunge.Plot_margin_right(self)
+
+    def margin_top(self):
+        r"""
+        Returns the top margin in pixels; used only when has_custom_margins() is true.
+        :rtype: float
+        :return: The stored top margin (default 72).
+        """
+        return _datamunge.Plot_margin_top(self)
+
+    def margin_bottom(self):
+        r"""
+        Returns the bottom margin in pixels; used only when has_custom_margins() is true.
+        :rtype: float
+        :return: The stored bottom margin (default 84).
+        """
+        return _datamunge.Plot_margin_bottom(self)
+
+    def tick_font_px(self):
+        r"""
+        Returns the tick-label font size set by tick_font_size().
+        :rtype: float
+        :return: Font size in pixels (default 12).
+        """
+        return _datamunge.Plot_tick_font_px(self)
+
+    def pretty_ticks_enabled(self):
+        r"""
+        Reports whether pretty_ticks() is on.
+        :rtype: boolean
+        :return: False (the default) for six evenly spaced numeric ticks.
+        """
+        return _datamunge.Plot_pretty_ticks_enabled(self)
+
+    def to_svg(self):
+        r"""
+        Renders the plot as a standalone SVG document and returns it as a string.
+
+        The document starts with an XML declaration and embeds the plot font, so it displays
+        identically in any browser. The plot is not modified, and no file or display is used.
+
+        :rtype: string
+        :return: The complete SVG text.
+        :raises: std::runtime_error  If the plot has no data series, or the canvas is smaller than
+                    its margins.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto svg = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).set_title("Tiny").to_svg();
+            std::print("{}\n", svg.starts_with("<?xml"));  // true
+            std::print("{}\n", svg.contains("Tiny"));      // true
+        See also: save(), show()
+        """
+        return _datamunge.Plot_to_svg(self)
+
+    def save(self, path):
+        r"""
+        Writes the plot to ``path``, choosing the format from the file extension
+               (R's `svg()`/`png()`/`pdf()` devices followed by `dev.off()`, in one call).
+
+        `.svg` or no extension writes the same text as to_svg(); `.png` writes the raster image
+        the X11 viewer displays; `.pdf` wraps that raster in a single-page PDF. The extension is
+        case-sensitive. An existing file is overwritten. Needs no display.
+
+        :type path: string
+        :param path:  Destination file; relative paths resolve against the working directory.
+        :raises: std::invalid_argument  For any other extension (e.g. `.jpg`).
+        :raises: std::runtime_error  If the file cannot be opened for writing, the plot has no data
+                    series, or the canvas is smaller than its margins.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0)).set_title("Squares");
+            plt.save("squares.svg");  // vector
+            plt.save("squares.png");  // raster
+            plt.save("squares.pdf");  // raster in a one-page PDF
+        See also: save_svg(), to_svg(), show()
+        """
+        return _datamunge.Plot_save(self, path)
+
+    def save_svg(self, path):
+        r"""
+        Writes to_svg() to ``path`` regardless of its extension.
+        :type path: string
+        :param path:  Destination file; an existing file is overwritten.
+        :raises: std::runtime_error  If the file cannot be opened for writing, or rendering fails
+                    as described for to_svg().
+
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).save_svg("diagonal.txt");  // SVG text
+        See also: save()
+        """
+        return _datamunge.Plot_save_svg(self, path)
+
+    def to_png(self):
+        r"""
+        Renders the plot as PNG image bytes (the same raster save() writes for `.png`).
+        :rtype: std::vector< std::uint8_t,std::allocator< std::uint8_t > >
+        :return: The complete PNG file contents.
+        :raises: std::runtime_error  If rendering fails as described for to_svg().
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto png = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).to_png();
+            std::print("{}\n", png[1] == 'P');  // true: PNG signature
+        See also: save_png(), to_pdf(), to_svg()
+        """
+        return _datamunge.Plot_to_png(self)
+
+    def to_pdf(self):
+        r"""
+        Renders the plot as a one-page PDF holding the raster image.
+        :rtype: std::vector< std::uint8_t,std::allocator< std::uint8_t > >
+        :return: The complete PDF file contents.
+        :raises: std::runtime_error  If rendering fails as described for to_svg().
+        See also: save_pdf(), to_png()
+        """
+        return _datamunge.Plot_to_pdf(self)
+
+    def save_png(self, path):
+        r"""
+        Writes to_png() to ``path`` regardless of its extension.
+        :type path: string
+        :param path:  Destination file; an existing file is overwritten.
+        :raises: std::runtime_error  If the file cannot be written or rendering fails.
+        See also: save(), to_png()
+        """
+        return _datamunge.Plot_save_png(self, path)
+
+    def save_pdf(self, path):
+        r"""
+        Writes to_pdf() to ``path`` regardless of its extension.
+        :type path: string
+        :param path:  Destination file; an existing file is overwritten.
+        :raises: std::runtime_error  If the file cannot be written or rendering fails.
+        See also: save(), to_pdf()
+        """
+        return _datamunge.Plot_save_pdf(self, path)
+
+    def view(self, *args):
+        r"""
+        Same as show(); kept as an alias for older code.
+        :type title_hint: string, optional
+        :param title_hint:  Window title; empty uses the plot's title.
+        :raises: std::runtime_error  As for show().
+        See also: show()
+        """
+        return _datamunge.Plot_view(self, *args)
+
+    def show(self, *args):
+        r"""
+        Opens the plot in an interactive X11 window and blocks until it is closed
+               (like printing a plot in an interactive R session).
+
+        The window has toolbar and keyboard zoom/pan (it re-renders from data bounds) and closes
+        on q or Escape; the function returns only then. The window title is ``title_hint``, or
+        the plot's title (title_text()) when the hint is empty. Requires a build with X11 support and a reachable `DISPLAY`; use save()
+        in headless code such as tests and CI.
+
+        :type title_hint: string, optional
+        :param title_hint:  Window title; empty (the default) uses the plot's title.
+        :raises: std::runtime_error  If X11 support was not compiled in, the display cannot be
+                    opened, its visual is unsupported, or the plot has no data series.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto x = dm::runif(0, 1, 1000);
+            const auto y = dm::sin(20 / (x + 0.25)) + dm::rnorm(0, 0.2, 1000);
+            dm::Plot(x, y).set_title("Doppler").set_col("blue").show("Doppler signal");
+        See also: save(), to_svg()
+        """
+        return _datamunge.Plot_show(self, *args)
+
+    def __init__(self):
+        _datamunge.Plot_swiginit(self, _datamunge.new_Plot())
+
+# Register Plot in _datamunge:
+_datamunge.Plot_swigregister(Plot)
+class RPlot(Plot):
+    r"""
+    A single R-base-graphics-style plot, spelled `dm::Plot` in user code.
+
+    Covers R's high-level plotting calls (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,
+    `curve()`, `qqnorm()`, ...) as constructors and static factories, plus the "add to the
+    current plot" verbs R exposes as separate functions (`points()`, `lines()`, `abline()`,
+    `legend()`, `text()`, ...) as chainable member functions. A plot is an ordinary value: it
+    owns copies of its data, copies cheaply enough to pass around, and draws nothing until it
+    is rendered with to_svg(), save(), or show().
+
+    Two composition styles mix freely. Setters such as set_title() and verbs such as points()
+    mutate the plot and return `RPlot&` for chaining; the pipe `plot | dm::points(...)` (see
+    compose.hpp) appends a reusable layer to a copy. A fresh plot has the title
+    "datamunge plot", axis labels "x" and "y", a 960x640 canvas, and a light grid.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto x = dm::seql(-2.0, 2.0, 9);
+        auto plt = dm::Plot(x, x * x)
+                       .set_title("Parabola")
+                       .set_xlab("x")
+                       .set_ylab("x squared");
+        plt.lines(x, x * x, dm::RGB{220, 38, 38}).abline_h(0.0);
+        plt.save("parabola.svg");
+    See also: dm::points(), dm::legend(), dm::Histogram, dm::Splom, RLayout
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        Constructs an empty plot with default labels and styling, ready for layers.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot();
+            std::print("{} | {} | {}\n", plt.title_text(), plt.x_label_text(), plt.y_label_text());
+           datamunge plot | x | y
+
+        |
+
+        *Overload 2:*
+        Constructs a scatter plot of ``y`` against ``x``, like R's `plot(x, y)`.
+
+        Equivalent to `RPlot::plot(x, y)`: one unlabeled scatter series drawn in blue
+        `{37, 99, 235}` with 4-pixel markers; axis ranges fit the data. The coordinates are
+        copied (or moved from rvalues); `dm::Vector<double>` converts implicitly. Restyle the
+        points afterwards with set_col().
+
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates, one per point.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x`` by position.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto iris = dm::datasets::iris();
+            auto plt = dm::Plot(iris.get_column("Petal.Length").values(),
+                                iris.get_column("Petal.Width").values())
+                           .set_col("blue");
+            plt.save("petals.svg");
+        See also: points(), set_col(), plot()
+        """
+        _datamunge.RPlot_swiginit(self, _datamunge.new_RPlot(*args))
+
+    @staticmethod
+    def create():
+        r"""
+        Returns a fresh empty plot; same as the default constructor `dm::Plot()`.
+
+        Kept for language bindings, where a named factory reads better than a constructor.
+
+        :rtype: :py:class:`RPlot`
+        :return: An empty plot with default labels and styling.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot::create();
+            std::print("{}\n", plt.series().size());  // 0
+        See also: RPlot()
+        """
+        return _datamunge.RPlot_create()
+
+    def size(self, width, height):
+        r"""
+        Sets the canvas size in pixels (default 960 by 640), like the `width`/`height`
+               of R's `png()` or `svg()` device.
+
+        Not validated here: rendering throws std::runtime_error when the canvas leaves no room
+        inside the margins (by default the canvas must exceed 114 by 156 pixels).
+
+        :type width: std::size_t
+        :param width:  Canvas width in pixels.
+        :type height: std::size_t
+        :param height:  Canvas height in pixels.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).size(400, 300);
+            std::print("{}x{}\n", plt.width(), plt.height());  // 400x300
+        See also: margins()
+        """
+        val = _datamunge.RPlot_size(self, width, height)
+        val = self 
+
+        return val
+
+
+    def title(self, value):
+        r"""
+        Sets the main heading, like R's `main =`; an empty string removes it.
+        :type value: string
+        :param value:  Heading text (copied).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        See also: set_title()
+        """
+        val = _datamunge.RPlot_title(self, value)
+        val = self 
+
+        return val
+
+
+    def subtitle(self, value):
+        r"""
+        Sets the subtitle and returns this plot for chaining RPlot verbs; same as set_subtitle().
+        :type value: string
+        :param value:  Subtitle text drawn under the title; empty removes it.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        See also: set_subtitle()
+        """
+        val = _datamunge.RPlot_subtitle(self, value)
+        val = self 
+
+        return val
+
+
+    def x_label(self, value):
+        r"""
+        Sets the horizontal-axis label; same as xlab() and set_xlab().
+        :type value: string
+        :param value:  Label text (copied).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        See also: set_xlab()
+        """
+        val = _datamunge.RPlot_x_label(self, value)
+        val = self 
+
+        return val
+
+
+    def y_label(self, value):
+        r"""
+        Sets the vertical-axis label; same as ylab() and set_ylab().
+        :type value: string
+        :param value:  Label text (copied).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        See also: set_ylab()
+        """
+        val = _datamunge.RPlot_y_label(self, value)
+        val = self 
+
+        return val
+
+
+    def xlab(self, value):
+        r"""
+        R-style alias for x_label(), like R's `xlab =`.
+        :type value: string
+        :param value:  Label text (copied).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        See also: set_xlab()
+        """
+        val = _datamunge.RPlot_xlab(self, value)
+        val = self 
+
+        return val
+
+
+    def ylab(self, value):
+        r"""
+        R-style alias for y_label(), like R's `ylab =`.
+        :type value: string
+        :param value:  Label text (copied).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        See also: set_ylab()
+        """
+        val = _datamunge.RPlot_ylab(self, value)
+        val = self 
+
+        return val
+
+
+    def set_title(self, value):
+        r"""
+        Sets the main heading drawn above the plotting area (R's `main =`).
+
+        The plot owns a copy of the text. An empty string clears the heading; a fresh plot
+        shows "datamunge plot" until this is called. Same as title().
+
+        :type value: string
+        :param value:  Heading text.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(2.0, 4.0, 8.0))
+                           .set_title("Growth")
+                           .set_subtitle("Doubling every step")
+                           .set_xlab("Step")
+                           .set_ylab("Count");
+            std::print("{} / {}\n", plt.title_text(), plt.subtitle_text());
+           Growth / Doubling every step
+        See also: set_subtitle(), set_xlab(), set_ylab(), dm::title()
+        """
+        val = _datamunge.RPlot_set_title(self, value)
+        val = self 
+
+        return val
+
+
+    def set_subtitle(self, value):
+        r"""
+        Sets the smaller second heading drawn beneath the title (unlike R's `sub =`,
+               which sits below the x axis).
+
+        The plot owns a copy of the text. Empty (the default) draws no subtitle and reserves no
+        extra top margin. Same as subtitle().
+
+        :type value: string
+        :param value:  Subtitle text.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot().set_title("Iris Dataset").set_subtitle("Sepal Width vs Length");
+            plt.set_subtitle("");  // remove it again
+        See also: set_title(), dm::subtitle()
+        """
+        val = _datamunge.RPlot_set_subtitle(self, value)
+        val = self 
+
+        return val
+
+
+    def set_xlab(self, value):
+        r"""
+        Sets the horizontal-axis label (R's `xlab =`).
+
+        The plot owns a copy of the text; the default is "x" and an empty string hides the
+        label. Same as xlab() and x_label().
+
+        :type value: string
+        :param value:  Axis label text.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_xlab("Sepal Width");
+            std::print("{}\n", plt.x_label_text());  // Sepal Width
+        See also: set_ylab(), dm::xlab()
+        """
+        val = _datamunge.RPlot_set_xlab(self, value)
+        val = self 
+
+        return val
+
+
+    def set_ylab(self, value):
+        r"""
+        Sets the vertical-axis label (R's `ylab =`).
+
+        The plot owns a copy of the text; the default is "y" and an empty string hides the
+        label. Same as ylab() and y_label().
+
+        :type value: string
+        :param value:  Axis label text.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_ylab("Sepal Length");
+            std::print("{}\n", plt.y_label_text());  // Sepal Length
+        See also: set_xlab(), dm::ylab()
+        """
+        val = _datamunge.RPlot_set_ylab(self, value)
+        val = self 
+
+        return val
+
+
+    def set_col(self, *args):
+        r"""
+        *Overload 1:*
+        Recolors every data series already on the plot (R's `col =` applied after the fact).
+
+        Every existing series (points, lines, bars, ...) takes ``color``, and per-point palettes
+        from dm::points(...).set_col() or points_colored() are cleared, so the whole plot becomes
+        one color. Only layers present now are affected: points added later keep their own
+        colors. Reference lines (abline) and manual legend entries keep their explicit colors.
+
+        :type color: :py:class:`RGB`
+        :param color:  New color, including its alpha.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 1.0, 2.0))
+                           .set_col(dm::RGB{220, 100, 255});
+            std::print("{}\n", plt.series()[0].color.r);  // 220
+        See also: set_col(std::string), dm::points()
+
+        |
+
+        *Overload 2:*
+        Same as set_col(RGB) but takes a color name or hex string, like R's `col = "blue"`.
+
+        Matching is case-insensitive. Names are black, white, red, green, blue, yellow, cyan,
+        magenta, gray/grey, and transparent (a much smaller set than R's `colors()`). Green is
+        RGB(0,128,0) as in CSS, and transparent is black with zero alpha. Hex strings are
+        `#RRGGBB` or `#RRGGBBAA`, where AA is an alpha byte (`80` is about 0.5).
+
+        :type color: string
+        :param color:  Color name or hex string.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  For unknown names or malformed hex; the plot is unchanged.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto x = dm::runif(0, 1, 100);
+            auto plt = dm::Plot(x, dm::rnorm(0, 1, 100)).set_col("blue");
+            plt.set_col("#FF000080");  // half-transparent red
+            const auto& col = plt.series()[0].color;
+            std::print("{} {:.2f}\n", col.r, col.alpha);  // 255 0.50
+        See also: set_col(RGB)
+        """
+        val = _datamunge.RPlot_set_col(self, *args)
+        val = self 
+
+        return val
+
+
+    def background(self, color):
+        r"""
+        Sets the fill color of the whole canvas, like R's `par(bg =)`.
+
+        The default is white `{255, 255, 255}`. The color fills the margins as well as the
+        plotting area. Its alpha is ignored: the background is always drawn opaque.
+
+        :type color: :py:class:`RGB`
+        :param color:  Canvas fill color.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0))
+                           .background(dm::RGB{17, 24, 39})
+                           .axis_color(dm::RGB{229, 231, 235})
+                           .grid_color(dm::RGB{55, 65, 81});  // a dark theme
+            std::print("{} {}\n", plt.background_color().r, plt.axes_color().r);  // 17 229
+
+        Title: References
+        - R `par()` (`bg`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+
+        See also: axis_color(), grid_color()
+        """
+        val = _datamunge.RPlot_background(self, color)
+        val = self 
+
+        return val
+
+
+    def axis_color(self, color):
+        r"""
+        Sets the color of the axis lines and of all plot-level text: tick labels, axis
+               labels, title, and subtitle (R's `col.axis`, `col.lab`, and `col.main` in one).
+
+        The default is slate gray `{55, 65, 81}`. Legend text follows it too; text() labels and
+        data layers keep their own colors.
+
+        :type color: :py:class:`RGB`
+        :param color:  Axis and text color.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+        See background(), which builds a dark theme with all three color setters.
+
+        Title: References
+        - R `par()` (`col.axis`, `col.lab`, `col.main`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+
+        See also: background(), grid_color()
+        """
+        val = _datamunge.RPlot_axis_color(self, color)
+        val = self 
+
+        return val
+
+
+    def grid_color(self, color):
+        r"""
+        Sets the color of the background grid lines (default light gray `{229, 231, 235}`).
+
+        Has no visible effect while the grid is off (show_grid(false)) or the axes are hidden.
+
+        :type color: :py:class:`RGB`
+        :param color:  Grid-line color.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+        See background(), which builds a dark theme with all three color setters.
+        See also: show_grid(), background()
+        """
+        val = _datamunge.RPlot_grid_color(self, color)
+        val = self 
+
+        return val
+
+
+    def show_grid(self, enabled=True):
+        r"""
+        Turns the light background grid on or off (on by default), like adding or
+               omitting R's `grid()`.
+
+        One vertical line per x tick and one horizontal line per y tick, so the grid always lines
+        up with the tick labels (round values, evenly spaced ticks, or custom tick positions).
+        Hidden axes hide the grid too.
+
+        :type enabled: boolean, optional
+        :param enabled:  True (the default) draws the grid; false omits it.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).show_grid(false);
+            std::print("{}\n", plt.grid_visible());  // false
+
+        Title: References
+        - R `grid()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/grid.html
+
+        See also: grid_color(), hide_axes()
+        """
+        val = _datamunge.RPlot_show_grid(self, enabled)
+        val = self 
+
+        return val
+
+
+    def x_limits(self, min_x, max_x):
+        r"""
+        Fixes the visible x range, like R's `xlim = c(min_x, max_x)`.
+
+        Without limits the x range is fitted to every layer (and vertical reference line), plus
+        5% padding on each side. With limits, the plotting area spans exactly [``min_x``, ``max_x]``
+        with no padding (R pads `xlim` by 4% unless `xaxs = "i"`). Data outside the range is not
+        clipped and may be drawn over the margins.
+
+        :type min_x: float
+        :param min_x:  Left edge of the plotting area, in data units.
+        :type max_x: float
+        :param max_x:  Right edge; must be greater than ``min_x``.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  Unless `max_x > min_x` (NaN fails); the plot is unchanged.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0))
+                           .x_limits(0.0, 4.0)
+                           .y_limits(0.0, 10.0);
+            std::print("{} {} {}\n", plt.has_x_limits(), plt.x_max(), plt.y_max());  // true 4 10
+
+        Title: References
+        - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+
+        See also: y_limits()
+        """
+        val = _datamunge.RPlot_x_limits(self, min_x, max_x)
+        val = self 
+
+        return val
+
+
+    def y_limits(self, min_y, max_y):
+        r"""
+        Fixes the visible y range, like R's `ylim = c(min_y, max_y)`.
+
+        Without limits the y range is fitted to every layer, plus 10% padding at each end (bar
+        layers also include y = 0). With limits, the plotting area spans exactly
+        [``min_y``, ``max_y]``. Data outside the range is not clipped.
+
+        :type min_y: float
+        :param min_y:  Bottom edge of the plotting area, in data units.
+        :type max_y: float
+        :param max_y:  Top edge; must be greater than ``min_y``.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  Unless `max_y > min_y` (NaN fails); the plot is unchanged.
+
+        Title: Example
+        See x_limits(), which sets both ranges.
+
+        Title: References
+        - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+
+        See also: x_limits()
+        """
+        val = _datamunge.RPlot_y_limits(self, min_y, max_y)
+        val = self 
+
+        return val
+
+
+    def hide_axes(self, enabled=True):
+        r"""
+        Hides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,
+               ann = FALSE` (the title and subtitle are still drawn).
+
+        pie() turns this on. Margins are unchanged, so call margins() as well to let the data use
+        the freed space.
+
+        :type enabled: boolean, optional
+        :param enabled:  True (the default) hides them; false shows them again.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).hide_axes();
+            std::print("{}\n", plt.axes_hidden());  // true
+
+        Title: References
+        - R `plot.default()` (`axes`, `ann`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+
+        See also: show_grid(), margins()
+        """
+        val = _datamunge.RPlot_hide_axes(self, enabled)
+        val = self 
+
+        return val
+
+
+    def x_tick_labels(self, labels):
+        r"""
+        Replaces the numeric x ticks with ``labels`` at x = 0, 1, 2, ..., like R's
+               `axis(1, at = 0:(n - 1), labels = labels)`.
+
+        Matches the bar positions of barplot() and boxplot(). Clears any positions set by
+        x_ticks(); an empty vector restores the numeric ticks.
+
+        :type labels: std::vector< std::string,std::allocator< std::string > >
+        :param labels:  Tick texts, in order.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(0.0, 1.0, 2.0), dm::c(5.0, 3.0, 4.0))
+                           .x_tick_labels({"low", "mid", "high"});
+            std::print("{}\n", plt.x_tick_label_list()[2]);  // high
+
+        Title: References
+        - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+
+        See also: x_ticks(), y_tick_labels()
+        """
+        val = _datamunge.RPlot_x_tick_labels(self, labels)
+        val = self 
+
+        return val
+
+
+    def x_ticks(self, positions, labels):
+        r"""
+        Replaces the numeric x ticks with ``labels`` drawn at data positions ``positions``,
+               like R's `axis(1, at = positions, labels = labels)`.
+
+        Positions need not be sorted or inside the visible range. Two empty vectors restore the
+        numeric ticks.
+
+        :type positions: std::vector< double,std::allocator< double > >
+        :param positions:  x data coordinates of the ticks.
+        :type labels: std::vector< std::string,std::allocator< std::string > >
+        :param labels:  Tick texts, one per position.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the two vectors differ in length; the plot is unchanged.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto x = dm::seql(0.0, 6.283, 50);
+            auto plt = dm::Plot(x, dm::sin(x))
+                           .x_ticks({0.0, 3.1416, 6.2832}, {"0", "pi", "2 pi"})
+                           .y_ticks({-1.0, 0.0, 1.0}, {"min", "0", "max"});
+            std::print("{}\n", plt.x_tick_position_list()[1]);  // 3.1416
+
+        Title: References
+        - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+
+        See also: x_tick_labels(), y_ticks()
+        """
+        return _datamunge.RPlot_x_ticks(self, positions, labels)
+
+    def y_tick_labels(self, labels):
+        r"""
+        Replaces the numeric y ticks with ``labels`` at y = 0, 1, 2, ..., like R's
+               `axis(2, at = 0:(n - 1), labels = labels)`.
+
+        Clears any positions set by y_ticks(); an empty vector restores the numeric ticks.
+
+        :type labels: std::vector< std::string,std::allocator< std::string > >
+        :param labels:  Tick texts, in order.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(3.0, 5.0), dm::c(0.0, 1.0)).y_tick_labels({"no", "yes"});
+            std::print("{}\n", plt.y_tick_label_list().size());  // 2
+
+        Title: References
+        - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+
+        See also: y_ticks(), x_tick_labels()
+        """
+        return _datamunge.RPlot_y_tick_labels(self, labels)
+
+    def y_ticks(self, positions, labels):
+        r"""
+        Replaces the numeric y ticks with ``labels`` drawn at data positions ``positions``,
+               like R's `axis(2, at = positions, labels = labels)`.
+
+        Two empty vectors restore the numeric ticks.
+
+        :type positions: std::vector< double,std::allocator< double > >
+        :param positions:  y data coordinates of the ticks.
+        :type labels: std::vector< std::string,std::allocator< std::string > >
+        :param labels:  Tick texts, one per position.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the two vectors differ in length; the plot is unchanged.
+
+        Title: Example
+        See x_ticks(), which sets both axes.
+
+        Title: References
+        - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+
+        See also: y_tick_labels(), x_ticks()
+        """
+        return _datamunge.RPlot_y_ticks(self, positions, labels)
+
+    def margins(self, left, right, top, bottom):
+        r"""
+        Overrides the automatic outer margins around the plotting area, in pixels, like
+               R's `par(mai =)` (which uses inches and orders bottom, left, top, right).
+
+        The automatic margins are left 90, right 24, top 72 (96 when a subtitle is set), and
+        bottom 84; they leave room for the title, axis labels, and ticks. Explicit margins are used
+        as given, with no extra room for a subtitle. Tight margins suit small multi-panel tiles
+        whose title and axis labels are empty. Rendering throws std::runtime_error if the margins
+        leave no plotting area.
+
+        :type left: float
+        :param left:  Left margin in pixels.
+        :type right: float
+        :param right:  Right margin in pixels.
+        :type top: float
+        :param top:  Top margin in pixels.
+        :type bottom: float
+        :param bottom:  Bottom margin in pixels.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If any margin is negative or non-finite; the plot is unchanged.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto tile = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0))
+                            .set_title("").set_xlab("").set_ylab("")
+                            .margins(30, 10, 10, 20)
+                            .tick_font_size(9);
+            std::print("{} {}\n", tile.has_custom_margins(), tile.margin_left());  // true 30
+
+        Title: References
+        - R `par()` (`mai`, `mar`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+
+        See also: size(), tick_font_size(), RLayout
+        """
+        val = _datamunge.RPlot_margins(self, left, right, top, bottom)
+        val = self 
+
+        return val
+
+
+    def tick_font_size(self, pixels):
+        r"""
+        Sets the tick-label font size in pixels (default 12), like R's `cex.axis`.
+
+        In SVG output the size is used as given. The raster outputs (PNG, PDF, show()) draw tick
+        labels with half-size glyphs when the size is below 12.
+
+        :type pixels: float
+        :param pixels:  Font size in pixels.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If ``pixels`` is not positive and finite; the plot is unchanged.
+
+        Title: Example
+        See margins(), which shrinks the ticks for a small tile.
+
+        Title: References
+        - R `par()` (`cex.axis`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+
+        See also: margins()
+        """
+        val = _datamunge.RPlot_tick_font_size(self, pixels)
+        val = self 
+
+        return val
+
+
+    def pretty_ticks(self, enabled=True):
+        r"""
+        Places numeric ticks at round values (default on) instead of six evenly spaced
+               ticks across the range, in the spirit of R's `pretty()`.
+
+        The step is 1, 2, or 5 times a power of ten, chosen as the "nice number" nearest a fifth
+        of the visible range (Heckbert's rule), and ticks are its multiples inside the range.
+        That gives about four to seven ticks, close to R's `pretty()`: a padded range of -0.365
+        to 7.665 gets ticks at 0, 2, 4 and 6. Custom tick labels take precedence. The background
+        grid follows the ticks.
+
+        :type enabled: boolean, optional
+        :param enabled:  True turns round ticks on; false restores six even ticks.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(0.0, 100.0), dm::c(0.0, 1.0)).pretty_ticks();
+            std::print("{}\n", plt.to_svg().contains(">40</text>"));  // true: ticks 0, 20, ..., 100
+
+        Title: References
+        - R `pretty()`: https://stat.ethz.ch/R-manual/R-devel/library/base/html/pretty.html
+        - P. S. Heckbert (1990). "Nice Numbers for Graph Labels". In Graphics Gems, 61-63.
+          Academic Press. doi:10.1016/B978-0-08-050753-8.50020-8
+
+        See also: x_ticks(), show_grid()
+        """
+        return _datamunge.RPlot_pretty_ticks(self, enabled)
+
+    @staticmethod
+    def plot(*args):
+        r"""
+        Builds a scatter, line, or line-plus-points plot of ``y`` against ``x``, like R's
+               `plot(x, y, type = "p" | "l" | "b")`.
+
+        `"p"` (the default) adds one scatter series with 4-pixel markers; `"l"` adds one 2-pixel
+        line joining the points in input order; `"b"` adds the line and then unlabeled points on
+        top (R's `"b"` leaves gaps in the line around each point; this draws it through them). The
+        title and axis labels keep their defaults. `RPlot(x, y)` is `plot(x, y)`.
+
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates, one per point.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x`` by position.
+        :type type: string, optional
+        :param type:  `"p"` (default), `"l"`, or `"b"`; case-sensitive.
+        :type label: string, optional
+        :param label:  Legend text; empty (the default) keeps the plot out of the automatic legend.
+                   With `"b"` only the line carries it.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Color of the points and line (default blue `{37, 99, 235}`).
+        :rtype: :py:class:`RPlot`
+        :return: A new plot holding the series.
+        :raises: std::invalid_argument  If the coordinates are empty or differ in length, or
+                    ``type`` is not one of the three codes.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto x = dm::seql(0.0, 4.0, 5);
+            auto plt = dm::Plot::plot(x, x * x, "b", "x squared");
+            std::print("{} series\n", plt.series().size());  // 2 series
+
+        Title: References
+        - R `plot.default()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+
+        See also: RPlot(std::vector<double>, std::vector<double>), points(), lines()
+        """
+        return _datamunge.RPlot_plot(*args)
+
+    @staticmethod
+    def hist(*args):
+        r"""
+        Builds a frequency histogram of ``data`` with ``bins`` equal-width bins, like R's
+               `hist(x, breaks = bins)`.
+
+        The bins split [min, max] of the data into equal widths (R instead treats `breaks` as a
+        suggestion and uses `pretty()` boundaries). Bins include their left edge and exclude their
+        right edge, except that the maximum goes in the final bin; R's default (`right = TRUE`) is
+        the opposite, so a value on an inner boundary is counted one bin higher here. Constant
+        data uses the range [value, value + 1]. Each bin is one bar of height equal to its count,
+        centered on the bin with width equal to the bin width. The title is "Histogram", the x
+        label "x", and the y label "Frequency". The data is consumed; the plot keeps only counts.
+
+        :type data: std::vector< double,std::allocator< double > >
+        :param data:  Observations; all must be finite.
+        :type bins: std::size_t, optional
+        :param bins:  Number of bins (default 10).
+        :type label: string, optional
+        :param label:  Legend text; empty (the default) shows no legend.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Bar color (default light blue `{96, 165, 250}`).
+        :rtype: :py:class:`RPlot`
+        :return: A new plot holding one Bar series.
+        :raises: std::invalid_argument For empty/non-finite data, zero bins, or a range/bin
+                    width that cannot be represented as a finite positive double.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot::hist({1.0, 2.0, 2.0, 3.0, 3.0, 3.0, 4.0}, 3);
+            const auto& bars = plt.series()[0];  // bins [1,2) [2,3) [3,4]
+            std::print("{} {} {}\n", bars.y[0], bars.y[1], bars.y[2]);  // 1 2 4
+
+        Title: References
+        - R `hist()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/hist.html
+
+        See also: dm::Histogram, bars()
+        """
+        return _datamunge.RPlot_hist(*args)
+
+    @staticmethod
+    def barplot(*args):
+        r"""
+        Builds a bar chart with one bar per height, like R's
+               `barplot(heights, names.arg = names)`.
+
+        Bar i is centered at x = i (0, 1, 2, ...) and is 0.8 units wide (R puts default bars at
+        0.7, 1.9, 3.1, ...). Bars rise from 0, so negative heights point down, and the y range
+        always includes 0. Nonempty ``names`` become x tick labels under the bars. The title and
+        axis labels keep their defaults.
+
+        :type heights: std::vector< double,std::allocator< double > >
+        :param heights:  Bar heights, in display order.
+        :type names: std::vector< std::string,std::allocator< std::string > >, optional
+        :param names:  Tick labels, one per bar; empty (the default) keeps numeric ticks.
+        :type label: string, optional
+        :param label:  Legend text; empty (the default) shows no legend.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Bar color (default green `{22, 163, 74}`).
+        :rtype: :py:class:`RPlot`
+        :return: A new plot holding one Bar series.
+        :raises: std::invalid_argument  If ``heights`` is empty or ``names`` is nonempty with a
+                    different length.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot::barplot({3.0, 5.0, 2.0}, {"a", "b", "c"}).set_title("Counts");
+            std::print("{} {}\n", plt.series()[0].x[2], plt.x_tick_label_list()[2]);  // 2 c
+
+        Title: References
+        - R `barplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+
+        See also: bars(), x_tick_labels()
+        """
+        return _datamunge.RPlot_barplot(*args)
+
+    @staticmethod
+    def boxplot(*args):
+        r"""
+        *Overload 1:*
+        Builds side-by-side box-and-whisker plots, one per group, like R's
+               `boxplot(list(...), names = names)`.
+
+        Group g is drawn at x = g (0, 1, 2, ...) as a 0.6-unit-wide box from the first to the
+        third quartile with a line at the median. Quartiles are R's default "type 7" sample
+        quantiles. Whiskers reach the most extreme values within 1.5 IQR of the box (Tukey's
+        rule), and values beyond are drawn as outlier points. R's `boxplot()` instead uses
+        Tukey's hinges (`fivenum()`), so for some sample sizes the box edges and the fences differ
+        slightly from R: for 1, ..., 9, 40 this gives quartiles 3.25 and 7.75 where R draws
+        hinges at 3 and 8. All boxes share ``color;`` the title and axis labels keep their defaults.
+
+        :type groups: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param groups:  One vector of observations per box; each must be nonempty.
+        :type names: std::vector< std::string,std::allocator< std::string > >, optional
+        :param names:  Tick labels under the boxes; empty (the default) keeps numeric ticks.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
+        :rtype: :py:class:`RPlot`
+        :return: A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).
+        :raises: std::invalid_argument  If ``groups`` or any group is empty, or ``names`` is nonempty
+                    with a different length.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot::boxplot({{1, 2, 3, 4, 5, 6, 7, 8, 9, 40}, {2, 4, 6}}, {"a", "b"});
+            const auto& y = plt.series()[0].y;  // whisker_lo, q1, median, q3, whisker_hi, outliers...
+            std::print("{} {} {} {} {} | {}\n", y[0], y[1], y[2], y[3], y[4], y[5]);
+           1 3.25 5.5 7.75 9 | 40
+            plt.save("boxes.svg");
+
+        Title: References
+        - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley. (Box plot and the 1.5 IQR fences.)
+        - R. McGill, J. W. Tukey, W. A. Larsen (1978). "Variations of Box Plots". The American
+          Statistician 32(1), 12-16. doi:10.1080/00031305.1978.10479236
+        - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+          Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566 (quantile type 7.)
+        - R `boxplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/boxplot.html
+        - R `boxplot.stats()`: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/boxplot.stats.html
+
+        See also: box(), x_tick_labels()
+
+        |
+
+        *Overload 2:*
+        boxplot() with one color per box, like R's `boxplot(..., col = colors)`.
+
+        :type groups: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param groups:  One vector of observations per box; each must be nonempty.
+        :type names: std::vector< std::string,std::allocator< std::string > >
+        :param names:  Tick labels under the boxes; empty keeps numeric ticks.
+        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+        :param colors:  Box colors, recycled when shorter than ``groups;`` must be nonempty.
+        :rtype: :py:class:`RPlot`
+        :return: A new plot holding one Box series per group.
+        :raises: std::invalid_argument  As boxplot(), or if ``colors`` is empty.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::graphics::RPlot::boxplot({{1, 2, 3}, {2, 4, 6}}, {"a", "b"},
+                                                std::vector<dm::RGB>{{78, 121, 167}, {242, 142, 43}});
+        See also: boxplot(std::vector<std::vector<double>>, std::vector<std::string>, RGB)
+        """
+        return _datamunge.RPlot_boxplot(*args)
+
+    @staticmethod
+    def pie(*args):
+        r"""
+        Builds a pie chart with one wedge per value, like R's
+               `pie(x, labels = names, col = colors, clockwise = TRUE)`.
+
+        Wedge i spans the fraction values[i] / sum(values) of the circle. Wedges start at 12
+        o'clock and run clockwise (R's default starts at 3 o'clock and runs counter-clockwise).
+        Each wedge is a filled unit-radius polygon with 24 arc segments. Names, when given, are
+        drawn at radius 1.15 beside the middle of each wedge's arc and also label the wedges, so the
+        automatic legend lists them. Colors are recycled; empty uses an 8-color built-in palette
+        starting blue, red, green. The axes and grid are hidden and both ranges are fixed at
+        [-1.4, 1.4]. The pie is drawn in data units, so it is round only when the plotting area is
+        square, e.g. `.size(598, 640)` with the default margins; the default 960x640 canvas draws an
+        ellipse.
+
+        :type values: std::vector< double,std::allocator< double > >
+        :param values:  Wedge sizes; nonnegative, with a positive sum.
+        :type names: std::vector< std::string,std::allocator< std::string > >, optional
+        :param names:  Wedge labels; empty (the default) draws none.
+        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional
+        :param colors:  Wedge colors, recycled; empty (the default) uses the built-in palette.
+        :rtype: :py:class:`RPlot`
+        :return: A new plot holding one Polygon series per wedge plus one Text series per name.
+        :raises: std::invalid_argument  If ``values`` is empty, has a negative entry, or sums to 0,
+                    or ``names`` is nonempty with a different length.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot::pie({3.0, 2.0, 1.0}, {"rent", "food", "fun"}).size(598, 640);
+            std::print("{}\n", plt.series().size());  // 6
+            plt.save("budget.svg");
+
+        Title: References
+        - R `pie()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/pie.html
+
+        See also: polygon(), text()
+        """
+        return _datamunge.RPlot_pie(*args)
+
+    @staticmethod
+    def curve(*args):
+        r"""
+        Plots a function over [``from``, ``to]`` as a line, like R's `curve(expr, from, to, n)`.
+
+        Evaluates `f.call(x)` at ``n`` evenly spaced points including both ends, in increasing
+        order, and joins them with a 2-pixel line. ``f`` is used only during this call and is not
+        retained. Non-finite results are stored as-is. Exceptions thrown by `f.call()` propagate.
+
+        :type f: :py:class:`Callback`
+        :param f:  The function to draw: a dm::Callback subclass overriding `call(double)`.
+        :type from: float
+        :param from:  Left end of the range.
+        :type to: float
+        :param to:  Right end; must be greater than ``from``.
+        :type n: std::size_t, optional
+        :param n:  Number of sample points, at least 2 (default 101, as in R).
+        :type label: string, optional
+        :param label:  Legend text; empty (the default) shows no legend.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Line color (default red `{220, 38, 38}`).
+        :rtype: :py:class:`RPlot`
+        :return: A new plot holding one Line series.
+        :raises: std::invalid_argument  If ``n`` is below 2 or ``to`` is not greater than ``from``.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            struct Square : dm::Callback {
+              double call(double x) override { return x * x; }
+            };
+            Square square;
+            auto plt = dm::Plot::curve(square, -1.0, 1.0, 5);
+            std::print("{}\n", plt.series()[0].y);  // [1, 0.25, 0, 0.25, 1]
+
+        Title: References
+        - R `curve()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html
+
+        See also: lines()
+        """
+        return _datamunge.RPlot_curve(*args)
+
+    @staticmethod
+    def qqnorm(*args):
+        r"""
+        Builds a normal Q-Q plot: the sorted ``data`` against standard-normal quantiles,
+               like R's `qqnorm(y)`.
+
+        The i-th smallest value (i = 1..n) is plotted against the normal quantile of the plotting
+        position (i - 0.5) / n. R's `ppoints()` uses that rule only for n > 10 and
+        (i - 3/8) / (n + 1/4) for n <= 10, so the x coordinates differ from R for small samples.
+        Points that fall on a straight line indicate normally distributed data; add the reference
+        line with qqline(). The title is "Normal Q-Q", the axis labels "Theoretical Quantiles"
+        and "Sample Quantiles".
+
+        :type data: std::vector< double,std::allocator< double > >
+        :param data:  The sample; at least two values. Consumed (sorted in place).
+        :type label: string, optional
+        :param label:  Legend text (default "sample", so the automatic legend shows one row; pass
+                   "" to hide it).
+        :type color: :py:class:`RGB`, optional
+        :param color:  Point color (default blue `{37, 99, 235}`).
+        :rtype: :py:class:`RPlot`
+        :return: A new plot holding one Scatter series.
+        :raises: std::invalid_argument  If ``data`` has fewer than two values.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};
+            auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+            std::print("{:.4f}\n", plt.series()[0].x[0]);  // -1.2816
+
+        Title: References
+        - M. B. Wilk, R. Gnanadesikan (1968). "Probability plotting methods for the analysis of
+          data". Biometrika 55(1), 1-17. doi:10.1093/biomet/55.1.1
+        - R `qqnorm()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+        - R `ppoints()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ppoints.html
+
+        See also: qqline()
+        """
+        return _datamunge.RPlot_qqnorm(*args)
+
+    def points_colored(self, x, y, colors, marker_size=4.0):
+        r"""
+        Appends scatter points with a recycled per-point RGB(A) palette.
+        Coordinates must have equal nonzero lengths; colors must not be empty.
+        A partial palette cycle is allowed without a warning. Colors retain their own alpha.
+        The series is unlabeled, so it never appears in the automatic legend.
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x``.
+        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+        :param colors:  Palette; point i uses `colors[i % colors.size()]`.
+        :type marker_size: float, optional
+        :param marker_size:  Marker radius in pixels (default 4).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument If the coordinate lengths or palette are invalid.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto palette = dm::c(dm::RGB{255, 0, 0}, dm::RGB{0, 0, 255});
+            auto plt = dm::Plot().points_colored(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 2.0, 1.0), palette);
+            std::print("{}\n", plt.series()[0].point_colors.size());  // 2 (red, blue, red)
+
+        Title: References
+        - R `points()` (vector `col`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+
+        See also: dm::points() and Points::set_col(), the pipe-friendly form of this call.
+        """
+        val = _datamunge.RPlot_points_colored(self, x, y, colors, marker_size)
+        val = self 
+
+        return val
+
+
+    def line(self, *args):
+        r"""
+        Adds a line joining the points in input order, like R's `lines(x, y, col = color,
+               lwd = stroke_width)`; same as lines().
+
+        The points are not sorted, so unsorted x draws a zigzag. The coordinates are copied (or
+        moved from rvalues) into a new Line series drawn above existing layers; axis ranges grow
+        to include it. A nonempty ``label`` adds a row to the automatic legend.
+
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates, one per vertex.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x`` by position.
+        :type label: string, optional
+        :param label:  Legend text; empty (the default) keeps it out of the legend.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Line color (default red `{220, 38, 38}`).
+        :type stroke_width: float, optional
+        :param stroke_width:  Line width in pixels (default 2).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+        See lines().
+
+        Title: References
+        - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+
+        See also: lines(), plot()
+        """
+        val = _datamunge.RPlot_line(self, *args)
+        val = self 
+
+        return val
+
+
+    def points(self, *args):
+        r"""
+        *Overload 1:*
+        Adds a scatter series to this plot, like R's `points(x, y, col = color)`.
+
+        The coordinates are copied (or moved from rvalues) into a new series drawn above the
+        existing ones; axis ranges grow to include it. A nonempty ``label`` adds a row to the
+        automatic legend (shown only while no manual legend() entries exist).
+
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates, one per point.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x`` by position.
+        :type label: string, optional
+        :param label:  Legend text for this series; empty (the default) keeps it out of the legend.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Marker color for every point (default blue `{37, 99, 235}`).
+        :type marker_size: float, optional
+        :param marker_size:  Marker radius in pixels (default 4).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto x = dm::seql(0.0, 6.0, 13);
+            auto plt = dm::Plot().set_title("sin and cos");
+            plt.points(x, dm::sin(x), "sin", dm::RGB{37, 99, 235})
+               .points(x, dm::cos(x), "cos", dm::RGB{220, 38, 38}, 6.0);
+            plt.save("trig.svg");  // automatic legend lists "sin" and "cos"
+
+        Title: References
+        - R `points()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+
+        See also: points_colored(), dm::points(), set_col()
+
+        |
+
+        *Overload 2:*
+        Same as points(x, y, label, color, marker_size) with an empty label, so the
+               series stays out of the automatic legend.
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x``.
+        :type color: :py:class:`RGB`
+        :param color:  Marker color for every point.
+        :type marker_size: float, optional
+        :param marker_size:  Marker radius in pixels (default 4).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot();
+            plt.points(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0), dm::RGB{22, 163, 74}, 3.0);
+        See also: points()
+
+        |
+
+        *Overload 3:*
+        Same as points(x, y, label, color, marker_size) with an empty label, so the
+               series stays out of the automatic legend.
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x``.
+        :type color: :py:class:`RGB`
+        :param color:  Marker color for every point.
+        :param marker_size:  Marker radius in pixels (default 4).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot();
+            plt.points(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0), dm::RGB{22, 163, 74}, 3.0);
+        See also: points()
+        """
+        val = _datamunge.RPlot_points(self, *args)
+        val = self 
+
+        return val
+
+
+    def lines(self, *args):
+        r"""
+        *Overload 1:*
+        Adds a line joining the points in input order, like R's `lines(x, y, col = color,
+               lwd = stroke_width)`.
+
+        Same as line(). The points are not sorted, so unsorted x draws a zigzag. The coordinates
+        are copied (or moved from rvalues) into a new Line series drawn above existing layers;
+        axis ranges grow to include it. A nonempty ``label`` adds a row to the automatic legend.
+
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates, one per vertex.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x`` by position.
+        :type label: string, optional
+        :param label:  Legend text; empty (the default) keeps it out of the legend.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Line color (default red `{220, 38, 38}`).
+        :type stroke_width: float, optional
+        :param stroke_width:  Line width in pixels (default 2).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto x = dm::seql(0.0, 6.0, 25);
+            auto plt = dm::Plot(x, dm::sin(x) + dm::rnorm(0, 0.1, 25));
+            plt.lines(x, dm::sin(x), "sin(x)", dm::RGB{220, 38, 38}, 3.0);
+            std::print("{}\n", plt.series()[1].stroke_width);  // 3
+
+        Title: References
+        - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+
+        See also: line(), lines(std::vector<double>, std::vector<double>, RGB, double), plot()
+
+        |
+
+        *Overload 2:*
+        Unlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x``.
+        :type color: :py:class:`RGB`
+        :param color:  Line color.
+        :type stroke_width: float, optional
+        :param stroke_width:  Line width in pixels (default 2).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot().lines(dm::c(0.0, 1.0, 2.0), dm::c(0.0, 1.0, 0.0), dm::RGB{0, 0, 0}, 1.0);
+            std::print("{}\n", plt.series()[0].label.empty());  // true
+        See also: lines()
+
+        |
+
+        *Overload 3:*
+        Unlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Horizontal coordinates.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertical coordinates, paired with ``x``.
+        :type color: :py:class:`RGB`
+        :param color:  Line color.
+        :param stroke_width:  Line width in pixels (default 2).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot().lines(dm::c(0.0, 1.0, 2.0), dm::c(0.0, 1.0, 0.0), dm::RGB{0, 0, 0}, 1.0);
+            std::print("{}\n", plt.series()[0].label.empty());  // true
+        See also: lines()
+        """
+        val = _datamunge.RPlot_lines(self, *args)
+        val = self 
+
+        return val
+
+
+    def bars(self, *args):
+        r"""
+        Adds vertical bars centered at arbitrary x positions, the low-level form behind
+               barplot() and hist() (R's `rect()` from 0 to each height).
+
+        Bar i spans x[i] +/- bar_width / 2 and rises from 0 to y[i] (negative heights point
+        down); the y range always includes 0. Bars are drawn 85% opaque in SVG output. A nonempty
+        ``label`` adds a row to the automatic legend.
+
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Bar centers, in data units.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Bar heights, paired with ``x`` by position.
+        :type label: string, optional
+        :param label:  Legend text; empty (the default) keeps it out of the legend.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Bar color (default green `{22, 163, 74}`).
+        :type bar_width: float, optional
+        :param bar_width:  Bar width in data units (default 0.8).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot().bars(dm::c(1.0, 2.5, 4.0), dm::c(3.0, -1.0, 2.0), "net",
+                                       dm::RGB{22, 163, 74}, 1.0);
+            std::print("{}\n", plt.series()[0].bar_width);  // 1
+
+        Title: References
+        - R `rect()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html
+
+        See also: barplot(), hist()
+        """
+        val = _datamunge.RPlot_bars(self, *args)
+        val = self 
+
+        return val
+
+
+    def box(self, *args):
+        r"""
+        Adds one box-and-whisker from precomputed statistics at an arbitrary x position,
+               the low-level form behind boxplot() (R's `bxp()`).
+
+        Draws a box from ``q1`` to ``q3`` with a thicker line at ``median``, whiskers out to
+        ``whisker_lo`` and ``whisker_hi`` with end caps, and one dot per outlier. The values are
+        not checked for order or finiteness. In SVG the box is filled at 35% opacity.
+
+        :type position: float
+        :param position:  Box center, in x data units.
+        :type whisker_lo: float
+        :param whisker_lo:  Lower whisker end.
+        :type q1: float
+        :param q1:  Lower box edge (first quartile).
+        :type median: float
+        :param median:  Median line.
+        :type q3: float
+        :param q3:  Upper box edge (third quartile).
+        :type whisker_hi: float
+        :param whisker_hi:  Upper whisker end.
+        :type outliers: std::vector< double,std::allocator< double > >, optional
+        :param outliers:  Values drawn as individual points (default none).
+        :type color: :py:class:`RGB`, optional
+        :param color:  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
+        :type width: float, optional
+        :param width:  Box width in data units (default 0.6).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot().box(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, {8.0}).box(1.0, 2.0, 3.0, 3.5, 4.0, 6.0);
+            std::print("{} {}\n", plt.series().size(), plt.series()[0].y.size());  // 2 6
+
+        Title: References
+        - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley.
+        - R `bxp()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/bxp.html
+
+        See also: boxplot()
+        """
+        val = _datamunge.RPlot_box(self, *args)
+        val = self 
+
+        return val
+
+
+    def abline(self, *args):
+        r"""
+        Adds the reference line y = intercept + slope * x across the plotting area, like
+               R's `abline(a = intercept, b = slope)`.
+
+        The line runs between the left and right edges of the visible x range and is drawn
+        beneath every data layer. It does not change the axis ranges, and it is not clipped to the
+        plotting area, so a steep line can extend into the margins. Stored as an ABLine.
+
+        :type intercept: float
+        :param intercept:  y value at x = 0.
+        :type slope: float
+        :param slope:  Change in y per unit x.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Line color (default opaque black).
+        :type stroke_width: float, optional
+        :param stroke_width:  Line width in pixels (default 1).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Warning: Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
+                 `.pdf`, and show()) currently omit them.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto x = dm::c(1.0, 2.0, 3.0, 4.0);
+            auto plt = dm::Plot(x, dm::c(2.1, 3.9, 6.2, 7.8))
+                           .abline(0.0, 2.0, dm::RGB{220, 38, 38})  // y = 2x
+                           .abline_h(5.0)
+                           .abline_v(2.5, dm::RGB{37, 99, 235}, 2.0);
+            std::print("{}\n", plt.reference_lines().size());  // 3
+            plt.save("ablines.svg");
+
+        Title: References
+        - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+
+        See also: abline_h(), abline_v(), qqline(), ABLine
+        """
+        val = _datamunge.RPlot_abline(self, *args)
+        val = self 
+
+        return val
+
+
+    def abline_h(self, *args):
+        r"""
+        Adds a horizontal reference line at y = ``y_value``, like R's `abline(h = y_value)`.
+
+        Same as `abline(y_value, 0.0, color, stroke_width)`: drawn beneath the data and not
+        included in the axis ranges, so a value outside the visible y range is off the plot.
+
+        :type y_value: float
+        :param y_value:  Height of the line, in data units.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Line color (default opaque black).
+        :type stroke_width: float, optional
+        :param stroke_width:  Line width in pixels (default 1).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Warning: Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
+                 `.pdf`, and show()) currently omit them.
+
+        Title: Example
+        See abline().
+
+        Title: References
+        - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+
+        See also: abline(), abline_v()
+        """
+        val = _datamunge.RPlot_abline_h(self, *args)
+        val = self 
+
+        return val
+
+
+    def abline_v(self, *args):
+        r"""
+        Adds a vertical reference line at x = ``x_value``, like R's `abline(v = x_value)`.
+
+        Spans the full height of the plotting area beneath the data. Unlike horizontal and
+        sloped lines, it widens the automatic x range to include ``x_value``.
+
+        :type x_value: float
+        :param x_value:  Horizontal position of the line, in data units.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Line color (default opaque black).
+        :type stroke_width: float, optional
+        :param stroke_width:  Line width in pixels (default 1).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Warning: Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
+                 `.pdf`, and show()) currently omit them.
+
+        Title: Example
+        See abline().
+
+        Title: References
+        - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+
+        See also: abline(), abline_h()
+        """
+        val = _datamunge.RPlot_abline_v(self, *args)
+        val = self 
+
+        return val
+
+
+    def qqline(self, *args):
+        r"""
+        Adds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line
+               through the first and third quartiles of ``data`` and of the standard normal.
+
+        Pass the same data given to qqnorm(). The sample quartiles are R's default "type 7"
+        quantiles, as in R's `qqline()` defaults (`probs = c(0.25, 0.75)`, `qtype = 7`). The
+        slope is the sample IQR divided by the normal IQR (about 1.349), so for normal data it
+        estimates the standard deviation and the intercept estimates the mean. Added through
+        abline().
+
+        :type data: std::vector< double,std::allocator< double > >
+        :param data:  The sample; at least two values. Taken by value, so the caller's data is unchanged.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Line color (default red `{220, 38, 38}`).
+        :type stroke_width: float, optional
+        :param stroke_width:  Line width in pixels (default 1.5).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If ``data`` has fewer than two values.
+
+        Warning: Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
+                 `.pdf`, and show()) currently omit them.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};
+            auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+            const auto& line = plt.reference_lines()[0];
+            std::print("{:.4f} {:.4f}\n", line.value, line.slope);  // 3.0000 1.4826
+
+        Title: References
+        - R `qqline()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+        - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+          Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566
+
+        See also: qqnorm(), abline()
+        """
+        val = _datamunge.RPlot_qqline(self, *args)
+        val = self 
+
+        return val
+
+
+    def legend(self, labels, colors):
+        r"""
+        Adds manual legend rows, like R's `legend(legend = labels, col = colors)`.
+
+        Each label is paired with the color at the same position and drawn as a swatch row in
+        the legend box. Once any manual row exists, it replaces the automatic legend built from
+        labeled series. Calling again appends more rows. Unlike dm::legend(), colors are not
+        recycled here: the vectors must match in length. Empty vectors add nothing.
+
+        :type labels: std::vector< std::string,std::allocator< std::string > >
+        :param labels:  Row texts, in display order.
+        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+        :param colors:  Swatch colors, one per label.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If ``labels`` and ``colors`` differ in length.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto up = dm::RGB{37, 99, 235};
+            const auto down = dm::RGB{220, 38, 38};
+            auto plt = dm::Plot();
+            plt.points(dm::c(1.0, 2.0), dm::c(1.0, 2.0), up)
+               .points(dm::c(1.0, 2.0), dm::c(2.0, 1.0), down)
+               .legend({"rising", "falling"}, {up, down});
+            std::print("{}\n", plt.legend_entries().size());  // 2
+
+        Title: References
+        - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
+
+        See also: dm::legend() for the recycling, pipe-friendly layer.
+        """
+        val = _datamunge.RPlot_legend(self, labels, colors)
+        val = self 
+
+        return val
+
+
+    def text(self, *args):
+        r"""
+        Draws ``label`` centered on the data point (``x``, ``y)``, like R's
+               `text(x, y, labels = label)`.
+
+        The text is centered both horizontally and vertically on the point, like R's default
+        `adj`. The point counts toward the automatic axis ranges, but the text's extent does not,
+        so long labels near the edge can overflow. Text layers never appear in the legend, and
+        set_col() recolors them along with the data.
+
+        :type x: float
+        :param x:  Horizontal position, in data units.
+        :type y: float
+        :param y:  Vertical position, in data units.
+        :type label: string
+        :param label:  The text to draw (XML-escaped in SVG output).
+        :type color: :py:class:`RGB`, optional
+        :param color:  Text color (default near-black `{17, 24, 39}`).
+        :type font_size: float, optional
+        :param font_size:  Font size in pixels (default 14).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 2.0))
+                           .text(2.0, 4.4, "peak", dm::RGB{220, 38, 38}, 16.0);
+            std::print("{} {}\n", plt.series()[1].label, plt.series()[1].marker_size);  // peak 16
+
+        Title: References
+        - R `text()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/text.html
+
+        See also: pie(), legend()
+        """
+        val = _datamunge.RPlot_text(self, *args)
+        val = self 
+
+        return val
+
+
+    def polygon(self, *args):
+        r"""
+        Draws the closed polygon through the vertices (x[i], y[i]), like R's
+               `polygon(x, y, col = color)`.
+
+        The last vertex joins the first automatically. Filled polygons (the default) are painted
+        with ``color`` (plus a 1-pixel outline in SVG; the raster fill uses the even-odd rule);
+        unfilled ones draw a 2-pixel outline only (R's default is unfilled). Translucent colors work well
+        for shaded regions such as confidence bands. Vertices count toward the axis ranges.
+
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Vertex x coordinates, in order around the polygon.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Vertex y coordinates, paired with ``x``.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Fill (and outline) color (default blue `{37, 99, 235}`).
+        :type filled: boolean, optional
+        :param filled:  True (the default) fills; false draws the outline only.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the coordinates are empty or have different lengths.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::Plot()
+                           .polygon({0.0, 1.0, 0.5}, {0.0, 0.0, 1.0}, dm::RGBA{37, 99, 235, 0.4})
+                           .polygon({0.2, 0.8, 0.8, 0.2}, {0.1, 0.1, 0.4, 0.4}, dm::RGB{0, 0, 0}, false);
+            std::print("{}\n", plt.series()[1].filled);  // false
+
+        Title: References
+        - R `polygon()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/polygon.html
+
+        See also: pie(), segments()
+        """
+        val = _datamunge.RPlot_polygon(self, *args)
+        val = self 
+
+        return val
+
+
+    def image(self, *args):
+        r"""
+        Draws a grid of coloured rectangles, one per value of ``z``, like R's `image(x, y, z)`.
+
+        Cell (i, j) is centred on (x[i], y[j]) and reaches halfway to its neighbours (a half step
+        beyond the outermost centres). Its colour is the palette entry for z[i][j] on a linear
+        scale from ``z_min`` to ``z_max;`` NaN cells are left empty. Each cell is added as a filled
+        polygon, so the grid should have at most tens of thousands of cells.
+
+        :type x: std::vector< double,std::allocator< double > >
+        :param x:  Cell centres along x, increasing (at least 2).
+        :type y: std::vector< double,std::allocator< double > >
+        :param y:  Cell centres along y, increasing (at least 2).
+        :type z: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param z:  Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.
+        :type palette: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional
+        :param palette:  Colours from low to high (default terrain_colors(12)).
+        :type z_min: float, optional
+        :param z_min:  Value mapped to the first colour; NaN (the default) uses the smallest z.
+        :type z_max: float, optional
+        :param z_max:  Value mapped to the last colour; NaN (the default) uses the largest z.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the sizes do not match, x or y is not increasing, or the
+                    palette is empty.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::graphics::RPlot::create().image({0.0, 1.0}, {0.0, 1.0, 2.0}, {{1, 2, 3}, {4, 5, 6}});
+            std::print("{}\n", plt.series().size());  // 6
+
+        Title: References
+        - R `image()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/image.html
+
+        See also: terrain_colors(), polygon()
+        """
+        return _datamunge.RPlot_image(self, *args)
+
+    def segments(self, *args):
+        r"""
+        Draws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like
+               R's `segments(x0, y0, x1, y1)`.
+
+        All segments share ``color`` and ``stroke_width`` and form one Segment layer; their end
+        points count toward the axis ranges. Useful for error bars, residual sticks, and
+        dendrograms.
+
+        :type x0: std::vector< double,std::allocator< double > >
+        :param x0:  Start x coordinates.
+        :type y0: std::vector< double,std::allocator< double > >
+        :param y0:  Start y coordinates.
+        :type x1: std::vector< double,std::allocator< double > >
+        :param x1:  End x coordinates.
+        :type y1: std::vector< double,std::allocator< double > >
+        :param y1:  End y coordinates.
+        :type color: :py:class:`RGB`, optional
+        :param color:  Segment color (default opaque black).
+        :type stroke_width: float, optional
+        :param stroke_width:  Segment width in pixels (default 1).
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument  If the four vectors differ in length or are empty.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto x = dm::c(1.0, 2.0, 3.0);
+            const auto y = dm::c(2.0, 3.5, 3.0);
+            auto plt = dm::Plot(x, y).segments(x, y - 0.5, x, y + 0.5);  // +/- 0.5 error bars
+            std::print("{}\n", plt.series()[1].x.size());  // 6 (start, end, start, end, ...)
+
+        Title: References
+        - R `segments()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/segments.html
+
+        See also: abline(), polygon()
+        """
+        val = _datamunge.RPlot_segments(self, *args)
+        val = self 
+
+        return val
+
+    __swig_destroy__ = _datamunge.delete_RPlot
+
+# Register RPlot in _datamunge:
+_datamunge.RPlot_swigregister(RPlot)
+class RLayout(object):
+    r"""
+    Tiles independently built plots into one multi-panel figure, like R's
+           `par(mfrow = c(rows, cols))` followed by one plot per panel.
+
+    Create it with create(rows, cols), then add() up to rows * cols panels; they fill the grid
+    row by row. Each panel is copied (and its SVG rendered) at add() time, so later changes to
+    the original plot do not show and panels need not outlive the layout. Each cell is
+    `width / cols` by `(height - band) / rows` pixels, where band is title_band_px when a
+    figure title is set and 0 otherwise; every panel is scaled from its own canvas size into its
+    cell. The figure background is white. Unused cells stay empty.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto x = dm::seql(0.0, 6.0, 30);
+        auto fig = dm::graphics::RLayout::create(1, 2)
+                       .size(1200, 500)
+                       .title("Two views")
+                       .add(dm::Plot(x, dm::sin(x)).set_title("sin"))
+                       .add(dm::Plot(x, dm::cos(x)).set_title("cos"));
+        std::print("{} panels in {}x{}\n", fig.panel_count(), fig.rows(), fig.cols());
+       2 panels in 1x2
+        fig.save("two_views.svg");
+
+    Title: References
+    - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+
+    See also: RPlot, RPlot::margins(), dm::Splom
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    title_band_px = _datamunge.RLayout_title_band_px
+    r"""Height in pixels of the heading band reserved above the panels when a title is set."""
+    min_panel_px = _datamunge.RLayout_min_panel_px
+    r"""
+    Smallest canvas side fit_panels() gives a panel; smaller cells get a larger canvas
+           with the cell's aspect ratio, scaled down when drawn, so the margins still fit.
+    """
+
+    @staticmethod
+    def create(rows, cols):
+        r"""
+        Creates an empty layout with ``rows`` by ``cols`` cells, like R's
+               `par(mfrow = c(rows, cols))`.
+
+        The figure starts at 960 by 640 pixels with no title.
+
+        :type rows: std::size_t
+        :param rows:  Number of panel rows; must be positive.
+        :type cols: std::size_t
+        :param cols:  Number of panel columns; must be positive.
+        :rtype: :py:class:`RLayout`
+        :return: The empty layout.
+        :raises: std::invalid_argument  If ``rows`` or ``cols`` is 0.
+
+        Title: Example
+        See RLayout.
+
+        Title: References
+        - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+
+        See also: add()
+        """
+        return _datamunge.RLayout_create(rows, cols)
+
+    def add(self, panel):
+        r"""
+        Copies ``panel`` into the next free cell, filling rows left to right, top to bottom.
+
+        The panel's SVG is rendered immediately and stored with the copy, so rendering errors
+        surface here and later edits to the original plot have no effect on the layout.
+
+        :type panel: :py:class:`Plot`
+        :param panel:  The plot to add; any RPlot (or other Plot) converts.
+        :rtype: :py:class:`RLayout`
+        :return: This layout, for chaining.
+        :raises: std::invalid_argument  If all rows * cols cells are already filled.
+        :raises: std::runtime_error  If ``panel`` has no data series or its canvas is smaller than
+                    its margins.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto fig = dm::graphics::RLayout::create(1, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)));
+            try {
+              fig.add(dm::Plot(dm::c(1.0), dm::c(1.0)));
+            } catch (const std::invalid_argument& e) {
+              std::print("{}\n", e.what());  // RLayout::add: layout is already full
+            }
+        See also: panel(), panel_count()
+        """
+        val = _datamunge.RLayout_add(self, panel)
+        val = self 
+
+        return val
+
+
+    def size(self, width, height):
+        r"""
+        Sets the size of the whole figure in pixels (default 960 by 640).
+
+        Panels keep their own canvas sizes and are scaled into their cells, so text in a panel
+        shrinks or grows with it; give panels a size close to their cell for readable labels.
+
+        :type width: std::size_t
+        :param width:  Figure width in pixels.
+        :type height: std::size_t
+        :param height:  Figure height in pixels, including the title band.
+        :rtype: :py:class:`RLayout`
+        :return: This layout, for chaining.
+
+        Title: Example
+        See RLayout.
+        See also: title()
+        """
+        val = _datamunge.RLayout_size(self, width, height)
+        val = self 
+
+        return val
+
+
+    def title(self, value):
+        r"""
+        Sets an optional figure-level heading drawn in a band above the panels, like R's
+               `mtext(main, outer = TRUE)`; an empty string (the default) reserves no band.
+        :type value: string
+        :param value:  Heading text; the band is title_band_px pixels tall.
+        :rtype: :py:class:`RLayout`
+        :return: This layout, for chaining.
+
+        Title: Example
+        See RLayout.
+
+        Title: References
+        - R `mtext()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/mtext.html
+
+        See also: title_text()
+        """
+        val = _datamunge.RLayout_title(self, value)
+        val = self 
+
+        return val
+
+
+    def rows(self):
+        r"""
+        Returns the number of panel rows given to create().
+        :rtype: std::size_t
+        :return: Row count (at least 1).
+        """
+        return _datamunge.RLayout_rows(self)
+
+    def cols(self):
+        r"""
+        Returns the number of panel columns given to create().
+        :rtype: std::size_t
+        :return: Column count (at least 1).
+        """
+        return _datamunge.RLayout_cols(self)
+
+    def width(self):
+        r"""
+        Returns the figure width in pixels.
+        :rtype: std::size_t
+        :return: Width set by size() (default 960).
+        """
+        return _datamunge.RLayout_width(self)
+
+    def height(self):
+        r"""
+        Returns the figure height in pixels.
+        :rtype: std::size_t
+        :return: Height set by size() (default 640).
+        """
+        return _datamunge.RLayout_height(self)
+
+    def panel_count(self):
+        r"""
+        Returns how many panels have been added.
+        :rtype: std::size_t
+        :return: Panel count, at most rows() * cols().
+        """
+        return _datamunge.RLayout_panel_count(self)
+
+    def title_text(self):
+        r"""
+        Borrows the figure-level heading for the lifetime of this layout.
+        :rtype: string
+        :return: The title; empty (the default) when none is drawn.
+        """
+        return _datamunge.RLayout_title_text(self)
+
+    def panel(self, index):
+        r"""
+        Borrows the copy of the ``index-th`` added panel.
+        :type index: std::size_t
+        :param index:  Zero-based panel index, in the order panels were added.
+        :rtype: :py:class:`Plot`
+        :return: The stored copy, valid until the next add() or the layout's destruction.
+        :raises: std::out_of_range If ``index`` is not below panel_count().
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto fig = dm::graphics::RLayout::create(1, 2).add(dm::Plot(dm::c(1.0), dm::c(1.0)).set_title("A"));
+            std::print("{}\n", fig.panel(0).title_text());  // A
+        """
+        return _datamunge.RLayout_panel(self, index)
+
+    def to_svg(self):
+        r"""
+        Renders the multi-panel figure as a standalone SVG document and returns it as a string.
+
+        Each panel becomes a nested `<svg>` scaled into its cell. A layout with no panels renders
+        as an empty white figure. The layout is not modified.
+
+        :rtype: string
+        :return: The complete SVG text.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto fig = dm::graphics::RLayout::create(2, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)));
+            std::print("{}\n", fig.to_svg().starts_with("<?xml"));  // true
+        See also: save()
+        """
+        return _datamunge.RLayout_to_svg(self)
+
+    def save(self, path):
+        r"""
+        Saves the figure, choosing the format from the extension: `.svg` (or none) writes
+               SVG, `.png` / `.pdf` write the same tiled raster the X11 viewer shows.
+
+        The extension is case-sensitive and an existing file is overwritten. Raster panels are
+        re-rendered from the stored copies and scaled into their cells.
+
+        :type path: string
+        :param path:  Destination file.
+        :raises: std::invalid_argument For any other extension.
+        :raises: std::runtime_error  If the file cannot be written.
+
+        Title: Example
+        See RLayout.
+        See also: save_svg(), to_svg(), show()
+        """
+        return _datamunge.RLayout_save(self, path)
+
+    def save_svg(self, path):
+        r"""
+        Writes to_svg() to ``path`` regardless of its extension.
+        :type path: string
+        :param path:  Destination file; an existing file is overwritten.
+        :raises: std::runtime_error  If the file cannot be opened for writing.
+        See also: save()
+        """
+        return _datamunge.RLayout_save_svg(self, path)
+
+    def to_png(self):
+        r"""
+        Renders the tiled figure as PNG image bytes (the raster save() writes for `.png`).
+        :rtype: std::vector< std::uint8_t,std::allocator< std::uint8_t > >
+        :return: The complete PNG file contents.
+        :raises: std::runtime_error  If a panel cannot be rendered.
+        See also: save_png(), to_svg()
+        """
+        return _datamunge.RLayout_to_png(self)
+
+    def to_pdf(self):
+        r"""
+        Renders the tiled figure as a one-page PDF holding the raster image.
+        :rtype: std::vector< std::uint8_t,std::allocator< std::uint8_t > >
+        :return: The complete PDF file contents.
+        :raises: std::runtime_error  If a panel cannot be rendered.
+        See also: save_pdf(), to_png()
+        """
+        return _datamunge.RLayout_to_pdf(self)
+
+    def save_png(self, path):
+        r"""
+        Writes to_png() to ``path`` regardless of its extension.
+        :type path: string
+        :param path:  Destination file; an existing file is overwritten.
+        :raises: std::runtime_error  If the file cannot be written or a panel cannot be rendered.
+        """
+        return _datamunge.RLayout_save_png(self, path)
+
+    def save_pdf(self, path):
+        r"""
+        Writes to_pdf() to ``path`` regardless of its extension.
+        :type path: string
+        :param path:  Destination file; an existing file is overwritten.
+        :raises: std::runtime_error  If the file cannot be written or a panel cannot be rendered.
+        """
+        return _datamunge.RLayout_save_pdf(self, path)
+
+    def fit_panels(self):
+        r"""
+        Resizes every stored panel's canvas to its cell, so text keeps its pixel size
+               instead of being scaled with the panel.
+
+        Call it after size() and title() (the title band changes the cell height). Panels added
+        later keep their own size until fit_panels() is called again. A cell whose shorter side is
+        under min_panel_px gets a canvas scaled up to that side (same aspect ratio), so its text is
+        drawn proportionally smaller instead of the margins overflowing the panel.
+        :rtype: :py:class:`RLayout`
+        :return: This layout, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto fig = dm::graphics::RLayout::create(1, 2)
+                           .add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)))
+                           .add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)))
+                           .size(1000, 400)
+                           .fit_panels();
+            std::print("{}x{}\n", fig.panel(0).width(), fig.panel(0).height());  // 500x400
+        See also: size()
+        """
+        return _datamunge.RLayout_fit_panels(self)
+
+    def show(self, *args):
+        r"""
+        Opens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons
+               act on every panel's data bounds at once, keyboard zoom/pan scales the whole image.
+
+        Blocks until the window is closed (q or Escape). Use save() in headless code.
+
+        :type title_hint: string, optional
+        :param title_hint:  Window title; empty (the default) uses title_text().
+        :raises: std::runtime_error If X11 support was not enabled at build time or no display is
+                    available.
+        :raises: std::invalid_argument  If no panel was added.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto x = dm::seql(0.0, 6.0, 30);
+            dm::graphics::RLayout::create(1, 2)
+                .add(dm::Plot(x, dm::sin(x)))
+                .add(dm::Plot(x, dm::cos(x)))
+                .show("Trig");
+        See also: save(), Plot::show()
+        """
+        return _datamunge.RLayout_show(self, *args)
+
+    def view(self, *args):
+        r"""
+        Same as show(); kept as an alias for older code.
+        :type title_hint: string, optional
+        :param title_hint:  Window title; empty (the default) uses title_text().
+        :raises: std::runtime_error  As for show().
+        :raises: std::invalid_argument  If no panel was added.
+        See also: show()
+        """
+        return _datamunge.RLayout_view(self, *args)
+
+    def __init__(self):
+        _datamunge.RLayout_swiginit(self, _datamunge.new_RLayout())
+    __swig_destroy__ = _datamunge.delete_RLayout
+
+# Register RLayout in _datamunge:
+_datamunge.RLayout_swigregister(RLayout)
+
+def terrain_colors(n):
+    r"""
+    ``n`` colours from green through yellow and brown to near-white, as R's `terrain.colors(n)`.
+    :type n: std::size_t
+    :param n:  Number of colours (at least 1).
+    :rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+    :return: The palette, low to high.
+    :raises: std::invalid_argument  If ``n`` is 0.
+    """
+    return _datamunge.terrain_colors(n)
+
+def diverging_colors(n):
+    r"""
+    ``n`` colours from dark blue through white to dark red, a diverging palette for signed
+           values such as correlations (ColorBrewer's RdBu, reversed so that low is blue).
+
+    Interpolates linearly between the seven RdBu anchor colours; an odd ``n`` puts pure
+    near-white (247, 247, 247) in the middle, so with `z_min = -z_max` in RPlot::image() zero
+    maps to white.
+
+    :type n: std::size_t
+    :param n:  Number of colours (at least 1; 1 gives the white midpoint).
+    :rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+    :return: The palette, low (blue) to high (red).
+    :raises: std::invalid_argument  If ``n`` is 0.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto pal = dm::graphics::diverging_colors(3);
+        std::print("{} {} {}\n", pal[0].r, pal[1].g, pal[2].r);  // 33 247 178
+
+    Title: References
+    - C. Brewer, ColorBrewer 2.0 (RdBu scheme): https://colorbrewer2.org
+
+    See also: terrain_colors(), RPlot::image()
+    """
+    return _datamunge.diverging_colors(n)
+
+def viridis_colors(n):
+    r"""
+    ``n`` colours of the viridis scale, from dark purple through blue and green to yellow,
+           matching R's `viridisLite::viridis(n)` at n = 10.
+
+    Viridis is perceptually uniform, so equal steps in value look like equal steps in colour,
+    and it stays readable in greyscale and for the common forms of colour blindness. Colours are
+    interpolated linearly between viridis(10)'s ten anchors.
+
+    :type n: std::size_t
+    :param n:  Number of colours (at least 1).
+    :rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+    :return: The palette, low (purple) to high (yellow).
+    :raises: std::invalid_argument  If ``n`` is 0.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto pal = dm::graphics::viridis_colors(10);
+        std::print("{} {} {}\n", pal[0].r, pal[5].g, pal[9].b);  // 68 158 37
+
+    Title: References
+    - S. van der Walt and N. Smith (2015). "mpl colourmaps" (viridis): https://bids.github.io/colormap/
+    - viridisLite: https://sjmgarnier.github.io/viridisLite/
+
+    See also: value_colors(), terrain_colors()
+    """
+    return _datamunge.viridis_colors(n)
+
+def value_colors(*args):
+    r"""
+    One colour per value on a continuous scale, for colouring scatter points by a
+           numeric variable (ggplot2's `scale_colour_viridis_c()`).
+
+    Each value is mapped linearly from [``z_min``, ``z_max]`` to the palette and rounded to the
+    nearest entry; values outside are clamped, NaN values get grey (190, 190, 190), and a zero
+    range maps everything to the middle colour. Pass the result to RPlot::points_colored().
+
+    :type values: std::vector< double,std::allocator< double > >
+    :param values:  Values to colour.
+    :type palette: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional
+    :param palette:  Colours from low to high (default viridis_colors(256)).
+    :type z_min: float, optional
+    :param z_min:  Value of the first colour; NaN (the default) uses the smallest value.
+    :type z_max: float, optional
+    :param z_max:  Value of the last colour; NaN (the default) uses the largest value.
+    :rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+    :return: One colour per value.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto cols = dm::graphics::value_colors({0.0, 0.5, 1.0}, dm::graphics::viridis_colors(3));
+        std::print("{} {} {}\n", cols[0].r, cols[1].r, cols[2].r);  // 68 35 253
+
+    See also: viridis_colors(), RPlot::points_colored()
+    """
+    return _datamunge.value_colors(*args)
 class DataSeriesVector(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -1596,6 +4261,388 @@ class LegendEntryVector(object):
 
 # Register LegendEntryVector in _datamunge:
 _datamunge.LegendEntryVector_swigregister(LegendEntryVector)
+
+def data_home():
+    r"""
+    The cache root where downloaded datasets are stored.
+
+    The first of: `$DATAMUNGE_DATA_DIR`; `$XDG_CACHE_HOME/datamunge/datasets`;
+    `$HOME/.cache/datamunge/datasets`; on Windows `%LOCALAPPDATA%/datamunge/datasets`;
+    otherwise `build/datasets` relative to the working directory. Nothing is created.
+
+    :rtype: string
+    :return: The directory path (it may not exist yet).
+
+    Title: Example
+
+    .. code-block:: c++
+
+        std::print("{}\n", dm::datasets::data_home());   // e.g. /home/me/.cache/datamunge/datasets
+    See also: fetch()
+    """
+    return _datamunge.data_home()
+
+def downloadable():
+    r"""
+    The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100",
+           "diamonds", "fashion_mnist", "mnist", "sudoku".
+
+    Title: Example
+
+    .. code-block:: c++
+
+        for (const auto& name : dm::datasets::downloadable()) std::print("{}\n", name);
+    """
+    return _datamunge.downloadable()
+
+def fetch(*args):
+    r"""
+    Makes sure a downloadable dataset is on disk and returns where it is.
+
+    For the tabular datasets ("diamonds", "california_housing") this is the CSV file. For the
+    image datasets it is a directory: "mnist" and "fashion_mnist" hold the four uncompressed
+    IDX files (`train-images-idx3-ubyte`, ...); "cifar10" holds `data_batch_1..5.bin` and
+    `test_batch.bin`; "cifar100" holds `train.bin` and `test.bin` (the binary versions);
+    "sudoku" holds Norvig's `easy50.txt`, `top95.txt` and `hardest.txt`.
+    Approximate download sizes: diamonds 2.7 MB, california_housing 1.4 MB, MNIST 11 MB,
+    Fashion-MNIST 30 MB, CIFAR-10 163 MB, CIFAR-100 161 MB, sudoku 14 KB.
+
+    :type name: string
+    :param name: One of downloadable().
+    :type directory: string, optional
+    :param directory: Where the files live; empty means `data_home() + "/" + name`. Files
+               already present there are used as they are.
+    :rtype: string
+    :return: The local path of the CSV file or the dataset directory.
+    :raises: std::invalid_argument for an unknown name.
+    :raises: std::runtime_error if files are missing and downloading is disabled or fails, or
+                a download does not match its checksum.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto housing = dm::datasets::read_csv(dm::datasets::fetch("california_housing"));
+    See also: data_home(), downloadable(), download_file()
+    """
+    return _datamunge.fetch(*args)
+
+def download_file(*args):
+    r"""
+    Downloads ``url`` to ``destination`` with curl, unless the destination already exists.
+
+    The file is downloaded into a temporary directory next to ``destination``, checked, and only
+    then renamed into place. Parent directories are created as needed. `DATAMUNGE_DATA_OFFLINE`
+    is honored; `DATAMUNGE_DATA_MIRROR` is not (fetch() applies it).
+
+    :type url: string
+    :param url: An `https://`, `http://` or `file://` URL.
+    :type destination: string
+    :param destination: The final file path.
+    :type md5: string, optional
+    :param md5: Expected lowercase hex MD5 of the downloaded bytes; empty skips the check.
+    :raises: std::runtime_error if downloading is disabled or fails, or the checksum differs.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::datasets::download_file("https://example.org/data.csv", "/tmp/data.csv");
+    """
+    return _datamunge.download_file(*args)
+class ImageBatch(object):
+    r"""
+    One batch of images and labels returned by ImageLoader.
+
+    `pixels` holds size() images back to back, each laid out as `shape` describes:
+    - "nhwc": shape {n, height, width, channels}, channels interleaved per pixel;
+    - "nchw": shape {n, channels, height, width}, one full plane per channel;
+    - "flat": shape {n, height * width * channels}, in "nhwc" order.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    pixels = property(_datamunge.ImageBatch_pixels_get, _datamunge.ImageBatch_pixels_set, doc=r"""Image values, row-major per `shape`.""")
+    labels = property(_datamunge.ImageBatch_labels_get, _datamunge.ImageBatch_labels_set, doc=r"""Class index of each image (see ImageLoader::class_names()).""")
+    indices = property(_datamunge.ImageBatch_indices_get, _datamunge.ImageBatch_indices_set, doc=r"""Position of each image within its split, 0-based.""")
+    shape = property(_datamunge.ImageBatch_shape_get, _datamunge.ImageBatch_shape_set, doc=r"""Dimensions of `pixels`; shape[0] is the number of images.""")
+
+    def size(self):
+        r"""Number of images in the batch."""
+        return _datamunge.ImageBatch_size(self)
+
+    def features(self):
+        r"""Values per image (height * width * channels)."""
+        return _datamunge.ImageBatch_features(self)
+
+    def image(self, i):
+        r"""
+        A copy of image ``i's`` features() values.
+        :raises: std::out_of_range if ``i`` is not in [0, size()).
+        """
+        return _datamunge.ImageBatch_image(self, i)
+
+    def __init__(self):
+        _datamunge.ImageBatch_swiginit(self, _datamunge.new_ImageBatch())
+    __swig_destroy__ = _datamunge.delete_ImageBatch
+
+# Register ImageBatch in _datamunge:
+_datamunge.ImageBatch_swigregister(ImageBatch)
+class ImageLoader(object):
+    r"""
+    A configurable, disk-backed batch iterator over a standard image dataset.
+
+    Datasets: "mnist" and "fashion_mnist" (28x28 grayscale, 10 classes; 60000 train / 10000
+    test), "cifar10" (32x32 RGB, 10 classes; 50000 / 10000) and "cifar100" (32x32 RGB, 100 fine
+    or 20 coarse classes; 50000 / 10000).
+
+    Iteration works in epochs. has_next()/next() walk the current epoch's order; reset() starts
+    the next epoch (with a fresh shuffle when shuffling is on). Every setter returns the loader
+    for chaining and rewinds the current epoch, so configure before iterating.
+
+    Reading is const and opens files per call, so batch()/take() may be called from several
+    threads at once; next()/reset() and the setters mutate and must not race.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::datasets::ImageLoader test("cifar10", "test");
+        test.set_batch_size(500).set_layout("nchw").set_normalize(false);
+        const auto first = test.next();          // shape {500, 3, 32, 32}, values 0..255
+        std::print("{}\n", test.class_names()[first.labels[0]]);   // "cat"
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        Opens a dataset split, downloading the files first if they are missing.
+        :type dataset: string
+        :param dataset: "mnist", "fashion_mnist", "cifar10" or "cifar100".
+        :type split: string, optional
+        :param split: "train" or "test".
+        :type directory: string, optional
+        :param directory: Where the dataset's files are (or should be downloaded); empty means
+                   `data_home() + "/" + dataset`.
+        :raises: std::invalid_argument for an unknown dataset or split.
+        :raises: std::runtime_error if the files are missing and cannot be downloaded, or are
+                    not valid files of that dataset.
+        """
+        _datamunge.ImageLoader_swiginit(self, _datamunge.new_ImageLoader(*args))
+
+    def set_batch_size(self, size):
+        r"""
+        Images per batch (default 32).
+        :raises: std::invalid_argument if ``size`` is not positive.
+        """
+        val = _datamunge.ImageLoader_set_batch_size(self, size)
+        val = self 
+
+        return val
+
+
+    def set_shuffle(self, shuffle):
+        r"""
+        Turns shuffling on or off (default off). Epoch e's order is a permutation drawn
+               from (seed(), e), so the same seed always gives the same sequence of epochs.
+        """
+        val = _datamunge.ImageLoader_set_shuffle(self, shuffle)
+        val = self 
+
+        return val
+
+
+    def set_seed(self, seed):
+        r"""Sets the shuffle seed (default 0); see set_shuffle()."""
+        val = _datamunge.ImageLoader_set_seed(self, seed)
+        val = self 
+
+        return val
+
+
+    def set_drop_last(self, drop_last):
+        r"""When true, a final batch smaller than batch_size() is skipped (default false)."""
+        val = _datamunge.ImageLoader_set_drop_last(self, drop_last)
+        val = self 
+
+        return val
+
+
+    def set_normalize(self, normalize):
+        r"""true scales pixels to [0, 1] (default); false keeps the raw 0..255 values."""
+        val = _datamunge.ImageLoader_set_normalize(self, normalize)
+        val = self 
+
+        return val
+
+
+    def set_layout(self, layout):
+        r"""
+        Memory layout of ImageBatch::pixels: "nhwc" (default), "nchw" or "flat".
+        :raises: std::invalid_argument for any other value.
+        """
+        val = _datamunge.ImageLoader_set_layout(self, layout)
+        val = self 
+
+        return val
+
+
+    def set_limit(self, count):
+        r"""
+        Uses only the first ``count`` examples of the split (0, the default, means all).
+               Handy for quick experiments. Shuffling then permutes just those examples.
+        :raises: std::invalid_argument if ``count`` is negative.
+        """
+        val = _datamunge.ImageLoader_set_limit(self, count)
+        val = self 
+
+        return val
+
+
+    def set_coarse_labels(self, coarse):
+        r"""
+        CIFAR-100 only: true labels images with the 20 superclasses, false (default)
+               with the 100 fine classes. Ignored by the other datasets.
+        """
+        val = _datamunge.ImageLoader_set_coarse_labels(self, coarse)
+        val = self 
+
+        return val
+
+
+    def dataset(self):
+        r"""The dataset name given to the constructor."""
+        return _datamunge.ImageLoader_dataset(self)
+
+    def split(self):
+        r""""train" or "test"."""
+        return _datamunge.ImageLoader_split(self)
+
+    def directory(self):
+        r"""The directory the files are read from."""
+        return _datamunge.ImageLoader_directory(self)
+
+    def batch_size(self):
+        r"""Images per batch."""
+        return _datamunge.ImageLoader_batch_size(self)
+
+    def shuffle(self):
+        r"""Whether each epoch is shuffled."""
+        return _datamunge.ImageLoader_shuffle(self)
+
+    def seed(self):
+        r"""The shuffle seed."""
+        return _datamunge.ImageLoader_seed(self)
+
+    def drop_last(self):
+        r"""Whether a short final batch is skipped."""
+        return _datamunge.ImageLoader_drop_last(self)
+
+    def normalize(self):
+        r"""Whether pixels are scaled to [0, 1]."""
+        return _datamunge.ImageLoader_normalize(self)
+
+    def layout(self):
+        r""""nhwc", "nchw" or "flat"."""
+        return _datamunge.ImageLoader_layout(self)
+
+    def coarse_labels(self):
+        r"""Whether CIFAR-100 uses coarse labels."""
+        return _datamunge.ImageLoader_coarse_labels(self)
+
+    def size(self):
+        r"""Examples per epoch: the split size, or the limit if one is set and smaller."""
+        return _datamunge.ImageLoader_size(self)
+
+    def split_size(self):
+        r"""Examples in the split on disk, ignoring any limit."""
+        return _datamunge.ImageLoader_split_size(self)
+
+    def num_batches(self):
+        r"""Batches per epoch, honoring drop_last()."""
+        return _datamunge.ImageLoader_num_batches(self)
+
+    def height(self):
+        r"""Image height in pixels."""
+        return _datamunge.ImageLoader_height(self)
+
+    def width(self):
+        r"""Image width in pixels."""
+        return _datamunge.ImageLoader_width(self)
+
+    def channels(self):
+        r"""Channels per pixel: 1 for MNIST-style, 3 (RGB) for CIFAR."""
+        return _datamunge.ImageLoader_channels(self)
+
+    def num_classes(self):
+        r"""Number of label classes (CIFAR-100: 100, or 20 with coarse labels)."""
+        return _datamunge.ImageLoader_num_classes(self)
+
+    def class_names(self):
+        r"""Label names, indexed by label (e.g. "airplane" for CIFAR-10 label 0)."""
+        return _datamunge.ImageLoader_class_names(self)
+
+    def epoch(self):
+        r"""The current epoch number, starting at 0 and advanced by reset()."""
+        return _datamunge.ImageLoader_epoch(self)
+
+    def position(self):
+        r"""Index of the batch next() will return in this epoch."""
+        return _datamunge.ImageLoader_position(self)
+
+    def has_next(self):
+        r"""true while the current epoch has batches left."""
+        return _datamunge.ImageLoader_has_next(self)
+
+    def next(self):
+        r"""
+        Reads the next batch of the current epoch.
+        :raises: std::out_of_range when the epoch is finished (call reset() for the next one).
+        """
+        return _datamunge.ImageLoader_next(self)
+
+    def reset(self):
+        r"""
+        Starts the next epoch: the position returns to 0 and, if shuffling, a new
+               order is drawn.
+        """
+        return _datamunge.ImageLoader_reset(self)
+
+    def batch(self, index):
+        r"""
+        Reads batch ``index`` of the current epoch without moving the position.
+        :raises: std::out_of_range if ``index`` is not in [0, num_batches()).
+        """
+        return _datamunge.ImageLoader_batch(self, index)
+
+    def take(self, indices):
+        r"""
+        Reads the listed examples (split positions), in the order given.
+        :raises: std::out_of_range if an index is not in [0, size()).
+        """
+        return _datamunge.ImageLoader_take(self, indices)
+
+    def load_all(self):
+        r"""
+        Reads every example of the epoch (all of size()) into one batch, in split order.
+               Mind memory: all 60000 MNIST images take ~376 MB as doubles; see set_limit().
+        """
+        return _datamunge.ImageLoader_load_all(self)
+
+    def __iter__(self):
+        """Yields the remaining batches of the current epoch; call reset() for the next epoch."""
+        while self.has_next():
+            yield self.next()
+
+    def __len__(self):
+        return self.num_batches()
+
+    __swig_destroy__ = _datamunge.delete_ImageLoader
+
+# Register ImageLoader in _datamunge:
+_datamunge.ImageLoader_swigregister(ImageLoader)
 
 def hello():
     r"""Prints a hello message to standard output."""
@@ -1926,6 +4973,13 @@ class DataFrame(object):
     def to_string(self, max_rows=10):
         return _datamunge.DataFrame_to_string(self, max_rows)
 
+    def to_md(self, digits=3):
+        r"""
+        The frame as a Markdown table (numeric columns right-aligned, at most ``digits``
+               decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().
+        """
+        return _datamunge.DataFrame_to_md(self, digits)
+
     def is_numeric_column(self, column_name):
         r"""true if column_name holds numeric values, false if it holds strings."""
         return _datamunge.DataFrame_is_numeric_column(self, column_name)
@@ -1948,10 +5002,204 @@ class DataFrame(object):
     @staticmethod
     def penguins():
         return _datamunge.DataFrame_penguins()
+
+    @staticmethod
+    def tooth_growth():
+        return _datamunge.DataFrame_tooth_growth()
+
+    @staticmethod
+    def wine():
+        r"""UCI wine recognition data, 178 x 14; see datasets::wine()."""
+        return _datamunge.DataFrame_wine()
+
+    @staticmethod
+    def titanic():
+        r"""Kaggle Titanic training set, 891 x 12 with missing values; see datasets::titanic()."""
+        return _datamunge.DataFrame_titanic()
+
+    @staticmethod
+    def eight_schools():
+        r"""Rubin's eight schools coaching experiment, 8 x 3; see datasets::eight_schools()."""
+        return _datamunge.DataFrame_eight_schools()
+
+    @staticmethod
+    def air_passengers():
+        r"""Monthly airline passengers 1949-1960, 144 x 3; see datasets::air_passengers()."""
+        return _datamunge.DataFrame_air_passengers()
+
+    @staticmethod
+    def volcano():
+        r"""Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3; see datasets::volcano()."""
+        return _datamunge.DataFrame_volcano()
+
+    @staticmethod
+    def faithful():
+        r"""Old Faithful eruptions, 272 x 2; see datasets::faithful()."""
+        return _datamunge.DataFrame_faithful()
+
+    @staticmethod
+    def mtcars():
+        r"""Motor Trend cars, 32 x 12 (row names as `model`); see datasets::mtcars()."""
+        return _datamunge.DataFrame_mtcars()
+
+    @staticmethod
+    def airquality():
+        r"""New York air quality 1973, 153 x 6 with missing values; see datasets::airquality()."""
+        return _datamunge.DataFrame_airquality()
+
+    @staticmethod
+    def breast_cancer():
+        r"""Wisconsin diagnostic breast cancer, 569 x 31; see datasets::breast_cancer()."""
+        return _datamunge.DataFrame_breast_cancer()
+
+    @staticmethod
+    def diabetes():
+        r"""Efron et al.'s diabetes progression data, 442 x 11; see datasets::diabetes()."""
+        return _datamunge.DataFrame_diabetes()
+
+    @staticmethod
+    def digits():
+        r"""8x8 handwritten digits, 1797 x 65; see datasets::digits()."""
+        return _datamunge.DataFrame_digits()
+
+    @staticmethod
+    def diamonds():
+        r"""ggplot2's diamonds, 53940 x 10, downloaded once and cached; see datasets::diamonds()."""
+        return _datamunge.DataFrame_diamonds()
+
+    @staticmethod
+    def california_housing():
+        r"""
+        California housing, 20640 x 10, downloaded once and cached; see
+               datasets::california_housing().
+        """
+        return _datamunge.DataFrame_california_housing()
+
+    @staticmethod
+    def dataset(name):
+        r"""
+        Any table-shaped dataset by name, e.g. "wine"; see datasets::load().
+        :raises: std::invalid_argument for an unknown or image dataset name.
+        """
+        return _datamunge.DataFrame_dataset(name)
+
+    @staticmethod
+    def dataset_catalog():
+        r"""
+        One row per available dataset (name, rows, columns, storage, size_mb,
+               description); see datasets::catalog().
+        """
+        return _datamunge.DataFrame_dataset_catalog()
+
+    @staticmethod
+    def read_csv(*args):
+        r"""
+        Reads a whole CSV file, typing columns automatically; see datasets::read_csv().
+        :type path: string
+        :param path: The file to read.
+        :type delimiter: char, optional
+        :param delimiter: The field separator.
+        :raises: std::runtime_error if the file cannot be read or is malformed.
+        """
+        return _datamunge.DataFrame_read_csv(*args)
+
+    @staticmethod
+    def parse_csv(*args):
+        r"""
+        Parses CSV text, typing columns automatically; see datasets::parse_csv().
+        :raises: std::runtime_error if the text is malformed.
+        """
+        return _datamunge.DataFrame_parse_csv(*args)
+
+    @staticmethod
+    def from_image_batch(batch):
+        r"""
+        An ImageLoader batch as a table (`pixel_0`.., `label`, `index`); see
+               datasets::to_dataframe().
+        """
+        return _datamunge.DataFrame_from_image_batch(batch)
     __swig_destroy__ = _datamunge.delete_DataFrame
 
 # Register DataFrame in _datamunge:
 _datamunge.DataFrame_swigregister(DataFrame)
+class CsvReader(object):
+    r"""
+    SWIG-friendly streaming CSV reader: returns a big file as DataFrames of at most
+           batch_size() rows each, so only one chunk is in memory at a time.
+
+    Wraps datasets::CsvReader; column types are fixed from the first 1000 rows.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::CsvReader reader(dm::datasets::fetch("diamonds"), 10000);
+        while (reader.has_next()) {
+          std::unique_ptr<dm::DataFrame> chunk(reader.next());
+       ... use chunk ...
+        }
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        Opens ``path`` and infers its column types.
+        :type path: string
+        :param path: The CSV file.
+        :type batch_size: int, optional
+        :param batch_size: Rows per chunk; must be positive.
+        :type delimiter: char, optional
+        :param delimiter: The field separator.
+        :raises: std::invalid_argument if batch_size is not positive.
+        :raises: std::runtime_error if the file cannot be opened or is malformed.
+        """
+        _datamunge.CsvReader_swiginit(self, _datamunge.new_CsvReader(*args))
+
+    def has_next(self):
+        r"""true while rows remain."""
+        return _datamunge.CsvReader_has_next(self)
+
+    def next(self):
+        r"""
+        The next chunk (caller owns it).
+        :raises: std::out_of_range when no rows remain.
+        """
+        return _datamunge.CsvReader_next(self)
+
+    def reset(self):
+        r"""Rewinds to the first data row."""
+        return _datamunge.CsvReader_reset(self)
+
+    def batch_size(self):
+        r"""Rows per chunk."""
+        return _datamunge.CsvReader_batch_size(self)
+
+    def set_batch_size(self, rows):
+        r"""
+        Changes the rows per chunk.
+        :raises: std::invalid_argument if ``rows`` is not positive.
+        """
+        return _datamunge.CsvReader_set_batch_size(self, rows)
+
+    def column_names(self):
+        r"""Column names, in file order."""
+        return _datamunge.CsvReader_column_names(self)
+
+    def rows_read(self):
+        r"""Rows returned since opening or the last reset()."""
+        return _datamunge.CsvReader_rows_read(self)
+
+    def __iter__(self):
+        """Yields the remaining chunks as DataFrames."""
+        while self.has_next():
+            yield self.next()
+
+    __swig_destroy__ = _datamunge.delete_CsvReader
+
+# Register CsvReader in _datamunge:
+_datamunge.CsvReader_swigregister(CsvReader)
 class ShapeLayer(object):
     r"""
     SWIG-friendly facade for datamunge::gis::ShapeLayer — reads a shapefile (.shp geometry
@@ -2020,7 +5268,7 @@ class ShapeLayer(object):
 _datamunge.ShapeLayer_swigregister(ShapeLayer)
 class GGPlot(object):
     r"""
-    SWIG-friendly facade for datamunge::plot::GGPlot — a ggplot2-style grammar-of-graphics
+    SWIG-friendly facade for datamunge::graphics::GGPlot — a ggplot2-style grammar-of-graphics
            builder. Geom/theme/scale/facet calls are chainable, mirroring ggplot2's own layered
            `ggplot(df, aes(...)) + geom_point() + ...` style as closely as C++ method chaining allows.
     """
@@ -2092,10 +5340,550 @@ class GGPlot(object):
 
     def show(self, *args):
         return _datamunge.GGPlot_show(self, *args)
+
+    def rows(self):
+        r"""
+        Number of data rows being plotted.
+        :rtype: int
+        :return: The row count of the frame passed to the constructor.
+        """
+        return _datamunge.GGPlot_rows(self)
+
+    def x_column(self):
+        r"""
+        The column mapped to x.
+        :rtype: string
+        :return: The x column name.
+        """
+        return _datamunge.GGPlot_x_column(self)
+
+    def y_column(self):
+        r"""
+        The column mapped to y.
+        :rtype: string
+        :return: The y column name; empty when unmapped.
+        """
+        return _datamunge.GGPlot_y_column(self)
+
+    def color_column(self):
+        r"""
+        The discrete color grouping column.
+        :rtype: string
+        :return: The color column name; empty when unmapped.
+        """
+        return _datamunge.GGPlot_color_column(self)
+
+    def layer_count(self):
+        r"""
+        Number of geom layers added so far.
+        :rtype: int
+        :return: The layer count.
+        """
+        return _datamunge.GGPlot_layer_count(self)
+
+    def layer_kinds(self):
+        r"""
+        The geom of each layer in drawing order ("point", "line", "smooth", ...).
+        :rtype: std::vector< std::string,std::allocator< std::string > >
+        :return: One name per layer.
+        """
+        return _datamunge.GGPlot_layer_kinds(self)
+
+    def theme_name(self):
+        r"""
+        The selected theme's name.
+        :rtype: string
+        :return: "gray" (the default), "minimal", "bw" or "classic".
+        """
+        return _datamunge.GGPlot_theme_name(self)
+
+    def facet_column(self):
+        r"""
+        The facet_wrap() column.
+        :rtype: string
+        :return: The column name; empty when not faceted.
+        """
+        return _datamunge.GGPlot_facet_column(self)
+
+    def title_text(self):
+        r"""
+        The title set by labs().
+        :rtype: string
+        :return: The title; empty when unset.
+        """
+        return _datamunge.GGPlot_title_text(self)
+
+    def x_label(self):
+        r"""
+        The x-axis label set by labs().
+        :rtype: string
+        :return: The label; empty when unset.
+        """
+        return _datamunge.GGPlot_x_label(self)
+
+    def y_label(self):
+        r"""
+        The y-axis label set by labs().
+        :rtype: string
+        :return: The label; empty when unset.
+        """
+        return _datamunge.GGPlot_y_label(self)
     __swig_destroy__ = _datamunge.delete_GGPlot
 
 # Register GGPlot in _datamunge:
 _datamunge.GGPlot_swigregister(GGPlot)
+class Splom(object):
+    r"""
+    A scatterplot matrix (R's `pairs()`, GGally's `ggpairs()`) over the columns of a
+           data frame, with chainable setters; the SWIG-friendly facade for graphics::Splom.
+
+    Panel (row i, column j) puts variable j on x and variable i on y. The panel type follows
+    the two variables' kinds (numeric columns are quantitative, string columns categorical):
+    - diagonal: kernel density curves, one per group_by() group (numeric), or a stacked bar of
+      level counts (string), titled with the variable name;
+    - numeric vs numeric above the diagonal: the points with a local linear smooth of the mean and
+      a 95% prediction band, one per group; point colors follow set_col() or group_by();
+    - numeric vs numeric below the diagonal: bivariate kernel density contours, one set per group;
+    - string vs numeric: one violin per level with the median and interquartile range marked;
+    - string vs string: a mosaic shaded by chi-squared Pearson residuals, with its p-value.
+
+    Values are copied at construction, so the frame need not outlive the matrix. Rows with a
+    missing value in either variable are dropped from that panel only. Setters return
+    `Splom&` for chaining; nothing is drawn until to_svg(), save(), or show(). The default
+    figure is 960 by 960 pixels with blue `{37, 99, 235}` points of radius 2.5.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto iris = dm::datasets::iris();
+        const auto species = dm::factor(dm::c(iris.get_column<std::string>("Species").values()));
+        const auto palette = dm::c(dm::RGB{255, 255, 80}, dm::RGB{100, 255, 255},
+                                   dm::RGB{220, 100, 255});
+        auto pairs = dm::Splom(iris).set_title("Iris Pairs").set_col(species, palette);
+        pairs.show();  // or pairs.save("iris_pairs.svg") without a display
+    See also: dm::splom(), dm::Plot, graphics::Splom
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        Builds the matrix from a facade DataFrame (the overload SWIG bindings use).
+
+        :type data: :py:class:`DataFrame`
+        :param data:  Source frame; its values are copied.
+        :type columns: std::vector< std::string,std::allocator< std::string > >, optional
+        :param columns: Columns to include in order; empty selects every numeric column plus every
+                   string column with at most graphics::Splom::max_default_levels distinct values.
+        :raises: std::invalid_argument For a missing column, or fewer than two variables.
+        See also: Splom(const dstruct::DataFrame&, const std::vector<std::string>&)
+        """
+        _datamunge.Splom_swiginit(self, _datamunge.new_Splom(*args))
+
+    def title(self, value):
+        r"""
+        Sets the heading above the grid; "" removes it.
+
+        A nonempty title reserves a band above the panels (none by default). show() also uses
+        it as the window title when no hint is passed.
+
+        :type value: string
+        :param value:  Figure heading.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        See also: set_title()
+        """
+        val = _datamunge.Splom_title(self, value)
+        val = self 
+
+        return val
+
+
+    def size(self, width, height):
+        r"""
+        Sets the figure size in pixels (default 960 by 960); panels share it equally.
+        :type width: std::size_t
+        :param width:  Figure width in pixels.
+        :type height: std::size_t
+        :param height:  Figure height in pixels.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        :raises: std::invalid_argument  If either dimension is zero.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto pairs = dm::Splom(dm::datasets::iris()).size(600, 600);
+            pairs.save("small_pairs.png");
+        """
+        val = _datamunge.Splom_size(self, width, height)
+        val = self 
+
+        return val
+
+
+    def color(self, value):
+        r"""
+        Uses one color for all points and clears any grouping.
+
+        Clears group_by(), point_colors(), and the factor form of set_col().
+
+        :type value: :py:class:`RGB`
+        :param value:  Point color (default `{37, 99, 235}`).
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        See also: set_col(datamunge::graphics::RGB)
+        """
+        val = _datamunge.Splom_color(self, value)
+        val = self 
+
+        return val
+
+
+    def group_by(self, *args):
+        r"""
+        Splits every numeric panel by the groups of string column ``column`` (GGally's
+               `ggpairs(aes(colour = group))`); an empty palette uses the default level palette.
+
+        The column need not be a panel variable but must be a string column of the source
+        frame. Groups are its sorted distinct non-missing values, and group k takes
+        `palette[k % palette.size()]`. Each group gets its own points, diagonal density, smooth
+        and prediction band, and density contours; rows with a missing group are left out of
+        those panels. When the column is also a panel variable its violins, bars, and mosaic axis
+        share the colors. Pass "" to clear the grouping. Clears point_colors().
+
+        :type column: string
+        :param column:  String column to group by, or "" to clear.
+        :type palette: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional
+        :param palette:  Group colors in sorted-group order; empty uses the default.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        :raises: std::invalid_argument  If ``column`` is not a string column of the source frame.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto pairs = dm::Splom(dm::datasets::iris()).group_by("Species");
+            std::print("{}\n", pairs.groups());  // ["setosa", "versicolor", "virginica"]
+        See also: groups(), set_col()
+        """
+        val = _datamunge.Splom_group_by(self, *args)
+        val = self 
+
+        return val
+
+
+    def point_colors(self, colors):
+        r"""
+        Sets one color per data row for the points (recycled); clears group_by().
+
+        Same as set_col(const Vector<RGB>&) for callers holding a std::vector; an empty vector
+        restores the single color().
+
+        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+        :param colors:  Per-row colors, recycled when shorter than the frame.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto pairs = dm::Splom(dm::datasets::iris())
+                             .point_colors({dm::RGB{0, 0, 0}, dm::RGB{255, 0, 0}});  // alternate rows
+        """
+        val = _datamunge.Splom_point_colors(self, colors)
+        val = self 
+
+        return val
+
+
+    def level_palette(self, colors):
+        r"""
+        Sets the fills cycled over categorical levels in violins and stacked bars.
+
+        An empty vector restores the default palette. group_by() and the factor form of
+        set_col() override it for their own column. Scatter points are unaffected.
+
+        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+        :param colors:  Fill colors in sorted-level order, recycled.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        """
+        val = _datamunge.Splom_level_palette(self, colors)
+        val = self 
+
+        return val
+
+
+    def marker_size(self, value):
+        r"""
+        Sets the point radius in pixels (default 2.5).
+        :type value: float
+        :param value:  Positive marker radius.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        :raises: std::invalid_argument  If ``value`` is not positive.
+        """
+        val = _datamunge.Splom_marker_size(self, value)
+        val = self 
+
+        return val
+
+
+    def diagonal_names(self):
+        r"""
+        Shows only the variable names on the diagonal, like R's `pairs()`.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        See also: diagonal_density(), diagonal_histogram()
+        """
+        val = _datamunge.Splom_diagonal_names(self)
+        val = self 
+
+        return val
+
+
+    def diagonal_density(self):
+        r"""
+        Shows kernel densities, one per group (numeric), or a stacked bar (string) on the
+               diagonal (the default).
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        See also: diagonal_histogram(), diagonal_names()
+        """
+        val = _datamunge.Splom_diagonal_density(self)
+        val = self 
+
+        return val
+
+
+    def diagonal_histogram(self):
+        r"""
+        Shows a histogram (numeric) or stacked bar (string) on the diagonal.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        See also: diagonal_density(), bins()
+        """
+        val = _datamunge.Splom_diagonal_histogram(self)
+        val = self 
+
+        return val
+
+
+    def span(self, value):
+        r"""
+        Sets the fraction of each group's points used in each local fit of the smooths
+               above the diagonal (R's `loess(span =)`, default 0.75).
+        :type value: float
+        :param value:  Span in (0, 1]; smaller values follow the data more closely.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        :raises: std::invalid_argument  If ``value`` is not in (0, 1].
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto pairs = dm::Splom(dm::datasets::iris()).group_by("Species").span(0.5).prediction_level(0.9);
+        """
+        val = _datamunge.Splom_span(self, value)
+        val = self 
+
+        return val
+
+
+    def prediction_level(self, value):
+        r"""
+        Sets the coverage of the prediction bands above the diagonal (default 0.95).
+        :type value: float
+        :param value:  Coverage in (0, 1).
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        :raises: std::invalid_argument  If ``value`` is not in (0, 1).
+        See also: span()
+        """
+        val = _datamunge.Splom_prediction_level(self, value)
+        val = self 
+
+        return val
+
+
+    def bins(self, value):
+        r"""
+        Sets the histogram bin count used by diagonal_histogram() (default 10).
+        :type value: std::size_t
+        :param value:  Positive number of equal-width bins.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+        :raises: std::invalid_argument  If ``value`` is zero.
+        """
+        val = _datamunge.Splom_bins(self, value)
+        val = self 
+
+        return val
+
+
+    def show_grid(self, enabled=True):
+        r"""
+        Toggles the light background grid of the scatter and violin panels (default on).
+        :type enabled: boolean, optional
+        :param enabled:  True draws the grid.
+        :rtype: :py:class:`Splom`
+        :return: This matrix, for chaining.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            auto pairs = dm::Splom(dm::datasets::iris(), {"Sepal.Length", "Sepal.Width", "Species"})
+                             .marker_size(1.5)
+                             .bins(15)
+                             .show_grid(false);
+        """
+        val = _datamunge.Splom_show_grid(self, enabled)
+        val = self 
+
+        return val
+
+
+    def variables(self):
+        r"""
+        Variable names in panel order.
+        :rtype: std::vector< std::string,std::allocator< std::string > >
+        :return: A copy of the selected column names.
+        """
+        return _datamunge.Splom_variables(self)
+
+    def groups(self):
+        r"""
+        Sorted group labels set by group_by(), in palette order; empty without grouping.
+        :rtype: std::vector< std::string,std::allocator< std::string > >
+        :return: A copy of the group labels; also empty after the factor form of set_col().
+        """
+        return _datamunge.Splom_groups(self)
+
+    def title_text(self):
+        r"""
+        The figure title set by set_title() or title().
+        :rtype: string
+        :return: The title; empty when unset.
+        """
+        return _datamunge.Splom_title_text(self)
+
+    def width(self):
+        r"""
+        Figure width in pixels.
+        :rtype: int
+        :return: The width (960 by default).
+        """
+        return _datamunge.Splom_width(self)
+
+    def height(self):
+        r"""
+        Figure height in pixels.
+        :rtype: int
+        :return: The height (960 by default).
+        """
+        return _datamunge.Splom_height(self)
+
+    def panel(self, row, col):
+        r"""
+        Builds the panel with variable ``col`` on x and variable ``row`` on y.
+
+        The panel is a standalone dm::Plot sized to one grid cell, useful for inspecting or
+        saving a single pair. Indices are zero-based positions in variables().
+
+        :type row: std::size_t
+        :param row:  Zero-based index of the y variable.
+        :type col: std::size_t
+        :param col:  Zero-based index of the x variable; equal to ``row`` gives the diagonal panel.
+        :rtype: :py:class:`RPlot`
+        :return: The rendered-on-demand panel plot.
+        :raises: std::out_of_range  If either index is not below variables().size().
+        :raises: std::invalid_argument  If the panel has no complete rows to draw.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto pairs = dm::Splom(dm::datasets::iris(), {"Sepal.Length", "Sepal.Width"});
+            pairs.panel(1, 0).save("sepal_scatter.svg");  // Sepal.Length on x, Sepal.Width on y
+        """
+        return _datamunge.Splom_panel(self, row, col)
+
+    def to_svg(self):
+        r"""
+        Renders the matrix as a standalone SVG document and returns it as a string.
+        :rtype: string
+        :return: The complete SVG text of the full grid, including the title band.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto svg = dm::Splom(dm::datasets::iris()).set_title("Iris Pairs").to_svg();
+            std::print("{}\n", svg.contains("Iris Pairs"));  // true
+        """
+        return _datamunge.Splom_to_svg(self)
+
+    def save(self, path):
+        r"""
+        Writes the matrix to ``path``, choosing the format from the extension.
+
+        `.svg` or no extension writes to_svg(); `.png` and `.pdf` write the tiled raster the
+        viewer shows. Needs no display.
+
+        :type path: string
+        :param path:  Destination file; an existing file is overwritten.
+        :raises: std::invalid_argument  For any other extension.
+        :raises: std::runtime_error  If the file cannot be written.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto pairs = dm::Splom(dm::datasets::iris()).group_by("Species");
+            pairs.save("iris_pairs.svg");
+            pairs.save("iris_pairs.png");
+        """
+        return _datamunge.Splom_save(self, path)
+
+    def save_svg(self, path):
+        r"""
+        Writes to_svg() to ``path`` regardless of its extension.
+        :type path: string
+        :param path:  Destination file; an existing file is overwritten.
+        :raises: std::runtime_error  If the file cannot be opened for writing.
+        """
+        return _datamunge.Splom_save_svg(self, path)
+
+    def show(self, *args):
+        r"""
+        Opens the matrix in the interactive X11 viewer and blocks until the window closes.
+
+        Zoom and pan act on every panel at once; q or Escape closes the window. Requires an
+        X11-enabled build and a reachable display; use save() in headless code.
+
+        :type title_hint: string, optional
+        :param title_hint:  Window title; empty uses the figure title, or "datamunge splom".
+        :raises: std::runtime_error  If X11 is unavailable or the display cannot be opened.
+
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::Splom(dm::datasets::iris()).set_title("Iris Pairs").group_by("Species").show();
+        """
+        return _datamunge.Splom_show(self, *args)
+    __swig_destroy__ = _datamunge.delete_Splom
+
+# Register Splom in _datamunge:
+_datamunge.Splom_swigregister(Splom)
 class LM(object):
     r"""SWIG-friendly facade for datamunge::stats::LM — R-`lm()`-style linear models fit from a DataFrame."""
 
@@ -2569,6 +6357,10 @@ class LDA(object):
     def print_summary(self):
         return _datamunge.LDA_print_summary(self)
 
+    def to_md(self, digits=4):
+        r"""The fit as Markdown tables (priors, group means, coefficients, proportion of trace)."""
+        return _datamunge.LDA_to_md(self, digits)
+
     def predict(self, newdata):
         return _datamunge.LDA_predict(self, newdata)
 
@@ -2576,11 +6368,16 @@ class LDA(object):
         r""""class" column, LD1/LD2/... discriminant scores, and posterior_<class> probability columns."""
         return _datamunge.LDA_predict_frame(self, newdata)
 
-    def plot_discriminants(self):
-        return _datamunge.LDA_plot_discriminants(self)
+    def plot_discriminants(self, decision_regions=True):
+        r"""LD1/LD2 scatter; with ``decision_regions``, class regions shaded and boundaries drawn."""
+        return _datamunge.LDA_plot_discriminants(self, decision_regions)
 
     def save_discriminant_plot(self, path):
         return _datamunge.LDA_save_discriminant_plot(self, path)
+
+    def plot_decision_regions(self):
+        r"""Decision regions in predictor space, for a model with exactly two predictors."""
+        return _datamunge.LDA_plot_decision_regions(self)
     __swig_destroy__ = _datamunge.delete_LDA
 
 # Register LDA in _datamunge:
@@ -5604,6 +9401,10 @@ def unif(lower, upper, n):
     r"""n draws from Uniform[lower, upper)."""
     return _datamunge.unif(lower, upper, n)
 
+def runif(lower, upper, n):
+    r"""Alias for unif(lower, upper, n), sharing its generator and validation."""
+    return _datamunge.runif(lower, upper, n)
+
 def rnorm(mean, sd, n):
     r"""n draws from Normal(mean, sd)."""
     return _datamunge.rnorm(mean, sd, n)
@@ -5754,6 +9555,13 @@ PSR = PSplineRegression
 RGBA = RGB
 
 class ARIMAOptions(object):
+    r"""
+    Model orders and optimizer settings for an ARIMA fit.
+
+    The regular orders are (p, d, q) and the seasonal orders are (P, D, Q) with period s.
+    Leave every seasonal field at zero for a plain ARIMA(p, d, q) model.
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     p = property(_datamunge.ARIMAOptions_p_get, _datamunge.ARIMAOptions_p_set)
@@ -5770,7 +9578,7 @@ class ARIMAOptions(object):
     """)
     de_population_size = property(_datamunge.ARIMAOptions_de_population_size_get, _datamunge.ARIMAOptions_de_population_size_set)
     de_max_generations = property(_datamunge.ARIMAOptions_de_max_generations_get, _datamunge.ARIMAOptions_de_max_generations_set)
-    coefficient_bound = property(_datamunge.ARIMAOptions_coefficient_bound_get, _datamunge.ARIMAOptions_coefficient_bound_set, doc=r"""Box constraint applied to every AR/MA coefficient during optimization.""")
+    coefficient_bound = property(_datamunge.ARIMAOptions_coefficient_bound_get, _datamunge.ARIMAOptions_coefficient_bound_set)
     seed = property(_datamunge.ARIMAOptions_seed_get, _datamunge.ARIMAOptions_seed_set)
 
     def __init__(self):
@@ -5803,42 +9611,111 @@ class ARIMA(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Fit the model to a series.
+        :type y: std::vector< double,std::allocator< double > >
+        :param y: The observed series, in time order.
+        :type options: :py:class:`ARIMAOptions`, optional
+        :param options: Model orders and optimizer settings.
+        :raises: std::invalid_argument If a seasonal order is set while seasonal_period is zero,
+                    or if the series is too short for the requested differencing or AR order.
+        """
         _datamunge.ARIMA_swiginit(self, _datamunge.new_ARIMA(*args))
 
     def options(self):
+        r"""
+        The options the model was fit with.
+        :rtype: :py:class:`ARIMAOptions`
+        :return: The stored ARIMAOptions.
+        """
         return _datamunge.ARIMA_options(self)
 
     def ar_coefficients(self):
+        r"""
+        Fitted non-seasonal AR coefficients :math:`\phi_1,\dots,\phi_p`.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: A vector of length p; the AR polynomial is -_i_i B^i:math:`.`
+        """
         return _datamunge.ARIMA_ar_coefficients(self)
 
     def ma_coefficients(self):
+        r"""
+        Fitted non-seasonal MA coefficients :math:`\theta_1,\dots,\theta_q`.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: A vector of length q; the MA polynomial is +_j_j B^j:math:`.`
+        """
         return _datamunge.ARIMA_ma_coefficients(self)
 
     def seasonal_ar_coefficients(self):
+        r"""
+        Fitted seasonal AR coefficients :math:`\Phi_1,\dots,\Phi_P`.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: A vector of length P; the polynomial is -_i_i B^{is}:math:`.`
+        """
         return _datamunge.ARIMA_seasonal_ar_coefficients(self)
 
     def seasonal_ma_coefficients(self):
+        r"""
+        Fitted seasonal MA coefficients :math:`\Theta_1,\dots,\Theta_Q`.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: A vector of length Q; the polynomial is +_j_j B^{js}:math:`.`
+        """
         return _datamunge.ARIMA_seasonal_ma_coefficients(self)
 
     def mean(self):
+        r"""
+        Fitted mean of the differenced series.
+        :rtype: float
+        :return: The mean, or 0 when no mean term was fit (include_mean is false, or d or D is nonzero).
+        """
         return _datamunge.ARIMA_mean(self)
 
     def observations(self):
+        r"""
+        Length of the input series.
+        :rtype: std::size_t
+        :return: The number of observations passed to the constructor.
+        """
         return _datamunge.ARIMA_observations(self)
 
     def n_used(self):
+        r"""
+        Number of residuals that enter the sum of squares.
+        :rtype: std::size_t
+        :return: The differenced series length minus +sP:math:`(the conditioned-on presample).`
+        """
         return _datamunge.ARIMA_n_used(self)
 
     def sigma2(self):
+        r"""
+        Innovation variance estimate.
+        :rtype: float
+        :return: The CSS residual sum of squares divided by n_used().
+        """
         return _datamunge.ARIMA_sigma2(self)
 
     def log_likelihood(self):
+        r"""
+        Gaussian log-likelihood at the CSS estimate, over n_used() residuals.
+        :rtype: float
+        :return: :math:`-\tfrac{n}{2}(\log 2\pi + \log\sigma^2 + 1)` with :math:`= n_used().`
+        """
         return _datamunge.ARIMA_log_likelihood(self)
 
     def aic(self):
+        r"""
+        Akaike information criterion.
+        :rtype: float
+        :return: :math:`-2\ell + 2k`, where :math:`counts the coefficients, the mean (if fit) and`^2:math:`.`
+        """
         return _datamunge.ARIMA_aic(self)
 
     def bic(self):
+        r"""
+        Bayesian information criterion.
+        :rtype: float
+        :return: :math:`-2\ell + k\log n`, with :math:`as in aic() and \f$n` = n_used().
+        """
         return _datamunge.ARIMA_bic(self)
 
     def fitted_values(self):
@@ -5855,14 +9732,47 @@ class ARIMA(object):
         return _datamunge.ARIMA_residuals(self)
 
     def forecast(self, horizon):
-        r"""Point forecasts for the next ``horizon`` periods, on the original scale."""
+        r"""
+        Point forecasts for the next ``horizon`` periods, on the original scale.
+        :type horizon: std::size_t
+        :param horizon: Number of steps ahead to forecast.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: A vector of length ``horizon`` (empty when ``horizon`` is 0).
+        """
         return _datamunge.ARIMA_forecast(self, horizon)
+
+    def expanded_ar_coefficients(self):
+        r"""
+        AR coefficients of the stationary (differenced) model after multiplying the regular
+               and seasonal polynomials, _t=_i a_i w_{t-i}+_t+_j b_j_{t-j}:math:`. @return The \f$a_i`, =1,,p+sP:math:`(zeros where no lag enters).`
+        """
+        return _datamunge.ARIMA_expanded_ar_coefficients(self)
+
+    def expanded_ma_coefficients(self):
+        r"""MA coefficients _j:math:`of the stationary model, after multiplying the regular and        seasonal MA polynomials; for the airline model`(,0,,0,,):math:`. @return The \f$b_j`, =1,,q+sQ:math:`.`"""
+        return _datamunge.ARIMA_expanded_ma_coefficients(self)
+
+    def psi_weights(self, count):
+        r"""
+        The first ``count`` :math:`\psi`-weights of the full model, differencing included:
+               _t=_{j_j_{t-j}:math:`formally, with`_0=1:math:`. The h-step forecast error is`_{j<h}\psi_j\varepsilon_{t+h-j}\f$, so its variance is
+        :math:`\sigma^2\sum_{j<h}\psi_j^2`; forecast_with_intervals() uses exactly these weights.
+        :type count: std::size_t
+        :param count: Number of weights.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: :math:`\psi_0,\dots,\psi_{count-1}`.
+        """
+        return _datamunge.ARIMA_psi_weights(self, count)
 
     def forecast_with_intervals(self, horizon):
         r"""
         Point forecasts and their standard errors (from the psi-weight / MA(infinity)
                expansion of the full, non-stationary AR/MA representation of y), on the
                original scale.
+        :type horizon: std::size_t
+        :param horizon: Number of steps ahead to forecast.
+        :rtype: std::pair< std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > > >
+        :return: A pair (point forecasts, standard errors), each of length ``horizon``.
         """
         return _datamunge.ARIMA_forecast_with_intervals(self, horizon)
     __swig_destroy__ = _datamunge.delete_ARIMA
@@ -5967,15 +9877,28 @@ class ExponentialSmoothing(object):
 # Register ExponentialSmoothing in _datamunge:
 _datamunge.ExponentialSmoothing_swigregister(ExponentialSmoothing)
 Alternative_TwoSided = _datamunge.Alternative_TwoSided
+r"""Both directions, using each test's stated two-sided ordering."""
 Alternative_Less = _datamunge.Alternative_Less
+r"""Lower signed-effect tail (KS: empirical CDF below reference)."""
 Alternative_Greater = _datamunge.Alternative_Greater
+r"""Upper signed-effect tail (KS: empirical CDF above reference)."""
 class HypothesisTestResult(object):
     r"""
-    A generic hypothesis-test result, reused across every test in this module the way
-           R's `htest` S3 class is reused across t.test/wilcox.test/chisq.test/ks.test/etc.
-           Not every field is meaningful for every test -- e.g. chi-squared and KS tests
-           don't report a confidence interval, so conf_int_lower/upper are left at 0; see
-           each test function's doc comment for which fields it actually fills in.
+    Owned hypothesis-test result, analogous to R's htest list.
+    Each test documents which fields it populates and what its interval estimates.
+    Unused numeric fields retain zero; this default is storage, not a claim of zero effect.
+    Read bounds only when has_conf_int is true; one-sided intervals may be unbounded.
+    p_value is a null-model tail probability, not a posterior probability of the null.
+    Objects own their method string and contain no borrowed references or shared state.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+        std::print("{}\n",t.has_conf_int); // true
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+    See also: Alternative, hypothesis_test_table()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -5990,7 +9913,7 @@ class HypothesisTestResult(object):
     conf_int_upper = property(_datamunge.HypothesisTestResult_conf_int_upper_get, _datamunge.HypothesisTestResult_conf_int_upper_set)
     has_conf_int = property(_datamunge.HypothesisTestResult_has_conf_int_get, _datamunge.HypothesisTestResult_has_conf_int_set)
     alternative = property(_datamunge.HypothesisTestResult_alternative_get, _datamunge.HypothesisTestResult_alternative_set)
-    method = property(_datamunge.HypothesisTestResult_method_get, _datamunge.HypothesisTestResult_method_set)
+    method = property(_datamunge.HypothesisTestResult_method_get, _datamunge.HypothesisTestResult_method_set, doc=r"""Owned human-readable method, including relevant approximation labels.""")
 
     def __init__(self):
         _datamunge.HypothesisTestResult_swiginit(self, _datamunge.new_HypothesisTestResult())
@@ -6000,183 +9923,695 @@ class HypothesisTestResult(object):
 _datamunge.HypothesisTestResult_swigregister(HypothesisTestResult)
 
 def t_test_one_sample(*args):
-    r"""One-sample t-test of whether the mean of ``x`` differs from ``mu``."""
+    r"""
+    One-sample Student t-test of a population mean, like R t.test().
+
+    Independent normal observations give t=(mean-mu)/SE with n-1 df. The CI estimates the
+    population mean, not mean-mu. Inputs are copied only for paired differences; all routines
+    leave inputs unchanged and use no shared mutable state. O(n) work; no null/nonfinite omission.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: At least two finite observations with positive representable sample variance.
+    :type mu: float, optional
+    :param mu: Finite null mean, default zero, in observation units.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater, relative to mu.
+    :type conf_level: float, optional
+    :param conf_level: Finite confidence level strictly in (0,1), default .95.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=t, parameter1=df, estimate1=sample mean, p_value and mean confidence bounds;
+        remaining scalars retain defaults. One-sided intervals have one infinite endpoint.
+    :raises: std::invalid_argument Too few/nonfinite values, invalid mu/alternative/confidence or
+        zero/nonfinite standard error.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+        std::print("{:.0f}\n",t.parameter1); // 3
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+    See also: HypothesisTestResult
+    """
     return _datamunge.t_test_one_sample(*args)
 
 def t_test_two_sample(*args):
     r"""
-    Two-sample t-test of whether ``x`` and ``y`` have the same mean. Uses Welch's
-           unequal-variance approximation (Satterthwaite degrees of freedom) by default,
-           matching R's t.test() default; set ``equal_variance`` to use the classic pooled-
-           variance Student's t-test instead.
+    Independent two-sample Welch or pooled Student mean test, like R t.test().
+
+    Welch uses unequal sample variances and Satterthwaite approximate df; normality alone does not
+    make its reference exact. Pooled Student requires equal population variances and independent
+    normal observations for its exact reference. CI estimates mean(x)-mean(y). O(n_x+n_y) work,
+    inputs unchanged, no shared mutable state or omission.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: At least two finite observations in the first group.
+    :type y: std::vector< double,std::allocator< double > >
+    :param y: At least two finite independent observations in the second group.
+    :type equal_variance: boolean, optional
+    :param equal_variance: False (default) uses Welch; true uses pooled variance.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for mean(x)-mean(y).
+    :type conf_level: float, optional
+    :param conf_level: Finite confidence level in (0,1), default .95.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=t, parameter1=df, estimate1/2=group means, p_value and confidence bounds for
+        their difference. One-sided bounds can be infinite.
+    :raises: std::invalid_argument Invalid sample sizes/values, alternative/confidence,
+        unrepresentable mean difference or zero/nonfinite combined standard error.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::stats::t_test_two_sample({1,2,3},{4,5,6});
+        std::print("{:.0f}\n",t.estimate1); // 2
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.t_test_two_sample(*args)
 
 def t_test_paired(*args):
     r"""
-    Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].
-           Requires x and y to have the same length.
+    Paired Student t-test on aligned differences, like R t.test(paired=TRUE).
+
+    Runs the one-sample test on x[i]-y[i]. Differences, rather than the two marginal samples, need
+    independent normal sampling for the exact t reference. Row order defines pairing; no values
+    are omitted. O(n) work/storage; inputs unchanged, no shared mutable state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: At least two finite first measurements.
+    :type y: std::vector< double,std::allocator< double > >
+    :param y: Equal-length finite second measurements paired by index.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for the population mean difference.
+    :type conf_level: float, optional
+    :param conf_level: Finite confidence level in (0,1), default .95.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: One-sample difference result with method Paired t-test; estimate1 is mean difference,
+        CI targets the same difference.
+    :raises: std::invalid_argument Length mismatch, nonfinite data/differences, invalid controls or
+        zero/nonfinite difference standard error.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::stats::t_test_paired({2,4,7},{1,2,4});
+        std::print("{:.0f}\n",t.parameter1); // 2
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.t_test_paired(*args)
 
 def wilcoxon_signed_rank_test(*args):
     r"""
-    Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired
-           t-test, testing whether the distribution of ``x`` - ``mu`` is symmetric about zero.
-           For a paired test, pass the elementwise differences as ``x``. Differences exactly
-           equal to ``mu`` are dropped (matching R's wilcox.test() default). Uses the normal
-           approximation with a continuity correction and a tie correction to the variance
-           (matching R's behavior once ties are present, which is the common case for real
-           data); no confidence interval is reported (has_conf_int stays false), matching the
-           default `conf.int = FALSE` behavior in R.
+    Normal-approximation Wilcoxon signed-rank test with tie/continuity corrections.
+
+    Tests symmetry of x-mu about zero under independent observations, not an arbitrary-population
+    mean or median null. For paired data pass aligned differences. Exact-zero differences are
+    removed; absolute differences receive average ranks. Always uses a normal approximation, even
+    for small tie-free samples; no exact option or CI. O(n log n) work/O(n) storage; input
+    unchanged, no shared state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: Finite values; at least one nonzero difference from mu must remain.
+    :type mu: float, optional
+    :param mu: Finite symmetry centre, default zero.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for the signed location shift.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=positive rank sum V, estimate1=mu (not an estimated pseudomedian),
+        approximate p_value; no CI.
+    :raises: std::invalid_argument Nonfinite input/mu, invalid alternative, no nonzero differences
+        or zero rank variance.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto w=dm::stats::wilcoxon_signed_rank_test({1,2,3,4});
+        std::print("{:.0f}\n",w.statistic); // 10
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.wilcoxon_signed_rank_test(*args)
 
 def wilcoxon_rank_sum_test(*args):
     r"""
-    Wilcoxon rank-sum test (equivalently, the Mann-Whitney U test): a non-parametric
-           analog of the two-sample t-test, testing whether ``x`` and ``y`` are drawn from
-           distributions with the same location. Uses the normal approximation with a
-           continuity correction and a tie correction to the variance.
+    Tie/continuity-corrected Mann-Whitney U test using a normal approximation.
+
+    Pools ranks, giving average ranks to ties, and reports U for the first sample. Its identical-
+    distribution null requires independent exchangeable samples. A common-shape shift model
+    supports a location interpretation; equal medians alone is insufficient. U/(n_x*n_y) estimates
+    P(X>Y)+P(X=Y)/2, not a mean difference. Approximation is used at every size. O(N log N)
+    work/O(N) storage, inputs unchanged, no shared state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: Nonempty finite first sample.
+    :type y: std::vector< double,std::allocator< double > >
+    :param y: Nonempty finite independent second sample.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for first-versus-second stochastic
+        location.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=U=rank_sum(x)-n_x(n_x+1)/2 and approximate p_value; no CI or location
+        estimate.
+    :raises: std::invalid_argument Empty/nonfinite samples, invalid alternative or zero rank
+        variance (all pooled observations tied).
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto w=dm::stats::wilcoxon_rank_sum_test({1,2,3},{4,5,6});
+        std::print("{:.0f}\n",w.statistic); // 0
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.wilcoxon_rank_sum_test(*args)
 
 def ks_test_one_sample_normal(*args):
     r"""
-    One-sample Kolmogorov-Smirnov test of whether ``x`` is drawn from a
-           Normal(``mean``, ``sd)`` distribution, comparing the empirical CDF of ``x`` against
-           that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided
-           p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov
-           one-sided asymptotic formula for "less"/"greater"; this will differ slightly from
-           software that computes the exact finite-sample null distribution for small,
-           tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more
-           than a few dozen.
+    One-sample KS test against a fully specified continuous normal CDF.
+
+    Two-sided p-values use the Stephens corrected asymptotic Kolmogorov reference; one-sided
+    values use exp(-2*n*D^2). Mean and sd must be fixed independently of this sample: fitting them
+    here invalidates the stated calibration. This is not a Lilliefors test. Ties are accepted, but
+    continuous-null calibration is affected by rounding. O(n log n) work/O(n) storage, input
+    unchanged, no omission/shared state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: At least two finite observations.
+    :type mean: float, optional
+    :param mean: Finite prespecified normal mean, default zero.
+    :type sd: float, optional
+    :param sd: Positive finite prespecified normal SD, default one.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default); Greater tests empirical CDF above reference, Less below
+        (opposite to a location alternative).
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=D or D+/D-, parameter1=n and approximate p_value; no CI.
+    :raises: std::invalid_argument Too few/nonfinite values, invalid mean/sd or alternative.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto k=dm::stats::ks_test_one_sample_normal({-1,0,1});
+        std::print("{:.0f}\n",k.parameter1); // 3
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.ks_test_one_sample_normal(*args)
 
+def ks_test_one_sample_uniform(*args):
+    r"""
+    One-sample KS test against a specified continuous uniform CDF.
+
+    Same asymptotic p-value and tie caveats as ks_test_one_sample_normal(); limits must be
+    prespecified rather than estimated from x. O(n log n) work/O(n) storage; no mutation, omission
+    or shared state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: At least two finite observations.
+    :type lower: float, optional
+    :param lower: Finite prespecified lower bound, default zero.
+    :type upper: float, optional
+    :param upper: Finite upper bound greater than lower, default one.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Greater for empirical CDF above reference or Less below.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=D or D+/D-, parameter1=n, approximate p_value; no CI.
+    :raises: std::invalid_argument Invalid sample, limits or alternative.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto k=dm::stats::ks_test_one_sample_uniform({.2,.4,.6,.8});
+        std::print("{:.1f}\n",k.statistic); // 0.2
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html
+    See also: HypothesisTestResult
+    """
+    return _datamunge.ks_test_one_sample_uniform(*args)
+
 def ks_test_two_sample(*args):
     r"""
-    Two-sample Kolmogorov-Smirnov test of whether ``x`` and ``y`` are drawn from the
-           same continuous distribution, comparing their empirical CDFs. Same asymptotic
-           p-value approach as ks_test_one_sample_normal.
+    Two-sample KS comparison of empirical CDFs with asymptotic p-values.
+
+    Uses effective n=n_x*n_y/(n_x+n_y) in the asymptotic reference. This is not an exact finite-
+    sample calculation; ties/rounding and very small groups affect calibration. O(N log N)
+    work/O(N) storage; inputs unchanged, no omission/shared state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: Nonempty finite first sample.
+    :type y: std::vector< double,std::allocator< double > >
+    :param y: Nonempty finite independent second sample.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default); Greater tests F_x above F_y, Less below, so Greater
+        corresponds to stochastically smaller x.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=D or D+/D-, parameter1=n_x, parameter2=n_y and approximate p_value; no CI.
+    :raises: std::invalid_argument Empty/nonfinite samples or invalid alternative.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto k=dm::stats::ks_test_two_sample({1,2,3},{1,2,3});
+        std::print("{:.0f}\n",k.statistic); // 0
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.ks_test_two_sample(*args)
 
 def chi_squared_goodness_of_fit(*args):
     r"""
-    Chi-squared goodness-of-fit test: whether the counts in ``observed`` match the
-           given ``expected_probabilities`` (which must sum to 1). If ``expected_probabilities``
-           is empty, a uniform distribution across categories is assumed, matching R's
-           chisq.test() default.
+    Pearson chi-square test of specified category probabilities, like R chisq.test().
+
+    Uses sum((observed-expected)^2/expected) and chi-square(k-1); the probabilities are fixed, not
+    estimated here. Expected counts must be sufficiently large for the approximation. Nonnegative
+    fractional counts are accepted algebraically but do not automatically define a sampling model.
+    O(k) work/storage, inputs unchanged, no shared state or omission.
+    :type observed: std::vector< double,std::allocator< double > >
+    :param observed: At least two finite nonnegative counts with positive finite total.
+    :type expected_probabilities: std::vector< double,std::allocator< double > >, optional
+    :param expected_probabilities: Empty (default) means uniform; otherwise positive finite
+        probabilities matching counts and summing to one within 1e-10.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=X-squared, parameter1=k-1 and approximate upper-tail p_value; no CI.
+    :raises: std::invalid_argument Invalid counts/probabilities, sizes or zero/nonfinite total.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto q=dm::stats::chi_squared_goodness_of_fit({10,10});
+        std::print("{:.0f}\n",q.statistic); // 0
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.chi_squared_goodness_of_fit(*args)
 
 def chi_squared_test_independence(table, nrows, ncols, correct=True):
     r"""
-    Chi-squared test of independence on a two-way contingency table given as a
-           row-major flattened vector of counts (length ``nrows`` * ``ncols)``. Applies Yates'
-           continuity correction when the table is 2x2 and ``correct`` is true (the default,
-           matching R's chisq.test()).
+    Pearson chi-square test for a contingency table, like R chisq.test().
+
+    Expected counts are row_sum*column_sum/total; df=(rows-1)(columns-1). The asymptotic reference
+    assumes independent multinomial/product-multinomial observations and adequately populated
+    expected cells. O(rows*columns) work and O(rows+columns) space; inputs unchanged, no shared
+    state.
+    :type table: std::vector< double,std::allocator< double > >
+    :param table: Finite nonnegative row-major counts with strictly positive margins; integer counts
+        are the usual sampling model.
+    :type nrows: std::size_t
+    :param nrows: At least two rows.
+    :type ncols: std::size_t
+    :param ncols: At least two columns; table length must equal nrows*ncols.
+    :type correct: boolean, optional
+    :param correct: True (default) subtracts min(.5,abs(O-E)) from each absolute residual only for
+        2x2 tables.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=X-squared, parameter1=df, approximate upper-tail p_value; no CI.
+    :raises: std::invalid_argument Invalid shape, counts/margins or nonfinite total.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto q=dm::stats::chi_squared_test_independence({10,10,10,10},2,2);
+        std::print("{:.0f}\n",q.statistic); // 0
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.chi_squared_test_independence(table, nrows, ncols, correct)
 
 def one_way_anova(values, group_sizes):
     r"""
-    One-way ANOVA F-test across k >= 2 independent groups, testing whether all groups
-           share the same mean. ``values`` is every group's observations concatenated in
-           order, and ``group_sizes`` gives each group's length (must sum to values.size()).
-           statistic = F, parameter1 = between-groups df, parameter2 = within-groups df.
+    Classical equal-variance one-way ANOVA, like R oneway.test(var.equal=TRUE).
+
+    Tests equality of group means with between/within mean-square ratio. Independent normal
+    observations and a common within-group population variance give the exact F reference. This is
+    not Welch ANOVA. O(N) work, O(1) auxiliary storage; input unchanged, no omission or shared
+    mutable state.
+    :type values: std::vector< double,std::allocator< double > >
+    :param values: Finite observations concatenated group by group.
+    :type group_sizes: std::vector< std::size_t,std::allocator< std::size_t > >
+    :param group_sizes: At least two positive sizes summing exactly to values.size(); N must exceed
+        the group count.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=F, parameter1=k-1, parameter2=N-k and upper-tail p_value; no CI or group
+        estimates.
+    :raises: std::invalid_argument Invalid grouping/nonfinite input, no residual df, zero within-
+        group variation or arithmetic overflow.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto a=dm::stats::one_way_anova({1,2,3,4,5,6,7,8,9},{3,3,3});
+        std::print("{:.0f}\n",a.statistic); // 27
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/oneway.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.one_way_anova(values, group_sizes)
 
 def kruskal_wallis_test(values, group_sizes):
     r"""
-    Kruskal-Wallis rank-sum test: a non-parametric analog of one-way ANOVA across
-           k >= 2 independent groups, testing whether they share the same distribution.
-           Same (values, group_sizes) layout as one_way_anova(). Uses the chi-squared
-           approximation to the H statistic with a tie correction; statistic = H,
-           parameter1 = df = k - 1.
+    Tie-corrected Kruskal-Wallis rank test, like R kruskal.test().
+
+    Ranks the pooled observations with average ties and uses the chi-square(k-1) approximation.
+    The usual exchangeability null is identical independent group distributions; a common-shape
+    shift model permits a location interpretation. It is not an omnibus test for every possible
+    distributional difference. Small groups can invalidate the approximation. O(N log N) work/O(N)
+    space, no mutation, omission or shared state.
+    :type values: std::vector< double,std::allocator< double > >
+    :param values: Finite observations concatenated by group.
+    :type group_sizes: std::vector< std::size_t,std::allocator< std::size_t > >
+    :param group_sizes: At least two positive group sizes summing to values.size().
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=H, parameter1=k-1 and upper-tail approximate p_value; no CI.
+    :raises: std::invalid_argument Invalid groups, nonfinite input or all observations tied.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto h=dm::stats::kruskal_wallis_test({1,2,3,4,5,6,7,8,9},{3,3,3});
+        std::print("{:.1f}\n",h.statistic); // 7.2
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kruskal.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.kruskal_wallis_test(values, group_sizes)
 
 def pearson_correlation_test(*args):
     r"""
-    Pearson product-moment correlation test between ``x`` and ``y``. estimate1 is the
-           correlation coefficient r; the confidence interval is computed via the Fisher
-           z-transform.
+    Pearson product-moment correlation test with Fisher-z confidence bounds.
+
+    Uses t=r*sqrt((n-2)/(1-r^2)). The exact zero-correlation null reference requires independent
+    bivariate-normal pairs; Fisher-z intervals are approximate. At n=3 no confidence interval is
+    reported; n>=4 gets one. Perfect correlations use infinite-statistic limits. O(n) work, no
+    input mutation/omission or shared state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: At least three finite nonconstant first measurements.
+    :type y: std::vector< double,std::allocator< double > >
+    :param y: Same-length finite nonconstant second measurements, paired by index.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for population correlation.
+    :type conf_level: float, optional
+    :param conf_level: Finite confidence level in (0,1), default .95.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=t, parameter1=n-2, estimate1=r and p_value; has_conf_int only for n>=4.
+    :raises: std::invalid_argument Invalid lengths, nonfinite/constant samples or invalid controls.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::stats::pearson_correlation_test({1,2,3,4},{2,4,6,8});
+        std::print("{:.1f}\n",r.estimate1); // 1.0
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.pearson_correlation_test(*args)
 
 def spearman_correlation_test(*args):
     r"""
-    Spearman's rank correlation test between ``x`` and ``y``: the Pearson correlation
-           of their ranks, with a p-value from the same t-approximation used for Pearson's
-           test (matching R's asymptotic method, used whenever ties are present). estimate1
-           is rho; no confidence interval is reported (has_conf_int stays false), matching R.
+    Spearman correlation with average ranks and a t-approximation p-value.
+
+    Computes Pearson correlation on ranks. The reference is always t(n-2), not a small-sample
+    exact permutation distribution; ties receive average ranks. Tests zero rank correlation under
+    the approximation, not arbitrary independence. O(n log n) work/O(n) storage, no
+    mutation/omission or shared state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: At least three finite nonconstant first measurements.
+    :type y: std::vector< double,std::allocator< double > >
+    :param y: Same-length finite nonconstant paired second measurements.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for population rank correlation.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=rank-correlation t, parameter1=n-2, estimate1=rho, approximate p_value; no
+        CI.
+    :raises: std::invalid_argument Invalid lengths, nonfinite/constant samples or alternative.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::stats::spearman_correlation_test({1,2,3,4},{10,20,30,40});
+        std::print("{:.1f}\n",r.estimate1); // 1.0
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.spearman_correlation_test(*args)
+class KendallTau(object):
+    r"""
+    Owned pair counts and coefficients from kendall_tau().
+    Title: Example
+    See kendall_tau().
+    See also: kendall_tau()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    concordant = property(_datamunge.KendallTau_concordant_get, _datamunge.KendallTau_concordant_set, doc=r"""Pairs ordered the same way by x and y.""")
+    discordant = property(_datamunge.KendallTau_discordant_get, _datamunge.KendallTau_discordant_set, doc=r"""Pairs ordered oppositely by x and y.""")
+    ties_x = property(_datamunge.KendallTau_ties_x_get, _datamunge.KendallTau_ties_x_set, doc=r"""Pairs tied in x only.""")
+    ties_y = property(_datamunge.KendallTau_ties_y_get, _datamunge.KendallTau_ties_y_set, doc=r"""Pairs tied in y only.""")
+    ties_xy = property(_datamunge.KendallTau_ties_xy_get, _datamunge.KendallTau_ties_xy_set, doc=r"""Pairs tied in both.""")
+    tau_a = property(_datamunge.KendallTau_tau_a_get, _datamunge.KendallTau_tau_a_set, doc=r""":math:`(C-D)/\binom n2`.""")
+    tau_b = property(_datamunge.KendallTau_tau_b_get, _datamunge.KendallTau_tau_b_set, doc=r""":math:`(C-D)/\sqrt{(n_0-n_x)(n_0-n_y)}`, with _x,n_y:math:`the pairs tied in x, y.`""")
+
+    def __init__(self):
+        _datamunge.KendallTau_swiginit(self, _datamunge.new_KendallTau())
+    __swig_destroy__ = _datamunge.delete_KendallTau
+
+# Register KendallTau in _datamunge:
+_datamunge.KendallTau_swigregister(KendallTau)
+
+def kendall_tau(x, y):
+    r"""
+    Kendall rank coefficients by Knight inversion counting.
+
+    Sorts paired values and counts concordant, discordant and tied pairs in O(n log n) work/O(n)
+    storage. Inputs are unchanged and calls share no mutable state. This is a coefficient
+    calculation, not a hypothesis test; tau_b is zero when its denominator vanishes.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: At least two finite first coordinates.
+    :type y: std::vector< double,std::allocator< double > >
+    :param y: Equal-length finite second coordinates, paired by index.
+    :rtype: :py:class:`KendallTau`
+    :return: Owned pair counts, tau_a and tie-adjusted tau_b.
+    :raises: std::invalid_argument Lengths differ, fewer than two values, or nonfinite
+        observations.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto k=dm::stats::kendall_tau({1,2,3,4},{1,2,3,4});
+        std::print("{}\n",k.concordant); // 6
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.html
+    See also: HypothesisTestResult
+    """
+    return _datamunge.kendall_tau(x, y)
 
 def f_test_variance(*args):
     r"""
-    F-test comparing the variances of ``x`` and ``y`` (H0: equal variances). estimate1
-           is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the
-           two groups' degrees of freedom.
+    F-test and interval for a ratio of variances, like R var.test().
+
+    Uses sample variance(x)/sample variance(y). Independent normal populations give the
+    F(df_x,df_y) reference; it is sensitive to nonnormality and is not a gatekeeper for choosing
+    Welch versus pooled t tests. O(n_x+n_y) work/O(1) auxiliary storage; inputs unchanged, no
+    omission/shared state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: At least two finite first-sample values with positive finite sample variance.
+    :type y: std::vector< double,std::allocator< double > >
+    :param y: At least two finite independent second-sample values with positive finite sample
+        variance.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for population variance ratio relative to
+        one.
+    :type conf_level: float, optional
+    :param conf_level: Finite confidence level in (0,1), default .95.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=estimate1=variance ratio, parameter1/2=sample sizes minus one, p_value and
+        ratio confidence bounds; one-sided interval ends at zero or infinity.
+    :raises: std::invalid_argument Too few/nonfinite observations, nonpositive/nonfinite variances
+        or invalid controls.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto f=dm::stats::f_test_variance({1,2,3},{2,4,6});
+        std::print("{:.2f}\n",f.estimate1); // 0.25
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/var.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.f_test_variance(*args)
 
 def proportion_test_one_sample(*args):
     r"""
-    One-sample test of the proportion ``successes`` / ``n`` against a null value ``p``
-           (default 0.5), via the chi-squared/normal approximation with a continuity
-           correction (matching R's prop.test()). estimate1 is the sample proportion; the
-           confidence interval uses the Wilson score interval (without continuity
-           correction, a close approximation to R's corrected version).
+    One-proportion score test with an uncorrected Wilson confidence interval.
+
+    Tests a fixed Bernoulli success probability using the signed null-standard-error z statistic;
+    statistic stores z^2 but the chosen tail uses its sign. The optional continuity correction
+    affects the test only: its Wilson interval is uncorrected and need not invert that test.
+    Approximation requires sufficiently populated success/failure counts. O(1) work/storage, no
+    shared state.
+    :type successes: std::size_t
+    :param successes: Integer successes in [0,n].
+    :type n: std::size_t
+    :param n: Positive independent-trial count.
+    :type p: float, optional
+    :param p: Finite null probability strictly in (0,1), default .5.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for true probability relative to p.
+    :type correct: boolean, optional
+    :param correct: True (default) applies the capped half-count correction to z.
+    :type conf_level: float, optional
+    :param conf_level: Finite confidence level in (0,1), default .95.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=z^2, parameter1=1, estimate1=successes/n, p_value and uncorrected Wilson
+        confidence bounds.
+    :raises: std::invalid_argument Invalid counts, null probability, alternative or confidence
+        level.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto p=dm::stats::proportion_test_one_sample(45,100);
+        std::print("{:.2f}\n",p.estimate1); // 0.45
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.proportion_test_one_sample(*args)
 
 def proportion_test_two_sample(*args):
     r"""
-    Two-sample test of whether two groups have the same success proportion, via the
-           pooled chi-squared/normal approximation with a continuity correction (matching
-           R's prop.test()). estimate1/estimate2 are the two sample proportions; the
-           confidence interval is for their difference (estimate1 - estimate2).
+    Pooled score test for two proportions, with an unpooled difference interval.
+
+    Tests equality using the pooled null SE and optionally a capped continuity correction. The
+    difference CI uses an unpooled Wald SE and an uncapped half-count width correction when
+    requested; it is approximate and is not a Wilson/Newcombe interval. All-zero/all-one pooled
+    samples return z=0,p=1. O(1) work/storage, no shared state.
+    :type successes1: std::size_t
+    :param successes1: First success count in [0,n1].
+    :type n1: std::size_t
+    :param n1: Positive first independent-trial count.
+    :type successes2: std::size_t
+    :param successes2: Second success count in [0,n2].
+    :type n2: std::size_t
+    :param n2: Positive independent second-trial count.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for p1-p2.
+    :type correct: boolean, optional
+    :param correct: True (default) corrects the score test and adds a half-count CI width.
+    :type conf_level: float, optional
+    :param conf_level: Finite confidence level in (0,1), default .95.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=z^2, parameter1=1, estimates=sample proportions, p_value and confidence
+        bounds for p1-p2, clamped to [-1,1].
+    :raises: std::invalid_argument Invalid counts, alternative or confidence level.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto p=dm::stats::proportion_test_two_sample(2,10,3,10);
+        std::print("{:.1f}\n",p.estimate1); // 0.2
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.proportion_test_two_sample(*args)
 
 def binomial_test(*args):
     r"""
-    Exact binomial test of whether ``successes`` out of ``n`` trials is consistent with
-           success probability ``p`` (default 0.5), summing exact binomial probabilities
-           (matching R's binom.test()). estimate1 is the sample proportion; the confidence
-           interval is the exact Clopper-Pearson interval.
+    Exact binomial test with Clopper-Pearson confidence bounds, like R binom.test().
+
+    One-sided p-values are inclusive tails. Two-sided p-values sum PMFs no larger than the
+    observed PMF, using relative comparison tolerance 1e-7. The equal-tailed Clopper-Pearson
+    interval has at-least-nominal coverage but need not invert the probability-ordered two-sided
+    test. Null endpoints zero/one are supported. Two-sided enumeration costs O(n), intervals use
+    bounded beta-CDF bisection; O(1) auxiliary storage, no shared state.
+    :type successes: std::size_t
+    :param successes: Integer observed successes in [0,n].
+    :type n: std::size_t
+    :param n: Positive independent Bernoulli trial count.
+    :type p: float, optional
+    :param p: Finite null probability in [0,1], default .5.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for true success probability.
+    :type conf_level: float, optional
+    :param conf_level: Finite confidence level in (0,1), default .95.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=successes, parameter1=n, estimate1=successes/n, p_value and Clopper-Pearson
+        interval; one-sided intervals end at zero/one.
+    :raises: std::invalid_argument Invalid counts, probability, alternative or confidence level.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto b=dm::stats::binomial_test(9,10);
+        std::print("{:.6f}\n",b.p_value); // 0.021484
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/binom.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.binomial_test(*args)
 
 def fisher_exact_test_2x2(*args):
     r"""
-    Fisher's exact test on a 2x2 contingency table
+    Conditional Fisher exact test of a 2x2 table with fixed margins.
 
-               | col1 | col2
-           row1|  a   |  b
-           row2|  c   |  d
+    Conditions on row/column totals and tests odds ratio one. Two-sided p-values sum probabilities
+    no larger than the observed table (relative ordering tolerance 1e-7); they are not generally
+    twice the smaller tail. Direct tail summation avoids 1-CDF cancellation. Empty margins give
+    p=1. O(s) work/O(1) auxiliary storage for feasible support s; inputs unchanged, no shared
+    state.
+    :type a: std::size_t
+    :param a: Top-left nonnegative integer count.
+    :type b: std::size_t
+    :param b: Top-right count.
+    :type c: std::size_t
+    :param c: Bottom-left count.
+    :type d: std::size_t
+    :param d: Bottom-right count; total must fit size_t.
+    :type alternative: int, optional
+    :param alternative: TwoSided (default), Less or Greater for the odds ratio relative to one.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=a, p_value and estimate1=sample odds ratio a*d/(b*c), not R conditional MLE;
+        denominator zero gives infinity for positive numerator or NaN for 0/0. No confidence interval.
+    :raises: std::invalid_argument Count-total overflow or invalid alternative.
+    Title: Example
 
-           testing independence of the row and column classifications by summing exact
-           hypergeometric probabilities (matching R's fisher.test() p-values). estimate1 is
-           the sample odds ratio (a*d)/(b*c), not the conditional MLE R reports by default;
-           no confidence interval is computed (has_conf_int stays false). statistic holds the
-           observed count `a`.
+    .. code-block:: c++
+
+        const auto f=dm::stats::fisher_exact_test_2x2(0,3,3,0);
+        std::print("{:.1f}\n",f.p_value); // 0.1
+    Title: References
+    - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fisher.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.fisher_exact_test_2x2(*args)
 
 def shapiro_francia_test(x):
     r"""
-    Shapiro-Francia test for normality: the squared correlation between the sorted
-           sample and the expected normal order statistics (Blom's approximation), with
-           Royston's (1993) log-normal p-value approximation. A simpler, closely-related
-           cousin of the (more commonly cited but more involved) Shapiro-Wilk test, valid
-           for 5 <= n <= 5000; estimate1 is the W' statistic (near 1 for normal-looking
-           data, well below 1 for non-normal data). A small p-value is evidence against
-           normality.
+    Shapiro-Francia composite normality test, like R nortest::sf.test().
+
+    Squared correlation of sorted observations with Blom normal scores, using Royston (1993) log-
+    normal p-value approximation. Tests some normal distribution; a large p-value does not prove
+    normality. Rounding/ties affect calibration. O(n log n) work/O(n) storage; input unchanged, no
+    omission/shared state.
+    :type x: std::vector< double,std::allocator< double > >
+    :param x: Between 5 and 5000 finite, nonconstant observations.
+    :rtype: :py:class:`HypothesisTestResult`
+    :return: statistic=estimate1=W-prime and approximate p_value; no CI.
+    :raises: std::invalid_argument Invalid sample size, nonfinite input or constant sample.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto s=dm::stats::shapiro_francia_test({1,2,3,4,5});
+        std::print("{}\n",s.has_conf_int); // false
+    Title: References
+    - https://search.r-project.org/CRAN/refmans/nortest/html/sf.test.html
+    See also: HypothesisTestResult
     """
     return _datamunge.shapiro_francia_test(x)
 PAdjustMethod_Bonferroni = _datamunge.PAdjustMethod_Bonferroni
@@ -6511,12 +10946,25 @@ class ResidualFunction(object):
 # Register ResidualFunction in _datamunge:
 _datamunge.ResidualFunction_swigregister(ResidualFunction)
 class GradientDescentOptions(object):
+    r"""
+    Configuration for GradientDescent; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::GradientDescentOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: GradientDescent
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.GradientDescentOptions_step_size_get, _datamunge.GradientDescentOptions_step_size_set)
-    momentum = property(_datamunge.GradientDescentOptions_momentum_get, _datamunge.GradientDescentOptions_momentum_set, doc=r"""Classical momentum coefficient in [0, 1); 0 disables momentum (plain gradient descent).""")
+    momentum = property(_datamunge.GradientDescentOptions_momentum_get, _datamunge.GradientDescentOptions_momentum_set)
     max_iterations = property(_datamunge.GradientDescentOptions_max_iterations_get, _datamunge.GradientDescentOptions_max_iterations_set)
-    tolerance = property(_datamunge.GradientDescentOptions_tolerance_get, _datamunge.GradientDescentOptions_tolerance_set, doc=r"""Stops when the gradient norm or the objective's per-iteration change drops below this.""")
+    tolerance = property(_datamunge.GradientDescentOptions_tolerance_get, _datamunge.GradientDescentOptions_tolerance_set)
 
     def __init__(self):
         _datamunge.GradientDescentOptions_swiginit(self, _datamunge.new_GradientDescentOptions())
@@ -6525,25 +10973,92 @@ class GradientDescentOptions(object):
 # Register GradientDescentOptions in _datamunge:
 _datamunge.GradientDescentOptions_swigregister(GradientDescentOptions)
 class GradientDescent(object):
-    r"""Gradient descent (optionally with classical momentum) on a DifferentiableFunction."""
+    r"""
+    GradientDescent on the DifferentiableFunction callback interface.
+    Velocity is momentum*velocity-step_size*gradient. Updates before testing the gradient just used or absolute objective change. Equal objective values can stop an oscillation away from stationarity. O(p) reset velocity state; no line search.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::GradientDescent optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+    See also: GradientDescentOptions, trace_optimize()
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`GradientDescentOptions`, optional
+        :param options: Method-specific controls; defaults are listed by GradientDescentOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::GradientDescent optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.GradientDescent_swiginit(self, _datamunge.new_GradientDescent(*args))
 
     def optimize(self, function, coordinates):
         r"""
-        Minimizes ``function`` starting from ``coordinates``, updating it in place to the
-               best point found, and returns the objective value there.
+        Run GradientDescent from the supplied point using the configured finite budget.
+        Velocity is momentum*velocity-step_size*gradient. Updates before testing the gradient just used or absolute objective change. Equal objective values can stop an oscillation away from stationarity. O(p) reset velocity state; no line search.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::GradientDescentOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::GradientDescent(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), GradientDescentOptions
         """
         return _datamunge.GradientDescent_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`GradientDescentOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.GradientDescent_options(self)
     __swig_destroy__ = _datamunge.delete_GradientDescent
 
 # Register GradientDescent in _datamunge:
 _datamunge.GradientDescent_swigregister(GradientDescent)
 class AdamOptions(object):
+    r"""
+    Configuration for Adam; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::AdamOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: Adam
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.AdamOptions_step_size_get, _datamunge.AdamOptions_step_size_set)
@@ -6560,25 +11075,96 @@ class AdamOptions(object):
 # Register AdamOptions in _datamunge:
 _datamunge.AdamOptions_swigregister(AdamOptions)
 class Adam(object):
-    r"""Full-batch Adam (Kingma & Ba 2015) on a DifferentiableFunction."""
+    r"""
+    Adam on the DifferentiableFunction callback interface.
+    Bias-corrected full-batch first and second moments, denominator sqrt(vhat)+epsilon. Tests the pre-update gradient norm after applying its update. No line search or general nonconvex convergence guarantee; O(p) reset local state.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::Adam optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - D. P. Kingma and J. Ba (2015), Adam: A Method for Stochastic Optimization, https://arxiv.org/abs/1412.6980
+    See also: AdamOptions, trace_optimize()
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`AdamOptions`, optional
+        :param options: Method-specific controls; defaults are listed by AdamOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::Adam optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.Adam_swiginit(self, _datamunge.new_Adam(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run Adam from the supplied point using the configured finite budget.
+        Bias-corrected full-batch first and second moments, denominator sqrt(vhat)+epsilon. Tests the pre-update gradient norm after applying its update. No line search or general nonconvex convergence guarantee; O(p) reset local state.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::AdamOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::Adam(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), AdamOptions
+        """
         return _datamunge.Adam_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`AdamOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.Adam_options(self)
     __swig_destroy__ = _datamunge.delete_Adam
 
 # Register Adam in _datamunge:
 _datamunge.Adam_swigregister(Adam)
 class AdaGradOptions(object):
+    r"""
+    Configuration for AdaGrad; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::AdaGradOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: AdaGrad
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.AdaGradOptions_step_size_get, _datamunge.AdaGradOptions_step_size_set)
-    epsilon = property(_datamunge.AdaGradOptions_epsilon_get, _datamunge.AdaGradOptions_epsilon_set, doc=r"""Added inside the square root to keep early and zero-gradient updates finite.""")
+    epsilon = property(_datamunge.AdaGradOptions_epsilon_get, _datamunge.AdaGradOptions_epsilon_set)
     max_iterations = property(_datamunge.AdaGradOptions_max_iterations_get, _datamunge.AdaGradOptions_max_iterations_set)
     tolerance = property(_datamunge.AdaGradOptions_tolerance_get, _datamunge.AdaGradOptions_tolerance_set)
 
@@ -6590,24 +11176,92 @@ class AdaGradOptions(object):
 _datamunge.AdaGradOptions_swigregister(AdaGradOptions)
 class AdaGrad(object):
     r"""
-    Full-batch AdaGrad (Duchi, Hazan, Singer 2011) on a DifferentiableFunction.  AdaGrad
-           scales each coordinate's step by the inverse root of its accumulated squared gradient,
-           making it useful when gradient magnitudes differ substantially by coordinate.
+    AdaGrad on the DifferentiableFunction callback interface.
+    Accumulates squared full gradients; divides each update by sqrt(sum+epsilon). Tests the pre-update gradient norm after applying the update. Every optimize call resets the accumulator. O(p) local storage.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::AdaGrad optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - J. Duchi, E. Hazan and Y. Singer (2011), Adaptive Subgradient Methods for Online Learning and Stochastic Optimization, https://jmlr.org/papers/v12/duchi11a.html
+    See also: AdaGradOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`AdaGradOptions`, optional
+        :param options: Method-specific controls; defaults are listed by AdaGradOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::AdaGrad optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.AdaGrad_swiginit(self, _datamunge.new_AdaGrad(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run AdaGrad from the supplied point using the configured finite budget.
+        Accumulates squared full gradients; divides each update by sqrt(sum+epsilon). Tests the pre-update gradient norm after applying the update. Every optimize call resets the accumulator. O(p) local storage.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument AdaGrad: step_size must be positive; AdaGrad: epsilon must be positive; AdaGrad: tolerance must be non-negative.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::AdaGradOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::AdaGrad(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), AdaGradOptions
+        """
         return _datamunge.AdaGrad_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`AdaGradOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.AdaGrad_options(self)
     __swig_destroy__ = _datamunge.delete_AdaGrad
 
 # Register AdaGrad in _datamunge:
 _datamunge.AdaGrad_swigregister(AdaGrad)
 class AdaDeltaOptions(object):
+    r"""
+    Configuration for AdaDelta; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::AdaDeltaOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: AdaDelta
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     decay_rate = property(_datamunge.AdaDeltaOptions_decay_rate_get, _datamunge.AdaDeltaOptions_decay_rate_set)
@@ -6623,24 +11277,92 @@ class AdaDeltaOptions(object):
 _datamunge.AdaDeltaOptions_swigregister(AdaDeltaOptions)
 class AdaDelta(object):
     r"""
-    Full-batch AdaDelta (Zeiler 2012) on a DifferentiableFunction.  AdaDelta rescales
-           gradients by the ratio of running RMS parameter updates to running RMS gradients,
-           avoiding a separate global learning-rate parameter.
+    AdaDelta on the DifferentiableFunction callback interface.
+    Uses squared-gradient and squared-update exponential averages. The update multiplies the gradient by sqrt(previous_update_average+epsilon)/sqrt(current_gradient_average+epsilon). No separate learning-rate option. Tests the gradient used after applying its update; O(p) reset local state.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::AdaDelta optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - M. D. Zeiler (2012), ADADELTA: An Adaptive Learning Rate Method, https://arxiv.org/abs/1212.5701
+    See also: AdaDeltaOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`AdaDeltaOptions`, optional
+        :param options: Method-specific controls; defaults are listed by AdaDeltaOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::AdaDelta optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.AdaDelta_swiginit(self, _datamunge.new_AdaDelta(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run AdaDelta from the supplied point using the configured finite budget.
+        Uses squared-gradient and squared-update exponential averages. The update multiplies the gradient by sqrt(previous_update_average+epsilon)/sqrt(current_gradient_average+epsilon). No separate learning-rate option. Tests the gradient used after applying its update; O(p) reset local state.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument AdaDelta: decay_rate must be in [0, 1); AdaDelta: epsilon must be positive; AdaDelta: tolerance must be non-negative.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::AdaDeltaOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::AdaDelta(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), AdaDeltaOptions
+        """
         return _datamunge.AdaDelta_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`AdaDeltaOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.AdaDelta_options(self)
     __swig_destroy__ = _datamunge.delete_AdaDelta
 
 # Register AdaDelta in _datamunge:
 _datamunge.AdaDelta_swigregister(AdaDelta)
 class AMSGradOptions(object):
+    r"""
+    Configuration for AMSGrad; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::AMSGradOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: AMSGrad
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.AMSGradOptions_step_size_get, _datamunge.AMSGradOptions_step_size_set)
@@ -6658,24 +11380,92 @@ class AMSGradOptions(object):
 _datamunge.AMSGradOptions_swigregister(AMSGradOptions)
 class AMSGrad(object):
     r"""
-    Full-batch AMSGrad (Reddi et al. 2018) on a DifferentiableFunction.  AMSGrad is Adam
-           with a non-decreasing per-coordinate second-moment estimate, giving it a more stable
-           effective learning-rate schedule.
+    AMSGrad on the DifferentiableFunction callback interface.
+    Bias-corrected AMSGrad variant: maximises uncorrected second moments, then divides that maximum by 1-beta2^t. The corrected denominator need not be monotone, so the original uncorrected theorem is not automatically inherited. Tests the gradient used after updating; O(p) reset state.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::AMSGrad optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - S. Reddi, S. Kale and S. Kumar (2018), On the Convergence of Adam and Beyond, https://openreview.net/forum?id=ryQu7f-RZ
+    See also: AMSGradOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`AMSGradOptions`, optional
+        :param options: Method-specific controls; defaults are listed by AMSGradOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::AMSGrad optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.AMSGrad_swiginit(self, _datamunge.new_AMSGrad(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run AMSGrad from the supplied point using the configured finite budget.
+        Bias-corrected AMSGrad variant: maximises uncorrected second moments, then divides that maximum by 1-beta2^t. The corrected denominator need not be monotone, so the original uncorrected theorem is not automatically inherited. Tests the gradient used after updating; O(p) reset state.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument AMSGrad: step_size must be positive; AMSGrad: beta1 must be in [0, 1); AMSGrad: beta2 must be in [0, 1); AMSGrad: epsilon must be positive; AMSGrad: tolerance must be non-negative.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::AMSGradOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::AMSGrad(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), AMSGradOptions
+        """
         return _datamunge.AMSGrad_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`AMSGradOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.AMSGrad_options(self)
     __swig_destroy__ = _datamunge.delete_AMSGrad
 
 # Register AMSGrad in _datamunge:
 _datamunge.AMSGrad_swigregister(AMSGrad)
 class NadamOptions(object):
+    r"""
+    Configuration for Nadam; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::NadamOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: Nadam
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.NadamOptions_step_size_get, _datamunge.NadamOptions_step_size_set)
@@ -6693,27 +11483,96 @@ class NadamOptions(object):
 _datamunge.NadamOptions_swigregister(NadamOptions)
 class Nadam(object):
     r"""
-    Full-batch Nadam (Dozat 2016) on a DifferentiableFunction: Adam's adaptive second
-           moment combined with a Nesterov-style, bias-corrected first-moment direction.
+    Nadam on the DifferentiableFunction callback interface.
+    Fixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::Nadam optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - T. Dozat (2016), Incorporating Nesterov Momentum into Adam, https://openreview.net/pdf?id=OM0jvwB8jIp57ZJjtNEZ
+    See also: NadamOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`NadamOptions`, optional
+        :param options: Method-specific controls; defaults are listed by NadamOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::Nadam optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.Nadam_swiginit(self, _datamunge.new_Nadam(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run Nadam from the supplied point using the configured finite budget.
+        Fixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument Nadam: step_size must be positive; Nadam: beta1 must be in [0, 1); Nadam: beta2 must be in [0, 1); Nadam: epsilon must be positive; Nadam: tolerance must be non-negative.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::NadamOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::Nadam(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), NadamOptions
+        """
         return _datamunge.Nadam_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`NadamOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.Nadam_options(self)
     __swig_destroy__ = _datamunge.delete_Nadam
 
 # Register Nadam in _datamunge:
 _datamunge.Nadam_swigregister(Nadam)
 class RMSPropOptions(object):
+    r"""
+    Configuration for RMSProp; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::RMSPropOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: RMSProp
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.RMSPropOptions_step_size_get, _datamunge.RMSPropOptions_step_size_set)
-    decay_rate = property(_datamunge.RMSPropOptions_decay_rate_get, _datamunge.RMSPropOptions_decay_rate_set, doc=r"""Exponential decay of the per-coordinate squared-gradient average.""")
+    decay_rate = property(_datamunge.RMSPropOptions_decay_rate_get, _datamunge.RMSPropOptions_decay_rate_set)
     epsilon = property(_datamunge.RMSPropOptions_epsilon_get, _datamunge.RMSPropOptions_epsilon_set)
     max_iterations = property(_datamunge.RMSPropOptions_max_iterations_get, _datamunge.RMSPropOptions_max_iterations_set)
     tolerance = property(_datamunge.RMSPropOptions_tolerance_get, _datamunge.RMSPropOptions_tolerance_set)
@@ -6726,31 +11585,99 @@ class RMSPropOptions(object):
 _datamunge.RMSPropOptions_swigregister(RMSPropOptions)
 class RMSProp(object):
     r"""
-    Full-batch RMSProp on a DifferentiableFunction.  RMSProp normalizes every coordinate
-           by a moving average of its recent squared gradients, unlike AdaGrad whose accumulator
-           grows indefinitely.
+    RMSProp on the DifferentiableFunction callback interface.
+    Uses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::RMSProp optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - G. Hinton (2012), lecture 6e, https://www.cs.utoronto.ca/~hinton/coursera_lectures.html
+    See also: RMSPropOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`RMSPropOptions`, optional
+        :param options: Method-specific controls; defaults are listed by RMSPropOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::RMSProp optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.RMSProp_swiginit(self, _datamunge.new_RMSProp(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run RMSProp from the supplied point using the configured finite budget.
+        Uses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument RMSProp: step_size must be positive; RMSProp: decay_rate must be in [0, 1); RMSProp: epsilon must be positive; RMSProp: tolerance must be non-negative.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::RMSPropOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::RMSProp(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), RMSPropOptions
+        """
         return _datamunge.RMSProp_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`RMSPropOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.RMSProp_options(self)
     __swig_destroy__ = _datamunge.delete_RMSProp
 
 # Register RMSProp in _datamunge:
 _datamunge.RMSProp_swigregister(RMSProp)
 class LBFGSOptions(object):
+    r"""
+    Configuration for LBFGS; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::LBFGSOptions o;
+        std::print("{}\n",o.max_iterations); // 500
+    See also: LBFGS
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     max_iterations = property(_datamunge.LBFGSOptions_max_iterations_get, _datamunge.LBFGSOptions_max_iterations_set)
-    tolerance = property(_datamunge.LBFGSOptions_tolerance_get, _datamunge.LBFGSOptions_tolerance_set, doc=r"""Stops when the gradient norm drops below this.""")
-    history_size = property(_datamunge.LBFGSOptions_history_size_get, _datamunge.LBFGSOptions_history_size_set, doc=r"""Number of (s, y) curvature pairs retained for the two-loop recursion.""")
-    armijo_c1 = property(_datamunge.LBFGSOptions_armijo_c1_get, _datamunge.LBFGSOptions_armijo_c1_set, doc=r"""Armijo sufficient-decrease constant for the line search.""")
-    wolfe_c2 = property(_datamunge.LBFGSOptions_wolfe_c2_get, _datamunge.LBFGSOptions_wolfe_c2_set, doc=r"""Weak-Wolfe curvature constant for the line search (typical value for L-BFGS).""")
+    tolerance = property(_datamunge.LBFGSOptions_tolerance_get, _datamunge.LBFGSOptions_tolerance_set)
+    history_size = property(_datamunge.LBFGSOptions_history_size_get, _datamunge.LBFGSOptions_history_size_set)
+    armijo_c1 = property(_datamunge.LBFGSOptions_armijo_c1_get, _datamunge.LBFGSOptions_armijo_c1_set)
+    wolfe_c2 = property(_datamunge.LBFGSOptions_wolfe_c2_get, _datamunge.LBFGSOptions_wolfe_c2_set)
     max_line_search_trials = property(_datamunge.LBFGSOptions_max_line_search_trials_get, _datamunge.LBFGSOptions_max_line_search_trials_set)
 
     def __init__(self):
@@ -6761,33 +11688,100 @@ class LBFGSOptions(object):
 _datamunge.LBFGSOptions_swigregister(LBFGSOptions)
 class LBFGS(object):
     r"""
-    Limited-memory BFGS (Nocedal 1980) on a DifferentiableFunction: a quasi-Newton
-           method that approximates the inverse Hessian from a short history of gradient
-           changes, combined with an Armijo backtracking line search.
+    LBFGS on the DifferentiableFunction callback interface.
+    Limited-memory BFGS with weak-Wolfe bracket/bisection search, descent fallback and positive-curvature pair retention. If the search budget ends, a previous Armijo step can be used; if none was found, returns. Tests gradient norm or absolute objective change. O(history_size*p) state; history_size must be positive.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::LBFGS optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 500
+    Title: References
+    - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+    See also: LBFGSOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`LBFGSOptions`, optional
+        :param options: Method-specific controls; defaults are listed by LBFGSOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::LBFGS optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 500
+        See also: optimize()
+        """
         _datamunge.LBFGS_swiginit(self, _datamunge.new_LBFGS(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run LBFGS from the supplied point using the configured finite budget.
+        Limited-memory BFGS with weak-Wolfe bracket/bisection search, descent fallback and positive-curvature pair retention. If the search budget ends, a previous Armijo step can be used; if none was found, returns. Tests gradient norm or absolute objective change. O(history_size*p) state; history_size must be positive.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::LBFGSOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::LBFGS(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), LBFGSOptions
+        """
         return _datamunge.LBFGS_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`LBFGSOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.LBFGS_options(self)
     __swig_destroy__ = _datamunge.delete_LBFGS
 
 # Register LBFGS in _datamunge:
 _datamunge.LBFGS_swigregister(LBFGS)
 class NelderMeadOptions(object):
+    r"""
+    Configuration for NelderMead; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::NelderMeadOptions o;
+        std::print("{}\n",o.max_iterations); // 2000
+    See also: NelderMead
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    initial_simplex_scale = property(_datamunge.NelderMeadOptions_initial_simplex_scale_get, _datamunge.NelderMeadOptions_initial_simplex_scale_set, doc=r"""Per-coordinate displacement used to construct the initial simplex.""")
+    initial_simplex_scale = property(_datamunge.NelderMeadOptions_initial_simplex_scale_get, _datamunge.NelderMeadOptions_initial_simplex_scale_set)
     reflection = property(_datamunge.NelderMeadOptions_reflection_get, _datamunge.NelderMeadOptions_reflection_set)
     expansion = property(_datamunge.NelderMeadOptions_expansion_get, _datamunge.NelderMeadOptions_expansion_set)
     contraction = property(_datamunge.NelderMeadOptions_contraction_get, _datamunge.NelderMeadOptions_contraction_set)
     shrink = property(_datamunge.NelderMeadOptions_shrink_get, _datamunge.NelderMeadOptions_shrink_set)
     max_iterations = property(_datamunge.NelderMeadOptions_max_iterations_get, _datamunge.NelderMeadOptions_max_iterations_set)
-    tolerance = property(_datamunge.NelderMeadOptions_tolerance_get, _datamunge.NelderMeadOptions_tolerance_set, doc=r"""Stops when both the simplex diameter and its objective spread are below this.""")
+    tolerance = property(_datamunge.NelderMeadOptions_tolerance_get, _datamunge.NelderMeadOptions_tolerance_set)
 
     def __init__(self):
         _datamunge.NelderMeadOptions_swiginit(self, _datamunge.new_NelderMeadOptions())
@@ -6797,30 +11791,98 @@ class NelderMeadOptions(object):
 _datamunge.NelderMeadOptions_swigregister(NelderMeadOptions)
 class NelderMead(object):
     r"""
-    Nelder-Mead downhill simplex search for an ArbitraryFunction.  This local,
-           derivative-free method is suitable when gradients are unavailable but repeated
-           objective evaluations are affordable.
+    NelderMead on the ArbitraryFunction callback interface.
+    Local simplex reflection, expansion, contraction and shrink search. Starts with per-coordinate displacements initial_simplex_scale and stops when simplex diameter and value spread are small. Those conditions do not prove stationarity or a global minimum. O(p^2) simplex storage.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::NelderMead optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 2000
+    Title: References
+    - J. A. Nelder and R. Mead (1965), A Simplex Method for Function Minimization, https://doi.org/10.1093/comjnl/7.4.308
+    See also: NelderMeadOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`NelderMeadOptions`, optional
+        :param options: Method-specific controls; defaults are listed by NelderMeadOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::NelderMead optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 2000
+        See also: optimize()
+        """
         _datamunge.NelderMead_swiginit(self, _datamunge.new_NelderMead(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run NelderMead from the supplied point using the configured finite budget.
+        Local simplex reflection, expansion, contraction and shrink search. Starts with per-coordinate displacements initial_simplex_scale and stops when simplex diameter and value spread are small. Those conditions do not prove stationarity or a global minimum. O(p^2) simplex storage.
+        :type function: :py:class:`ArbitraryFunction`
+        :param function: Borrowed ArbitraryFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument NelderMead: initial_simplex_scale must be positive; NelderMead: reflection must be positive; NelderMead: expansion must be greater than 1; NelderMead: contraction must be in (0, 1); NelderMead: shrink must be in (0, 1); NelderMead: tolerance must be non-negative.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::NelderMeadOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::NelderMead(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), NelderMeadOptions
+        """
         return _datamunge.NelderMead_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`NelderMeadOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.NelderMead_options(self)
     __swig_destroy__ = _datamunge.delete_NelderMead
 
 # Register NelderMead in _datamunge:
 _datamunge.NelderMead_swigregister(NelderMead)
 class SGDOptions(object):
+    r"""
+    Configuration for SGD; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::SGDOptions o;
+        std::print("{}\n",o.max_epochs); // 100
+    See also: SGD
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.SGDOptions_step_size_get, _datamunge.SGDOptions_step_size_set)
     max_epochs = property(_datamunge.SGDOptions_max_epochs_get, _datamunge.SGDOptions_max_epochs_set)
     batch_size = property(_datamunge.SGDOptions_batch_size_get, _datamunge.SGDOptions_batch_size_set)
-    tolerance = property(_datamunge.SGDOptions_tolerance_get, _datamunge.SGDOptions_tolerance_set, doc=r"""Stops when the full-objective change between epochs drops below this.""")
+    tolerance = property(_datamunge.SGDOptions_tolerance_get, _datamunge.SGDOptions_tolerance_set)
     shuffle = property(_datamunge.SGDOptions_shuffle_get, _datamunge.SGDOptions_shuffle_set)
     seed = property(_datamunge.SGDOptions_seed_get, _datamunge.SGDOptions_seed_set)
 
@@ -6832,29 +11894,97 @@ class SGDOptions(object):
 _datamunge.SGDOptions_swigregister(SGDOptions)
 class SGD(object):
     r"""
-    Stochastic (mini-batch) gradient descent on a DifferentiableSeparableFunction: each
-           step updates coordinates from the average gradient of one shuffled mini-batch of
-           terms, rather than the full objective's gradient.
+    SGD on the DifferentiableSeparableFunction callback interface.
+    Uses the mean gradient of each mini-batch, reshuffling component indices each epoch when enabled. Full objective remains the sum of components. Stops on absolute full-objective change per epoch. Nonempty components and positive batch_size are required; seeds reproduce the same build, not a cross-library shuffle transcript.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::SGD optimizer;
+        std::print("{}\n",optimizer.options().max_epochs); // 100
+    Title: References
+    - H. Robbins and S. Monro (1951), A Stochastic Approximation Method, https://doi.org/10.1214/aoms/1177729586. The fixed-rate reshuffling variant here differs from their decreasing-step stochastic approximation.
+    See also: SGDOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`SGDOptions`, optional
+        :param options: Method-specific controls; defaults are listed by SGDOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::SGD optimizer;
+            std::print("{}\n",optimizer.options().max_epochs); // 100
+        See also: optimize()
+        """
         _datamunge.SGD_swiginit(self, _datamunge.new_SGD(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run SGD from the supplied point using the configured finite budget.
+        Uses the mean gradient of each mini-batch, reshuffling component indices each epoch when enabled. Full objective remains the sum of components. Stops on absolute full-objective change per epoch. Nonempty components and positive batch_size are required; seeds reproduce the same build, not a cross-library shuffle transcript.
+        :type function: :py:class:`DifferentiableSeparableFunction`
+        :param function: Borrowed DifferentiableSeparableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument SGD: batch_size must be positive; SGD::optimize: function has zero terms.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});
+            dm::optim::SGDOptions controls;controls.max_epochs=5;
+            std::vector<double> x{0};
+            const auto value=dm::optim::SGD(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), SGDOptions
+        """
         return _datamunge.SGD_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`SGDOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.SGD_options(self)
     __swig_destroy__ = _datamunge.delete_SGD
 
 # Register SGD in _datamunge:
 _datamunge.SGD_swigregister(SGD)
 class SVRGOptions(object):
+    r"""
+    Configuration for SVRG; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::SVRGOptions o;
+        std::print("{}\n",o.max_epochs); // 100
+    See also: SVRG
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.SVRGOptions_step_size_get, _datamunge.SVRGOptions_step_size_set)
     max_epochs = property(_datamunge.SVRGOptions_max_epochs_get, _datamunge.SVRGOptions_max_epochs_set)
-    inner_iterations = property(_datamunge.SVRGOptions_inner_iterations_get, _datamunge.SVRGOptions_inner_iterations_set, doc=r"""Stochastic updates per epoch; zero uses the number of component functions.""")
+    inner_iterations = property(_datamunge.SVRGOptions_inner_iterations_get, _datamunge.SVRGOptions_inner_iterations_set)
     tolerance = property(_datamunge.SVRGOptions_tolerance_get, _datamunge.SVRGOptions_tolerance_set)
     seed = property(_datamunge.SVRGOptions_seed_get, _datamunge.SVRGOptions_seed_set)
 
@@ -6866,24 +11996,92 @@ class SVRGOptions(object):
 _datamunge.SVRGOptions_swigregister(SVRGOptions)
 class SVRG(object):
     r"""
-    Stochastic Variance Reduced Gradient (Johnson & Zhang 2013) on a
-           DifferentiableSeparableFunction.  Each epoch uses a full-gradient snapshot as a
-           control variate, reducing the noise of individual component-gradient updates.
+    SVRG on the DifferentiableSeparableFunction callback interface.
+    Uses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::SVRG optimizer;
+        std::print("{}\n",optimizer.options().max_epochs); // 100
+    Title: References
+    - R. Johnson and T. Zhang (2013), Accelerating Stochastic Gradient Descent using Predictive Variance Reduction, https://proceedings.neurips.cc/paper/2013/hash/ac1dd209cbcc5e5d1c6e28598e8cbbe8-Abstract.html
+    See also: SVRGOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`SVRGOptions`, optional
+        :param options: Method-specific controls; defaults are listed by SVRGOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::SVRG optimizer;
+            std::print("{}\n",optimizer.options().max_epochs); // 100
+        See also: optimize()
+        """
         _datamunge.SVRG_swiginit(self, _datamunge.new_SVRG(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run SVRG from the supplied point using the configured finite budget.
+        Uses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch.
+        :type function: :py:class:`DifferentiableSeparableFunction`
+        :param function: Borrowed DifferentiableSeparableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument SVRG: step_size must be positive; SVRG: tolerance must be non-negative; SVRG: function has zero terms.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});
+            dm::optim::SVRGOptions controls;controls.max_epochs=5;
+            std::vector<double> x{0};
+            const auto value=dm::optim::SVRG(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), SVRGOptions
+        """
         return _datamunge.SVRG_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`SVRGOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.SVRG_options(self)
     __swig_destroy__ = _datamunge.delete_SVRG
 
 # Register SVRG in _datamunge:
 _datamunge.SVRG_swigregister(SVRG)
 class SAGAOptions(object):
+    r"""
+    Configuration for SAGA; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::SAGAOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: SAGA
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.SAGAOptions_step_size_get, _datamunge.SAGAOptions_step_size_set)
@@ -6899,30 +12097,98 @@ class SAGAOptions(object):
 _datamunge.SAGAOptions_swigregister(SAGAOptions)
 class SAGA(object):
     r"""
-    SAGA (Defazio, Bach, Lacoste-Julien 2014) on a DifferentiableSeparableFunction.
-           SAGA maintains one stored gradient per component and updates from a variance-reduced
-           estimator formed from the sampled gradient, its stored value, and their running mean.
+    SAGA on the DifferentiableSeparableFunction callback interface.
+    Uses current_i-table_i+mean(table), then refreshes one stored component gradient and its running mean. The estimator targets mean component loss while evaluate() returns their sum. Stops on epoch-boundary objective change or the last estimator norm; the latter is not the full gradient norm. O(n*p) gradient table.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::SAGA optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - A. Defazio, F. Bach and S. Lacoste-Julien (2014), SAGA: A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives, https://arxiv.org/abs/1407.0202
+    See also: SAGAOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`SAGAOptions`, optional
+        :param options: Method-specific controls; defaults are listed by SAGAOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::SAGA optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.SAGA_swiginit(self, _datamunge.new_SAGA(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run SAGA from the supplied point using the configured finite budget.
+        Uses current_i-table_i+mean(table), then refreshes one stored component gradient and its running mean. The estimator targets mean component loss while evaluate() returns their sum. Stops on epoch-boundary objective change or the last estimator norm; the latter is not the full gradient norm. O(n*p) gradient table.
+        :type function: :py:class:`DifferentiableSeparableFunction`
+        :param function: Borrowed DifferentiableSeparableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument SAGA: step_size must be positive; SAGA: tolerance must be non-negative; SAGA: function has zero terms.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});
+            dm::optim::SAGAOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0};
+            const auto value=dm::optim::SAGA(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), SAGAOptions
+        """
         return _datamunge.SAGA_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`SAGAOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.SAGA_options(self)
     __swig_destroy__ = _datamunge.delete_SAGA
 
 # Register SAGA in _datamunge:
 _datamunge.SAGA_swigregister(SAGA)
 class CoordinateDescentOptions(object):
+    r"""
+    Configuration for CoordinateDescent; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::CoordinateDescentOptions o;
+        std::print("{}\n",o.max_iterations); // 1000
+    See also: CoordinateDescent
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    step_size = property(_datamunge.CoordinateDescentOptions_step_size_get, _datamunge.CoordinateDescentOptions_step_size_set, doc=r"""Initial step considered for each one-dimensional update.""")
+    step_size = property(_datamunge.CoordinateDescentOptions_step_size_get, _datamunge.CoordinateDescentOptions_step_size_set)
     max_iterations = property(_datamunge.CoordinateDescentOptions_max_iterations_get, _datamunge.CoordinateDescentOptions_max_iterations_set)
     tolerance = property(_datamunge.CoordinateDescentOptions_tolerance_get, _datamunge.CoordinateDescentOptions_tolerance_set)
-    armijo_c1 = property(_datamunge.CoordinateDescentOptions_armijo_c1_get, _datamunge.CoordinateDescentOptions_armijo_c1_set, doc=r"""Armijo sufficient-decrease constant used by the per-coordinate line search.""")
+    armijo_c1 = property(_datamunge.CoordinateDescentOptions_armijo_c1_get, _datamunge.CoordinateDescentOptions_armijo_c1_set)
     backtracking_factor = property(_datamunge.CoordinateDescentOptions_backtracking_factor_get, _datamunge.CoordinateDescentOptions_backtracking_factor_set)
     max_line_search_trials = property(_datamunge.CoordinateDescentOptions_max_line_search_trials_get, _datamunge.CoordinateDescentOptions_max_line_search_trials_set)
 
@@ -6934,33 +12200,102 @@ class CoordinateDescentOptions(object):
 _datamunge.CoordinateDescentOptions_swigregister(CoordinateDescentOptions)
 class CoordinateDescent(object):
     r"""
-    Cyclic coordinate descent on a DifferentiableFunction.  Each epoch visits every
-           coordinate in index order and performs an Armijo-backtracked partial-gradient step.
+    CoordinateDescent on the DifferentiableFunction callback interface.
+    Each epoch visits coordinates in index order. Every partial update requests a full gradient and an Armijo-backtracked value sequence; this is not exact one-dimensional minimisation. An exhausted search restores that coordinate. Stops on the full end-of-epoch gradient norm.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::CoordinateDescent optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 1000
+    Title: References
+    - S. J. Wright (2015), Coordinate descent algorithms, https://doi.org/10.1007/s10107-015-0892-3. This implementation uses the stated full-gradient coordinate/block steps.
+    See also: CoordinateDescentOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`CoordinateDescentOptions`, optional
+        :param options: Method-specific controls; defaults are listed by CoordinateDescentOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::CoordinateDescent optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 1000
+        See also: optimize()
+        """
         _datamunge.CoordinateDescent_swiginit(self, _datamunge.new_CoordinateDescent(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run CoordinateDescent from the supplied point using the configured finite budget.
+        Each epoch visits coordinates in index order. Every partial update requests a full gradient and an Armijo-backtracked value sequence; this is not exact one-dimensional minimisation. An exhausted search restores that coordinate. Stops on the full end-of-epoch gradient norm.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument CoordinateDescent: step_size must be positive; CoordinateDescent: tolerance must be non-negative; CoordinateDescent: armijo_c1 must be in (0, 1); CoordinateDescent: backtracking_factor must be in (0, 1).
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::CoordinateDescentOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::CoordinateDescent(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), CoordinateDescentOptions
+        """
         return _datamunge.CoordinateDescent_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`CoordinateDescentOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.CoordinateDescent_options(self)
     __swig_destroy__ = _datamunge.delete_CoordinateDescent
 
 # Register CoordinateDescent in _datamunge:
 _datamunge.CoordinateDescent_swigregister(CoordinateDescent)
 class RandomizedBlockCoordinateDescentOptions(object):
+    r"""
+    Configuration for RandomizedBlockCoordinateDescent; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::RandomizedBlockCoordinateDescentOptions o;
+        std::print("{}\n",o.max_iterations); // 1000
+    See also: RandomizedBlockCoordinateDescent
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    block_size = property(_datamunge.RandomizedBlockCoordinateDescentOptions_block_size_get, _datamunge.RandomizedBlockCoordinateDescentOptions_block_size_set, doc=r"""Number of coordinates updated together in each block.""")
+    block_size = property(_datamunge.RandomizedBlockCoordinateDescentOptions_block_size_get, _datamunge.RandomizedBlockCoordinateDescentOptions_block_size_set)
     step_size = property(_datamunge.RandomizedBlockCoordinateDescentOptions_step_size_get, _datamunge.RandomizedBlockCoordinateDescentOptions_step_size_set)
     max_iterations = property(_datamunge.RandomizedBlockCoordinateDescentOptions_max_iterations_get, _datamunge.RandomizedBlockCoordinateDescentOptions_max_iterations_set)
     tolerance = property(_datamunge.RandomizedBlockCoordinateDescentOptions_tolerance_get, _datamunge.RandomizedBlockCoordinateDescentOptions_tolerance_set)
     armijo_c1 = property(_datamunge.RandomizedBlockCoordinateDescentOptions_armijo_c1_get, _datamunge.RandomizedBlockCoordinateDescentOptions_armijo_c1_set)
     backtracking_factor = property(_datamunge.RandomizedBlockCoordinateDescentOptions_backtracking_factor_get, _datamunge.RandomizedBlockCoordinateDescentOptions_backtracking_factor_set)
     max_line_search_trials = property(_datamunge.RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get, _datamunge.RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set)
-    seed = property(_datamunge.RandomizedBlockCoordinateDescentOptions_seed_get, _datamunge.RandomizedBlockCoordinateDescentOptions_seed_set, doc=r"""Seed for the reproducible random coordinate permutation generated each epoch.""")
+    seed = property(_datamunge.RandomizedBlockCoordinateDescentOptions_seed_get, _datamunge.RandomizedBlockCoordinateDescentOptions_seed_set)
 
     def __init__(self):
         _datamunge.RandomizedBlockCoordinateDescentOptions_swiginit(self, _datamunge.new_RandomizedBlockCoordinateDescentOptions())
@@ -6970,29 +12305,96 @@ class RandomizedBlockCoordinateDescentOptions(object):
 _datamunge.RandomizedBlockCoordinateDescentOptions_swigregister(RandomizedBlockCoordinateDescentOptions)
 class RandomizedBlockCoordinateDescent(object):
     r"""
-    Randomized cyclic block coordinate descent on a DifferentiableFunction.  Every epoch
-           randomly permutes the coordinates, partitions that permutation into blocks, and visits
-           each block exactly once.  A block uses a simultaneous partial-gradient step with an
-           Armijo backtracking line search.
+    RandomizedBlockCoordinateDescent on the DifferentiableFunction callback interface.
+    Randomly permutes coordinates each epoch and visits consecutive blocks once. Full-gradient block directions use Armijo backtracking and restore a failed block. This is random reshuffling, not independent coordinate draws. Stops on the full epoch-end gradient norm; O(p) local storage.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::RandomizedBlockCoordinateDescent optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 1000
+    Title: References
+    - S. J. Wright (2015), Coordinate descent algorithms, https://doi.org/10.1007/s10107-015-0892-3. This implementation uses the stated full-gradient coordinate/block steps.
+    See also: RandomizedBlockCoordinateDescentOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`RandomizedBlockCoordinateDescentOptions`, optional
+        :param options: Method-specific controls; defaults are listed by RandomizedBlockCoordinateDescentOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::RandomizedBlockCoordinateDescent optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 1000
+        See also: optimize()
+        """
         _datamunge.RandomizedBlockCoordinateDescent_swiginit(self, _datamunge.new_RandomizedBlockCoordinateDescent(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run RandomizedBlockCoordinateDescent from the supplied point using the configured finite budget.
+        Randomly permutes coordinates each epoch and visits consecutive blocks once. Full-gradient block directions use Armijo backtracking and restore a failed block. This is random reshuffling, not independent coordinate draws. Stops on the full epoch-end gradient norm; O(p) local storage.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument RandomizedBlockCoordinateDescent: block_size must be positive; RandomizedBlockCoordinateDescent: step_size must be positive; RandomizedBlockCoordinateDescent: tolerance must be non-negative; RandomizedBlockCoordinateDescent: armijo_c1 must be in (0, 1); RandomizedBlockCoordinateDescent: backtracking_factor must be in (0, 1).
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::RandomizedBlockCoordinateDescentOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::RandomizedBlockCoordinateDescent(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), RandomizedBlockCoordinateDescentOptions
+        """
         return _datamunge.RandomizedBlockCoordinateDescent_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`RandomizedBlockCoordinateDescentOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.RandomizedBlockCoordinateDescent_options(self)
     __swig_destroy__ = _datamunge.delete_RandomizedBlockCoordinateDescent
 
 # Register RandomizedBlockCoordinateDescent in _datamunge:
 _datamunge.RandomizedBlockCoordinateDescent_swigregister(RandomizedBlockCoordinateDescent)
 class NesterovAcceleratedGradientOptions(object):
+    r"""
+    Configuration for NesterovAcceleratedGradient; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::NesterovAcceleratedGradientOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: NesterovAcceleratedGradient
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.NesterovAcceleratedGradientOptions_step_size_get, _datamunge.NesterovAcceleratedGradientOptions_step_size_set)
-    momentum = property(_datamunge.NesterovAcceleratedGradientOptions_momentum_get, _datamunge.NesterovAcceleratedGradientOptions_momentum_set, doc=r"""Momentum coefficient in [0, 1), typically 0.9.""")
+    momentum = property(_datamunge.NesterovAcceleratedGradientOptions_momentum_get, _datamunge.NesterovAcceleratedGradientOptions_momentum_set)
     max_iterations = property(_datamunge.NesterovAcceleratedGradientOptions_max_iterations_get, _datamunge.NesterovAcceleratedGradientOptions_max_iterations_set)
     tolerance = property(_datamunge.NesterovAcceleratedGradientOptions_tolerance_get, _datamunge.NesterovAcceleratedGradientOptions_tolerance_set)
 
@@ -7003,21 +12405,93 @@ class NesterovAcceleratedGradientOptions(object):
 # Register NesterovAcceleratedGradientOptions in _datamunge:
 _datamunge.NesterovAcceleratedGradientOptions_swigregister(NesterovAcceleratedGradientOptions)
 class NesterovAcceleratedGradient(object):
-    r"""Nesterov accelerated gradient (look-ahead momentum) on a DifferentiableFunction."""
+    r"""
+    NesterovAcceleratedGradient on the DifferentiableFunction callback interface.
+    Evaluates the gradient at coordinates+momentum*velocity, then updates velocity and coordinates. Tests that look-ahead gradient after the update. Fixed momentum and rate do not implement every strongly-convex acceleration schedule. O(p) reset local state.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::NesterovAcceleratedGradient optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+    See also: NesterovAcceleratedGradientOptions, trace_optimize()
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`NesterovAcceleratedGradientOptions`, optional
+        :param options: Method-specific controls; defaults are listed by NesterovAcceleratedGradientOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::NesterovAcceleratedGradient optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.NesterovAcceleratedGradient_swiginit(self, _datamunge.new_NesterovAcceleratedGradient(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run NesterovAcceleratedGradient from the supplied point using the configured finite budget.
+        Evaluates the gradient at coordinates+momentum*velocity, then updates velocity and coordinates. Tests that look-ahead gradient after the update. Fixed momentum and rate do not implement every strongly-convex acceleration schedule. O(p) reset local state.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument NesterovAcceleratedGradient: step_size must be positive; NesterovAcceleratedGradient: momentum must be in [0, 1); NesterovAcceleratedGradient: tolerance must be non-negative.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::NesterovAcceleratedGradientOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::NesterovAcceleratedGradient(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), NesterovAcceleratedGradientOptions
+        """
         return _datamunge.NesterovAcceleratedGradient_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`NesterovAcceleratedGradientOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.NesterovAcceleratedGradient_options(self)
     __swig_destroy__ = _datamunge.delete_NesterovAcceleratedGradient
 
 # Register NesterovAcceleratedGradient in _datamunge:
 _datamunge.NesterovAcceleratedGradient_swigregister(NesterovAcceleratedGradient)
 class ConjugateGradientOptions(object):
+    r"""
+    Configuration for ConjugateGradient; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::ConjugateGradientOptions o;
+        std::print("{}\n",o.max_iterations); // 1000
+    See also: ConjugateGradient
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     max_iterations = property(_datamunge.ConjugateGradientOptions_max_iterations_get, _datamunge.ConjugateGradientOptions_max_iterations_set)
@@ -7033,27 +12507,99 @@ class ConjugateGradientOptions(object):
 # Register ConjugateGradientOptions in _datamunge:
 _datamunge.ConjugateGradientOptions_swigregister(ConjugateGradientOptions)
 class ConjugateGradient(object):
-    r"""Nonlinear conjugate gradient with the Polak-Ribiere+ update and an Armijo line search."""
+    r"""
+    ConjugateGradient on the DifferentiableFunction callback interface.
+    Nonlinear Polak-Ribiere-plus directions with negative beta truncated to zero, periodic/descent restarts and an Armijo line search. It is not linear CG with exact line minimisation and does not imply termination in p steps. Returns when gradient/change/search conditions stop progress.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::ConjugateGradient optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 1000
+    Title: References
+    - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+    See also: ConjugateGradientOptions, trace_optimize()
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`ConjugateGradientOptions`, optional
+        :param options: Method-specific controls; defaults are listed by ConjugateGradientOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::ConjugateGradient optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 1000
+        See also: optimize()
+        """
         _datamunge.ConjugateGradient_swiginit(self, _datamunge.new_ConjugateGradient(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run ConjugateGradient from the supplied point using the configured finite budget.
+        Nonlinear Polak-Ribiere-plus directions with negative beta truncated to zero, periodic/descent restarts and an Armijo line search. It is not linear CG with exact line minimisation and does not imply termination in p steps. Returns when gradient/change/search conditions stop progress.
+        :type function: :py:class:`DifferentiableFunction`
+        :param function: Borrowed DifferentiableFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument ConjugateGradient: tolerance must be non-negative; ConjugateGradient: armijo_c1 must be in (0, 1); ConjugateGradient: backtracking_factor must be in (0, 1).
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::ConjugateGradientOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::ConjugateGradient(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), ConjugateGradientOptions
+        """
         return _datamunge.ConjugateGradient_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`ConjugateGradientOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.ConjugateGradient_options(self)
     __swig_destroy__ = _datamunge.delete_ConjugateGradient
 
 # Register ConjugateGradient in _datamunge:
 _datamunge.ConjugateGradient_swigregister(ConjugateGradient)
 class CMAESOptions(object):
+    r"""
+    Configuration for CMAES; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::CMAESOptions o;
+        std::print("{}\n",o.max_generations); // 500
+    See also: CMAES
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    population_size = property(_datamunge.CMAESOptions_population_size_get, _datamunge.CMAESOptions_population_size_set, doc=r"""Offspring sampled per generation; zero selects the standard 4 + floor(3 log(n)).""")
-    initial_step_size = property(_datamunge.CMAESOptions_initial_step_size_get, _datamunge.CMAESOptions_initial_step_size_set, doc=r"""Initial global search standard deviation.""")
+    population_size = property(_datamunge.CMAESOptions_population_size_get, _datamunge.CMAESOptions_population_size_set)
+    initial_step_size = property(_datamunge.CMAESOptions_initial_step_size_get, _datamunge.CMAESOptions_initial_step_size_set)
     max_generations = property(_datamunge.CMAESOptions_max_generations_get, _datamunge.CMAESOptions_max_generations_set)
-    tolerance = property(_datamunge.CMAESOptions_tolerance_get, _datamunge.CMAESOptions_tolerance_set, doc=r"""Stops when the global step size times the largest covariance axis is below this.""")
+    tolerance = property(_datamunge.CMAESOptions_tolerance_get, _datamunge.CMAESOptions_tolerance_set)
     seed = property(_datamunge.CMAESOptions_seed_get, _datamunge.CMAESOptions_seed_set)
 
     def __init__(self):
@@ -7064,31 +12610,98 @@ class CMAESOptions(object):
 _datamunge.CMAESOptions_swigregister(CMAESOptions)
 class CMAES(object):
     r"""
-    Covariance Matrix Adaptation Evolution Strategy (CMA-ES) for unconstrained continuous
-           derivative-free optimization.  CMA-ES adapts a full Gaussian covariance matrix from
-           the best sampled candidates each generation, making it effective on rotated and
-           ill-conditioned objectives.
+    CMAES on the ArbitraryFunction callback interface.
+    Unbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::CMAES optimizer;
+        std::print("{}\n",optimizer.options().max_generations); // 500
+    Title: References
+    - N. Hansen and A. Ostermeier (2001), Completely Derandomized Self-Adaptation in Evolution Strategies, https://doi.org/10.1162/106365601750190398
+    See also: CMAESOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`CMAESOptions`, optional
+        :param options: Method-specific controls; defaults are listed by CMAESOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::CMAES optimizer;
+            std::print("{}\n",optimizer.options().max_generations); // 500
+        See also: optimize()
+        """
         _datamunge.CMAES_swiginit(self, _datamunge.new_CMAES(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run CMAES from the supplied point using the configured finite budget.
+        Unbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate.
+        :type function: :py:class:`ArbitraryFunction`
+        :param function: Borrowed ArbitraryFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument CMAES: initial_step_size must be positive; CMAES: tolerance must be non-negative; CMAES: population_size must be at least 2.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::CMAESOptions controls;controls.max_generations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::CMAES(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), CMAESOptions
+        """
         return _datamunge.CMAES_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`CMAESOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.CMAES_options(self)
     __swig_destroy__ = _datamunge.delete_CMAES
 
 # Register CMAES in _datamunge:
 _datamunge.CMAES_swigregister(CMAES)
 class SimulatedAnnealingOptions(object):
+    r"""
+    Configuration for SimulatedAnnealing; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::SimulatedAnnealingOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: SimulatedAnnealing
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     initial_temperature = property(_datamunge.SimulatedAnnealingOptions_initial_temperature_get, _datamunge.SimulatedAnnealingOptions_initial_temperature_set)
-    cooling_rate = property(_datamunge.SimulatedAnnealingOptions_cooling_rate_get, _datamunge.SimulatedAnnealingOptions_cooling_rate_set, doc=r"""Multiplicative cooling factor applied to the temperature after every iteration.""")
+    cooling_rate = property(_datamunge.SimulatedAnnealingOptions_cooling_rate_get, _datamunge.SimulatedAnnealingOptions_cooling_rate_set)
     max_iterations = property(_datamunge.SimulatedAnnealingOptions_max_iterations_get, _datamunge.SimulatedAnnealingOptions_max_iterations_set)
-    step_std_dev = property(_datamunge.SimulatedAnnealingOptions_step_std_dev_get, _datamunge.SimulatedAnnealingOptions_step_std_dev_set, doc=r"""Standard deviation of the Gaussian perturbation proposed at each step.""")
+    step_std_dev = property(_datamunge.SimulatedAnnealingOptions_step_std_dev_get, _datamunge.SimulatedAnnealingOptions_step_std_dev_set)
     seed = property(_datamunge.SimulatedAnnealingOptions_seed_get, _datamunge.SimulatedAnnealingOptions_seed_set)
 
     def __init__(self):
@@ -7099,26 +12712,91 @@ class SimulatedAnnealingOptions(object):
 _datamunge.SimulatedAnnealingOptions_swigregister(SimulatedAnnealingOptions)
 class SimulatedAnnealing(object):
     r"""
-    Simulated annealing on an ArbitraryFunction: a derivative-free stochastic method
-           that accepts worsening moves with Metropolis probability exp(-delta/temperature),
-           cooling geometrically, and tracks the best point found. The only optimizer here
-           that requires nothing beyond evaluate() -- suitable for non-differentiable or
-           black-box objectives.
+    SimulatedAnnealing on the ArbitraryFunction callback interface.
+    Gaussian random-walk proposals with geometrically decaying temperature and Metropolis acceptance of worse values. Returns the best visited point, not the last accepted state. A finite cooling schedule does not certify a global optimum; O(p) storage.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::SimulatedAnnealing optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - S. Kirkpatrick, C. D. Gelatt and M. P. Vecchi (1983), Optimization by Simulated Annealing, https://doi.org/10.1126/science.220.4598.671. Finite geometric cooling here supplies no global guarantee.
+    See also: SimulatedAnnealingOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`SimulatedAnnealingOptions`, optional
+        :param options: Method-specific controls; defaults are listed by SimulatedAnnealingOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::SimulatedAnnealing optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.SimulatedAnnealing_swiginit(self, _datamunge.new_SimulatedAnnealing(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run SimulatedAnnealing from the supplied point using the configured finite budget.
+        Gaussian random-walk proposals with geometrically decaying temperature and Metropolis acceptance of worse values. Returns the best visited point, not the last accepted state. A finite cooling schedule does not certify a global optimum; O(p) storage.
+        :type function: :py:class:`ArbitraryFunction`
+        :param function: Borrowed ArbitraryFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::SimulatedAnnealingOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::SimulatedAnnealing(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), SimulatedAnnealingOptions
+        """
         return _datamunge.SimulatedAnnealing_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`SimulatedAnnealingOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.SimulatedAnnealing_options(self)
     __swig_destroy__ = _datamunge.delete_SimulatedAnnealing
 
 # Register SimulatedAnnealing in _datamunge:
 _datamunge.SimulatedAnnealing_swigregister(SimulatedAnnealing)
 class PSOOptions(object):
+    r"""
+    Configuration for PSO; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::PSOOptions o;
+        std::print("{}\n",o.max_iterations); // 1000
+    See also: PSO
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     population_size = property(_datamunge.PSOOptions_population_size_get, _datamunge.PSOOptions_population_size_set)
@@ -7126,19 +12804,11 @@ class PSOOptions(object):
     inertia_weight = property(_datamunge.PSOOptions_inertia_weight_get, _datamunge.PSOOptions_inertia_weight_set)
     cognitive_coefficient = property(_datamunge.PSOOptions_cognitive_coefficient_get, _datamunge.PSOOptions_cognitive_coefficient_set)
     social_coefficient = property(_datamunge.PSOOptions_social_coefficient_get, _datamunge.PSOOptions_social_coefficient_set)
-    topology = property(_datamunge.PSOOptions_topology_get, _datamunge.PSOOptions_topology_set, doc=r"""
-    One of "global" (gbest -- every particle is attracted to the single best
-           particle found so far) or "ring" (lbest -- each particle is attracted to the
-           best particle within a small ring-shaped neighborhood; slower but less prone
-           to premature convergence).
-    """)
-    ring_neighbors = property(_datamunge.PSOOptions_ring_neighbors_get, _datamunge.PSOOptions_ring_neighbors_set, doc=r"""Neighbors considered on each side of a particle when topology == "ring".""")
-    inertia_strategy = property(_datamunge.PSOOptions_inertia_strategy_get, _datamunge.PSOOptions_inertia_strategy_set, doc=r"""
-    One of "constant" or "linear_decay" (anneals from inertia_weight down to
-           final_inertia_weight over the course of the run).
-    """)
+    topology = property(_datamunge.PSOOptions_topology_get, _datamunge.PSOOptions_topology_set)
+    ring_neighbors = property(_datamunge.PSOOptions_ring_neighbors_get, _datamunge.PSOOptions_ring_neighbors_set)
+    inertia_strategy = property(_datamunge.PSOOptions_inertia_strategy_get, _datamunge.PSOOptions_inertia_strategy_set)
     final_inertia_weight = property(_datamunge.PSOOptions_final_inertia_weight_get, _datamunge.PSOOptions_final_inertia_weight_set)
-    tolerance = property(_datamunge.PSOOptions_tolerance_get, _datamunge.PSOOptions_tolerance_set, doc=r"""Stops after the global best has improved by less than this for 20 consecutive iterations.""")
+    tolerance = property(_datamunge.PSOOptions_tolerance_get, _datamunge.PSOOptions_tolerance_set)
     seed = property(_datamunge.PSOOptions_seed_get, _datamunge.PSOOptions_seed_set)
 
     def __init__(self):
@@ -7149,43 +12819,105 @@ class PSOOptions(object):
 _datamunge.PSOOptions_swigregister(PSOOptions)
 class PSO(object):
     r"""
-    Particle swarm optimization on an ArbitraryFunction within a box constraint: a
-           population of particles fly through the search space, each pulled toward its own
-           best-seen position and the best position found by (depending on topology) the
-           whole swarm or a local neighborhood. Derivative-free.
+    PSO on the ArbitraryFunction callback interface.
+    Box-constrained particle swarm with global or ring attraction and constant or linearly decayed inertia. Coordinates seed one clamped particle; returns the best visited feasible point. Stops after more than twenty small-best-improvement iterations or its budget. O(population_size*p) storage; no global-optimality certificate.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::PSO optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 1000
+    Title: References
+    - J. Kennedy and R. Eberhart (1995), Particle Swarm Optimization, https://doi.org/10.1109/ICNN.1995.488968. This implementation adds the documented inertia, topology and clamping controls.
+    See also: PSOOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`PSOOptions`, optional
+        :param options: Method-specific controls; defaults are listed by PSOOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::PSO optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 1000
+        See also: optimize()
+        """
         _datamunge.PSO_swiginit(self, _datamunge.new_PSO(*args))
 
     def optimize(self, function, coordinates, lower_bound, upper_bound):
         r"""
-        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
-               ``coordinates`` in place to the best point found, and returns its value. The
-               initial ``coordinates`` (clamped into bounds) seed one particle of the swarm.
+        Run PSO from the supplied point using the configured finite budget.
+        Box-constrained particle swarm with global or ring attraction and constant or linearly decayed inertia. Coordinates seed one clamped particle; returns the best visited feasible point. Stops after more than twenty small-best-improvement iterations or its budget. O(population_size*p) storage; no global-optimality certificate.
+        :type function: :py:class:`ArbitraryFunction`
+        :param function: Borrowed ArbitraryFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :type lower_bound: std::vector< double,std::allocator< double > >
+        :param lower_bound: Matching finite inclusive lower box limits.
+        :type upper_bound: std::vector< double,std::allocator< double > >
+        :param upper_bound: Matching finite inclusive upper limits, greater than lower limits.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument PSO::optimize: population_size must be at least 2; PSO::optimize: topology must be 'global' or 'ring'; PSO::optimize: inertia_strategy must be 'constant' or 'linear_decay'.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::PSOOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::PSO(controls).optimize(f,x,std::vector<double>{-3,-3},std::vector<double>{3,3});
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), PSOOptions
         """
         return _datamunge.PSO_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`PSOOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.PSO_options(self)
     __swig_destroy__ = _datamunge.delete_PSO
 
 # Register PSO in _datamunge:
 _datamunge.PSO_swigregister(PSO)
 class DEOptions(object):
+    r"""
+    Configuration for DifferentialEvolution; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::DEOptions o;
+        std::print("{}\n",o.max_generations); // 500
+    See also: DifferentialEvolution
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     population_size = property(_datamunge.DEOptions_population_size_get, _datamunge.DEOptions_population_size_set)
     max_generations = property(_datamunge.DEOptions_max_generations_get, _datamunge.DEOptions_max_generations_set)
-    differential_weight = property(_datamunge.DEOptions_differential_weight_get, _datamunge.DEOptions_differential_weight_set, doc=r"""F: scales the differential perturbation applied by the mutation strategy.""")
-    crossover_rate = property(_datamunge.DEOptions_crossover_rate_get, _datamunge.DEOptions_crossover_rate_set, doc=r"""CR: probability that a given gene is taken from the mutant vector.""")
-    mutation_strategy = property(_datamunge.DEOptions_mutation_strategy_get, _datamunge.DEOptions_mutation_strategy_set, doc=r"""
-    One of "rand1", "best1", "current_to_best1", or "rand2" -- Storn & Price's
-           DE/x/y/z naming for which base vector(s) the differential perturbation(s) are
-           added to.
-    """)
-    crossover_strategy = property(_datamunge.DEOptions_crossover_strategy_get, _datamunge.DEOptions_crossover_strategy_set, doc=r"""One of "binomial" or "exponential".""")
-    tolerance = property(_datamunge.DEOptions_tolerance_get, _datamunge.DEOptions_tolerance_set, doc=r"""Stops after the population best has improved by less than this for 20 consecutive generations.""")
+    differential_weight = property(_datamunge.DEOptions_differential_weight_get, _datamunge.DEOptions_differential_weight_set)
+    crossover_rate = property(_datamunge.DEOptions_crossover_rate_get, _datamunge.DEOptions_crossover_rate_set)
+    mutation_strategy = property(_datamunge.DEOptions_mutation_strategy_get, _datamunge.DEOptions_mutation_strategy_set)
+    crossover_strategy = property(_datamunge.DEOptions_crossover_strategy_get, _datamunge.DEOptions_crossover_strategy_set)
+    tolerance = property(_datamunge.DEOptions_tolerance_get, _datamunge.DEOptions_tolerance_set)
     seed = property(_datamunge.DEOptions_seed_get, _datamunge.DEOptions_seed_set)
 
     def __init__(self):
@@ -7196,44 +12928,110 @@ class DEOptions(object):
 _datamunge.DEOptions_swigregister(DEOptions)
 class DifferentialEvolution(object):
     r"""
-    Differential evolution on an ArbitraryFunction within a box constraint: each
-           generation, every individual is challenged by a "trial" vector built from a
-           mutated combination of other population members, greedily replacing it only if
-           the trial is at least as good. Derivative-free.
+    DifferentialEvolution on the ArbitraryFunction callback interface.
+    Box-constrained differential mutation/crossover with greedy trial replacement. Supports the declared rand1/best1/current_to_best1/rand2 and binomial/exponential strategies. Coordinates seed one clamped member; more than twenty small-best-improvement generations can stop the run. O(population_size*p) storage; no global certificate.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::DifferentialEvolution optimizer;
+        std::print("{}\n",optimizer.options().max_generations); // 500
+    Title: References
+    - R. Storn and K. Price (1997), Differential Evolution - A Simple and Efficient Heuristic for global Optimization over Continuous Spaces, https://doi.org/10.1023/A:1008202821328
+    See also: DEOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`DEOptions`, optional
+        :param options: Method-specific controls; defaults are listed by DEOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::DifferentialEvolution optimizer;
+            std::print("{}\n",optimizer.options().max_generations); // 500
+        See also: optimize()
+        """
         _datamunge.DifferentialEvolution_swiginit(self, _datamunge.new_DifferentialEvolution(*args))
 
     def optimize(self, function, coordinates, lower_bound, upper_bound):
         r"""
-        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
-               ``coordinates`` in place to the best point found, and returns its value. The
-               initial ``coordinates`` (clamped into bounds) seed one member of the population.
+        Run DifferentialEvolution from the supplied point using the configured finite budget.
+        Box-constrained differential mutation/crossover with greedy trial replacement. Supports the declared rand1/best1/current_to_best1/rand2 and binomial/exponential strategies. Coordinates seed one clamped member; more than twenty small-best-improvement generations can stop the run. O(population_size*p) storage; no global certificate.
+        :type function: :py:class:`ArbitraryFunction`
+        :param function: Borrowed ArbitraryFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :type lower_bound: std::vector< double,std::allocator< double > >
+        :param lower_bound: Matching finite inclusive lower box limits.
+        :type upper_bound: std::vector< double,std::allocator< double > >
+        :param upper_bound: Matching finite inclusive upper limits, greater than lower limits.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument DifferentialEvolution::optimize: crossover_strategy must be 'binomial' or 'exponential'.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::DEOptions controls;controls.max_generations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::DifferentialEvolution(controls).optimize(f,x,std::vector<double>{-3,-3},std::vector<double>{3,3});
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), DEOptions
         """
         return _datamunge.DifferentialEvolution_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`DEOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.DifferentialEvolution_options(self)
     __swig_destroy__ = _datamunge.delete_DifferentialEvolution
 
 # Register DifferentialEvolution in _datamunge:
 _datamunge.DifferentialEvolution_swigregister(DifferentialEvolution)
 class GAOptions(object):
+    r"""
+    Configuration for GeneticAlgorithm; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::GAOptions o;
+        std::print("{}\n",o.max_generations); // 500
+    See also: GeneticAlgorithm
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     population_size = property(_datamunge.GAOptions_population_size_get, _datamunge.GAOptions_population_size_set)
     max_generations = property(_datamunge.GAOptions_max_generations_get, _datamunge.GAOptions_max_generations_set)
     crossover_rate = property(_datamunge.GAOptions_crossover_rate_get, _datamunge.GAOptions_crossover_rate_set)
-    mutation_rate = property(_datamunge.GAOptions_mutation_rate_get, _datamunge.GAOptions_mutation_rate_set, doc=r"""Per-gene probability of a Gaussian mutation.""")
-    mutation_std_dev = property(_datamunge.GAOptions_mutation_std_dev_get, _datamunge.GAOptions_mutation_std_dev_set, doc=r"""Mutation Gaussian standard deviation, as a fraction of each gene's [lower, upper] range.""")
-    selection_strategy = property(_datamunge.GAOptions_selection_strategy_get, _datamunge.GAOptions_selection_strategy_set, doc=r"""One of "tournament", "roulette" (fitness-proportionate), or "rank" (linear ranking).""")
+    mutation_rate = property(_datamunge.GAOptions_mutation_rate_get, _datamunge.GAOptions_mutation_rate_set)
+    mutation_std_dev = property(_datamunge.GAOptions_mutation_std_dev_get, _datamunge.GAOptions_mutation_std_dev_set)
+    selection_strategy = property(_datamunge.GAOptions_selection_strategy_get, _datamunge.GAOptions_selection_strategy_set)
     tournament_size = property(_datamunge.GAOptions_tournament_size_get, _datamunge.GAOptions_tournament_size_set)
-    crossover_strategy = property(_datamunge.GAOptions_crossover_strategy_get, _datamunge.GAOptions_crossover_strategy_set, doc=r"""One of "single_point", "uniform", or "blend" (BLX-alpha).""")
-    blend_alpha = property(_datamunge.GAOptions_blend_alpha_get, _datamunge.GAOptions_blend_alpha_set, doc=r"""Alpha parameter for BLX-alpha crossover, used only when crossover_strategy == "blend".""")
+    crossover_strategy = property(_datamunge.GAOptions_crossover_strategy_get, _datamunge.GAOptions_crossover_strategy_set)
+    blend_alpha = property(_datamunge.GAOptions_blend_alpha_get, _datamunge.GAOptions_blend_alpha_set)
     elitism = property(_datamunge.GAOptions_elitism_get, _datamunge.GAOptions_elitism_set)
     elite_count = property(_datamunge.GAOptions_elite_count_get, _datamunge.GAOptions_elite_count_set)
-    tolerance = property(_datamunge.GAOptions_tolerance_get, _datamunge.GAOptions_tolerance_set, doc=r"""Stops after the population best has improved by less than this for 20 consecutive generations.""")
+    tolerance = property(_datamunge.GAOptions_tolerance_get, _datamunge.GAOptions_tolerance_set)
     seed = property(_datamunge.GAOptions_seed_get, _datamunge.GAOptions_seed_set)
 
     def __init__(self):
@@ -7244,25 +13042,78 @@ class GAOptions(object):
 _datamunge.GAOptions_swigregister(GAOptions)
 class GeneticAlgorithm(object):
     r"""
-    A real-valued genetic algorithm on an ArbitraryFunction within a box constraint: a
-           population evolves across generations via selection, crossover, and mutation.
-           Independently configurable selection/crossover strategies and elitism give a
-           combinatorial family of GA variants under one interface. Derivative-free.
+    GeneticAlgorithm on the ArbitraryFunction callback interface.
+    Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::GeneticAlgorithm optimizer;
+        std::print("{}\n",optimizer.options().max_generations); // 500
+    Title: References
+    - J. H. Holland (1992 reprint), Adaptation in Natural and Artificial Systems, MIT Press, https://mitpress.mit.edu/9780262581110/adaptation-in-natural-and-artificial-systems/. This implementation uses real-valued operators, as specified above, rather than binary chromosomes.
+    See also: GAOptions, trace_optimize()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`GAOptions`, optional
+        :param options: Method-specific controls; defaults are listed by GAOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::GeneticAlgorithm optimizer;
+            std::print("{}\n",optimizer.options().max_generations); // 500
+        See also: optimize()
+        """
         _datamunge.GeneticAlgorithm_swiginit(self, _datamunge.new_GeneticAlgorithm(*args))
 
     def optimize(self, function, coordinates, lower_bound, upper_bound):
         r"""
-        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
-               ``coordinates`` in place to the best point found, and returns its value. The
-               initial ``coordinates`` (clamped into bounds) seed one member of the population.
+        Run GeneticAlgorithm from the supplied point using the configured finite budget.
+        Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
+        :type function: :py:class:`ArbitraryFunction`
+        :param function: Borrowed ArbitraryFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :type lower_bound: std::vector< double,std::allocator< double > >
+        :param lower_bound: Matching finite inclusive lower box limits.
+        :type upper_bound: std::vector< double,std::allocator< double > >
+        :param upper_bound: Matching finite inclusive upper limits, greater than lower limits.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument GeneticAlgorithm::optimize: population_size must be at least 2.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::GAOptions controls;controls.max_generations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::GeneticAlgorithm(controls).optimize(f,x,std::vector<double>{-3,-3},std::vector<double>{3,3});
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), GAOptions
         """
         return _datamunge.GeneticAlgorithm_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`GAOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.GeneticAlgorithm_options(self)
     __swig_destroy__ = _datamunge.delete_GeneticAlgorithm
 
 # Register GeneticAlgorithm in _datamunge:
@@ -7315,6 +13166,14 @@ class ACOR(object):
                initial ``coordinates`` (clamped into bounds) seed one member of the archive.
         """
         return _datamunge.ACOR_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this ACOR was configured with.
+        :rtype: :py:class:`ACOROptions`
+        :return: The stored options.
+        """
+        return _datamunge.ACOR_options(self)
     __swig_destroy__ = _datamunge.delete_ACOR
 
 # Register ACOR in _datamunge:
@@ -7365,6 +13224,14 @@ class ArtificialBeeColony(object):
                initial ``coordinates`` (clamped into bounds) seed one food source.
         """
         return _datamunge.ArtificialBeeColony_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this ArtificialBeeColony was configured with.
+        :rtype: :py:class:`ArtificialBeeColonyOptions`
+        :return: The stored options.
+        """
+        return _datamunge.ArtificialBeeColony_options(self)
     __swig_destroy__ = _datamunge.delete_ArtificialBeeColony
 
 # Register ArtificialBeeColony in _datamunge:
@@ -7418,6 +13285,14 @@ class CrossEntropyMethod(object):
                initial ``coordinates`` (clamped into bounds) seed the initial distribution mean.
         """
         return _datamunge.CrossEntropyMethod_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this CrossEntropyMethod was configured with.
+        :rtype: :py:class:`CrossEntropyMethodOptions`
+        :return: The stored options.
+        """
+        return _datamunge.CrossEntropyMethod_options(self)
     __swig_destroy__ = _datamunge.delete_CrossEntropyMethod
 
 # Register CrossEntropyMethod in _datamunge:
@@ -7475,6 +13350,14 @@ class CuckooSearch(object):
                initial ``coordinates`` (clamped into bounds) seed one nest of the population.
         """
         return _datamunge.CuckooSearch_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this CuckooSearch was configured with.
+        :rtype: :py:class:`CuckooSearchOptions`
+        :return: The stored options.
+        """
+        return _datamunge.CuckooSearch_options(self)
     __swig_destroy__ = _datamunge.delete_CuckooSearch
 
 # Register CuckooSearch in _datamunge:
@@ -7530,6 +13413,14 @@ class EstimationOfDistribution(object):
                initial ``coordinates`` (clamped into bounds) seed the initial Gaussian mean.
         """
         return _datamunge.EstimationOfDistribution_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this EstimationOfDistribution was configured with.
+        :rtype: :py:class:`EstimationOfDistributionOptions`
+        :return: The stored options.
+        """
+        return _datamunge.EstimationOfDistribution_options(self)
     __swig_destroy__ = _datamunge.delete_EstimationOfDistribution
 
 # Register EstimationOfDistribution in _datamunge:
@@ -7578,6 +13469,14 @@ class EvolutionStrategy(object):
                initial ``coordinates`` (clamped into bounds) seed one parent of the population.
         """
         return _datamunge.EvolutionStrategy_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this EvolutionStrategy was configured with.
+        :rtype: :py:class:`EvolutionStrategyOptions`
+        :return: The stored options.
+        """
+        return _datamunge.EvolutionStrategy_options(self)
     __swig_destroy__ = _datamunge.delete_EvolutionStrategy
 
 # Register EvolutionStrategy in _datamunge:
@@ -7627,6 +13526,14 @@ class FireflyAlgorithm(object):
                initial ``coordinates`` (clamped into bounds) seed one member of the population.
         """
         return _datamunge.FireflyAlgorithm_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this FireflyAlgorithm was configured with.
+        :rtype: :py:class:`FireflyAlgorithmOptions`
+        :return: The stored options.
+        """
+        return _datamunge.FireflyAlgorithm_options(self)
     __swig_destroy__ = _datamunge.delete_FireflyAlgorithm
 
 # Register FireflyAlgorithm in _datamunge:
@@ -7667,6 +13574,14 @@ class GreyWolfOptimizer(object):
                initial ``coordinates`` (clamped into bounds) seed one wolf of the population.
         """
         return _datamunge.GreyWolfOptimizer_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this GreyWolfOptimizer was configured with.
+        :rtype: :py:class:`GreyWolfOptimizerOptions`
+        :return: The stored options.
+        """
+        return _datamunge.GreyWolfOptimizer_options(self)
     __swig_destroy__ = _datamunge.delete_GreyWolfOptimizer
 
 # Register GreyWolfOptimizer in _datamunge:
@@ -7719,6 +13634,14 @@ class HarmonySearch(object):
                initial ``coordinates`` (clamped into bounds) seed one member of the harmony memory.
         """
         return _datamunge.HarmonySearch_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this HarmonySearch was configured with.
+        :rtype: :py:class:`HarmonySearchOptions`
+        :return: The stored options.
+        """
+        return _datamunge.HarmonySearch_options(self)
     __swig_destroy__ = _datamunge.delete_HarmonySearch
 
 # Register HarmonySearch in _datamunge:
@@ -7761,6 +13684,14 @@ class ParallelTempering(object):
 
     def optimize(self, function, coordinates):
         return _datamunge.ParallelTempering_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        The options this ParallelTempering was configured with.
+        :rtype: :py:class:`ParallelTemperingOptions`
+        :return: The stored options.
+        """
+        return _datamunge.ParallelTempering_options(self)
     __swig_destroy__ = _datamunge.delete_ParallelTempering
 
 # Register ParallelTempering in _datamunge:
@@ -7800,11 +13731,32 @@ class WhaleOptimization(object):
                initial ``coordinates`` (clamped into bounds) seed one whale of the population.
         """
         return _datamunge.WhaleOptimization_optimize(self, function, coordinates, lower_bound, upper_bound)
+
+    def options(self):
+        r"""
+        The options this WhaleOptimization was configured with.
+        :rtype: :py:class:`WhaleOptimizationOptions`
+        :return: The stored options.
+        """
+        return _datamunge.WhaleOptimization_options(self)
     __swig_destroy__ = _datamunge.delete_WhaleOptimization
 
 # Register WhaleOptimization in _datamunge:
 _datamunge.WhaleOptimization_swigregister(WhaleOptimization)
 class FISTAOptions(object):
+    r"""
+    Configuration for FISTA; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::FISTAOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: FISTA
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.FISTAOptions_step_size_get, _datamunge.FISTAOptions_step_size_set)
@@ -7818,19 +13770,93 @@ class FISTAOptions(object):
 # Register FISTAOptions in _datamunge:
 _datamunge.FISTAOptions_swigregister(FISTAOptions)
 class FISTA(object):
+    r"""
+    FISTA on the ProximalFunction callback interface.
+    Classical t recurrence (1+sqrt(1+4*t^2))/2 and extrapolated gradient points, followed by the supplied proximal map. Stops on successive accepted-coordinate displacement. No adaptive restart, backtracking or monotonicity safeguard. Supply the correct proximal dimensions and a rate at most 1/L for the standard convex bound.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::FISTA optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - A. Beck and M. Teboulle (2009), A Fast Iterative Shrinkage-Thresholding Algorithm for Linear Inverse Problems, https://doi.org/10.1137/080716542
+    See also: FISTAOptions, trace_optimize()
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`FISTAOptions`, optional
+        :param options: Method-specific controls; defaults are listed by FISTAOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::FISTA optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.FISTA_swiginit(self, _datamunge.new_FISTA(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run FISTA from the supplied point using the configured finite budget.
+        Classical t recurrence (1+sqrt(1+4*t^2))/2 and extrapolated gradient points, followed by the supplied proximal map. Stops on successive accepted-coordinate displacement. No adaptive restart, backtracking or monotonicity safeguard. Supply the correct proximal dimensions and a rate at most 1/L for the standard convex bound.
+        :type function: :py:class:`ProximalFunction`
+        :param function: Borrowed ProximalFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument FISTA: step_size must be positive.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::L1LeastSquaresObjective f({{1}},{3},1);
+            dm::optim::FISTAOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0};
+            const auto value=dm::optim::FISTA(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), FISTAOptions
+        """
         return _datamunge.FISTA_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`FISTAOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.FISTA_options(self)
     __swig_destroy__ = _datamunge.delete_FISTA
 
 # Register FISTA in _datamunge:
 _datamunge.FISTA_swigregister(FISTA)
 class ProximalGradientOptions(object):
+    r"""
+    Configuration for ProximalGradient; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::ProximalGradientOptions o;
+        std::print("{}\n",o.max_iterations); // 10000
+    See also: ProximalGradient
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.ProximalGradientOptions_step_size_get, _datamunge.ProximalGradientOptions_step_size_set)
@@ -7844,21 +13870,93 @@ class ProximalGradientOptions(object):
 # Register ProximalGradientOptions in _datamunge:
 _datamunge.ProximalGradientOptions_swigregister(ProximalGradientOptions)
 class ProximalGradient(object):
-    r"""Proximal gradient descent for composite objectives such as lasso."""
+    r"""
+    ProximalGradient on the ProximalFunction callback interface.
+    ISTA update prox(x-step_size*gradient(x),step_size), with gradient of the smooth part only. Stops on coordinate displacement norm. There is no Lipschitz estimation or backtracking; caller chooses a stable rate. The returned objective includes both smooth and nonsmooth parts.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::ProximalGradient optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 10000
+    Title: References
+    - A. Beck and M. Teboulle (2009), A Fast Iterative Shrinkage-Thresholding Algorithm for Linear Inverse Problems, https://doi.org/10.1137/080716542
+    See also: ProximalGradientOptions, trace_optimize()
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`ProximalGradientOptions`, optional
+        :param options: Method-specific controls; defaults are listed by ProximalGradientOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::ProximalGradient optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 10000
+        See also: optimize()
+        """
         _datamunge.ProximalGradient_swiginit(self, _datamunge.new_ProximalGradient(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run ProximalGradient from the supplied point using the configured finite budget.
+        ISTA update prox(x-step_size*gradient(x),step_size), with gradient of the smooth part only. Stops on coordinate displacement norm. There is no Lipschitz estimation or backtracking; caller chooses a stable rate. The returned objective includes both smooth and nonsmooth parts.
+        :type function: :py:class:`ProximalFunction`
+        :param function: Borrowed ProximalFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument ProximalGradient: step_size must be positive; ProximalGradient: proximal returned wrong dimension.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::L1LeastSquaresObjective f({{1}},{3},1);
+            dm::optim::ProximalGradientOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0};
+            const auto value=dm::optim::ProximalGradient(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), ProximalGradientOptions
+        """
         return _datamunge.ProximalGradient_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`ProximalGradientOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.ProximalGradient_options(self)
     __swig_destroy__ = _datamunge.delete_ProximalGradient
 
 # Register ProximalGradient in _datamunge:
 _datamunge.ProximalGradient_swigregister(ProximalGradient)
 class LevenbergMarquardtOptions(object):
+    r"""
+    Configuration for LevenbergMarquardt; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::LevenbergMarquardtOptions o;
+        std::print("{}\n",o.max_iterations); // 200
+    See also: LevenbergMarquardt
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     initial_damping = property(_datamunge.LevenbergMarquardtOptions_initial_damping_get, _datamunge.LevenbergMarquardtOptions_initial_damping_set)
@@ -7872,19 +13970,93 @@ class LevenbergMarquardtOptions(object):
 # Register LevenbergMarquardtOptions in _datamunge:
 _datamunge.LevenbergMarquardtOptions_swigregister(LevenbergMarquardtOptions)
 class LevenbergMarquardt(object):
+    r"""
+    LevenbergMarquardt on the ResidualFunction callback interface.
+    Forms J transpose J plus scalar damping*I and solves by unpivoted elimination. Accepts only strict reductions of half residual SSE, multiplying damping by .3 on acceptance and 10 on rejection. Tests proposed step norm even after rejection. A small rejected step is not a gradient certificate; no parameter constraints. O(np^2+p^3) work.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::LevenbergMarquardt optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 200
+    Title: References
+    - K. Levenberg (1944), A Method for the Solution of Certain Non-Linear Problems in Least Squares, https://doi.org/10.1090/qam/10666; D. W. Marquardt (1963), An Algorithm for Least-Squares Estimation of Nonlinear Parameters, https://doi.org/10.1137/0111030
+    See also: LevenbergMarquardtOptions, trace_optimize()
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`LevenbergMarquardtOptions`, optional
+        :param options: Method-specific controls; defaults are listed by LevenbergMarquardtOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::LevenbergMarquardt optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 200
+        See also: optimize()
+        """
         _datamunge.LevenbergMarquardt_swiginit(self, _datamunge.new_LevenbergMarquardt(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run LevenbergMarquardt from the supplied point using the configured finite budget.
+        Forms J transpose J plus scalar damping*I and solves by unpivoted elimination. Accepts only strict reductions of half residual SSE, multiplying damping by .3 on acceptance and 10 on rejection. Tests proposed step norm even after rejection. A small rejected step is not a gradient certificate; no parameter constraints. O(np^2+p^3) work.
+        :type function: :py:class:`ResidualFunction`
+        :param function: Borrowed ResidualFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates (half residual SSE); not a stop-status code.
+        :raises: std::invalid_argument LevenbergMarquardt: initial_damping must be positive.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto data=dm::optim::optimization_curve_data();dm::optim::CurveResidual f(data);
+            dm::optim::LevenbergMarquardtOptions controls;controls.max_iterations=5;
+            std::vector<double> x{2,.5};
+            const auto value=dm::optim::LevenbergMarquardt(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), LevenbergMarquardtOptions
+        """
         return _datamunge.LevenbergMarquardt_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`LevenbergMarquardtOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.LevenbergMarquardt_options(self)
     __swig_destroy__ = _datamunge.delete_LevenbergMarquardt
 
 # Register LevenbergMarquardt in _datamunge:
 _datamunge.LevenbergMarquardt_swigregister(LevenbergMarquardt)
 class NewtonOptions(object):
+    r"""
+    Configuration for Newton; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::NewtonOptions o;
+        std::print("{}\n",o.max_iterations); // 100
+    See also: Newton
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     max_iterations = property(_datamunge.NewtonOptions_max_iterations_get, _datamunge.NewtonOptions_max_iterations_set)
@@ -7898,19 +14070,93 @@ class NewtonOptions(object):
 # Register NewtonOptions in _datamunge:
 _datamunge.NewtonOptions_swigregister(NewtonOptions)
 class Newton(object):
+    r"""
+    Newton on the HessianFunction callback interface.
+    Adds fixed damping to the supplied Hessian diagonal, solves with partial-pivot Gaussian elimination, and takes a full step. This is not a globalised line-search method; indefinite or nearly singular Hessians can increase the loss or produce huge steps. Stops on gradient norm. Dense O(p^3) solve/O(p^2) storage.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::Newton optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 100
+    Title: References
+    - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+    See also: NewtonOptions, trace_optimize()
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`NewtonOptions`, optional
+        :param options: Method-specific controls; defaults are listed by NewtonOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::Newton optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 100
+        See also: optimize()
+        """
         _datamunge.Newton_swiginit(self, _datamunge.new_Newton(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run Newton from the supplied point using the configured finite budget.
+        Adds fixed damping to the supplied Hessian diagonal, solves with partial-pivot Gaussian elimination, and takes a full step. This is not a globalised line-search method; indefinite or nearly singular Hessians can increase the loss or produce huge steps. Stops on gradient norm. Dense O(p^3) solve/O(p^2) storage.
+        :type function: :py:class:`HessianFunction`
+        :param function: Borrowed HessianFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument Newton: Hessian has wrong dimension; Newton: singular Hessian.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::NewtonOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::Newton(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), NewtonOptions
+        """
         return _datamunge.Newton_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`NewtonOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.Newton_options(self)
     __swig_destroy__ = _datamunge.delete_Newton
 
 # Register Newton in _datamunge:
 _datamunge.Newton_swigregister(Newton)
 class TrustRegionNewtonOptions(object):
+    r"""
+    Configuration for TrustRegionNewton; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::TrustRegionNewtonOptions o;
+        std::print("{}\n",o.max_iterations); // 200
+    See also: TrustRegionNewton
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     initial_radius = property(_datamunge.TrustRegionNewtonOptions_initial_radius_get, _datamunge.TrustRegionNewtonOptions_initial_radius_set)
@@ -7925,19 +14171,93 @@ class TrustRegionNewtonOptions(object):
 # Register TrustRegionNewtonOptions in _datamunge:
 _datamunge.TrustRegionNewtonOptions_swigregister(TrustRegionNewtonOptions)
 class TrustRegionNewton(object):
+    r"""
+    TrustRegionNewton on the HessianFunction callback interface.
+    Cauchy-point variant: clips a steepest-descent ray using gHg and the current radius. Accepts any strict objective decrease and doubles the radius, otherwise halves it. It does not compute a model-agreement ratio, dogleg step or exact trust-region subproblem. Stops on gradient norm or tiny radius; O(p^2) Hessian work.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::TrustRegionNewton optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 200
+    Title: References
+    - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+    See also: TrustRegionNewtonOptions, trace_optimize()
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`TrustRegionNewtonOptions`, optional
+        :param options: Method-specific controls; defaults are listed by TrustRegionNewtonOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::TrustRegionNewton optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 200
+        See also: optimize()
+        """
         _datamunge.TrustRegionNewton_swiginit(self, _datamunge.new_TrustRegionNewton(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run TrustRegionNewton from the supplied point using the configured finite budget.
+        Cauchy-point variant: clips a steepest-descent ray using gHg and the current radius. Accepts any strict objective decrease and doubles the radius, otherwise halves it. It does not compute a model-agreement ratio, dogleg step or exact trust-region subproblem. Stops on gradient norm or tiny radius; O(p^2) Hessian work.
+        :type function: :py:class:`HessianFunction`
+        :param function: Borrowed HessianFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument TrustRegionNewton: initial_radius must be positive.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::QuadraticObjective f({2,8},{1,-2});
+            dm::optim::TrustRegionNewtonOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::TrustRegionNewton(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), TrustRegionNewtonOptions
+        """
         return _datamunge.TrustRegionNewton_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`TrustRegionNewtonOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.TrustRegionNewton_options(self)
     __swig_destroy__ = _datamunge.delete_TrustRegionNewton
 
 # Register TrustRegionNewton in _datamunge:
 _datamunge.TrustRegionNewton_swigregister(TrustRegionNewton)
 class AugmentedLagrangianOptions(object):
+    r"""
+    Configuration for AugmentedLagrangian; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::AugmentedLagrangianOptions o;
+        std::print("{}\n",o.max_outer_iterations); // 50
+    See also: AugmentedLagrangian
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.AugmentedLagrangianOptions_step_size_get, _datamunge.AugmentedLagrangianOptions_step_size_set)
@@ -7953,19 +14273,93 @@ class AugmentedLagrangianOptions(object):
 # Register AugmentedLagrangianOptions in _datamunge:
 _datamunge.AugmentedLagrangianOptions_swigregister(AugmentedLagrangianOptions)
 class AugmentedLagrangian(object):
+    r"""
+    AugmentedLagrangian on the EqualityConstrainedFunction callback interface.
+    Uses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::AugmentedLagrangian optimizer;
+        std::print("{}\n",optimizer.options().max_outer_iterations); // 50
+    Title: References
+    - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+    See also: AugmentedLagrangianOptions, trace_optimize()
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`AugmentedLagrangianOptions`, optional
+        :param options: Method-specific controls; defaults are listed by AugmentedLagrangianOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::AugmentedLagrangian optimizer;
+            std::print("{}\n",optimizer.options().max_outer_iterations); // 50
+        See also: optimize()
+        """
         _datamunge.AugmentedLagrangian_swiginit(self, _datamunge.new_AugmentedLagrangian(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run AugmentedLagrangian from the supplied point using the configured finite budget.
+        Uses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate.
+        :type function: :py:class:`EqualityConstrainedFunction`
+        :param function: Borrowed EqualityConstrainedFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument AugmentedLagrangian: positive step_size and penalty required.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::EqualityQuadratic f({2,0},1);
+            dm::optim::AugmentedLagrangianOptions controls;controls.max_outer_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::AugmentedLagrangian(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), AugmentedLagrangianOptions
+        """
         return _datamunge.AugmentedLagrangian_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`AugmentedLagrangianOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.AugmentedLagrangian_options(self)
     __swig_destroy__ = _datamunge.delete_AugmentedLagrangian
 
 # Register AugmentedLagrangian in _datamunge:
 _datamunge.AugmentedLagrangian_swigregister(AugmentedLagrangian)
 class SQPOptions(object):
+    r"""
+    Configuration for SQP; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::SQPOptions o;
+        std::print("{}\n",o.max_iterations); // 200
+    See also: SQP
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.SQPOptions_step_size_get, _datamunge.SQPOptions_step_size_set)
@@ -7980,19 +14374,92 @@ class SQPOptions(object):
 # Register SQPOptions in _datamunge:
 _datamunge.SQPOptions_swigregister(SQPOptions)
 class SQP(object):
+    r"""
+    SQP on the EqualityConstrainedFunction callback interface.
+    Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::SQP optimizer;
+        std::print("{}\n",optimizer.options().max_iterations); // 200
+    Title: References
+    - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+    See also: SQPOptions, trace_optimize()
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`SQPOptions`, optional
+        :param options: Method-specific controls; defaults are listed by SQPOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::SQP optimizer;
+            std::print("{}\n",optimizer.options().max_iterations); // 200
+        See also: optimize()
+        """
         _datamunge.SQP_swiginit(self, _datamunge.new_SQP(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run SQP from the supplied point using the configured finite budget.
+        Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient.
+        :type function: :py:class:`EqualityConstrainedFunction`
+        :param function: Borrowed EqualityConstrainedFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::EqualityQuadratic f({2,0},1);
+            dm::optim::SQPOptions controls;controls.max_iterations=5;
+            std::vector<double> x{0,0};
+            const auto value=dm::optim::SQP(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), SQPOptions
+        """
         return _datamunge.SQP_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`SQPOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.SQP_options(self)
     __swig_destroy__ = _datamunge.delete_SQP
 
 # Register SQP in _datamunge:
 _datamunge.SQP_swigregister(SQP)
 class InteriorPointOptions(object):
+    r"""
+    Configuration for InteriorPoint; fields retain their documented native defaults.
+    Supply finite values in the supported ranges. Controls are copied at construction;
+    validation, stopping and loss scaling belong to optimize().
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::InteriorPointOptions o;
+        std::print("{}\n",o.max_outer_iterations); // 20
+    See also: InteriorPoint
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     step_size = property(_datamunge.InteriorPointOptions_step_size_get, _datamunge.InteriorPointOptions_step_size_set)
@@ -8008,29 +14475,113 @@ class InteriorPointOptions(object):
 # Register InteriorPointOptions in _datamunge:
 _datamunge.InteriorPointOptions_swigregister(InteriorPointOptions)
 class InteriorPoint(object):
+    r"""
+    InteriorPoint on the InequalityConstrainedFunction callback interface.
+    Gradient steps on f-mu*sum(log(-c)) with c<0. Backtracks only for strict feasibility, not barrier-objective decrease, then decays mu after each fixed inner budget. Requires a strictly feasible start and can fail later when feasible steps underflow. No KKT or barrier-stationarity stop test; no phase-I feasibility search.
+    The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
+    coordinates mutate in place and can retain a partial state if a callback throws.
+    Calls use local optimizer state and propagate callback exceptions; sharing a mutable
+    objective across threads requires external synchronisation. Normal return alone
+    is not a uniform convergence certificate.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::optim::InteriorPoint optimizer;
+        std::print("{}\n",optimizer.options().max_outer_iterations); // 20
+    Title: References
+    - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+    See also: InteriorPointOptions, trace_optimize()
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Store a copy of the controls without running the objective.
+        :type options: :py:class:`InteriorPointOptions`, optional
+        :param options: Method-specific controls; defaults are listed by InteriorPointOptions.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::optim::InteriorPoint optimizer;
+            std::print("{}\n",optimizer.options().max_outer_iterations); // 20
+        See also: optimize()
+        """
         _datamunge.InteriorPoint_swiginit(self, _datamunge.new_InteriorPoint(*args))
 
     def optimize(self, function, coordinates):
+        r"""
+        Run InteriorPoint from the supplied point using the configured finite budget.
+        Gradient steps on f-mu*sum(log(-c)) with c<0. Backtracks only for strict feasibility, not barrier-objective decrease, then decays mu after each fixed inner budget. Requires a strictly feasible start and can fail later when feasible steps underflow. No KKT or barrier-stationarity stop test; no phase-I feasibility search.
+        :type function: :py:class:`InequalityConstrainedFunction`
+        :param function: Borrowed InequalityConstrainedFunction with matching finite output shapes.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates: Owned-by-caller finite start; overwritten with the native returned point.
+        :rtype: float
+        :return: Objective at the native returned coordinates; not a stop-status code.
+        :raises: std::invalid_argument InteriorPoint: starting point must be strictly feasible.
+        :raises: std::runtime_error InteriorPoint: unable to find feasible step.
+        :raises: std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::optim::NonnegativeQuadratic f({-1,2});
+            dm::optim::InteriorPointOptions controls;controls.max_outer_iterations=1;
+            std::vector<double> x{.5,.5};
+            const auto value=dm::optim::InteriorPoint(controls).optimize(f,x);
+            std::print("{}\n",std::isfinite(value)); // true
+        See also: trace_optimize(), InteriorPointOptions
+        """
         return _datamunge.InteriorPoint_optimize(self, function, coordinates)
+
+    def options(self):
+        r"""
+        Borrow this optimizer's stored configuration.
+        :rtype: :py:class:`InteriorPointOptions`
+        :return: Const option reference, valid during this object's lifetime; no mutation.
+        """
+        return _datamunge.InteriorPoint_options(self)
     __swig_destroy__ = _datamunge.delete_InteriorPoint
 
 # Register InteriorPoint in _datamunge:
 _datamunge.InteriorPoint_swigregister(InteriorPoint)
 class BayesianSurrogate(object):
-    r"""Surrogate/acquisition extension point for bounded Bayesian optimization."""
+    r"""
+    Surrogate/acquisition extension point for BayesianOptimization.
+
+    A surrogate is refitted to all observations before every proposal. acquisition() scores a
+    candidate point; the optimizer evaluates the objective where the score is largest.
+    RBFGaussianProcessSurrogate is the built-in implementation.
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     __swig_destroy__ = _datamunge.delete_BayesianSurrogate
 
     def fit(self, points, values):
+        r"""
+        Fits the surrogate to the observations so far.
+        :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param points:  Evaluated points, one per observation.
+        :type values: std::vector< double,std::allocator< double > >
+        :param values:  Objective values at ``points``.
+        """
         return _datamunge.BayesianSurrogate_fit(self, points, values)
 
     def acquisition(self, point, incumbent):
+        r"""
+        Scores a candidate; larger means more worth evaluating.
+        :type point: std::vector< double,std::allocator< double > >
+        :param point:      Candidate point.
+        :type incumbent: float
+        :param incumbent:  Smallest objective value observed so far.
+        :rtype: float
+        :return: The acquisition value.
+        """
         return _datamunge.BayesianSurrogate_acquisition(self, point, incumbent)
 
     def __init__(self):
@@ -8047,11 +14598,18 @@ class BayesianSurrogate(object):
 # Register BayesianSurrogate in _datamunge:
 _datamunge.BayesianSurrogate_swigregister(BayesianSurrogate)
 class BayesianOptimizationOptions(object):
+    r"""Settings for BayesianOptimization."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    initial_samples = property(_datamunge.BayesianOptimizationOptions_initial_samples_get, _datamunge.BayesianOptimizationOptions_initial_samples_set)
-    max_iterations = property(_datamunge.BayesianOptimizationOptions_max_iterations_get, _datamunge.BayesianOptimizationOptions_max_iterations_set)
-    seed = property(_datamunge.BayesianOptimizationOptions_seed_get, _datamunge.BayesianOptimizationOptions_seed_set)
+    initial_samples = property(_datamunge.BayesianOptimizationOptions_initial_samples_get, _datamunge.BayesianOptimizationOptions_initial_samples_set, doc=r"""Uniform random points evaluated before the surrogate is first fitted (at least 1).""")
+    max_iterations = property(_datamunge.BayesianOptimizationOptions_max_iterations_get, _datamunge.BayesianOptimizationOptions_max_iterations_set, doc=r"""Surrogate-guided evaluations after the initial design.""")
+    seed = property(_datamunge.BayesianOptimizationOptions_seed_get, _datamunge.BayesianOptimizationOptions_seed_set, doc=r"""Seed of the random design and the candidate draws.""")
+    candidates = property(_datamunge.BayesianOptimizationOptions_candidates_get, _datamunge.BayesianOptimizationOptions_candidates_set, doc=r"""Uniform random candidates scored by the acquisition function per iteration (at least 1).""")
+    refine_iterations = property(_datamunge.BayesianOptimizationOptions_refine_iterations_get, _datamunge.BayesianOptimizationOptions_refine_iterations_set, doc=r"""
+    Compass-search step halvings that polish the best candidate on the acquisition
+           surface; 0 keeps the best random candidate as it is.
+    """)
 
     def __init__(self):
         _datamunge.BayesianOptimizationOptions_swiginit(self, _datamunge.new_BayesianOptimizationOptions())
@@ -8059,33 +14617,304 @@ class BayesianOptimizationOptions(object):
 
 # Register BayesianOptimizationOptions in _datamunge:
 _datamunge.BayesianOptimizationOptions_swigregister(BayesianOptimizationOptions)
+class BayesianOptimizationResult(object):
+    r"""Everything a BayesianOptimization::run() evaluated, in order."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    best_point = property(_datamunge.BayesianOptimizationResult_best_point_get, _datamunge.BayesianOptimizationResult_best_point_set, doc=r"""The evaluated point with the smallest value.""")
+    best_value = property(_datamunge.BayesianOptimizationResult_best_value_get, _datamunge.BayesianOptimizationResult_best_value_set, doc=r"""The smallest observed value.""")
+    points = property(_datamunge.BayesianOptimizationResult_points_get, _datamunge.BayesianOptimizationResult_points_set, doc=r"""Every evaluated point: the initial design first, then one per iteration.""")
+    values = property(_datamunge.BayesianOptimizationResult_values_get, _datamunge.BayesianOptimizationResult_values_set, doc=r"""The objective value at each point.""")
+    best_values = property(_datamunge.BayesianOptimizationResult_best_values_get, _datamunge.BayesianOptimizationResult_best_values_set, doc=r"""Running minimum of 'values' after each evaluation.""")
+    acquisition_values = property(_datamunge.BayesianOptimizationResult_acquisition_values_get, _datamunge.BayesianOptimizationResult_acquisition_values_set, doc=r"""The acquisition value of each proposed point (one per iteration, none for the design).""")
+
+    def __init__(self):
+        _datamunge.BayesianOptimizationResult_swiginit(self, _datamunge.new_BayesianOptimizationResult())
+    __swig_destroy__ = _datamunge.delete_BayesianOptimizationResult
+
+# Register BayesianOptimizationResult in _datamunge:
+_datamunge.BayesianOptimizationResult_swigregister(BayesianOptimizationResult)
 class BayesianOptimization(object):
+    r"""
+    Minimises an expensive black-box function on a box with few evaluations.
+
+    The loop is:
+    1. evaluate `initial_samples` points drawn uniformly in `[lower, upper]`;
+    2. repeat `max_iterations` times: fit the surrogate to all observations, score `candidates`
+       uniform random points with BayesianSurrogate::acquisition() (the incumbent being the
+       smallest value so far), polish the best one by compass search on the acquisition (steps
+       of 10% of each side, halved `refine_iterations` times, clipped to the box), and evaluate
+       the objective there.
+
+    Only point evaluations of the objective are used, so it suits expensive simulations,
+    experiments and hyperparameter tuning where each evaluation costs far more than the
+    surrogate fit.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        struct Bowl : dm::optim::ArbitraryFunction {
+            double evaluate(const std::vector<double>& x) override { return (x[0] - 1.0) * (x[0] - 1.0); }
+        } bowl;
+        dm::optim::RBFGaussianProcessSurrogate gp({.fit_hyperparameters = true});
+        const auto result = dm::optim::BayesianOptimization({.initial_samples = 4, .max_iterations = 10})
+                                .run(bowl, {-3.0}, {3.0}, gp);
+        std::print("{:.3f} after {} evaluations\n", result.best_point[0], result.values.size());  // 1.002 after 14 evaluations
+    See also: RBFGaussianProcessSurrogate, expected_improvement()
+    Title: References
+    - D. R. Jones, M. Schonlau and W. J. Welch (1998). "Efficient global optimization of expensive
+      black-box functions". Journal of Global Optimization 13, 455–492.
+    - B. Shahriari et al. (2016). "Taking the human out of the loop: a review of Bayesian
+      optimization". Proceedings of the IEEE 104(1), 148–175.
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Creates the optimizer.
+        :type options: :py:class:`BayesianOptimizationOptions`, optional
+        :param options:  Design size, iteration count, seed and acquisition search settings.
+        """
         _datamunge.BayesianOptimization_swiginit(self, _datamunge.new_BayesianOptimization(*args))
 
+    def run(self, function, lower, upper, surrogate):
+        r"""
+        Runs the loop and records every evaluation.
+        :type function: :py:class:`ArbitraryFunction`
+        :param function:   Objective to minimise.
+        :type lower: std::vector< double,std::allocator< double > >
+        :param lower:      Lower corner of the box.
+        :type upper: std::vector< double,std::allocator< double > >
+        :param upper:      Upper corner of the box (each entry larger than in ``lower)``.
+        :type surrogate: :py:class:`BayesianSurrogate`
+        :param surrogate:  Surrogate refitted before every proposal.
+        :rtype: :py:class:`BayesianOptimizationResult`
+        :return: The evaluations and the best point.
+        :raises: std::invalid_argument  If the bounds are empty, differ in length or are not increasing.
+        """
+        return _datamunge.BayesianOptimization_run(self, function, lower, upper, surrogate)
+
     def optimize(self, function, coordinates, lower, upper, surrogate):
+        r"""
+        Runs the loop and returns only the best value.
+        :type function: :py:class:`ArbitraryFunction`
+        :param function:     Objective to minimise.
+        :type coordinates: std::vector< double,std::allocator< double > >
+        :param coordinates:  Output: the best point (its length must equal the bounds').
+        :type lower: std::vector< double,std::allocator< double > >
+        :param lower:        Lower corner of the box.
+        :type upper: std::vector< double,std::allocator< double > >
+        :param upper:        Upper corner of the box.
+        :type surrogate: :py:class:`BayesianSurrogate`
+        :param surrogate:    Surrogate refitted before every proposal.
+        :rtype: float
+        :return: The smallest observed value.
+        :raises: std::invalid_argument  If the bounds do not match ``coordinates`` or are not increasing.
+        """
         return _datamunge.BayesianOptimization_optimize(self, function, coordinates, lower, upper, surrogate)
+
+    def options(self):
+        r"""
+        The options this BayesianOptimization was configured with.
+        :rtype: :py:class:`BayesianOptimizationOptions`
+        :return: The stored options.
+        """
+        return _datamunge.BayesianOptimization_options(self)
     __swig_destroy__ = _datamunge.delete_BayesianOptimization
 
 # Register BayesianOptimization in _datamunge:
 _datamunge.BayesianOptimization_swigregister(BayesianOptimization)
+
+def expected_improvement(mean, sd, incumbent, exploration=0.0):
+    r"""
+    Expected improvement of a Gaussian prediction below an incumbent (minimisation).
+
+    For N(,^2):math:`and target \f$t=\text{incumbent}-\xi`,
+    :math:`\operatorname{E}\max(t-Y,0)=(t-\mu)\Phi(u)+\sigma\varphi(u)` with =(t-)/:math:`. @param mean         Predicted mean`:math:`. @param sd           Predicted standard deviation`:math:`; 0 gives`(t-,0):math:`. @param incumbent    Smallest value observed so far. @param exploration  Margin`:math:`an improvement must exceed. @return The expected improvement (never negative). @par Example @code std::print("{:.4f}\n", dm::optim::expected_improvement(0.0, 1.0, 0.0));  // 0.3989 = phi(0)`
+    """
+    return _datamunge.expected_improvement(mean, sd, incumbent, exploration)
+
+def probability_of_improvement(mean, sd, incumbent, exploration=0.0):
+    r"""
+    Probability that a Gaussian prediction falls below incumbent − exploration.
+    :type mean: float
+    :param mean:         Predicted mean :math:`\mu`.
+    :type sd: float
+    :param sd:           Predicted standard deviation; 0 gives 0 or 1.
+    :type incumbent: float
+    :param incumbent:    Smallest value observed so far.
+    :type exploration: float, optional
+    :param exploration:  Margin :math:`\xi\ge0`.
+    :rtype: float
+    :return: :math:`\Phi\big((\text{incumbent}-\xi-\mu)/\sigma\big)`.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        std::print("{:.4f}\n", dm::optim::probability_of_improvement(1.0, 1.0, 0.0));  // 0.1587
+    """
+    return _datamunge.probability_of_improvement(mean, sd, incumbent, exploration)
+class SurrogatePrediction(object):
+    r"""The Gaussian-process posterior of the objective at one point."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mean = property(_datamunge.SurrogatePrediction_mean_get, _datamunge.SurrogatePrediction_mean_set)
+    sd = property(_datamunge.SurrogatePrediction_sd_get, _datamunge.SurrogatePrediction_sd_set)
+
+    def __init__(self):
+        _datamunge.SurrogatePrediction_swiginit(self, _datamunge.new_SurrogatePrediction())
+    __swig_destroy__ = _datamunge.delete_SurrogatePrediction
+
+# Register SurrogatePrediction in _datamunge:
+_datamunge.SurrogatePrediction_swigregister(SurrogatePrediction)
 class RBFGaussianProcessSurrogate(BayesianSurrogate):
-    r"""Vector-native RBF Gaussian-process surrogate with expected-improvement acquisition."""
+    r"""
+    Exact Gaussian-process regression surrogate with the squared-exponential kernel
+           (-x-x'^2/2^2):math:`. fit() Cholesky-factors \f$K+\sigma_n^2I=LL^\top` once and solves for
+    :math:`\alpha=(K+\sigma_n^2I)^{-1}(y-m)`; predict() then needs one forward substitution per point:
+    mean +k_*^:math:`and variance \f$s-\lVert L^{-1}k_*\rVert^2`.
+
+    The two-argument constructor keeps the original fixed setup: zero prior mean, unit signal
+    variance, no normalisation or fitting, expected improvement. The options constructor adds
+    value normalisation, marginal-likelihood fitting of the hyperparameters and other acquisitions.
+    The kernel is isotropic, so the inputs should be on comparable scales.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::optim::RBFGaussianProcessSurrogate gp(1.0, 0.0);
+        gp.fit({{0.0}, {2.0}}, {1.0, -1.0});
+        const auto p = gp.predict({1.0});
+        std::print("{:.4f} {:.4f}\n", p.mean, p.sd);  // 0.0000 0.5933
+    See also: BayesianOptimization, expected_improvement()
+    Title: References
+    - C. E. Rasmussen and C. K. I. Williams (2006). *Gaussian Processes for Machine Learning*,
+      chapters 2 and 5. MIT Press.
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, length_scale=1.0, noise=1e-6):
+        r"""
+        Fixed-hyperparameter surrogate with expected improvement.
+        :type length_scale: float, optional
+        :param length_scale:  Kernel length scale :math:`\ell>0`.
+        :type noise: float, optional
+        :param noise:         Noise variance added to the diagonal (:math:`\ge0`).
+        :raises: std::invalid_argument  If ``length_scale`` is not positive or ``noise`` is negative.
+        """
         _datamunge.RBFGaussianProcessSurrogate_swiginit(self, _datamunge.new_RBFGaussianProcessSurrogate(length_scale, noise))
 
     def fit(self, points, values):
+        r"""
+        Fits the GP to the observations (refitting hyperparameters when configured).
+        :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param points:  Training points, all of one dimension.
+        :type values: std::vector< double,std::allocator< double > >
+        :param values:  Objective values.
+        :raises: std::invalid_argument  If the data are empty, mismatched or of mixed dimension.
+        """
         return _datamunge.RBFGaussianProcessSurrogate_fit(self, points, values)
 
     def acquisition(self, point, incumbent):
+        r"""
+        The configured acquisition at ``point``.
+        :type point: std::vector< double,std::allocator< double > >
+        :param point:      Candidate point.
+        :type incumbent: float
+        :param incumbent:  Smallest observed value.
+        :rtype: float
+        :return: The acquisition value (0 before fitting).
+        :raises: std::invalid_argument  If ``point`` has the wrong dimension.
+        """
         return _datamunge.RBFGaussianProcessSurrogate_acquisition(self, point, incumbent)
+
+    def predict(self, point):
+        r"""
+        Posterior mean and standard deviation at ``point``.
+        :type point: std::vector< double,std::allocator< double > >
+        :param point:  Query point.
+        :rtype: :py:class:`SurrogatePrediction`
+        :return: The prediction, in the objective's units.
+        :raises: std::logic_error      Before fit().
+        :raises: std::invalid_argument  If ``point`` has the wrong dimension.
+        """
+        return _datamunge.RBFGaussianProcessSurrogate_predict(self, point)
+
+    def log_marginal_likelihood(self):
+        r"""
+        Log marginal likelihood of the values at the hyperparameters in use.
+
+        The density of the raw values under the GP with the prior mean (and scale, when
+        normalising) treated as known, so it includes the :math:`-n\log(\text{scale})` Jacobian.
+        :rtype: float
+        :return: :math:`\log p(y)`; 0 before fit().
+        """
+        return _datamunge.RBFGaussianProcessSurrogate_log_marginal_likelihood(self)
+
+    def length_scale(self):
+        r"""
+        The length scale in use (fitted, after fit(), when fitting is on).
+        :rtype: float
+        :return: :math:`\ell`.
+        """
+        return _datamunge.RBFGaussianProcessSurrogate_length_scale(self)
+
+    def noise(self):
+        r"""
+        The noise variance in use, in normalised units when normalising.
+        :rtype: float
+        :return: :math:`\sigma_n^2`.
+        """
+        return _datamunge.RBFGaussianProcessSurrogate_noise(self)
+
+    def signal_variance(self):
+        r"""
+        The signal variance in use, in normalised units when normalising.
+        :rtype: float
+        :return: :math:`.`
+        """
+        return _datamunge.RBFGaussianProcessSurrogate_signal_variance(self)
+
+    def prior_mean(self):
+        r"""
+        The prior mean: the mean of the values when normalising, else 0.
+        :rtype: float
+        :return: :math:`.`
+        """
+        return _datamunge.RBFGaussianProcessSurrogate_prior_mean(self)
+
+    def value_scale(self):
+        r"""
+        The value scale: the standard deviation of the values when normalising, else 1.
+        :rtype: float
+        :return: The scale.
+        """
+        return _datamunge.RBFGaussianProcessSurrogate_value_scale(self)
+
+    def points(self):
+        r"""
+        The training points from the last fit() (empty before fitting).
+        :rtype: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :return: The stored training points.
+        """
+        return _datamunge.RBFGaussianProcessSurrogate_points(self)
+
+    def values(self):
+        r"""
+        The training values from the last fit() (empty before fitting).
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: The stored training values.
+        """
+        return _datamunge.RBFGaussianProcessSurrogate_values(self)
     __swig_destroy__ = _datamunge.delete_RBFGaussianProcessSurrogate
 
 # Register RBFGaussianProcessSurrogate in _datamunge:
@@ -8121,19 +14950,29 @@ class MAP(object):
                to the mode found, and returns the log-posterior density there.
         """
         return _datamunge.MAP_optimize(self, log_posterior, coordinates)
+
+    def options(self):
+        r"""
+        The options this MAP was configured with.
+        :rtype: :py:class:`MAPOptions`
+        :return: The stored options.
+        """
+        return _datamunge.MAP_options(self)
     __swig_destroy__ = _datamunge.delete_MAP
 
 # Register MAP in _datamunge:
 _datamunge.MAP_swigregister(MAP)
 class HMCOptions(object):
+    r"""Settings for HMC."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    num_samples = property(_datamunge.HMCOptions_num_samples_get, _datamunge.HMCOptions_num_samples_set)
-    num_warmup = property(_datamunge.HMCOptions_num_warmup_get, _datamunge.HMCOptions_num_warmup_set)
+    num_samples = property(_datamunge.HMCOptions_num_samples_get, _datamunge.HMCOptions_num_samples_set, doc=r"""Number of post-warmup draws.""")
+    num_warmup = property(_datamunge.HMCOptions_num_warmup_get, _datamunge.HMCOptions_num_warmup_set, doc=r"""Number of warmup iterations (step-size adaptation; 0 keeps initial_step_size).""")
     num_leapfrog_steps = property(_datamunge.HMCOptions_num_leapfrog_steps_get, _datamunge.HMCOptions_num_leapfrog_steps_set, doc=r"""Number of leapfrog steps per proposal (trajectory length = num_leapfrog_steps * step size).""")
-    initial_step_size = property(_datamunge.HMCOptions_initial_step_size_get, _datamunge.HMCOptions_initial_step_size_set)
+    initial_step_size = property(_datamunge.HMCOptions_initial_step_size_get, _datamunge.HMCOptions_initial_step_size_set, doc=r"""Leapfrog step size at the start of warmup.""")
     target_accept_rate = property(_datamunge.HMCOptions_target_accept_rate_get, _datamunge.HMCOptions_target_accept_rate_set, doc=r"""Target Metropolis acceptance rate the dual-averaging adaptation aims for during warmup.""")
-    seed = property(_datamunge.HMCOptions_seed_get, _datamunge.HMCOptions_seed_set)
+    seed = property(_datamunge.HMCOptions_seed_get, _datamunge.HMCOptions_seed_set, doc=r"""Random seed.""")
 
     def __init__(self):
         _datamunge.HMCOptions_swiginit(self, _datamunge.new_HMCOptions())
@@ -8142,11 +14981,13 @@ class HMCOptions(object):
 # Register HMCOptions in _datamunge:
 _datamunge.HMCOptions_swigregister(HMCOptions)
 class HMCResult(object):
+    r"""Output of HMC::sample()."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     samples = property(_datamunge.HMCResult_samples_get, _datamunge.HMCResult_samples_set, doc=r"""Post-warmup draws, one vector<double> per sample.""")
-    accept_rate = property(_datamunge.HMCResult_accept_rate_get, _datamunge.HMCResult_accept_rate_set)
-    final_step_size = property(_datamunge.HMCResult_final_step_size_get, _datamunge.HMCResult_final_step_size_set)
+    accept_rate = property(_datamunge.HMCResult_accept_rate_get, _datamunge.HMCResult_accept_rate_set, doc=r"""Fraction of all iterations (warmup included) whose proposal was accepted.""")
+    final_step_size = property(_datamunge.HMCResult_final_step_size_get, _datamunge.HMCResult_final_step_size_set, doc=r"""Step size used after warmup.""")
 
     def __init__(self):
         _datamunge.HMCResult_swiginit(self, _datamunge.new_HMCResult())
@@ -8166,27 +15007,63 @@ class HMC(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Stores the sampler settings.
+        :type options: :py:class:`HMCOptions`, optional
+        :param options: Sampler settings.
+        """
         _datamunge.HMC_swiginit(self, _datamunge.new_HMC(*args))
 
     def sample(self, log_posterior, initial_params):
+        r"""
+        Runs warmup (adapting the step size unless num_warmup is 0) then num_samples draws.
+        :type log_posterior: :py:class:`DifferentiableFunction`
+        :param log_posterior: Log density (up to a constant) and its gradient.
+        :type initial_params: std::vector< double,std::allocator< double > >
+        :param initial_params: Starting point on the unconstrained scale.
+        :rtype: :py:class:`HMCResult`
+        :return: Draws, acceptance rate and final step size.
+        """
         return _datamunge.HMC_sample(self, log_posterior, initial_params)
+
+    def options(self):
+        r"""
+        The options this HMC was configured with.
+        :rtype: :py:class:`HMCOptions`
+        :return: The stored options.
+        """
+        return _datamunge.HMC_options(self)
     __swig_destroy__ = _datamunge.delete_HMC
 
 # Register HMC in _datamunge:
 _datamunge.HMC_swigregister(HMC)
+
+def leapfrog_gaussian_acceptance(step_size, num_steps, sd, angles=4096):
+    r"""
+    Exact expected Metropolis acceptance of one HMC proposal (fixed step size and
+           number of leapfrog steps, unit mass) on a one-dimensional (m,s^2):math:`target, started        in equilibrium. In scaled coordinates \f$x=((q-m)/s,\,p)` each leapfrog step is the linear map
+    =&0\-h/2&1&h\0&1&0\-h/2&1:math:`with \f$h=\varepsilon/s`, :math:`\det M=1` and :math:`\operatorname{tr}M=2-h^2`, so it is stable
+    exactly when :math:`\varepsilon<2s`. Writing _0=r(,):math:`the energy error is`H=r^2f():math:`with \f$f=\tfrac12(|M^L(\cos\phi,\sin\phi)|^2-1)`, and because
+    ^2/2(1):math:`the radial average of`(1,e^{-H}):math:`is \f$1/(1+2f)` for >0:math:`and 1 otherwise. The angle is integrated numerically. @param step_size Leapfrog step size`>0:math:`. @param num_steps Number of leapfrog steps \f$L\geq1`.
+    :type sd: float
+    :param sd: Target standard deviation >0:math:`. @param angles Number of quadrature angles (at least 8). @return The expected acceptance probability. @throws std::invalid_argument for non-positive arguments.`
+    """
+    return _datamunge.leapfrog_gaussian_acceptance(step_size, num_steps, sd, angles)
 class NUTSOptions(object):
+    r"""Settings for NUTS."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    num_samples = property(_datamunge.NUTSOptions_num_samples_get, _datamunge.NUTSOptions_num_samples_set)
-    num_warmup = property(_datamunge.NUTSOptions_num_warmup_get, _datamunge.NUTSOptions_num_warmup_set)
+    num_samples = property(_datamunge.NUTSOptions_num_samples_get, _datamunge.NUTSOptions_num_samples_set, doc=r"""Number of post-warmup draws.""")
+    num_warmup = property(_datamunge.NUTSOptions_num_warmup_get, _datamunge.NUTSOptions_num_warmup_set, doc=r"""Number of warmup iterations (step-size adaptation).""")
     max_tree_depth = property(_datamunge.NUTSOptions_max_tree_depth_get, _datamunge.NUTSOptions_max_tree_depth_set, doc=r"""Caps the recursive trajectory-doubling at 2^max_tree_depth leapfrog steps per iteration.""")
-    initial_step_size = property(_datamunge.NUTSOptions_initial_step_size_get, _datamunge.NUTSOptions_initial_step_size_set)
-    target_accept_rate = property(_datamunge.NUTSOptions_target_accept_rate_get, _datamunge.NUTSOptions_target_accept_rate_set)
+    initial_step_size = property(_datamunge.NUTSOptions_initial_step_size_get, _datamunge.NUTSOptions_initial_step_size_set, doc=r"""Leapfrog step size at the start of warmup.""")
+    target_accept_rate = property(_datamunge.NUTSOptions_target_accept_rate_get, _datamunge.NUTSOptions_target_accept_rate_set, doc=r"""Mean acceptance statistic the dual-averaging adaptation aims for.""")
     max_delta_error = property(_datamunge.NUTSOptions_max_delta_error_get, _datamunge.NUTSOptions_max_delta_error_set, doc=r"""
     A trajectory is flagged as diverging once the Hamiltonian drifts by more than
            this from its initial value (Stan's default of 1000).
     """)
-    seed = property(_datamunge.NUTSOptions_seed_get, _datamunge.NUTSOptions_seed_set)
+    seed = property(_datamunge.NUTSOptions_seed_get, _datamunge.NUTSOptions_seed_set, doc=r"""Random seed (chain k of sample_chains() uses seed + k).""")
 
     def __init__(self):
         _datamunge.NUTSOptions_swiginit(self, _datamunge.new_NUTSOptions())
@@ -8195,6 +15072,8 @@ class NUTSOptions(object):
 # Register NUTSOptions in _datamunge:
 _datamunge.NUTSOptions_swigregister(NUTSOptions)
 class NUTSResult(object):
+    r"""Output of NUTS::sample()."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     samples = property(_datamunge.NUTSResult_samples_get, _datamunge.NUTSResult_samples_set, doc=r"""Post-warmup draws, one vector<double> per sample.""")
@@ -8202,8 +15081,12 @@ class NUTSResult(object):
     Mean Metropolis acceptance statistic across all iterations (the same quantity
            the step-size adaptation targets).
     """)
-    final_step_size = property(_datamunge.NUTSResult_final_step_size_get, _datamunge.NUTSResult_final_step_size_set)
-    num_divergences = property(_datamunge.NUTSResult_num_divergences_get, _datamunge.NUTSResult_num_divergences_set)
+    final_step_size = property(_datamunge.NUTSResult_final_step_size_get, _datamunge.NUTSResult_final_step_size_set, doc=r"""Step size used after warmup.""")
+    num_divergences = property(_datamunge.NUTSResult_num_divergences_get, _datamunge.NUTSResult_num_divergences_set, doc=r"""Number of iterations, warmup included, whose trajectory diverged.""")
+    divergent = property(_datamunge.NUTSResult_divergent_get, _datamunge.NUTSResult_divergent_set, doc=r"""Per post-warmup draw: 1 if that iteration's trajectory diverged, else 0.""")
+    tree_depth = property(_datamunge.NUTSResult_tree_depth_get, _datamunge.NUTSResult_tree_depth_set, doc=r"""Per post-warmup draw: number of trajectory doublings performed (tree depth).""")
+    n_leapfrog = property(_datamunge.NUTSResult_n_leapfrog_get, _datamunge.NUTSResult_n_leapfrog_set, doc=r"""Per post-warmup draw: number of leapfrog steps (gradient evaluations) used.""")
+    energy = property(_datamunge.NUTSResult_energy_get, _datamunge.NUTSResult_energy_set, doc=r"""Per post-warmup draw: the Hamiltonian =-p(q)+|r|^2:math:`at the        start of the iteration, after momentum resampling (input to energy_bfmi()).`""")
 
     def __init__(self):
         _datamunge.NUTSResult_swiginit(self, _datamunge.new_NUTSResult())
@@ -8225,19 +15108,43 @@ class NUTS(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Stores the sampler settings.
+        :type options: :py:class:`NUTSOptions`, optional
+        :param options: Sampler settings.
+        """
         _datamunge.NUTS_swiginit(self, _datamunge.new_NUTS(*args))
 
     def sample(self, log_posterior, initial_params):
+        r"""
+        Runs one chain: warmup with step-size adaptation, then num_samples draws.
+        :type log_posterior: :py:class:`DifferentiableFunction`
+        :param log_posterior: Log density (up to a constant) and its gradient.
+        :type initial_params: std::vector< double,std::allocator< double > >
+        :param initial_params: Starting point on the unconstrained scale.
+        :rtype: :py:class:`NUTSResult`
+        :return: Draws plus acceptance, step size and per-draw diagnostics.
+        """
         return _datamunge.NUTS_sample(self, log_posterior, initial_params)
+
+    def options(self):
+        r"""
+        The options this NUTS was configured with.
+        :rtype: :py:class:`NUTSOptions`
+        :return: The stored options.
+        """
+        return _datamunge.NUTS_options(self)
     __swig_destroy__ = _datamunge.delete_NUTS
 
 # Register NUTS in _datamunge:
 _datamunge.NUTS_swigregister(NUTS)
 class RWMOptions(object):
+    r"""Settings for RandomWalkMetropolis."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    num_samples = property(_datamunge.RWMOptions_num_samples_get, _datamunge.RWMOptions_num_samples_set)
-    num_warmup = property(_datamunge.RWMOptions_num_warmup_get, _datamunge.RWMOptions_num_warmup_set)
+    num_samples = property(_datamunge.RWMOptions_num_samples_get, _datamunge.RWMOptions_num_samples_set, doc=r"""Number of post-warmup draws.""")
+    num_warmup = property(_datamunge.RWMOptions_num_warmup_get, _datamunge.RWMOptions_num_warmup_set, doc=r"""Number of warmup iterations (adaptation).""")
     initial_step_size = property(_datamunge.RWMOptions_initial_step_size_get, _datamunge.RWMOptions_initial_step_size_set, doc=r"""
     Initial isotropic proposal std dev, adapted via dual averaging during warmup
            (the same scheme HMC/NUTS use for their step size).
@@ -8249,7 +15156,14 @@ class RWMOptions(object):
            HMC/NUTS's 0.8 (trajectory-based proposals) or GibbsSampler's 0.44 (a scalar
            per-coordinate proposal).
     """)
-    seed = property(_datamunge.RWMOptions_seed_get, _datamunge.RWMOptions_seed_set)
+    seed = property(_datamunge.RWMOptions_seed_get, _datamunge.RWMOptions_seed_set, doc=r"""Random seed.""")
+    adapt_covariance = property(_datamunge.RWMOptions_adapt_covariance_get, _datamunge.RWMOptions_adapt_covariance_set, doc=r"""
+    Learn a proposal covariance during warmup (adaptive Metropolis, Haario et al.
+           2001). The first half of warmup is isotropic; at its end the covariance
+           :math:`\hat\Sigma` of the second quarter's draws, shrunk slightly towards
+           ^{-3}I:math:`, becomes the proposal shape \f$x'=x+\varepsilon Lz` with
+           ^=:math:`, and the step size is re-adapted from`=2.38/d:math:`for the rest of warmup.`
+    """)
 
     def __init__(self):
         _datamunge.RWMOptions_swiginit(self, _datamunge.new_RWMOptions())
@@ -8258,6 +15172,8 @@ class RWMOptions(object):
 # Register RWMOptions in _datamunge:
 _datamunge.RWMOptions_swigregister(RWMOptions)
 class RWMResult(object):
+    r"""Output of RandomWalkMetropolis::sample()."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     samples = property(_datamunge.RWMResult_samples_get, _datamunge.RWMResult_samples_set, doc=r"""Post-warmup draws, one vector<double> per sample.""")
@@ -8265,7 +15181,11 @@ class RWMResult(object):
     Mean Metropolis acceptance statistic across all iterations (the same quantity
            the step-size adaptation targets).
     """)
-    final_step_size = property(_datamunge.RWMResult_final_step_size_get, _datamunge.RWMResult_final_step_size_set)
+    final_step_size = property(_datamunge.RWMResult_final_step_size_get, _datamunge.RWMResult_final_step_size_set, doc=r"""Step size used after warmup.""")
+    proposal_covariance = property(_datamunge.RWMResult_proposal_covariance_get, _datamunge.RWMResult_proposal_covariance_set, doc=r"""
+    Learned proposal covariance :math:`\hat\Sigma` (before scaling by the step size);
+           empty unless RWMOptions::adapt_covariance was set and warmup had at least 8 iterations.
+    """)
 
     def __init__(self):
         _datamunge.RWMResult_swiginit(self, _datamunge.new_RWMResult())
@@ -8288,19 +15208,44 @@ class RandomWalkMetropolis(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Stores the sampler settings.
+        :type options: :py:class:`RWMOptions`, optional
+        :param options: Sampler settings.
+        """
         _datamunge.RandomWalkMetropolis_swiginit(self, _datamunge.new_RandomWalkMetropolis(*args))
 
     def sample(self, log_posterior, initial_params):
+        r"""
+        Runs warmup (adapting the step size, and optionally the proposal covariance),
+               then num_samples draws.
+        :type log_posterior: :py:class:`ArbitraryFunction`
+        :param log_posterior: Log density up to a constant; only evaluate() is used.
+        :type initial_params: std::vector< double,std::allocator< double > >
+        :param initial_params: Starting point.
+        :rtype: :py:class:`RWMResult`
+        :return: Draws, acceptance rate, final step size and learned covariance.
+        """
         return _datamunge.RandomWalkMetropolis_sample(self, log_posterior, initial_params)
+
+    def options(self):
+        r"""
+        The options this RandomWalkMetropolis was configured with.
+        :rtype: :py:class:`RWMOptions`
+        :return: The stored options.
+        """
+        return _datamunge.RandomWalkMetropolis_options(self)
     __swig_destroy__ = _datamunge.delete_RandomWalkMetropolis
 
 # Register RandomWalkMetropolis in _datamunge:
 _datamunge.RandomWalkMetropolis_swigregister(RandomWalkMetropolis)
 class GibbsOptions(object):
+    r"""Settings for GibbsSampler."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    num_samples = property(_datamunge.GibbsOptions_num_samples_get, _datamunge.GibbsOptions_num_samples_set)
-    num_warmup = property(_datamunge.GibbsOptions_num_warmup_get, _datamunge.GibbsOptions_num_warmup_set)
+    num_samples = property(_datamunge.GibbsOptions_num_samples_get, _datamunge.GibbsOptions_num_samples_set, doc=r"""Number of post-warmup sweeps kept.""")
+    num_warmup = property(_datamunge.GibbsOptions_num_warmup_get, _datamunge.GibbsOptions_num_warmup_set, doc=r"""Number of warmup sweeps (per-coordinate step adaptation).""")
     initial_step_sizes = property(_datamunge.GibbsOptions_initial_step_sizes_get, _datamunge.GibbsOptions_initial_step_sizes_set, doc=r"""
     Initial per-coordinate proposal std dev. A single entry is broadcast to every
            coordinate; otherwise its length must match the parameter vector, and each
@@ -8311,7 +15256,7 @@ class GibbsOptions(object):
            rate for a SCALAR random-walk proposal (Roberts & Rosenthal 2001), unlike
            RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
     """)
-    seed = property(_datamunge.GibbsOptions_seed_get, _datamunge.GibbsOptions_seed_set)
+    seed = property(_datamunge.GibbsOptions_seed_get, _datamunge.GibbsOptions_seed_set, doc=r"""Random seed.""")
 
     def __init__(self):
         _datamunge.GibbsOptions_swiginit(self, _datamunge.new_GibbsOptions())
@@ -8320,11 +15265,13 @@ class GibbsOptions(object):
 # Register GibbsOptions in _datamunge:
 _datamunge.GibbsOptions_swigregister(GibbsOptions)
 class GibbsResult(object):
+    r"""Output of GibbsSampler::sample()."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     samples = property(_datamunge.GibbsResult_samples_get, _datamunge.GibbsResult_samples_set, doc=r"""Post-warmup draws, one vector<double> per sample.""")
     accept_rates = property(_datamunge.GibbsResult_accept_rates_get, _datamunge.GibbsResult_accept_rates_set, doc=r"""Mean acceptance rate per coordinate (across all iterations), in parameter order.""")
-    final_step_sizes = property(_datamunge.GibbsResult_final_step_sizes_get, _datamunge.GibbsResult_final_step_sizes_set)
+    final_step_sizes = property(_datamunge.GibbsResult_final_step_sizes_get, _datamunge.GibbsResult_final_step_sizes_set, doc=r"""Per-coordinate step sizes after warmup.""")
 
     def __init__(self):
         _datamunge.GibbsResult_swiginit(self, _datamunge.new_GibbsResult())
@@ -8353,19 +15300,43 @@ class GibbsSampler(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Stores the sampler settings.
+        :type options: :py:class:`GibbsOptions`, optional
+        :param options: Sampler settings.
+        """
         _datamunge.GibbsSampler_swiginit(self, _datamunge.new_GibbsSampler(*args))
 
     def sample(self, log_posterior, initial_params):
+        r"""
+        Runs warmup sweeps (adapting each coordinate's step), then num_samples sweeps.
+        :type log_posterior: :py:class:`ArbitraryFunction`
+        :param log_posterior: Log density up to a constant; only evaluate() is used.
+        :type initial_params: std::vector< double,std::allocator< double > >
+        :param initial_params: Starting point.
+        :rtype: :py:class:`GibbsResult`
+        :return: Draws, per-coordinate acceptance rates and step sizes.
+        """
         return _datamunge.GibbsSampler_sample(self, log_posterior, initial_params)
+
+    def options(self):
+        r"""
+        The options this GibbsSampler was configured with.
+        :rtype: :py:class:`GibbsOptions`
+        :return: The stored options.
+        """
+        return _datamunge.GibbsSampler_options(self)
     __swig_destroy__ = _datamunge.delete_GibbsSampler
 
 # Register GibbsSampler in _datamunge:
 _datamunge.GibbsSampler_swigregister(GibbsSampler)
 class ImportanceSamplingOptions(object):
+    r"""Settings for ImportanceSampling."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    num_samples = property(_datamunge.ImportanceSamplingOptions_num_samples_get, _datamunge.ImportanceSamplingOptions_num_samples_set)
-    seed = property(_datamunge.ImportanceSamplingOptions_seed_get, _datamunge.ImportanceSamplingOptions_seed_set)
+    num_samples = property(_datamunge.ImportanceSamplingOptions_num_samples_get, _datamunge.ImportanceSamplingOptions_num_samples_set, doc=r"""Number of proposal draws.""")
+    seed = property(_datamunge.ImportanceSamplingOptions_seed_get, _datamunge.ImportanceSamplingOptions_seed_set, doc=r"""Random seed.""")
 
     def __init__(self):
         _datamunge.ImportanceSamplingOptions_swiginit(self, _datamunge.new_ImportanceSamplingOptions())
@@ -8374,6 +15345,8 @@ class ImportanceSamplingOptions(object):
 # Register ImportanceSamplingOptions in _datamunge:
 _datamunge.ImportanceSamplingOptions_swigregister(ImportanceSamplingOptions)
 class ImportanceSamplingResult(object):
+    r"""Output of ImportanceSampling::sample()."""
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     samples = property(_datamunge.ImportanceSamplingResult_samples_get, _datamunge.ImportanceSamplingResult_samples_set, doc=r"""Draws from the N(proposal_mean, proposal_covariance) proposal (not the target).""")
@@ -8410,6 +15383,11 @@ class ImportanceSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+        Stores the sampler settings.
+        :type options: :py:class:`ImportanceSamplingOptions`, optional
+        :param options: Sampler settings.
+        """
         _datamunge.ImportanceSampling_swiginit(self, _datamunge.new_ImportanceSampling(*args))
 
     def sample(self, log_target, proposal_mean, proposal_covariance):
@@ -8421,10 +15399,28 @@ class ImportanceSampling(object):
                definite.
         """
         return _datamunge.ImportanceSampling_sample(self, log_target, proposal_mean, proposal_covariance)
+
+    def options(self):
+        r"""
+        The options this ImportanceSampling was configured with.
+        :rtype: :py:class:`ImportanceSamplingOptions`
+        :return: The stored options.
+        """
+        return _datamunge.ImportanceSampling_options(self)
     __swig_destroy__ = _datamunge.delete_ImportanceSampling
 
 # Register ImportanceSampling in _datamunge:
 _datamunge.ImportanceSampling_swigregister(ImportanceSampling)
+
+def gaussian_importance_efficiency(scale, dimension):
+    r"""
+    Asymptotic effective-sample-size fraction _{/N:math:`of importance sampling        a \f$d`-dimensional Gaussian target with a Gaussian proposal of the same mean and
+           covariance scaled by ^2:math:`. \f$N_{\text{eff}}/N\to1/E_q[w^2]` for weights =p/q:math:`normalised to mean 1. In one dimension \f$E_q[w^2]=\int p^2/q=k^2/\sqrt{2k^2-1}`, finite only for ^2>1/2:math:`, and the dimensions multiply, giving`(^2-1}/k^2)^d:math:`. It is 1 at \f$k=1` and
+    0 (infinite weight variance) for /:math:`. @param scale Proposal scale factor \f$k>0`.
+    :type dimension: int
+    :param dimension: Dimension :math:`. @return The efficiency in [0, 1]. @throws std::invalid_argument for non-positive @p scale or @p dimension.`
+    """
+    return _datamunge.gaussian_importance_efficiency(scale, dimension)
 class RHS(object):
     r"""
     Right-hand side of a first-order ODE system dy/dt = f(t, y): R x R^n -> R^n.
@@ -8550,6 +15546,14 @@ class ODESolver(object):
                Throws std::invalid_argument for an unknown system name.
         """
         return _datamunge.ODESolver_solve_builtin(self, system, params, y0, t_start, t_end)
+
+    def options(self):
+        r"""
+        The options this ODESolver was configured with.
+        :rtype: :py:class:`ODEOptions`
+        :return: The stored options.
+        """
+        return _datamunge.ODESolver_options(self)
     __swig_destroy__ = _datamunge.delete_ODESolver
 
 # Register ODESolver in _datamunge:
@@ -12276,6 +19280,30 @@ class AlphaBetaFilter(object):
     def velocity(self):
         return _datamunge.AlphaBetaFilter_velocity(self)
 
+    def alpha(self):
+        r"""
+        The position-correction gain alpha.
+        :rtype: float
+        :return: The value passed to the constructor.
+        """
+        return _datamunge.AlphaBetaFilter_alpha(self)
+
+    def beta(self):
+        r"""
+        The velocity-correction gain beta.
+        :rtype: float
+        :return: The value passed to the constructor.
+        """
+        return _datamunge.AlphaBetaFilter_beta(self)
+
+    def dt(self):
+        r"""
+        The time step between measurements.
+        :rtype: float
+        :return: The value passed to the constructor.
+        """
+        return _datamunge.AlphaBetaFilter_dt(self)
+
     def filter(self, measurements):
         return _datamunge.AlphaBetaFilter_filter(self, measurements)
     __swig_destroy__ = _datamunge.delete_AlphaBetaFilter
@@ -12322,6 +19350,38 @@ class AlphaBetaGammaFilter(object):
 
     def acceleration(self):
         return _datamunge.AlphaBetaGammaFilter_acceleration(self)
+
+    def alpha(self):
+        r"""
+        The position-correction gain alpha.
+        :rtype: float
+        :return: The value passed to the constructor.
+        """
+        return _datamunge.AlphaBetaGammaFilter_alpha(self)
+
+    def beta(self):
+        r"""
+        The velocity-correction gain beta.
+        :rtype: float
+        :return: The value passed to the constructor.
+        """
+        return _datamunge.AlphaBetaGammaFilter_beta(self)
+
+    def gamma(self):
+        r"""
+        The acceleration-correction gain gamma.
+        :rtype: float
+        :return: The value passed to the constructor.
+        """
+        return _datamunge.AlphaBetaGammaFilter_gamma(self)
+
+    def dt(self):
+        r"""
+        The time step between measurements.
+        :rtype: float
+        :return: The value passed to the constructor.
+        """
+        return _datamunge.AlphaBetaGammaFilter_dt(self)
 
     def filter(self, measurements):
         return _datamunge.AlphaBetaGammaFilter_filter(self, measurements)
@@ -12894,6 +19954,29 @@ def crt(remainders, moduli):
     """
     return _datamunge.crt(remainders, moduli)
 
+def gf_mul(a, b, p):
+    r"""Product of two polynomials over GF(p)."""
+    return _datamunge.gf_mul(a, b, p)
+
+def gf_derivative(a, p):
+    r"""Formal derivative over GF(p); it vanishes for p-th powers (x^p):math:`.`"""
+    return _datamunge.gf_derivative(a, p)
+
+def gf_square_free(f, p):
+    r"""
+    Square-free decomposition of a monic polynomial over GF(p) (Yun's algorithm, with the
+           p-th-root step needed in characteristic p): pairs (g, m) with f = prod g^m, every g
+           monic and square-free and the g pairwise coprime.
+    """
+    return _datamunge.gf_square_free(f, p)
+
+def berlekamp_null_space(f, p):
+    r"""
+    Basis of the Berlekamp subalgebra of a monic polynomial ``f`` of degree n >= 1: the
+           polynomials v of degree < n with ^pv f:math:`, as the null space of        \f$Q-I`, where row i of Q holds the coefficients of ^{ip}f:math:`. For square-free        f its dimension is the number of irreducible factors. The first vector is the constant 1.`
+    """
+    return _datamunge.berlekamp_null_space(f, p)
+
 def berlekamp_factor_mod(poly, prime):
     r"""
     Binding-friendly wrapper around berlekamp_factor() using doubles (exact up to 2^53)
@@ -12904,6 +19987,60 @@ def berlekamp_factor_mod(poly, prime):
            preconditions.
     """
     return _datamunge.berlekamp_factor_mod(poly, prime)
+class GfFactorization(object):
+    r"""Complete factorization over GF(p) from factor_gf_p()."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    leading = property(_datamunge.GfFactorization_leading_get, _datamunge.GfFactorization_leading_set, doc=r"""Leading coefficient, in [1, p).""")
+    factors = property(_datamunge.GfFactorization_factors_get, _datamunge.GfFactorization_factors_set, doc=r"""Distinct monic irreducible factors, by degree then coefficients.""")
+    multiplicities = property(_datamunge.GfFactorization_multiplicities_get, _datamunge.GfFactorization_multiplicities_set, doc=r"""Multiplicity of each factor.""")
+
+    def __init__(self):
+        _datamunge.GfFactorization_swiginit(self, _datamunge.new_GfFactorization())
+    __swig_destroy__ = _datamunge.delete_GfFactorization
+
+# Register GfFactorization in _datamunge:
+_datamunge.GfFactorization_swigregister(GfFactorization)
+
+def berlekamp_factor_count(poly, p):
+    r"""
+    Number of irreducible factors of a monic square-free polynomial over GF(p), by
+           Berlekamp's theorem: the dimension of the null space of :math:`(Q-I)^{\mathsf T}`, that is
+           -(Q-I):math:`. A square-free polynomial is irreducible exactly when it is 1. @param poly ascending coefficients (made monic and reduced mod p first). @param p a prime. @return the number of distinct irreducible factors (for square-free input). @throws std::invalid_argument if poly is constant.`
+    """
+    return _datamunge.berlekamp_factor_count(poly, p)
+
+def factor_gf_p(poly, p):
+    r"""
+    Complete factorization of a polynomial over GF(p): leading coefficient times monic
+           irreducible factors with multiplicities. The square-free decomposition separates
+           repeated factors (taking p-th roots where the derivative vanishes), and Berlekamp's
+           algorithm splits each square-free part.
+    :type poly: std::vector< long long,std::allocator< long long > >
+    :param poly: ascending coefficients; reduced mod p first.
+    :type p: int
+    :param p: a prime.
+    :rtype: :py:class:`GfFactorization`
+    :return: the leading coefficient, the factors and their multiplicities.
+    :raises: std::invalid_argument for the zero polynomial.
+    """
+    return _datamunge.factor_gf_p(poly, p)
+
+def count_monic_irreducibles(p, d):
+    r"""
+    Number of monic irreducible polynomials of degree ``d`` over GF(p), by Gauss's formula
+           _d=_{ed}(d/e),p^{e}:math:`, as a double (exact while below 2^53). @param p a prime. @param d degree, at least 1. @return \f$I_d`.
+    """
+    return _datamunge.count_monic_irreducibles(p, d)
+
+def expected_distinct_irreducible_factors(p, n):
+    r"""
+    Expected number of distinct monic irreducible factors of a uniformly random monic
+           polynomial of degree ``n`` over GF(p): each irreducible g of degree d <= n divides it with
+           probability ^{-d}:math:`, so the expectation is`_{d=1}^{n}I_d,p^{-d}H_n:math:`. @param p a prime. @param n degree, at least 1. @return the expected count.`
+    """
+    return _datamunge.expected_distinct_irreducible_factors(p, n)
 MonomialOrder_Lex = _datamunge.MonomialOrder_Lex
 MonomialOrder_Grlex = _datamunge.MonomialOrder_Grlex
 MonomialOrder_Grevlex = _datamunge.MonomialOrder_Grevlex
@@ -13929,4 +21066,1537 @@ def nn_get_num_threads():
 
 def nn_set_num_threads(threads):
     return _datamunge.nn_set_num_threads(threads)
+class BSplineBasis(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        Degree-0 basis with knots {0, 1}: one constant function on [0, 1].
+
+        Exists so containers (and binding-generated vectors) of bases can be default
+        constructed; assign a real basis before use.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::BSplineBasis b;
+            std::print("{} {}\n", b.degree(), b.basis_size()); // 0 1
+        """
+        _datamunge.BSplineBasis_swiginit(self, _datamunge.new_BSplineBasis(*args))
+
+    @staticmethod
+    def open_uniform(degree, basis_size, min_x=0.0, max_x=1.0):
+        return _datamunge.BSplineBasis_open_uniform(degree, basis_size, min_x, max_x)
+
+    def degree(self):
+        return _datamunge.BSplineBasis_degree(self)
+
+    def basis_size(self):
+        return _datamunge.BSplineBasis_basis_size(self)
+
+    def knots(self):
+        return _datamunge.BSplineBasis_knots(self)
+
+    def domain(self):
+        return _datamunge.BSplineBasis_domain(self)
+    __swig_destroy__ = _datamunge.delete_BSplineBasis
+
+# Register BSplineBasis in _datamunge:
+_datamunge.BSplineBasis_swigregister(BSplineBasis)
+class BSplineBasisVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.BSplineBasisVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _datamunge.BSplineBasisVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.BSplineBasisVector___len__(self)
+
+    def __delitem__(self, *args):
+        return _datamunge.BSplineBasisVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.BSplineBasisVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.BSplineBasisVector___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _datamunge.BSplineBasisVector_pop(self, i)
+
+    def append(self, x):
+        return _datamunge.BSplineBasisVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.BSplineBasisVector_empty(self)
+
+    def size(self):
+        return _datamunge.BSplineBasisVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.BSplineBasisVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.BSplineBasisVector_begin(self)
+
+    def end(self):
+        return _datamunge.BSplineBasisVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.BSplineBasisVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.BSplineBasisVector_rend(self)
+
+    def clear(self):
+        return _datamunge.BSplineBasisVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.BSplineBasisVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.BSplineBasisVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.BSplineBasisVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.BSplineBasisVector_swiginit(self, _datamunge.new_BSplineBasisVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.BSplineBasisVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.BSplineBasisVector_front(self)
+
+    def back(self):
+        return _datamunge.BSplineBasisVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.BSplineBasisVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.BSplineBasisVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.BSplineBasisVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.BSplineBasisVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.BSplineBasisVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_BSplineBasisVector
+
+# Register BSplineBasisVector in _datamunge:
+_datamunge.BSplineBasisVector_swigregister(BSplineBasisVector)
+SplineSolver_Automatic = _datamunge.SplineSolver_Automatic
+r"""Cholesky up to SplineSolveOptions::direct_limit unknowns, else CG."""
+SplineSolver_Cholesky = _datamunge.SplineSolver_Cholesky
+r"""Dense Cholesky factorization of the normal equations."""
+SplineSolver_ConjugateGradient = _datamunge.SplineSolver_ConjugateGradient
+r"""Jacobi-preconditioned CG on the sparse normal equations."""
+class SplineSolveOptions(object):
+    r"""
+    Solver settings shared by fit_tensor_bspline(), fit_tensor_pspline() and the
+           hierarchical fitting methods.
+
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::fda::SplineSolveOptions options;
+        options.method = dm::fda::SplineSolver::Cholesky;
+    See also: SplineSolver
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    method = property(_datamunge.SplineSolveOptions_method_get, _datamunge.SplineSolveOptions_method_set)
+    direct_limit = property(_datamunge.SplineSolveOptions_direct_limit_get, _datamunge.SplineSolveOptions_direct_limit_set)
+    tolerance = property(_datamunge.SplineSolveOptions_tolerance_get, _datamunge.SplineSolveOptions_tolerance_set)
+    max_iterations = property(_datamunge.SplineSolveOptions_max_iterations_get, _datamunge.SplineSolveOptions_max_iterations_set)
+
+    def __init__(self):
+        _datamunge.SplineSolveOptions_swiginit(self, _datamunge.new_SplineSolveOptions())
+    __swig_destroy__ = _datamunge.delete_SplineSolveOptions
+
+# Register SplineSolveOptions in _datamunge:
+_datamunge.SplineSolveOptions_swigregister(SplineSolveOptions)
+class BSplineRefinement(object):
+    r"""
+    A refined B-spline basis together with the operator that maps coarse
+           coefficients onto it.
+
+    For any coefficient vector c on the coarse basis, `matrix * c` (equivalently apply())
+    gives coefficients on the refined basis that represent exactly the same spline.
+    Title: Example
+
+    .. code-block:: c++
+
+        auto coarse = dm::fda::BSplineBasis::open_uniform(2, 4);
+        auto refined = dm::fda::dyadic_refine(coarse);
+        std::print("{}\n", refined.basis.basis_size()); // 6
+    See also: refine_basis(), dyadic_refine()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    basis = property(_datamunge.BSplineRefinement_basis_get, _datamunge.BSplineRefinement_basis_set, doc=r"""Refined basis (same degree and domain).""")
+
+    def apply(self, coefficients):
+        r"""
+        Maps coarse coefficients to the refined basis.
+        :type coefficients: std::vector< double,std::allocator< double > >
+        :param coefficients: One coefficient per coarse basis function.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: One coefficient per refined basis function, representing the same spline.
+        :raises: std::invalid_argument If ``coefficients`` does not match the coarse basis size.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto r = dm::fda::dyadic_refine(dm::fda::BSplineBasis::open_uniform(1, 2));
+            std::print("{}\n", r.apply({0.0, 2.0})); // [0, 1, 2]
+        """
+        return _datamunge.BSplineRefinement_apply(self, coefficients)
+
+    def __init__(self):
+        _datamunge.BSplineRefinement_swiginit(self, _datamunge.new_BSplineRefinement())
+    __swig_destroy__ = _datamunge.delete_BSplineRefinement
+
+# Register BSplineRefinement in _datamunge:
+_datamunge.BSplineRefinement_swigregister(BSplineRefinement)
+
+def refine_basis(basis, inserted_knots):
+    r"""
+    Inserts knots into a clamped B-spline basis (Oslo algorithm).
+
+    Builds the refined knot vector (old knots merged with ``inserted_knots)`` and the sparse
+    discrete-B-spline operator that re-expresses every coarse spline on it exactly. Each
+    row has at most degree + 1 nonzeros and the work is O(m p^2) for m refined functions.
+
+    :type basis: :py:class:`BSplineBasis`
+    :param basis: Basis to refine; its knot vector must be clamped (first and last knots
+                     repeated degree + 1 times, as produced by BSplineBasis::open_uniform()).
+    :type inserted_knots: std::vector< double,std::allocator< double > >
+    :param inserted_knots: Knots to add, strictly inside the domain, in any order. Repeats
+                              are allowed while every knot multiplicity stays <= degree + 1.
+    :rtype: :py:class:`BSplineRefinement`
+    :return: The refined basis and its refinement operator.
+    :raises: std::invalid_argument If the basis is not clamped, a knot is outside the open
+                                      domain or non-finite, or a multiplicity would exceed degree + 1.
+    Title: Example
+
+    .. code-block:: c++
+
+        auto coarse = dm::fda::BSplineBasis::open_uniform(1, 2);   // knots 0 0 1 1
+        auto r = dm::fda::refine_basis(coarse, {0.25});
+        std::print("{}\n", r.apply({0.0, 4.0}));                   // [0, 1, 4]
+    Title: References
+    - E. Cohen, T. Lyche and R. Riesenfeld (1980). Discrete B-splines and subdivision
+      techniques in computer-aided geometric design and computer graphics. Computer Graphics
+      and Image Processing 14(2), 87-111. https://doi.org/10.1016/0146-664X(80)90040-4
+    - W. Boehm (1980). Inserting new knots into B-spline curves. Computer-Aided Design
+      12(4), 199-201. https://doi.org/10.1016/0010-4485(80)90154-2
+    See also: dyadic_refine()
+    """
+    return _datamunge.refine_basis(basis, inserted_knots)
+
+def dyadic_refine(basis):
+    r"""
+    Halves every knot span of a clamped basis (inserts each positive span's midpoint).
+
+    This is the nested-space step between consecutive levels of HB/THB splines: the refined
+    space contains the coarse one, and the operator maps coefficients exactly.
+    :type basis: :py:class:`BSplineBasis`
+    :param basis: Clamped basis to refine.
+    :rtype: :py:class:`BSplineRefinement`
+    :return: The refined basis and its refinement operator.
+    :raises: std::invalid_argument If the basis is not clamped.
+    Title: Example
+
+    .. code-block:: c++
+
+        auto r = dm::fda::dyadic_refine(dm::fda::BSplineBasis::open_uniform(3, 5));
+        std::print("{} -> {}\n", 5, r.basis.basis_size()); // 5 -> 7
+    Title: References
+    - E. Cohen, T. Lyche and R. Riesenfeld (1980). Discrete B-splines and subdivision
+      techniques in computer-aided geometric design and computer graphics.
+      https://doi.org/10.1016/0146-664X(80)90040-4
+    See also: refine_basis(), TensorBSpline::dyadic_refine()
+    """
+    return _datamunge.dyadic_refine(basis)
+class TensorBSpline(object):
+    r"""
+    A scalar tensor-product B-spline f(x) = sum_j c_j B_j(x) with owned coefficients.
+
+    With one basis this is an ordinary spline curve; with d bases a surface or volume. The
+    coefficient net is row-major over the per-axis basis sizes (last axis fastest), the same
+    column order as fda::BSpline::evaluate(). Evaluation clamps each coordinate into the
+    basis domain, so points outside the domain take the boundary value. Const methods are
+    safe to call concurrently while the object is not mutated.
+    Title: Example
+
+    .. code-block:: c++
+
+        auto b = dm::fda::BSplineBasis::open_uniform(1, 2);     // linear on [0, 1]
+        dm::fda::TensorBSpline f({b, b}, {0, 1, 1, 2});         // f(x, y) = x + y
+        std::print("{:.2f}\n", f.evaluate({0.25, 0.5}));        // 0.75
+    Title: References
+    - C. de Boor (1972). On calculating with B-splines. Journal of Approximation Theory
+      6(1), 50-62. https://doi.org/10.1016/0021-9045(72)90080-9
+    See also: fit_tensor_bspline(), fit_tensor_pspline(), BSpline
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        One-dimensional spline curve on ``basis``.
+        :type basis: :py:class:`BSplineBasis`
+        :param basis: Basis for the single axis.
+        :type coefficients: std::vector< double,std::allocator< double > >
+        :param coefficients: One coefficient per basis function.
+        :raises: std::invalid_argument If the coefficient count differs from basis.basis_size().
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::TensorBSpline f(dm::fda::BSplineBasis::open_uniform(1, 2), {1.0, 3.0});
+            std::print("{}\n", f.evaluate(0.5)); // 2
+
+        |
+
+        *Overload 2:*
+        Tensor-product spline over one basis per axis.
+        :type bases: std::vector< datamunge::fda::BSplineBasis,std::allocator< datamunge::fda::BSplineBasis > >
+        :param bases: One basis per dimension (at least one).
+        :type coefficients: std::vector< double,std::allocator< double > >
+        :param coefficients: Row-major net whose size is the product of the basis sizes.
+        :raises: std::invalid_argument If ``bases`` is empty or the net size does not match.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto b = dm::fda::BSplineBasis::open_uniform(0, 2);  // piecewise constant
+            dm::fda::TensorBSpline f({b, b}, {1, 2, 3, 4});
+            std::print("{}\n", f.evaluate({0.75, 0.25}));        // 3
+        """
+        _datamunge.TensorBSpline_swiginit(self, _datamunge.new_TensorBSpline(*args))
+
+    def dimensions(self):
+        r"""
+        Number of parameter dimensions d.
+        :rtype: std::size_t
+        :return: bases().size().
+        """
+        return _datamunge.TensorBSpline_dimensions(self)
+
+    def bases(self):
+        r"""
+        The per-axis bases.
+        :rtype: std::vector< datamunge::fda::BSplineBasis,std::allocator< datamunge::fda::BSplineBasis > >
+        :return: Reference valid for the lifetime of this object.
+        """
+        return _datamunge.TensorBSpline_bases(self)
+
+    def shape(self):
+        r"""
+        Per-axis basis sizes, i.e. the shape of the coefficient net.
+        :rtype: std::vector< int,std::allocator< int > >
+        :return: d sizes in axis order.
+        """
+        return _datamunge.TensorBSpline_shape(self)
+
+    def coefficient_count(self):
+        r"""
+        Total number of coefficients (product of shape()).
+        :rtype: std::size_t
+        :return: Coefficient count.
+        """
+        return _datamunge.TensorBSpline_coefficient_count(self)
+
+    def coefficients(self):
+        r"""
+        The row-major coefficient net.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: Reference valid until the next mutation of this object.
+        """
+        return _datamunge.TensorBSpline_coefficients(self)
+
+    def domain_min(self):
+        r"""
+        Lower corner of the parameter domain (each basis's first clamped knot).
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: d coordinates.
+        """
+        return _datamunge.TensorBSpline_domain_min(self)
+
+    def domain_max(self):
+        r"""
+        Upper corner of the parameter domain.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: d coordinates.
+        """
+        return _datamunge.TensorBSpline_domain_max(self)
+
+    def coefficient(self, index):
+        r"""
+        Reads one coefficient by per-axis basis index.
+        :type index: std::vector< int,std::allocator< int > >
+        :param index: d indices, each in [0, shape()[k]).
+        :rtype: float
+        :return: The coefficient.
+        :raises: std::invalid_argument If index.size() != dimensions().
+        :raises: std::out_of_range If a component is out of range.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+            dm::fda::TensorBSpline f({b, b}, {0, 1, 2, 3});
+            std::print("{}\n", f.coefficient({1, 0})); // 2
+        """
+        return _datamunge.TensorBSpline_coefficient(self, index)
+
+    def set_coefficient(self, index, value):
+        r"""
+        Overwrites one coefficient by per-axis basis index.
+        :type index: std::vector< int,std::allocator< int > >
+        :param index: d indices, each in [0, shape()[k]).
+        :type value: float
+        :param value: New coefficient.
+        :raises: std::invalid_argument If index.size() != dimensions().
+        :raises: std::out_of_range If a component is out of range.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::TensorBSpline f(dm::fda::BSplineBasis::open_uniform(1, 2), {0, 0});
+            f.set_coefficient({1}, 5.0);
+            std::print("{}\n", f.evaluate(1.0)); // 5
+        """
+        return _datamunge.TensorBSpline_set_coefficient(self, index, value)
+
+    def evaluate(self, *args):
+        r"""
+        *Overload 1:*
+        Evaluates a one-dimensional spline at ``x`` (clamped into the domain).
+        :type x: float
+        :param x: Finite coordinate.
+        :rtype: float
+        :return: f(x).
+        :raises: std::invalid_argument If dimensions() != 1 or ``x`` is not finite.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::TensorBSpline f(dm::fda::BSplineBasis::open_uniform(1, 2), {1.0, 3.0});
+            std::print("{}\n", f.evaluate(2.0)); // 3  (clamped to x = 1)
+
+        |
+
+        *Overload 2:*
+        Evaluates at one d-dimensional point (each coordinate clamped into the domain).
+        :type point: std::vector< double,std::allocator< double > >
+        :param point: d finite coordinates.
+        :rtype: float
+        :return: f(point).
+        :raises: std::invalid_argument If point.size() != dimensions() or a coordinate is not finite.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+            dm::fda::TensorBSpline f({b, b}, {0, 1, 1, 2});
+            std::print("{}\n", f.evaluate({1.0, 1.0})); // 2
+        """
+        return _datamunge.TensorBSpline_evaluate(self, *args)
+
+    def evaluate_points(self, points):
+        r"""
+        Evaluates at many points.
+        :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param points: Points, each of length d.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: One value per point, in input order.
+        :raises: std::invalid_argument As for evaluate(const std::vector<double>&).
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::TensorBSpline f(dm::fda::BSplineBasis::open_uniform(1, 2), {0.0, 1.0});
+            std::print("{}\n", f.evaluate_points({{0.0}, {0.5}})); // [0, 0.5]
+        """
+        return _datamunge.TensorBSpline_evaluate_points(self, points)
+
+    def evaluate_grid(self, axes):
+        r"""
+        Evaluates on the Cartesian product of per-axis sample values.
+        :type axes: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param axes: d non-empty coordinate lists.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: Row-major grid of values (axis 0 slowest, last axis fastest).
+        :raises: std::invalid_argument If axes.size() != dimensions() or an axis is empty.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+            dm::fda::TensorBSpline f({b, b}, {0, 1, 1, 2});
+            std::print("{}\n", f.evaluate_grid({{0, 1}, {0, 1}})); // [0, 1, 1, 2]
+        """
+        return _datamunge.TensorBSpline_evaluate_grid(self, axes)
+
+    def dyadic_refine(self):
+        r"""
+        Dyadically refines every axis and maps the coefficients, giving an identical
+               function on the finer, nested tensor basis.
+        :rtype: :py:class:`TensorBSpline`
+        :return: The refined spline.
+        :raises: std::invalid_argument If some axis basis is not clamped.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::TensorBSpline f(dm::fda::BSplineBasis::open_uniform(2, 4), {0, 1, 3, 2});
+            auto g = f.dyadic_refine();
+            std::print("{} {:.6f}\n", g.coefficient_count(), g.evaluate(0.3) - f.evaluate(0.3)); // 6 0.000000
+        See also: dyadic_refine(const BSplineBasis&)
+        """
+        return _datamunge.TensorBSpline_dyadic_refine(self)
+    __swig_destroy__ = _datamunge.delete_TensorBSpline
+
+# Register TensorBSpline in _datamunge:
+_datamunge.TensorBSpline_swigregister(TensorBSpline)
+
+def fit_tensor_bspline(*args):
+    r"""
+    Fits a tensor-product B-spline to scattered data by ordinary least squares.
+
+    Builds the sparse design B (each row has at most prod(degree_k + 1) nonzeros), then
+    solves (B^T B) c = B^T y. Coordinates outside a basis domain are clamped to it.
+    :type bases: std::vector< datamunge::fda::BSplineBasis,std::allocator< datamunge::fda::BSplineBasis > >
+    :param bases: One basis per dimension.
+    :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+    :param points: Sample locations, each of length bases.size().
+    :type values: std::vector< double,std::allocator< double > >
+    :param values: One response per point.
+    :type options: :py:class:`SplineSolveOptions`, optional
+    :param options: Solver settings (default: automatic).
+    :rtype: :py:class:`TensorBSpline`
+    :return: The fitted spline.
+    :raises: std::invalid_argument On empty or mismatched inputs, or non-finite data.
+    :raises: std::runtime_error If the normal equations are singular (some basis function has
+                                   too little data; use a penalized fit or fewer functions).
+    Title: Example
+
+    .. code-block:: c++
+
+        auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+        auto f = dm::fda::fit_tensor_bspline({b}, {{0.0}, {0.5}, {1.0}}, {1.0, 2.0, 3.0});
+        std::print("{:.3f}\n", f.evaluate(0.25)); // 1.500
+    Title: References
+    - C. de Boor (2001). A Practical Guide to Splines, revised edition. Springer.
+    See also: fit_tensor_pspline()
+    """
+    return _datamunge.fit_tensor_bspline(*args)
+
+def fit_tensor_pspline(*args):
+    r"""
+    Fits a tensor-product P-spline: least squares plus an anisotropic difference
+           penalty, solving (B^T B + P) c = B^T y with P from tensor_difference_penalty().
+
+    All-zero lambdas reproduce fit_tensor_bspline(). Positive lambdas keep the system
+    well-posed even with fewer points than coefficients (for order 0, or once the data
+    determine the order-q polynomial null space).
+    :type bases: std::vector< datamunge::fda::BSplineBasis,std::allocator< datamunge::fda::BSplineBasis > >
+    :param bases: One basis per dimension.
+    :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+    :param points: Sample locations, each of length bases.size().
+    :type values: std::vector< double,std::allocator< double > >
+    :param values: One response per point.
+    :type lambdas: std::vector< double,std::allocator< double > >
+    :param lambdas: Nonnegative per-axis smoothing weights, one per basis.
+    :type order: int, optional
+    :param order: Difference order (default 2, the conventional curvature penalty).
+    :type options: :py:class:`SplineSolveOptions`, optional
+    :param options: Solver settings (default: automatic).
+    :rtype: :py:class:`TensorBSpline`
+    :return: The fitted spline.
+    :raises: std::invalid_argument On empty/mismatched inputs, invalid lambdas, or an axis
+                                      with no more functions than ``order``.
+    :raises: std::runtime_error If the penalized normal equations are singular.
+    Title: Example
+
+    .. code-block:: c++
+
+        auto b = dm::fda::BSplineBasis::open_uniform(3, 8);
+        auto f = dm::fda::fit_tensor_pspline({b}, {{0.0}, {1.0}}, {0.0, 1.0}, {1e3});
+        std::print("{:.3f}\n", f.evaluate(0.5)); // 0.500
+    Title: References
+    - P. H. C. Eilers and B. D. Marx (1996). Flexible smoothing with B-splines and penalties.
+      https://doi.org/10.1214/ss/1038425655
+    - P. H. C. Eilers, I. D. Currie and M. Durban (2006). Fast and compact smoothing on large
+      multidimensional grids. https://doi.org/10.1016/j.csda.2004.07.008
+    See also: fit_tensor_bspline(), fit_pspline()
+    """
+    return _datamunge.fit_tensor_pspline(*args)
+class HierarchicalBSpline(object):
+    r"""
+    Classical (overlay) hierarchical B-spline in the style of Forsey and Bartels:
+           every cell of a dyadic tree may carry its own local "detail" TensorBSpline.
+
+    evaluate(x) sums the patch of every cell on the root-to-leaf path containing x. Each
+    patch is evaluated in its cell's local coordinates, (x - cell_min) / (cell_max -
+    cell_min) in [0, 1]^d, so patch bases should span [0, 1]. Patches are independent
+    (no shared nested basis and no truncation); see TruncatedHierarchicalBSpline for the
+    THB-spline construction. Cells are identified by integer ids (root 0).
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::fda::HierarchicalBSpline h({0.0}, {1.0});
+        auto b = dm::fda::BSplineBasis::open_uniform(0, 1);              // constant patch
+        h.set_spline(h.root(), dm::fda::TensorBSpline(b, {1.0}));
+        h.refine(h.root(), 1, dm::fda::TensorBSpline(b, {2.0}));          // upper half
+        std::print("{} {}\n", h.evaluate({0.25}), h.evaluate({0.75}));    // 1 3
+    Title: References
+    - D. R. Forsey and R. H. Bartels (1988). Hierarchical B-spline refinement. ACM SIGGRAPH
+      Computer Graphics 22(4), 205-212. https://doi.org/10.1145/378456.378512
+    See also: TruncatedHierarchicalBSpline
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, domain_min, domain_max):
+        r"""
+        Creates a hierarchy whose root cell is [domain_min, domain_max], with no patches.
+        :type domain_min: std::vector< double,std::allocator< double > >
+        :param domain_min: Lower corner (length d >= 1).
+        :type domain_max: std::vector< double,std::allocator< double > >
+        :param domain_max: Upper corner, with domain_min[k] < domain_max[k].
+        :raises: std::invalid_argument On empty, mismatched or non-finite bounds, min >= max,
+                                          or more than 20 dimensions.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::HierarchicalBSpline h({0.0, 0.0}, {1.0, 2.0});
+            std::print("{} {}\n", h.dimensions(), h.cell_count()); // 2 1
+        """
+        _datamunge.HierarchicalBSpline_swiginit(self, _datamunge.new_HierarchicalBSpline(domain_min, domain_max))
+
+    def dimensions(self):
+        r"""
+         Number of dimensions d. :rtype: std::size_t
+        :return: d.
+        """
+        return _datamunge.HierarchicalBSpline_dimensions(self)
+
+    def cell_count(self):
+        r"""
+         Number of cells created so far. :rtype: int
+        :return: Cell count.
+        """
+        return _datamunge.HierarchicalBSpline_cell_count(self)
+
+    def root(self):
+        r"""
+         Root cell id. :rtype: int
+        :return: Always 0.
+        """
+        return _datamunge.HierarchicalBSpline_root(self)
+
+    def parent(self, cell):
+        r"""
+         Parent id. :type cell: int
+        :param cell: Cell id. :rtype: int
+        :return: Parent id, -1 for the root.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.HierarchicalBSpline_parent(self, cell)
+
+    def child(self, cell, slot):
+        r"""
+         Child id at ``slot``. :type cell: int
+        :param cell: Cell id. :type slot: int
+        :param slot: Child slot in [0, 2^d).
+         :rtype: int
+         :return: Child id, or -1 when not created. :raises: std::out_of_range For invalid ids/slots.
+        """
+        return _datamunge.HierarchicalBSpline_child(self, cell, slot)
+
+    def depth(self, cell):
+        r"""
+         Depth of ``cell`` (root 0). :type cell: int
+        :param cell: Cell id. :rtype: int
+        :return: Depth.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.HierarchicalBSpline_depth(self, cell)
+
+    def cell_min(self, cell):
+        r"""
+         Lower corner of ``cell``. :type cell: int
+        :param cell: Cell id. :rtype: std::vector< double,std::allocator< double > >
+        :return: d coordinates.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.HierarchicalBSpline_cell_min(self, cell)
+
+    def cell_max(self, cell):
+        r"""
+         Upper corner of ``cell``. :type cell: int
+        :param cell: Cell id. :rtype: std::vector< double,std::allocator< double > >
+        :return: d coordinates.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.HierarchicalBSpline_cell_max(self, cell)
+
+    def locate(self, point):
+        r"""
+        Deepest existing cell containing ``point``.
+        :type point: std::vector< double,std::allocator< double > >
+        :param point: d coordinates.
+        :rtype: int
+        :return: Cell id, or -1 if ``point`` is outside the domain.
+        :raises: std::invalid_argument If point.size() != dimensions().
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::HierarchicalBSpline h({0.0}, {1.0});
+            int c = h.refine(h.root(), 1);
+            std::print("{} {}\n", h.locate({0.9}) == c, h.locate({2.0})); // true -1
+        """
+        return _datamunge.HierarchicalBSpline_locate(self, point)
+
+    def has_spline(self, cell):
+        r"""
+         Whether ``cell`` carries a patch. :type cell: int
+        :param cell: Cell id. :rtype: boolean
+        :return: Flag.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.HierarchicalBSpline_has_spline(self, cell)
+
+    def spline(self, cell):
+        r"""
+         The patch of ``cell``. :type cell: int
+        :param cell: Cell id.
+         :rtype: :py:class:`TensorBSpline`
+         :return: Reference valid until the patch is replaced or cleared.
+         :raises: std::out_of_range For an invalid id. :raises: std::invalid_argument If no patch.
+        """
+        return _datamunge.HierarchicalBSpline_spline(self, cell)
+
+    def set_spline(self, cell, spline):
+        r"""
+         Installs (or replaces) the patch of ``cell``.
+         :type cell: int
+         :param cell: Cell id. :type spline: :py:class:`TensorBSpline`
+        :param spline: Patch in cell-local [0, 1]^d coordinates.
+         :raises: std::out_of_range For an invalid id.
+         :raises: std::invalid_argument If the patch dimension differs from dimensions().
+        """
+        return _datamunge.HierarchicalBSpline_set_spline(self, cell, spline)
+
+    def clear_spline(self, cell):
+        r"""
+         Removes the patch of ``cell`` (no-op if none). :type cell: int
+        :param cell: Cell id.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.HierarchicalBSpline_clear_spline(self, cell)
+
+    def subdivide(self, cell):
+        r"""
+        Creates all 2^d children of ``cell`` (existing ones are kept), without patches.
+        :type cell: int
+        :param cell: Cell id.
+        :rtype: std::vector< int,std::allocator< int > >
+        :return: The 2^d child ids in slot order.
+        :raises: std::out_of_range For an invalid id.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::HierarchicalBSpline h({0.0, 0.0}, {1.0, 1.0});
+            std::print("{}\n", h.subdivide(h.root()).size()); // 4
+        """
+        return _datamunge.HierarchicalBSpline_subdivide(self, cell)
+
+    def refine(self, *args):
+        r"""
+        *Overload 1:*
+         Creates (if needed) only the child of ``cell`` at ``slot``.
+         :type cell: int
+         :param cell: Cell id. :type slot: int
+        :param slot: Child slot; bit k selects the upper half of axis k.
+         :rtype: int
+         :return: The child id.
+         :raises: std::out_of_range For an invalid id or slot.
+         Title: Example
+
+         .. code-block:: c++
+
+             dm::fda::HierarchicalBSpline h({0.0}, {1.0});
+             int c = h.refine(h.root(), 0);
+             std::print("{}\n", h.cell_max(c)); // [0.5]
+
+        |
+
+        *Overload 2:*
+         Creates (if needed) the child at ``slot`` and installs ``spline`` on it.
+         :type cell: int
+         :param cell: Cell id. :type slot: int
+        :param slot: Child slot. :type spline: :py:class:`TensorBSpline`
+        :param spline: Patch for the child.
+         :rtype: int
+         :return: The child id.
+         :raises: std::out_of_range For an invalid id or slot.
+         :raises: std::invalid_argument If the patch dimension differs from dimensions().
+         Title: Example
+         See the class example.
+        """
+        return _datamunge.HierarchicalBSpline_refine(self, *args)
+
+    def refine_region(self, region_min, region_max, depth):
+        r"""
+         Subdivides, down to depth ``depth``, every cell overlapping the open box
+                (region_min, region_max).
+         :type region_min: std::vector< double,std::allocator< double > >
+         :param region_min: Lower corner. :type region_max: std::vector< double,std::allocator< double > >
+        :param region_max: Upper corner (min < max per axis).
+         :type depth: int
+         :param depth: Deepest depth to create (cells already deeper are untouched).
+         :raises: std::invalid_argument On mismatched sizes or min >= max.
+         Title: Example
+
+         .. code-block:: c++
+
+             dm::fda::HierarchicalBSpline h({0.0}, {1.0});
+             h.refine_region({0.0}, {0.3}, 2);
+             std::print("{}\n", h.cell_count()); // 4
+        """
+        return _datamunge.HierarchicalBSpline_refine_region(self, region_min, region_max, depth)
+
+    def fit_cell(self, *args):
+        r"""
+        Least-squares fits a new patch on ``cell`` so the whole hierarchy matches
+               ``values`` at ``points``.
+
+        The patch explains only what is left after every other patch on the path (the
+        residual values - evaluate(points)), in the spirit of Forsey-Bartels editing, so pass
+        raw data values rather than residuals. Points are global coordinates inside the cell.
+        :type cell: int
+        :param cell: Cell id; must not already have a patch (clear_spline() first to refit).
+        :type bases: std::vector< datamunge::fda::BSplineBasis,std::allocator< datamunge::fda::BSplineBasis > >
+        :param bases: Patch bases on [0, 1], one per dimension.
+        :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param points: Sample locations inside the cell.
+        :type values: std::vector< double,std::allocator< double > >
+        :param values: One raw data value per point.
+        :type options: :py:class:`SplineSolveOptions`, optional
+        :param options: Solver settings.
+        :raises: std::out_of_range For an invalid id.
+        :raises: std::invalid_argument If the cell has a patch, inputs are empty/mismatched, or a
+                                          point lies outside the cell.
+        :raises: std::runtime_error If the local normal equations are singular.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::fda::HierarchicalBSpline h({0.0}, {1.0});
+            auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+            h.fit_cell(h.root(), {b}, {{0.0}, {1.0}}, {1.0, 3.0});
+            std::print("{}\n", h.evaluate({0.5})); // 2
+        """
+        return _datamunge.HierarchicalBSpline_fit_cell(self, *args)
+
+    def fit_cell_penalized(self, *args):
+        r"""
+         Penalized (P-spline) variant of fit_cell() with per-axis ``lambdas`` and
+                difference ``order;`` all-zero lambdas give fit_cell().
+         :type cell: int
+         :param cell: Cell id without a patch. :type bases: std::vector< datamunge::fda::BSplineBasis,std::allocator< datamunge::fda::BSplineBasis > >
+        :param bases: Patch bases on [0, 1].
+         :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+         :param points: Sample locations inside the cell. :type values: std::vector< double,std::allocator< double > >
+        :param values: Raw data values.
+         :type lambdas: std::vector< double,std::allocator< double > >
+         :param lambdas: Nonnegative per-axis weights. :type order: int, optional
+        :param order: Difference order (default 2).
+         :type options: :py:class:`SplineSolveOptions`, optional
+         :param options: Solver settings.
+         :raises: std::out_of_range For an invalid id.
+         :raises: std::invalid_argument As for fit_cell() and fit_tensor_pspline().
+         :raises: std::runtime_error If the penalized normal equations are singular.
+         Title: Example
+
+         .. code-block:: c++
+
+             dm::fda::HierarchicalBSpline h({0.0}, {1.0});
+             auto b = dm::fda::BSplineBasis::open_uniform(3, 10);
+             h.fit_cell_penalized(h.root(), {b}, {{0.0}, {1.0}}, {0.0, 2.0}, {1e3});
+             std::print("{:.3f}\n", h.evaluate({0.5})); // 1.000
+        """
+        return _datamunge.HierarchicalBSpline_fit_cell_penalized(self, *args)
+
+    def evaluate(self, point):
+        r"""
+        Sum of the patches along the path of cells containing ``point``.
+        :type point: std::vector< double,std::allocator< double > >
+        :param point: d coordinates inside the domain.
+        :rtype: float
+        :return: Hierarchy value (0 where no patch applies).
+        :raises: std::invalid_argument On a size mismatch or a point outside the domain.
+        Title: Example
+        See the class example.
+        """
+        return _datamunge.HierarchicalBSpline_evaluate(self, point)
+
+    def evaluate_points(self, points):
+        r"""
+         Evaluates at many points. :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param points: Points of length d.
+         :rtype: std::vector< double,std::allocator< double > >
+         :return: One value per point. :raises: std::invalid_argument As for evaluate().
+         Title: Example
+
+         .. code-block:: c++
+
+             dm::fda::HierarchicalBSpline h({0.0}, {1.0});
+             std::print("{}\n", h.evaluate_points({{0.1}, {0.9}})); // [0, 0]
+        """
+        return _datamunge.HierarchicalBSpline_evaluate_points(self, points)
+
+    def evaluate_grid(self, axes):
+        r"""
+         Evaluates on a Cartesian grid. :type axes: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param axes: d non-empty coordinate lists.
+         :rtype: std::vector< double,std::allocator< double > >
+         :return: Row-major values (last axis fastest).
+         :raises: std::invalid_argument On a dimension mismatch, empty axis, or outside point.
+         Title: Example
+
+         .. code-block:: c++
+
+             dm::fda::HierarchicalBSpline h({0.0, 0.0}, {1.0, 1.0});
+             std::print("{}\n", h.evaluate_grid({{0.0, 1.0}, {0.5}}).size()); // 2
+        """
+        return _datamunge.HierarchicalBSpline_evaluate_grid(self, axes)
+    __swig_destroy__ = _datamunge.delete_HierarchicalBSpline
+
+# Register HierarchicalBSpline in _datamunge:
+_datamunge.HierarchicalBSpline_swigregister(HierarchicalBSpline)
+class TruncatedHierarchicalBSpline(object):
+    r"""
+    Truncated hierarchical B-spline (THB-spline) of Giannelli, Juttler and Speleers.
+
+    Level 0 is the caller's TensorBSpline; level l + 1 is the dyadic refinement of level l.
+    A dyadic cell tree defines the nested domains Omega^0 (whole domain) contains Omega^1
+    contains ..., where Omega^l is the union of cells of depth >= l. A level-l basis
+    function is active when its support lies in Omega^l but not in Omega^(l+1). The THB
+    basis consists of the active functions, each truncated: its representation on finer
+    levels drops the finer functions whose support lies in the finer refined domain. The
+    resulting basis is a partition of unity, preserves the continuity of the underlying
+    splines, and spans the hierarchical spline space.
+
+    Internally each level stores a full coefficient net whose entries outside the next
+    level's refined domain always equal the refinement of the coarser level; coefficient
+    edits are pushed down through all finer levels with truncation, so evaluation needs
+    only the finest level covering a point. Refinement never changes the represented
+    function. Bases must be clamped. Cells are integer ids (root 0).
+    Title: Example
+
+    .. code-block:: c++
+
+        auto b = dm::fda::BSplineBasis::open_uniform(2, 4);
+        dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline({b, b}, std::vector<double>(16, 1.0)));
+        thb.refine_region({0.0, 0.0}, {0.5, 0.5}, 1);
+        std::print("{} {:.3f}\n", thb.level_count(), thb.evaluate({0.2, 0.2})); // 2 1.000
+    Title: References
+    - C. Giannelli, B. Juttler and H. Speleers (2012). THB-splines: The truncated basis for
+      hierarchical splines. Computer Aided Geometric Design 29(7), 485-498.
+      https://doi.org/10.1016/j.cagd.2012.03.025
+    - D. R. Forsey and R. H. Bartels (1988). Hierarchical B-spline refinement.
+      https://doi.org/10.1145/378456.378512
+    See also: HierarchicalBSpline, dyadic_refine()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, base):
+        r"""
+        Starts a hierarchy whose level 0 (and root cell / domain) is ``base``.
+        :type base: :py:class:`TensorBSpline`
+        :param base: Level-0 spline; every axis basis must be clamped.
+        :raises: std::invalid_argument If an axis basis is not clamped or d > 20.
+        Title: Example
+        See the class example.
+        """
+        _datamunge.TruncatedHierarchicalBSpline_swiginit(self, _datamunge.new_TruncatedHierarchicalBSpline(base))
+
+    def dimensions(self):
+        r"""
+         Number of dimensions d. :rtype: std::size_t
+        :return: d.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_dimensions(self)
+
+    def level_count(self):
+        r"""
+         Number of materialized levels (1 + deepest cell depth). :rtype: int
+        :return: Level count.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_level_count(self)
+
+    def level(self, level):
+        r"""
+        The level-``l`` spline on the whole domain; it equals the hierarchy wherever
+               Omega^l but not Omega^(l+1) applies.
+        :type level: int
+        :param level: Level in [0, level_count()).
+        :rtype: :py:class:`TensorBSpline`
+        :return: Reference valid until the next refinement or coefficient edit.
+        :raises: std::out_of_range For an invalid level.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_level(self, level)
+
+    def cell_count(self):
+        r"""
+         Number of cells. :rtype: int
+        :return: Cell count.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_cell_count(self)
+
+    def root(self):
+        r"""
+         Root cell id. :rtype: int
+        :return: Always 0.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_root(self)
+
+    def parent(self, cell):
+        r"""
+         Parent id. :type cell: int
+        :param cell: Cell id. :rtype: int
+        :return: Parent id, -1 for the root.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_parent(self, cell)
+
+    def child(self, cell, slot):
+        r"""
+         Child id. :type cell: int
+        :param cell: Cell id. :type slot: int
+        :param slot: Child slot.
+         :rtype: int
+         :return: Child id or -1. :raises: std::out_of_range For invalid ids/slots.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_child(self, cell, slot)
+
+    def depth(self, cell):
+        r"""
+         Depth (= level used there if it is a leaf). :type cell: int
+        :param cell: Cell id. :rtype: int
+        :return: Depth.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_depth(self, cell)
+
+    def cell_min(self, cell):
+        r"""
+         Lower corner. :type cell: int
+        :param cell: Cell id. :rtype: std::vector< double,std::allocator< double > >
+        :return: d coordinates.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_cell_min(self, cell)
+
+    def cell_max(self, cell):
+        r"""
+         Upper corner. :type cell: int
+        :param cell: Cell id. :rtype: std::vector< double,std::allocator< double > >
+        :return: d coordinates.
+         :raises: std::out_of_range For an invalid id.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_cell_max(self, cell)
+
+    def locate(self, point):
+        r"""
+         Deepest cell containing ``point`` (its depth is the finest level there).
+         :type point: std::vector< double,std::allocator< double > >
+         :param point: d coordinates. :rtype: int
+        :return: Cell id, or -1 outside the domain.
+         :raises: std::invalid_argument If point.size() != dimensions().
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_locate(self, point)
+
+    def refine(self, cell, slot):
+        r"""
+         Creates (if needed) the child of ``cell`` at ``slot``, materializing the next
+                level when first reached. The represented function is unchanged.
+         :type cell: int
+         :param cell: Cell id. :type slot: int
+        :param slot: Child slot. :rtype: int
+        :return: Child id.
+         :raises: std::out_of_range For an invalid id or slot.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 1.0}));
+             thb.refine(thb.root(), 0);
+             std::print("{} {}\n", thb.level_count(), thb.evaluate({0.25})); // 2 0.25
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_refine(self, cell, slot)
+
+    def subdivide(self, cell):
+        r"""
+         Creates all 2^d children of ``cell``. :type cell: int
+        :param cell: Cell id.
+         :rtype: std::vector< int,std::allocator< int > >
+         :return: Child ids in slot order. :raises: std::out_of_range For an invalid id.
+         Title: Example
+         See refine().
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_subdivide(self, cell)
+
+    def refine_region(self, region_min, region_max, depth):
+        r"""
+         Subdivides, down to depth ``depth``, every cell overlapping the open box
+                (region_min, region_max). The represented function is unchanged.
+         :type region_min: std::vector< double,std::allocator< double > >
+         :param region_min: Lower corner. :type region_max: std::vector< double,std::allocator< double > >
+        :param region_max: Upper corner (min < max per axis).
+         :type depth: int
+         :param depth: Deepest level to create.
+         :raises: std::invalid_argument On mismatched sizes or min >= max.
+         Title: Example
+         See the class example.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_refine_region(self, region_min, region_max, depth)
+
+    def support_min(self, level, index):
+        r"""
+         Lower corner of the support box of basis function ``index`` at ``level``.
+         :type level: int
+         :param level: Level. :type index: std::vector< int,std::allocator< int > >
+        :param index: Multi-index into that level's net.
+         :rtype: std::vector< double,std::allocator< double > >
+         :return: d coordinates. :raises: std::out_of_range For invalid levels/indices.
+         :raises: std::invalid_argument On a dimension mismatch.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_support_min(self, level, index)
+
+    def support_max(self, level, index):
+        r"""
+         Upper corner of the support box. :type level: int
+        :param level: Level. :type index: std::vector< int,std::allocator< int > >
+        :param index: Multi-index.
+         :rtype: std::vector< double,std::allocator< double > >
+         :return: d coordinates. :raises: std::out_of_range For invalid levels/indices.
+         :raises: std::invalid_argument On a dimension mismatch.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_support_max(self, level, index)
+
+    def is_active(self, level, index):
+        r"""
+         Whether level-``level`` function ``index`` is in the THB basis (support in
+                Omega^level but not in Omega^(level+1)).
+         :type level: int
+         :param level: Level. :type index: std::vector< int,std::allocator< int > >
+        :param index: Multi-index.
+         :rtype: boolean
+         :return: Activity flag.
+         :raises: std::out_of_range For invalid levels/indices.
+         :raises: std::invalid_argument On a dimension mismatch.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 1.0}));
+             thb.subdivide(thb.root());
+             std::print("{} {}\n", thb.is_active(0, {0}), thb.is_active(1, {0})); // false true
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_is_active(self, level, index)
+
+    def active_indices(self, level):
+        r"""
+         Every active multi-index at ``level``, in row-major order.
+         :type level: int
+         :param level: Level. :rtype: std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > >
+        :return: Multi-indices. :raises: std::out_of_range For an invalid level.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 1.0}));
+             std::print("{}\n", thb.active_indices(0).size()); // 2
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_active_indices(self, level)
+
+    def basis_size(self):
+        r"""
+         Total number of THB basis functions over all levels. :rtype: std::size_t
+        :return: Count.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 1.0}));
+             thb.refine(thb.root(), 0);
+             std::print("{}\n", thb.basis_size()); // 3
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_basis_size(self)
+
+    def coefficient(self, level, index):
+        r"""
+         THB coefficient of a basis function (for active functions; inactive entries
+                are internal bookkeeping).
+         :type level: int
+         :param level: Level. :type index: std::vector< int,std::allocator< int > >
+        :param index: Multi-index. :rtype: float
+        :return: Coefficient.
+         :raises: std::out_of_range For invalid levels/indices.
+         :raises: std::invalid_argument On a dimension mismatch.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_coefficient(self, level, index)
+
+    def set_coefficient(self, level, index, value):
+        r"""
+         Sets the coefficient of an active function and propagates the change, with
+                truncation, to every finer level. The edit is local to the function's support.
+         :type level: int
+         :param level: Level. :type index: std::vector< int,std::allocator< int > >
+        :param index: Active multi-index. :type value: float
+        :param value: New coefficient.
+         :raises: std::out_of_range For invalid levels/indices.
+         :raises: std::invalid_argument On a dimension mismatch or an inactive index.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 0.0}));
+             thb.set_coefficient(0, {1}, 2.0);
+             std::print("{}\n", thb.evaluate({0.5})); // 1
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_set_coefficient(self, level, index, value)
+
+    def truncated_basis(self, level, index, point):
+        r"""
+         Value of the truncated basis function (level, index) at ``point``.
+         :type level: int
+         :param level: Level. :type index: std::vector< int,std::allocator< int > >
+        :param index: Multi-index (inactive functions give 0).
+         :type point: std::vector< double,std::allocator< double > >
+         :param point: d coordinates inside the domain.
+         :rtype: float
+         :return: Truncated basis value.
+         :raises: std::out_of_range For invalid levels/indices.
+         :raises: std::invalid_argument On a size mismatch or a point outside the domain.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 1.0}));
+             std::print("{}\n", thb.truncated_basis(0, {1}, {0.25})); // 0.25
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_truncated_basis(self, level, index, point)
+
+    def fit_level(self, *args):
+        r"""
+         Least-squares update of the active coefficients at ``level`` only.
+
+         Solves for the change of the level's active coefficients that best explains the
+         residual values - evaluate(points), using the exact truncated basis, so pass raw
+         data values. Points shallower than ``level`` are unaffected by these functions and
+         are ignored. Typical use is coarse-to-fine: fit level 0, refine where residuals are
+         large, then fit the new level.
+         :type level: int
+         :param level: Level with at least one active function.
+         :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+         :param points: Sample locations inside the domain. :type values: std::vector< double,std::allocator< double > >
+        :param values: One raw value per point.
+         :type options: :py:class:`SplineSolveOptions`, optional
+         :param options: Solver settings.
+         :raises: std::out_of_range For an invalid level.
+         :raises: std::invalid_argument On empty/mismatched inputs, points outside the domain, or
+                                           a level with no active functions.
+         :raises: std::runtime_error If the normal equations are singular.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 0.0}));
+             thb.fit_level(0, {{0.0}, {1.0}}, {1.0, 3.0});
+             std::print("{}\n", thb.evaluate({0.5})); // 2
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_fit_level(self, *args)
+
+    def fit_level_penalized(self, *args):
+        r"""
+         Penalized variant of fit_level(): adds the level's full-grid tensor difference
+                penalty restricted to its active functions, applied to the coefficient change.
+         :type level: int
+         :param level: Level. :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param points: Sample locations. :type values: std::vector< double,std::allocator< double > >
+        :param values: Raw values.
+         :type lambdas: std::vector< double,std::allocator< double > >
+         :param lambdas: Nonnegative per-axis weights. :type order: int, optional
+        :param order: Difference order (default 2).
+         :type options: :py:class:`SplineSolveOptions`, optional
+         :param options: Solver settings.
+         :raises: std::out_of_range For an invalid level.
+         :raises: std::invalid_argument As for fit_level() and tensor_difference_penalty().
+         :raises: std::runtime_error If the normal equations are singular.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(3, 8);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, std::vector<double>(8, 0.0)));
+             thb.fit_level_penalized(0, {{0.0}, {1.0}}, {0.0, 1.0}, {1e3});
+             std::print("{:.3f}\n", thb.evaluate({0.5})); // 0.500
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_fit_level_penalized(self, *args)
+
+    def fit(self, *args):
+        r"""
+         Least-squares fit of every active coefficient on every level at once
+                (replaces the current function).
+         :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+         :param points: Sample locations inside the domain. :type values: std::vector< double,std::allocator< double > >
+        :param values: One value per point.
+         :type options: :py:class:`SplineSolveOptions`, optional
+         :param options: Solver settings.
+         :raises: std::invalid_argument On empty/mismatched inputs or points outside the domain.
+         :raises: std::runtime_error If some active function has too little data (singular).
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 0.0}));
+             thb.refine(thb.root(), 1);                      // adds a knot at 0.5
+             thb.fit({{0.0}, {0.25}, {0.5}, {0.75}, {1.0}}, {1.0, 0.5, 0.0, 0.5, 1.0}); // |2x - 1|
+             std::print("{:.3f}\n", thb.evaluate({0.75})); // 0.500
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_fit(self, *args)
+
+    def fit_penalized(self, *args):
+        r"""
+         Penalized all-level fit: adds lambda_k times the squared order-q differences
+                along axis k of every run of q + 1 neighbouring active coefficients of a level.
+
+         Differences that would involve an inactive coefficient are omitted, so for q >= 1
+         constant coefficients (and, generally, polynomials of degree < q in the coefficient
+         index on each level) are unpenalized; q = 0 is ridge regression on all coefficients.
+         :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+         :param points: Sample locations. :type values: std::vector< double,std::allocator< double > >
+        :param values: One value per point.
+         :type lambdas: std::vector< double,std::allocator< double > >
+         :param lambdas: Nonnegative per-axis weights. :type order: int, optional
+        :param order: Difference order (default 2).
+         :type options: :py:class:`SplineSolveOptions`, optional
+         :param options: Solver settings.
+         :raises: std::invalid_argument As for fit() and tensor_difference_penalty().
+         :raises: std::runtime_error If the normal equations are singular.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(2, 6);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, std::vector<double>(6, 0.0)));
+             thb.refine_region({0.0}, {0.5}, 1);
+             thb.fit_penalized({{0.0}, {1.0}}, {2.0, 2.0}, {1.0}, 1);
+             std::print("{:.3f}\n", thb.evaluate({0.3})); // 2.000
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_fit_penalized(self, *args)
+
+    def evaluate(self, point):
+        r"""
+         Evaluates the hierarchical spline (finest level covering ``point)``.
+         :type point: std::vector< double,std::allocator< double > >
+         :param point: d coordinates inside the domain. :rtype: float
+        :return: Value.
+         :raises: std::invalid_argument On a size mismatch or a point outside the domain.
+         Title: Example
+         See the class example.
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_evaluate(self, point)
+
+    def evaluate_points(self, points):
+        r"""
+         Evaluates at many points. :type points: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param points: Points of length d.
+         :rtype: std::vector< double,std::allocator< double > >
+         :return: One value per point. :raises: std::invalid_argument As for evaluate().
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 1.0}));
+             std::print("{}\n", thb.evaluate_points({{0.0}, {0.5}})); // [0, 0.5]
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_evaluate_points(self, points)
+
+    def evaluate_grid(self, axes):
+        r"""
+         Evaluates on a Cartesian grid. :type axes: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
+        :param axes: d non-empty coordinate lists.
+         :rtype: std::vector< double,std::allocator< double > >
+         :return: Row-major values (last axis fastest).
+         :raises: std::invalid_argument On a dimension mismatch, empty axis, or outside point.
+         Title: Example
+
+         .. code-block:: c++
+
+             auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+             dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline(b, {0.0, 1.0}));
+             std::print("{}\n", thb.evaluate_grid({{0.0, 1.0}})); // [0, 1]
+        """
+        return _datamunge.TruncatedHierarchicalBSpline_evaluate_grid(self, axes)
+    __swig_destroy__ = _datamunge.delete_TruncatedHierarchicalBSpline
+
+# Register TruncatedHierarchicalBSpline in _datamunge:
+_datamunge.TruncatedHierarchicalBSpline_swigregister(TruncatedHierarchicalBSpline)
+Task_InvertedPendulum = _datamunge.Task_InvertedPendulum
+r"""Sliding cart and upright hinged pole; one force action in [-3,3]."""
+Task_Hopper = _datamunge.Task_Hopper
+r"""Planar free torso and three articulated leg segments; three torques in [-1,1]."""
+class TaskOutput(object):
+    r"""
+    Preallocated observations, rewards and independent episode-end flags.
+    Observations are row-major [environments,observation_size]. Terminal observations
+    stay in final_observations until the next terminal transition for that index.
+    No auto-reset occurs. Masked-out rows keep all previous values.
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::sim::TaskBatch task(dm::sim::Task::InvertedPendulum,2);
+        const auto& result=task.output();
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    observations = property(_datamunge.TaskOutput_observations_get, doc=r"""Current observations, including terminal states.""")
+    rewards = property(_datamunge.TaskOutput_rewards_get, doc=r"""Reward from the last selected step, zero after reset.""")
+    terminated = property(_datamunge.TaskOutput_terminated_get, doc=r"""Physical failure, requiring explicit reset.""")
+    truncated = property(_datamunge.TaskOutput_truncated_get, doc=r"""Time limit, requiring explicit reset; bootstrap is valid.""")
+    final_observations = property(_datamunge.TaskOutput_final_observations_get, doc=r"""
+    Last episode's final observations, meaningful when
+    final_valid is one.
+    """)
+    final_valid = property(_datamunge.TaskOutput_final_valid_get, doc=r"""Whether a final observation has ever been recorded for this row.""")
+
+    def __init__(self):
+        _datamunge.TaskOutput_swiginit(self, _datamunge.new_TaskOutput())
+    __swig_destroy__ = _datamunge.delete_TaskOutput
+
+# Register TaskOutput in _datamunge:
+_datamunge.TaskOutput_swigregister(TaskOutput)
+class TaskBatch(object):
+    r"""
+    Batched native InvertedPendulum or Hopper rollouts without a graphics dependency.
+    CPU worlds use persistent parallel workers. Actions and all output arrays are
+    finite double precision, with no NN dependency. Single-writer, including reset.
+    Invalid actions fail before forces are applied. A native solver error propagates;
+    reset selected worlds before retrying after such an error. Reset uses small
+    independent uniform joint perturbations and never touches another row's RNG.
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::sim::TaskBatch task(dm::sim::Task::InvertedPendulum,4,dm::compute::Context({},2),42);
+        const auto& result=task.step(std::vector<double>(4,0));
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+
+    def size(self):
+        r"""
+        Return the number of independent environments.
+        :rtype: std::size_t
+        :return: Positive environment count.
+        """
+        return _datamunge.TaskBatch_size(self)
+
+    def observation_size(self):
+        r"""
+        Read the task's observation width.
+        :rtype: std::size_t
+        :return: Four for InvertedPendulum or eleven for Hopper.
+        """
+        return _datamunge.TaskBatch_observation_size(self)
+
+    def action_size(self):
+        r"""
+        Read the continuous action width.
+        :rtype: std::size_t
+        :return: One for InvertedPendulum or three for Hopper.
+        """
+        return _datamunge.TaskBatch_action_size(self)
+
+    def output(self):
+        r"""Return an owned snapshot of current native rollout outputs without advancing physics. Numeric arrays and binary end flags remain valid after the task is collected."""
+        return _datamunge.TaskBatch_output(self)
+
+    def step(self, *args):
+        r"""Advance selected native CPU task worlds with row-major actions. An empty mask selects all rows; otherwise use one binary integer per environment. Completed selected rows require explicit reset. Return an owned TaskOutput snapshot, including separate terminated/truncated flags and retained final observations."""
+        return _datamunge.TaskBatch_step(self, *args)
+
+    def reset(self, *args):
+        r"""Restore selected native worlds and sample independent initial perturbations. An empty mask selects all rows; otherwise use one binary integer per environment. Random streams continue and final observations remain available. Return an owned TaskOutput snapshot."""
+        return _datamunge.TaskBatch_reset(self, *args)
+
+    def seed(self, seed):
+        r"""
+        Reproduce fresh reset draws after explicit reseeding; physics is unchanged until reset.
+        :type seed: int
+        :param seed: New batch random seed.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::sim::TaskBatch task(dm::sim::Task::Hopper,1);task.seed(7);task.reset();
+        """
+        return _datamunge.TaskBatch_seed(self, seed)
+
+    @staticmethod
+    def create(task, count, workers=1, seed=0, time_limit=1000):
+        r"""Create an owned native CPU task batch. task is InvertedPendulum or Hopper; count and workers must be positive. seed defaults to zero and time_limit to 1000 successful episode steps. Physics runs in the canonical C++ engine. No rendering or external simulator is required."""
+        return _datamunge.TaskBatch_create(task, count, workers, seed, time_limit)
+    __swig_destroy__ = _datamunge.delete_TaskBatch
+
+# Register TaskBatch in _datamunge:
+_datamunge.TaskBatch_swigregister(TaskBatch)
 

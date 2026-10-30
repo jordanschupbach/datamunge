@@ -36,7 +36,7 @@ in error resilience.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 inline std::string fib_code(std::uint64_t n) { std::vector<bool> b; fibonacci_encode_value(n, b); std::string s; for (bool x : b) s += x ? '1' : '0'; return s; }
 inline int fib_len(std::uint64_t n) { std::vector<bool> b; fibonacci_encode_value(n, b); return (int)b.size(); }
@@ -96,7 +96,7 @@ length against order-0 Exp-Golomb.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 inline std::string fib_code(std::uint64_t n) { std::vector<bool> b; fibonacci_encode_value(n, b); std::string s; for (bool x : b) s += x ? '1' : '0'; return s; }
 inline int fib_len(std::uint64_t n) { std::vector<bool> b; fibonacci_encode_value(n, b); return (int)b.size(); }

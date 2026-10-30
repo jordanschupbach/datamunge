@@ -1,3 +1,5 @@
+/// @file xgboost_classifier.cpp
+/// @brief Regularised multiclass boosting, fixed-model evaluation and plotting.
 #include <datamunge/stats/xgboost_classifier.hpp>
 
 #include <datamunge/random/random.hpp>
@@ -22,7 +24,7 @@ std::string format_stat(double v, int precision = 4) {
     return oss.str();
 }
 
-const plot::RGB kSeriesColors[] = {
+const graphics::RGB kSeriesColors[] = {
     {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}, {124, 58, 237}, {8, 145, 178},
 };
 
@@ -53,6 +55,31 @@ std::vector<double> softmax_row(const linalg::DenseMatrix<double>& scores, std::
     return p;
 }
 
+/// @brief Require finite transformed predictors or scores before numerical tree/softmax operations.
+/// @param matrix Borrowed dense numeric matrix.
+/// @throws std::invalid_argument If any matrix cell is non-finite.
+void xgb_check_finite(const linalg::DenseMatrix<double>& matrix) {
+  for(std::size_t i=0;i<matrix.rows();++i)
+    for(std::size_t j=0;j<matrix.cols();++j)
+      if(!std::isfinite(matrix(i,j)))throw std::invalid_argument("XGBoostClassifier: non-finite transformed value or score");
+}
+
+/// @brief Map complete-case response labels into the fitted sorted class order.
+/// @param labels Labels of complete evaluation rows.
+/// @param classes Sorted fitted class labels.
+/// @return Owned class indices in evaluation-row order.
+/// @throws std::invalid_argument If an evaluation label was not a training class.
+std::vector<std::size_t> xgb_truth_indices(const std::vector<std::string>& labels,
+                                          const std::vector<std::string>& classes) {
+  std::vector<std::size_t> out;out.reserve(labels.size());
+  for(const auto& label:labels){
+    const auto it=std::lower_bound(classes.begin(),classes.end(),label);
+    if(it==classes.end()||*it!=label)throw std::invalid_argument("XGBoostClassifier: unknown evaluation response class");
+    out.push_back(static_cast<std::size_t>(it-classes.begin()));
+  }
+  return out;
+}
+
 } // namespace
 
 XGBoostClassifier::XGBoostClassifier(const dstruct::DataFrame& data, const std::string& formula,
@@ -63,14 +90,20 @@ XGBoostClassifier::XGBoostClassifier(const dstruct::DataFrame& data, const std::
 }
 
 void XGBoostClassifier::fit(const dstruct::DataFrame& data) {
-    if (options_.n_trees == 0) throw std::invalid_argument("XGBoostClassifier: n_trees must be at least 1");
-    if (options_.subsample <= 0.0 || options_.subsample > 1.0)
-        throw std::invalid_argument("XGBoostClassifier: subsample must be in (0, 1]");
-    if (options_.colsample_bytree <= 0.0 || options_.colsample_bytree > 1.0)
-        throw std::invalid_argument("XGBoostClassifier: colsample_bytree must be in (0, 1]");
+    if(options_.n_trees==0)throw std::invalid_argument("XGBoostClassifier: n_trees must be positive");
+    if(!std::isfinite(options_.learning_rate)||options_.learning_rate<=0)
+      throw std::invalid_argument("XGBoostClassifier: learning_rate must be finite and positive");
+    for(const double penalty:{options_.lambda,options_.alpha,options_.gamma,options_.min_child_weight})
+      if(!std::isfinite(penalty)||penalty<0)throw std::invalid_argument("XGBoostClassifier: penalties/child weight must be finite and nonnegative");
+    if(options_.min_samples_leaf==0||options_.min_samples_leaf>std::numeric_limits<std::size_t>::max()/2)
+      throw std::invalid_argument("XGBoostClassifier: invalid min_samples_leaf");
+    for(const double fraction:{options_.subsample,options_.colsample_bytree})
+      if(!std::isfinite(fraction)||fraction<=0||fraction>1)
+        throw std::invalid_argument("XGBoostClassifier: sampling fractions must be in (0,1]");
 
     design_       = formula_.resolve(data, ResponseKind::Categorical);
     const auto cd = design_.build_classification_matrix(data);
+    xgb_check_finite(cd.X);
     const std::size_t n = cd.X.rows();
     const std::size_t p = cd.X.cols();
 
@@ -168,6 +201,7 @@ void XGBoostClassifier::fit(const dstruct::DataFrame& data) {
         }
         trees_.push_back(std::move(round_trees));
 
+        xgb_check_finite(scores);
         double deviance = 0.0;
         for (std::size_t i = 0; i < n; ++i) {
             const auto p_row = softmax_row(scores, i, K);
@@ -271,7 +305,9 @@ std::vector<std::string> XGBoostClassifier::predict(const dstruct::DataFrame& ne
 XGBoostClassifierPrediction XGBoostClassifier::predict_detail(const dstruct::DataFrame& newdata) const {
     design_.validate_categorical_levels(newdata, "XGBoostClassifier::predict");
     const auto dm        = design_.build_matrix(newdata, /*require_response=*/false);
+    xgb_check_finite(dm.X);
     const auto scores    = score_matrix(dm.X, dm.X.rows());
+    xgb_check_finite(scores);
     const std::size_t K  = classes_.size();
 
     XGBoostClassifierPrediction result;
@@ -290,13 +326,74 @@ XGBoostClassifierPrediction XGBoostClassifier::predict_detail(const dstruct::Dat
     return result;
 }
 
-plot::RPlot XGBoostClassifier::plot_classification(const dstruct::DataFrame& data,
+dstruct::DataFrame XGBoostClassifier::staged_evaluation(const dstruct::DataFrame& data) const {
+  design_.validate_categorical_levels(data,"XGBoostClassifier::staged_evaluation");
+  const auto cd=design_.build_classification_matrix(data);
+  xgb_check_finite(cd.X);
+  const auto truth=xgb_truth_indices(cd.labels,classes_);
+  const std::size_t n=cd.X.rows(),K=classes_.size();
+  linalg::DenseMatrix<double> scores(n,K,0.0);
+  for(std::size_t i=0;i<n;++i)for(std::size_t k=0;k<K;++k)scores(i,k)=base_scores_[k];
+  std::vector<double> rounds,accuracy,loss,brier;
+  /// @brief Append metrics at a fixed ensemble stage without changing model state.
+  /// @param round Zero for priors or the number of already accumulated rounds.
+  const auto record=[&](std::size_t round){
+    xgb_check_finite(scores);
+    double correct=0,total_loss=0,total_brier=0;
+    for(std::size_t i=0;i<n;++i){
+      const auto probability=softmax_row(scores,i,K);
+      const auto best=static_cast<std::size_t>(std::max_element(probability.begin(),probability.end())-probability.begin());
+      correct+=best==truth[i];total_loss-=std::log(std::max(probability[truth[i]],1e-15));
+      for(std::size_t k=0;k<K;++k){const double error=probability[k]-(k==truth[i]);total_brier+=error*error;}
+    }
+    rounds.push_back(round);accuracy.push_back(correct/n);loss.push_back(total_loss/n);brier.push_back(total_brier/n);
+  };
+  record(0);
+  for(std::size_t m=0;m<trees_.size();++m){
+    for(std::size_t k=0;k<K;++k){
+      const auto contribution=trees_[m][k].predict(cd.X);
+      for(std::size_t i=0;i<n;++i)scores(i,k)+=options_.learning_rate*contribution[i];
+    }
+    record(m+1);
+  }
+  dstruct::DataFrame out;
+  out.add_column("round",rounds);
+  out.add_column("input_rows",std::vector<double>(rounds.size(),data.nrows()));
+  out.add_column("evaluated_rows",std::vector<double>(rounds.size(),n));
+  out.add_column("skipped_rows",std::vector<double>(rounds.size(),data.nrows()-n));
+  out.add_column("accuracy",accuracy);out.add_column("mean_log_loss",loss);out.add_column("brier",brier);
+  return out;
+}
+
+dstruct::DataFrame XGBoostClassifier::evaluation(const dstruct::DataFrame& data) const {
+  return staged_evaluation(data).tail(1);
+}
+
+dstruct::DataFrame XGBoostClassifier::confusion(const dstruct::DataFrame& data) const {
+  design_.validate_categorical_levels(data,"XGBoostClassifier::confusion");
+  const auto cd=design_.build_classification_matrix(data);
+  xgb_check_finite(cd.X);
+  const auto truth=xgb_truth_indices(cd.labels,classes_);
+  const auto scores=score_matrix(cd.X,cd.X.rows());xgb_check_finite(scores);
+  const std::size_t K=classes_.size();
+  std::vector<std::vector<double>> counts(K,std::vector<double>(K));
+  for(std::size_t i=0;i<cd.X.rows();++i){
+    const auto p=softmax_row(scores,i,K);
+    const auto predicted=static_cast<std::size_t>(std::max_element(p.begin(),p.end())-p.begin());
+    counts[predicted][truth[i]]+=1;
+  }
+  dstruct::DataFrame out;out.add_column("actual",classes_);
+  for(std::size_t k=0;k<K;++k)out.add_column("pred_"+classes_[k],counts[k]);
+  return out;
+}
+
+graphics::RPlot XGBoostClassifier::plot_classification(const dstruct::DataFrame& data,
                                                           const std::string& x_feature,
                                                           const std::string& y_feature) const {
     const auto  predictions = predict(data);
     const auto& response    = design_.response_name;
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs, ys;
         for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -327,7 +424,7 @@ plot::RPlot XGBoostClassifier::plot_classification(const dstruct::DataFrame& dat
     return plot;
 }
 
-plot::RPlot XGBoostClassifier::plot_decision_regions(const std::string& x_feature,
+graphics::RPlot XGBoostClassifier::plot_decision_regions(const std::string& x_feature,
                                                             const std::string& y_feature,
                                                             std::size_t grid_resolution) const {
     if (predictor_names_.size() != 2)
@@ -378,7 +475,7 @@ plot::RPlot XGBoostClassifier::plot_decision_regions(const std::string& x_featur
         grid_y[c].push_back(predictor_names_[0] == y_feature ? col0[i] : col1[i]);
     }
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         auto color = kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))];
         color.r    = static_cast<std::uint8_t>(std::min(255, color.r + (255 - color.r) * 3 / 4));
@@ -391,11 +488,11 @@ plot::RPlot XGBoostClassifier::plot_decision_regions(const std::string& x_featur
     return plot;
 }
 
-plot::RPlot XGBoostClassifier::plot_training_deviance() const {
+graphics::RPlot XGBoostClassifier::plot_training_deviance() const {
     std::vector<double> iteration(training_deviance_.size());
     for (std::size_t i = 0; i < training_deviance_.size(); ++i) iteration[i] = static_cast<double>(i + 1);
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     plot.line(iteration, training_deviance_, "training deviance");
     plot.title("Training Deviance").x_label("Boosting iteration").y_label("Multinomial deviance");
     return plot;

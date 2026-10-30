@@ -284,7 +284,7 @@ Six checks, each exercised through =fem::FEM1D= or =fem::FEM2D=:
 
 The entire analysis is one C++ program against =datamunge=:
 =fem::FEM1D=, =fem::FEM2D=, =fem::Mesh1D=, =fem::Mesh2D=, and
-=fem::ScalarField1D= for the finite element solves, and =plot::RPlot=
+=fem::ScalarField1D= for the finite element solves, and =graphics::RPlot=
 for every figure. No external FEM or plotting package is used.
 
 ** Program, presented as a literate whole
@@ -302,7 +302,7 @@ for every figure. No external FEM or plotting package is used.
 #include <iostream>
 
 using namespace datamunge::fem;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 using datamunge::geometry::Point2D;
 
 namespace {

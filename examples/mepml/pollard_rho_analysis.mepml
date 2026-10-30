@@ -57,7 +57,7 @@ factorization with multiplicity.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The rho idea
@@ -274,7 +274,7 @@ sequence fall into a short cycle \-\- the collision the algorithm exploits.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

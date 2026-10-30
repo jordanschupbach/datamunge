@@ -40,7 +40,7 @@ fancier \(O(n\log n)\) sorts on small or nearly-sorted arrays.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Instrumented copy that counts key comparisons, for the cost figure.
 static long insertion_compares(std::vector<int> a) {

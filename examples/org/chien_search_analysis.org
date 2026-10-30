@@ -39,7 +39,7 @@ of the \(p-1\) steps costs \(\deg f\) multiplications, all of them the same fixe
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::int64_t md(std::int64_t a, std::int64_t p) { return ((a % p) + p) % p; }
 static std::int64_t evalp(const GFPoly& f, std::int64_t x, std::int64_t p) {

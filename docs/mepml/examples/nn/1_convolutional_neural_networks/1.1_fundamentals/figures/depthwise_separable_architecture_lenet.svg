@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="785.35" viewBox="0 0 1000 785.35" role="img" data-model-layout="left-to-right" data-model-style="LeNet" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Depthwise and pointwise convolution</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="36" y="36" font-size="20" font-weight="600">Depthwise and pointwise convolution</text>
+<text x="36" y="63" font-size="12">4 nodes | 82 unique learned values | LeNet / blocks</text>
+<rect x="36" y="71" width="12" height="12" rx="2" fill="#E69F00"/><text x="54" y="81" font-size="11">Input</text>
+<rect x="166" y="71" width="12" height="12" rx="2" fill="#64B5CD"/><text x="184" y="81" font-size="11">Convolution</text>
+<rect x="296" y="71" width="12" height="12" rx="2" fill="#6C8194"/><text x="314" y="81" font-size="11">Output</text>
+<text x="36" y="111" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path class="feature-connector" d="M 212 202 L 268.889 186 M 212 378 L 268.889 394" stroke="#64B5CD" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="0" data-to="1" d="M 212 290 C 240.444 290 240.444 290 268.889 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 476.889 186 L 533.778 196.667 M 476.889 394 L 533.778 383.333" stroke="#64B5CD" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="1" data-to="2" d="M 476.889 290 C 505.333 290 505.333 290 533.778 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path class="feature-connector" d="M 720.444 196.667 L 777.333 196.667 M 720.444 383.333 L 777.333 383.333" stroke="#6C8194" stroke-opacity="0.55" stroke-width="1.25" fill="none"/>
+<path data-from="2" data-to="3" d="M 720.444 290 C 748.889 290 748.889 290 777.333 290" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 8 x 8 x 3]</title>
+<g id="model-glyph-0" data-left="36" data-right="212" data-face-width="144" data-face-height="144" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 36 234 L 68 202" fill="none"/>
+<rect class="feature-plane" data-plane="2" x="68" y="202" width="144" height="144" fill="#E69F00"/>
+<rect class="feature-plane" data-plane="1" x="52" y="218" width="144" height="144" fill="#E69F00"/>
+<rect class="feature-plane" data-plane="0" x="36" y="234" width="144" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(124 558.675) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>separable/depthwise [1 x 8 x 8 x 6]</title>
+<g id="model-glyph-1" data-left="268.889" data-right="476.889" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 268.889 250 L 332.889 186" fill="none"/>
+<rect class="feature-plane" data-plane="5" x="332.889" y="186" width="144" height="144" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="4" x="320.089" y="198.8" width="144" height="144" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="3" x="307.289" y="211.6" width="144" height="144" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="2" x="294.489" y="224.4" width="144" height="144" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="1" x="281.689" y="237.2" width="144" height="144" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="0" x="268.889" y="250" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(372.889 558.675) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">separable/depthwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 6]</text>
+</g></g>
+<g data-node="2" data-category="Convolution"><title>separable/pointwise [1 x 8 x 8 x 4]</title>
+<g id="model-glyph-2" data-left="533.778" data-right="720.444" data-face-width="144" data-face-height="144" data-depth="42.6667" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 533.778 239.333 L 576.444 196.667" fill="none"/>
+<rect class="feature-plane" data-plane="3" x="576.444" y="196.667" width="144" height="144" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="2" x="562.222" y="210.889" width="144" height="144" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="1" x="548" y="225.111" width="144" height="144" fill="#64B5CD"/>
+<rect class="feature-plane" data-plane="0" x="533.778" y="239.333" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(627.111 558.675) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">separable/pointwise</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 4]</text>
+</g></g>
+<g data-node="3" data-category="Output"><title>Output [1 x 8 x 8 x 4]</title>
+<g id="model-glyph-3" data-left="777.333" data-right="964" data-face-width="144" data-face-height="144" data-depth="42.6667" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<path class="feature-depth" d="M 777.333 239.333 L 820 196.667" fill="none"/>
+<rect class="feature-plane" data-plane="3" x="820" y="196.667" width="144" height="144" fill="#6C8194"/>
+<rect class="feature-plane" data-plane="2" x="805.778" y="210.889" width="144" height="144" fill="#6C8194"/>
+<rect class="feature-plane" data-plane="1" x="791.556" y="225.111" width="144" height="144" fill="#6C8194"/>
+<rect class="feature-plane" data-plane="0" x="777.333" y="239.333" width="144" height="144" fill="#6C8194"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(870.667 558.675) rotate(-90)" text-anchor="middle">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 4]</text>
+</g></g>
+</g></svg>

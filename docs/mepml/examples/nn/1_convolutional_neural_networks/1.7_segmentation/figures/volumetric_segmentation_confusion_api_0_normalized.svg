@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="270.786" viewBox="0 0 180 270.786" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">Selected-checkpoint voxel recall</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. true-row proportions; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="12">
+<text x="14" y="20" font-size="12" font-weight="bold">Selected-checkpoint</text>
+<text x="14" y="38" font-size="12" font-weight="bold">voxel recall</text>
+<text x="97.8" y="70" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 132) rotate(-90)" text-anchor="middle">True class</text>
+<text x="41.8" y="111.6" text-anchor="end">0</text>
+<text transform="translate(73.8 192) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="24395" data-value="0.78297"><title>0 → 0: 24395</title>
+<rect x="49.8" y="84" width="48" height="48" fill="rgb(81,131,238)" stroke="white"/>
+<text x="73.8" y="111.6" font-size="12" text-anchor="middle" fill="white">78.3%</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="6762" data-value="0.21703"><title>0 → 1: 6762</title>
+<rect x="97.8" y="84" width="48" height="48" fill="rgb(197,213,246)" stroke="white"/>
+<text x="121.8" y="111.6" font-size="12" text-anchor="middle" fill="#172033">21.7%</text>
+</g>
+<text x="41.8" y="159.6" text-anchor="end">1</text>
+<text transform="translate(121.8 192) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="3" data-value="0.0018622"><title>1 → 0: 3</title>
+<rect x="49.8" y="132" width="48" height="48" fill="rgb(241,245,249)" stroke="white"/>
+<text x="73.8" y="159.6" font-size="12" text-anchor="middle" fill="#172033">0.2%</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="1608" data-value="0.998138"><title>1 → 1: 1608</title>
+<rect x="97.8" y="132" width="48" height="48" fill="rgb(37,99,235)" stroke="white"/>
+<text x="121.8" y="159.6" font-size="12" text-anchor="middle" fill="white">99.8%</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="49.8" y="222.786" width="96" height="10" fill="url(#cm-scale)"/>
+<text x="49.8" y="247.786">0</text><text x="145.8" y="247.786" text-anchor="end">100%</text>
+</g></svg>

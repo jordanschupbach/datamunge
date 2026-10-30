@@ -1,10 +1,10 @@
 # Native R NN example. Greedy layer-wise pretrained stacked sigmoid autoencoder with a scratch control.
+# CMD: nix develop .#r --command Rscript examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/stacked_autoencoder.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example stacked_autoencoder
 # Greedy 784->64 and 64->16 pretraining, exact transfer into 784->64->16->64->784.
 # Three epochs per stage/default; validation-only selection and same-stack scratch control.
 #

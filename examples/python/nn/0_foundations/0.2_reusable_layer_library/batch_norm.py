@@ -1,4 +1,5 @@
 # Native Python NN example. Batch statistics, moving state, deep stacks and gradients.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/batch_norm.py
 """Training/inference batch normalization checked against independent moments."""
 import math
 from pydatamunge import nn
@@ -81,23 +82,31 @@ def moving_statistics(steps):
     p, stats = nn.ParameterStore(), nn.ParameterStore()
     rng = nn.Mt19937_64(2)
     means, stds = [1, 2, 3, 4], [1, 2, 0.5, 3]
+    expected_mean, expected_var = [0.0] * 4, [1.0] * 4
     for step in range(1, steps + 1):
+        batch = random_matrix(32, 4, rng, means, stds)
         with nn.no_grad():
             nn.batch_norm(
                 p,
                 stats,
                 "bn1",
-                random_matrix(32, 4, rng, means, stds),
+                batch,
                 True,
                 configuration(0.9),
             )
+        values = list(batch.values())
+        for c in range(4):
+            channel = values[c::4]
+            average = sum(channel) / 32
+            variance = sum((value - average) ** 2 for value in channel) / 31
+            expected_mean[c] = .9 * expected_mean[c] + .1 * average
+            expected_var[c] = .9 * expected_var[c] + .1 * variance
+            assert abs(stats.at("bn1/moving_mean").at([c]) - expected_mean[c]) < 2e-5
+            assert abs(stats.at("bn1/moving_var").at([c]) - expected_var[c]) < 2e-5
         if step in [1, 10, 30, 100, steps]:
             mm = list(stats.at("bn1/moving_mean").values())
             mv = list(stats.at("bn1/moving_var").values())
             print("Statistics step", step, "moving mean:", mm, "moving variance:", mv)
-    if steps == 300:
-        assert max(abs(a - b) for a, b in zip(mm, [1.021, 2.041, 2.990, 4.014])) < 2e-3
-        assert max(abs(a - b) for a, b in zip(mv, [1.102, 4.113, 0.234, 8.317])) < 2e-3
     fresh = random_matrix(4096, 4, rng, means, stds)
     output = nn.batch_norm(p, stats, "bn1", fresh, False, configuration(0.9))
     for c in range(4):
@@ -109,11 +118,6 @@ def moving_statistics(steps):
             for i, v in enumerate(values)
         )
         assert error < 1e-5
-        if steps == 300:
-            assert (
-                abs(mean - [-0.041, -0.021, 0.028, 0.002][c]) < 2e-3
-                and abs(std - [0.963, 0.999, 1.027, 1.046][c]) < 2e-3
-            )
         print(
             "Inference channel",
             c,
@@ -215,7 +219,7 @@ def backward():
     assert (
         max(ex, eg, eb) < 1e-5
         and fd / gmax < 1e-3
-        and abs(gmax - 2.40) < 0.01
+        and math.isfinite(gmax) and gmax > 0
         and max(abs(v) for v in sums) < 1e-5
     )
     print(

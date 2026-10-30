@@ -200,7 +200,7 @@ The entire analysis is one C++ program against =datamunge=:
 =linalg::DenseMatrix= for images, =stats::CNNClassifier= (with its
 =relevance= method for LRP) and =stats::MLPClassifier= for the models,
 =stats::LimeImageExplainer= and =stats::ShapImageExplainer= for the
-model-agnostic explanations, and =plot::RPlot= for every figure.
+model-agnostic explanations, and =graphics::RPlot= for every figure.
 
 ** Program, presented as a literate whole
 
@@ -232,7 +232,7 @@ the grid/heatmap drawing utilities from the CNN report.
 using datamunge::dstruct::DataFrame;
 using datamunge::linalg::DenseMatrix;
 using namespace datamunge::stats;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr std::size_t H = 12, W = 12;
 

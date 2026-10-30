@@ -1,4 +1,5 @@
 # Native Python NN example. Attention maps and measured key-removal interventions.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/attention_visualization.py
 """Compare attention concentration with actual effects, including identical values."""
 import math
 from pathlib import Path

@@ -1,11 +1,17 @@
+/// @file conjugate_gradient.cpp
+/// @brief ConjugateGradient native update, trial and stopping implementation.
 #include <datamunge/optim/conjugate_gradient.hpp>
 
 #include <cmath>
 #include <stdexcept>
 
 namespace datamunge::optim {
+/// @brief Private conjugate gradient arithmetic, validation and local state.
 namespace {
 
+/// @brief Sum squared gradient components for nonlinear CG recurrence and stopping.
+/// @param vector Borrowed components.
+/// @return Squared Euclidean norm; arithmetic may overflow on nonfinite/huge inputs.
 double squared_norm(const std::vector<double>& vector) {
     double result = 0.0;
     for (const double value : vector) result += value * value;

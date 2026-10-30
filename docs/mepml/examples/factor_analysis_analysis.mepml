@@ -1,0 +1,664 @@
+//? Title: Factor Analysis: Common Variance, Rotation and Boundary Fits
+//? Subtitle: Exact three-indicator calculations, principal-axis diagnostics and Iris
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Several measured variables can move together because they share fewer unobserved
+sources of variation. We want to represent their covariance by common loadings and
+variable-specific variance, while checking whether that split is statistically and
+numerically plausible. An exact three-indicator example exposes the algebra and
+principal-axis iterations; a change of measurement units and an orthogonal rotation
+show what is invariant. Repeated synthetic samples check recovery of known common
+covariances and compare a rank-matched PCA. Finally, Iris demonstrates why a stopped
+iteration, a nonnegative parameter count and a small residual do not by themselves
+establish an admissible or scientifically interpretable factor model. Its one-factor
+fit stops with a negative raw uniqueness for petal length.
+)
+\toc
+
+> The method
+
+>> Model common covariance and separate unique variance
+
+For a centred p-vector, k common factors and independent variable-specific errors,
+
+$$
+ x=\Lambda f+\epsilon,\qquad \operatorname{Cov}(f)=I_k,\quad
+ \operatorname{Cov}(f,\epsilon)=0,\quad \operatorname{Cov}(\epsilon)=\Psi,
+ \qquad \Sigma=\Lambda\Lambda^T+\Psi.
+$$
+\alttext(Observed variables are linear combinations of unit-variance uncorrelated factors plus unique errors. Their covariance is the loading Gram matrix plus a diagonal uniqueness matrix.)
+
+Here Lambda is p by k and Psi is diagonal with nonnegative entries. No normality
+assumption is needed for this covariance identity. The generated studies below use
+Gaussian factors/errors, but the native estimator is principal-axis factoring (PAF),
+not Gaussian maximum likelihood. R's `factanal` and scikit-learn's FactorAnalysis
+therefore solve different estimation problems and need not return the same fit.
+
+For one factor, off-diagonal covariance is lambda_i*lambda_j. A unique error contributes
+only to its own diagonal. This restriction is what distinguishes the common-factor
+model from an unrestricted low-rank approximation.
+
+The retained TikZ diagram is rendered locally. Regeneration requires LaTeX with
+PGF/TikZ, standalone and Latin Modern, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/factor_model.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/factor_model.tikz > build/factor_model.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/factor_model.svg build/factor_model.dvi > build/factor_model.render.log 2>&1
+printf 'Rendered the local common-factor diagram.\n'
+```
+// result_begin:
+// Rendered the local common-factor diagram.
+// \image(figures/factor_model.svg)
+// result_end
+\caption(One common source creates covariance among three indicators; independent unique terms add only diagonal variance.)
+\alttext(A common latent factor points to three observed variables, with one loading on each arrow. Three separate errors point to their respective observations. Equations show shared cross-covariance and the common-plus-unique variance split.)
+
+>> Communalities, uniquenesses and improper fits
+
+The common variance for feature j is the squared norm of its loading row:
+
+$$
+ h_j^2=\sum_{c=1}^k\lambda_{jc}^2,\qquad
+ \psi_j=C_{jj}-h_j^2,\qquad
+ \text{common fraction}_j=\frac{h_j^2}{C_{jj}}.
+$$
+\alttext(Communality is the sum of squared loadings. Raw uniqueness is observed variance minus communality, and their ratio measures the feature's common fraction.)
+
+With standardized features, C is the sample correlation matrix and C_jj is one up to
+roundoff. Without standardization, communalities and uniquenesses are variances in
+each feature's units; dividing by C_jj produces a dimensionless fraction. A negative
+raw uniqueness is an improper solution, often called an ultra-Heywood case; a zero
+uniqueness is a boundary case. We use “Heywood violation” below for materially negative
+raw uniqueness. Such a violation can occur even when the parameter count is favourable.
+
+The existing `uniquenesses()` API clips negative raw values to zero for compatibility.
+The new `variance_table()` shows both values, actual squared loading norms and a
+Heywood flag. Consequently, `reproduced_covariance()` can exceed an observed diagonal:
+clipping is not a repair of an improper loading solution.
+
+>> Derive principal-axis updates and their stopping rule
+
+Let C be the covariance of the centred, optionally standardized complete rows. Sample
+standard deviations and C use the n−1 divisor. Initialize with squared multiple
+correlations, then repeatedly replace the diagonal by estimated common variances:
+
+$$
+ h_{j,0}^2=C_{jj}\operatorname{clip}\!\left(1-
+ \frac{1}{(C_{\mathrm{floor}}^{-1})_{jj}C_{jj}},0,1\right),\quad
+ C_t=C-\operatorname{diag}(C)+\operatorname{diag}(h_t^2),\quad
+ L_{t+1}=V_k\operatorname{diag}\!\left(\sqrt{\max(\lambda_1,0)},\ldots,
+ \sqrt{\max(\lambda_k,0)}\right).
+$$
+\alttext(Initial common variances are observed variances times squared multiple correlations. Each reduced matrix substitutes those variances on the diagonal, then its leading nonnegative eigenvalues and eigenvectors produce updated loadings.)
+
+The next diagonal is clip(row_squared_norm(L),0,C_jj). The native implementation stops
+when the largest absolute change in these **clipped** variances is less than `tol`, or
+when `max_iter` is exhausted. The published loadings remain the actual eigenvectors
+times square roots, so their squared row norms need not equal the clipped diagonal.
+`iteration_history()` records every completed update and its residual/violation count;
+`converged()` reports only this extraction stopping condition, not validity or a global
+minimum. PAF is neither maximum likelihood nor a guaranteed minimum-residual optimizer.
+
+The inverse used for SMCs and scores floors eigenvalues at 1e-8 times the largest
+observed feature variance. This is a regularized inverse, not a Moore–Penrose inverse;
+near singularity, scores and initialization depend on that convention. Symmetric
+matrices are normalized before the Jacobi eigensolve. Forming covariance still loses
+relative accuracy in poorly conditioned directions. Each PAF step costs O(p cubed)
+for bounded Jacobi sweeps, after O(n*p squared) preprocessing; stored history adds
+O(iterations*p) space. Only finite complete rows with positive feature variances are
+accepted. Missing-feature rows are dropped together, and their original indices are
+retained for score/label alignment. Feature names must be numeric and distinct.
+
+>> Rotation changes the coordinates, not the common covariance
+
+For orthogonal Q,
+
+$$
+ (\Lambda Q)(\Lambda Q)^T=\Lambda\Lambda^T,\qquad
+ V(Q)=\sum_c\left[\sum_j q_{jc}^4-
+ \frac{1}{p}\left(\sum_jq_{jc}^2\right)^2\right],\qquad
+ q_{jc}=\frac{(\Lambda Q)_{jc}}{\sqrt{h_j^2}}.
+$$
+\alttext(Orthogonal rotation preserves the common covariance. Kaiser-normalized varimax increases the sum of within-column variances of squared row-normalized loadings; zero loading rows contribute zero.)
+
+The implementation uses pairwise varimax sweeps, then orders columns by squared
+loading sums and makes each largest-magnitude loading positive. These are reporting
+conventions, not identification of physical causes. The rotation objective is computed
+on row-normalized loadings and the row norms are restored afterwards. A higher value
+can give a simpler loading pattern without improving covariance fit. Varimax retains
+orthogonal factors; correlated generating factors require oblique coordinates to retain
+their original simple pattern. The common covariance is a safer recovery target than
+individual loading entries when signs, permutations or rotations can change.
+
+>> Scores and parameter counting answer different questions
+
+For preprocessed rows Z, regression scores use
+
+$$
+ \widehat F=ZC_{\mathrm{floor}}^{-1}\Lambda,\qquad
+ \mathrm{df}=\frac{p(p+1)}2-
+ \left(pk+p-\frac{k(k-1)}2\right)
+ =\frac{(p-k)^2-p-k}{2}.
+$$
+\alttext(Regression scores use the observed regularized covariance inverse. Parameter-count degrees of freedom subtract loadings and unique variances, accounting for orthogonal rotation freedom, from observed covariance entries.)
+
+The scores are linear estimates of unobserved factors. They are generally shrunken,
+not unit variance, and not guaranteed sample-orthogonal. Orthogonal rotation of a fit
+rotates its scores too. Nonnegative df is a necessary parameter-count check for generic
+identification, not a sufficient uniqueness or admissibility test. Negative df means the
+unrestricted model has more effective parameters than available covariance entries;
+the API allows such fits for inspection. These df are not a computed chi-square test,
+and this PAF report supplies no likelihood-based p-value.
+
+> Simple examples
+
+>> Three indicators whose correlations are exactly one half
+
+Take eight centred rows, with a=sqrt(7)/2. The three columns below have four nonzero
+entries of magnitude a, so each sample variance is 4*a squared/7=1. Each pair has two
+matching nonzero entries, giving covariance 2*a squared/7=.5. For a one-factor model,
+lambda_1 squared=C_12*C_13/C_23=.5, and similarly for the other two indicators.
+The positive-sign loadings are therefore sqrt(.5), and each uniqueness is .5.
+
+The inverse correlation diagonal is 1.5, so every initial communality is 1/3. Symmetry
+reduces the PAF update to a scalar recurrence:
+
+$$
+ h_{t+1}^2=\frac{h_t^2+1}{3},\qquad h_0^2=\frac13,\qquad
+ h_t^2=\frac12-\frac{1}{6\cdot3^t}.
+$$
+\alttext(The equal communalities update by adding one and dividing by three. Starting at one third, the error from one half shrinks by a factor of three per iteration.)
+
+The first update is 4/9. The table exposes that intermediate state rather than just
+the final answer. For this example the regression weights are sqrt(.5)/2 on each
+indicator, so a row's score is sqrt(.5)*(a+b+c)/2. Its sample score variance is .75,
+even though the latent factor's model variance is one.
+
+```{cpp, results="markdown", file="figures/fa_exact.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const double           a = std::sqrt(7.) / 2;
+  dm::dstruct::DataFrame d;
+  d.add_column("a", std::vector<double>{a, a, 0, 0, 0, 0, -a, -a});
+  d.add_column("b", std::vector<double>{a, 0, a, 0, 0, -a, 0, -a});
+  d.add_column("c", std::vector<double>{a, 0, 0, a, -a, 0, 0, -a});
+  const dm::stats::FactorAnalysis m(d, {"a", "b", "c"}, {1, true, "none", 1000, 1e-12});
+  const auto&                     h = m.iteration_history();
+  auto split = dm::graphics::RPlot::create(), path = dm::graphics::RPlot::create();
+  split.bars({1, 2, 3}, {1, 1, 1}, "observed", {148, 163, 184}, .55)
+      .bars({1, 2, 3}, m.communalities(), "common", {37, 99, 235}, .55)
+      .title("Common and remaining variance")
+      .x_label("indicator (a, b, c)")
+      .y_label("sample variance")
+      .y_limits(0, 1.5);
+  path.line(
+          h.numeric_column("iteration").values(),
+          h.numeric_column("communality_1").values(),
+          "updated h squared",
+          {37, 99, 235})
+      .line({1, double(m.iterations())}, {.5, .5}, "exact .5", {220, 38, 38})
+      .title("Each update divides the error by three")
+      .x_label("PAF iteration")
+      .y_label("communality of indicator a")
+      .y_limits(.3, .7);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(split).add(path).size(1100, 490).fit_panels().save_svg(
+      "build/fa_exact.svg");
+  std::print(
+      "{}\n\n{}\n\n{}\n\n{}\n",
+      d.to_md(5),
+      m.loading_table().to_md(8),
+      m.variance_table().to_md(8),
+      h.select({"iteration", "communality_1", "max_change"}).head(5).to_md(9));
+}
+```
+// result_begin: markdown
+| a | b | c |
+| ---: | ---: | ---: |
+| 1.32288 | 1.32288 | 1.32288 |
+| 1.32288 | 0.00000 | 0.00000 |
+| 0.00000 | 1.32288 | 0.00000 |
+| 0.00000 | 0.00000 | 1.32288 |
+| 0.00000 | 0.00000 | -1.32288 |
+| 0.00000 | -1.32288 | 0.00000 |
+| -1.32288 | 0.00000 | 0.00000 |
+| -1.32288 | -1.32288 | -1.32288 |
+
+
+| feature | Factor1 |
+| :--- | ---: |
+| a | 0.70710678 |
+| b | 0.70710678 |
+| c | 0.70710678 |
+
+
+| feature | observed_variance | communality | raw_uniqueness | uniqueness | heywood | common_fraction |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| a | 1 | 0.5 | 0.5 | 0.5 | 0 | 0.5 |
+| b | 1 | 0.5 | 0.5 | 0.5 | 0 | 0.5 |
+| c | 1 | 0.5 | 0.5 | 0.5 | 0 | 0.5 |
+
+
+| iteration | communality_1 | max_change |
+| ---: | ---: | ---: |
+| 1 | 0.444444444 | 0.111111111 |
+| 2 | 0.481481481 | 0.037037037 |
+| 3 | 0.493827160 | 0.012345679 |
+| 4 | 0.497942387 | 0.004115226 |
+| 5 | 0.499314129 | 0.001371742 |
+
+\image(figures/fa_exact.svg)
+// result_end
+\caption(An exact sample covariance gives hand-checkable loadings, unique variances and the entire communality recurrence.)
+\alttext(Observed variance bars contain equal common and remaining portions. A second plot shows the communalities approaching one half. Tables show all eight rows, estimated loadings, variance split and the first five iterations.)
+
+>> Change units without changing the common fraction
+
+Multiply all three observations by two. With standardization, the fitted correlation
+is unchanged. With covariance fitting, the entire covariance is four times larger:
+loadings double, and common/unique variances quadruple. The initial communalities
+must therefore be 4/3, not 1/3, and the first updated value is 16/9. The final common
+variance is two out of four, giving the same common fraction .5. This uniform change
+of units checks the covariance-mode initialization's dimensional consistency; arbitrary
+per-feature rescaling can also change eigenvalue flooring and iterative behaviour.
+
+```{cpp, results="markdown", file="figures/fa_units.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const double           a = std::sqrt(7.) / 2;
+  dm::dstruct::DataFrame d;
+  d.add_column("a", std::vector<double>{a, a, 0, 0, 0, 0, -a, -a});
+  d.add_column("b", std::vector<double>{a, 0, a, 0, 0, -a, 0, -a});
+  d.add_column("c", std::vector<double>{a, 0, 0, a, -a, 0, 0, -a});
+  for (const auto& name : std::vector<std::string>{"a", "b", "c"}) {
+    auto values = d.numeric_column(name).values();
+    for (auto& v : values)
+      v *= 2;
+    d = d.mutate(name, values);
+  }
+  const dm::stats::FactorAnalysis scaled(d, {"a", "b", "c"}, {1, true, "none", 1000, 1e-12});
+  const dm::stats::FactorAnalysis covariance(d, {"a", "b", "c"}, {1, false, "none", 1000, 1e-12});
+  const dm::stats::FactorAnalysis first(d, {"a", "b", "c"}, {1, false, "none", 1, 1e-12});
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  left.bars({1, 2, 3}, {1, 1, 1}, "observed", {148, 163, 184}, .55)
+      .bars({1, 2, 3}, scaled.communalities(), "common", {37, 99, 235}, .55)
+      .title("Standardized: common .5 of 1")
+      .x_label("indicator (a, b, c)")
+      .y_label("variance")
+      .y_limits(0, 1.5);
+  right.bars({1, 2, 3}, {4, 4, 4}, "observed", {148, 163, 184}, .55)
+      .bars({1, 2, 3}, covariance.communalities(), "common", {37, 99, 235}, .55)
+      .title("Covariance units: common 2 of 4")
+      .x_label("indicator (a, b, c)")
+      .y_label("variance")
+      .y_limits(0, 6);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/fa_units.svg");
+  std::print(
+      "Covariance fit:\n\n{}\n\nFirst update:\n\n{}\n\nObserved trace: {:.6f}; common share: "
+      "{:.6f}.\n",
+      covariance.variance_table().to_md(8),
+      first.iteration_history().select({"iteration", "communality_1", "max_change"}).to_md(9),
+      covariance.diagnostics().double_at("total_variance", 0),
+      covariance.proportion_variance()[0]);
+}
+```
+// result_begin: markdown
+Covariance fit:
+
+| feature | observed_variance | communality | raw_uniqueness | uniqueness | heywood | common_fraction |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| a | 4 | 2 | 2 | 2 | 0 | 0.5 |
+| b | 4 | 2 | 2 | 2 | 0 | 0.5 |
+| c | 4 | 2 | 2 | 2 | 0 | 0.5 |
+
+
+First update:
+
+| iteration | communality_1 | max_change |
+| ---: | ---: | ---: |
+| 1 | 1.777777778 | 0.444444444 |
+
+
+Observed trace: 12.000000; common share: 0.500000.
+\image(figures/fa_units.svg)
+// result_end
+\caption(A uniform factor-of-two measurement change multiplies variances by four while preserving the common fraction.)
+\alttext(Standardized and covariance fits both show half of each indicator variance as common. The covariance table has observed variance four, communality two and uniqueness two. A one-step fit reports sixteen ninths as its first updated communality.)
+
+>> Rotate a two-factor pattern and inspect the invariant fit
+
+Start with six unit-variance indicators, with loadings .85,.80,.75 on factor A and
+.70,.65,.60 on factor B, and unique variances one minus each squared loading.
+For this example let B=.6*A+.8*G, where A and G are independent standard Gaussians.
+The effective loadings on independent coordinates (A,G) are (.85,0),(.80,0),(.75,0),
+(.42,.56),(.39,.52),(.36,.48). This is a valid correlated-generating-factor example
+expressed in orthogonal coordinates, not an implemented oblique rotation.
+
+A local seeded generator produces 500 observations. Raw and varimax models use the
+same sample and extraction options. Their common covariance and per-feature common
+variances must agree; the normalized varimax criterion may improve. Neither set of
+individual loadings is uniquely “the true” generating factor orientation.
+
+```{cpp, results="markdown", file="figures/fa_rotation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::linalg::DenseMatrix<double> L(
+      6, 2, {.85, 0, .80, 0, .75, 0, .42, .56, .39, .52, .36, .48});
+  const auto d = dm::stats::factor_model_sample(L, {.2775, .36, .4375, .51, .5775, .64}, 500, 321);
+  const std::vector<std::string>  names = {"v1", "v2", "v3", "v4", "v5", "v6"};
+  const dm::stats::FactorAnalysis raw(d, names, {2, true, "none"}),
+      rot(d, names, {2, true, "varimax"});
+  auto left = raw.plot_loadings(), right = rot.plot_loadings();
+  left.title("Unrotated loadings").x_limits(-1.6, 1.6).y_limits(-1.2, 1.25);
+  right.title("Varimax: unchanged covariance").x_limits(-1.6, 1.6).y_limits(-1.2, 1.25);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/fa_rotation.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("feature", names);
+  table.add_column("raw_F1", raw.factor_loadings(0));
+  table.add_column("raw_F2", raw.factor_loadings(1));
+  table.add_column("varimax_F1", rot.factor_loadings(0));
+  table.add_column("varimax_F2", rot.factor_loadings(1));
+  std::print(
+      "{}\n\nKaiser varimax objective: {:.9f} -> {:.9f}.\nCommon covariance off-diagonal "
+      "difference: {:.9e}.\n",
+      table.to_md(7),
+      raw.diagnostics().double_at("kaiser_varimax", 0),
+      rot.diagnostics().double_at("kaiser_varimax", 0),
+      dm::stats::covariance_residual_rms(raw.common_covariance(), rot.common_covariance()));
+}
+```
+// result_begin: markdown
+| feature | raw_F1 | raw_F2 | varimax_F1 | varimax_F2 |
+| :--- | ---: | ---: | ---: | ---: |
+| v1 | 0.7393222 | -0.2490338 | 0.7375755 | 0.2541607 |
+| v2 | 0.7597734 | -0.3095976 | 0.7907494 | 0.2186816 |
+| v3 | 0.6709638 | -0.2785480 | 0.7014567 | 0.1890500 |
+| v4 | 0.6361843 | 0.3005333 | 0.3203561 | 0.6264365 |
+| v5 | 0.5406857 | 0.4467877 | 0.1554279 | 0.6839609 |
+| v6 | 0.4690996 | 0.3697925 | 0.1457422 | 0.5792755 |
+
+
+Kaiser varimax objective: 0.175125928 -> 2.016285312.
+Common covariance off-diagonal difference: 4.116817158e-17.
+\image(figures/fa_rotation.svg)
+// result_end
+\caption(Orthogonal varimax changes the loading pattern while preserving the reproduced common covariance.)
+\alttext(Two plots show the same six indicators before and after varimax. Labels identify each feature, and a unit-variance circle gives a common reference. A table and objective values distinguish changed coordinates from unchanged covariance fit.)
+
+> Checking the theory
+
+>> Recover common covariance across constructed samples
+
+Return to independent generating factors, with the two three-indicator blocks above.
+Their population common covariance is L*L transpose and each population feature
+variance is one. We vary n=100,500,2000 and use three declared seeds at each size.
+Recovery is measured against this known common covariance using off-diagonal RMS,
+so signs, permutations and orthogonal rotations cannot change the answer.
+
+For each exact same sample, also fit standardized PCA and reconstruct its covariance
+from the first two eigenpairs. Compare both models against the **sample** off-diagonal
+correlations. PCA optimizes a different criterion involving total variance, including
+the diagonal; a smaller PAF off-diagonal residual on these generated samples is not a
+general superiority claim or an optimum guarantee for PAF. Population recovery and
+sample fit are separate columns. Individual replications need not improve monotonically
+with n, and nine fits do not establish a sampling distribution or a confidence interval.
+
+```{cpp, results="markdown", file="figures/fa_recovery.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::linalg::DenseMatrix<double> L(6, 2, {.85, 0, .80, 0, .75, 0, 0, .70, 0, .65, 0, .60});
+  const auto                            target = L * L.transpose();
+  const std::vector<std::string>        names  = {"v1", "v2", "v3", "v4", "v5", "v6"};
+  const std::vector<double>             unique = {.2775, .36, .4375, .51, .5775, .64};
+  std::vector<double> ns, seeds, recovery, fa_error, pca_error, converged, heywood;
+  auto                left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  std::size_t                          index  = 0;
+  for (unsigned seed : {123, 321, 777}) {
+    std::vector<double> grid, errors;
+    for (std::size_t n : {100, 500, 2000}) {
+      const auto                       d = dm::stats::factor_model_sample(L, unique, n, seed);
+      const dm::stats::FactorAnalysis  fit(d, names, {2, true, "varimax", 1000, 1e-8});
+      const dm::stats::PCA             pca(d, names);
+      std::vector<std::vector<double>> columns;
+      for (std::size_t c = 0; c < 2; ++c) {
+        auto v = pca.loadings().col(c);
+        for (auto& x : v)
+          x *= std::sqrt(pca.explained_variance()[c]);
+        columns.push_back(v);
+      }
+      const auto   P = dm::linalg::DenseMatrix<double>::from_columns(columns);
+      const double r = dm::stats::covariance_residual_rms(target, fit.common_covariance());
+      const double f = fit.diagnostics().double_at("offdiagonal_rms", 0);
+      const double e =
+          dm::stats::covariance_residual_rms(pca.covariance_matrix(), P * P.transpose());
+      ns.push_back(n);
+      seeds.push_back(seed);
+      recovery.push_back(r);
+      fa_error.push_back(f);
+      pca_error.push_back(e);
+      converged.push_back(fit.converged() ? 1 : 0);
+      heywood.push_back(fit.diagnostics().double_at("heywood_variables", 0));
+      grid.push_back(std::log10(n));
+      errors.push_back(r);
+    }
+    left.line(grid, errors, "seed " + std::to_string(seed), colors[index])
+        .points(grid, errors, "", colors[index], 4);
+    ++index;
+  }
+  left.title("Recovery of known common covariance")
+      .x_label("log10 sample count")
+      .y_label("off-diagonal RMS")
+      .y_limits(0, .12);
+  right.points(fa_error, pca_error, "same samples", {37, 99, 235}, 5)
+      .line({0, .14}, {0, .14}, "equal residual", {148, 163, 184})
+      .title("Sample residuals solve different tasks")
+      .x_label("PAF off-diagonal RMS")
+      .y_label("PCA off-diagonal RMS")
+      .x_limits(0, .15)
+      .y_limits(0, .2);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/fa_recovery.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("n", ns);
+  table.add_column("seed", seeds);
+  table.add_column("population_common_RMS", recovery);
+  table.add_column("PAF_sample_RMS", fa_error);
+  table.add_column("PCA_sample_RMS", pca_error);
+  table.add_column("converged", converged);
+  table.add_column("Heywood", heywood);
+  std::print("{}\n", table.to_md(7));
+}
+```
+// result_begin: markdown
+| n | seed | population_common_RMS | PAF_sample_RMS | PCA_sample_RMS | converged | Heywood |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 100 | 123 | 0.0614692 | 0.0173167 | 0.0937194 | 1 | 0 |
+| 500 | 123 | 0.0278470 | 0.0071293 | 0.0985903 | 1 | 0 |
+| 2000 | 123 | 0.0158787 | 0.0060141 | 0.1000678 | 1 | 0 |
+| 100 | 321 | 0.0520771 | 0.0268993 | 0.1118930 | 1 | 0 |
+| 500 | 321 | 0.0440913 | 0.0130158 | 0.1004483 | 1 | 0 |
+| 2000 | 321 | 0.0230020 | 0.0038874 | 0.1007050 | 1 | 0 |
+| 100 | 777 | 0.0692954 | 0.0122644 | 0.1044803 | 1 | 0 |
+| 500 | 777 | 0.0376980 | 0.0090833 | 0.0966754 | 1 | 0 |
+| 2000 | 777 | 0.0184706 | 0.0035293 | 0.0995004 | 1 | 0 |
+
+\image(figures/fa_recovery.svg)
+// result_end
+\caption(Repeated known-model samples distinguish recovery of population common covariance from residual fit to each sample.)
+\alttext(Three lines show common-covariance recovery errors for three seeds and three sample sizes. A second plot compares PAF and PCA sample off-diagonal residuals on identical data, with an equality line. A table includes stopping and Heywood flags for every fit.)
+
+Across these seeds, population common-covariance RMS falls from .0521–.0693 at n=100
+to .0159–.0230 at n=2000. All nine fits stop without a Heywood violation. PAF sample
+residuals are .0035–.0269, while rank-two PCA residuals are .0937–.1119 on these same
+samples. Those numbers describe this specified generating model and these replications.
+
+> Iris: inspect a strained factor model
+
+`dm::datasets::iris()` contains 150 rows, four numeric measurements in centimetres and
+species labels. Use all four numeric columns, standardize them, and keep species out
+of fitting. The first rows make the schema explicit. Iris is a familiar counterexample
+for fit diagnostics, rather than evidence that species are generated by these factors.
+
+For p=4, k=1 has parameter-count df=2, while k=2 has df=−1. Fit both with the same
+stopping controls and show what the implementation actually does. Report convergence,
+raw uniqueness and observed-versus-reproduced off-diagonal correlations together.
+A positive df does not prevent an improper fit, and a smaller covariance residual does
+not rescue an overparameterized or nonconverged one. Inspecting diagonal mismatch is
+necessary because the compatibility uniqueness output is clamped.
+
+```{cpp, results="markdown", file="figures/fa_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto                     d     = dm::datasets::iris();
+  const std::vector<std::string> names = {
+      "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+  const dm::stats::FactorAnalysis one(d, names, {1, true, "none"}),
+      two(d, names, {2, true, "varimax"});
+  const auto v1 = one.variance_table(), v2 = two.variance_table();
+  auto       left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  left.bars(
+          {.83, 1.83, 2.83, 3.83},
+          v1.numeric_column("raw_uniqueness").values(),
+          "one factor",
+          {37, 99, 235},
+          .3)
+      .bars(
+          {1.17, 2.17, 3.17, 4.17},
+          v2.numeric_column("raw_uniqueness").values(),
+          "two factors",
+          {220, 38, 38},
+          .3)
+      .line({.5, 4.5}, {0, 0}, "boundary", {148, 163, 184})
+      .title("Raw uniqueness reveals the violation")
+      .x_label("SL=1, SW=2, PL=3, PW=4")
+      .y_label("observed minus common variance")
+      .y_limits(-.2, 1.35);
+  const auto          a = one.covariance_pairs(), b = two.covariance_pairs();
+  std::vector<double> observed, fitted1, fitted2;
+  for (std::size_t i = 0; i < a.nrows(); ++i) {
+    if (a.string_at("feature_i", i) == a.string_at("feature_j", i))
+      continue;
+    observed.push_back(a.double_at("observed", i));
+    fitted1.push_back(a.double_at("reproduced", i));
+    fitted2.push_back(b.double_at("reproduced", i));
+  }
+  right.points(observed, fitted1, "one factor", {37, 99, 235}, 5)
+      .points(observed, fitted2, "two factors", {220, 38, 38}, 4)
+      .line({-.6, 1.05}, {-.6, 1.05}, "exact fit", {148, 163, 184})
+      .title("Off-diagonal agreement is only one check")
+      .x_label("observed correlation")
+      .y_label("reproduced correlation")
+      .x_limits(-.6, 1.05)
+      .y_limits(-.6, 1.65);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/fa_iris.svg");
+  const auto columns = std::vector<std::string>{
+      "factors",
+      "iterations",
+      "converged",
+      "degrees_freedom",
+      "heywood_variables",
+      "offdiagonal_rms",
+      "max_diagonal_excess"};
+  std::print(
+      "Iris: {} rows, {} numeric model features.\n\n{}\n\nOne factor:\n\n{}\n\nTwo "
+      "factors:\n\n{}\n\nOne-factor variance split:\n\n{}\n\nOne-factor loadings:\n\n{}\n",
+      d.nrows(),
+      names.size(),
+      d.head(3).to_md(2),
+      one.diagnostics().select(columns).to_md(7),
+      two.diagnostics().select(columns).to_md(7),
+      v1.to_md(7),
+      one.loading_table().to_md(7));
+}
+```
+// result_begin: markdown
+Iris: 150 rows, 4 numeric model features.
+
+| Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
+| ---: | ---: | ---: | ---: | :--- |
+| 5.1 | 3.5 | 1.4 | 0.2 | setosa |
+| 4.9 | 3.0 | 1.4 | 0.2 | setosa |
+| 4.7 | 3.2 | 1.3 | 0.2 | setosa |
+
+
+One factor:
+
+| factors | iterations | converged | degrees_freedom | heywood_variables | offdiagonal_rms | max_diagonal_excess |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 22 | 1 | 2 | 1 | 0.0780916 | 0.0324913 |
+
+
+Two factors:
+
+| factors | iterations | converged | degrees_freedom | heywood_variables | offdiagonal_rms | max_diagonal_excess |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 1000 | 0 | -1 | 1 | 0.0054321 | 0.0142872 |
+
+
+One-factor variance split:
+
+| feature | observed_variance | communality | raw_uniqueness | uniqueness | heywood | common_fraction |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Sepal.Length | 1 | 0.6767736 | 0.3232264 | 0.3232264 | 0 | 0.6767736 |
+| Sepal.Width | 1 | 0.1117880 | 0.8882120 | 0.8882120 | 0 | 0.1117880 |
+| Petal.Length | 1 | 1.0324913 | -0.0324913 | 0.0000000 | 1 | 1.0324913 |
+| Petal.Width | 1 | 0.9486536 | 0.0513464 | 0.0513464 | 0 | 0.9486536 |
+
+
+One-factor loadings:
+
+| feature | Factor1 |
+| :--- | ---: |
+| Sepal.Length | 0.8226625 |
+| Sepal.Width | -0.3343471 |
+| Petal.Length | 1.0161158 |
+| Petal.Width | 0.9739885 |
+
+\image(figures/fa_iris.svg)
+// result_end
+\caption(Iris separates a parameter-count check, iteration stopping, admissibility and covariance residuals.)
+\alttext(Grouped bars show signed raw uniqueness for each Iris measurement under one and two factors, including negative values. Another panel compares six observed correlations with their reproduced values. Tables give sample rows, fit status, degrees of freedom, Heywood counts, one-factor variance splits and loadings.)
+
+The one-factor Iris iteration stops after 22 steps, yet petal length has communality
+1.0324913 and raw uniqueness −.0324913. Its reproduced diagonal exceeds one by exactly
+that violation. The two-factor run reaches 1000 steps without convergence; despite
+its smaller off-diagonal RMS (.0054321 versus .0780916), it has negative parameter-count
+df and still has a negative raw uniqueness. These outcomes do not identify a single
+cause for the misfit and do not support treating the one-factor fit as a clean solution.
+
+> Conclusion
+
+The exact three-indicator example connects the covariance model to loadings,
+unique variances, a scalar PAF recurrence and shrunken regression scores. A uniform
+change of units preserves common fractions, while orthogonal rotation preserves
+common covariance rather than individual loading entries. Constructed samples make
+rotation-invariant recovery checks possible and distinguish sample covariance fit
+from PCA's total-variance reconstruction objective.
+
+Iris illustrates why no single diagnostic certifies a factor model. Numerical
+stopping, parameter counting, nonnegative unique variance and residual fit are
+separate checks. Clamping a negative uniqueness does not make its loading solution
+admissible. This implementation supplies exploratory PAF with orthogonal varimax;
+it does not establish causal factors, perform oblique rotation, compute ML fit tests,
+or quantify sampling uncertainty from one fitted dataset.
+
+> References
+
+- Revelle, W. [psych::fa: exploratory factor analysis|https://personality-project.org/r/psych/help/fa.html]. Principal-axis iteration, SMC initialization and regression-score conventions; this implementation uses maximum clipped-communality change, not a sum-change stopping rule.
+- Kaiser, H. F. (1958). [The varimax criterion for analytic rotation in factor analysis|https://doi.org/10.1007/BF02289233]. Psychometrika 23, 187–200. Kaiser normalization and orthogonal rotation.
+- R Core Team. [factanal|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/factanal.html]. Covariance model, uniqueness boundaries and regression scores; factanal fits maximum likelihood rather than the PAF estimator used here.
+- Thomson, G. H. (1938). [Methods of Estimating Mental Factors|https://doi.org/10.1038/141246a0]. Nature 141, 246. Factor-score estimation.
+- Fisher, R. A. (1936). [The use of multiple measurements in taxonomic problems|https://doi.org/10.1111/j.1469-1809.1936.tb02137.x]. Annals of Eugenics 7, 179–188. Iris dataset context.
+

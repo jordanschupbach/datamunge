@@ -1,3 +1,4 @@
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/ggplot_ex.py
 """Demonstrates dm.GGPlot -- the ggplot2-style grammar-of-graphics library."""
 import os
 

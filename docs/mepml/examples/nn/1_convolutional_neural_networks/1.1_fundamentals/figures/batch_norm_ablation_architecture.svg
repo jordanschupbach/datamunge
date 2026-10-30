@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1366.7" height="564.9" viewBox="0 0 1366.7 564.9" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">CIFAR-10 CNN</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">CIFAR-10 CNN</text>
+<text x="24" y="51" font-size="12">9 nodes | 545098 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#64B5CD"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#748BCB"/><text x="302" y="69" font-size="11">Dense</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#5ABF9A"/><text x="432" y="69" font-size="11">Pooling</text>
+<rect x="544" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="562" y="69" font-size="11">Output</text>
+<rect x="674" y="59" width="12" height="12" rx="2" fill="#94A3B8"/><text x="692" y="69" font-size="11">Operation</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="171,154 219,154 219,330 171,301" fill="#64B5CD" fill-opacity="0.08"/>
+<path data-from="0" data-to="1" d="M 171 227.5 C 195 227.5 195 242 219 242" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="395,154 443,154 443,258 395,330" fill="#5ABF9A" fill-opacity="0.08"/>
+<path data-from="1" data-to="2" d="M 395 242 C 419 242 419 206 443 206" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="547,154 595,154 595,290 547,258" fill="#64B5CD" fill-opacity="0.08"/>
+<path data-from="2" data-to="3" d="M 547 206 C 571 206 571 222 595 222" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="731,154 779,154 779,254 731,290" fill="#5ABF9A" fill-opacity="0.08"/>
+<path data-from="3" data-to="4" d="M 731 222 C 755 222 755 204 779 204" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="879,154 949.35,154 949.35,299 879,254" fill="#94A3B8" fill-opacity="0.08"/>
+<path data-from="4" data-to="5" d="M 879 204 C 914.175 204 914.175 226.5 949.35 226.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="968.35,154 1069.5,154 1069.5,159.5 968.35,299" fill="#748BCB" fill-opacity="0.08"/>
+<path data-from="5" data-to="6" d="M 968.35 226.5 C 1018.92 226.5 1018.92 156.75 1069.5 156.75" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1088.5,154 1198.1,154 1198.1,156 1088.5,159.5" fill="#748BCB" fill-opacity="0.08"/>
+<path data-from="6" data-to="7" d="M 1088.5 156.75 C 1143.3 156.75 1143.3 155 1198.1 155" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1217.1,154 1309.8,154 1309.8,156 1217.1,156" fill="#6C8194" fill-opacity="0.08"/>
+<path data-from="7" data-to="8" d="M 1217.1 155 C 1263.45 155 1263.45 155 1309.8 155" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 32 x 32 x 3]</title>
+<g id="model-glyph-0" data-left="24" data-right="171" data-face-width="144" data-face-height="144" data-depth="3" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="24,157 27,154 171,154 168,157" fill="#E69F00"/>
+<polygon class="volume-side" points="168,157 171,154 171,298 168,301" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="157" width="144" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(97.5 391.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 32 x 32 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>conv1 [1 x 32 x 32 x 32]</title>
+<g id="model-glyph-1" data-left="219" data-right="395" data-face-width="144" data-face-height="144" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="219,186 251,154 395,154 363,186" fill="#64B5CD"/>
+<polygon class="volume-side" points="363,186 395,154 395,298 363,330" fill="#64B5CD"/>
+<rect class="volume-front" x="219" y="186" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(307 441.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">conv1</text>
+<text x="0" y="-4.55" font-size="13">Conv2D k3 s1 d1 / relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 32 x 32 x 32]</text>
+<text x="0" y="29.25" font-size="13">896 learned values</text>
+</g></g>
+<g data-node="2" data-category="Pooling"><title>MaxPool [1 x 16 x 16 x 32]</title>
+<g id="model-glyph-2" data-left="443" data-right="547" data-face-width="72" data-face-height="72" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="443,186 475,154 547,154 515,186" fill="#5ABF9A"/>
+<polygon class="volume-side" points="515,186 547,154 547,226 515,258" fill="#5ABF9A"/>
+<rect class="volume-front" x="443" y="186" width="72" height="72" fill="#5ABF9A"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(495 352.55) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 16 x 16 x 32]</text>
+</g></g>
+<g data-node="3" data-category="Convolution"><title>conv2 [1 x 16 x 16 x 64]</title>
+<g id="model-glyph-3" data-left="595" data-right="731" data-face-width="72" data-face-height="72" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="595,218 659,154 731,154 667,218" fill="#64B5CD"/>
+<polygon class="volume-side" points="667,218 731,154 731,226 667,290" fill="#64B5CD"/>
+<rect class="volume-front" x="595" y="218" width="72" height="72" fill="#64B5CD"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(663 401.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">conv2</text>
+<text x="0" y="-4.55" font-size="13">Conv2D k3 s1 d1 / relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 16 x 16 x 64]</text>
+<text x="0" y="29.25" font-size="13">18496 learned values</text>
+</g></g>
+<g data-node="4" data-category="Pooling"><title>MaxPool [1 x 8 x 8 x 64]</title>
+<g id="model-glyph-4" data-left="779" data-right="879" data-face-width="36" data-face-height="36" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="779,218 843,154 879,154 815,218" fill="#5ABF9A"/>
+<polygon class="volume-side" points="815,218 879,154 879,190 815,254" fill="#5ABF9A"/>
+<rect class="volume-front" x="779" y="218" width="36" height="36" fill="#5ABF9A"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(829 340.1) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 8 x 8 x 64]</text>
+</g></g>
+<g data-node="5" data-category="Operation"><title>Reshape [1 x 4096]</title>
+<g id="model-glyph-5" data-left="949.35" data-right="968.35" data-face-width="18" data-face-height="144" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="949.35,155 950.35,154 968.35,154 967.35,155" fill="#94A3B8"/>
+<polygon class="volume-side" points="967.35,155 968.35,154 968.35,298 967.35,299" fill="#94A3B8"/>
+<rect class="volume-front" x="949.35" y="155" width="18" height="144" fill="#94A3B8"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(958.85 359.75) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Reshape</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 4096]</text>
+</g></g>
+<g data-node="6" data-category="Dense"><title>dense [1 x 128]</title>
+<g id="model-glyph-6" data-left="1069.5" data-right="1088.5" data-face-width="18" data-face-height="4.5" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1069.5,155 1070.5,154 1088.5,154 1087.5,155" fill="#748BCB"/>
+<polygon class="volume-side" points="1087.5,155 1088.5,154 1088.5,158.5 1087.5,159.5" fill="#748BCB"/>
+<rect class="volume-front" x="1069.5" y="155" width="18" height="4.5" fill="#748BCB"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(1079 266.725) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">dense</text>
+<text x="0" y="-4.55" font-size="13">Dense / relu</text>
+<text x="0" y="12.35" font-size="13">[1 x 128]</text>
+<text x="0" y="29.25" font-size="13">524416 learned values</text>
+</g></g>
+<g data-node="7" data-category="Dense"><title>output [1 x 10]</title>
+<g id="model-glyph-7" data-left="1198.1" data-right="1217.1" data-face-width="18" data-face-height="1" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1198.1,155 1199.1,154 1217.1,154 1216.1,155" fill="#748BCB"/>
+<polygon class="volume-side" points="1216.1,155 1217.1,154 1217.1,155 1216.1,156" fill="#748BCB"/>
+<rect class="volume-front" x="1198.1" y="155" width="18" height="1" fill="#748BCB"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(1207.6 254.775) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-21.45" font-size="13" font-weight="600">output</text>
+<text x="0" y="-4.55" font-size="13">Dense / identity</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+<text x="0" y="29.25" font-size="13">1290 learned values</text>
+</g></g>
+<g data-node="8" data-category="Output"><title>Output [1 x 10]</title>
+<g id="model-glyph-8" data-left="1309.8" data-right="1328.8" data-face-width="18" data-face-height="1" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1309.8,155 1310.8,154 1328.8,154 1327.8,155" fill="#6C8194"/>
+<polygon class="volume-side" points="1327.8,155 1328.8,154 1328.8,155 1327.8,156" fill="#6C8194"/>
+<rect class="volume-front" x="1309.8" y="155" width="18" height="1" fill="#6C8194"/>
+</g>
+<g id="model-label-8" data-node-label="8" transform="translate(1319.3 208.3) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+</g></svg>

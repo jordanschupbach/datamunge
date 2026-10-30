@@ -46,7 +46,7 @@ degenerate case an SVD solution detects and corrects by hand.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 >> Pseudocode
@@ -129,7 +129,7 @@ translation \((5,-2,1)\), add a little noise, and ask Kabsch to recover the tran
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

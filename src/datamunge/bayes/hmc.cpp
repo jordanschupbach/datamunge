@@ -1,3 +1,7 @@
+/// @file hmc.cpp
+/// @brief Hamiltonian Monte Carlo with dual-averaging warmup, and the exact Gaussian leapfrog
+///        acceptance rate.
+
 #include <datamunge/bayes/hmc.hpp>
 
 #include <datamunge/bayes/detail/dual_averaging.hpp>
@@ -5,7 +9,9 @@
 
 #include <algorithm>
 #include <cmath>
+#include <numbers>
 #include <random>
+#include <stdexcept>
 
 namespace datamunge::bayes {
 
@@ -54,6 +60,26 @@ HMCResult HMC::sample(optim::DifferentiableFunction& log_posterior, const std::v
     result.accept_rate = static_cast<double>(accepted) / static_cast<double>(total_iters);
     result.final_step_size = step_size;
     return result;
+}
+
+double leapfrog_gaussian_acceptance(const double step_size, const std::size_t num_steps, const double sd,
+                                   const std::size_t angles) {
+    if (!(step_size > 0.0) || num_steps == 0 || !(sd > 0.0) || angles < 8)
+        throw std::invalid_argument("leapfrog_gaussian_acceptance: arguments must be positive (angles >= 8)");
+    const double h = step_size / sd;
+    double total = 0.0;
+    for (std::size_t k = 0; k < angles; ++k) {
+        const double phi = 2.0 * std::numbers::pi * (static_cast<double>(k) + 0.5) / static_cast<double>(angles);
+        double q = std::cos(phi), p = std::sin(phi);
+        for (std::size_t l = 0; l < num_steps; ++l) {
+            p -= 0.5 * h * q;
+            q += h * p;
+            p -= 0.5 * h * q;
+        }
+        const double f = 0.5 * (q * q + p * p - 1.0);
+        total += f > 0.0 ? 1.0 / (1.0 + 2.0 * f) : 1.0;
+    }
+    return total / static_cast<double>(angles);
 }
 
 } // namespace datamunge::bayes

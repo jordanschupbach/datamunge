@@ -1,0 +1,541 @@
+//? Title: Gaussian Process Regression: Conditioning, Noise and Uncertainty
+//? Subtitle: Exact covariance calculations, empirical-Bayes fitting and held-out iris predictions with datamunge
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given noisy measurements of a nonlinear relationship, we want both a predicted mean
+and an account of the uncertainty in an unobserved curve value or a future measurement.
+Those are different targets: observation noise remains even when the underlying curve
+is well determined. Gaussian process regression conditions a joint Gaussian model using
+a covariance kernel. We derive the posterior and profiled marginal likelihood, solve
+two-point examples by hand, and distinguish shared latent values from independent noise
+at repeated query locations. A generated extrapolation sweep checks reversion to a finite
+prior variance. On iris, a fit of petal length against petal width illustrates hyperparameter
+selection, conditional deletion diagnostics, a separate train/test assessment and the
+limits of interpreting narrow plug-in intervals as universal confidence guarantees. The
+held-out RMSE is 0.403 cm; 95% new-observation intervals contain 42 of 45 test flowers,
+while the latent-function intervals contain 14. Far outside the observed widths, the
+model returns to a prior mean of 3.758 cm with finite latent standard deviation 1.423 cm.
+)
+
+\toc
+
+> The method
+
+>> A function prior and two prediction targets
+
+A Gaussian process specifies jointly Gaussian function values at every finite collection
+of inputs. Write \(f\sim\mathcal{GP}(m,k)\) and observe
+\(y_i=f(x_i)+\epsilon_i\), where independent observation errors have variance
+\(\sigma_n^2\). The squared-exponential or RBF kernel is
+
+$$
+ k(x,x')=s\exp\left(-\frac{\|x-x'\|^2}{2\ell^2}\right)=sR(x,x').
+$$
+\alttext(The covariance is signal variance s times an RBF correlation, which decays with squared distance divided by twice the squared length scale.)
+
+Here \(\ell\) controls correlation distance and \(s\) is a variance, not a standard
+deviation. An isotropic length scale uses the same distance scale in every expanded
+predictor coordinate. Scaling the inputs therefore changes the model. The default
+standardises each formula-expanded predictor using its training population mean and
+standard deviation. A formula intercept is suppressed; the prior mean is instead the
+empirical response mean. Transformations and categorical expansions affect distance
+through their resulting design columns, not through the original column names alone.
+
+The response is always represented as \(z=(y-\bar y)/s_y\), with population standard
+deviation \(s_y\); a scale below \(10^{-12}\) is replaced by one. In the following
+matrix formulas, \(s\) is in standardized-response variance units and
+\(\eta=\sigma_n^2/s\). A dimensionless numerical ridge \(j\) gives
+
+$$
+ C=R+(\eta+j)I,\qquad K=sC=LL^\top,\qquad \alpha=K^{-1}z.
+$$
+\alttext(The normalized training covariance C adds the physical noise ratio eta and numerical ridge ratio j to the RBF correlation matrix. Multiplying by s gives K, which is factored by Cholesky.)
+
+The default ridge is \(j=10^{-8}\). It is included consistently in likelihood selection
+and the final factorisation. It is not added as noise on a new query target. The exact
+hand calculations below set \(j=0\) on positive-definite examples. With zero noise and
+zero ridge, duplicate training inputs make the covariance singular.
+
+For query inputs, let \(K_*=sR_{X,*}\) and \(K_{**}=sR_{*,*}\). Conditioning the
+joint Gaussian, equivalently completing its quadratic form, gives
+
+$$
+ \mu_* = \bar y\mathbf1+s_yK_*^\top\alpha,\qquad
+ \Sigma_f=s_y^2(K_{**}-K_*^\top K^{-1}K_*),\qquad
+ \Sigma_{\mathrm{new}\ y}=\Sigma_f+s_y^2s\eta I.
+$$
+\alttext(The posterior mean shifts the empirical prior mean by a covariance-weighted response. Latent covariance subtracts the information supplied by training observations from prior covariance. Future observations add independent noise on their covariance diagonal.)
+
+The mean uses two triangular solves after Cholesky; covariance reduction can use
+\(V=L^{-1}K_*\) and \(V^\top V\). No explicit inverse is needed for prediction.
+The Schur complement is positive semidefinite in exact arithmetic. Rounding-sized
+negative variances are clipped; materially invalid values cause an error.
+These equations follow [Rasmussen and Williams, chapter 2|https://gaussianprocess.org/gpml/chapters/RW2.pdf].
+
+`predict_detail()` describes the *latent function*. `predict_observation_detail()`
+describes a *new noisy observation*. `prediction_table()` puts both side by side,
+and `predict_covariance()` preserves dependence between several queries. A central
+pointwise interval is mean plus or minus a Gaussian quantile times the relevant
+posterior standard deviation. It is not a simultaneous confidence band, nor an
+interval that integrates uncertainty in fitted hyperparameters and preprocessing.
+
+>> Profiling the amplitude and searching a bounded grid
+
+For fixed \(\ell,\eta,j\), put \(q=z^\top C^{-1}z\). The standardized log density is
+
+$$
+ \mathcal L(s)=-\frac12\left[n\log(2\pi)+n\log s+\log|C|+\frac qs\right],\qquad
+ \hat s=\max\left(10^{-12},\frac qn\right).
+$$
+\alttext(The Gaussian log density combines normalization, covariance determinant and a quadratic data-fit term. Differentiating with respect to s gives q over n, subject to the library's positive variance floor.)
+
+Differentiation gives \(-n/(2s)+q/(2s^2)=0\). At the unconstrained optimum \(q/\hat s=n\),
+but that simplification is invalid when the variance floor is active. In particular,
+a constant response has \(z=0\): its covariance scale is driven to the imposed floor,
+not to a well-identified nonzero prior variance.
+
+This is conditional maximum likelihood with empirical centring and scaling held fixed.
+It integrates out the Gaussian function values, then plugs in covariance parameters;
+it does not integrate over those parameters. In that sense it is an empirical-Bayes
+fit rather than a fully integrated Bayesian posterior. The normalized-scale accessor
+`signal_variance()` retains the original API convention. Original response variances
+multiply by \(s_y^2\); `model_summary()` names these explicitly. Original-scale log
+density subtracts \(n\log s_y\), treating the estimated scale as fixed.
+
+By default the library searches 20 geometrically spaced lengths from \(0.1\sqrt p\)
+to \(3\sqrt p\), and 15 noise ratios from \(10^{-4}\) to 1. A positive length or
+nonnegative noise ratio fixes that quantity; negative finite values request selection.
+Every candidate profiles \(s\). The first largest finite log density wins. This is a
+bounded grid search, not a continuous or global optimisation guarantee. The profile
+at each length maximizes over the searched noise ratios; `hyperparameter_search()`
+exposes the full grid, including failed candidates. See
+[Rasmussen and Williams, chapter 5|https://gaussianprocess.org/gpml/chapters/RW5.pdf].
+
+At fixed \(\ell,\eta,j\), the posterior mean uses \(R_*^\top C^{-1}z\): the amplitude
+cancels. Changing noise ratio and profiling the amplitude can change both smoothing
+and uncertainty, so a comparison across refitted models is not a fixed-prior variance
+monotonicity argument.
+
+>> Conditional deletion is a diagnostic, not a refitted pipeline
+
+Let \(A=K^{-1}\). Block inversion of the Gaussian training covariance gives
+
+$$
+ \mu_{-i}=\bar y+s_y\left(z_i-\frac{\alpha_i}{A_{ii}}\right),\qquad
+ v_{-i,\mathrm{new}\ y}=s_y^2\left(\frac1{A_{ii}}-sj\right).
+$$
+\alttext(The conditional deleted-row mean removes alpha i divided by the inverse covariance diagonal from the normalized response. The physical observation variance subtracts the held-out target's numerical ridge from the usual inverse-diagonal formula.)
+
+When \(j=0\), the variance is the familiar inverse-diagonal expression. The subtraction
+for nonzero ridge excludes numerical jitter on the new held-out target while retaining
+regularisation on the observations used to predict it. `training_details()` reports these
+means, residuals, observation standard deviations and standardized residuals.
+
+The historical `fitted_values()`, `rmse()` and `r_squared()` accessors use these conditional
+deletion means. They hold the response mean, feature scales, amplitude and selected kernel
+parameters from the *full* sample fixed. They therefore do not equal a sequence of refitted
+models with each row removed, and do not provide an unbiased assessment of the complete
+tuning pipeline. Full-data posterior means are exposed separately as
+`posterior_fitted_values()`. A train/test split below keeps test responses out of preprocessing
+and tuning. Its empirical interval coverage assesses the new-observation target.
+
+>> Computation and limits
+
+An exact dense fit stores \(O(n^2+np)\) numbers. A grid of \(G\) candidates costs
+\(O(G(n^3+n^2p))\) work: each uses kernel construction and Cholesky. Conditional deletion
+uses solves for the inverse diagonal after selection. At \(M\) queries, marginal predictions
+cost \(O(M(n^2+np))\); the joint covariance additionally costs \(O(M^2(n+p))\) and stores
+\(M^2\) entries. This is a small-to-moderate-data implementation, not a sparse GP approximation.
+
+Far from all training inputs, an RBF cross-covariance vanishes. The mean returns to
+\(\bar y\), latent variance approaches \(s_y^2s\), and observation variance approaches
+\(s_y^2s(1+\eta)\). Uncertainty saturates at that finite, fitted prior level; it does not
+grow without bound or guarantee protection against an inappropriate prior mean or kernel.
+
+> Simple worked examples
+
+>> Two distinct inputs: shrinkage and a two-by-two covariance
+
+Take \(x=(0,1)\), \(y=(-1,1)\), disable predictor standardisation and choose
+\(\ell=1/\sqrt{2\log2}\), \(\eta=1/2\), \(j=0\). The response already has mean zero
+and population standard deviation one. Then
+
+$$
+ R=\begin{pmatrix}1&1/2\\1/2&1\end{pmatrix},\quad
+ C=\begin{pmatrix}3/2&1/2\\1/2&3/2\end{pmatrix},\quad
+ C^{-1}=\begin{pmatrix}3/4&-1/4\\-1/4&3/4\end{pmatrix},\quad
+ q=2,\quad \hat s=1.
+$$
+\alttext(The two training inputs have correlation one half. Adding noise ratio one half gives diagonal three halves. The inverse has diagonal three quarters and off-diagonal minus one quarter. The quadratic form is two, so the profiled signal variance is one.)
+
+Here \(\alpha=(-1,1)\), so the latent posterior means at the observations are
+\((-1/2,1/2)\), rather than interpolating the noisy responses. Direct multiplication gives
+
+$$
+ \Sigma_f=\frac1{16}\begin{pmatrix}5&1\\1&5\end{pmatrix},\qquad
+ \Sigma_{\mathrm{new}\ y}=\frac1{16}\begin{pmatrix}13&1\\1&13\end{pmatrix}.
+$$
+\alttext(The latent covariance has diagonal five sixteenths and off-diagonal one sixteenth. Adding independent noise one half raises only the diagonal to thirteen sixteenths.)
+
+At the midpoint, the posterior mean is zero and latent variance is
+\(1-1/\sqrt2\). It is slightly smaller than the variance at either observed input:
+posterior uncertainty depends on the entire covariance geometry, not just nearest-point distance.
+The conditional deletion means are \((1/3,-1/3)\), giving RMSE \(4/3\).
+
+```{cpp, results="markdown", file="figures/gpr_two_points.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame data; data.add_column("x",std::vector<double>{0,1}); data.add_column("y",std::vector<double>{-1,1});
+  dm::stats::GaussianProcessRegressionOptions options;
+  options.length_scale=1/std::sqrt(2*std::log(2.0)); options.noise_ratio=.5; options.standardize=false; options.jitter_ratio=0;
+  const dm::stats::GaussianProcessRegression gp(data,"y ~ x",options);
+  dm::dstruct::DataFrame query; query.add_column("x",dm::seql(-2,3,201).values());
+  const auto prediction=gp.prediction_table(query); const auto& x=query.numeric_column("x").values();
+  auto fit=gp.plot_fit(data), uncertainty=dm::graphics::RPlot::create();
+  fit.title("Conditioning shrinks noisy observations").y_limits(-2,4);
+  uncertainty.lines(x,prediction.numeric_column("latent_sd").values(),"Latent SD",{37,99,235},3)
+    .lines(x,prediction.numeric_column("observation_sd").values(),"New-y SD",{220,90,35},3)
+    .title("Two different prediction targets").x_label("Query x").y_label("Posterior standard deviation").y_limits(0,1.8);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(fit).add(uncertainty);
+  std::filesystem::create_directories("build"); layout.size(1100,490).fit_panels().save_svg("build/gpr_two_points.svg");
+  std::print("{}\n\n{}\n",gp.model_summary().select({"length_scale","signal_variance_y","noise_variance_y","conditional_loo_rmse","posterior_rmse"}).to_md(6),
+      gp.training_details().to_md(6));
+}
+```
+// result_begin: markdown
+| length_scale | signal_variance_y | noise_variance_y | conditional_loo_rmse | posterior_rmse |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.849322 | 1 | 0.5 | 1.333333 | 0.5 |
+
+
+| row | observed | posterior_mean | loo_mean | loo_residual | loo_observation_sd | loo_z |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | -1 | -0.5 | 0.333333 | -1.333333 | 1.154701 | -1.154701 |
+| 2 | 1 | 0.5 | -0.333333 | 1.333333 | 1.154701 | 1.154701 |
+
+\image(figures/gpr_two_points.svg)
+// result_end
+\caption(The exact two-point model. Left bounds describe the latent curve, while the right panel separates latent and future-observation standard deviations. Training posterior and conditional deletion means are different quantities.)
+\alttext(Left: the posterior mean passes through minus one half and plus one half at the two noisy training inputs, with pointwise latent bounds. Right: latent standard deviation dips near the inputs, while observation standard deviation is larger everywhere.)
+
+>> Repeated locations: identical latent values, distinct future errors
+
+Now put both observations at \(x=0\), keeping responses \((-1,1)\), length one,
+noise ratio one half and zero ridge. The correlation matrix is all ones; its contrast
+direction has variance supplied entirely by the noise ratio. Profiling gives \(s=2\),
+so physical noise variance is one. The posterior mean at zero is zero and its latent
+variance is \(2-8/5=2/5\).
+
+For two new queries at this same location, the latent values refer to the *same random
+function value*. Their covariance matrix is rank one. The observation errors are instead
+independent, so
+
+$$
+ \Sigma_f=\begin{pmatrix}2/5&2/5\\2/5&2/5\end{pmatrix},\qquad
+ \Sigma_{\mathrm{new}\ y}=\begin{pmatrix}7/5&2/5\\2/5&7/5\end{pmatrix},\qquad
+ \operatorname{Var}(f_1-f_2)=0,\quad \operatorname{Var}(y_1-y_2)=2.
+$$
+\alttext(Repeated latent queries have covariance two fifths in every entry, so their difference has zero variance. Independent observation noise raises each diagonal by one and gives the difference variance two.)
+
+Treating pointwise standard deviations as if they implied independent function values
+would miss this distinction. Zero noise and zero ridge cannot fit these conflicting,
+coincident observations: the training covariance is singular, and the library rejects it.
+
+```{cpp, results="markdown", file="figures/gpr_repeated_queries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame data; data.add_column("x",std::vector<double>{0,0}); data.add_column("y",std::vector<double>{-1,1});
+  dm::stats::GaussianProcessRegressionOptions options; options.length_scale=1; options.noise_ratio=.5; options.standardize=false; options.jitter_ratio=0;
+  const dm::stats::GaussianProcessRegression gp(data,"y ~ x",options);
+  auto layout=dm::graphics::RLayout::create(1,2);
+  for (bool observation : {false,true}) {
+    const auto C=gp.predict_covariance(data,observation); auto plot=dm::graphics::RPlot::create();
+    plot.image({1,2},{1,2},{{C(0,0),C(0,1)},{C(1,0),C(1,1)}},dm::graphics::diverging_colors(15),0,1.5);
+    for (std::size_t i=0;i<2;++i) for (std::size_t j=0;j<2;++j)
+      plot.text(i+1,j+1,std::format("{:.1f}",C(i,j)),C(i,j)>1?dm::RGB{255,255,255}:dm::RGB{25,25,25},22);
+    plot.title(observation?"New observations: independent noise":"Latent values: the same location")
+      .x_label("Query row").y_label("Query row").x_limits(.5,2.5).y_limits(.5,2.5);
+    layout.add(plot);
+  }
+  std::filesystem::create_directories("build"); layout.size(1100,490).fit_panels().save_svg("build/gpr_repeated_queries.svg");
+  std::print("{}\n",gp.prediction_table(data).to_md(6));
+}
+```
+// result_begin: markdown
+| row | mean | latent_sd | observation_sd | latent_lower | latent_upper | observation_lower | observation_upper |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0 | 0.632456 | 1.183216 | -1.239590 | 1.239590 | -2.319061 | 2.319061 |
+| 2 | 0 | 0.632456 | 1.183216 | -1.239590 | 1.239590 | -2.319061 | 2.319061 |
+
+\image(figures/gpr_repeated_queries.svg)
+// result_end
+\caption(Joint covariances for repeated queries. Diagonal observation noise changes the distribution of differences without changing the posterior mean or the off-diagonal latent dependence.)
+\alttext(Two two-by-two heatmaps print their cell values. The latent matrix has 0.4 in every cell; the new-observation matrix has 1.4 on its diagonal and 0.4 off the diagonal.)
+
+> Checking the theory
+
+>> Finite prior limits and the exact noise increment
+
+Shift the first example's responses to \((9,11)\). Its empirical mean is now ten,
+while response scale, profiled signal variance and noise variance remain one, one and
+one half. Translation changes the posterior mean by ten and leaves the covariance
+unchanged. Over a grid extending well beyond the two training inputs, check
+
+$$
+ 0\leq v_f(x)\leq1,\qquad v_{\mathrm{new}\ y}(x)-v_f(x)=1/2,\qquad
+ \mu(x)\longrightarrow10,\quad v_f(x)\longrightarrow1.
+$$
+\alttext(Latent variance is bounded by the unit prior variance, new-observation variance exceeds it by exactly one half, and sufficiently distant posterior means and latent variances approach ten and one.)
+
+The upper bound follows because the covariance reduction is nonnegative. The limits
+follow from every RBF cross-covariance tending to zero. They are not a claim of
+monotone variance in distance from the nearest observation. The future-observation
+variance approaches 1.5, not one.
+
+```{cpp, results="markdown", file="figures/gpr_prior_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame data; data.add_column("x",std::vector<double>{0,1}); data.add_column("y",std::vector<double>{9,11});
+  dm::stats::GaussianProcessRegressionOptions options;
+  options.length_scale=1/std::sqrt(2*std::log(2.0)); options.noise_ratio=.5; options.standardize=false; options.jitter_ratio=0;
+  const dm::stats::GaussianProcessRegression gp(data,"y ~ x",options);
+  dm::dstruct::DataFrame query; query.add_column("x",dm::seql(-4,5,201).values()); const auto p=gp.prediction_table(query);
+  const auto& x=query.numeric_column("x").values(); auto mean=dm::graphics::RPlot::create(), variance=dm::graphics::RPlot::create();
+  mean.lines(x,p.numeric_column("observation_lower").values(),"New-y bounds",{220,90,35})
+    .lines(x,p.numeric_column("observation_upper").values(),"",{220,90,35})
+    .lines(x,p.numeric_column("latent_lower").values(),"Latent bounds",{150,70,180})
+    .lines(x,p.numeric_column("latent_upper").values(),"",{150,70,180})
+    .lines(x,p.numeric_column("mean").values(),"Mean",{37,99,235},3).points({0,1},{9,11},"Observed",{70,70,70},5)
+    .abline_h(10,{110,110,110}).title("The mean returns to its specified prior").x_label("Query x").y_label("Response").y_limits(6.8,15);
+  variance.lines(x,dm::pow(dm::Vector<>(p.numeric_column("latent_sd").values()),2).values(),"Latent variance",{37,99,235},3)
+    .lines(x,dm::pow(dm::Vector<>(p.numeric_column("observation_sd").values()),2).values(),"New-y variance",{220,90,35},3)
+    .abline_h(1,{110,110,110}).abline_h(1.5,{150,150,150})
+    .title("Variance saturates; noise remains").x_label("Query x").y_label("Squared response").y_limits(0,2.2);
+  auto layout=dm::graphics::RLayout::create(1,2);layout.add(mean).add(variance);
+  std::filesystem::create_directories("build");layout.size(1100,490).fit_panels().save_svg("build/gpr_prior_limits.svg");
+  dm::dstruct::DataFrame selected;selected.add_column("x",std::vector<double>{0,.5,1,5,10});auto result=gp.prediction_table(selected);
+  result.add_column("x",selected.numeric_column("x").values());
+  std::print("{}\n",result.select({"x","mean","latent_sd","observation_sd","observation_lower","observation_upper"}).to_md(6));
+}
+```
+// result_begin: markdown
+| x | mean | latent_sd | observation_sd | observation_lower | observation_upper |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.0 | 9.500000 | 0.559017 | 0.901388 | 7.733312 | 11.266688 |
+| 0.5 | 10.000000 | 0.541196 | 0.890446 | 8.254759 | 11.745241 |
+| 1.0 | 10.500000 | 0.559017 | 0.901388 | 8.733312 | 12.266688 |
+| 5.0 | 10.000015 | 1.000000 | 1.224745 | 7.599559 | 12.400471 |
+| 10.0 | 10.000000 | 1.000000 | 1.224745 | 7.599544 | 12.400456 |
+
+\image(figures/gpr_prior_limits.svg)
+// result_end
+\caption(A generated translation and extrapolation check. Both interval targets use the same mean; their variance difference is exactly the physical noise variance, without numerical jitter added at query points.)
+\alttext(Left: posterior means return to ten far from inputs zero and one, with wider observation bounds around the latent bounds. Right: latent variance approaches one and observation variance approaches one and a half.)
+
+> A dataset example: iris petal length from petal width
+
+>> Data and units
+
+`dm::datasets::iris()` has 150 rows, four numeric measurements in centimetres and a
+species label. Each species contributes 50 flowers. We retain the original example's
+formula `Petal.Length ~ Petal.Width`. Species describes the mixture and stratifies the
+later split; it is not supplied as a predictor. A one-dimensional Gaussian-noise GP
+therefore approximates a pooled relationship, not separate species-specific mechanisms.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto data=dm::datasets::iris();std::print("{} flowers, {} columns.\n\n",data.nrows(),data.ncols());
+  std::print("{}\n",data | dm::group_by("Species")
+    | dm::summarise(dm::agg::n("n"),dm::agg::mean("Petal.Width","mean_width_cm"),dm::agg::mean("Petal.Length","mean_length_cm"),
+                    dm::agg::min("Petal.Width","min_width_cm"),dm::agg::max("Petal.Width","max_width_cm")) | dm::to_md(3));
+}
+```
+// result_begin: markdown
+150 flowers, 5 columns.
+
+| Species | n | mean_width_cm | mean_length_cm | min_width_cm | max_width_cm |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| setosa | 50 | 0.246 | 1.462 | 0.1 | 0.6 |
+| versicolor | 50 | 1.326 | 4.260 | 1.0 | 1.8 |
+| virginica | 50 | 2.026 | 5.552 | 1.4 | 2.5 |
+// result_end
+\caption(Species counts and measurements in centimetres. All rows are complete for the chosen formula; there is no response-based deletion or data standardisation before a split.)
+
+>> Full-data description and the likelihood profile
+
+First fit the descriptive model on all flowers using the default 20-by-15 search.
+Its length scale is in standardized petal-width units. The summary table reports signal
+and noise variances in square centimetres, and log density on the original response
+scale. The profile plot uses standardized-response log density; the Jacobian shift is
+constant across candidates, so it does not change which candidate is selected.
+
+The posterior curve and latent interval describe uncertainty about the fitted mean
+function. They are not a predictive envelope for flower-to-flower variability. Compare
+the training posterior RMSE with the conditional deletion RMSE, then reserve the latter's
+interpretation as an internal diagnostic.
+
+```{cpp, results="markdown", file="figures/gpr_iris_fit_profile.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto data=dm::datasets::iris();const dm::stats::GaussianProcessRegression gp(data,"Petal.Length ~ Petal.Width");
+  auto fit=gp.plot_fit(data), profile=gp.plot_length_scale_profile();
+  fit.title("Pooled iris: mean and latent bounds").x_label("Petal width (cm)").y_label("Petal length (cm)").y_limits(.5,9);
+  profile.title("Amplitude and noise profiled on a grid");
+  auto layout=dm::graphics::RLayout::create(1,2);layout.add(fit).add(profile);
+  std::filesystem::create_directories("build");layout.size(1100,490).fit_panels().save_svg("build/gpr_iris_fit_profile.svg");
+  std::print("{}\n\n{}\n",gp.model_summary().select({"length_scale","noise_ratio","signal_variance_y","noise_variance_y","log_likelihood_y"}).to_md(6),
+    gp.model_summary().select({"conditional_loo_rmse","conditional_loo_r_squared","posterior_rmse"}).to_md(6));
+}
+```
+// result_begin: markdown
+| length_scale | noise_ratio | signal_variance_y | noise_variance_y | log_likelihood_y |
+| ---: | ---: | ---: | ---: | ---: |
+| 1.024854 | 0.071969 | 2.026148 | 0.145819 | -80.562795 |
+
+
+| conditional_loo_rmse | conditional_loo_r_squared | posterior_rmse |
+| ---: | ---: | ---: |
+| 0.387653 | 0.951454 | 0.374133 |
+
+\image(figures/gpr_iris_fit_profile.svg)
+// result_end
+\caption(The full-data posterior mean with a 95% pointwise latent interval and the profiled length-scale likelihood. Variances in the table use original squared-centimetre units.)
+\alttext(Left: iris petal length is plotted against petal width with a nonlinear posterior mean and narrow latent bounds. Right: the log marginal likelihood is profiled over the searched noise ratios and the selected length is marked.)
+
+The full-data grid selects length 1.024854 and noise ratio 0.071969. In original units,
+signal variance is 2.026148 square centimetres and noise variance is 0.145819 square
+centimetres, a noise standard deviation of 0.382 cm. Conditional deletion RMSE is
+0.387653 cm, versus posterior training RMSE 0.374133 cm. The fitted log density is
+4.1835 on the standardized scale and -80.5628 on the original response scale; the
+change is the stated Jacobian, not a different fitted kernel.
+
+>> Hold out flowers before preprocessing and tuning
+
+A seeded split holds out 30 percent within each species: 105 training flowers and
+45 test flowers. The GP sees only training rows during formula resolution, scaling,
+amplitude profiling and the entire hyperparameter search. `score(test)` assesses these
+external predictions without fitting on test responses. It reports RMSE, empirical
+coverage of each interval target, mean observation-interval width and Gaussian negative
+log predictive density, which rewards accurate distributions rather than wide intervals alone.
+
+The left panel below still uses the training model's conditional deletion residuals.
+The right panel uses actual held-out flowers and observation prediction intervals.
+Keeping these labels separate avoids presenting the conditional deletion shortcut as
+validation of a fully refitted pipeline. One small, balanced holdout is an assessment
+of this split, not a population-wide coverage guarantee or a comparison of all kernels.
+
+```{cpp, results="markdown", file="figures/gpr_iris_holdout.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [train,test]=dm::stats::train_test_split(dm::datasets::iris(),.3,42,"Species");
+  const dm::stats::GaussianProcessRegression gp(train,"Petal.Length ~ Petal.Width");
+  const auto prediction=gp.prediction_table(test);const auto& actual=test.numeric_column("Petal.Length").values();
+  auto residuals=gp.plot_residuals_vs_fitted(), heldout=dm::graphics::RPlot::create();
+  residuals.title("Training: conditional deletion residuals");
+  heldout.segments(actual,prediction.numeric_column("observation_lower").values(),actual,prediction.numeric_column("observation_upper").values(),{170,170,170},1.5)
+    .points(actual,prediction.numeric_column("mean").values(),"Mean",{37,99,235},4)
+    .abline(0,1,{80,80,80}).title("Held-out flowers: new-y intervals")
+    .x_label("Observed petal length (cm)").y_label("Prediction and 95% new-y interval")
+    .x_limits(.5,8).y_limits(0,9);
+  auto layout=dm::graphics::RLayout::create(1,2);layout.add(residuals).add(heldout);
+  std::filesystem::create_directories("build");layout.size(1100,490).fit_panels().save_svg("build/gpr_iris_holdout.svg");
+  std::print("{} training rows, {} held-out rows.\n\n{}\n\n{}\n",train.nrows(),test.nrows(),
+    gp.model_summary().select({"length_scale","noise_ratio","conditional_loo_rmse","posterior_rmse"}).to_md(6),gp.score(test).select({"n","rmse","latent_coverage","observation_coverage","mean_observation_width","mean_nlpd"}).to_md(6));
+}
+```
+// result_begin: markdown
+105 training rows, 45 held-out rows.
+
+| length_scale | noise_ratio | conditional_loo_rmse | posterior_rmse |
+| ---: | ---: | ---: | ---: |
+| 1.753443 | 0.037276 | 0.386267 | 0.372383 |
+
+
+| n | rmse | latent_coverage | observation_coverage | mean_observation_width | mean_nlpd |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 45 | 0.402965 | 0.311111 | 0.933333 | 1.516322 | 0.510046 |
+
+\image(figures/gpr_iris_holdout.svg)
+// result_end
+\caption(The training-only model's conditional diagnostics and external predictions are evaluated separately. Grey vertical bars are 95% new-observation intervals; the diagonal is perfect agreement. Coverage uses these noisy-target intervals, not latent-function intervals.)
+\alttext(Left: conditional deletion residuals on training flowers are shown around a zero reference. Right: posterior means for 45 held-out petal lengths have vertical future-observation intervals, compared with the observed-equals-predicted diagonal.)
+
+The training-only fit selects length 1.753443 and noise ratio 0.037276. Test RMSE is
+0.402965 cm, versus conditional training deletion RMSE 0.386267 cm. Observation
+interval coverage is 42/45 (93.3%); latent interval coverage of test measurements is
+14/45 (31.1%), reflecting their different targets. Mean observation-interval width is
+1.5163 cm and mean negative log predictive density is 0.5100. These counts are
+properties of this particular test split and fitted noise model.
+
+>> Extrapolation and the constant prior mean
+
+Return to the full-data model and query widths 0.2, 1.3 and 2.5 cm within the training
+range, then 10 cm far outside it. The output includes both interval targets. Far from
+observed widths, the constant empirical prior pulls the mean towards the overall petal
+length mean, even though that need not describe a flower with a much wider petal.
+The bounded prior variance should not be read as an automatic guarantee against such
+model misspecification. RBF smoothness, Gaussian homogeneous noise and plug-in parameter
+values are all substantive assumptions.
+
+```{cpp, results="markdown", file="figures/gpr_iris_extrapolation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto data=dm::datasets::iris();const dm::stats::GaussianProcessRegression gp(data,"Petal.Length ~ Petal.Width");
+  dm::dstruct::DataFrame grid;grid.add_column("Petal.Width",dm::seql(.1,10,251).values());const auto p=gp.prediction_table(grid);
+  const auto& x=grid.numeric_column("Petal.Width").values();auto curve=dm::graphics::RPlot::create(), uncertainty=dm::graphics::RPlot::create();
+  curve.points(data.numeric_column("Petal.Width").values(),data.numeric_column("Petal.Length").values(),"Observed",{130,130,130,.5},3)
+    .lines(x,p.numeric_column("observation_lower").values(),"New-y bounds",{220,90,35}).lines(x,p.numeric_column("observation_upper").values(),"",{220,90,35})
+    .lines(x,p.numeric_column("latent_lower").values(),"Latent bounds",{150,70,180}).lines(x,p.numeric_column("latent_upper").values(),"",{150,70,180})
+    .lines(x,p.numeric_column("mean").values(),"Mean",{37,99,235},3).abline_h(gp.response_mean(),{130,130,130})
+    .title("Far predictions return to the prior mean").x_label("Petal width (cm)").y_label("Petal length (cm)").y_limits(0,10);
+  uncertainty.lines(x,p.numeric_column("latent_sd").values(),"Latent SD",{37,99,235},3)
+    .lines(x,p.numeric_column("observation_sd").values(),"New-y SD",{220,90,35},3)
+    .title("Uncertainty plateaus at the fitted prior").x_label("Petal width (cm)").y_label("Posterior SD (cm)");
+  auto layout=dm::graphics::RLayout::create(1,2);layout.add(curve).add(uncertainty);
+  std::filesystem::create_directories("build");layout.size(1100,490).fit_panels().save_svg("build/gpr_iris_extrapolation.svg");
+  dm::dstruct::DataFrame query;query.add_column("Petal.Width",std::vector<double>{.2,1.3,2.5,10});auto table=gp.prediction_table(query);
+  table.add_column("width_cm",query.numeric_column("Petal.Width").values());
+  std::print("{}\n",table.select({"width_cm","mean","latent_sd","observation_sd","latent_lower","latent_upper","observation_lower","observation_upper"}).to_md(6));
+}
+```
+// result_begin: markdown
+| width_cm | mean | latent_sd | observation_sd | latent_lower | latent_upper | observation_lower | observation_upper |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.2 | 1.413075 | 0.058087 | 0.386255 | 1.299226 | 1.526924 | 0.656029 | 2.170122 |
+| 1.3 | 4.288771 | 0.058430 | 0.386307 | 4.174250 | 4.403292 | 3.531623 | 5.045919 |
+| 2.5 | 5.733776 | 0.145192 | 0.408533 | 5.449205 | 6.018346 | 4.933065 | 6.534486 |
+| 10.0 | 3.758000 | 1.423428 | 1.473759 | 0.968132 | 6.547868 | 0.869485 | 6.646515 |
+
+\image(figures/gpr_iris_extrapolation.svg)
+// result_end
+\caption(Within-range and extrapolated predictions from the full-data descriptive model. Both bands are pointwise and conditional on the fitted parameters. The prior mean reference is the training response mean, not a physical model of extreme flowers.)
+\alttext(Left: the curve fits the observed width range then returns towards the overall petal-length mean as width approaches ten centimetres. Right: latent and new-observation standard deviations rise and approach finite plateaus, with the noisy target always wider.)
+
+At width 10 cm the mean is 3.758 cm, the latent SD is 1.423428 cm and the
+new-observation SD is 1.473759 cm. Their variances differ by the fitted noise variance
+0.145819 square centimetres. The finite prior limit is visible; it does not establish
+that this is an appropriate prediction for such an extreme hypothetical flower.
+
+> Conclusion
+
+Two-point calculations identify what the matrix algebra means: conditioning shrinks
+the posterior mean away from noisy observations, while independent future noise adds
+to the covariance diagonal. Repeated-location queries show why a collection of marginal
+standard deviations cannot replace a joint covariance matrix. The extrapolation sweep
+checks both the exact noise increment and the finite prior limit.
+
+On iris, likelihood selection supplies a reproducible, model-dependent covariance fit.
+Conditional deletion is useful for diagnosis, while the held-out split assesses a model
+whose preprocessing and tuning did not see test responses. Latent and observation intervals
+answer different questions; neither includes hyperparameter or mean-estimation uncertainty.
+More data, different kernels, heteroscedastic models or a different prior mean could change
+the predictions and their calibration. A GP provides an explicit conditional probability
+model, whose assumptions still need to match the prediction problem.
+
+> References
+
+- C. E. Rasmussen and C. K. I. Williams (2006). *Gaussian Processes for Machine Learning*. MIT Press. [Book and original chapter files|https://gaussianprocess.org/gpml/]. Chapters [2: regression|https://gaussianprocess.org/gpml/chapters/RW2.pdf] and [5: hyperparameter selection and conditional deletion|https://gaussianprocess.org/gpml/chapters/RW5.pdf].
+- scikit-learn developers. [GaussianProcessRegressor|https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessRegressor.html], used as an independent check with fixed ConstantKernel times RBF, matching normalization and a training-only diagonal alpha.

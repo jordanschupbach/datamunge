@@ -1,0 +1,361 @@
+//? Title: Regularised Tree Boosting for Iris: Fit, Select, Then Test
+//? Subtitle: Diagonal Newton updates, validation loss paths and a separate final test set
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+We derive the regularised leaf weights and split gains used by datamunge's
+XGBoost-style multiclass classifier. The implementation uses one class tree
+per round and a diagonal softmax curvature approximation; it is not a
+binding to the upstream XGBoost system. Fisher's iris measurements are split
+into training, validation and test partitions. Fixed-model staged evaluation
+separates decreasing training loss from validation behaviour, and a
+validation-only search selects the L2 penalty and round count. A model
+refitted on all development data is then evaluated once on the reserved
+test partition using accuracy, mean log loss, Brier score and class counts.
+)
+
+\toc
+
+> The data and the evaluation design
+
+`dm::datasets::iris()` has 150 flowers, four measurements in centimetres,
+and three string-valued species labels with 50 observations each. Petal
+measurements show clear setosa separation and an overlap between the other
+two species. The classifier uses all four measurements, without scaling;
+a two-dimensional scatter is descriptive, not the full decision space.
+
+```{cpp, results="markdown", file="figures/xgb_iris_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto iris = dm::datasets::iris();
+  std::print("{}\n",iris.head(6).to_md());
+  std::print("\n{}\n",(iris | dm::group_by("Species") | dm::summarise(dm::agg::n("flowers"),
+      dm::agg::mean("Petal.Length","mean_petal_length"),dm::agg::mean("Petal.Width","mean_petal_width"))).to_md(3));
+  const auto [development,test] = dm::stats::train_test_split(iris,0.2,42,"Species");
+  const auto [train,validation] = dm::stats::train_test_split(development,0.25,43,"Species");
+  std::print("\n| partition | flowers | flowers per species |\n| :--- | ---: | ---: |\n"
+      "| training | {} | 30 |\n| validation | {} | 10 |\n| final test | {} | 10 |\n",train.nrows(),validation.nrows(),test.nrows());
+  std::filesystem::create_directories("build");
+  dm::graphics::GGPlot::create(iris,{"Petal.Length","Petal.Width","Species","",""}).geom_point()
+      .labs("Iris petal measurements","petal length (cm)","petal width (cm)")
+      .theme_minimal().save_svg("build/xgb_iris_data.svg");
+}
+```
+// result_begin: markdown
+| Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
+| ---: | ---: | ---: | ---: | :--- |
+| 5.1 | 3.5 | 1.4 | 0.2 | setosa |
+| 4.9 | 3.0 | 1.4 | 0.2 | setosa |
+| 4.7 | 3.2 | 1.3 | 0.2 | setosa |
+| 4.6 | 3.1 | 1.5 | 0.2 | setosa |
+| 5.0 | 3.6 | 1.4 | 0.2 | setosa |
+| 5.4 | 3.9 | 1.7 | 0.4 | setosa |
+
+
+| Species | flowers | mean_petal_length | mean_petal_width |
+| :--- | ---: | ---: | ---: |
+| setosa | 50 | 1.462 | 0.246 |
+| versicolor | 50 | 4.260 | 1.326 |
+| virginica | 50 | 5.552 | 2.026 |
+
+
+| partition | flowers | flowers per species |
+| :--- | ---: | ---: |
+| training | 90 | 30 |
+| validation | 30 | 10 |
+| final test | 30 | 10 |
+\image(figures/xgb_iris_data.svg)
+// result_end
+\caption(The data, species summaries and reproducible stratified partition sizes. The full-data scatter is used only to describe the measurements.)
+\alttext(A petal-length versus petal-width scatter coloured by species. Setosa is separate, while versicolor and virginica partly overlap.)
+
+Each class contributes 30 training, 10 validation and 10 final test flowers.
+The outer split reserves 20% with seed 42; the inner split reserves 25%
+of the remaining development data with seed 43. Both splits preserve
+original row order after selection. We predeclare depth two, learning rate
+0.1, full row/column sampling, at most 100 rounds and the lambda grid
+\(\{0.01,0.1,1,10,100\}\). Validation chooses among these settings;
+the final test data do not participate in that choice. No claim about
+relative performance against classifiers fitted with different defaults
+is made here.
+
+> Deriving a regularised boosting round
+
+For class scores \(F_{ik}\), probabilities and the mean negative log
+likelihood are
+
+$$
+p_{ik}=\frac{e^{F_{ik}}}{\sum_j e^{F_{ij}}},\qquad
+\mathcal L=-\frac1n\sum_i\log p_{i,y_i}.
+$$
+\alttext(Softmax converts class scores into probabilities. Mean log loss is the average negative logarithm of the probability assigned to the observed class.)
+
+The initial scores are log training-class proportions. Subtracting each
+row's largest score before exponentiating leaves probabilities unchanged
+and stabilises the computation. Differentiating the per-row loss gives
+
+$$
+g_{ik}=p_{ik}-\mathbf1\{y_i=k\},\qquad
+\frac{\partial^2\ell_i}{\partial F_{ik}\partial F_{ij}}
+=p_{ik}(\mathbf1\{k=j\}-p_{ij}).
+$$
+\alttext(The gradient is predicted probability minus the class indicator. The full softmax Hessian has diagonal p times one minus p and nonzero off-diagonal entries minus the product of class probabilities.)
+
+The local implementation retains only the diagonal
+\(h_{ik}=\max(p_{ik}(1-p_{ik}),10^{-6})\). It computes all class
+gradients from the scores at the start of a round, fits one tree per class,
+then adds the learning-rate-scaled contributions. Omitting off-diagonal
+terms makes this a diagonal Newton heuristic; it is not an exact joint
+Newton step. XGBoost 3.1.0's upstream multiclass objective instead uses the
+bound \(2p(1-p)\) with its own floor. Identical option names therefore
+do not establish numerical equivalence with that package.
+
+>> Leaf weights and split gains
+
+For a leaf, sum gradients and Hessians over its assigned training rows:
+\(G=\sum_i g_i\), \(H=\sum_i h_i\). With L2 penalty
+\(\lambda\) and L1 penalty \(\alpha\), its quadratic surrogate is
+
+$$
+Q(w)=Gw+\frac12(H+\lambda)w^2+\alpha|w|,\qquad
+w^*=-\frac{\operatorname{sign}(G)\max(|G|-\alpha,0)}{H+\lambda}.
+$$
+\alttext(The leaf objective combines the linear gradient term, curvature plus L2 penalty, and an L1 absolute-value penalty. Its minimum is the negative soft-thresholded gradient divided by Hessian plus lambda.)
+
+For positive or negative \(w\), set the corresponding derivative to
+zero. At \(w=0\), the subgradient condition is \(|G|\le\alpha\),
+which yields exactly zero. This derives the soft-threshold rule. Increasing
+lambda shrinks a leaf update for fixed \(G,H\), but later gradients and
+chosen splits also change, so an entire fitted model need not vary
+monotonically with lambda.
+
+Put \(S(G,H)=\operatorname{softthresh}(G,\alpha)^2/(H+\lambda)\).
+The best surrogate contribution is \(-S/2\). Subtracting the children's
+best objective from the parent's and charging a split penalty gives
+
+$$
+\operatorname{Gain}=\frac12\{S(G_L,H_L)+S(G_R,H_R)-S(G,H)\}-\gamma.
+$$
+\alttext(The split gain is half the two child scores minus the parent score, then minus gamma. Positive gain represents improvement in the regularised quadratic surrogate.)
+
+The local tree enumerates exact midpoint thresholds and requires child
+row-count and summed-Hessian limits. A gain must improve the current best
+by more than \(10^{-12}\). Gain importance sums accepted regularised split
+gains, then normalises across features; it is training-derived attribution,
+not a causal effect or a probability that a predictor matters. A smaller
+learning rate and more rounds can compensate for shrinkage, so a fixed
+round budget is part of any regularisation comparison.
+
+The source's `training_deviance()` is mean negative log likelihood, not
+twice that quantity. Evaluation uses the same definition and a probability
+floor of \(10^{-15}\) for the logarithm. Brier score is
+\(n^{-1}\sum_i\sum_k(p_{ik}-\mathbf1\{y_i=k\})^2\), without dividing
+by the number of classes. Balanced three-class priors consequently give
+mean log loss \(\log3\), Brier score \(2/3\), and tie-broken accuracy
+\(1/3\). Probabilities are fitted softmax outputs, not verified calibrated
+posteriors.
+
+> Training and validation curves from the same fitted trees
+
+For illustration, first fix lambda at one and fit the entire 100-round
+budget. `staged_evaluation()` traverses that model's fitted trees once in
+round order; it never trains on the evaluation frame or refits a separate
+model at every stage. Round zero evaluates the original training priors.
+Counts explicitly record rows omitted for null predictors or response.
+The iris data have no omitted rows.
+
+```{cpp, results="markdown", file="figures/xgb_iris_paths.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [development,test] = dm::stats::train_test_split(dm::datasets::iris(),0.2,42,"Species");
+  const auto [train,validation] = dm::stats::train_test_split(development,0.25,43,"Species");
+  dm::stats::XGBoostClassifierOptions options; options.n_trees=100; options.max_depth=2; options.learning_rate=0.1;
+  const dm::stats::XGBoostClassifier model(train,"Species ~ .",options);
+  const auto training = model.staged_evaluation(train), valid = model.staged_evaluation(validation);
+  std::print("Validation stages:\n\n{}\n",valid.take_rows({0,10,20,50,100}).to_md(6));
+  std::print("\nTraining final stage:\n\n{}\n",training.tail(1).to_md(6));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().line(training.get_column("round").values(),training.get_column("mean_log_loss").values(),
+      "training",dm::RGB{37,99,235},2)
+      .line(valid.get_column("round").values(),valid.get_column("mean_log_loss").values(),"validation",dm::RGB{220,38,38},2)
+      .title("Fixed lambda = 1: training loss and validation loss diverge")
+      .x_label("completed boosting rounds").y_label("mean log loss")
+      .size(1000,480).save_svg("build/xgb_iris_paths.svg");
+}
+```
+// result_begin: markdown
+Validation stages:
+
+| round | input_rows | evaluated_rows | skipped_rows | accuracy | mean_log_loss | brier |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 30 | 30 | 0 | 0.333333 | 1.098612 | 0.666667 |
+| 10 | 30 | 30 | 0 | 0.933333 | 0.285492 | 0.119005 |
+| 20 | 30 | 30 | 0 | 0.933333 | 0.234883 | 0.107851 |
+| 50 | 30 | 30 | 0 | 0.933333 | 0.259089 | 0.115874 |
+| 100 | 30 | 30 | 0 | 0.933333 | 0.255237 | 0.113452 |
+
+
+Training final stage:
+
+| round | input_rows | evaluated_rows | skipped_rows | accuracy | mean_log_loss | brier |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 100 | 90 | 90 | 0 | 1 | 0.038867 | 0.006592 |
+
+\image(figures/xgb_iris_paths.svg)
+// result_end
+\caption(Staged losses for a model fitted to 90 training flowers. The validation labels only score fixed trees. These curves do not use the reserved final test partition.)
+\alttext(Two log-loss curves falling from the three-class prior baseline. Training loss keeps declining while validation loss levels off and rises modestly.)
+
+>> Selecting lambda and the stopping round on validation only
+
+For each predeclared lambda, the library picks the lowest validation mean
+log loss among stages 1 through 100. It then compares those five candidates.
+Exact ties retain the first supplied lambda and the earliest stage. The
+round-zero prior is a useful reference but excluded from this search.
+Validation accuracy can be identical while probability-sensitive log loss
+differs; accuracy alone would conceal that distinction.
+
+```{cpp, results="markdown", file="figures/xgb_iris_selection.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [development,test] = dm::stats::train_test_split(dm::datasets::iris(),0.2,42,"Species");
+  const auto [train,validation] = dm::stats::train_test_split(development,0.25,43,"Species");
+  dm::stats::XGBoostClassifierOptions options; options.n_trees=100; options.max_depth=2; options.learning_rate=0.1;
+  const auto search = dm::stats::xgboost_validation_search(train,validation,"Species ~ .",options);
+  std::print("{}\n",search.candidates.to_md(6));
+  std::print("\nSelected lambda: {}; selected rounds: {}.\n",search.selected_options.lambda,search.selected_options.n_trees);
+  auto log_lambda = search.candidates.get_column("lambda").values();
+  for (auto& value : log_lambda) value = std::log10(value);
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().line(log_lambda,search.candidates.get_column("mean_log_loss").values(),
+      "validation loss",dm::RGB{37,99,235},2)
+      .points(log_lambda,search.candidates.get_column("mean_log_loss").values(),"",dm::RGB{37,99,235},5)
+      .title("Best validation loss per lambda within 100 rounds")
+      .x_label("log10(lambda)").y_label("best validation mean log loss")
+      .size(1000,480).save_svg("build/xgb_iris_selection.svg");
+}
+```
+// result_begin: markdown
+| lambda | round | evaluated_rows | accuracy | mean_log_loss | brier |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.01 | 13 | 30 | 0.933333 | 0.241081 | 0.104946 |
+| 0.10 | 13 | 30 | 0.933333 | 0.235788 | 0.103294 |
+| 1.00 | 17 | 30 | 0.933333 | 0.231535 | 0.104302 |
+| 10.00 | 57 | 30 | 0.933333 | 0.221657 | 0.101410 |
+| 100.00 | 100 | 30 | 0.933333 | 0.350397 | 0.147607 |
+
+
+Selected lambda: 10; selected rounds: 57.
+\image(figures/xgb_iris_selection.svg)
+// result_end
+\caption(Each lambda's best stage and validation scores. The stopping round varies across candidates; this is a joint selection over lambda and stage, not a fixed-stage lambda curve.)
+\alttext(A validation-loss curve over five logarithmically spaced penalties, with its lowest point at lambda ten and a higher loss at lambda one hundred.)
+
+The selected configuration is lambda 10 and 57 rounds. The lambda-100
+candidate reaches its best reported value at the budget boundary, so this
+experiment does not establish its best possible performance with more
+rounds. The selected validation loss is optimistically biased by the
+search itself. It is not substituted for the final test score.
+
+> Refit on development data, then evaluate the final test partition
+
+The selected settings are refitted from scratch on all 120 development
+flowers, combining the training and validation partitions. This can change
+every fitted tree; the selected validation loss does not describe the
+refitted model directly. The 30 reserved flowers are evaluated after that
+refit. The feature-importance plot uses only the development-fitted trees.
+
+```{cpp, results="markdown", file="figures/xgb_iris_test.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [development,test] = dm::stats::train_test_split(dm::datasets::iris(),0.2,42,"Species");
+  const auto [train,validation] = dm::stats::train_test_split(development,0.25,43,"Species");
+  dm::stats::XGBoostClassifierOptions options; options.n_trees=100; options.max_depth=2; options.learning_rate=0.1;
+  const auto search = dm::stats::xgboost_validation_search(train,validation,"Species ~ .",options);
+  const dm::stats::XGBoostClassifier final_model(development,"Species ~ .",search.selected_options);
+  std::print("Final test:\n\n{}\n\n{}\n",final_model.evaluation(test).to_md(6),final_model.confusion(test).to_md());
+  std::print("\n| training flowers | training accuracy | training mean log loss |\n| ---: | ---: | ---: |\n"
+      "| {} | {:.6f} | {:.6f} |\n",final_model.observations(),final_model.training_accuracy(),final_model.training_deviance().back());
+  auto layout = dm::graphics::RLayout::create(1,2);
+  layout.add(final_model.plot_classification(test,"Petal.Length","Petal.Width")
+      .title("Final test: four-feature predictions").size(750,500));
+  layout.add(dm::graphics::RPlot::barplot(final_model.feature_importance(),final_model.predictor_names(),"gain share")
+      .title("Development-fit split gains").y_label("normalised gain").size(750,500));
+  std::filesystem::create_directories("build");layout.size(1500,500).save_svg("build/xgb_iris_test.svg");
+}
+```
+// result_begin: markdown
+Final test:
+
+| round | input_rows | evaluated_rows | skipped_rows | accuracy | mean_log_loss | brier |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 57 | 30 | 30 | 0 | 0.933333 | 0.223922 | 0.126820 |
+
+
+| actual | pred_setosa | pred_versicolor | pred_virginica |
+| :--- | ---: | ---: | ---: |
+| setosa | 10 | 0 | 0 |
+| versicolor | 0 | 9 | 1 |
+| virginica | 0 | 1 | 9 |
+
+
+| training flowers | training accuracy | training mean log loss |
+| ---: | ---: | ---: |
+| 120 | 1.000000 | 0.070942 |
+\image(figures/xgb_iris_test.svg)
+// result_end
+\caption(Final test metrics and confusion counts after refitting on all development data. The left panel projects four-feature predictions onto petal coordinates and marks errors in black. The right panel is a training-derived importance summary.)
+\alttext(A species-coloured test scatter with two black error markers beside a gain-importance bar chart dominated by petal measurements.)
+
+The reserved test result is 28 correct predictions out of 30: accuracy
+0.93333, mean log loss 0.22392 and multiclass Brier score 0.12682. One
+versicolor and one virginica are exchanged. The refitted model classifies
+all 120 development flowers correctly, illustrating why training accuracy
+is not a replacement for the held-out result. A single flower changes this
+test accuracy by 3.33 percentage points, and one split does not quantify
+variation over other splits or populations. Softmax probabilities have not
+been separately calibrated.
+
+> Computational and modelling limits
+
+The local implementation enumerates midpoint candidates and rescans their
+rows. A conservative bound is \(O(MK(p+1)n^2(D+1))\) training work for \(M\)
+rounds, \(K\) classes, \(p\) resolved predictors and depth limit \(D\).
+Staged evaluation traverses each stored tree once per usable evaluation
+row, with \(O(nMK(D+1))\) traversal and \(O(nMK)\) score work. It avoids
+refitting \(M\) prefix models. This small exact-search implementation is
+appropriate for understanding the method; it does not implement upstream
+XGBoost's full scalable, sparse or distributed training system.
+
+Null response or predictor rows are omitted and counted consistently;
+unseen response classes and non-finite transformed predictors are errors.
+Categorical predictor levels must have appeared during training. Formula
+basis construction belongs to the training design, which is reused for
+validation and prediction. The procedure therefore separates fitting and
+scoring, but the user remains responsible for a sampling design relevant
+to the intended population and for keeping partitions disjoint.
+
+> Conclusion
+
+The regularised leaf optimum and split gain follow from a quadratic loss
+surrogate; the diagonal multiclass approximation and curvature floor are
+explicit implementation choices. Staged evaluation shows training loss
+continuing to improve after validation loss has stopped improving.
+Validation selects a penalty and stopping round, then a fresh development
+fit is scored on reserved flowers. This sequence supports a measured
+predictive claim while keeping model selection, training fit and final
+evaluation distinct.
+
+> References
+
+- T. Chen and C. Guestrin (2016). *XGBoost: A Scalable Tree Boosting System*.
+  KDD, 785–794. https://doi.org/10.1145/2939672.2939785
+  Author manuscript: https://arxiv.org/abs/1603.02754
+- XGBoost 3.1.0 multiclass objective, including its Hessian bound:
+  https://github.com/dmlc/xgboost/blob/v3.1.0/src/objective/multiclass_obj.cu
+- G. W. Brier (1950). *Verification of Forecasts Expressed in Terms of Probability*.
+  Monthly Weather Review 78(1), 1–3.
+  https://journals.ametsoc.org/view/journals/mwre/78/1/1520-0493_1950_078_0001_vofeit_2_0_co_2.xml
+- R. A. Fisher (1936). *The Use of Multiple Measurements in Taxonomic Problems*.
+  Annals of Eugenics 7(2), 179–188. https://doi.org/10.1111/j.1469-1809.1936.tb02137.x

@@ -1,9 +1,9 @@
 # Native R NN example. Flip, crop, color jitter, cutout, mixup and CutMix on NHWC batches.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/data_augmentation.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example data_augmentation
 # Port of tflow's data_augmentation. Check exact pixel positions, unchanged
 # evaluation inputs, clipping, soft labels and area-correct CutMix labels on
 # small known NHWC batches. Crop coordinates come from a host RNG that is

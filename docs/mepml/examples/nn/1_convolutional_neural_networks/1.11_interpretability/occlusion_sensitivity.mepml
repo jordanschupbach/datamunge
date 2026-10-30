@@ -1,0 +1,464 @@
+//? Title: Occlusion sensitivity:actual finite patches and overlap accounting
+//? Requires: vanilla_saliency.mepml
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An image classifier may change its score when a visible region is replaced. Evaluate every actual rectangular replacement on genuine MNIST images,retain signed fixed-category score changes,and show explicit edge coverage and replacement,patch,target and weight controls.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.11_interpretability/occlusion_sensitivity.cpp`.
+
+> The method
+
+For patchR,replacementr and fixed raw score s_c,measure the finite change directly. Project the patch measurements onto pixels by averaging all covering patch drops:
+
+$$ D_R=s_c(x)-s_c(x_{R\leftarrow r}),\qquad M_p=\frac{\sum_{R:p\in R}D_R}{\#\{R:p\in R\}}. $$
+\alttext(The signed patch effect is the original fixed-category score minus its actual replacement score;the pixel display averages effects of every patch covering that pixel.)
+
+Coverage is positive everywhere because boundary anchors are explicit and stride never exceeds patch size. No derivative,learned explainer or optimizer replaces the actual frozen-model predictions. The model fitting loop remains explicit in vanilla_saliency.
+
+The editable concept diagram is `diagrams/occlusion_sensitivity_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/occlusion_sensitivity_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/occlusion_sensitivity_concept.tikz > build/occlusion_sensitivity_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/occlusion_sensitivity_concept.svg build/occlusion_sensitivity_concept.dvi > build/occlusion_sensitivity_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/occlusion_sensitivity_concept.svg)
+// result_end
+\caption(Occlusion sensitivity:actual finite patches and overlap accounting)
+\alttext(Actual image;  fixed finite patch; then Re-evaluate same;  raw category; then Signed score drops;  overlap mean and controls.)
+
+> Frozen original observations and finite interventions
+
+Restore the validation-selected MNIST classifier from
+[vanilla saliency](vanilla_saliency.mepml),whose96tensor Adam updates and200
+held-out errors are visible. There is no new fitting in this report. Use the
+same first actual held-out image of each true digit0..9,original source IDs and
+fixed learned top/runner categories. The shared classifier has88%held-out
+accuracy and24mistakes;an occlusion map does not correct those predictions.
+
+Replace a specified rectangle with pixels from a specified replacement image,
+then re-evaluate the SAME fixed raw category. Positive drop means replacement
+lowered the score;negative drop means it raised the score. Keep both signs.
+The intervention has finite size and is not an input derivative. Replacement,
+patch shape and stride define the question;black and grey patches can differ.
+
+> Executed tensor architecture
+
+The diagram shows the forward MNIST CNN that the attribution or feature-optimization method inspects; the attribution algorithm is explained separately.
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/occlusion_sensitivity_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(1103);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) { return m::SaliencyCnn(p, image).logits; },
+      "Occlusion sensitivity:actual finite patches and overlap accounting");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 28, 28, 1}), options);
+  diagram.save_svg("build/occlusion_sensitivity_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+12 displayed nodes; 26826 reachable learned values.
+\image(figures/occlusion_sensitivity_architecture.svg)
+// result_end
+\caption(Executed occlusion sensitivity tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right occlusion sensitivity architecture with rotated names and exact output shapes.)
+
+> Rectangular edge anchors and exact overlap accounting
+
+For a4x5image,2x2patch and2x2stride,the horizontal starts are0,2,3:append3to
+cover the otherwise missed right edge. Six rectangles cover every pixel;some
+pixels belong to two rectangles. The reported pixel map averages signed drops
+of all covering patches. It is a projection of patch measurements,not an
+additive decomposition of the score into individual pixel contributions.
+```{cpp, results="markdown", file="figures/occlusion_sensitivity_fixture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto x = (n::arange(0, 40) * .02 + .1).reshape({2, 4, 5, 1}),
+             replacement = n::full(x.shape(), .2),
+             kernel = (n::sin(n::arange(0, 20) * .7) * .1).reshape({1, 4, 5, 1});
+  const auto target = n::from_vector(std::vector<int>{0, 1});
+  auto predict = [&](const n::Tensor &p) {
+    const auto s = n::sum(p * kernel, {1, 2, 3}) + .3;
+    return n::stack({s, -s}, 1);
+  };
+  const auto out = m::OcclusionSensitivity(x, replacement, target, {2, 2, 2, 2}, 3, predict);
+  std::print(
+      "Every actual rectangle {},coverage {},all12signed drops {},all40overlap means {}.\n",
+      out.rectangles, out.coverage, out.drops, out.pixel_mean);
+  const auto peak = n::max(n::abs(out.pixel_mean)).item();
+  auto a = n::plot_tensor_map(n::reverse(out.coverage, {0}), 0, 2),
+       b = n::plot_tensor_map(n::reverse(n::select(out.pixel_mean, 0, 0), {0}), -peak, peak);
+  a.title("Declared rectangular-patch coverage").x_label("pixel x").y_label("pixel y");
+  b.title("Actual overlap-mean signed drops").x_label("pixel x").y_label("pixel y");
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(a).add(b).size(1100, 500).fit_panels().save_svg(
+      "build/occlusion_sensitivity_fixture.svg");
+}
+```
+// result_begin: markdown
+Every actual rectangle int32[6, 4] [[0, 0, 2, 2], [0, 2, 2, 2], [0, 3, 2, 2], [2, 0, 2, 2], [2, 2, 2, 2], [2, 3, 2, 2]],coverage int32[4, 5] [[1, 1, 1, 2, 1], [1, 1, 1, 2, 1], [1, 1, 1, 2, 1], [1, 1, 1, 2, 1]],all12signed drops float64[6, 2] [[-0.00689688, 0.0300226], [-0.0170829, 0.00768536], [-0.0077759, -0.0155739], [-0.0207079, 0.0292567], [0.00310886, -0.0266762], [0.0181311, -0.0443636]],all40overlap means float64[2, 4, 5] [[[-0.00689688, -0.00689688, -0.0170829, -0.0124294, -0.0077759], [-0.00689688, -0.00689688, -0.0170829, -0.0124294, -0.0077759], [-0.0207079, -0.0207079, 0.00310886, 0.01062, 0.0181311], [-0.0207079, -0.0207079, 0.00310886, 0.01062, 0.0181311]], [[0.0300226, 0.0300226, 0.00768536, -0.00394425, -0.0155739], [0.0300226, 0.0300226, 0.00768536, -0.00394425, -0.0155739], [0.0292567, 0.0292567, -0.0266762, -0.0355199, -0.0443636], [0.0292567, 0.0292567, -0.0266762, -0.0355199, -0.0443636]]].
+\image(figures/occlusion_sensitivity_fixture.svg)
+// result_end
+\caption(The declared4x5fixture exposes every rectangle,coverage count,signed drop and overlap mean. Native independent oracles verify all240occluded pixels,12drops,20coverage values and40means,including identity/full replacement and invalid strides.)
+\alttext(The declared4x5fixture exposes every rectangle,coverage count,signed drop and overlap mean. Native independent oracles verify all240occluded pixels,12drops,20coverage values and40means,including identity/full replacement and invalid strides.)
+
+> All eight real-image intervention configurations
+
+Primary7x7patches with stride4append the21pixel edge anchor,forming49windows.
+Compare grey.5replacement,runner-up category,actual-initial weights,5x5/stride3,
+7x7/stride7,identity replacement and full-image black replacement. Each variant
+runs actual predictions on all its modified images. A larger window count is
+not more independent data;overlapping windows share original pixels.
+
+All model inputs,replacements,masks,score subtraction and overlap averaging
+use tensors. RawFloat32scores subtract inDouble. Identity replacement has
+ideal zero drop;small nonzero Float32differences from different prediction
+batch sizes are reported with1e-5tolerance. Full replacement must match the
+actual replacement-image prediction. The actual primary experiment gives276positive,154negative and60zero drops.
+Identity maximum2.86102295e-6and single/batch maximum3.81469727e-6remain
+within the stated numerical tolerance;full replacement agrees exactly with
+its actual baseline prediction.
+
+No synthetic noise or derivative proxy
+substitutes for the actual counterfactual inputs.
+```{cpp, results="markdown", file="figures/occlusion_sensitivity_maps.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  dm::datasets::prepare_example_data("mnist-assets", cache.string());
+  const auto pools = m::LoadSaliency(cache / "saliency");
+  const auto &fit = pools[0];
+  const auto &validation = pools[1];
+  const auto &test = pools[2];
+
+  n::ParameterStore p(1103);
+  {
+    n::NoGradGuard guard;
+    m::SaliencyCnn(p, n::zeros({1, 28, 28, 1}));
+  }
+  auto predict = [&](const n::Tensor &images) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> parts;
+    for (std::int64_t start = 0; start < images.size(0); start += 32)
+      parts.push_back(
+          m::SaliencyCnn(p, n::slice_axis(images, 0, start,
+                                          std::min<std::int64_t>(start + 32, images.size(0))))
+              .logits);
+    return n::concat(parts, 0);
+  };
+
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_best.npz"))
+    p.set(key, value.clone());
+
+  std::vector<std::int64_t> chosen;
+  const auto labels = test.labels.to_vector<int>();
+  for (int digit = 0; digit < 10; ++digit) {
+    const auto it = std::find(labels.begin(), labels.end(), digit);
+    chosen.push_back(it - labels.begin());
+  }
+  const auto examples = m::SaliencyRows(test, chosen);
+  const auto z = predict(examples.images);
+  const auto sorted = n::argsort(z, true);
+  const auto targets = n::select(sorted, 1, 0).to(n::DType::Int32),
+             runners = n::select(sorted, 1, 1).to(n::DType::Int32);
+
+  const auto before = p.flatten();
+  n::ParameterStore random(1103);
+  {
+    n::NoGradGuard guard;
+    m::SaliencyCnn(random, n::zeros({1, 28, 28, 1}));
+  }
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_initial.npz"))
+    random.set(key, value.clone());
+  const auto random_before = random.flatten();
+  auto initial_predict = [&](const n::Tensor &x) {
+    n::NoGradGuard guard;
+    return m::SaliencyCnn(random, x).logits;
+  };
+  const auto black = n::zeros(examples.images.shape()),
+             gray = n::full(examples.images.shape(), .5);
+  std::vector<std::pair<std::string, m::OcclusionOutput>> groups;
+  groups.push_back({"main", m::OcclusionSensitivity(examples.images, black, targets,
+                                                    {7, 7, 4, 4}, 32, predict)});
+  groups.push_back({"gray", m::OcclusionSensitivity(examples.images, gray, targets,
+                                                    {7, 7, 4, 4}, 32, predict)});
+  groups.push_back({"runner", m::OcclusionSensitivity(examples.images, black, runners,
+                                                      {7, 7, 4, 4}, 32, predict)});
+  groups.push_back({"initial", m::OcclusionSensitivity(examples.images, black, targets,
+                                                       {7, 7, 4, 4}, 32, initial_predict)});
+  groups.push_back({"small", m::OcclusionSensitivity(examples.images, black, targets,
+                                                     {5, 5, 3, 3}, 32, predict)});
+  groups.push_back({"stride", m::OcclusionSensitivity(examples.images, black, targets,
+                                                      {7, 7, 7, 7}, 32, predict)});
+  groups.push_back({"identity", m::OcclusionSensitivity(examples.images, examples.images,
+                                                        targets, {7, 7, 4, 4}, 32, predict)});
+  groups.push_back({"full", m::OcclusionSensitivity(examples.images, black, targets,
+                                                    {28, 28, 28, 28}, 32, predict)});
+  const auto repeat = m::OcclusionSensitivity(examples.images, black, targets, {7, 7, 4, 4},
+                                              32, predict),
+             single = m::OcclusionSensitivity(
+                 n::slice_axis(examples.images, 0, 0, 1), n::slice_axis(black, 0, 0, 1),
+                 n::slice_axis(targets, 0, 0, 1), {7, 7, 4, 4}, 1, predict);
+  const auto replay =
+                 n::max(n::abs(groups[0].second.occluded_logits - repeat.occluded_logits)),
+             batch = n::max(
+                 n::abs(n::select(groups[0].second.drops, 1, 0) - single.drops.reshape({49}))),
+             identity = n::max(n::abs(groups[6].second.drops));
+  const auto baseline = m::SaliencyScore(predict(black), targets),
+             full = n::max(n::abs(groups[7].second.occluded_score.reshape({10}) - baseline));
+  if (replay.item() != 0 || batch.item() > 1e-5 || identity.item() > 1e-5 ||
+      full.item() > 1e-6 || before != p.flatten() || random_before != random.flatten())
+    return 1;
+  std::print("Replay {},single/batch {:.9g},identity {:.9g},full-baseline "
+             "{:.9g};all16selected/controlarrays unchanged.\n",
+             replay.item(), batch.item(), identity.item(), full.item());
+  n::NamedTensors arrays{{"images", examples.images},
+                         {"source_ids", examples.source},
+                         {"targets", targets},
+                         {"runners", runners}};
+  auto peak = n::zeros({}, n::DType::Float64);
+  for (int i = 0; i < 6; ++i)
+    peak = n::maximum(peak, n::max(n::abs(groups[i].second.pixel_mean)));
+  std::vector<n::Tensor> display{examples.images};
+  std::print("| variant | actual patches | coverage min/max | positive drops | negative drops "
+             "|\n|---|---:|---|---:|---:|\n");
+  for (const auto &[name, value] : groups) {
+    for (const auto &[key, tensor] : std::vector<std::pair<std::string, n::Tensor>>{
+             {"rectangles", value.rectangles},
+             {"coverage", value.coverage},
+             {"original_logits", value.original_logits},
+             {"occluded_logits", value.occluded_logits},
+             {"original_score", value.original_score},
+             {"occluded_score", value.occluded_score},
+             {"drops", value.drops},
+             {"pixel_mean", value.pixel_mean},
+             {"occluded_inputs", value.occluded_inputs}})
+      arrays.push_back({name + "_" + key, tensor});
+    if (name != "identity" && name != "full")
+      display.push_back(
+          n::expand_dims(value.pixel_mean.to(n::DType::Float32) / (peak.item() * 2) + .5, 3));
+    std::print("| {} | {} | {}..{} | {} | {} |\n", name, value.patches,
+               n::min(value.coverage).item(), n::max(value.coverage).item(),
+               n::sum(n::greater(value.drops, 0.).to(n::DType::Int32)).item(),
+               n::sum(n::less(value.drops, 0.).to(n::DType::Int32)).item());
+  }
+  std::print("Actual source IDs {},fixed targets {},runners {}.\n", examples.source, targets,
+             runners);
+  n::save_npz("build/occlusion_sensitivity_maps.npz", arrays);
+  auto plot = n::plot_tensor_map(n::reverse(groups[0].second.coverage, {0}), 0, 9);
+  plot.title("Every actual primary patch coverage")
+      .x_label("original pixel x")
+      .y_label("original pixel y");
+  plot.save_svg("build/occlusion_sensitivity_coverage.svg");
+  std::filesystem::copy_file("build/occlusion_sensitivity_coverage.svg",
+                             "figures/occlusion_sensitivity_coverage.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  n::save_image_grid(n::concat(display, 0), "build/occlusion_sensitivity_maps.png", 10, 0, 1,
+                     2, .8, 4);
+}
+```
+// result_begin: markdown
+Replay 0,single/batch 3.81469727e-06,identity 2.86102295e-06,full-baseline 0;all16selected/controlarrays unchanged.
+| variant | actual patches | coverage min/max | positive drops | negative drops |
+|---|---:|---|---:|---:|
+| main | 49 | 1..9 | 276 | 154 |
+| gray | 49 | 1..9 | 310 | 180 |
+| runner | 49 | 1..9 | 267 | 179 |
+| initial | 49 | 1..9 | 239 | 202 |
+| small | 81 | 1..4 | 364 | 294 |
+| stride | 16 | 1..1 | 87 | 50 |
+| identity | 49 | 1..9 | 54 | 255 |
+| full | 1 | 1..1 | 10 | 0 |
+Actual source IDs int32[10] [66921, 63380, 68936, 62280, 62094, 65222, 61209, 61721, 69402, 62570],fixed targets int32[10] [0, 1, 2, 3, 9, 5, 6, 7, 8, 9],runners int32[10] [2, 6, 3, 5, 4, 9, 1, 9, 5, 4].
+\image(figures/occlusion_sensitivity_maps.png)
+// result_end
+\caption(Columns:true digit0..9. Rows:actual input,primary black7x7/stride4,grey.5replacement,runner-up,actual initial weights,5x5/stride3,and7x7/stride7overlap means. All six signed-map rows share one absolute peak;negativeblack,zerogrey,positivewhite. Identity/full controls are numerical checks,not extra normalized gallery rows.)
+\alttext(Columns:true digit0..9. Rows:actual input,primary black7x7/stride4,grey.5replacement,runner-up,actual initial weights,5x5/stride3,and7x7/stride7overlap means. All six signed-map rows share one absolute peak;negativeblack,zerogrey,positivewhite. Identity/full controls are numerical checks,not extra normalized gallery rows.)
+
+
+\image(figures/occlusion_sensitivity_coverage.svg)
+\caption(All28x28primary coverage counts,including appended bottom/right edge anchors. Minimum1and maximum9are actual measured counts;the overlap denominator is never silently assumed constant.)
+\alttext(Every original pixel's number of covering primary finite patches.)
+
+> Every case and patch remains inspectable
+
+Compare each actual control's projected map with the primary map and retain
+all490primary patch/case score drops,all modified images and source identities.
+The following plots show all ten per-case L1changes and positive/negative drop
+counts. Changes with replacement,patch geometry,target or weights establish
+dependence of the experiment;they do not establish causal pixel importance.
+```{cpp, results="markdown", file="figures/occlusion_sensitivity_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  std::map<std::string, n::Tensor> a;
+  for (const auto &[key, value] : n::load_npz("build/occlusion_sensitivity_maps.npz"))
+    a.emplace(key, value);
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  const std::vector<std::string> names{"gray", "runner", "initial", "small", "stride"};
+  const std::vector<dm::graphics::RGB> colors{
+      {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {147, 51, 234}, {234, 88, 12}};
+  std::print("| control | all ten per-case projected-map L1changes |\n|---|---|\n");
+  for (int i = 0; i < 5; ++i) {
+    const auto delta =
+        n::sum(n::abs(a.at("main_pixel_mean") - a.at(names[i] + "_pixel_mean")), {1, 2});
+    std::print("| {} | {} |\n", names[i], delta);
+    left.lines(n::arange(0, 10).to_vector<double>(), delta.to_vector<double>(), names[i],
+               colors[i]);
+  }
+  const auto positive = n::sum(n::greater(a.at("main_drops"), 0.).to(n::DType::Int32), {0}),
+             negative = n::sum(n::less(a.at("main_drops"), 0.).to(n::DType::Int32), {0});
+  right
+      .points(n::arange(0, 10).to_vector<double>(), positive.to_vector<double>(), "positive",
+              {37, 99, 235})
+      .points(n::arange(0, 10).to_vector<double>(), negative.to_vector<double>(), "negative",
+              {220, 38, 38});
+  std::print("\n| primary patch | top,left,height,width | all ten fixed-category drops "
+             "|\n|---:|---|---|\n");
+  for (int patch = 0; patch < 49; ++patch)
+    std::print("| {} | {} | {} |\n", patch,
+               n::select(a.at("main_rectangles"), 0, patch).to_vector<int>(),
+               n::select(a.at("main_drops"), 0, patch).to_vector<double>());
+  left.title("Every replacement and model control")
+      .x_label("true digit0..9")
+      .y_label("overlap-mean map L1change");
+  right.title("Both signs of actual patch effects")
+      .x_label("true digit0..9")
+      .y_label("number of49actual patches")
+      .y_limits(0, 52);
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(left).add(right).size(1100, 500).fit_panels().save_svg(
+      "build/occlusion_sensitivity_controls.svg");
+}
+```
+// result_begin: markdown
+| control | all ten per-case projected-map L1changes |
+|---|---|
+| gray | float64[10] [828.145, 705.04, 1026.97, 1028.36, 452.404, 562.844, 710.618, 904.196, 699.548, 457.179] |
+| runner | float64[10] [487.537, 164.438, 373.037, 251.393, 163.709, 460.655, 169.371, 202.142, 300.041, 332.178] |
+| initial | float64[10] [619.518, 190.685, 543.596, 194.799, 205.552, 346.992, 253.445, 157.063, 495.627, 319.325] |
+| small | float64[10] [352.086, 97.575, 335.676, 114.07, 109.206, 233.491, 123.279, 95.5775, 275.594, 150.854] |
+| stride | float64[10] [259.689, 151.385, 300.333, 134.913, 129.259, 215.224, 176.386, 146.304, 198.811, 172.907] |
+
+| primary patch | top,left,height,width | all ten fixed-category drops |
+|---:|---|---|
+| 0 | [0, 0, 7, 7] | [9.5367431640625e-07, -4.76837158203125e-07, 0, -7.152557373046875e-07, -2.384185791015625e-07, 0, -2.384185791015625e-07, 0, 0, 0] |
+| 1 | [0, 4, 7, 7] | [-0.0049190521240234375, -4.76837158203125e-07, 0, 0.5485889911651611, -4.76837158203125e-07, -9.5367431640625e-07, -7.152557373046875e-07, 0.041405677795410156, 0.00841379165649414, 3.0994415283203125e-06] |
+| 2 | [0, 8, 7, 7] | [0.6588926315307617, 0.019817113876342773, 0.2414560317993164, 1.6388988494873047, 0.0025594234466552734, 4.76837158203125e-07, 0, 0.037407875061035156, 0.28820037841796875, 0.11857414245605469] |
+| 3 | [0, 12, 7, 7] | [1.4187679290771484, 0.23964643478393555, 1.4335408210754395, 0.8927936553955078, 0.08089709281921387, -9.5367431640625e-07, -0.010759115219116211, -0.02618122100830078, 0.6573596000671387, 0.4177722930908203] |
+| 4 | [0, 16, 7, 7] | [0.40026187896728516, 0.07083249092102051, 0.7570095062255859, -9.5367431640625e-07, 0.07950758934020996, 0.01551198959350586, 0.03150606155395508, 0, 0.5715341567993164, 0.13805341720581055] |
+| 5 | [0, 20, 7, 7] | [-1.9073486328125e-06, -4.76837158203125e-07, -0.06374168395996094, -7.152557373046875e-07, -4.76837158203125e-07, 0.4006986618041992, 0.4176506996154785, 0, 0.21768569946289062, -9.5367431640625e-07] |
+| 6 | [0, 21, 7, 7] | [0, -4.76837158203125e-07, 0, 0, -2.384185791015625e-07, 0.4006972312927246, 0.45326805114746094, 0, 0.08674860000610352, -4.76837158203125e-07] |
+| 7 | [4, 0, 7, 7] | [-1.9073486328125e-06, -4.76837158203125e-07, -2.86102294921875e-06, -7.152557373046875e-07, -4.76837158203125e-07, 4.76837158203125e-07, -7.152557373046875e-07, 0, 0, -4.76837158203125e-07] |
+| 8 | [4, 4, 7, 7] | [0.06034660339355469, -4.76837158203125e-07, 0.008406639099121094, 0.231154203414917, 0.10739421844482422, 0.08804845809936523, -4.76837158203125e-07, 0.30794060230255127, 0.39472436904907227, 0.23634624481201172] |
+| 9 | [4, 8, 7, 7] | [0.6738395690917969, -0.11734604835510254, 0.5228805541992188, 1.7021974325180054, 0.6288501024246216, 0.6606779098510742, -0.026395320892333984, 0.7780146598815918, 0.9268894195556641, 0.7522649765014648] |
+| 10 | [4, 12, 7, 7] | [1.9474101066589355, 0.2372908592224121, 2.228783130645752, 1.0131988525390625, 0.6726198196411133, 0.912353515625, -0.7325575351715088, 1.4919156432151794, 0.7729582786560059, 1.3180980682373047] |
+| 11 | [4, 16, 7, 7] | [0.8148441314697266, 0.05060315132141113, 1.3394832611083984, 0.0425572395324707, 0.33444643020629883, 1.6478791236877441, -0.751192569732666, 1.508378803730011, 1.411872386932373, 0.46486592292785645] |
+| 12 | [4, 20, 7, 7] | [0.061458587646484375, 0, -0.017365455627441406, 0, 0, 2.6243746280670166, 0.0560612678527832, 0, 0.7559480667114258, -7.152557373046875e-07] |
+| 13 | [4, 21, 7, 7] | [0.02882862091064453, -4.76837158203125e-07, 0, -7.152557373046875e-07, -4.76837158203125e-07, 2.2826757431030273, 0.13828563690185547, 4.76837158203125e-07, 0.35956335067749023, 2.384185791015625e-07] |
+| 14 | [8, 0, 7, 7] | [0.08263683319091797, -4.76837158203125e-07, 0, -7.152557373046875e-07, -2.384185791015625e-07, -0.00034809112548828125, -2.384185791015625e-07, 0, 0, 0] |
+| 15 | [8, 4, 7, 7] | [1.298964500427246, -4.76837158203125e-07, -0.010467529296875, -0.7231323719024658, 0.9157450199127197, 0.9919590950012207, 0, -0.15917372703552246, 0.3769564628601074, 1.2411956787109375] |
+| 16 | [8, 8, 7, 7] | [0.9371194839477539, 0.3755457401275635, -0.2575864791870117, -0.6173741817474365, 1.3664562702178955, 1.5205979347229004, 0.04381108283996582, -0.857109785079956, 1.7257471084594727, 1.310786247253418] |
+| 17 | [8, 12, 7, 7] | [0.03497600555419922, 0.8152077198028564, -0.08899497985839844, 0.7653770446777344, 0.7570106983184814, 0.8762178421020508, -0.7675008773803711, 1.353175401687622, 1.0730562210083008, 0.9533493518829346] |
+| 18 | [8, 16, 7, 7] | [0.22567081451416016, -0.0039539337158203125, 0.2513751983642578, 0.3350188732147217, 0.45808935165405273, 1.0028009414672852, -0.5789647102355957, 2.021753840148449, 0.7144622802734375, 1.0594086647033691] |
+| 19 | [8, 20, 7, 7] | [0.45866966247558594, 0, 0, 0.0051386356353759766, -4.76837158203125e-07, 0.7756071090698242, -7.152557373046875e-07, 4.76837158203125e-07, 0.39279985427856445, 2.384185791015625e-07] |
+| 20 | [8, 21, 7, 7] | [0.35117244720458984, -4.76837158203125e-07, -1.9073486328125e-06, -9.5367431640625e-07, -2.384185791015625e-07, 0.6035985946655273, -4.76837158203125e-07, 0, 0.2421116828918457, -4.76837158203125e-07] |
+| 21 | [12, 0, 7, 7] | [0.6534309387207031, -4.76837158203125e-07, 0.5050563812255859, -7.152557373046875e-07, -4.76837158203125e-07, 0.0009541511535644531, 0.003008127212524414, 0, -9.5367431640625e-07, -9.5367431640625e-07] |
+| 22 | [12, 4, 7, 7] | [2.7150425910949707, -4.76837158203125e-07, 1.0569705963134766, -0.08508849143981934, 1.0767728090286255, 0.7478175163269043, 1.1414625644683838, -0.28948187828063965, 0.5133099555969238, 1.6359143257141113] |
+| 23 | [12, 8, 7, 7] | [0.9548482894897461, 2.2319438457489014, 0.6268110275268555, -0.03252768516540527, 1.5401752591133118, 0.8475837707519531, 1.3413562774658203, -1.3929345607757568, 2.646632671356201, 2.200477361679077] |
+| 24 | [12, 12, 7, 7] | [0.14425277709960938, 2.4008997678756714, 0.9852676391601562, 0.4597346782684326, 1.4691064357757568, -0.4068927764892578, -0.12579131126403809, -0.45578503608703613, 1.3484296798706055, 2.2015299797058105] |
+| 25 | [12, 16, 7, 7] | [1.3856077194213867, 0.0034704208374023438, 0.5401811599731445, 0.5827460289001465, 0.8302680253982544, -0.17125272750854492, -0.0015134811401367188, 0.2558537721633911, -0.29670047760009766, 1.6018671989440918] |
+| 26 | [12, 20, 7, 7] | [1.088033676147461, -4.76837158203125e-07, 0.03968524932861328, 0.09906888008117676, -7.152557373046875e-07, -4.76837158203125e-07, -4.76837158203125e-07, 4.76837158203125e-07, -4.76837158203125e-07, -7.152557373046875e-07] |
+| 27 | [12, 21, 7, 7] | [0.49957847595214844, -4.76837158203125e-07, 0.009258270263671875, -7.152557373046875e-07, -4.76837158203125e-07, 0, 2.384185791015625e-07, 4.76837158203125e-07, 0, 2.384185791015625e-07] |
+| 28 | [16, 0, 7, 7] | [0.5840702056884766, 0, 2.7672371864318848, 0, 0, 0.049574851989746094, -0.05770301818847656, 0, -4.76837158203125e-07, -7.152557373046875e-07] |
+| 29 | [16, 4, 7, 7] | [2.9779233932495117, -0.002905130386352539, 4.298482418060303, 0.024550437927246094, 0.06646466255187988, 0.8488326072692871, 1.5911638736724854, 4.76837158203125e-07, 1.627357006072998, 0.24254488945007324] |
+| 30 | [16, 8, 7, 7] | [2.69858980178833, 2.4910049438476562, 1.954073429107666, -0.006370067596435547, -0.383087158203125, 1.442763328552246, 2.7190475165843964, -0.08243083953857422, 2.432802677154541, 0.13176941871643066] |
+| 31 | [16, 12, 7, 7] | [2.5263843536376953, 2.489081382751465, 1.3820233345031738, 0.38821840286254883, -0.4582784175872803, 0.9588394165039062, 1.8926447629928589, 0.1673046350479126, 0.9717197418212891, -0.006640195846557617] |
+| 32 | [16, 16, 7, 7] | [2.194857120513916, -4.76837158203125e-07, 2.0265064239501953, 0.7420308589935303, 0.1495368480682373, 0.31589841842651367, 0.9537404775619507, 0.11653149127960205, 0.4056072235107422, 0.09113359451293945] |
+| 33 | [16, 20, 7, 7] | [0.5095844268798828, -4.76837158203125e-07, 1.4666972160339355, 0.08036231994628906, -4.76837158203125e-07, -9.5367431640625e-07, -7.152557373046875e-07, 4.76837158203125e-07, -4.76837158203125e-07, 2.384185791015625e-07] |
+| 34 | [16, 21, 7, 7] | [0.10414791107177734, -4.76837158203125e-07, 1.1405057907104492, -9.5367431640625e-07, 0, 4.76837158203125e-07, 0, 0, 0, -9.5367431640625e-07] |
+| 35 | [20, 0, 7, 7] | [0.021741867065429688, 0, 1.559147834777832, -4.76837158203125e-07, -4.76837158203125e-07, 0.049574851989746094, -0.04330801963806152, 4.76837158203125e-07, -4.76837158203125e-07, 2.384185791015625e-07] |
+| 36 | [20, 4, 7, 7] | [1.2264623641967773, -0.0053653717041015625, 2.452841281890869, 0.10601568222045898, -2.384185791015625e-07, 0.8667125701904297, 0.03062129020690918, 0, 1.0066518783569336, -4.76837158203125e-07] |
+| 37 | [20, 8, 7, 7] | [2.8192687034606934, 0.42189884185791016, 0.7469062805175781, 0.21444082260131836, -0.4164464473724365, 1.5528945922851562, 0.7437741756439209, 0.22805964946746826, 2.2065587043762207, -0.6239297389984131] |
+| 38 | [20, 12, 7, 7] | [2.802978038787842, 0.3692190647125244, 0.08624744415283203, 0.5669674873352051, -0.6370751857757568, 0.8976407051086426, 1.0888193845748901, 0.30422091484069824, 2.418914318084717, -0.8920958042144775] |
+| 39 | [20, 16, 7, 7] | [0.8055362701416016, -4.76837158203125e-07, 0.7704439163208008, 0.4099445343017578, -0.047132015228271484, 0.06604433059692383, 0.2210838794708252, -0.0763404369354248, 1.0535306930541992, -0.29898810386657715] |
+| 40 | [20, 20, 7, 7] | [0, -4.76837158203125e-07, 0.9195766448974609, 0.0015439987182617188, -7.152557373046875e-07, -4.76837158203125e-07, -4.76837158203125e-07, 4.76837158203125e-07, -4.76837158203125e-07, -1.1920928955078125e-06] |
+| 41 | [20, 21, 7, 7] | [0, -2.384185791015625e-07, 0.7837581634521484, -4.76837158203125e-07, 0, 4.76837158203125e-07, -7.152557373046875e-07, 0, 0, -4.76837158203125e-07] |
+| 42 | [21, 0, 7, 7] | [0, -4.76837158203125e-07, 1.1136808395385742, -2.384185791015625e-07, -7.152557373046875e-07, 0.030824661254882812, -4.76837158203125e-07, 4.76837158203125e-07, -4.76837158203125e-07, -7.152557373046875e-07] |
+| 43 | [21, 4, 7, 7] | [0.713414192199707, -0.0053653717041015625, 1.8691482543945312, 0.1619405746459961, -4.76837158203125e-07, 0.7881731986999512, -0.040017127990722656, 4.76837158203125e-07, 0.6186461448669434, 2.384185791015625e-07] |
+| 44 | [21, 8, 7, 7] | [2.342419147491455, 0.005970954895019531, 0.48497581481933594, 0.22975921630859375, -0.2720921039581299, 1.5037317276000977, 0.39623355865478516, 0.1880626678466797, 1.943908929824829, -0.4694960117340088] |
+| 45 | [21, 12, 7, 7] | [2.313007354736328, 0.049666404724121094, 0.0069408416748046875, 0.5612194538116455, -0.43654966354370117, 0.7570676803588867, 0.5315201282501221, 0.2576805353164673, 2.328947067260742, -0.7987349033355713] |
+| 46 | [21, 16, 7, 7] | [0.4901695251464844, -4.76837158203125e-07, 0.19050884246826172, 0.3512387275695801, -0.025955677032470703, 0.032867431640625, 0.03706860542297363, -0.06757378578186035, 0.9554247856140137, -0.2542412281036377] |
+| 47 | [21, 20, 7, 7] | [-9.5367431640625e-07, -4.76837158203125e-07, 0.2176952362060547, 0, -7.152557373046875e-07, 0, 0, 0, -4.76837158203125e-07, -1.1920928955078125e-06] |
+| 48 | [21, 21, 7, 7] | [0, 0, 0.2004222869873047, 0, 0, 0, 0, 0, 0, 0] |
+\image(figures/occlusion_sensitivity_controls.svg)
+// result_end
+\caption(All ten per-case control changes and actual signed primary patch counts. Every raw primary drop and rectangle is saved and printed;overlap-averaged pixels are summaries of finite interventions rather than additive causal contributions.)
+\alttext(All ten per-case control changes and actual signed primary patch counts. Every raw primary drop and rectangle is saved and printed;overlap-averaged pixels are summaries of finite interventions rather than additive causal contributions.)
+
+
+> Conclusion
+
+Original observations,every modified input,all signed score changes and explicit coverage make the experiment reproducible. Identity/full checks and independent finite-patch oracles validate computation;replacement,size,stride,target and model dependence limit any pixelwise or causal interpretation.
+
+> References
+
+- [Zeiler and Fergus(2014),Visualizing and Understanding Convolutional Networks](https://arxiv.org/abs/1311.2901).

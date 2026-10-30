@@ -1,3 +1,5 @@
+/// @file string_metrics.cpp
+/// @brief Dynamic-programming edit metrics, fixed-byte comparison and lexical similarities.
 #include <datamunge/algorithms/string_metrics.hpp>
 
 #include <algorithm>

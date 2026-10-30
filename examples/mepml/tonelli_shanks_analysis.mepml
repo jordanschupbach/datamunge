@@ -39,7 +39,7 @@ decreases \(S\), so it terminates quickly.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -112,7 +112,7 @@ verifies this and a \(p\equiv 1\pmod 8\) case, then rejects a non-residue.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

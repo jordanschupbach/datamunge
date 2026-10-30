@@ -39,7 +39,7 @@ distance 3: it corrects any 1 error (or detects any 2).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

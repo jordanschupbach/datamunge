@@ -1,4 +1,5 @@
 # Native R NN example. Model, differentiation and training loops run in R.
+# CMD: nix develop .#r --command Rscript examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/undercomplete_autoencoder.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT", getwd()), "examples/r/nn/common.R")
 if (!file.exists(.nn_common))
     .nn_common <- system.file("examples/nn/common.R", package = "datamungerNN", mustWork = TRUE)

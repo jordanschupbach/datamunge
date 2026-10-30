@@ -4,6 +4,7 @@
 
 #include <cstddef>
 #include <map>
+#include <string>
 #include <vector>
 
 using datamunge::algorithms::apriori_frequent_itemsets;
@@ -90,4 +91,50 @@ TEST(AssociationRules, MinSupportMonotonicity) {
         ASSERT_TRUE(low.count(items)) << "itemset frequent at 4 but missing at 2";
         EXPECT_EQ(low.at(items), sup);
     }
+}
+
+TEST(AssociationRules, AprioriLevelsAccountForEveryFrequentSet) {
+    const auto txns   = groceries();
+    const auto freq   = apriori_frequent_itemsets(txns, 2);
+    const auto levels = datamunge::algorithms::apriori_levels(txns, 2);
+    ASSERT_FALSE(levels.empty());
+    EXPECT_EQ(levels[0].k, 1u);
+    EXPECT_EQ(levels[0].joined, 5u);
+    EXPECT_EQ(levels[0].frequent, 5u);
+    std::size_t total = 0;
+    for (std::size_t i = 0; i < levels.size(); ++i) {
+        EXPECT_EQ(levels[i].k, i + 1);
+        EXPECT_LE(levels[i].candidates, levels[i].joined);
+        EXPECT_LE(levels[i].frequent, levels[i].candidates);
+        std::size_t of_size = 0;
+        for (const auto& f : freq) of_size += f.items.size() == levels[i].k;
+        EXPECT_EQ(levels[i].frequent, of_size);
+        total += levels[i].frequent;
+    }
+    EXPECT_EQ(total, freq.size());
+}
+
+TEST(AssociationRules, EncodesDataFrameRowsAsItems) {
+    datamunge::dstruct::DataFrame df;
+    df.add_column("cls", std::vector<double>{1, 3, 1});
+    df.add_column("sex", std::vector<std::string>{"f", "m", "m"});
+    const auto enc = datamunge::algorithms::encode_transactions(df, {"cls", "sex"});
+    ASSERT_EQ(enc.transactions.size(), 3u);
+    EXPECT_EQ(enc.labels, (std::vector<std::string>{"cls=1", "sex=f", "cls=3", "sex=m"}));
+    EXPECT_EQ(enc.transactions[2], (std::vector<std::size_t>{0, 3}));
+    EXPECT_EQ(datamunge::algorithms::itemset_label({0, 3}, enc.labels), "{cls=1, sex=m}");
+    EXPECT_THROW(datamunge::algorithms::encode_transactions(df, {"nope"}), std::exception);
+}
+
+TEST(AssociationRules, ImprovementComparesWithShorterRules) {
+    const auto txns  = groceries();
+    const auto freq  = apriori_frequent_itemsets(txns, 2);
+    const auto rules = association_rules(freq, txns.size(), 0.0);
+    const auto imp   = datamunge::algorithms::rule_improvements(rules, freq, txns.size());
+    ASSERT_EQ(imp.size(), rules.size());
+    for (std::size_t i = 0; i < rules.size(); ++i)
+        if (rules[i].antecedent == std::vector<std::size_t>{4} && rules[i].consequent == std::vector<std::size_t>{3}) {
+            // diapers => beer: confidence 1, beer alone in 4 of 8 baskets.
+            EXPECT_NEAR(imp[i], 1.0 - 4.0 / 8.0, 1e-12);
+        }
 }

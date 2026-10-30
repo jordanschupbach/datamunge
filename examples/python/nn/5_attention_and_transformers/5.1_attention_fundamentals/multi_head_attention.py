@@ -1,4 +1,5 @@
 # Native Python NN example. Multi-head projections and shared-input derivatives.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/multi_head_attention.py
 """Four multi-head cases, parameter/input finite differences and primitive equivalence."""
 import math
 from pathlib import Path

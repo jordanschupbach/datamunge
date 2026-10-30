@@ -1,0 +1,651 @@
+//? Title: Chan's Algorithm
+//? Subtitle: The optimal output-sensitive convex hull, derived, traced on small examples and checked against n log h on random point clouds, with convex layers of Old Faithful's eruptions, using datamunge's geometry::chans_algorithm_trace
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given \(n\) points in the plane, the convex-hull problem asks for the corners of the smallest convex
+polygon that contains them all, in order round the boundary. Hulls underlie collision tests, shape
+summaries, outlier peeling and many other geometric algorithms, so their cost matters, and it
+should depend on the size of the answer: a hull often has far fewer than \(n\) corners.
+Graham scan finds the hull in \(O(n\log n)\) time. Gift wrapping takes
+\(O(nh)\), where \(h\) is the number of hull vertices. Chan (1996) combined the two into an
+\(O(n\log h)\) algorithm, which is optimal. It guesses \(m\), hulls groups of \(m\) points, and
+gift-wraps the groups for at most \(m\) steps, finding each group's best candidate by binary
+search. If the wrap does not close, it squares \(m\) and tries again. We derive the three facts
+that make this work and trace both rounds on twenty points. We then count orientation tests on
+random clouds whose hulls have \(\Theta(\sqrt{\log n})\), \(\Theta(\log n)\), \(\Theta(n^{1/3})\)
+and \(n\) vertices. Chan's count stays below \(9\,n\log_2 h\) in every case, while doubling \(m\)
+instead of squaring it grows like \(n\log^2 h\). Its constant is large, though. Graham scan makes at most
+\(1.3\,n\log_2 n\) tests, and Chan's algorithm made fewer in only 2 of 24 runs, both on hulls of
+a dozen vertices. In wall-clock time it was 2 to 9 times slower than Graham scan in every case.
+Finally, we peel the Old Faithful eruptions into 21 convex layers. The innermost layer lies inside
+the larger cluster, but points in the empty gap between the clusters are rated as central as the
+core of the smaller cluster, because convex depth ignores density.
+)
+
+\toc
+
+> The problem
+
+The *convex hull* of a finite set \(S\) of \(n\) points in the plane is the smallest convex
+polygon containing it. Its corners, the *hull vertices*, are points of \(S\); let \(h\) be their
+number. Every function in `geometry/hull_algorithms.hpp` returns them counterclockwise, without
+points that lie on an edge.
+
+Everything below is built from one primitive, the *orientation test*
+
+$$
+\operatorname{orient}(a,b,c)=(b_x-a_x)(c_y-a_y)-(b_y-a_y)(c_x-a_x),
+$$
+\alttext(orient of a, b, c equals b x minus a x times c y minus a y, minus b y minus a y times c x minus a x.)
+
+which is positive when \(c\) lies left of the directed line \(a\to b\), negative when it lies to
+the right, and zero when the three points are collinear. We measure the cost of a hull algorithm
+by how many orientation tests it makes, since that count does not depend on the machine.
+
+Two lower bounds frame the problem. Sorting reduces to hulls: the points \((x_i,x_i^2)\) are all
+hull vertices, and reading the hull in order sorts the \(x_i\). So \(\Omega(n\log n)\) tests are
+needed in the worst case, which Graham scan attains. But when \(h\) is small this is not the
+right yardstick. Kirkpatrick and Seidel (1986) proved the sharper bound \(\Omega(n\log h)\). Gift
+wrapping (Jarvis march) costs \(n-2\) tests per hull vertex, \(O(nh)\) in all, which is good only
+when \(h<\log n\). Chan's algorithm meets the \(n\log h\) bound for every \(h\).
+
+> The method
+
+>> One wrap step
+
+Gift wrapping walks round the hull. From a hull vertex \(p\), the next vertex \(q\) is the point
+with no point of \(S\) strictly right of \(p\to q\) (if several points qualify, all collinear with
+\(p\), take the farthest). Write \(a\prec_p b\) when \(a\) lies right of \(p\to b\), so \(a\) is
+*more clockwise* than \(b\) as seen from \(p\). Because \(p\) is a hull vertex, all of \(S\) lies in
+a half-plane through \(p\), so \(\prec_p\) orders \(S\setminus\{p\}\) by angle, and \(q\) is its
+minimum.
+
+*Lemma 1 (groups).* Split \(S\) into groups \(G_1,\dots,G_r\). Then the minimum of \(\prec_p\) over
+\(S\) is the minimum over \(i\) of the group minima, and each group minimum is a vertex of
+\(\operatorname{CH}(G_i)\).
+
+*Proof.* The minimum of a union is the minimum of the minima. For one group, let \(q_i\) be its
+minimum. Every point of \(G_i\) is left of or on the line \(p\to q_i\), so that line supports
+\(\operatorname{CH}(G_i)\) at \(q_i\). A supporting point is on the boundary, and taking the
+farthest of collinear points makes it a corner. \(\blacksquare\)
+
+So each wrap step only needs one candidate per group: the vertex of the group's hull where the
+line from \(p\) touches it. This is the *tangent* from \(p\).
+
+>> The tangent by binary search
+
+Let the group hull have vertices \(v_0,\dots,v_{k-1}\) counterclockwise, and let \(p\) be outside it.
+The orientation test is unchanged by cyclic shifts, so
+\(\operatorname{orient}(p,v_i,v_{i+1})=\operatorname{orient}(v_i,v_{i+1},p)\). The left side says
+whether the direction from \(p\) turns counterclockwise from \(v_i\) to \(v_{i+1}\). The right side
+says whether \(p\) is left of edge \(i\), that is, whether edge \(i\) faces away from \(p\).
+
+*Lemma 2 (bitonic directions).* As \(i\) runs round the polygon, the direction from \(p\) to
+\(v_i\) turns clockwise along the edges that face \(p\) and counterclockwise along the others. The
+edges that face \(p\) form one contiguous run. So the directions form a cyclic *bitonic* sequence:
+they rise from the minimum (the tangent we want) to a maximum (the other tangent), then fall
+back.
+
+*Proof.* The first part is the identity above. For the second, let \(\nu_i\) be the outward unit
+normal of edge \(i\). The edge faces \(p\) exactly when
+\(\nu_i\cdot p>\max_{x\in P}\nu_i\cdot x\), that is, when \(\nu_i\) lies in every open half-circle
+\(\{\nu:\nu\cdot(p-x)>0\}\) for \(x\) in the polygon \(P\). An intersection of open half-circles
+is a single arc. The outward normals turn monotonically as \(i\) goes round, so the edges whose
+normals fall in that arc are consecutive. \(\blacksquare\)
+
+The minimum of a cyclic bitonic sequence can be found by halving. Keep a chain \(v_a,\dots,v_b\)
+that contains the minimum, starting from the whole cycle. Probe the middle vertex \(c\). One test
+says whether edge \(c\) rises, a second whether edge \(c-1\) falls (if both, \(v_c\) is the
+minimum), and comparing the slopes and heights at \(a\) and \(c\) decides which half keeps the
+minimum. Each halving costs at most five tests, so a group of size \(m\) is queried in
+\(O(\log m)\). `geometry::convex_polygon_tangent` implements this and returns its probes.
+
+>> Rounds with a guess
+
+Suppose we knew a number \(m\ge h\). Split the points into \(r=\lceil n/m\rceil\) groups of at most
+\(m\) and hull each one with Graham scan. Then wrap: each of the \(h\le m\) steps asks every group
+for its tangent. The cost is
+
+$$
+\underbrace{r\cdot O(m\log m)}_{\text{group hulls}}+\underbrace{h\cdot r\cdot O(\log m)}_{\text{wrap}}
+=O(n\log m)\quad\text{when } h\le m.
+$$
+\alttext(r times order m log m for the group hulls, plus h times r times order log m for the wrap, equals order n log m when h is at most m.)
+
+Without knowing \(h\), run the wrap for at most \(m\) steps. If it returns to the start, the hull
+is done. If not, \(h>m\): discard the round and *square* the guess. Starting from \(m_0=4\),
+round \(t\) uses \(m_t=2^{2^{t+1}}\), so \(\log_2 m_t=2^{t+1}\), and each round costs at most
+\(c\,n\log_2 m_t\) for some constant \(c\). If round \(T\) is the first to close, then
+\(m_{T-1}<h\) and \(\log_2 m_T=2\log_2 m_{T-1}<2\log_2 h\). The round costs form a geometric series:
+
+$$
+\sum_{t=0}^{T}c\,n\,2^{t+1}<c\,n\,2^{T+2}=2c\,n\log_2 m_T<4c\,n\log_2 h .
+$$
+\alttext(The sum over t from 0 to T of c n 2 to the t plus 1 is less than c n 2 to the T plus 2, which equals 2 c n log base 2 of m T, which is less than 4 c n log base 2 of h.)
+
+This is \(O(n\log h)\), matching the lower bound. Squaring matters. Doubling the guess,
+\(m_t=4\cdot2^t\), takes about \(\log_2 h\) rounds whose costs \(c\,n(t+2)\) add up to roughly
+\(\tfrac c2 n\log_2^2 h\). Squaring wastes at most a factor of 2 in the last round, since
+\(m_T\) can overshoot up to \(h^2\), but it makes the failed rounds cost less than the last one.
+
+Two details keep the total honest. Duplicates are removed by hashing, because sorting would
+already cost \(n\log n\). And the groups are consecutive runs of the input, in any order: Lemma 1
+holds for every partition.
+
+> Simple examples
+
+>> Twenty points, two rounds
+
+Take twenty points with an 8-vertex hull. Round 0 guesses \(m=4\): five groups of four, and a wrap
+that is cut off after four steps, halfway round. Round 1 guesses \(m=16\): two groups, and the wrap
+closes after eight steps. `chans_algorithm_trace` records both rounds when `record_geometry` is
+set.
+
+```{cpp, results="markdown", file="figures/chans_rounds.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace geo = dm::geometry;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<geo::Point2D> pts = {{0, 0},  {10, 0}, {18, 4},  {20, 12}, {15, 20}, {6, 22},  {-2, 15},
+                                         {-4, 6}, {5, 5},  {10, 10}, {8, 15},  {3, 10},  {12, 6},  {14, 14},
+                                         {2, 18}, {16, 10}, {7, 3},  {11, 17}, {9, 8},   {13, 11}};
+  const auto result = geo::chans_algorithm_trace(pts, {.record_geometry = true});
+
+  std::vector<std::string> m, groups, vertices, steps, closed, hull_tests, wrap_tests;
+  for (const auto& r : result.rounds) {
+    m.push_back(std::to_string(r.m));
+    groups.push_back(std::to_string(r.groups));
+    vertices.push_back(std::to_string(r.group_hull_vertices));
+    steps.push_back(std::to_string(r.wrap_steps));
+    closed.push_back(r.completed ? "yes" : "no");
+    hull_tests.push_back(std::to_string(r.hull_tests));
+    wrap_tests.push_back(std::to_string(r.wrap_tests));
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("guess m", m);
+  table.add_column("groups", groups);
+  table.add_column("group-hull vertices", vertices);
+  table.add_column("wrap steps", steps);
+  table.add_column("closed", closed);
+  table.add_column("tests: group hulls", hull_tests);
+  table.add_column("tests: wrap", wrap_tests);
+  std::print("Hull: {} vertices; {} orientation tests in all.\n\n{}\n", result.hull.size(),
+             result.orientation_tests, table.to_md());
+
+  const std::vector<dm::RGB> palette = {{217, 119, 6}, {37, 99, 235}, {5, 150, 105}, {219, 39, 119}, {124, 58, 237}};
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  for (const auto& r : result.rounds) {
+    auto plot = dm::graphics::RPlot::create();
+    for (std::size_t g = 0; g < r.group_hulls.size(); ++g) {
+      std::vector<double> gx, gy;
+      for (const auto& v : r.group_hulls[g]) {
+        gx.push_back(v.x);
+        gy.push_back(v.y);
+      }
+      plot.polygon(gx, gy, palette[g % palette.size()], false);
+    }
+    std::vector<double> px, py, wx, wy;
+    for (const auto& p : pts) {
+      px.push_back(p.x);
+      py.push_back(p.y);
+    }
+    for (const auto& v : r.wrap_path) {
+      wx.push_back(v.x);
+      wy.push_back(v.y);
+    }
+    if (r.completed) {
+      wx.push_back(wx.front());
+      wy.push_back(wy.front());
+    }
+    plot.points(px, py, dm::RGB{71, 85, 105}, 5.0);
+    plot.lines(wx, wy, dm::RGB{17, 24, 39}, 3.0);
+    for (std::size_t i = 0; i < r.wrap_path.size(); ++i)
+      plot.text(r.wrap_path[i].x + 1.1, r.wrap_path[i].y - 1.1, std::to_string(i), dm::RGB{17, 24, 39}, 13.0);
+    layout.add(plot.x_limits(-6, 23)
+                   .y_limits(-3, 24)
+                   .title(std::format("m = {}: {} groups, {} wrap steps, {}", r.m, r.groups, r.wrap_steps,
+                                      r.completed ? "closed" : "cut off"))
+                   .x_label("x")
+                   .y_label("y"));
+  }
+  layout.size(1100, 520).fit_panels().save_svg("build/chans_rounds.svg");
+}
+```
+// result_begin: markdown
+Hull: 8 vertices; 277 orientation tests in all.
+
+| guess m | groups | group-hull vertices | wrap steps | closed | tests: group hulls | tests: wrap |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 4 | 5 | 19 | 4 | no | 24 | 110 |
+| 16 | 2 | 11 | 8 | yes | 119 | 24 |
+
+\image(figures/chans_rounds.svg)
+// result_end
+
+\caption(The two rounds of Chan's algorithm on twenty points. Coloured outlines are the group hulls; the black path is the wrap, its vertices numbered in the order found. On the right, the first group's hull is the whole hull, hidden under the black octagon.)
+\alttext(Two panels with the same twenty grey points. Left, m equals 4: five overlapping coloured quadrilaterals and triangles, one per group of four points, and a black path through hull vertices 0 to 3 along the bottom and right side that stops halfway round. Right, m equals 16: two larger coloured outlines, one per group, and a closed black octagon through all eight hull vertices numbered 0 to 7 counterclockwise from the bottom.)
+
+The groups are runs of the input, so in round 0 their hulls overlap and cross; Lemma 1 does not
+care. The wrap starts at the lowest point and takes four steps, then stops at vertex 3 because
+\(h=8>4\). That round is wasted, but cheap: 134 tests. In round 1 the first group happens to hold
+all eight hull vertices, so its hull is the answer, and each of the eight steps compares two
+candidates, one from each group. Most of round 1's tests (119 of 143) go into the two Graham
+scans, which is the \(n\log m\) term of the cost.
+
+>> One tangent query
+
+The wrap spends most of its tests in tangent queries. Here is one: a 51-vertex polygon (the
+hull of 3,000 random points in the unit disc) and an outside point \(p\). The binary search probes
+vertex 0, then halves the cycle.
+
+```{cpp, results="markdown", file="figures/chans_tangent.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace geo = dm::geometry;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto polygon = geo::convex_hull(geo::random_point_cloud(3000, geo::PointCloud::Disk, 1));
+  const geo::Point2D p{1.5, -0.9};
+  const auto search = geo::convex_polygon_tangent(polygon, p);
+
+  std::print("{} vertices; probes {}; tangent vertex {}; {} orientation tests ", polygon.size(), search.probes,
+             search.index, search.orientation_tests);
+  std::print("(a linear scan needs {}; the bound is \\(5\\lceil\\log_2 k\\rceil + O(1)\\), here \\(5\\cdot{}\\)).\n",
+             polygon.size() - 1, std::bit_width(polygon.size() - 1));
+
+  auto plot = dm::graphics::RPlot::create();
+  std::vector<double> x, y;
+  for (const auto& v : polygon) {
+    x.push_back(v.x);
+    y.push_back(v.y);
+  }
+  plot.polygon(x, y, dm::RGB{148, 163, 184}, false).points(x, y, dm::RGB{100, 116, 139}, 3.5);
+  for (std::size_t j = 0; j < search.probes.size(); ++j) {
+    const auto& v = polygon[search.probes[j]];
+    plot.segments({p.x}, {p.y}, {v.x}, {v.y}, dm::RGB{96, 165, 250}, 1.2);
+    plot.points({v.x}, {v.y}, dm::RGB{37, 99, 235}, 7.0);
+    plot.text(v.x + 0.06 * (v.x - p.x > 0 ? 1 : -1), v.y + 0.07, std::format("{}", j + 1), dm::RGB{30, 64, 175}, 15.0);
+  }
+  const auto& t = polygon[search.index];
+  plot.segments({p.x}, {p.y}, {p.x + 1.6 * (t.x - p.x)}, {p.y + 1.6 * (t.y - p.y)}, dm::RGB{220, 38, 38}, 2.5);
+  plot.points({p.x}, {p.y}, dm::RGB{220, 38, 38}, 9.0).text(p.x + 0.08, p.y - 0.08, "p", dm::RGB{220, 38, 38}, 16.0);
+  plot.x_limits(-1.2, 1.8)
+      .y_limits(-1.2, 1.4)
+      .title("Binary search for the tangent from p")
+      .x_label("x")
+      .y_label("y")
+      .size(620, 560)
+      .save_svg("build/chans_tangent.svg");
+}
+```
+// result_begin: markdown
+51 vertices; probes [0, 25, 38, 31, 28]; tangent vertex 28; 17 orientation tests (a linear scan needs 50; the bound is \(5\lceil\log_2 k\rceil + O(1)\), here \(5\cdot6\)).
+\image(figures/chans_tangent.svg)
+// result_end
+
+\caption(A tangent query. Blue rays go from \(p\) to the probed vertices, numbered in probe order; the red line is the tangent found, with the whole polygon on its left.)
+\alttext(A grey 51-sided polygon close to the unit circle, and a red point p below and to the right of it at 1.5, minus 0.9. Five blue rays run from p to probed vertices labelled 1 to 5: label 1 at the leftmost vertex, 2 at the rightmost, 3 near the top, then 4 and 5 on the upper right, converging on the tangent point. A thick red line from p touches the polygon at the last probed vertex on the right and continues past it, with the polygon entirely on its left.)
+
+The first probe, vertex 0, is the leftmost vertex. Probe 2 lands on vertex 25 on the right and
+probe 3 on vertex 38 near the top. Each answer halves the chain that must hold the most clockwise
+direction, and probes 4 and 5 close in on vertex 28, where the line from \(p\) leaves the whole
+polygon on its left. The search needed 17 tests; a scan needs 50. Every group is queried at every
+step of a round, so this \(\log m\) is what keeps a round at \(O(n\log m)\).
+
+> Checking the theory
+
+>> Clouds with different hull sizes
+
+`geometry::random_point_cloud` draws points from shapes whose expected hull sizes are known
+(Rényi and Sulanke 1963): \(\Theta(\sqrt{\log n})\) for a Gaussian, \(\Theta(\log n)\) in a square,
+\(\Theta(n^{1/3})\) in a disc, and \(h=n\) on the parabola \(y=x^2\), where every point is a vertex.
+Coordinates are rounded to multiples of \(2^{-20}\), so every orientation test is exact. For each
+cloud and \(n=2^{10},2^{12},\dots,2^{20}\) we count the orientation tests of Chan's algorithm
+(squaring and doubling the guess) and of Graham scan.
+
+```{cpp, results="markdown", file="figures/chans_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace geo = dm::geometry;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::pair<geo::PointCloud, std::string>> clouds = {
+      {geo::PointCloud::Gaussian, "Gaussian"}, {geo::PointCloud::Square, "square"},
+      {geo::PointCloud::Disk, "disc"},         {geo::PointCloud::Parabola, "parabola"}};
+  std::vector<std::string> name, rounds, last_m;
+  std::vector<double>      log_n, hull, chan, dbl, graham;
+  std::vector<double>      sx, sy, dx, dy, gx, gy;
+  std::string wins;
+  int         n_wins = 0;
+  for (const auto& [cloud, label] : clouds) {
+    for (int e = 10; e <= 20; e += 2) {
+      const auto      pts = geo::random_point_cloud(1 << e, cloud, 1);
+      const auto      sq  = geo::chans_algorithm_trace(pts);
+      const auto      db  = geo::chans_algorithm_trace(pts, {.square_guess = false});
+      long long       gt  = 0;
+      const auto      gh  = geo::graham_scan(pts, gt);
+      const double    n   = sq.distinct_points;
+      const double    lh  = std::log2(double(sq.hull.size()));
+      sx.push_back(lh), sy.push_back(sq.orientation_tests / n);
+      dx.push_back(lh), dy.push_back(db.orientation_tests / n);
+      gx.push_back(std::log2(n)), gy.push_back(gt / n);
+      if (sq.orientation_tests < gt)
+        wins += std::format("{}{} at \\(n=2^{{{}}}\\) (h = {})", n_wins++ ? ", " : "", label, e, sq.hull.size());
+      if (e == 20) {
+        name.push_back(label);
+        hull.push_back(double(sq.hull.size()));
+        rounds.push_back(std::to_string(sq.rounds.size()));
+        last_m.push_back(std::to_string(sq.rounds.back().m));
+        chan.push_back(sq.orientation_tests / (n * lh));
+        dbl.push_back(db.orientation_tests / (n * lh));
+        graham.push_back(gt / (n * std::log2(n)));
+      }
+    }
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("cloud", name);
+  table.add_column("h", hull);
+  table.add_column("rounds", rounds);
+  table.add_column("last m", last_m);
+  table.add_column("Chan / (n log2 h)", chan);
+  table.add_column("doubling / (n log2 h)", dbl);
+  table.add_column("Graham / (n log2 n)", graham);
+  double worst = 0;
+  for (std::size_t i = 0; i < sx.size(); ++i) worst = std::max(worst, sy[i] / sx[i]);
+  std::print("At \\(n=2^{{20}}\\):\n\n{}\n\nOver all 24 runs the largest Chan ratio is {:.2f}. ", table.to_md(), worst);
+  std::print("Chan's algorithm made fewer tests than Graham scan in {} runs: {}.\n", n_wins, wins);
+
+  auto left = dm::graphics::RPlot::create();
+  left.points(dx, dy, "doubling m", dm::RGB{234, 88, 12}, 6.0)
+      .points(sx, sy, "squaring m (Chan)", dm::RGB{37, 99, 235}, 6.0)
+      .segments({0.0}, {0.0}, {20.0}, {180.0}, dm::RGB{37, 99, 235}, 1.0)
+      .text(13.0, 135.0, "9 log2 h", dm::RGB{37, 99, 235}, 13.0)
+      .x_limits(0, 21)
+      .y_limits(0, 1100)
+      .title("Chan's algorithm: tests per point")
+      .x_label("log2 h")
+      .y_label("orientation tests / n");
+  auto right = dm::graphics::RPlot::create();
+  right.points(gx, gy, dm::RGB{5, 150, 105}, 6.0)
+      .segments({9.0}, {1.3 * 9}, {21.0}, {1.3 * 21}, dm::RGB{5, 150, 105}, 1.0)
+      .text(12.0, 20.0, "1.3 log2 n", dm::RGB{5, 150, 105}, 13.0)
+      .x_limits(9, 21)
+      .y_limits(0, 30)
+      .title("Graham scan: tests per point")
+      .x_label("log2 n")
+      .y_label("orientation tests / n");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 480).fit_panels().save_svg("build/chans_scaling.svg");
+}
+```
+// result_begin: markdown
+At \(n=2^{20}\):
+
+| cloud | h | rounds | last m | Chan / (n log2 h) | doubling / (n log2 h) | Graham / (n log2 n) |
+| :--- | ---: | :--- | :--- | ---: | ---: | ---: |
+| Gaussian | 19 | 3 | 256 | 8.164 | 11.052 | 1.271 |
+| square | 34 | 3 | 256 | 7.211 | 13.550 | 1.293 |
+| disc | 356 | 4 | 65536 | 8.616 | 18.429 | 1.292 |
+| parabola | 1048576 | 5 | 1048576 | 8.720 | 49.976 | 1.119 |
+
+
+Over all 24 runs the largest Chan ratio is 8.90. Chan's algorithm made fewer tests than Graham scan in 2 runs: Gaussian at \(n=2^{16}\) (h = 12), Gaussian at \(n=2^{18}\) (h = 14).
+\image(figures/chans_scaling.svg)
+// result_end
+
+\caption(Orientation tests per point. Left: Chan's algorithm against \(\log_2 h\), squaring the guess (blue) or doubling it (orange), for all four clouds and six sizes; the blue line is \(9\log_2 h\). Right: Graham scan against \(\log_2 n\), with the line \(1.3\log_2 n\).)
+\alttext(Left panel: x axis log2 h from 0 to 21, y axis tests per point from 0 to 1100. Blue points for squaring stay low, all on or below a straight line rising from 0 to 180 at log2 h equals 20; between log2 h of 10 and 16 they flatten at about 80 before rising to 175. Orange points for doubling sit near the blue ones for small h but curve upwards, reaching about 1000 at log2 h equals 20. Right panel: x axis log2 n from 9 to 21; green Graham points lie on a straight line from about 13 to 26, with one point per size lower, at 10 rising to 22.)
+
+The bound holds: every run is under \(9\,n\log_2 h\). Doubling the guess bends upwards as predicted: at
+\(h=2^{20}\) it costs 50 times \(n\log_2 h\), against 8.7 for squaring.
+
+The blue points are not on a straight line, though. The cost depends on how far the last guess
+overshoots: the Gaussian cloud at \(n=2^{20}\) has \(h=19\), just above the guess 16, so it pays for
+a round with \(m=256\) and its ratio jumps from 5.5 to 8.2. On the parabola the last guess is
+capped at \(n\) (for \(n=2^{12}\), \(m=4096\) instead of \(2^{16}\)), which makes the last round
+cheaper and flattens the middle of the plot.
+
+The constant is what matters in practice. Graham scan's sort costs about \(1.3\log_2 n\) tests per
+point (1.1 on the parabola). Chan's algorithm costs 5 to 9 times \(\log_2 h\), so it makes fewer
+tests only when \(\log_2 h\) is below a quarter to a sixth of \(\log_2 n\): for a million
+points, a hull of 10 to 25 vertices, depending on how far the last guess overshoots. That happened twice, on the Gaussian clouds with 12
+and 14 vertices.
+
+>> Why the tangents must be binary searches
+
+Replacing the binary search by a scan of each group hull keeps the hull correct but changes the
+cost of a step from \(r\log m\) to the total size of the group hulls. On the parabola every point
+is a vertex of its group's hull, so a step costs \(n\) tests and a failed round \(nm\).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace geo = dm::geometry;
+
+int main() {
+  std::vector<std::string> n_label;
+  std::vector<double>      binary, scan, ratio;
+  for (int e = 8; e <= 16; e += 2) {
+    const auto pts = geo::random_point_cloud(1 << e, geo::PointCloud::Parabola, 2);
+    const auto b   = geo::chans_algorithm_trace(pts);
+    const auto s   = geo::chans_algorithm_trace(pts, {.binary_tangent = false});
+    n_label.push_back(std::format("2^{}", e));
+    binary.push_back(double(b.orientation_tests) / (1 << e));
+    scan.push_back(double(s.orientation_tests) / (1 << e));
+    ratio.push_back(double(s.orientation_tests) / double(b.orientation_tests));
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("n = h", n_label);
+  table.add_column("tests / n, binary search", binary);
+  table.add_column("tests / n, scan", scan);
+  table.add_column("scan / binary", ratio);
+  std::print("{}\n", table.to_md());
+}
+```
+// result_begin: markdown
+| n = h | tests / n, binary search | tests / n, scan | scan / binary |
+| :--- | ---: | ---: | ---: |
+| 2^8 | 35.605 | 32.734 | 0.919 |
+| 2^10 | 72.990 | 237.454 | 3.253 |
+| 2^12 | 81.600 | 289.417 | 3.547 |
+| 2^14 | 85.188 | 304.410 | 3.573 |
+| 2^16 | 82.284 | 309.631 | 3.763 |
+// result_end
+
+\caption(Chan's algorithm on the parabola with binary-search tangents and with scanned tangents: orientation tests per point.)
+
+With scanning, the cost per point stays near 300 instead of 80, and the gap would widen with more
+rounds. It is not quadratic here only because the last round has \(m=n\): a single group,
+whose hull is the answer, needs no tangent queries at all. The failed round with \(m=256\) does
+the damage, at \(256\) steps times \(n\) tests. For \(n=2^8\) the scan is slightly cheaper, since
+the groups are so small that binary search has nothing to save.
+
+>> Wall-clock time
+
+Counting tests ignores memory traffic and the bookkeeping of groups. We time the three \(O(n\log n)\)
+or better algorithms at \(n=2^{20}\), taking the median of three runs.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <chrono>
+
+namespace geo = dm::geometry;
+
+template <class F> double median_ms(F f) {
+  std::vector<double> t;
+  for (int i = 0; i < 3; ++i) {
+    const auto start = std::chrono::steady_clock::now();
+    f();
+    t.push_back(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - start).count());
+  }
+  std::ranges::sort(t);
+  return t[1];
+}
+
+int main() {
+  std::vector<std::string> name;
+  std::vector<double>      chan, graham, chain;
+  for (const auto& [cloud, label] : {std::pair{geo::PointCloud::Gaussian, "Gaussian"}, std::pair{geo::PointCloud::Square, "square"},
+                                     std::pair{geo::PointCloud::Disk, "disc"}, std::pair{geo::PointCloud::Parabola, "parabola"}}) {
+    const auto pts = geo::random_point_cloud(1 << 20, cloud, 1);
+    name.push_back(label);
+    chan.push_back(median_ms([&] { return geo::chans_algorithm(pts).size(); }));
+    graham.push_back(median_ms([&] { return geo::graham_scan(pts).size(); }));
+    chain.push_back(median_ms([&] { return geo::convex_hull(pts).size(); }));
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("cloud", name);
+  table.add_column("Chan (ms)", chan);
+  table.add_column("Graham scan (ms)", graham);
+  table.add_column("monotone chain (ms)", chain);
+  std::print("{}\n", table.to_md());
+}
+```
+// result_begin: markdown
+| cloud | Chan (ms) | Graham scan (ms) | monotone chain (ms) |
+| :--- | ---: | ---: | ---: |
+| Gaussian | 551.672 | 199.380 | 104.839 |
+| square | 488.323 | 218.382 | 118.707 |
+| disc | 775.626 | 225.682 | 120.217 |
+| parabola | 1276.857 | 140.662 | 92.863 |
+// result_end
+
+\caption(Median wall-clock time of three runs at \(n=2^{20}\) on this machine, while other blocks of this report ran in parallel.)
+
+Chan's algorithm is the slowest everywhere: about twice Graham scan's time on the Gaussian and
+square clouds, three times on the disc and eight to nine times on the parabola, and four to eleven
+times the monotone chain's. Even on the Gaussian cloud, where its test count was competitive at
+smaller sizes, the extra rounds, the group bookkeeping and the scattered memory access of the
+tangent queries cost more than the sort they avoid. Timings vary between runs; the ranking did
+not.
+
+> A dataset example: convex layers of Old Faithful
+
+Peeling a point cloud like an onion gives its *convex layers*: layer 0 is the hull, layer 1 the
+hull of what remains, and so on. The layer number is a simple measure of how central a point is
+(Barnett 1976), and the innermost layer gives a robust "median" of a two-dimensional cloud.
+Peeling is a natural fit for an output-sensitive hull: each layer is a hull with few vertices,
+computed from the points that remain. `geometry::convex_layers` peels with Chan's algorithm, so the total cost
+is \(O(\sum_j n_j\log h_j)\).
+
+`dm::datasets::faithful()` holds 272 eruptions of the Old Faithful geyser: the eruption length
+and the waiting time before it, both in minutes.
+
+```{cpp, results="markdown", file="figures/chans_faithful_layers.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace geo = dm::geometry;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto faithful = dm::datasets::faithful();
+  const auto eruptions = faithful.get_column("eruptions").values();
+  const auto waiting = faithful.get_column("waiting").values();
+  std::vector<geo::Point2D> pts;
+  for (std::size_t i = 0; i < eruptions.size(); ++i) pts.push_back({eruptions[i], waiting[i]});
+  const auto layer = geo::convex_layers(pts);
+  const int depth = *std::ranges::max_element(layer) + 1;
+
+  std::vector<double> sizes(depth, 0.0);
+  for (const int l : layer) sizes[l] += 1;
+  std::vector<double> inner_e, inner_w;
+  for (std::size_t i = 0; i < pts.size(); ++i)
+    if (layer[i] == depth - 1) inner_e.push_back(eruptions[i]), inner_w.push_back(waiting[i]);
+  dm::dstruct::DataFrame inner;
+  inner.add_column("eruptions", inner_e);
+  inner.add_column("waiting", inner_w);
+  std::print("{} points, {} layers. Points per layer: {}.\n\nThe innermost layer:\n\n{}\n", pts.size(), depth, sizes,
+             inner.to_md());
+  std::vector<int> gap, short_c, long_c;
+  for (std::size_t i = 0; i < pts.size(); ++i)
+    (eruptions[i] < 2.5 ? short_c : eruptions[i] <= 3.5 ? gap : long_c).push_back(layer[i]);
+  const auto median = [](std::vector<double> v) { std::ranges::sort(v); return (v[(v.size() - 1) / 2] + v[v.size() / 2]) / 2; };
+  std::print("\nDeepest layer reached: short eruptions (< 2.5 min, {} points) {}, the gap (2.5 to 3.5 min, {} points) {}, ",
+             short_c.size(), std::ranges::max(short_c), gap.size(), std::ranges::max(gap));
+  std::print("long eruptions (> 3.5 min, {} points) {}. Coordinatewise median: ({}, {}).\n", long_c.size(),
+             std::ranges::max(long_c), median(eruptions), median(waiting));
+
+  auto plot = dm::graphics::RPlot::create();
+  const auto colours = dm::graphics::terrain_colors(depth);
+  for (int d = 0; d < depth; ++d) {
+    std::vector<geo::Point2D> on;
+    for (std::size_t i = 0; i < pts.size(); ++i)
+      if (layer[i] == d) on.push_back(pts[i]);
+    const auto ring = geo::convex_hull(on);
+    std::vector<double> x, y;
+    for (const auto& v : ring) {
+      x.push_back(v.x);
+      y.push_back(v.y);
+    }
+    if (ring.size() >= 3) plot.polygon(x, y, colours[d], false);
+  }
+  plot.points(eruptions, waiting, dm::RGB{51, 65, 85}, 3.5)
+      .title(std::format("Old Faithful: {} convex layers", depth))
+      .x_label("eruption length (min)")
+      .y_label("waiting time (min)")
+      .size(640, 520)
+      .save_svg("build/chans_faithful_layers.svg");
+}
+```
+// result_begin: markdown
+272 points, 21 layers. Points per layer: [11, 15, 19, 16, 15, 15, 18, 18, 17, 17, 15, 13, 14, 15, 11, 12, 7, 8, 7, 5, 4].
+
+The innermost layer:
+
+| eruptions | waiting |
+| ---: | ---: |
+| 4.250 | 79 |
+| 4.167 | 78 |
+| 4.000 | 77 |
+| 4.083 | 78 |
+
+
+Deepest layer reached: short eruptions (< 2.5 min, 92 points) 15, the gap (2.5 to 3.5 min, 14 points) 15, long eruptions (> 3.5 min, 166 points) 20. Coordinatewise median: (4, 76).
+\image(figures/chans_faithful_layers.svg)
+// result_end
+
+\caption(The 21 convex layers of the Old Faithful eruptions, from the outermost in green through yellow to the innermost in orange.)
+\alttext(Scatter plot of waiting time, 43 to 96 minutes, against eruption length, 1.6 to 5.1 minutes, with two clusters: short eruptions near 2 minutes and 55 minutes, and long eruptions near 4.3 minutes and 80 minutes. Nested convex polygons, green outside to orange inside, all stretched along the diagonal between the clusters. Most rings span both clusters and the gap between them; only the innermost orange rings shrink into the long-eruption cluster around 4.1 minutes and 78 minutes.)
+
+The innermost layer, four eruptions near 4.1 minutes and 78 minutes, sits in the larger cluster,
+close to the coordinatewise median of (4, 76). That is the peeling median doing its job. The
+layers also show the method's blind spot. Every ring stretches along the diagonal, because a
+convex layer cannot bend round an empty region. The fourteen eruptions in the gap between 2.5 and
+3.5 minutes, which are rare, reach layer 15, as deep as the core of the short-eruption cluster.
+Convex depth measures position relative to the shape of the whole cloud, not density, so on
+clustered data it should be computed per cluster.
+
+Each layer here has 4 to 19 points, so Chan's algorithm makes each peel cost about
+\(n_j\log h_j\) rather than \(n_j\log n_j\). With 272 points that saving is invisible. Chazelle
+(1985) showed that all layers together can be found in \(O(n\log n)\).
+
+> Conclusion
+
+Chan's algorithm reaches the \(\Omega(n\log h)\) lower bound by combining three ideas, each
+checked above: a wrap step needs only one candidate per group (Lemma 1); that candidate is a
+tangent, found in \(O(\log m)\) because directions seen from outside a convex polygon are
+bitonic (Lemma 2); and squaring the guess makes the failed rounds a geometric series dominated by
+the last. The counts confirm it: under \(9\,n\log_2 h\) on every cloud tested, while doubling the
+guess grows like \(n\log^2 h\) and scanning the tangents costs three to four times as much.
+
+The limits are practical. The constant is four to seven times Graham scan's, so on a million
+points Chan's algorithm only wins on test counts when the hull has about ten vertices, and in time
+it lost every comparison. Its value is theoretical, as the algorithm that settled the complexity
+of planar hulls, and as a design pattern: guess an output size, run a budgeted algorithm, and
+square the budget on failure. For practical work, `geometry::convex_hull` (the monotone chain) is
+the fastest choice here.
+
+> References
+
+- Barnett, V. (1976). The ordering of multivariate data. *Journal of the Royal Statistical Society A*, 139(3), 318–355.
+- Chan, T. M. (1996). Optimal output-sensitive convex hull algorithms in two and three dimensions. *Discrete & Computational Geometry*, 16(4), 361–368.
+- Chazelle, B. (1985). On the convex layers of a planar set. *IEEE Transactions on Information Theory*, 31(4), 509–517.
+- Graham, R. L. (1972). An efficient algorithm for determining the convex hull of a finite planar set. *Information Processing Letters*, 1(4), 132–133.
+- Jarvis, R. A. (1973). On the identification of the convex hull of a finite set of points in the plane. *Information Processing Letters*, 2(1), 18–21.
+- Kirkpatrick, D. G. and Seidel, R. (1986). The ultimate planar convex hull algorithm? *SIAM Journal on Computing*, 15(1), 287–299.
+- Rényi, A. and Sulanke, R. (1963). Über die konvexe Hülle von n zufällig gewählten Punkten. *Zeitschrift für Wahrscheinlichkeitstheorie*, 2, 75–84.

@@ -285,7 +285,7 @@ construction.
 The entire analysis is one C++ program against =datamunge=:
 =dstruct::DataFrame= for the data, =stats::TSNE= for the model (and, for
 the Swiss-roll comparison, =stats::PCA= and =stats::MDS=), and
-=plot::RPlot= for every figure. No external plotting or statistics
+=graphics::RPlot= for every figure. No external plotting or statistics
 package is used.
 
 ** Program, presented as a literate whole
@@ -317,7 +317,7 @@ using datamunge::stats::PCA;
 using datamunge::stats::PCAOptions;
 using datamunge::stats::TSNE;
 using datamunge::stats::TSNEOptions;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 *** Loading the data and an exploratory figure

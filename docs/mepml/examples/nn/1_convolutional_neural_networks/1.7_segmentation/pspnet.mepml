@@ -1,0 +1,519 @@
+//? Title: PSPNet pyramid context and auxiliary supervision
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Local pixel features can confuse shapes without scene-level context. PSPNet pools several spatial scales and fuses them with dense encoder features. This report checks exact overlapping bins and full graphs,then visibly fits the compact model with explicit main/auxiliary Adam supervision.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segmentation/pspnet.cpp`.
+
+> The method
+
+Adaptive1/2/3/6 bins collect global and regional context. Projected,aligned-corner resized means concatenate with dense ResNet features before class prediction. A separate auxiliary head contributes explicitly to the training objective;test predictions use the main head.
+
+The editable concept diagram is `diagrams/pspnet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/pspnet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/pspnet_concept.tikz > build/pspnet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/pspnet_concept.svg build/pspnet_concept.dvi > build/pspnet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/pspnet_concept.svg)
+// result_end
+\caption(PSPNet pyramid context and auxiliary supervision)
+\alttext(Adaptive pyramid bins; Global and local means; then Concatenate context; Two supervised heads; then Visible Adam loop; Paired BN checkpoints.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/pspnet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(17), state(17);
+  m::PSPNetConfig   c;
+  c.classes          = 4;
+  c.depth            = 18;
+  c.width_divisor    = 8;
+  c.pool_width       = 16;
+  c.head_width       = 32;
+  c.aux_width        = 16;
+  c.keep_probability = 1;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) { return m::PSPNet(p, state, image, c).logits; },
+      "PSPNet pyramid context and auxiliary supervision");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 3}), options);
+  diagram.save_svg("build/pspnet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+264 displayed nodes; 217996 reachable learned values.
+\image(figures/pspnet_architecture.svg)
+// result_end
+\caption(Executed pspnet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right pspnet architecture with rotated names and exact output shapes.)
+
+> Overlapping adaptive bins on a known rectangular grid
+
+PSPNet summarizes dense features at1/2/3/6 spatial bin scales,projects each,
+resizes them to the encoder grid and concatenates them with the original
+features. Adaptive-bin starts are `floor(i*H/bins)` and ends are
+`ceil((i+1)*H/bins)`. Odd-grid bins overlap: repeated source pixels receive
+the sum of every contributing mean derivative. Bins may exceed an input axis;
+a1x1 image copied into6x6 bins has derivative36 per channel for a summed output.
+
+On the known5x7 grid containing0..34,three-bin row ranges are[0,2),[1,4),[3,5)
+and column ranges[0,3),[2,5),[4,7). The centre mean is17. The following
+code checks every mean and derivative with independent loop arithmetic.
+
+```{cpp, results="markdown", file="figures/pspnet_bins.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  auto x = n::arange(0, 35, 1, n::DType::Float64).reshape({1, 5, 7, 1}).requires_grad_();
+  const auto pool = m::AdaptiveAveragePool(x, 3), g = n::grad(n::sum(pool), {x})[0];
+  std::vector<double> expected(35);
+  double error = 0;
+  for (int by = 0; by < 3; ++by)
+    for (int bx = 0; bx < 3; ++bx) {
+      const int y0 = by * 5 / 3, y1 = ((by + 1) * 5 + 2) / 3, x0 = bx * 7 / 3,
+                x1 = ((bx + 1) * 7 + 2) / 3;
+      double mean = 0;
+      for (int y = y0; y < y1; ++y)
+        for (int c = x0; c < x1; ++c) {
+          mean += (y * 7 + c) / double((y1 - y0) * (x1 - x0));
+          expected[y * 7 + c] += 1. / double((y1 - y0) * (x1 - x0));
+        }
+      error = std::max(error, std::abs(pool.at({0, by, bx, 0}) - mean));
+    }
+  for (int i = 0; i < 35; ++i)
+    error = std::max(error, std::abs(g.reshape({35}).at({i}) - expected[i]));
+  if (error > 1e-12)
+    return 1;
+  auto a = n::plot_tensor_map(n::reverse(pool.reshape({3, 3}), {0}), 0, 34),
+       b = n::plot_tensor_map(n::reverse(g.reshape({5, 7}), {0}), 0, 1);
+  a.title("Known3 by3 adaptive means").x_label("bin column").y_label("bin row");
+  b.title("Overlapping source derivatives").x_label("source column").y_label("source row");
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1200, 550).fit_panels().save_svg(
+      "build/pspnet_bins.svg");
+  std::print("All nine means and35 source derivatives match independent bin loops,max error "
+             "{:.12f};centre mean {:.6f}. Native "
+             "rectangular/multibatch/channel/bin-larger-than-grid tests also pass.\n",
+             error, pool.at({0, 1, 1, 0}));
+}
+```
+// result_begin: markdown
+All nine means and35 source derivatives match independent bin loops,max error 0.000000000000;centre mean 17.000000. Native rectangular/multibatch/channel/bin-larger-than-grid tests also pass.
+\image(figures/pspnet_bins.svg)
+// result_end
+\caption(Exact3x3 adaptive means from a known5x7 grid and the overlapping input-gradient footprint. Fixed ranges[0,34] and[0,1] show the different scales.)
+\alttext(Exact3x3 adaptive means from a known5x7 grid and the overlapping input-gradient footprint. Fixed ranges[0,34] and[0,1] show the different scales.)
+
+> Full PSPNet101 and complete auxiliary-head gradients
+
+The encoder is dense output-stride8 ResNet101. Four adaptive pools at1/2/3/6
+bins project to512 channels;corner-aligned resizing and the original2048
+features concatenate to4096 channels before the3x3/512 fusion head. A linear
+classifier restores input-sized logits. A C4 auxiliary classifier supports
+supervised training. BN uses momentum.9/epsilon1e-5;full training dropout
+keep probability is.9. No pretrained weights are used.
+
+The full model executes67,949,930 learned/110,976 state scalars and all334
+tensor gradients below at33px. The compact model retains every pool/head,
+ResNet18/divisor8,pool16/head32/aux16,four classes and no dropout. Native
+checks require every compact gradient nonzero and exact96/97-pixel main/aux
+alignment;all five concatenated context sources contribute.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  {
+    n::ParameterStore p(17), state(17);
+    const auto net = m::PSPNet(
+        p, state, n::sin(.13 * n::arange(0, 33 * 33 * 3)).reshape({1, 33, 33, 3}), {}, true);
+    const auto g =
+        n::grad(n::mean(n::square(net.logits)) + .4 * n::mean(n::square(net.auxiliary)),
+                p.parameters());
+    if (p.count() != 67949930 || state.count() != 110976 || g.size() != 334 ||
+        p.at("head/W").shape() != n::Shape{3, 3, 4096, 512})
+      return 1;
+    for (const auto &v : g)
+      if (!v.defined() || !std::isfinite(n::sum(n::square(v.to(n::DType::Float64))).item()))
+        return 1;
+    std::print("Full PSPNet101:{} learned/{} state scalars,all{} finite defined gradients "
+               "at33px,four pools and auxiliary head.\n",
+               p.count(), state.count(), g.size());
+  }
+  n::ParameterStore p(17), state(17);
+  m::PSPNetConfig c;
+  c.classes = 4;
+  c.depth = 18;
+  c.width_divisor = 8;
+  c.pool_width = 16;
+  c.head_width = 32;
+  c.aux_width = 16;
+  c.keep_probability = 1;
+  for (int side : {96, 97}) {
+    const auto net = m::PSPNet(p, state, n::zeros({1, side, side, 3}), c);
+    if (net.logits.shape() != n::Shape{1, side, side, 4} ||
+        net.auxiliary.shape() != net.logits.shape())
+      return 1;
+    std::print(
+        "Compact{}px:{} learned/{} state scalars;main/aux align,adaptive bins1/2/3/6.\n", side,
+        p.count(), state.count());
+  }
+}
+```
+// result_begin: markdown
+Full PSPNet101:67949930 learned/110976 state scalars,all334 finite defined gradients at33px,four pools and auxiliary head.
+Compact96px:222704 learned/1424 state scalars;main/aux align,adaptive bins1/2/3/6.
+Compact97px:222704 learned/1424 state scalars;main/aux align,adaptive bins1/2/3/6.
+// result_end
+
+> Actual data and explicit main/auxiliary Adam fitting
+
+The tensor generator creates64 fitting/16 validation/16 test96-pixel RGB
+shape scenes,seeds11/22/33. Class-independent noise,brightness and image-wide
+tint require spatial context;later objects occlude earlier masks. Tensor RNG
+changes the old mt19937 fixed-seed pixels. Palette: background dark,circle red,
+rectangle green,triangle blue. Four actual fitting pairs appear below.
+
+```{cpp, results="markdown", file="figures/pspnet_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto data = m::TensorSegmentationShapes(64, 96, 11);
+  std::vector<n::Tensor> gallery;
+  const auto colored = m::ColorSegmentationLabels(n::slice_axis(data.labels, 0, 0, 4));
+  for (int i = 0; i < 4; ++i) {
+    gallery.push_back(n::slice_axis(data.images, 0, i, i + 1));
+    gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+  }
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::concat(gallery, 0), "build/pspnet_data.png", 2, 0., 1., 3, 1., 2);
+  const auto weights = m::SegmentationClassWeights(data.labels, 4);
+  std::print(
+      "64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. "
+      "Fit-only inverse-square-root pseudocount weights {:.6f}/{:.6f}/{:.6f}/{:.6f}. "
+      "Noise,tint and brightness are class-independent; later objects occlude earlier masks. "
+      "Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.\n",
+      weights.at({0}), weights.at({1}), weights.at({2}), weights.at({3}));
+}
+```
+// result_begin: markdown
+64 fitting RGB images96x96; classes0 background,1 circle,2 rectangle,3 triangle. Fit-only inverse-square-root pseudocount weights 1.149431/3.477891/3.045941/4.357872. Noise,tint and brightness are class-independent; later objects occlude earlier masks. Tensor RNG changes fixed-seed pixels relative to the old mt19937 generator.
+\image(figures/pspnet_data.png)
+// result_end
+\caption(Actual first four fitting RGB image/mask pairs. The four-class palette remains fixed in test predictions.)
+\alttext(Actual first four fitting RGB image/mask pairs. The four-class palette remains fixed in test predictions.)
+
+Fit-only inverse-square-root pixel weights use pseudocount1. Every learned
+leaf is warmed before Adam(.001),then all parameters fit32 epochs,batch4,
+512 visible updates per model. Stable weighted CE normalizes by selected
+pixel-weight sum. Explicit `.00005*sum(kernel²)` penalizes kernels;biases and
+BN affine leaves are optimized but excluded from that penalty. Training-mode
+forwards update moving BN moments exactly once per batch. Strict validation
+mean IoU selects paired learned/BN checkpoints;restoration reproduces the
+selected score before test evaluation. Test data never fits weights or selects
+checkpoints. These bounded procedural fits make no VOC/Cityscapes benchmark claim.
+
+The explicit objective is `(main_weighted_CE+.4*auxiliary_weighted_CE)/1.4`,
+then kernel L2. Both classifier paths and the entire encoder/pyramid/fusion
+model enter Adam. The main and auxiliary outputs come from one training
+forward,so BN moments update once per batch. Evaluation uses main logits;
+auxiliary scores do not replace them or select a separate checkpoint.
+
+```{cpp, results="markdown", file="figures/pspnet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <print>
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  namespace m             = n::models;
+  n::set_num_threads(2);
+  const auto fit              = m::TensorSegmentationShapes(64, 96, 11),
+             validation       = m::TensorSegmentationShapes(16, 96, 22),
+             test             = m::TensorSegmentationShapes(16, 96, 33);
+  const auto          weights = m::SegmentationClassWeights(fit.labels, 4);
+  std::vector<double> epochs;
+  for (int epoch = 1; epoch <= 32; ++epoch)
+    epochs.push_back(epoch);
+  auto loss_plot = dm::graphics::RPlot::create(), score_plot = dm::graphics::RPlot::create();
+  const std::array<dm::graphics::RGB, 3> colors = {{{37, 99, 235}, {22, 163, 74}, {220, 38, 38}}};
+  int                                    color_index = 0;
+  double                                 max_loss    = 0;
+  std::filesystem::create_directories("build");
+  std::filesystem::create_directories("figures");
+  for (int variant : {1}) {
+    n::ParameterStore p(17), state(17);
+    m::PSPNetConfig   config;
+    config.classes          = 4;
+    config.depth            = 18;
+    config.width_divisor    = 8;
+    config.pool_width       = 16;
+    config.head_width       = 32;
+    config.aux_width        = 16;
+    config.keep_probability = 1;
+    const auto forward      = [&](const n::Tensor& images, bool training) {
+      return m::PSPNet(p, state, images, config, training).logits;
+    };
+    // Create every learnable convolution/score leaf before Adam captures the store.
+    {
+      n::NoGradGuard guard;
+      forward(n::slice_axis(fit.images, 0, 0, 1), false);
+    }
+    n::OptimizerConfig adam_config;
+    adam_config.kind = n::OptimizerKind::Adam;
+    n::Optimizer           adam(p, .001, adam_config);
+    n::BatchOrder          batches(64, 4, 29);
+    std::vector<n::Tensor> kernels;
+    for (const auto& leaf : p.parameters())
+      if (leaf.dim() > 1)
+        kernels.push_back(leaf);
+    const std::string   prefix   = "build/pspnet_" + std::to_string(variant);
+    double              best     = -1;
+    int                 selected = 0, updates = 0;
+    std::vector<double> losses, miou;
+    const auto          evaluate = [&](const m::TensorSegmentationData& data) {
+      n::NoGradGuard guard;
+      auto           confusion = n::zeros({4, 4}, n::DType::Int64);
+      for (int first = 0; first < data.images.shape()[0]; first += 8) {
+        const auto end    = std::min<std::int64_t>(first + 8, data.images.shape()[0]);
+        const auto logits = forward(n::slice_axis(data.images, 0, first, end), false);
+        confusion =
+            confusion + m::SegmentationPredictionMetrics(
+                            n::argmax(logits, 3), n::slice_axis(data.labels, 0, first, end), 4)
+                            .confusion;
+      }
+      return m::SegmentationConfusionMetrics(confusion);
+    };
+    std::print(
+        "Variant{}: {} learned scalars, paired BN state. Fit-only weights "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}.\n",
+        variant,
+        p.count(),
+        weights.at({0}),
+        weights.at({1}),
+        weights.at({2}),
+        weights.at({3}));
+    std::print(
+        "| variant | epoch | weighted pixel CE | validation mIoU |\n|---:|---:|---:|---:|\n");
+    for (int epoch = 1; epoch <= 32; ++epoch) {
+      batches.begin_epoch();
+      double      total = 0;
+      std::size_t seen  = 0;
+      for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+        const auto batch   = m::TensorSegmentationBatch(fit, n::from_vector(rows));
+        const auto net     = m::PSPNet(p, state, batch.first, config, true);
+        const auto main_ce = m::SegmentationCrossEntropy(net.logits, batch.second, 4, weights),
+                   aux_ce  = m::SegmentationCrossEntropy(net.auxiliary, batch.second, 4, weights);
+        const auto ce      = (main_ce + .4 * aux_ce) / 1.4;
+        n::Tensor  penalty = n::zeros({});
+        for (const auto& kernel : kernels)
+          penalty = penalty + n::sum(n::square(kernel));
+        if (!std::isfinite(ce.item()))
+          return 1;
+        total += ce.item() * rows.size();
+        seen += rows.size();
+        adam.minimize(ce + .00005 * penalty);
+        ++updates;
+      }
+      const auto metric = evaluate(validation);
+      losses.push_back(total / double(seen));
+      miou.push_back(metric.mean_iou.item());
+      if (miou.back() > best) {
+        best     = miou.back();
+        selected = epoch;
+        p.save(prefix + "_best.npz");
+        state.save(prefix + "_best_state.npz");
+      }
+      std::print("| {} | {} | {:.6f} | {:.6f} |\n", variant, epoch, losses.back(), miou.back());
+    }
+    p.load(prefix + "_best.npz");
+    state.load(prefix + "_best_state.npz");
+    const auto restored = evaluate(validation), metric = evaluate(test);
+    const auto count_matrix = n::ConfusionMatrix::from_counts(metric.confusion);
+    const auto index        = std::to_string(rendered_confusions++);
+    count_matrix.save_svg(
+        "build/pspnet_confusion_api_" + index + ".svg",
+        {.title = "Selected-checkpoint pixel counts"});
+    count_matrix.save_svg(
+        "build/pspnet_confusion_api_" + index + "_normalized.svg",
+        {.title         = "Selected-checkpoint pixel recall",
+         .normalization = n::ConfusionMatrixNormalization::True});
+
+    if (std::abs(restored.mean_iou.item() - best) > 1e-12 || updates != 512)
+      return 1;
+    n::NoGradGuard         guard;
+    std::vector<n::Tensor> gallery;
+    const auto prediction = n::argmax(forward(n::slice_axis(test.images, 0, 0, 4), false), 3);
+    const auto truth      = m::ColorSegmentationLabels(n::slice_axis(test.labels, 0, 0, 4)),
+               colored    = m::ColorSegmentationLabels(prediction);
+    for (int i = 0; i < 4; ++i) {
+      gallery.push_back(n::slice_axis(test.images, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(truth, 0, i, i + 1));
+      gallery.push_back(n::slice_axis(colored, 0, i, i + 1));
+    }
+    const auto image_name = "pspnet_predictions_" + std::to_string(variant) + ".png";
+    n::save_image_grid(n::concat(gallery, 0), "build/" + image_name, 3, 0., 1., 3, 1., 2);
+    std::filesystem::copy_file(
+        "build/" + image_name,
+        "figures/" + image_name,
+        std::filesystem::copy_options::overwrite_existing);
+    const auto        color = colors[color_index++];
+    const std::string name  = "PSPNet";
+    loss_plot.lines(epochs, losses, name, color);
+    score_plot.lines(epochs, miou, name, color);
+    max_loss = std::max(max_loss, *std::max_element(losses.begin(), losses.end()));
+    std::print(
+        "Variant{} restored epoch{}: validation mIoU {:.6f}; test pixel accuracy "
+        "{:.6f}, mean IoU {:.6f}; per-class IoU(background,circle,rectangle,triangle) "
+        "{:.6f}/{:.6f}/{:.6f}/{:.6f}. {} explicit Adam updates.\n",
+        variant,
+        selected,
+        best,
+        metric.pixel_accuracy.item(),
+        metric.mean_iou.item(),
+        metric.iou.at({0}),
+        metric.iou.at({1}),
+        metric.iou.at({2}),
+        metric.iou.at({3}),
+        updates);
+  }
+  loss_plot.title("PSPNet main/auxiliary loss")
+      .x_label("epoch")
+      .y_label("unregularized weighted CE")
+      .y_limits(0, max_loss * 1.3);
+  score_plot.title("Validation mean IoU selection")
+      .x_label("epoch")
+      .y_label("present-class mIoU")
+      .y_limits(0, 1.3);
+  dm::graphics::RLayout::create(1, 2)
+      .add(loss_plot)
+      .add(score_plot)
+      .size(1200, 550)
+      .fit_panels()
+      .save_svg("build/pspnet_training.svg");
+}
+```
+// result_begin: markdown
+Variant1: 222704 learned scalars, paired BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
+| variant | epoch | weighted pixel CE | validation mIoU |
+|---:|---:|---:|---:|
+| 1 | 1 | 1.325791 | 0.246196 |
+| 1 | 2 | 0.975903 | 0.312910 |
+| 1 | 3 | 0.818399 | 0.374429 |
+| 1 | 4 | 0.701542 | 0.397988 |
+| 1 | 5 | 0.581997 | 0.391246 |
+| 1 | 6 | 0.518350 | 0.362335 |
+| 1 | 7 | 0.457777 | 0.420172 |
+| 1 | 8 | 0.414770 | 0.460461 |
+| 1 | 9 | 0.356382 | 0.404603 |
+| 1 | 10 | 0.324438 | 0.418716 |
+| 1 | 11 | 0.282771 | 0.471555 |
+| 1 | 12 | 0.272174 | 0.447059 |
+| 1 | 13 | 0.242506 | 0.457329 |
+| 1 | 14 | 0.244436 | 0.412541 |
+| 1 | 15 | 0.205225 | 0.450702 |
+| 1 | 16 | 0.197101 | 0.466443 |
+| 1 | 17 | 0.184241 | 0.488761 |
+| 1 | 18 | 0.173064 | 0.466935 |
+| 1 | 19 | 0.157250 | 0.501431 |
+| 1 | 20 | 0.147388 | 0.484543 |
+| 1 | 21 | 0.150292 | 0.513235 |
+| 1 | 22 | 0.144909 | 0.500533 |
+| 1 | 23 | 0.139549 | 0.493154 |
+| 1 | 24 | 0.127730 | 0.506723 |
+| 1 | 25 | 0.117125 | 0.522807 |
+| 1 | 26 | 0.117735 | 0.482282 |
+| 1 | 27 | 0.116152 | 0.503874 |
+| 1 | 28 | 0.115616 | 0.475469 |
+| 1 | 29 | 0.107099 | 0.490863 |
+| 1 | 30 | 0.107758 | 0.484128 |
+| 1 | 31 | 0.102841 | 0.500620 |
+| 1 | 32 | 0.104419 | 0.511725 |
+Variant1 restored epoch25: validation mIoU 0.522807; test pixel accuracy 0.875156, mean IoU 0.547042; per-class IoU(background,circle,rectangle,triangle) 0.945169/0.361144/0.415453/0.466404. 512 explicit Adam updates.
+\image(figures/pspnet_training.svg)
+// result_end
+\caption(Visible whole-model512-update Adam with explicit(main CE+.4 auxiliary CE)/1.4 and kernel L2. Paired learned/BN state is validation-selected and restored before testing.)
+\alttext(Visible whole-model512-update Adam with explicit(main CE+.4 auxiliary CE)/1.4 and kernel L2. Paired learned/BN state is validation-selected and restored before testing.)
+
+Compact PSPNet has222,704 learned and1,424 state scalars. Epoch25 is
+selected with validation mean IoU.522807. Test pixel accuracy is.875156
+and mean IoU.547042;per-class IoUs are background.945169,circle.361144,
+rectangle.415453 and triangle.466404. The actual prediction gallery retains
+these class confusions rather than implying that high background accuracy
+means strong foreground recognition.
+
+\image(figures/pspnet_predictions_1.png)
+\caption(Each row shows an actual test image,its truth mask and restored main-head PSPNet prediction. Same palette/range as the fitting preview;errors remain visible.)
+\alttext(Four held-out PSPNet image/truth/main-prediction triples.)
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/pspnet_confusion_api_0.svg)
+\caption(Held-out pixel/voxel confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+\image(figures/pspnet_confusion_api_0_normalized.svg)
+\caption(True-class normalized confusion: each nonempty row sums to 100%; zero-support rows remain zero.)
+\alttext(Row-normalized percentages with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Exact bin values and every overlap derivative precede full PSPNet101 checks and compact fitting. Explicit auxiliary supervision,fit-only weights,paired BN restoration and actual held-out masks make the measured result inspectable without a benchmark claim.
+
+> References
+
+- [Zhao et al.(2017), Pyramid Scene Parsing Network](https://arxiv.org/abs/1612.01105).

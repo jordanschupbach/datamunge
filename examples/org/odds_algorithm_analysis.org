@@ -43,7 +43,7 @@ is needed.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static double win_prob(const std::vector<double>& p, std::size_t t) {
     double prod = 1.0, sum = 0.0;

@@ -1,0 +1,891 @@
+//? Title: Kernel Ridge Regression: Centring, Shrinkage and Validation
+//? Subtitle: Exact two-point fits, signed prediction weights and fold-local preprocessing
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A regression curve must predict a numeric response from inputs whose relationship
+may be nonlinear, while controlling how closely it follows noisy observations.
+Kernel ridge regression fits a penalised function through similarities between
+training rows. We derive the free-intercept estimator and check every quantity on
+two observations. A four-row counterexample separates fixed-metric leave-one-out
+from validation that refits preprocessing. A noisy sine wave tests spectral shrinkage
+against a known mean; Iris supplies a separate, untouched regression holdout.
+The examples distinguish training fit, tuning scores and evaluation error.
+)
+\toc
+
+> The method
+
+>> Similarities define a function space
+
+Given inputs \(x_i\) and numeric responses \(y_i\), choose a positive-semidefinite
+kernel \(k\) and its reproducing-kernel Hilbert space \(\mathcal H\). Fit a scalar
+intercept \(b\) and a function \(f\) by
+
+$$
+ \min_{b\in\mathbb R,\,f\in\mathcal H}\ \sum_{i=1}^n[y_i-b-f(x_i)]^2+\lambda\|f\|_{\mathcal H}^2,
+ \qquad f(x)=\sum_{i=1}^n\alpha_i k(x_i,x),\qquad K_{ij}=k(x_i,x_j).
+$$
+\alttext(Minimise the sum of squared response residuals plus lambda times the squared function norm, leaving the intercept unpenalised. The representer form expresses the function as a weighted sum of kernels anchored at the training rows.)
+
+The representer form follows by decomposing any function into its projection onto
+the span of training kernels and an orthogonal remainder. The remainder evaluates
+to zero at every training input, so removing it preserves the loss and reduces the
+penalty. For \(\lambda>0\), a minimum therefore lies in that finite span.
+The library uses a **sum** of losses: a mean-loss penalty \(\rho\) corresponds to
+\(\lambda=n\rho\). Changing that convention changes numerical penalty values.
+
+Supported kernels are linear \(x^Tz\), polynomial \((\gamma x^Tz+c)^d\), and RBF
+\(\exp[-\gamma\|x-z\|^2]\). Polynomial degree is a positive integer, offset is
+nonnegative, and nonlinear gamma is positive. By default each resolved Formula
+feature uses its training mean and population SD; a constant feature uses divisor
+one. Thus gamma measures distance in those standardised coordinates. RBF length
+scale \(\ell\) in the convention \(\exp[-\|x-z\|^2/(2\ell^2)]\) gives
+\(\gamma=1/(2\ell^2)\). A large gamma makes similarities local; it does not by
+itself specify the fitted complexity, which also depends on lambda and the data.
+
+>> A free intercept requires kernel centring
+
+Let \(C=I-\mathbf1\mathbf1^T/n\), \(K_c=CKC\), and \(y_c=Cy\). For positive
+lambda, the intercept normal equation and kernel equations give
+
+$$
+ \begin{bmatrix}K+\lambda I&\mathbf1\\\mathbf1^T&0\end{bmatrix}
+ \begin{bmatrix}\alpha\\b\end{bmatrix}=\begin{bmatrix}y\\0\end{bmatrix},
+ \quad\alpha=(K_c+\lambda I)^{-1}y_c,
+ \quad b=\bar y-\bar k^T\alpha,\quad \bar k=K\mathbf1/n.
+$$
+\alttext(The augmented kernel system enforces zero sum of dual coefficients. Equivalently solve the doubly centred kernel system on centred responses. The raw-kernel intercept is response mean minus the training kernel-column means dotted with alpha.)
+
+Merely subtracting \(\bar y\) before solving an *uncentred* kernel generally fails
+these equations: the dual coefficients need not sum to zero. A query's centred
+kernel row is \(k_{*c,j}=k(x_*,x_j)-\bar k_j-\bar k_*+\bar K\), where
+\(\bar k_*\) averages its training similarities and \(\bar K\) averages the full
+training Gram. Prediction is \(\bar y+k_{*c}^T\alpha=b+k_*^T\alpha\).
+Every centring quantity comes from the fitted rows. The option `fit_intercept=false`
+uses raw kernels and raw responses with zero intercept. Formula `+1`/`-1` markers
+are suppressed in the feature design; this option controls the intercept.
+
+The retained diagram needs LaTeX/TikZ, amsmath, lmodern and dvisvgm to rebuild.
+Documentation exports consume its saved local SVG.
+
+```{bash, file="figures/krr_centred_shrinkage.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/krr_centred_shrinkage.tikz > build/krr_centred_shrinkage.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/krr_centred_shrinkage.svg build/krr_centred_shrinkage.dvi > build/krr_centred_shrinkage.render.log 2>&1
+printf 'Rendered the free-intercept and spectral-shrinkage diagram.\n'
+```
+// result_begin:
+// Rendered the free-intercept and spectral-shrinkage diagram.
+// \image(figures/krr_centred_shrinkage.svg)
+// result_end
+\caption(The constant response direction is preserved by the free intercept; centred kernel directions are shrunk.)
+\alttext(Split the response into its constant mean and centred component. The mean passes unchanged to predictions. Each centred kernel eigenvector component is multiplied by eigenvalue divided by eigenvalue plus lambda, then the parts are added.)
+
+>> Eigenvalues explain effective complexity
+
+Write \(K_c=U\operatorname{diag}(d_j)U^T\) on the centred subspace. Each response
+coordinate \(u_j^Ty_c\) is multiplied by \(d_j/(d_j+\lambda)\). Hence
+
+$$
+ \widehat y=Sy,\quad
+ S=\mathbf1\mathbf1^T/n+U\operatorname{diag}\left(\frac{d_j}{d_j+\lambda}\right)U^T,
+ \quad\mathrm{df}=\operatorname{tr}S=1+\sum_{d_j>0}\frac{d_j}{d_j+\lambda},
+ \quad\frac{\partial\mathrm{df}}{\partial\lambda}=-\sum_{d_j>0}\frac{d_j}{(d_j+\lambda)^2}\le0.
+$$
+\alttext(The smoother preserves the constant direction and shrinks each positive centred-kernel direction. Its trace is one plus the sum of shrinkage factors, whose derivative with respect to lambda is nonpositive.)
+
+For a fixed kernel, df tends to one as the penalty grows; without an intercept the
+constant term is absent. Larger lambda reduces the fitted RKHS norm and increases
+training residual sum of squares. This also follows by adding the optimality
+inequalities for two penalties. Neither fact proves monotone validation or truth
+error. A free-intercept prediction has weights summing to one, so constant responses
+are reproduced; weights can be negative and predictions can exceed the observed
+response range. These are penalised function fits, unlike positive local averages.
+
+At zero penalty, the implementation uses a spectral pseudoinverse with eigenvalues
+at or below \(64n\epsilon\max_{ij}|K_{ij}|\) treated as numerical zero. It chooses
+the minimum-RKHS-norm least-squares limit under that rank convention. Contradictory
+responses at duplicate inputs cannot be interpolated. Tiny positive penalties can
+still be ill-conditioned. The diagnostics expose rank, objective and equation
+residual; at zero penalty with incompatible labels, an equation residual need not
+vanish because the centred response can lie outside the kernel range.
+
+>> Three different errors and two validation procedures
+
+Training predictions use all fitting responses. `fitted_values()`, `rmse()` and
+`r_squared()` retain this API's historical meaning: **fixed-metric LOO** predictions
+and scores. With fixed positive lambda, define
+
+$$
+ B=C(K_c+\lambda I)^{-1}C,\qquad
+ \widehat y_i^{(-i)}=y_i-\frac{\alpha_i}{B_{ii}},\qquad
+ \operatorname{LOO}_{\mathrm{metric}}=\frac1n\sum_i(y_i-\widehat y_i^{(-i)})^2.
+$$
+\alttext(The fixed-metric deletion prediction subtracts alpha i divided by the corresponding diagonal of the centred inverse from response i. Average its squared residuals for the fixed-metric LOO score.)
+
+Here the deleted fit refits the intercept and kernel centring but freezes the
+full-data predictor scaling, resolved feature schema, gamma and lambda. Without an
+intercept use \(C=I\). This is the usual residual-over-one-minus-leverage identity,
+computed through the inverse diagonal to avoid cancellation when leverage is near
+one. At lambda zero the code explicitly fits deleted Gram matrices; it does not
+replace a zero denominator with an arbitrary floor.
+
+`kernel_ridge_cross_validate` instead fits each fold's Formula preprocessing,
+predictor scaling, response offset and kernel centring using that fold's training
+rows. It requires explicit, fixed candidates, contiguous retained fold IDs and at
+least two fitting rows per fold. Its pooled MSE weights validation rows equally.
+Returned fold means/scales and row-aligned predictions make this distinction
+inspectable. Candidate ties choose the first strict minimum. An unavailable fold
+schema or invalid held-out prediction raises an error rather than dropping it.
+Neither a minimum tuning score nor the score used to select gamma estimates the
+selected procedure's generalisation error without an outer holdout or nested CV.
+
+Default automatic fitting searches 40 log-spaced lambdas from 0.0001 to 1000 and
+12 gammas from 0.03 to 30 times the inverse upper-median *positive* squared pair
+distance in the full training metric. Constant metrics use base one. Explicit
+candidate vectors preserve caller order. This finite search minimises the
+fixed-metric LOO score; it is neither continuous optimisation nor fold-refitted CV.
+
+Dense work for G gammas and L positive penalties is
+\(O(G(n^2p+n^3+Ln^2))\), with \(O(n^2+np)\) fitted storage. Zero-penalty deletion
+refits can add \(O(Gn^4)\). A GP with the same fixed mean, kernel and noise-to-signal
+ratio lambda has the corresponding posterior mean. Free-intercept treatment must
+also agree; empirical response centring alone is a different mean convention.
+KRR supplies no posterior predictive variance.
+
+> Small worked examples
+
+>> Two RBF anchors: all the numbers fit on a page
+
+Use \(x=(0,1)\), \(y=(0,2)\), no predictor standardisation,
+\(\gamma=\log2\), and \(\lambda=1/2\). Then
+\(K=\left[\begin{smallmatrix}1&1/2\\1/2&1\end{smallmatrix}\right]\),
+\(K_c=\tfrac14\left[\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\right]\),
+and \(y_c=(-1,1)^T\). The centred contrast eigenvalue is 1/2, so its shrinkage is
+1/2. Thus \(\alpha=(-1,1)\), \(b=1\), training predictions are \((1/2,3/2)\),
+\(S=\left[\begin{smallmatrix}3/4&1/4\\1/4&3/4\end{smallmatrix}\right]\),
+and df is 1.5. Each deletion leaves a single observation whose free intercept
+reproduces that response: LOO predictions are \((2,0)\), RMSE is two, and LOO
+R-squared is minus three. Negative R-squared is legitimate. The midpoint prediction
+is one by symmetry. Training RSS is 1/2, squared RKHS norm is one, and objective is one.
+
+```{cpp, results="markdown", file="figures/krr_two_point.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 1});
+  d.add_column("y", std::vector<double>{0, 2});
+  dm::stats::KernelRidgeRegressionOptions o;
+  o.lambda      = .5;
+  o.gamma       = std::log(2.);
+  o.standardize = false;
+  const dm::stats::KernelRidgeRegression m(d, "y ~ x", o);
+  dm::dstruct::DataFrame                 q;
+  q.add_column("x", dm::seql(-1, 2, 201).values());
+  const auto          x = q.numeric_column("x").values();
+  const auto          w = m.prediction_weights(q);
+  std::vector<double> w0, w1;
+  for (std::size_t i = 0; i < x.size(); ++i) {
+    w0.push_back(w(i, 0));
+    w1.push_back(w(i, 1));
+  }
+  auto fit =
+      dm::graphics::RPlot::create()
+          .line(x, m.predict(q), "fit", {40, 100, 190})
+          .points({0, 1}, {0, 2}, "observed", {30, 30, 30}, 4)
+          .points({0, 1}, m.training_predictions(), "training", {190, 100, 35}, 4)
+          .title("Two RBF anchors")
+          .x_label("x")
+          .y_label("response")
+          .x_limits(-1, 2)
+          .y_limits(-.5, 3)
+          .legend({"fit", "observed", "training"}, {{40, 100, 190}, {30, 30, 30}, {190, 100, 35}});
+  auto weights = dm::graphics::RPlot::create()
+                     .line(x, w0, "row 0", {40, 100, 190})
+                     .line(x, w1, "row 1", {190, 100, 35})
+                     .title("Response weights sum to one")
+                     .x_label("query x")
+                     .y_label("prediction weight")
+                     .x_limits(-1, 2)
+                     .y_limits(-.15, 1.5)
+                     .legend({"row 0", "row 1"}, {{40, 100, 190}, {190, 100, 35}});
+  dm::graphics::RLayout::create(1, 2).add(fit).add(weights).size(1100, 490).fit_panels().save_svg(
+      "build/krr_two_point.svg");
+  std::print(
+      "{}\n\n{}\n\n{}\n",
+      m.training_diagnostics().to_md(6),
+      m.spectrum().to_md(6),
+      m.diagnostics()
+          .select(
+              {"df",
+               "training_rmse",
+               "loo_rmse",
+               "rkhs_norm_squared",
+               "objective",
+               "system_residual"})
+          .to_md(6));
+}
+```
+// result_begin: markdown
+| row | response | training_prediction | loo_prediction | leverage | dual | training_residual | loo_residual |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0.5 | 2 | 0.75 | -1 | -0.5 | -2 |
+| 1 | 2 | 1.5 | 0 | 0.75 | 1 | 0.5 | 2 |
+
+
+| mode | eigenvalue | shrinkage | response_projection |
+| ---: | ---: | ---: | ---: |
+| 0 | 0.5 | 0.5 | 1.414214 |
+| 1 | 0.0 | 0.0 | 0.000000 |
+
+
+| df | training_rmse | loo_rmse | rkhs_norm_squared | objective | system_residual |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1.5 | 0.5 | 2 | 1 | 1 | 0 |
+
+\image(figures/krr_two_point.svg)
+// result_end
+\caption(The fitted contrast is half the observed contrast; deletion error is much larger than training error.)
+\alttext(The RBF fit passes through training fitted values 0.5 and 1.5. Query weights vary smoothly and add to one; both the fit and weights return toward equal weighting away from the anchors.)
+
+>> Linear kernel: ridge in feature coordinates, with signed extrapolation weights
+
+For a linear kernel the representer form gives \(f(x)=x^T\beta\) with
+\(\beta=X_c^T\alpha=(X_c^TX_c+\lambda I)^{-1}X_c^Ty_c\).
+The first equality and the centred kernel system prove the second by multiplying
+through \(X_c^T\); uniqueness follows for positive lambda. With the same two rows,
+\(X_c^TX_c=1/2\) and \(X_c^Ty_c=1\), so \(\beta=1\), \(b=1/2\).
+At query \(x=3\), prediction is 3.5, and its response weights are
+\((-3/4,7/4)\). They sum to one but are not probabilities. For constant responses
+seven, the prediction is seven at every query. The figure includes the extrapolation
+region explicitly rather than implying interpolation is all the model can do.
+
+```{cpp, results="markdown", file="figures/krr_linear_weights.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 1});
+  d.add_column("y", std::vector<double>{0, 2});
+  dm::stats::KernelRidgeRegressionOptions o;
+  o.kernel      = "linear";
+  o.lambda      = .5;
+  o.standardize = false;
+  const dm::stats::KernelRidgeRegression m(d, "y ~ x", o);
+  dm::dstruct::DataFrame                 q;
+  q.add_column("x", dm::seql(-1, 3, 101).values());
+  const auto          x = q.numeric_column("x").values();
+  const auto          w = m.prediction_weights(q);
+  std::vector<double> a, b;
+  for (std::size_t i = 0; i < x.size(); ++i) {
+    a.push_back(w(i, 0));
+    b.push_back(w(i, 1));
+  }
+  auto line =
+      dm::graphics::RPlot::create()
+          .line(x, m.predict(q), "ridge fit", {40, 100, 190})
+          .points({0, 1}, {0, 2}, "observed", {30, 30, 30}, 4)
+          .points({3}, {3.5}, "query", {190, 100, 35}, 4)
+          .title("Linear-kernel extrapolation")
+          .x_label("x")
+          .y_label("response")
+          .x_limits(-1, 3)
+          .y_limits(-1, 5)
+          .legend(
+              {"ridge fit", "observed", "query"}, {{40, 100, 190}, {30, 30, 30}, {190, 100, 35}});
+  auto weights = dm::graphics::RPlot::create()
+                     .line(x, a, "row 0", {40, 100, 190})
+                     .line(x, b, "row 1", {190, 100, 35})
+                     .abline_h(0, {130, 130, 130}, 1)
+                     .title("Signed weights are not probabilities")
+                     .x_label("query x")
+                     .y_label("prediction weight")
+                     .x_limits(-1, 3)
+                     .y_limits(-1, 2.7)
+                     .legend({"row 0", "row 1"}, {{40, 100, 190}, {190, 100, 35}});
+  dm::graphics::RLayout::create(1, 2).add(line).add(weights).size(1100, 490).fit_panels().save_svg(
+      "build/krr_linear_weights.svg");
+  dm::dstruct::DataFrame query;
+  query.add_column("x", std::vector<double>{3});
+  const auto                             qw = m.prediction_weights(query);
+  const dm::stats::KernelRidgeRegression constant(
+      d.mutate("y", std::vector<double>{7, 7}), "y ~ x", o);
+  dm::dstruct::DataFrame out;
+  out.add_column("query_x", std::vector<double>{3});
+  out.add_column("weight_0", std::vector<double>{qw(0, 0)});
+  out.add_column("weight_1", std::vector<double>{qw(0, 1)});
+  out.add_column("prediction", m.predict(query));
+  out.add_column("constant_response_prediction", constant.predict(query));
+  std::print("{}\n", out.to_md(6));
+}
+```
+// result_begin: markdown
+| query_x | weight_0 | weight_1 | prediction | constant_response_prediction |
+| ---: | ---: | ---: | ---: | ---: |
+| 3 | -0.75 | 1.75 | 3.5 | 7 |
+
+\image(figures/krr_linear_weights.svg)
+// result_end
+\caption(A linear kernel matches primal ridge, and the fitted line extrapolates beyond the response range.)
+\alttext(At x equals three, the fitted value is 3.5 from response weights minus 0.75 and 1.75. One weight becomes negative outside the anchors while their sum stays one.)
+
+>> Four rows: which leave-one-out question are we asking?
+
+Use \(x=(0,1,2,10)\), \(y=(0,1,0,2)\), RBF gamma one and lambda 0.1.
+Full-data mean and population SD of x are 3.25 and about 3.961. Deleting x=10
+changes them to one and \(\sqrt{2/3}\). This changes relative distances and hence
+the kernel even though gamma stays numerically fixed. The fast fixed-metric LOO
+MSE is about 1.9112; four genuine preprocessing refits give about 1.5837. Neither
+quantity is a universal upper or lower bound on the other. The right panel records
+what each deleted fit actually learned.
+
+```{cpp, results="markdown", file="figures/krr_preprocessing.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame d;
+  d.add_column("x", std::vector<double>{0, 1, 2, 10});
+  d.add_column("y", std::vector<double>{0, 1, 0, 2});
+  dm::stats::KernelRidgeRegressionOptions o;
+  o.lambda = .1;
+  o.gamma  = 1;
+  const dm::stats::KernelRidgeRegression m(d, "y ~ x", o);
+  const auto cv   = dm::stats::kernel_ridge_cross_validate(d, "y ~ x", {o}, {0, 1, 2, 3});
+  const auto pred = cv.predictions.sort_by("row");
+  const auto rows = pred.numeric_column("row").values();
+  auto       p =
+      dm::graphics::RPlot::create()
+          .points(rows, pred.numeric_column("observed").values(), "observed", {30, 30, 30}, 4)
+          .line(rows, m.fitted_values(), "fixed metric", {40, 100, 190})
+          .line(rows, pred.numeric_column("prediction").values(), "refit metric", {190, 100, 35})
+          .title("Two deletion procedures")
+          .x_label("deleted row")
+          .y_label("response / prediction")
+          .x_limits(-.1, 3.1)
+          .y_limits(-.6, 3.3)
+          .legend(
+              {"observed", "fixed metric", "refit metric"},
+              {{30, 30, 30}, {40, 100, 190}, {190, 100, 35}});
+  auto scales =
+      dm::graphics::RPlot::create()
+          .line(rows, cv.folds.numeric_column("mean_0").values(), "fold mean", {40, 100, 190})
+          .line(rows, cv.folds.numeric_column("scale_0").values(), "fold SD", {190, 100, 35})
+          .title("Training-only x preprocessing")
+          .x_label("deleted row")
+          .y_label("raw x units")
+          .x_limits(-.1, 3.1)
+          .y_limits(0, 6.5)
+          .legend({"fold mean", "fold SD"}, {{40, 100, 190}, {190, 100, 35}});
+  dm::graphics::RLayout::create(1, 2).add(p).add(scales).size(1100, 490).fit_panels().save_svg(
+      "build/krr_preprocessing.svg");
+  std::print(
+      "Full metric: mean={:.6f}, population SD={:.6f}; fixed-metric LOO "
+      "MSE={:.6f}.\n\n{}\n\n{}\n\n{}\n",
+      m.feature_mean()[0],
+      m.feature_scale()[0],
+      m.rmse() * m.rmse(),
+      cv.candidates.to_md(6),
+      cv.folds.to_md(6),
+      pred.to_md(6));
+}
+```
+// result_begin: markdown
+Full metric: mean=3.250000, population SD=3.960745; fixed-metric LOO MSE=1.911202.
+
+| candidate | kernel | lambda | gamma | mse | rmse | selected |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: |
+| 0 | rbf | 0.1 | 1 | 1.583722 | 1.258460 | 1 |
+
+
+| candidate | fold | training_rows | validation_rows | mse | mean_0 | scale_0 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 3 | 1 | 1.232960 | 4.333333 | 4.027682 |
+| 0 | 1 | 3 | 1 | 0.999618 | 4.000000 | 4.320494 |
+| 0 | 2 | 3 | 1 | 1.117346 | 3.666667 | 4.496913 |
+| 0 | 3 | 3 | 1 | 2.984966 | 1.000000 | 0.816497 |
+
+
+| candidate | fold | row | observed | prediction |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0 | 1.110387 |
+| 0 | 1 | 1 | 1 | 0.000191 |
+| 0 | 2 | 2 | 0 | 1.057046 |
+| 0 | 3 | 3 | 2 | 0.272295 |
+
+\image(figures/krr_preprocessing.svg)
+// result_end
+\caption(Refitting predictor scaling changes each deletion prediction and its aggregate score.)
+\alttext(Four observed responses are compared with frozen-metric and refitted-metric LOO predictions. The fold omitting the remote x value learns a much smaller training SD; the fold means and SDs are displayed separately.)
+
+> Checking the theory on a known function
+
+>> A noisy sine wave: tuning targets observations, evaluation targets the known mean
+
+`kernel_ridge_wave` preserves the original experiment: 120 uniform inputs on [0,1],
+responses \(y=\sin(2\pi x)+\epsilon\), independent normal noise SD 0.15,
+and local seed 20240815. The C++ standard distributions can differ across standard
+libraries, so exact reproducibility refers to this build's generated rows.
+We retain all rows for fitting and use the default finite fixed-metric search.
+The 401-point evaluation grid has response equal to the generating *mean*, not a
+fresh noisy observation. Its RMSE measures curve recovery; it is not a holdout
+estimate of noisy-response prediction error. In particular the noise SD is not a
+lower bound on error against the noiseless mean.
+
+The selected gamma is about 15.6026 and lambda 0.170125, giving df 18.5290.
+Training RMSE is about 0.12535 and conditional LOO RMSE 0.14734. This corrected
+free-intercept fit is fairly local: its mean-curve error is about 0.06, despite a
+small tuning score. The displayed curve and independent reference calculation are
+more informative than claiming that cross-validation recovers the true function
+optimally. The tuning curve below holds gamma at its selected value; it is one
+slice of the full 480-candidate search.
+
+```{cpp, results="markdown", file="figures/krr_wave.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto                             d = dm::stats::kernel_ridge_wave();
+  const dm::stats::KernelRidgeRegression m(d, "y ~ x");
+  dm::dstruct::DataFrame                 truth;
+  truth.add_column("x", dm::seql(0, 1, 401).values());
+  truth = truth.mutate_with(
+      "y", [](const auto& r) { return std::sin(2 * std::numbers::pi * r.get_double("x")); });
+  const auto x = truth.numeric_column("x").values();
+  auto       fit =
+      dm::graphics::RPlot::create()
+          .points(
+              d.numeric_column("x").values(),
+              d.numeric_column("y").values(),
+              "observed",
+              {130, 130, 130},
+              2)
+          .line(x, truth.numeric_column("y").values(), "mean", {190, 100, 35})
+          .line(x, m.predict(truth), "KRR", {40, 100, 190})
+          .title("Noisy sine and selected fit")
+          .x_label("x")
+          .y_label("response")
+          .x_limits(0, 1)
+          .y_limits(-1.6, 2)
+          .legend({"observed", "mean", "KRR"}, {{130, 130, 130}, {190, 100, 35}, {40, 100, 190}});
+  auto curve = m.plot_cv_curve();
+  curve.title("Selected gamma: conditional LOO");
+  dm::graphics::RLayout::create(1, 2).add(fit).add(curve).size(1100, 490).fit_panels().save_svg(
+      "build/krr_wave.svg");
+  std::print(
+      "{}\n\n{}\n\nMean-curve grid score\n\n{}\n",
+      m.selection_table()
+          .filter([](const auto& r) { return r.get_double("selected") == 1; })
+          .to_md(6),
+      m.diagnostics()
+          .select(
+              {"intercept",
+               "rank",
+               "df",
+               "training_rmse",
+               "loo_rmse",
+               "rkhs_norm_squared",
+               "objective"})
+          .to_md(6),
+      m.score(truth).to_md(6));
+}
+```
+// result_begin: markdown
+| candidate | gamma | lambda | conditional_loo_mse | df | selected |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 418 | 15.602620 | 0.170125 | 0.021709 | 18.529039 | 1 |
+
+
+| intercept | rank | df | training_rmse | loo_rmse | rkhs_norm_squared | objective |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| -0.006493 | 50 | 18.529039 | 0.125353 | 0.147341 | 4.593228 | 2.667038 |
+
+
+Mean-curve grid score
+
+| rows | rmse | r_squared | baseline_rmse |
+| ---: | ---: | ---: | ---: |
+| 401 | 0.059972 | 0.992789 | 0.708129 |
+
+\image(figures/krr_wave.svg)
+// result_end
+\caption(A small tuning score does not certify optimal recovery of the known sine mean.)
+\alttext(The selected RBF fit follows the sine but has visible local departures. The second panel shows fixed-metric LOO MSE versus log penalty at the selected gamma, with its minimum marked.)
+
+>> Hold the kernel fixed to test the shrinkage claim
+
+Set gamma to five and sweep eight penalties, refitting only the coefficients.
+The table reports the actual squared function norm and training RSS, as well as
+the three distinct RMSEs. Df decreases towards one, the norm decreases, and
+training RSS increases. The error curves need not follow that monotone pattern.
+The truth grid is an explicit simulation diagnostic and is never used by the
+library's automatic selection rule.
+
+```{cpp, results="markdown", file="figures/krr_penalty_path.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto             d = dm::stats::kernel_ridge_wave();
+  dm::dstruct::DataFrame truth;
+  truth.add_column("x", dm::seql(0, 1, 401).values());
+  truth = truth.mutate_with(
+      "y", [](const auto& r) { return std::sin(2 * std::numbers::pi * r.get_double("x")); });
+  std::vector<double> lambda, axis, df, norm, rss, training, loo, recovery;
+  for (double penalty : {.0001, .001, .01, .1, 1., 10., 100., 1000.}) {
+    dm::stats::KernelRidgeRegressionOptions o;
+    o.gamma  = 5;
+    o.lambda = penalty;
+    const dm::stats::KernelRidgeRegression m(d, "y ~ x", o);
+    const auto                             diag = m.diagnostics();
+    lambda.push_back(penalty);
+    axis.push_back(std::log10(penalty));
+    df.push_back(m.effective_degrees_of_freedom());
+    norm.push_back(diag.double_at("rkhs_norm_squared", 0));
+    training.push_back(diag.double_at("training_rmse", 0));
+    rss.push_back(d.nrows() * training.back() * training.back());
+    loo.push_back(m.rmse());
+    recovery.push_back(m.score(truth).double_at("rmse", 0));
+  }
+  auto degrees = dm::graphics::RPlot::create()
+                     .line(axis, df, "df", {40, 100, 190})
+                     .title("Fixed gamma: complexity shrinks")
+                     .x_label("log10 lambda")
+                     .y_label("effective degrees of freedom")
+                     .x_limits(-4, 3)
+                     .y_limits(0, 21);
+  auto errors = dm::graphics::RPlot::create()
+                    .line(axis, training, "training", {130, 130, 130})
+                    .line(axis, loo, "fixed-metric LOO", {40, 100, 190})
+                    .line(axis, recovery, "known mean", {190, 100, 35})
+                    .title("Error need not be monotone")
+                    .x_label("log10 lambda")
+                    .y_label("RMSE")
+                    .x_limits(-4, 3)
+                    .y_limits(0, 1.15)
+                    .legend(
+                        {"training", "fixed-metric LOO", "known mean"},
+                        {{130, 130, 130}, {40, 100, 190}, {190, 100, 35}});
+  dm::graphics::RLayout::create(1, 2)
+      .add(degrees)
+      .add(errors)
+      .size(1100, 490)
+      .fit_panels()
+      .save_svg("build/krr_penalty_path.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("lambda", lambda);
+  table.add_column("df", df);
+  table.add_column("rkhs_norm_squared", norm);
+  table.add_column("training_RSS", rss);
+  table.add_column("training_RMSE", training);
+  table.add_column("fixed_metric_LOO_RMSE", loo);
+  table.add_column("mean_curve_RMSE", recovery);
+  std::print("{}\n", table.to_md(6));
+}
+```
+// result_begin: markdown
+| lambda | df | rkhs_norm_squared | training_RSS | training_RMSE | fixed_metric_LOO_RMSE | mean_curve_RMSE |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.0001 | 19.712209 | 256.783361 | 1.901355 | 0.125875 | 0.148536 | 0.069001 |
+| 0.0010 | 17.583646 | 39.158300 | 1.961522 | 0.127852 | 0.149368 | 0.062067 |
+| 0.0100 | 15.221179 | 8.625101 | 2.049056 | 0.130673 | 0.150124 | 0.051135 |
+| 0.1000 | 12.462191 | 3.070743 | 2.188468 | 0.135045 | 0.150653 | 0.042938 |
+| 1.0000 | 9.069928 | 2.545258 | 2.372851 | 0.140619 | 0.151942 | 0.040448 |
+| 10.0000 | 4.849643 | 1.368900 | 7.918007 | 0.256872 | 0.267234 | 0.194957 |
+| 100.0000 | 1.801325 | 0.109027 | 45.401245 | 0.615097 | 0.624309 | 0.562165 |
+| 1000.0000 | 1.091975 | 0.001636 | 66.688057 | 0.745476 | 0.752303 | 0.690227 |
+
+\image(figures/krr_penalty_path.svg)
+// result_end
+\caption(The fixed-kernel penalty path obeys the spectral complexity and optimality inequalities.)
+\alttext(Effective degrees of freedom decrease with lambda. Training RMSE rises, while fixed-metric LOO and known-mean errors reflect both smoothing bias and sampling noise.)
+
+> A dataset example: Iris petal regression
+
+>> Declare the holdout and tune within the remaining rows
+
+`dm::datasets::iris()` contains 150 flowers, 50 per species, with four numeric
+measurements in centimetres and a species label. Predict `Petal.Length` from
+`Petal.Width`; this is regression of measurements, not species classification.
+The pooled relation partly reflects differences between species. We leave out
+original rows 0, 5, 10, ... for final evaluation: 30 flowers, ten per species.
+The remaining 120 rows supply all tuning and preprocessing. This deterministic
+split is transparent, but does not quantify population uncertainty or robustness
+to a different sampling scheme.
+
+Inside those 120 rows, fold ID is retained-row index modulo four. Every validation
+fold has 30 rows (ten per species) and 90 fitting rows. Compare RBF gammas
+0.1, one and ten, each at lambda 0.01, 0.1 and one, plus the linear kernel at
+those three penalties. Each of the 48 fold fits learns its own scaling. Gamma
+values are therefore comparable in training-standardised units, without importing
+validation-row SDs. We choose the first minimum pooled validation MSE, then refit
+that fixed candidate on all 120 fitting rows. The 30 holdout rows take no part in
+this choice. Fold means and SDs below belong to the winning candidate only.
+
+```{cpp, results="markdown", file="figures/krr_iris_validation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto               iris = dm::datasets::iris();
+  std::vector<std::size_t> rows;
+  for (std::size_t i = 0; i < iris.nrows(); ++i)
+    if (i % 5 != 0)
+      rows.push_back(i);
+  const auto train   = iris.take_rows(rows);
+  const auto summary = train | dm::group_by("Species") |
+                       dm::summarise(
+                           dm::agg::n("n"),
+                           dm::agg::mean("Petal.Length", "mean_length_cm"),
+                           dm::agg::mean("Petal.Width", "mean_width_cm"));
+  std::vector<std::size_t> folds(train.nrows());
+  for (std::size_t i = 0; i < folds.size(); ++i)
+    folds[i] = i % 4;
+  std::vector<dm::stats::KernelRidgeRegressionOptions> candidates;
+  for (double g : {.1, 1., 10.})
+    for (double l : {.01, .1, 1.}) {
+      dm::stats::KernelRidgeRegressionOptions o;
+      o.gamma  = g;
+      o.lambda = l;
+      candidates.push_back(o);
+    }
+  for (double l : {.01, .1, 1.}) {
+    dm::stats::KernelRidgeRegressionOptions o;
+    o.kernel = "linear";
+    o.lambda = l;
+    candidates.push_back(o);
+  }
+  const auto cv = dm::stats::kernel_ridge_cross_validate(
+      train, "Petal.Length ~ Petal.Width", candidates, folds);
+  const std::vector<std::string>       labels{"RBF 0.1", "RBF 1", "RBF 10", "linear"};
+  const std::vector<dm::graphics::RGB> colors{
+      {40, 100, 190}, {190, 100, 35}, {70, 145, 90}, {130, 85, 155}};
+  auto curve = dm::graphics::RPlot::create();
+  for (std::size_t group = 0; group < 4; ++group) {
+    std::vector<double> error;
+    for (std::size_t i = 0; i < 3; ++i)
+      error.push_back(cv.candidates.double_at("rmse", 3 * group + i));
+    curve.line({-2, -1, 0}, error, labels[group], colors[group]);
+  }
+  curve.title("Four-fold tuning on 120 flowers")
+      .x_label("log10 lambda")
+      .y_label("pooled validation RMSE (cm)")
+      .x_limits(-2, 0)
+      .y_limits(.2, .9)
+      .legend(labels, colors);
+  const auto local = cv.folds.filter(
+      [&](const auto& r) { return r.get_double("candidate") == double(cv.best_candidate); });
+  auto metric = dm::graphics::RPlot::create()
+                    .line(
+                        local.numeric_column("fold").values(),
+                        local.numeric_column("mean_0").values(),
+                        "training mean",
+                        colors[0])
+                    .line(
+                        local.numeric_column("fold").values(),
+                        local.numeric_column("scale_0").values(),
+                        "training SD",
+                        colors[1])
+                    .title("Winning candidate: fold metrics")
+                    .x_label("validation fold")
+                    .y_label("petal width (cm)")
+                    .x_limits(0, 3)
+                    .y_limits(0, 2)
+                    .legend({"training mean", "training SD"}, {colors[0], colors[1]});
+  dm::graphics::RLayout::create(1, 2).add(curve).add(metric).size(1100, 490).fit_panels().save_svg(
+      "build/krr_iris_validation.svg");
+  std::print(
+      "Dataset: {} rows; fitting: {}; untouched holdout: 30.\n\nTraining-only "
+      "summaries\n\n{}\n\n{}\n\n{}\n",
+      iris.nrows(),
+      train.nrows(),
+      summary.to_md(6),
+      cv.candidates.to_md(6),
+      local.to_md(6));
+}
+```
+// result_begin: markdown
+Dataset: 150 rows; fitting: 120; untouched holdout: 30.
+
+Training-only summaries
+
+| Species | n | mean_length_cm | mean_width_cm |
+| :--- | ---: | ---: | ---: |
+| setosa | 40 | 1.4550 | 0.2425 |
+| versicolor | 40 | 4.2450 | 1.3225 |
+| virginica | 40 | 5.4975 | 1.9850 |
+
+
+| candidate | kernel | lambda | gamma | mse | rmse | selected |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: |
+| 0 | rbf | 0.01 | 0.1 | 0.162166 | 0.402698 | 1 |
+| 1 | rbf | 0.10 | 0.1 | 0.164237 | 0.405262 | 0 |
+| 2 | rbf | 1.00 | 0.1 | 0.181986 | 0.426599 | 0 |
+| 3 | rbf | 0.01 | 1.0 | 0.167003 | 0.408660 | 0 |
+| 4 | rbf | 0.10 | 1.0 | 0.163043 | 0.403786 | 0 |
+| 5 | rbf | 1.00 | 1.0 | 0.163543 | 0.404404 | 0 |
+| 6 | rbf | 0.01 | 10.0 | 0.202189 | 0.449654 | 0 |
+| 7 | rbf | 0.10 | 10.0 | 0.203935 | 0.451591 | 0 |
+| 8 | rbf | 1.00 | 10.0 | 0.233465 | 0.483182 | 0 |
+| 9 | linear | 0.01 | 1.0 | 0.232261 | 0.481935 | 0 |
+| 10 | linear | 0.10 | 1.0 | 0.232241 | 0.481914 | 0 |
+| 11 | linear | 1.00 | 1.0 | 0.232349 | 0.482026 | 0 |
+
+
+| candidate | fold | training_rows | validation_rows | mse | mean_0 | scale_0 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 90 | 30 | 0.154821 | 1.170000 | 0.755785 |
+| 0 | 1 | 90 | 30 | 0.189151 | 1.195556 | 0.739506 |
+| 0 | 2 | 90 | 30 | 0.160967 | 1.182222 | 0.750789 |
+| 0 | 3 | 90 | 30 | 0.143724 | 1.185556 | 0.734932 |
+
+\image(figures/krr_iris_validation.svg)
+// result_end
+\caption(Candidate comparison uses fold-local preprocessing on the 120 fitting flowers.)
+\alttext(Four curves compare pooled validation RMSE across three penalties. The second panel shows the winning candidate training mean and population SD in each of four folds.)
+
+>> Refit the chosen model and evaluate the untouched rows
+
+The following complete program repeats the declared tuning protocol, refits its
+winner once, and scores all 30 held-out flowers. The baseline always predicts
+the **120-row training response mean**. R-squared uses variation about the
+holdout response mean, so its baseline differs from that reported baseline RMSE.
+The training and fixed-metric LOO diagnostics printed alongside it describe the
+refitted model; they are not substituted for held-out performance.
+On this split, RBF gamma 0.1 and lambda 0.01 win with pooled validation RMSE
+0.402698 cm. The refitted df is 3.9336. Held-out RMSE is 0.366721 cm versus
+1.816220 cm for the training-mean predictor, with held-out R-squared 0.959029.
+The holdout result happens to be better than the tuning score; this ordering is
+not guaranteed by the procedure.
+No confidence band is shown because this estimator does not supply predictive
+uncertainty. The fitted curve covers only the observed petal-width range.
+
+```{cpp, results="markdown", file="figures/krr_iris_holdout.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto               iris = dm::datasets::iris();
+  std::vector<std::size_t> a, b;
+  for (std::size_t i = 0; i < iris.nrows(); ++i)
+    (i % 5 == 0 ? b : a).push_back(i);
+  const auto               train = iris.take_rows(a), test = iris.take_rows(b);
+  std::vector<std::size_t> folds(train.nrows());
+  for (std::size_t i = 0; i < folds.size(); ++i)
+    folds[i] = i % 4;
+  std::vector<dm::stats::KernelRidgeRegressionOptions> candidates;
+  for (double g : {.1, 1., 10.})
+    for (double l : {.01, .1, 1.}) {
+      dm::stats::KernelRidgeRegressionOptions o;
+      o.gamma  = g;
+      o.lambda = l;
+      candidates.push_back(o);
+    }
+  for (double l : {.01, .1, 1.}) {
+    dm::stats::KernelRidgeRegressionOptions o;
+    o.kernel = "linear";
+    o.lambda = l;
+    candidates.push_back(o);
+  }
+  const auto cv = dm::stats::kernel_ridge_cross_validate(
+      train, "Petal.Length ~ Petal.Width", candidates, folds);
+  const dm::stats::KernelRidgeRegression m(
+      train, "Petal.Length ~ Petal.Width", candidates[cv.best_candidate]);
+  dm::dstruct::DataFrame q;
+  q.add_column("Petal.Width", dm::seql(.1, 2.5, 201).values());
+  const auto pred = m.predict(test);
+  auto       fit  = dm::graphics::RPlot::create()
+                 .points(
+                     train.numeric_column("Petal.Width").values(),
+                     train.numeric_column("Petal.Length").values(),
+                     "training",
+                     {150, 150, 150},
+                     2)
+                 .points(
+                     test.numeric_column("Petal.Width").values(),
+                     test.numeric_column("Petal.Length").values(),
+                     "holdout",
+                     {190, 100, 35},
+                     3)
+                 .line(
+                     q.numeric_column("Petal.Width").values(),
+                     m.predict(q),
+                     "selected fit",
+                     {40, 100, 190})
+                 .title("Iris: training fit and holdout")
+                 .x_label("petal width (cm)")
+                 .y_label("petal length (cm)")
+                 .x_limits(.1, 2.5)
+                 .y_limits(.5, 9)
+                 .legend(
+                     {"training", "holdout", "selected fit"},
+                     {{150, 150, 150}, {190, 100, 35}, {40, 100, 190}});
+  auto check =
+      dm::graphics::RPlot::create()
+          .points(test.numeric_column("Petal.Length").values(), pred, "holdout", {40, 100, 190}, 3)
+          .line({.5, 7.5}, {.5, 7.5}, "identity", {130, 130, 130})
+          .title("Thirty untouched predictions")
+          .x_label("observed petal length (cm)")
+          .y_label("predicted petal length (cm)")
+          .x_limits(.5, 7.5)
+          .y_limits(.5, 8.8)
+          .legend({"holdout", "identity"}, {{40, 100, 190}, {130, 130, 130}});
+  dm::graphics::RLayout::create(1, 2).add(fit).add(check).size(1100, 490).fit_panels().save_svg(
+      "build/krr_iris_holdout.svg");
+  std::print(
+      "Chosen within training rows\n\n{}\n\nRefit diagnostics\n\n{}\n\nUntouched holdout\n\n{}\n",
+      cv.candidates.filter([](const auto& r) { return r.get_double("selected") == 1; }).to_md(6),
+      m.diagnostics().select({"lambda", "gamma", "df", "training_rmse", "loo_rmse"}).to_md(6),
+      m.score(test).to_md(6));
+}
+```
+// result_begin: markdown
+Chosen within training rows
+
+| candidate | kernel | lambda | gamma | mse | rmse | selected |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: |
+| 0 | rbf | 0.01 | 0.1 | 0.162166 | 0.402698 | 1 |
+
+
+Refit diagnostics
+
+| lambda | gamma | df | training_rmse | loo_rmse |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.01 | 0.1 | 3.933564 | 0.386271 | 0.400205 |
+
+
+Untouched holdout
+
+| rows | rmse | r_squared | baseline_rmse |
+| ---: | ---: | ---: | ---: |
+| 30 | 0.366721 | 0.959029 | 1.816220 |
+
+\image(figures/krr_iris_holdout.svg)
+// result_end
+\caption(The final score uses a separate holdout and a training-mean baseline.)
+\alttext(Petal length is regressed on petal width using the candidate chosen inside the training set. Thirty untouched predictions are compared with their observed lengths and the identity line.)
+
+> What the calculations establish
+
+The two-point examples recover the augmented normal equations, centred-kernel
+shrinkage, full smoother trace and deletion predictions exactly. Signed weights
+explain linear extrapolation while preserving constant responses. The four-row
+example demonstrates that exact fixed-metric LOO is a different question from
+refitting the whole preprocessing pipeline. The sine path checks monotone
+complexity and norm reduction without claiming monotone evaluation error.
+The Iris exercise reserves evaluation rows before fitting and compares against a
+training-only baseline. Its single deterministic split supports a limited
+predictive comparison, not population confidence intervals or a universal choice
+of kernel.
+
+Required-null fitting rows are omitted jointly; retained nonfinite values are
+rejected. Prediction preserves query-row order, returning NaN for invalid required
+query cells. `score` requires every evaluation response and prediction to be finite,
+and refuses empty or partially scored sets. Dense kernels limit scale; categorical
+expansions and a chosen distance metric can dominate the result. Gamma and lambda
+are model choices whose uncertainty is absent from the reported point predictions.
+
+> References
+
+- G. S. Kimeldorf and G. Wahba (1971), “Some results on Tchebycheffian spline
+  functions”, *Journal of Mathematical Analysis and Applications* 33(1), 82–95.
+  [Original paper](https://doi.org/10.1016/0022-247X(71)90184-3).
+  The finite representer argument connects penalised function fitting to kernels.
+- C. Saunders, A. Gammerman and V. Vovk (1998), “Ridge Regression Learning
+  Algorithm in Dual Variables”, *Proceedings of ICML*, 515–521.
+  [Author-repository record](https://eprints.soton.ac.uk/258942/) and
+  [paper](https://eprints.soton.ac.uk/258942/1/Dualrr_ICML98.pdf).
+  This report makes its optional free-intercept centring and sum-loss convention explicit.
+

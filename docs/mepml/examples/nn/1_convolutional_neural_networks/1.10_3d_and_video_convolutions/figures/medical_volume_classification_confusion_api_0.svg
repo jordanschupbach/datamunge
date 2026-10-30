@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="183.825" height="297.351" viewBox="0 0 183.825 297.351" role="img" aria-labelledby="cm-title cm-description">
+<title id="cm-title">medical volume classification / learned CNN / 1</title><desc id="cm-description">True classes are rows from top to bottom; predicted classes are columns from left to right. counts; zero support produces zero. Cell tooltips retain exact counts.</desc>
+<rect width="100%" height="100%" fill="white"/><g id="cm-content" font-family="monospace" fill="#172033" font-size="13">
+<text x="14" y="20" font-size="12" font-weight="bold">medical volume</text>
+<text x="14" y="38" font-size="12" font-weight="bold">classification /</text>
+<text x="14" y="56" font-size="12" font-weight="bold">learned CNN / 1</text>
+<text x="102.45" y="88" text-anchor="middle">Predicted class</text>
+<text transform="translate(14 154) rotate(-90)" text-anchor="middle">True class</text>
+<text x="42.45" y="131.9" text-anchor="end">0</text>
+<text transform="translate(76.45 218) rotate(-60)" text-anchor="end">0</text>
+<g data-true="0" data-predicted="0" data-count="31" data-value="31"><title>0 → 0: 31</title>
+<rect x="50.45" y="102" width="52" height="52" fill="rgb(37,99,235)" stroke="white"/>
+<text x="76.45" y="131.9" font-size="13" text-anchor="middle" fill="white">31</text>
+</g>
+<g data-true="0" data-predicted="1" data-count="1" data-value="1"><title>0 → 1: 1</title>
+<rect x="102.45" y="102" width="52" height="52" fill="rgb(234,240,249)" stroke="white"/>
+<text x="128.45" y="131.9" font-size="13" text-anchor="middle" fill="#172033">1</text>
+</g>
+<text x="42.45" y="183.9" text-anchor="end">1</text>
+<text transform="translate(128.45 218) rotate(-60)" text-anchor="end">1</text>
+<g data-true="1" data-predicted="0" data-count="24" data-value="24"><title>1 → 0: 24</title>
+<rect x="50.45" y="154" width="52" height="52" fill="rgb(83,132,238)" stroke="white"/>
+<text x="76.45" y="183.9" font-size="13" text-anchor="middle" fill="white">24</text>
+</g>
+<g data-true="1" data-predicted="1" data-count="8" data-value="8"><title>1 → 1: 8</title>
+<rect x="102.45" y="154" width="52" height="52" fill="rgb(188,207,245)" stroke="white"/>
+<text x="128.45" y="183.9" font-size="13" text-anchor="middle" fill="#172033">8</text>
+</g>
+<defs><linearGradient id="cm-scale"><stop stop-color="#F1F5F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+<rect x="50.45" y="249.351" width="104" height="10" fill="url(#cm-scale)"/>
+<text x="50.45" y="274.351">0</text><text x="154.45" y="274.351" text-anchor="end">31</text>
+</g></svg>

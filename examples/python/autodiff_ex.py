@@ -1,3 +1,4 @@
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/autodiff_ex.py
 # Note: the C++ autodiff_ex.cpp additionally demonstrates datamunge::autodiff::derivative/
 # gradient_forward/gradient_reverse/jacobian_forward/hessian -- generic C++ template driver
 # functions that work over any callable, but templates can't cross the SWIG boundary, so

@@ -2,6 +2,7 @@
 
 #include <datamunge/dstruct/dstruct.hpp>
 
+#include <cmath>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -89,6 +90,32 @@ TEST(DataFrame, SupportsProjectionFilteringSlicingAndDroppingNulls) {
   const auto dropped = frame.drop_nulls();
   EXPECT_EQ(dropped.nrows(), 2u);
   EXPECT_EQ(dropped.string_at("label", 1), "b");
+}
+
+TEST(DataFrame, SupportsRStyleFreeHeadAndTail) {
+  DataFrame frame{{{"x", DataFrame::numeric_column_type(std::vector<std::optional<double>>{1, 2, 3, 4, 5, 6, 7, 8})}}};
+
+  EXPECT_EQ(datamunge::head(frame).nrows(), 6u);
+  EXPECT_EQ(datamunge::tail(frame).nrows(), 6u);
+
+  const auto first3 = datamunge::head(frame, 3);
+  EXPECT_EQ(first3.nrows(), 3u);
+  EXPECT_EQ(first3.optional_double_at("x", 2), std::optional<double>(3.0));
+
+  const auto last3 = datamunge::tail(frame, 3);
+  EXPECT_EQ(last3.optional_double_at("x", 0), std::optional<double>(6.0));
+
+  // Negative n drops rows from the other end, like R.
+  const auto all_but_last2 = datamunge::head(frame, -2);
+  EXPECT_EQ(all_but_last2.nrows(), 6u);
+  EXPECT_EQ(all_but_last2.optional_double_at("x", 5), std::optional<double>(6.0));
+  const auto all_but_first2 = datamunge::tail(frame, -2);
+  EXPECT_EQ(all_but_first2.nrows(), 6u);
+  EXPECT_EQ(all_but_first2.optional_double_at("x", 0), std::optional<double>(3.0));
+
+  EXPECT_EQ(datamunge::head(frame, 100).nrows(), 8u);
+  EXPECT_EQ(datamunge::head(frame, -100).nrows(), 0u);
+  EXPECT_EQ(datamunge::tail(frame, 0).nrows(), 0u);
 }
 
 TEST(DataFrame, SupportsSortingSummariesAndValueCounts) {
@@ -408,3 +435,44 @@ TEST(DataFrame, SupportsArrowRoundTrip) {
   EXPECT_EQ(restored.string_at("label", 0), "x");
 }
 #endif
+
+TEST(DataFrame, NaNKeysFormOneGroupLikeR) {
+  // Every NaN (any payload) is one key, separate from null -- previously any grouping verb
+  // threw std::out_of_range("unordered_map::at") because NaN != NaN.
+  DataFrame frame;
+  frame.add_column("k", std::vector<std::optional<double>>{std::nan(""), 1.0, -std::nan("1"), std::nullopt, 1.0});
+  frame.add_column("v", std::vector<double>{1, 2, 3, 4, 5});
+
+  const auto counts = frame.count({"k"});
+  ASSERT_EQ(counts.nrows(), 3u);
+  EXPECT_TRUE(std::isnan(counts.double_at("k", 0)));
+  EXPECT_DOUBLE_EQ(counts.double_at("n", 0), 2);
+  EXPECT_DOUBLE_EQ(counts.double_at("n", 1), 2);
+  EXPECT_TRUE(counts.is_null("k", 2));
+  EXPECT_DOUBLE_EQ(counts.double_at("n", 2), 1);
+
+  const auto sums = frame.group_by_sum({"k"}, {"v"});
+  ASSERT_EQ(sums.nrows(), 3u);
+  EXPECT_DOUBLE_EQ(sums.double_at("v", 0), 4);
+
+  EXPECT_EQ(frame.n_distinct("k"), 3u);
+  EXPECT_EQ(frame.drop_duplicates({"k"}).nrows(), 3u);
+
+  DataFrame lookup;
+  lookup.add_column("k", std::vector<double>{std::nan("")});
+  lookup.add_column("w", std::vector<double>{9});
+  const auto joined = frame.join(lookup, "k", "k", DataFrame::JoinType::Left);
+  EXPECT_EQ(joined.optional_double_at("w", 0), std::optional<double>(9));
+  EXPECT_EQ(joined.optional_double_at("w", 1), std::nullopt);
+}
+
+TEST(DataFrame, PivotWiderWithoutIdColumnsGivesOneRow) {
+  DataFrame frame;
+  frame.add_column("name", std::vector<std::string>{"a", "b"});
+  frame.add_column("value", std::vector<double>{1, 2});
+  const auto wide = frame.pivot_wider("name", "value");
+  ASSERT_EQ(wide.nrows(), 1u);
+  EXPECT_EQ(wide.columns(), (std::vector<std::string>{"a", "b"}));
+  EXPECT_DOUBLE_EQ(wide.double_at("a", 0), 1);
+  EXPECT_DOUBLE_EQ(wide.double_at("b", 0), 2);
+}

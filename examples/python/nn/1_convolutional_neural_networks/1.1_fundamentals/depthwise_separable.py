@@ -1,6 +1,6 @@
 # Native Python NN example. Depthwise separable convolution: equivalence, gradients, rank and cost.
-"""CMD: just python-example depthwise_separable
-Depthwise separable convolution: equivalence, gradients, rank and cost.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/depthwise_separable.py
+"""Depthwise separable convolution: equivalence, gradients, rank and cost.
 
 Port of tflow's depthwise_separable. Compose HWIM depthwise and 1x1
 pointwise filters into a dense HWIO filter, with no intervening activation.
@@ -20,7 +20,7 @@ TF -> datamunge: DepthwiseConv2dNative is nn.depthwise_conv2d, Svd is
 nn.svd, AddSymbolicGradients is nn.grad. Inputs come from the same
 std::mt19937 streams as the C++ (bit-identical).
 
-C++ reference: examples/cpp/nn/1_convolutional_neural_networks/1.1_fundamentals/depthwise_separable.cpp
+C++ reference: examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/depthwise_separable.cpp
 """
 import math
 import struct

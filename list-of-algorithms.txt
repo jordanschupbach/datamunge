@@ -4,11 +4,11 @@ General combinatorial algorithms
     [x] Floyd's cycle-finding algorithm: finds a cycle in function value iterations[3]  -- datamunge::algorithms::floyd_cycle_detection; report examples/org/floyd_cycle_detection_analysis.org
     [x] Gale–Shapley algorithm: solves the stable matching problem[4][5][6]  -- datamunge::algorithms::gale_shapley; report examples/org/gale_shapley_analysis.org
     Pseudorandom number generators (uniformly distributed—see also List of pseudorandom number generators for other PRNGs with varying degrees of convergence and varying statistical quality):[citation needed]
-        [x] ACORN generator  -- datamunge::random::Acorn64; report examples/org/acorn_generator_analysis.org
+        [x] ACORN generator  -- datamunge::random::Acorn64; report docs/mepml/examples/acorn_generator_analysis.mepml
         [x] Blum Blum Shub  -- datamunge::random::BlumBlumShub; report examples/org/blum_blum_shub_analysis.org
         [x] Lagged Fibonacci generator  -- datamunge::random::LaggedFibonacci64; report examples/org/lagged_fibonacci_analysis.org
         [x] Linear congruential generator  -- datamunge::random::LinearCongruential64; report examples/org/linear_congruential_analysis.org
-        [x] Mersenne Twister  -- datamunge::random::MersenneTwister64 (MT19937-64); report examples/org/mersenne_twister64.org
+        [x] Mersenne Twister -- datamunge::random::MersenneTwister64 (MT19937-64), inspectable twist/tempering, inverse output map and aligned-block continuation recovery; report docs/mepml/examples/mersenne_twister64.mepml
 
 Graph algorithms
 Further information: Category:Graph algorithms and Graph theory
@@ -57,7 +57,7 @@ Routing for graphs
         [x] Reverse-delete algorithm  -- datamunge::algorithms::reverse_delete; report examples/org/reverse_delete_analysis.org
     [x] Nonblocking minimal spanning switch say, for a telephone exchange  -- datamunge::algorithms::nonblocking_switch_routes (two-middle Clos rearrangement); report examples/org/nonblocking_switch_analysis.org
     Shortest path problem
-        [x] Bellman–Ford algorithm: computes shortest paths in a weighted graph (where some of the edge weights may be negative)  -- datamunge::algorithms::bellman_ford; report examples/org/bellman_ford_analysis.org
+        [x] Bellman–Ford algorithm: computes shortest paths in a weighted graph (where some of the edge weights may be negative)  -- datamunge::algorithms::bellman_ford; report docs/mepml/examples/bellman_ford_analysis.mepml
         [x] Dijkstra's algorithm: computes shortest paths in a graph with non-negative edge weights  -- datamunge::algorithms::dijkstra; report examples/org/dijkstra_analysis.org
         [x] Floyd–Warshall algorithm: solves the all pairs shortest path problem in a weighted, directed graph  -- datamunge::algorithms::floyd_warshall; report examples/org/floyd_warshall_analysis.org
         [x] Johnson's algorithm: all pairs shortest path algorithm in sparse weighted directed graph  -- datamunge::algorithms::johnson_all_pairs_shortest_paths; report examples/org/johnson_apsp_analysis.org
@@ -67,18 +67,18 @@ Routing for graphs
         [x] Nearest neighbour algorithm  -- datamunge::algorithms::nearest_neighbor_tsp; report examples/org/nearest_neighbor_tsp_analysis.org
     Vehicle routing problem
         [x] Clarke and Wright Saving algorithm  -- datamunge::algorithms::clarke_wright_savings; report examples/org/clarke_wright_analysis.org
-    [x] Warnsdorff's rule: a heuristic method for solving the Knight's tour problem  -- datamunge::algorithms::warnsdorff_knight_tour; report examples/org/warnsdorff_analysis.org
+    [x] Warnsdorff's rule: a heuristic method for solving the Knight's tour problem  -- datamunge::algorithms::warnsdorff_knight_tour; report docs/mepml/examples/warnsdorff_analysis.mepml
 
 Graph search
 Further information: Graph search algorithm and State space search
 
-    [x] A*: special case of best-first search that uses heuristics to improve speed  -- datamunge::algorithms::a_star_search; report examples/org/a_star_analysis.org
+    [x] A*: special case of best-first search that uses heuristics to improve speed  -- datamunge::algorithms::a_star_search; report docs/mepml/examples/a_star_analysis.mepml
     [x] B*: a best-first graph search algorithm that finds the least-cost path from a given initial node to any goal node (out of one or more possible goals)  -- datamunge::algorithms::b_star_search (multi-goal best-first); report examples/org/b_star_analysis.org
-    [x] Backtracking: abandons partial solutions when they are found not to satisfy a complete solution  -- datamunge::algorithms::backtracking_search; report examples/org/backtracking_search_analysis.org
-    [x] Beam search: is a heuristic search algorithm that is an optimization of best-first search that reduces its memory requirement  -- datamunge::algorithms::beam_search; report examples/org/beam_search_analysis.org
-    [x] Beam stack search: integrates backtracking with beam search  -- datamunge::algorithms::beam_stack_search; report examples/org/beam_stack_search_analysis.org
-    [x] Best-first search: traverses a graph in the order of likely importance using a priority queue  -- datamunge::algorithms::best_first_search; report examples/org/best_first_search_analysis.org
-    [x] Bidirectional search: find the shortest path from an initial vertex to a goal vertex in a directed graph  -- datamunge::algorithms::bidirectional_search (undirected graph); report examples/org/bidirectional_search_analysis.org
+    [x] Backtracking: abandons partial solutions when they are found not to satisfy a complete solution  -- datamunge::algorithms::backtracking_search; report docs/mepml/examples/backtracking_search_analysis.mepml
+    [x] Beam search: is a heuristic search algorithm that is an optimization of best-first search that reduces its memory requirement  -- datamunge::algorithms::beam_search; report docs/mepml/examples/beam_search_analysis.mepml
+    [x] Beam stack search: integrates backtracking with beam search  -- datamunge::algorithms::beam_stack_search; report docs/mepml/examples/beam_stack_search_analysis.mepml
+    [x] Best-first search: traverses a graph in the order of likely importance using a priority queue  -- datamunge::algorithms::best_first_search; report docs/mepml/examples/best_first_search_analysis.mepml
+    [x] Bidirectional search: find the shortest path from an initial vertex to a goal vertex in a directed graph  -- datamunge::algorithms::bidirectional_search (undirected graph); report docs/mepml/examples/bidirectional_search_analysis.mepml
     [x] Breadth-first search: traverses a graph level by level  -- datamunge::algorithms::breadth_first_search; report examples/org/breadth_first_search_analysis.org
     [x] Brute-force search: an exhaustive and reliable search method, but computationally inefficient in many applications  -- datamunge::algorithms::brute_force_search; report examples/org/brute_force_search_analysis.org
     [x] D*: an incremental heuristic search algorithm  -- datamunge::algorithms::d_star_replan (grid replanning kernel); report examples/org/d_star_analysis.org
@@ -117,7 +117,7 @@ Approximate sequence matching
     String metrics: computes a similarity or dissimilarity (distance) score between two pairs of text strings
         [x] Damerau–Levenshtein distance: computes a distance measure between two strings, improves on Levenshtein distance  -- datamunge::algorithms::damerau_levenshtein_distance (true/unrestricted Lowrance-Wagner); report examples/org/damerau_levenshtein_analysis.org
         [x] Dice's coefficient (also known as the Dice coefficient): a similarity measure related to the Jaccard index  -- datamunge::algorithms::dice_coefficient (bigram Sorensen-Dice); report examples/org/dice_coefficient_analysis.org
-        [x] Hamming distance: sum number of positions which are different  -- datamunge::algorithms::hamming_distance; report examples/org/hamming_distance_analysis.org
+        [x] Hamming distance: fixed byte positions, packed-bit XOR/popcount, finite-code separation and q-ary error balls -- datamunge::algorithms::hamming_distance / hamming_bit_distance; report docs/mepml/examples/hamming_distance_analysis.mepml
         [x] Jaro–Winkler distance: is a measure of similarity between two strings  -- datamunge::algorithms::jaro_similarity / jaro_winkler_similarity; report examples/org/jaro_winkler_analysis.org
         [x] Levenshtein edit distance: computes a metric for the amount of difference between two sequences  -- datamunge::algorithms::levenshtein_distance (Wagner-Fischer); report examples/org/levenshtein_analysis.org
     [x] Trigram search: search for text when the exact syntax or spelling of the target object is not precisely known  -- datamunge::algorithms::trigram_search (Jaccard of trigram sets); report examples/org/trigram_search_analysis.org
@@ -197,7 +197,7 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
         [x] Slowsort  -- datamunge::algorithms::slowsort (joke-tier; joke_sorts.hpp)
         [x] Strand sort  -- datamunge::algorithms::strand_sort (extract increasing runs, merge); report examples/org/strand_sort_analysis.org
     Non-comparison sorts
-        [x] Bead sort  -- datamunge::algorithms::bead_sort (gravity sort, non-negative ints); report examples/org/bead_sort_analysis.org
+        [x] Bead sort  -- datamunge::algorithms::bead_sort (gravity sort, non-negative ints); report docs/mepml/examples/bead_sort_analysis.mepml
         [x] Bucket sort  -- datamunge::algorithms::bucket_sort; report examples/org/bucket_sort_analysis.org
         [x] Burstsort: build a compact, cache efficient burst trie and then traverse it to create sorted output  -- datamunge::algorithms::burstsort; report examples/org/burstsort_analysis.org
         [x] Counting sort  -- datamunge::algorithms::counting_sort; report examples/org/counting_sort_analysis.org
@@ -230,17 +230,17 @@ Further information: Substrings
     [x] Kadane's algorithm: finds the contiguous subarray with largest sum in an array of numbers  -- datamunge::algorithms::kadane; report examples/org/kadane_analysis.org
     [x] Longest common substring problem: find the longest string (or strings) that is a substring (or are substrings) of two or more strings  -- datamunge::algorithms::longest_common_substring (two strings, common-suffix DP); report examples/org/longest_common_substring_analysis.org
     Matching wildcards
-        [x] Krauss matching wildcards algorithm: an open-source non-recursive algorithm  -- datamunge::algorithms::wildcard_match (non-recursive two-pointer; wildmat is the recursive variant); report examples/org/wildcard_match_analysis.org
-        [x] Rich Salz' wildmat: a widely used open-source recursive algorithm  -- realized by datamunge::algorithms::wildcard_match (same * and ? semantics, non-recursive); report examples/org/wildcard_match_analysis.org
+        [x] Krauss-style non-recursive wildcard matching -- datamunge::algorithms::wildcard_match (restricted byte * and ?, last-star scan, quadratic worst case); report docs/mepml/examples/wildcard_match_analysis.mepml
+        [ ] Rich Salz' wildmat: a recursive matcher; related non-recursive * and ? subset analysed in docs/mepml/examples/wildcard_match_analysis.mepml
     Substring search
-        [x] Aho–Corasick string matching algorithm: trie based algorithm for finding all substring matches to any of a finite set of strings  -- datamunge::algorithms::aho_corasick_search; report examples/org/aho_corasick_analysis.org
+        [x] Aho–Corasick string matching algorithm: trie based algorithm for finding all substring matches to any of a finite set of strings  -- datamunge::algorithms::aho_corasick_search; report docs/mepml/examples/aho_corasick_analysis.mepml
         [x] Boyer–Moore–Horspool algorithm: Simplification of Boyer–Moore  -- datamunge::algorithms::boyer_moore_horspool_search; report examples/org/boyer_moore_horspool_analysis.org
         [x] Boyer–Moore string-search algorithm: amortized linear (sublinear in most times) algorithm for substring search  -- datamunge::algorithms::boyer_moore_search; report examples/org/boyer_moore_analysis.org
         [x] Knuth–Morris–Pratt algorithm: substring search which bypasses reexamination of matched characters  -- datamunge::algorithms::kmp_search (+ kmp_prefix_function); report examples/org/kmp_analysis.org
         [x] Rabin–Karp string search algorithm: searches multiple patterns efficiently  -- datamunge::algorithms::rabin_karp_search; report examples/org/rabin_karp_analysis.org
-        [x] Z-algorithm (fundamental preprocessing): linear-time substring search via the Z-array  -- datamunge::algorithms::z_array / z_search; report examples/org/z_algorithm_analysis.org
+        [x] Z-algorithm (fundamental preprocessing): linear-time substring search via the Z-array  -- datamunge::algorithms::z_array / z_search; report docs/mepml/examples/z_algorithm_analysis.mepml
         [x] Manacher's algorithm: longest palindromic substring in linear time  -- datamunge::algorithms::longest_palindrome / palindrome_radii; report examples/org/manacher_analysis.org
-        [x] Zhu–Takaoka string matching algorithm: a variant of Boyer–Moore  -- datamunge::algorithms::zhu_takaoka_search (digram bad-character + good-suffix); report examples/org/zhu_takaoka_analysis.org
+        [x] Zhu–Takaoka string matching algorithm: a variant of Boyer–Moore  -- datamunge::algorithms::zhu_takaoka_search (digram bad-character + good-suffix); report docs/mepml/examples/zhu_takaoka_analysis.mepml
     [x] Ukkonen's algorithm: a linear-time, online algorithm for constructing suffix trees  -- datamunge::algorithms::build_suffix_tree (+ suffix_tree_contains / distinct_substring_count); report examples/org/ukkonen_analysis.org
 
 Computational mathematics
@@ -274,7 +274,7 @@ Further information: Computational geometry
     Collision detection algorithms: check for the collision or intersection of two given solids
     [x] Cone algorithm: identify surface points  -- datamunge::geometry::cone_surface_points (largest angular neighbor-gap exceeds threshold => boundary point); report examples/org/cone_algorithm_analysis.org
     [x] Convex hull algorithms: determining the convex hull of a set of points  -- datamunge::geometry::convex_hull (Andrew's monotone chain, O(n log n)); report examples/org/convex_hull_analysis.org
-        [x] Chan's algorithm  -- datamunge::geometry::chans_algorithm (O(n log h), group-hull + wrap); report examples/org/chans_algorithm_analysis.org
+        [x] Chan's algorithm  -- datamunge::geometry::chans_algorithm (O(n log h), group-hull + wrap); report docs/mepml/examples/chans_algorithm_analysis.mepml
         [x] Gift wrapping algorithm or Jarvis march  -- datamunge::geometry::jarvis_march (O(n*h), output-sensitive); report examples/org/jarvis_march_analysis.org
         [x] Graham scan  -- datamunge::geometry::graham_scan (O(n log n), angular sweep); report examples/org/graham_scan_analysis.org
         Kirkpatrick–Seidel algorithm
@@ -285,7 +285,7 @@ Further information: Computational geometry
     [x] Jump-and-Walk algorithm: an algorithm for point location in triangulations  -- datamunge::geometry::locate_triangle / TriangulationLocator (random jump + stochastic orientation walk, expected O(n^1/3)); report examples/org/jump_and_walk_analysis.org
     [x] Laplacian smoothing: an algorithm to smooth a polygonal mesh  -- datamunge::geometry::laplacian_smooth / dirichlet_energy (umbrella-average Jacobi sweeps, energy descent); report examples/org/laplacian_smoothing_analysis.org
     [x] Line segment intersection: finding whether lines intersect, usually with a sweep line algorithm  -- datamunge::geometry::segments_intersect / segment_intersection_point; report examples/org/segment_intersection_analysis.org
-        [x] Bentley–Ottmann algorithm  -- datamunge::geometry::bentley_ottmann (sweep-line segment intersections, O((n+k) log n)); report examples/org/bentley_ottmann_analysis.org
+        [x] Bentley–Ottmann algorithm  -- datamunge::geometry::bentley_ottmann (sweep-line segment intersections, O((n+k) log n)); report docs/mepml/examples/bentley_ottmann_analysis.mepml
         [x] Shamos–Hoey algorithm  -- datamunge::geometry::any_segments_intersect (sweep-line detection of any segment intersection, O(n log n)); report examples/org/shamos_hoey_analysis.org
     [x] Minimum bounding box algorithms: find the oriented minimum bounding box enclosing a set of points  -- datamunge::geometry::minimum_bounding_rectangle (rotating calipers); report examples/org/min_bounding_box_analysis.org
     [x] Nearest neighbor search: find the nearest point or points to a query point  -- datamunge::geometry::KDTree2D (k-d tree nearest / k_nearest); report examples/org/kdtree_nn_analysis.org
@@ -312,7 +312,7 @@ Further information: Number theory
     [x] Booth's multiplication algorithm  -- datamunge::algorithms::booth_multiply; report examples/org/booth_analysis.org
     [x] Chakravala method: a cyclic algorithm to solve indeterminate quadratic equations, including Pell's equation  -- datamunge::algorithms::chakravala; report examples/org/chakravala_analysis.org
     Discrete logarithm:
-        [x] Baby-step giant-step  -- datamunge::algorithms::baby_step_giant_step (Shanks, meet-in-the-middle, O(sqrt p)); report examples/org/baby_step_giant_step_analysis.org
+        [x] Baby-step giant-step  -- datamunge::algorithms::baby_step_giant_step (Shanks, meet-in-the-middle, O(sqrt p)); report docs/mepml/examples/baby_step_giant_step_analysis.mepml
         [x] Index calculus algorithm  -- datamunge::algorithms::index_calculus (factor-base discrete log, subexponential); report examples/org/index_calculus_analysis.org
         [x] Pohlig–Hellman algorithm  -- datamunge::algorithms::pohlig_hellman_log; report examples/org/pohlig_hellman_analysis.org
         [x] Pollard's rho algorithm for logarithms  -- datamunge::algorithms::pollard_rho_log; report examples/org/pollard_rho_log_analysis.org
@@ -334,7 +334,7 @@ Further information: Number theory
         [x] Trial division  -- datamunge::algorithms::trial_division_factorize; report examples/org/trial_division_analysis.org
     [x] Lenstra–Lenstra–Lovász algorithm (also known as LLL algorithm): find a short, nearly orthogonal lattice basis in polynomial time  -- datamunge::algorithms::lll_reduce; report examples/org/lll_analysis.org
     [x] Modular square root: computing square roots modulo a prime number  -- datamunge::algorithms::tonelli_shanks / cipolla_sqrt; reports examples/org/tonelli_shanks_analysis.org, examples/org/cipolla_analysis.org
-        [x] Berlekamp's root finding algorithm  -- datamunge::algorithms::berlekamp_roots (Berlekamp-Rabin, incl. modular sqrt); report examples/org/berlekamp_analysis.org
+        [x] Berlekamp's root finding algorithm  -- datamunge::algorithms::berlekamp_roots (Berlekamp-Rabin, incl. modular sqrt); report docs/mepml/examples/berlekamp_analysis.mepml
         [x] Cipolla's algorithm  -- datamunge::algorithms::cipolla_sqrt (modular sqrt via F_{p^2}); report examples/org/cipolla_analysis.org
         [x] Tonelli–Shanks algorithm  -- datamunge::algorithms::tonelli_shanks; report examples/org/tonelli_shanks_analysis.org
     Multiplication algorithms: fast multiplication of two numbers
@@ -343,12 +343,12 @@ Further information: Number theory
         [x] Toom–Cook multiplication  -- datamunge::algorithms::toom3_mul (Toom-3, O(n^1.465)); report examples/org/toom3_analysis.org
     Odlyzko–Schönhage algorithm: calculates nontrivial zeroes of the Riemann zeta function
     Primality tests: determining whether a given number is prime
-        [x] AKS primality test  -- datamunge::algorithms::aks_is_prime; report examples/org/aks_primality_analysis.org
-        [x] Baillie–PSW primality test  -- datamunge::algorithms::baillie_psw (strong MR base 2 + strong Lucas); report examples/org/baillie_psw_analysis.org
+        [x] AKS primality test  -- datamunge::algorithms::aks_is_prime; report docs/mepml/examples/aks_primality_analysis.mepml
+        [x] Baillie–PSW primality test  -- datamunge::algorithms::baillie_psw (strong MR base 2 + strong Lucas); report docs/mepml/examples/baillie_psw_analysis.mepml
         [x] Fermat primality test  -- datamunge::algorithms::fermat_probable_prime; report examples/org/fermat_primality_analysis.org
         [x] Lucas primality test  -- datamunge::algorithms::lucas_primality_test (deterministic); report examples/org/lucas_primality_analysis.org
         [x] Miller–Rabin primality test  -- datamunge::algorithms::miller_rabin; report examples/org/miller_rabin_analysis.org
-        [x] Sieve of Atkin  -- datamunge::algorithms::atkin_primes; report examples/org/atkin_sieve_analysis.org
+        [x] Sieve of Atkin  -- datamunge::algorithms::atkin_primes; report docs/mepml/examples/atkin_sieve_analysis.mepml
         [x] Sieve of Eratosthenes  -- datamunge::algorithms::prime_sieve / primes_up_to; report examples/org/sieve_of_eratosthenes_analysis.org
         [x] Sieve of Sundaram  -- datamunge::algorithms::sundaram_primes; report examples/org/sundaram_sieve_analysis.org
 
@@ -357,7 +357,7 @@ Further information: List of numerical analysis topics and Numerical analysis
 Differential equation solving
 Further information: Differential equation
 
-    [x] Backward Euler method  -- datamunge::algorithms::backward_euler (implicit, Newton solve, A-stable); report examples/org/backward_euler_analysis.org
+    [x] Backward Euler method  -- datamunge::algorithms::backward_euler (implicit, Newton solve, A-stable); report docs/mepml/examples/backward_euler_analysis.mepml
     [x] Euler method  -- datamunge::algorithms::euler_method (forward/explicit); report examples/org/euler_method_analysis.org
     [x] Linear multistep methods  -- datamunge::ode (linear multistep, ode/ode.hpp)
     Multigrid methods (MG methods), a group of algorithms for solving differential equations using a hierarchy of discretizations
@@ -374,7 +374,7 @@ Elementary and special functions
 Further information: Special functions
 
     Computation of π:
-        [x] Bailey–Borwein–Plouffe formula: (BBP formula) a spigot algorithm for the computation of the nth binary digit of π  -- datamunge::algorithms::bbp_pi_hex_digit; report examples/org/bbp_pi_analysis.org
+        [x] Bailey–Borwein–Plouffe formula: (BBP formula) a spigot algorithm for the computation of the nth binary digit of π  -- datamunge::algorithms::bbp_pi_hex_digit; report docs/mepml/examples/bbp_pi_analysis.mepml
         [x] Borwein's algorithm: an algorithm to calculate the value of 1/π  -- datamunge::algorithms::borwein_pi / borwein_pi_sequence (quartic-convergence AGM-style iteration); report examples/org/borwein_pi_analysis.org
         [x] Chudnovsky algorithm: a fast method for calculating the digits of π  -- datamunge::algorithms::chudnovsky_pi; report examples/org/chudnovsky_pi_analysis.org
         [x] Gauss–Legendre algorithm: computes the digits of pi  -- datamunge::algorithms::gauss_legendre_pi; report examples/org/gauss_legendre_pi_analysis.org
@@ -386,7 +386,7 @@ Further information: Special functions
         [x] Restoring division  -- datamunge::algorithms::restoring_divide; report examples/org/restoring_division_analysis.org
         [x] SRT division  -- datamunge::algorithms::srt_divide / srt_quotient_digits (radix-2, redundant digit set {-1,0,1}, bounded partial remainder); report examples/org/srt_division_analysis.org
     Exponentiation:
-        [x] Addition-chain exponentiation: exponentiation by positive integer powers that requires a minimal number of multiplications  -- datamunge::algorithms::addition_chain; report examples/org/addition_chain_analysis.org
+        [x] Addition-chain exponentiation: exponentiation by positive integer powers that requires a minimal number of multiplications  -- datamunge::algorithms::addition_chain; report docs/mepml/examples/addition_chain_analysis.mepml
         [x] Exponentiating by squaring: an algorithm used for the fast computation of large integer powers of a number  -- datamunge::algorithms::mod_pow (modular exponentiation); report examples/org/modular_exponentiation_analysis.org
     Hyperbolic and Trigonometric Functions:
         [x] BKM algorithm: computes elementary functions using a table of logarithms  -- datamunge::algorithms::bkm_ln / bkm_exp (shift-and-add, table of ln(1+2^-k)); report examples/org/bkm_analysis.org
@@ -403,7 +403,7 @@ Further information: Special functions
     [x] Rounding functions: the classic ways to round numbers  -- datamunge::algorithms::round_half_to_even / round_half_up / round_with / rounding_bias (tie-breaking modes + bias measure); report examples/org/rounding_functions_analysis.org
     [x] Spigot algorithm: a way to compute the value of a mathematical constant without knowing preceding digits  -- datamunge::algorithms::spigot_e; report examples/org/spigot_analysis.org
     Square and Nth root of a number:
-        [x] Alpha max plus beta min algorithm: an approximation of the square-root of the sum of two squares  -- datamunge::algorithms::alpha_max_beta_min; report examples/org/alpha_max_beta_min_analysis.org
+        [x] Alpha max plus beta min algorithm: an approximation of the square-root of the sum of two squares  -- datamunge::algorithms::alpha_max_beta_min; report docs/mepml/examples/alpha_max_beta_min_analysis.mepml
         [x] Methods of computing square roots  -- datamunge::algorithms::digit_by_digit_sqrt; report examples/org/sqrt_digits_analysis.org
         [x] nth root algorithm  -- datamunge::algorithms::nth_root (Newton); report examples/org/nth_root_analysis.org
     Summation:
@@ -426,7 +426,7 @@ Further information: Extrapolation and Interpolation
     [x] Linear interpolation: a method of curve fitting using linear polynomials  -- datamunge::algorithms::linear_interpolate; report examples/org/linear_interpolation_analysis.org
     [x] Monotone cubic interpolation: a variant of cubic interpolation that preserves monotonicity of the data set being interpolated.  -- datamunge::algorithms::monotone_cubic_interpolate (Fritsch-Carlson); report examples/org/monotone_cubic_analysis.org
     Multivariate interpolation
-        [x] Bicubic interpolation: a generalization of cubic interpolation to two dimensions  -- datamunge::algorithms::bicubic_interpolate (Keys cubic convolution, a=-1/2, separable 4x4 stencil); report examples/org/bicubic_interpolation_analysis.org
+        [x] Bicubic interpolation: a generalization of cubic interpolation to two dimensions  -- datamunge::algorithms::bicubic_interpolate (Keys cubic convolution, a=-1/2, separable 4x4 stencil); report docs/mepml/examples/bicubic_interpolation_analysis.mepml
         [x] Bilinear interpolation: an extension of linear interpolation for interpolating functions of two variables on a regular grid  -- datamunge::algorithms::bilinear_interpolate; report examples/org/bilinear_analysis.org
         [x] Lanczos resampling ("Lanzosh"): a multivariate interpolation method used to compute new values for any digitally sampled data  -- datamunge::algorithms::lanczos_resample / lanczos_resample_at (windowed-sinc kernel L(x)=sinc(x)sinc(x/a)); report examples/org/lanczos_resampling_analysis.org
         [x] Nearest-neighbor interpolation  -- datamunge::algorithms::nearest_neighbor_interpolate (piecewise-constant, nearest-sample, O(log n)); report examples/org/nearest_neighbor_interpolation_analysis.org
@@ -436,7 +436,7 @@ Further information: Extrapolation and Interpolation
         [x] Neville's algorithm  -- datamunge::algorithms::neville_interpolate; report examples/org/neville_analysis.org
     Spline interpolation: Reduces error with Runge's phenomenon.
         [x] Natural cubic spline interpolation  -- datamunge::algorithms::natural_cubic_spline / cubic_spline_eval; report examples/org/cubic_spline_analysis.org
-        [x] De Boor algorithm: B-splines  -- datamunge::geometry::de_boor (stable B-spline evaluation); report examples/org/de_boor_analysis.org
+        [x] De Boor algorithm: validated B-spline evaluation with construction traces, exact endpoints and separate-span plots -- datamunge::geometry::DeBoorSpline / de_boor; report docs/mepml/examples/de_boor_analysis.mepml
         [x] De Casteljau's algorithm: Bézier curves  -- datamunge::algorithms::de_casteljau; report examples/org/de_casteljau_analysis.org
     Trigonometric interpolation
 
@@ -444,7 +444,7 @@ Linear algebra
 Further information: Numerical linear algebra
 
     Eigenvalue algorithms
-        [x] Arnoldi iteration  -- datamunge::algorithms::arnoldi_iteration (orthonormal Krylov basis + upper-Hessenberg projection, Ritz values); report examples/org/arnoldi_iteration_analysis.org
+        [x] Arnoldi iteration  -- datamunge::algorithms::arnoldi_iteration (orthonormal Krylov basis + upper-Hessenberg projection, Ritz values); report docs/mepml/examples/arnoldi_iteration_analysis.mepml
         [x] Inverse iteration  -- datamunge::algorithms::inverse_iteration (shifted inverse power iteration for the eigenvector nearest mu); report examples/org/inverse_iteration_analysis.org
         [x] Jacobi method  -- datamunge::linalg::jacobi_eigen (linalg/eigen.hpp)
         [x] Lanczos iteration  -- datamunge::algorithms::lanczos_iteration (symmetric Krylov three-term recurrence -> tridiagonal, extreme Ritz values); report examples/org/lanczos_iteration_analysis.org
@@ -460,7 +460,7 @@ Further information: Numerical linear algebra
         [x] Strassen algorithm: faster matrix multiplication  -- datamunge::algorithms::strassen_multiply; report examples/org/strassen_analysis.org
 
     Solving systems of linear equations
-        [x] Biconjugate gradient method: solves systems of linear equations  -- datamunge::algorithms::biconjugate_gradient; report examples/org/biconjugate_gradient_analysis.org
+        [x] Biconjugate gradient method: solves systems of linear equations  -- datamunge::algorithms::biconjugate_gradient; report docs/mepml/examples/biconjugate_gradient_analysis.mepml
         [x] Conjugate gradient: an algorithm for the numerical solution of particular systems of linear equations  -- datamunge::algorithms::conjugate_gradient; report examples/org/conjugate_gradient_analysis.org
         [x] Gauss–Jordan elimination: solves systems of linear equations  -- datamunge::algorithms::gauss_jordan (also returns the inverse); report examples/org/gauss_jordan_analysis.org
         [x] Gauss–Seidel method: solves systems of linear equations iteratively  -- datamunge::algorithms::gauss_seidel; report examples/org/gauss_seidel_analysis.org
@@ -478,9 +478,9 @@ Further information: Numerical linear algebra
 Monte Carlo
 Further information: Monte Carlo method
 
-    [x] Gibbs sampling: generates a sequence of samples from the joint probability distribution of two or more random variables -- datamunge::bayes (bayes/gibbs.hpp; Metropolis-within-Gibbs); report examples/org/bayesian_sampling_analysis.org
-    [x] Hybrid Monte Carlo: generates a sequence of samples using Hamiltonian weighted Markov chain Monte Carlo, from a probability distribution which is difficult to sample directly. -- datamunge::bayes (bayes/hmc.hpp, Hamiltonian Monte Carlo); report examples/org/bayesian_modeling_analysis.org
-    [x] Metropolis–Hastings algorithm: used to generate a sequence of samples from the probability distribution of one or more variables -- datamunge::bayes (bayes/rwm.hpp, random-walk Metropolis); report examples/org/bayesian_sampling_analysis.org
+    [x] Gibbs sampling: generates a sequence of samples from the joint probability distribution of two or more random variables -- datamunge::bayes (bayes/gibbs.hpp; Metropolis-within-Gibbs); report docs/mepml/examples/bayesian_sampling_analysis.mepml
+    [x] Hybrid Monte Carlo: generates a sequence of samples using Hamiltonian weighted Markov chain Monte Carlo, from a probability distribution which is difficult to sample directly. -- datamunge::bayes (bayes/hmc.hpp, Hamiltonian Monte Carlo); report docs/mepml/examples/bayesian_modeling_analysis.mepml
+    [x] Metropolis–Hastings algorithm: used to generate a sequence of samples from the probability distribution of one or more variables -- datamunge::bayes (bayes/rwm.hpp, random-walk Metropolis); report docs/mepml/examples/bayesian_sampling_analysis.mepml
     [x] Wang and Landau algorithm: an extension of Metropolis–Hastings algorithm sampling  -- datamunge::algorithms::wang_landau_dos (flat-histogram density-of-states estimation); report examples/org/wang_landau_analysis.org
 
 Numerical integration
@@ -505,7 +505,7 @@ Main article: Mathematical optimization
 
 Hybrid Algorithms
 
-    [x] Alpha–beta pruning: search to reduce number of nodes in minimax algorithm  -- datamunge::algorithms::minimax / alpha_beta; report examples/org/alpha_beta_analysis.org
+    [x] Alpha–beta pruning: search to reduce number of nodes in minimax algorithm  -- datamunge::algorithms::minimax / alpha_beta; report docs/mepml/examples/alpha_beta_analysis.mepml
     A hybrid BFGS-Like method (see more https://doi.org/10.1016/j.cam.2024.115857)
     [x] Branch and bound  -- datamunge::algorithms::knapsack_branch_and_bound (0/1 knapsack, LP bound); report examples/org/branch_and_bound_analysis.org
     [x] Bruss algorithm: see odds algorithm  -- datamunge::algorithms::odds_algorithm; report examples/org/odds_algorithm_analysis.org
@@ -515,7 +515,7 @@ Hybrid Algorithms
         [x] Hungarian method: a combinatorial optimization algorithm which solves the assignment problem in polynomial time  -- datamunge::algorithms::hungarian; report examples/org/hungarian_analysis.org
     [x] Conjugate gradient methods (see more https://doi.org/10.1016/j.jksus.2022.101923)  -- datamunge::algorithms::conjugate_gradient; report examples/org/conjugate_gradient_analysis.org
     Constraint satisfaction
-        [x] AC-3 algorithm general algorithms for the constraint satisfaction  -- datamunge::algorithms::ac3; report examples/org/ac3_analysis.org
+        [x] AC-3 algorithm general algorithms for the constraint satisfaction  -- datamunge::algorithms::ac3; report docs/mepml/examples/ac3_analysis.mepml
         Chaff algorithm: an algorithm for solving instances of the Boolean satisfiability problem
         [x] Davis–Putnam algorithm: check the validity of a first-order logic formula  -- datamunge::algorithms::davis_putnam (CNF-SAT by unit propagation, pure-literal, and resolution variable elimination); report examples/org/davis_putnam_analysis.org
         [x] Difference map algorithm general algorithms for the constraint satisfaction  -- datamunge::algorithms::difference_map (Elser's projection-based feasibility solver; beta=1 is Douglas-Rachford); report examples/org/difference_map_analysis.org
@@ -525,13 +525,13 @@ Hybrid Algorithms
             [x] Algorithm X: a nondeterministic algorithm  -- datamunge::algorithms::exact_cover; report examples/org/exact_cover_analysis.org
             [x] Dancing Links: an efficient implementation of Algorithm X  -- datamunge::algorithms::exact_cover (DLX); report examples/org/exact_cover_analysis.org
     [x] Cross-entropy method: a general Monte Carlo approach to combinatorial and continuous multi-extremal optimization and importance sampling  -- datamunge::optim (optim/cross_entropy_method.hpp)
-    [x] Differential evolution  -- datamunge::optim (optim/differential_evolution.hpp)
+    [x] Differential evolution  -- datamunge::optim (optim/differential_evolution.hpp); report docs/mepml/examples/optimization_analysis.mepml
     Dynamic Programming: problems exhibiting the properties of overlapping subproblems and optimal substructure
     [x] Ellipsoid method: is an algorithm for solving convex optimization problems  -- datamunge::algorithms::ellipsoid_minimize; report examples/org/ellipsoid_analysis.org
     Evolutionary computation: optimization inspired by biological mechanisms of evolution
         [x] Evolution strategy  -- datamunge::optim (optim/evolution_strategy.hpp)
         Gene expression programming
-        [x] Genetic algorithms  -- datamunge::optim (optim/genetic_algorithm.hpp)
+        [x] Genetic algorithms  -- datamunge::optim (optim/genetic_algorithm.hpp); report docs/mepml/examples/optimization_analysis.mepml
             [x] Fitness proportionate selection – also known as roulette-wheel selection  -- datamunge::algorithms::roulette_wheel_sample (cumulative-fitness wheel, O(log n) per draw); report examples/org/roulette_wheel_analysis.org
             [x] Stochastic universal sampling  -- datamunge::algorithms::stochastic_universal_sampling (single spin, N evenly-spaced pointers, deviation <= 1); report examples/org/stochastic_universal_sampling_analysis.org
             [x] Tournament selection  -- datamunge::algorithms::tournament_sample (fittest of k random contestants, pressure tuned by k); report examples/org/tournament_selection_analysis.org
@@ -540,8 +540,8 @@ Hybrid Algorithms
         Swarm intelligence
             [x] Ant colony optimization  -- datamunge::optim (optim/acor.hpp)
             [x] Bees algorithm: a search algorithm which mimics the food foraging behavior of swarms of honey bees  -- datamunge::optim (optim/artificial_bee_colony.hpp)
-            [x] Particle swarm  -- datamunge::optim (optim/pso.hpp)
-    [x] Frank-Wolfe algorithm: an iterative first-order optimization algorithm for constrained convex optimization  -- datamunge::algorithms::frank_wolfe / simplex_lmo (conditional gradient, projection-free, linear minimization oracle, O(1/k)); report examples/org/frank_wolfe_analysis.org
+            [x] Particle swarm  -- datamunge::optim (optim/pso.hpp); report docs/mepml/examples/optimization_analysis.mepml
+    [x] Frank-Wolfe algorithm: an iterative first-order optimization algorithm for constrained convex optimization  -- datamunge::algorithms::frank_wolfe / simplex_lmo (conditional gradient, projection-free, linear minimization oracle, O(1/k)); report docs/mepml/examples/frank_wolfe_analysis.mepml
     [x] Golden-section search: an algorithm for finding the maximum of a real function  -- datamunge::algorithms::golden_section_search; report examples/org/golden_section_search_analysis.org
     Gradient descent
     Grid Search
@@ -563,13 +563,13 @@ Hybrid Algorithms
         Tabu search
     Minimax used in game programming
     Nearest neighbor search (NNS): find closest points in a metric space
-        [x] Best Bin First: find an approximate solution to the nearest neighbor search problem in very-high-dimensional spaces  -- datamunge::geometry::BestBinFirst (priority-queue k-d tree search with an examination budget); report examples/org/best_bin_first_analysis.org
+        [x] Best Bin First: find an approximate solution to the nearest neighbor search problem in very-high-dimensional spaces  -- datamunge::geometry::BestBinFirst (priority-queue k-d tree search with an examination budget); report docs/mepml/examples/best_bin_first_analysis.mepml
     Newton's method in optimization
     Nonlinear optimization
-        [x] BFGS method: a nonlinear optimization algorithm  -- datamunge::optim (L-BFGS variant, optim/lbfgs.hpp)
-        [x] Gauss–Newton algorithm: an algorithm for solving nonlinear least squares problems  -- datamunge::algorithms::gauss_newton (normal equations (J^T J)d=-J^T r, finite-difference Jacobian); report examples/org/gauss_newton_analysis.org
-        [x] Levenberg–Marquardt algorithm: an algorithm for solving nonlinear least squares problems  -- datamunge::optim (optim/levenberg_marquardt.hpp)
-        [x] Nelder–Mead method (downhill simplex method): a nonlinear optimization algorithm  -- datamunge::optim (optim/nelder_mead.hpp); report examples/org/optimization_derivative_free_analysis.org
+        [x] BFGS method: a nonlinear optimization algorithm  -- datamunge::optim (L-BFGS variant, optim/lbfgs.hpp); report docs/mepml/examples/optimization_second_order_analysis.mepml
+        [x] Gauss–Newton algorithm: an algorithm for solving nonlinear least squares problems  -- datamunge::algorithms::gauss_newton (scaled Householder QR, analytic/central-difference Jacobians, full-step trajectory diagnostics); report docs/mepml/examples/gauss_newton_analysis.mepml
+        [x] Levenberg–Marquardt algorithm: an algorithm for solving nonlinear least squares problems  -- datamunge::optim (optim/levenberg_marquardt.hpp); report docs/mepml/examples/optimization_nonlinear_least_squares_analysis.mepml
+        [x] Nelder–Mead method (downhill simplex method): a nonlinear optimization algorithm  -- datamunge::optim (optim/nelder_mead.hpp); report docs/mepml/examples/optimization_derivative_free_analysis.mepml
     [x] Odds algorithm (Bruss algorithm): Finds the optimal strategy to predict a last specific event in a random sequence event  -- datamunge::algorithms::odds_algorithm (optimal stopping); report examples/org/odds_algorithm_analysis.org
     Random Search
     Simulated annealing
@@ -583,7 +583,7 @@ Astronomy
 
     [x] Doomsday algorithm: day of the week  -> datamunge::algorithms::doomsday_weekday (doomsday.hpp); report examples/org/doomsday_analysis.org
     [x] various Easter algorithms are used to calculate the day of Easter  -> datamunge::algorithms::computus_gregorian (computus.hpp); report examples/org/computus_analysis.org
-    [x] Zeller's congruence is an algorithm to calculate the day of the week for any Julian or Gregorian calendar date  -> datamunge::algorithms::zeller_gregorian (zeller.hpp); report examples/org/zeller_analysis.org
+    [x] Zeller's congruence is an algorithm to calculate the day of the week for any Julian or Gregorian calendar date  -> datamunge::algorithms::zeller_gregorian (zeller.hpp); report docs/mepml/examples/zeller_analysis.mepml
 
 Bioinformatics
 Further information: Bioinformatics
@@ -638,31 +638,56 @@ Further information: Computational physics
 Statistics
 Further information: Computational statistics
 
+    [x] Classical hypothesis tests: Student/Welch, rank, ANOVA, correlation, variance, normality and exact count inference; finite-support calibration and declared Holm families -- datamunge::stats::t_test_two_sample, datamunge::stats::hypothesis_test_table; report docs/mepml/examples/hypothesis_tests_analysis.mepml
+
+    [x] Independent component analysis: population-whitened deflationary FastICA, inspectable updates, one-to-one source recovery and Gaussian identification limits -- datamunge::stats::ICA, ica_fixed_point_step, ica_source_matches; report docs/mepml/examples/ica_analysis.mepml
+    [x] Principal component analysis: covariance/correlation axes, frozen preprocessing, rank-aware spectral summaries and measured reconstruction error -- datamunge::stats::PCA; report docs/mepml/examples/pca_iris_analysis.mepml
+    [x] Gradient boosting classification: simultaneous residual trees, prefix diagnostics, validation selection and held-out Iris evaluation -- datamunge::stats::GBMClassifier, gbm_validation_search; report docs/mepml/examples/gbm_iris_analysis.mepml
+    [x] Elastic net, ridge and lasso regression: actual-norm coordinate descent, KKT diagnostics and fold-local cross-validation -- datamunge::stats::ElasticNet, Ridge, Lasso; report docs/mepml/examples/elastic_net_iris_analysis.mepml
+    [x] Factor analysis: principal-axis extraction, orthogonal varimax, covariance residuals and explicit Heywood/iteration diagnostics -- datamunge::stats::FactorAnalysis; report docs/mepml/examples/factor_analysis_analysis.mepml
+    [x] Kernel ridge regression: free-intercept centred-kernel least squares, signed prediction weights, spectral shrinkage and fold-local validation -- datamunge::stats::KernelRidgeRegression, kernel_ridge_cross_validate; report docs/mepml/examples/kernel_ridge_analysis.mepml
+    [x] Kernel PCA: centred kernel eigendecomposition, feature-space spectrum/rank and projection loss, stable RBF limits and frozen-training transforms -- datamunge::stats::KernelPCA; report docs/mepml/examples/kernel_pca_iris_analysis.mepml
+    [x] Nadaraya–Watson kernel regression: normalized local means, inspectable smoothing weights, coverage-aware bandwidth CV and held-out scoring -- datamunge::stats::KernelRegression; report docs/mepml/examples/kernel_regression_iris_analysis.mepml
+    [x] Isomap: union-kNN graph inspection, shortest-path geodesics, classical scaling, signed spectra and independent distance/shortcut diagnostics -- datamunge::stats::Isomap, datamunge::stats::isomap_graph; report docs/mepml/examples/isomap_iris_analysis.mepml
+
+    [x] Generalized linear mixed models: working-ML PQL, partial pooling, random intercepts/slopes, frozen working profiles and grouped prediction diagnostics -- datamunge::stats::GLMM; report docs/mepml/examples/glmm_analysis.mepml
+
+    [x] Generalized linear models: canonical-link IRLS, working-response traces, deviance and Wald inference, separation warnings and held-out binary probability scores -- datamunge::stats::GLM; report docs/mepml/examples/glm_iris_analysis.mepml
+
+    [x] Quantile regression: linear conditional quantiles by an exact simplex (or ADMM), with the LP dual, IID/NID/bootstrap standard errors and the quantile process -- datamunge::stats::QuantileRegression, datamunge::stats::quantile_process; report docs/mepml/examples/quantile_regression_analysis.mepml
+
+    [x] Gaussian process regression: exact RBF conditioning, profiled marginal likelihood, latent and new-observation uncertainty, joint covariance and conditional deletion diagnostics -- datamunge::stats::GaussianProcessRegression; report docs/mepml/examples/gaussian_process_regression_iris_analysis.mepml
+
+    [x] P-spline regression: B-spline least squares with coefficient-difference penalties, GCV selection and fixed-lambda leverage/deletion diagnostics -- datamunge::PSplineRegression (PSR), datamunge::fda::fit_pspline; report docs/mepml/examples/pspline.mepml
+
+    [x] U-statistics: symmetric distinct-index kernel averages, complete or randomly incomplete, with projection/jackknife/Monte Carlo diagnostics -- datamunge::stats::UStatistic; report docs/mepml/examples/u_statistic_analysis.mepml
+
     [x] Algorithms for calculating variance: avoiding instability and numerical overflow  -- datamunge::algorithms::OnlineVariance / OnlineCovariance (Welford single-pass, stable, mergeable); report examples/org/online_variance_analysis.org
-    [x] Approximate counting algorithm: allows counting large number of events in a small register  -- datamunge::algorithms::MorrisCounter (probabilistic loglog-space counting, tunable base); report examples/org/approximate_counting_analysis.org
+    [x] Approximate counting algorithm: allows counting large number of events in a small register  -- datamunge::algorithms::MorrisCounter (probabilistic loglog-space counting, tunable base); report docs/mepml/examples/approximate_counting_analysis.mepml
     Bayesian statistics
+        [x] Integrated nested Laplace approximation (INLA): dense Gaussian-strategy latent marginals and bounded hyperparameter integration -- datamunge::bayes::INLA / datamunge::stats::INLAMixedModel; report docs/mepml/examples/inla_analysis.mepml
         [x] Nested sampling algorithm: a computational approach to the problem of comparing models in Bayesian statistics -- datamunge::algorithms::nested_sampling (Skilling; evidence + posterior over a box prior); report examples/org/nested_sampling_analysis.org
     Clustering algorithms
-        [x] Average-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (average linkage); report examples/org/clustering_iris_analysis.org
+        [x] Average-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (average linkage); report docs/mepml/examples/clustering_iris_analysis.mepml
         [x] Canopy clustering algorithm: an unsupervised pre-clustering algorithm related to the K-means algorithm -- datamunge::algorithms::canopy_clustering (two-threshold overlapping pre-clustering); report examples/org/canopy_analysis.org
         Chinese whispers
-        [x] Complete-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (complete linkage); report examples/org/clustering_iris_analysis.org
-        [x] DBSCAN: a density based clustering algorithm -- datamunge::stats::DBSCAN; report examples/org/clustering_iris_analysis.org
+        [x] Complete-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (complete linkage); report docs/mepml/examples/clustering_iris_analysis.mepml
+        [x] DBSCAN: a density based clustering algorithm -- datamunge::stats::DBSCAN; report docs/mepml/examples/clustering_iris_analysis.mepml
         Expectation-maximization algorithm
         Fuzzy clustering: a class of clustering algorithms where each point has a degree of belonging to clusters
             FLAME clustering (Fuzzy clustering by Local Approximation of MEmberships): define clusters in the dense parts of a dataset and perform cluster assignment solely based on the neighborhood relationships among objects
             [x] Fuzzy c-means  -- datamunge::algorithms::fuzzy_c_means (soft clustering, alternating center/membership updates); report examples/org/fuzzy_c_means_analysis.org
-        [x] k-means clustering: cluster objects based on attributes into partitions -- datamunge::stats::KMeans; report examples/org/clustering_iris_analysis.org
-        [x] k-means++: a variation of this, using modified random seeds -- datamunge::stats::KMeans (k-means++ initialization); report examples/org/clustering_iris_analysis.org
+        [x] k-means clustering: cluster objects based on attributes into partitions -- datamunge::stats::KMeans; report docs/mepml/examples/clustering_iris_analysis.mepml
+        [x] k-means++: a variation of this, using modified random seeds -- datamunge::stats::KMeans (k-means++ initialization); report docs/mepml/examples/clustering_iris_analysis.mepml
         [x] k-medoids: similar to k-means, but chooses datapoints or medoids as centers  -- datamunge::algorithms::k_medoids (PAM: build + swap, robust to outliers); report examples/org/k_medoids_analysis.org
         KHOPCA clustering algorithm: a local clustering algorithm, which produces hierarchical multi-hop clusters in static and mobile environments.
         [x] Linde–Buzo–Gray algorithm: a vector quantization algorithm to derive a good codebook  -- datamunge::algorithms::linde_buzo_gray (codebook design by splitting + Lloyd); report examples/org/linde_buzo_gray_analysis.org
-        [x] Lloyd's algorithm (Voronoi iteration or relaxation): group data points into a given number of categories, a popular algorithm for k-means clustering -- datamunge::stats::KMeans (Lloyd iteration); report examples/org/clustering_iris_analysis.org
+        [x] Lloyd's algorithm (Voronoi iteration or relaxation): group data points into a given number of categories, a popular algorithm for k-means clustering -- datamunge::stats::KMeans (Lloyd iteration); report docs/mepml/examples/clustering_iris_analysis.mepml
         [x] OPTICS: a density based clustering algorithm with a visual evaluation method  -- datamunge::algorithms::optics (+ optics_extract_dbscan; reachability ordering across varying densities); report examples/org/optics_analysis.org
-        [x] Single-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (single linkage); report examples/org/clustering_iris_analysis.org
+        [x] Single-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (single linkage); report docs/mepml/examples/clustering_iris_analysis.mepml
         SUBCLU: a subspace clustering algorithm
         WACA clustering algorithm: a local clustering algorithm with potentially multi-hop structures; for dynamic networks
-        [x] Ward's method: an agglomerative clustering algorithm, extended to more general Lance–Williams algorithms -- datamunge::stats::AgglomerativeClustering (Ward linkage); report examples/org/clustering_iris_analysis.org
+        [x] Ward's method: an agglomerative clustering algorithm, extended to more general Lance–Williams algorithms -- datamunge::stats::AgglomerativeClustering (Ward linkage); report docs/mepml/examples/clustering_iris_analysis.mepml
     Estimation Theory
         Expectation-maximization algorithm A class of related algorithms for finding maximum likelihood estimates of parameters in probabilistic models
             Ordered subset expectation maximization (OSEM): used in medical imaging for positron emission tomography, single-photon emission computed tomography and X-ray computed tomography.
@@ -670,7 +695,7 @@ Further information: Computational statistics
         Odds algorithm (Bruss algorithm) Optimal online search for distinguished value in sequential random input
     False nearest neighbor algorithm (FNN) estimates fractal dimension
     Hidden Markov model
-        [x] Baum–Welch algorithm: computes maximum likelihood estimates and posterior mode estimates for the parameters of a hidden Markov model  -- datamunge::algorithms::baum_welch (EM re-estimation, scaled forward-backward E-step); report examples/org/baum_welch_analysis.org
+        [x] Baum–Welch algorithm: computes maximum likelihood estimates and posterior mode estimates for the parameters of a hidden Markov model  -- datamunge::algorithms::baum_welch (EM re-estimation, scaled forward-backward E-step); report docs/mepml/examples/baum_welch_analysis.mepml
         [x] Forward–backward algorithm: a dynamic programming algorithm for computing the probability of a particular observation sequence  -- datamunge::algorithms::forward_backward (scaled alpha/beta, smoothed posteriors + log-likelihood); report examples/org/forward_backward_analysis.org
         [x] Viterbi algorithm: find the most likely sequence of hidden states in a hidden Markov model  -- datamunge::algorithms::viterbi (log-space max-product trellis + backtrack); report examples/org/viterbi_analysis.org
     Partial least squares regression: finds a linear model describing some predicted variables in terms of other observable variables
@@ -679,7 +704,7 @@ Further information: Computational statistics
     [x] RANSAC (an abbreviation for "RANdom SAmple Consensus"): an iterative method to estimate parameters of a mathematical model from a set of observed data which contains outliers  -- datamunge::algorithms::ransac_line (+ ransac_required_iterations); report examples/org/ransac_analysis.org
     Scoring algorithm: is a form of Newton's method used to solve maximum likelihood equations numerically
     Yamartino method: calculate an approximation to the standard deviation σθ of wind direction θ during a single pass through the incoming data
-    [x] Ziggurat algorithm: generates random numbers from a non-uniform distribution  -- datamunge::algorithms::ZigguratNormal (fast normal sampling via equal-area strips); report examples/org/ziggurat_analysis.org
+    [x] Ziggurat algorithm: generates random numbers from a non-uniform distribution  -- datamunge::algorithms::ZigguratNormal (fast normal sampling via equal-area strips); report docs/mepml/examples/ziggurat_analysis.mepml
 
 Computer science
 Further information: Computer science
@@ -727,7 +752,7 @@ Further information: Computer graphics
     Line drawing: graphical algorithm for approximating a line segment on discrete graphical media.
         [x] Bresenham's line algorithm: plots points of a 2-dimensional array to form a straight line between 2 specified points (uses decision variables) -- datamunge::algorithms::bresenham_line (integer all-octant midpoint); report examples/org/bresenham_analysis.org
         [x] DDA line algorithm: plots points of a 2-dimensional array to form a straight line between specified points -- datamunge::algorithms::dda_line (digital differential analyzer); report examples/org/dda_line_analysis.org
-        [x] Xiaolin Wu's line algorithm: algorithm for line antialiasing. -- datamunge::algorithms::xiaolin_wu_line (two-pixel antialiasing); report examples/org/xiaolin_wu_line_analysis.org
+        [x] Xiaolin Wu's line algorithm: algorithm for line antialiasing. -- datamunge::algorithms::xiaolin_wu_line (two-pixel antialiasing); report docs/mepml/examples/xiaolin_wu_line_analysis.mepml
     [x] Midpoint circle algorithm: an algorithm used to determine the points needed for drawing a circle -- datamunge::algorithms::midpoint_circle (integer 8-way symmetry); report examples/org/midpoint_circle_analysis.org
     [x] Ramer–Douglas–Peucker algorithm: Given a 'curve' composed of line segments to find a curve not too dissimilar but that has fewer points -- datamunge::algorithms::ramer_douglas_peucker (polyline simplification); report examples/org/ramer_douglas_peucker_analysis.org
     Shading
@@ -804,30 +829,31 @@ Machine learning and statistical classification
 Main article: List of machine learning algorithms
 Further information: Machine learning and Statistical classification
 
-    [x] Almeida–Pineda recurrent backpropagation: Adjust a matrix of synaptic weights to generate desired outputs given its inputs -- datamunge::algorithms::almeida_pineda_train (recurrent BP via adjoint fixed-point relaxation); report examples/org/almeida_pineda_analysis.org
-    [x] ALOPEX: a correlation-based machine-learning algorithm -- datamunge::algorithms::alopex_minimize (gradient-free correlation-based optimizer); report examples/org/alopex_analysis.org
+    [x] Almeida–Pineda recurrent backpropagation: Adjust a matrix of synaptic weights to generate desired outputs given its inputs -- datamunge::algorithms::almeida_pineda_train (recurrent BP via adjoint fixed-point relaxation); report docs/mepml/examples/almeida_pineda_analysis.mepml
+    [x] ALOPEX: a correlation-based machine-learning algorithm -- datamunge::algorithms::alopex_minimize (gradient-free correlation-based optimizer); report docs/mepml/examples/alopex_analysis.mepml
     Association rule learning: discover interesting relations between variables, used in data mining
-        [x] Apriori algorithm  -- datamunge::algorithms::apriori_frequent_itemsets (+ association_rules); level-wise downward-closure pruning; report examples/org/apriori_analysis.org
+        [x] Apriori algorithm  -- datamunge::algorithms::apriori_frequent_itemsets (+ association_rules); level-wise downward-closure pruning; report docs/mepml/examples/apriori_analysis.mepml
         [x] Eclat algorithm  -- datamunge::algorithms::eclat_frequent_itemsets (depth-first vertical tidset intersection); report examples/org/eclat_analysis.org
         [x] FP-growth algorithm  -- datamunge::algorithms::fp_growth_frequent_itemsets (FP-tree + conditional pattern bases, no candidate generation); report examples/org/fp_growth_analysis.org
         [x] One-attribute rule -- datamunge::algorithms::one_r_train (OneR, Holte's one-rule); report examples/org/one_r_analysis.org
-        [x] Zero-attribute rule -- datamunge::algorithms::zero_r_train (ZeroR majority-class baseline); report examples/org/zero_r_analysis.org
+        [x] Zero-attribute rule -- datamunge::algorithms::zero_r_train (ZeroR majority-class baseline); report docs/mepml/examples/zero_r_analysis.mepml
     Boosting (meta-algorithm): Use many weak learners to boost effectiveness
-        [x] AdaBoost: adaptive boosting  -- datamunge::algorithms::adaboost_train (AdaBoost.M1 over decision stumps); report examples/org/adaboost_analysis.org
+        [x] AdaBoost: adaptive boosting  -- datamunge::algorithms::adaboost_train (AdaBoost.M1 over decision stumps); report docs/mepml/examples/adaboost_analysis.mepml
         BrownBoost: a boosting algorithm that may be robust to noisy datasets
         [x] LogitBoost: logistic regression boosting -- datamunge::algorithms::logitboost_train (additive logistic regression, Newton steps on stumps); report examples/org/logitboost_analysis.org
         LPBoost: linear programming boosting
-    [x] Bootstrap aggregating (bagging): technique to improve stability and classification accuracy -- datamunge::stats::RandomForestClassifier (bagging of trees); report examples/org/rf_iris_analysis.org
+    [x] Bootstrap aggregating (bagging): technique to improve stability and classification accuracy -- datamunge::stats::RandomForestClassifier (bagging of trees); report docs/mepml/examples/rf_iris_analysis.mepml
+    [x] Classical multidimensional scaling (MDS): recovers Euclidean coordinates by double-centring squared dissimilarities and truncating the positive Gram spectrum -- datamunge::stats::MDS; report docs/mepml/examples/mds_iris_analysis.mepml
     Clustering: a class of unsupervised learning algorithms for grouping and bucketing related input vector
     Computer Vision
         Grabcut based on Graph cuts
     Decision Trees
         [x] C4.5 algorithm: an extension to ID3 -- datamunge::algorithms::c45_train (continuous thresholds + gain ratio); report examples/org/c45_analysis.org
-        [x] ID3 algorithm (Iterative Dichotomiser 3): use heuristic to generate small decision trees -- datamunge::algorithms::id3_train (categorical, information gain); report examples/org/id3_analysis.org
-    [x] k-nearest neighbors (k-NN): a non-parametric method for classifying objects based on closest training examples in the feature space -- datamunge::stats::KNNClassifier; report examples/org/knn_iris_analysis.org
+        [x] ID3 algorithm (Iterative Dichotomiser 3): use heuristic to generate small decision trees -- datamunge::algorithms::id3_train (categorical, information gain); report docs/mepml/examples/id3_analysis.mepml (exact entropy, local fallbacks, XOR/identifier controls, Titanic holdout)
+    [x] k-nearest neighbors (k-NN): a non-parametric method for classifying objects based on closest training examples in the feature space -- datamunge::stats::KNNClassifier; report docs/mepml/examples/knn_iris_analysis.mepml
     [x] Linde–Buzo–Gray algorithm: a vector quantization algorithm used to derive a good codebook  -- datamunge::algorithms::linde_buzo_gray; report examples/org/linde_buzo_gray_analysis.org
     [x] Locality-sensitive hashing (LSH): a method of performing probabilistic dimension reduction of high-dimensional data  -- datamunge::algorithms::CosineLSH (random-hyperplane multi-table cosine ANN); report examples/org/lsh_analysis.org
-    [x] Naive Bayes classifier: a family of probabilistic classifiers based on Bayes' theorem -- datamunge::stats::NaiveBayesClassifier; report examples/org/naive_bayes_penguins_analysis.org
+    [x] Naive Bayes classifier: a family of probabilistic classifiers based on Bayes' theorem -- datamunge::stats::NaiveBayesClassifier; report docs/mepml/examples/naive_bayes_penguins_analysis.mepml
     Neural Network
         [x] Backpropagation: a supervised learning method which requires a teacher that knows, or can calculate, the desired output for any given input -- datamunge::stats::MLPClassifier (feed-forward net trained by backpropagation); report examples/org/neural_network_analysis.org
         [x] Hopfield net: a Recurrent neural network in which all connections are symmetric  -- datamunge::algorithms::hopfield_train (Hebbian associative memory, energy-descent recall); report examples/org/hopfield_network_analysis.org
@@ -835,16 +861,16 @@ Further information: Machine learning and Statistical classification
         [x] Pulse-coupled neural networks (PCNN): Neural models proposed by modeling a cat's visual cortex and developed for high-performance biomimetic image processing. -- datamunge::algorithms::pcnn_run (spiking cortical model for image segmentation); report examples/org/pcnn_analysis.org
         [x] Radial basis function network: an artificial neural network that uses radial basis functions as activation functions  -- datamunge::algorithms::rbf_train (k-means centers + linear least-squares readout); report examples/org/rbf_network_analysis.org
         [x] Self-organizing map: an unsupervised network that produces a low-dimensional representation of the input space of the training samples  -- datamunge::algorithms::som_train (Kohonen competitive learning, topology-preserving); report examples/org/self_organizing_map_analysis.org
-    [x] Random forest: classify using many decision trees -- datamunge::stats::RandomForestClassifier; report examples/org/rf_iris_analysis.org
+    [x] Random forest: classify using many decision trees -- datamunge::stats::RandomForestClassifier; report docs/mepml/examples/rf_iris_analysis.mepml
     Reinforcement learning:
         [x] Q-learning: learns an action-value function that gives the expected utility of taking a given action in a given state and following a fixed policy thereafter  -- datamunge::algorithms::q_learning (off-policy TD control, epsilon-greedy); report examples/org/q_learning_analysis.org
         [x] State–Action–Reward–State–Action (SARSA): learn a Markov decision process policy  -- datamunge::algorithms::sarsa (on-policy TD control); report examples/org/sarsa_analysis.org
         [x] Temporal difference learning  -- datamunge::algorithms::td_prediction (TD(0) policy evaluation by bootstrapping); report examples/org/td_learning_analysis.org
     [x] Relevance-Vector Machine (RVM): similar to SVM, but provides probabilistic classification -- datamunge::algorithms::rvm_train (sparse Bayesian kernel regression, ARD); report examples/org/rvm_analysis.org
     Supervised learning: Learning by examples (labelled data-set split into training-set and test-set)
-    [x] Support Vector Machine (SVM): a set of methods which divide multidimensional data by finding a dividing hyperplane with the maximum margin between the two sets -- datamunge::stats::SVM; report examples/org/svm_iris_analysis.org
+    [x] Support Vector Machine (SVM): a set of methods which divide multidimensional data by finding a dividing hyperplane with the maximum margin between the two sets -- datamunge::stats::SVM; report docs/mepml/examples/svm_iris_analysis.mepml
         [x] Structured SVM: allows training of a classifier for general structured output labels. -- datamunge::algorithms::structured_svm_train (Crammer-Singer multiclass, Pegasos); report examples/org/structured_svm_analysis.org
-    [x] Winnow algorithm: related to the perceptron, but uses a multiplicative weight-update scheme  -- datamunge::algorithms::winnow_train (Winnow2, O(k log n) mistake bound); report examples/org/winnow_analysis.org
+    [x] Winnow algorithm: related to the perceptron, but uses a multiplicative weight-update scheme  -- datamunge::algorithms::winnow_train (Winnow2, O(k log n) mistake bound); report docs/mepml/examples/winnow_analysis.mepml
 
 Programming language theory
 Further information: Programming language theory
@@ -881,7 +907,7 @@ See also: List of quantum algorithms
 
     Aharonov–Jones–Landau algorithm: quantum algorithm related to approximating the Jones polynomial
     Amplitude amplification: generalization of Grover's algorithm used to amplify the probability of desired outcomes
-    [x] Bernstein–Vazirani algorithm: determines a hidden bit string encoded in a black-box function  -> datamunge::algorithms::bernstein_vazirani (bernstein_vazirani.hpp); report examples/org/bernstein_vazirani_analysis.org
+    [x] Bernstein–Vazirani algorithm: determines a hidden bit string encoded in a black-box function  -> datamunge::algorithms::bernstein_vazirani (bernstein_vazirani.hpp); report docs/mepml/examples/bernstein_vazirani_analysis.mepml
     BHT algorithm: quantum algorithm for the Collision problem
     Boson sampling: sampling problem using noninteracting bosons, often discussed in relation to quantum advantage
     [x] Deutsch–Jozsa algorithm: determines whether a black-box Boolean function is constant or balanced  -> datamunge::algorithms::deutsch_jozsa (deutsch_jozsa.hpp); report examples/org/deutsch_jozsa_analysis.org
@@ -924,7 +950,7 @@ Error detection and correction
 Further information: Error detection and correction
 
     BCH Codes
-    [x] Berlekamp–Massey algorithm  -> datamunge::algorithms::berlekamp_massey (berlekamp_massey.hpp, over GF(2)); report examples/org/berlekamp_massey_analysis.org
+    [x] Berlekamp–Massey algorithm  -> datamunge::algorithms::berlekamp_massey (berlekamp_massey.hpp, over GF(2)); report docs/mepml/examples/berlekamp_massey_analysis.mepml
         Peterson–Gorenstein–Zierler algorithm
         Reed–Solomon error correction
     BCJR algorithm: decoding of error correcting codes defined on trellises (principally convolutional codes)
@@ -935,7 +961,7 @@ Further information: Error detection and correction
         Hamming distance: sum number of positions which are different
         Hamming weight (population count): find the number of 1 bits in a binary word
     Redundancy checks
-        [x] Adler-32 -- datamunge::algorithms::adler32; report examples/org/adler32_analysis.org
+        [x] Adler-32 -- datamunge::algorithms::adler32; report docs/mepml/examples/adler32_analysis.mepml
         [x] Cyclic redundancy check -- datamunge::algorithms::crc32 (reflected IEEE 802.3); report examples/org/crc32_analysis.org
         Damm algorithm
         [x] Fletcher's checksum -- datamunge::algorithms::fletcher16; report examples/org/fletcher_analysis.org
@@ -967,7 +993,7 @@ Main pages: Lossless compression algorithms and List of compression algorithms
             LZWL: syllable-based variant
             LZX
     Entropy encoding: coding scheme that assigns codes to symbols so as to match code lengths with the probabilities of the symbols
-    [x] Arithmetic coding: advanced entropy coding  -> datamunge::algorithms::arithmetic_encode (arithmetic_coding.hpp, 32-bit integer coder); report examples/org/arithmetic_coding_analysis.org
+    [x] Arithmetic coding: advanced entropy coding  -> datamunge::algorithms::arithmetic_encode (arithmetic_coding.hpp, 32-bit integer coder); report docs/mepml/examples/arithmetic_coding_analysis.mepml
     [x] Range encoding: same as arithmetic coding, but looked at in a slightly different way  -> datamunge::algorithms::range_encode (range_coding.hpp, carry-free Subbotin coder); report examples/org/range_coding_analysis.org
         [x] Huffman coding: simple lossless compression taking advantage of relative character frequencies -- datamunge::algorithms::huffman_build (+ encode/decode; optimal prefix code); report examples/org/huffman_analysis.org
             Adaptive Huffman coding: adaptive coding technique based on Huffman coding
@@ -1019,8 +1045,8 @@ Further information: Digital signal processing
     Discrete Fourier transform: determines the frequencies contained in a (segment of a) signal
         Bluestein's FFT algorithm
         Bruun's FFT algorithm
-        [x] Cooley–Tukey FFT algorithm -- datamunge::algorithms::fft (radix-2 iterative, + inverse); report examples/org/fft_analysis.org
-        [x] Fast Fourier transform -- realized by datamunge::algorithms::fft (Cooley-Tukey radix-2); report examples/org/fft_analysis.org
+        [x] Cooley–Tukey FFT algorithm -- datamunge::algorithms::fft (radix-2 iterative, + inverse); report docs/mepml/examples/fft_analysis.mepml
+        [x] Fast Fourier transform -- realized by datamunge::algorithms::fft (Cooley-Tukey radix-2); report docs/mepml/examples/fft_analysis.mepml
         Prime-factor FFT algorithm
         Rader's FFT algorithm
     Fast folding algorithm: an efficient algorithm for the detection of approximately periodic events within time series data
@@ -1066,7 +1092,7 @@ Further information: Software engineering
     Hash function: convert a large, possibly variable-sized amount of data into a small datum, usually a single integer that may serve as an index into an array
         [x] Fowler–Noll–Vo hash function: fast with low collision rate -- datamunge::algorithms::fnv1a_64 / fnv1a_32; report examples/org/fnv_analysis.org
         [x] Pearson hashing: computes 8-bit value only, optimized for 8-bit computers -- datamunge::algorithms::pearson_hash (permutation-table 8-bit hash); report examples/org/pearson_analysis.org
-        [x] Zobrist hashing: used in the implementation of transposition tables -- datamunge::algorithms::zobrist_hash / zobrist_update (incremental XOR hashing); report examples/org/zobrist_analysis.org
+        [x] Zobrist hashing: used in the implementation of transposition tables -- datamunge::algorithms::zobrist_hash / zobrist_update (incremental XOR hashing); report docs/mepml/examples/zobrist_analysis.mepml
     Unicode collation algorithm
     Xor swap algorithm: swaps the values of two variables without using a buffer
 
@@ -1085,7 +1111,7 @@ Distributed systems algorithms
 Further information: Distributed algorithm and Distributed systems
 
     Clock synchronization
-    [x] Berkeley algorithm  -> datamunge::algorithms::berkeley_sync (clock_synchronization.hpp); report examples/org/berkeley_analysis.org
+    [x] Berkeley algorithm  -> datamunge::algorithms::berkeley_sync (clock_synchronization.hpp); report docs/mepml/examples/berkeley_analysis.mepml
     [x] Cristian's algorithm  -> datamunge::algorithms::cristian_estimate (clock_synchronization.hpp); report examples/org/cristian_analysis.org
         Intersection algorithm
         Marzullo's algorithm
@@ -1133,7 +1159,7 @@ Further information: Network scheduler
 Operating systems algorithms
 Further information: Operating systems
 
-    [x] Banker's algorithm: algorithm used for deadlock avoidance  -> datamunge::algorithms::banker_safety (banker.hpp); report examples/org/banker_analysis.org
+    [x] Banker's algorithm: algorithm used for deadlock avoidance  -> datamunge::algorithms::banker_safety (banker.hpp); report docs/mepml/examples/banker_analysis.mepml
     Page replacement algorithms: for selecting the victim page under low memory conditions
         Adaptive replacement cache: better performance than LRU
         Clock with Adaptive Replacement (CAR): a page replacement algorithm with performance comparable to adaptive replacement cache
@@ -1142,7 +1168,7 @@ Process synchronization
 Further information: Process scheduler and Process synchronization
 
     Dekker's algorithm
-    [x] Lamport's Bakery algorithm  -> datamunge::algorithms::bakery_service_order (bakery.hpp); report examples/org/bakery_analysis.org
+    [x] Lamport's Bakery algorithm  -> datamunge::algorithms::bakery_service_order (bakery.hpp); report docs/mepml/examples/bakery_analysis.mepml
     Peterson's algorithm
 
 Scheduling

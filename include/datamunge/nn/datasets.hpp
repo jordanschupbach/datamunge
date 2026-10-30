@@ -3,8 +3,8 @@
 /// @file datasets.hpp
 /// @brief Loaders for common datasets from files on disk.
 ///
-/// Loaders only read; downloading belongs to the caller (the examples repo
-/// has fetch scripts). Images come back as float32 NHWC in [0, 1] and labels
+/// Loaders only read; callers use datasets::fetch() or
+/// datasets::prepare_example_data() for native acquisition and preparation. Images come back as float32 NHWC in [0, 1] and labels
 /// as int64.
 
 #include <cstddef>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="647.6" viewBox="0 0 1280 647.6" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Three convolutions: dilation 1, 2 and 4</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">Three convolutions: dilation 1, 2 and 4</text>
+<text x="24" y="51" font-size="12">5 nodes | 0 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#64B5CD"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="302" y="69" font-size="11">Output</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="232,154 280,154 280,362 232,362" fill="#64B5CD" fill-opacity="0.08"/>
+<path data-from="0" data-to="1" d="M 232 258 C 256 258 256 258 280 258" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="488,154 536,154 536,362 488,362" fill="#64B5CD" fill-opacity="0.08"/>
+<path data-from="1" data-to="2" d="M 488 258 C 512 258 512 258 536 258" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="744,154 792,154 792,362 744,362" fill="#64B5CD" fill-opacity="0.08"/>
+<path data-from="2" data-to="3" d="M 744 258 C 768 258 768 258 792 258" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="1000,154 1048,154 1048,362 1000,362" fill="#6C8194" fill-opacity="0.08"/>
+<path data-from="3" data-to="4" d="M 1000 258 C 1024 258 1024 258 1048 258" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-0" data-left="24" data-right="232" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="24,218 88,154 232,154 168,218" fill="#E69F00"/>
+<polygon class="volume-side" points="168,218 232,154 232,298 168,362" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="218" width="144" height="144" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(128 452.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>3x3 convolution / dilation 1 [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-1" data-left="280" data-right="488" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="280,218 344,154 488,154 424,218" fill="#64B5CD"/>
+<polygon class="volume-side" points="424,218 488,154 488,298 424,362" fill="#64B5CD"/>
+<rect class="volume-front" x="280" y="218" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(384 498.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">3x3 convolution / dilation 1</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+<g data-node="2" data-category="Convolution"><title>3x3 convolution / dilation 2 [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-2" data-left="536" data-right="744" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="536,218 600,154 744,154 680,218" fill="#64B5CD"/>
+<polygon class="volume-side" points="680,218 744,154 744,298 680,362" fill="#64B5CD"/>
+<rect class="volume-front" x="536" y="218" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(640 498.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">3x3 convolution / dilation 2</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+<g data-node="3" data-category="Convolution"><title>3x3 convolution / dilation 4 [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-3" data-left="792" data-right="1000" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="792,218 856,154 1000,154 936,218" fill="#64B5CD"/>
+<polygon class="volume-side" points="936,218 1000,154 1000,298 936,362" fill="#64B5CD"/>
+<rect class="volume-front" x="792" y="218" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(896 498.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">3x3 convolution / dilation 4</text>
+<text x="0" y="3.9" font-size="13">Composite stage</text>
+<text x="0" y="20.8" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+<g data-node="4" data-category="Output"><title>Output [1 x 15 x 15 x 1]</title>
+<g id="model-glyph-4" data-left="1048" data-right="1256" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="1048,218 1112,154 1256,154 1192,218" fill="#6C8194"/>
+<polygon class="volume-side" points="1192,218 1256,154 1256,298 1192,362" fill="#6C8194"/>
+<rect class="volume-front" x="1048" y="218" width="144" height="144" fill="#6C8194"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(1152 452.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 15 x 15 x 1]</text>
+</g></g>
+</g></svg>

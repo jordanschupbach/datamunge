@@ -40,7 +40,7 @@ the reason FFD is the default heuristic for cutting stock, load balancing, and s
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

@@ -1,0 +1,582 @@
+//? Title: Non-Local Attention: Four Affinities, Global Derivatives and Explicit Fitting
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Non-local blocks mix every query with all key/value positions. We compare four affinity
+rules and both pooling modes against a dense tensor composition, inspect global derivative
+support, then visibly optimize a complete five-module compact ResNet-50.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/non_local.cpp`.
+
+> The method
+
+With P=H*W queries, M keys and inner width floor(C/2), the response is y=A*g, followed by
+biased pointwise projection, learned BN (epsilon 1e-5) and the raw input shortcut. Pairwise
+modes differ in both affinity and normalization: embedded Gaussian uses softmax(theta*phiᵀ/
+sqrt(inner)), Gaussian uses softmax(x*x_keyᵀ) without embeddings, dot product uses
+(theta*phiᵀ)/M, and concatenation uses ReLU(theta*w1+(phi*w2)ᵀ)/M. Only the Gaussian rows
+are probability distributions. Dot weights can be signed; concatenation rows do not generally
+sum to one. The query/key matrix costs O(NPM*inner) arithmetic and O(NPM) storage.
+
+The source's subsampling convention max-pools INPUT features by 2×2 VALID before applying
+key/value projections. That is not generally equivalent to max-pooling phi/g after projection.
+The code preserves and explicitly checks that source convention, including odd-side VALID
+flooring. M then becomes floor(H/2)*floor(W/2). Projected g/theta/phi/W filters are biased
+He-uniform; the embedded-Gaussian scale follows the source release adaptation. No learned
+attention is detached: derivatives flow through affinities, normalization, values and output.
+
+Output BN gamma starts at zero, so a new block is exact signed identity with identity input
+derivatives; interior attention parameter gradients can initially be zero until the gate opens.
+Active no-pooling Gaussian/embedded/dot fixtures show one output depending on every input
+position, unlike a local 3×3 filter. Max pooling and concatenation ReLU can select fewer paths.
+The support probe uses saved BN values to isolate attention from training BN's global coupling.
+
+The backbone retains all sixteen ResNet-50 bottlenecks. It attaches non-local modules after
+zero-based blocks 0/2 in stage two and 0/2/4 in stage three: five total for depth 50. A deeper
+backbone would select more even-index blocks. Full width adds 7358464 scalars to plain ResNet-50,
+for 32915496 learned scalars. The 64-pixel full-width count/backward probe activates non-local
+gamma and freezes moving updates in BOTH the backbone and captured hook. It retains all
+channels/blocks but is not an ImageNet-resolution benchmark. Some biases have true training
+invariances: phi shifts softmax rows; g and W shifts become constants removed by BN. Finite
+gradients are checked without requiring every tensor to have a nonzero derivative.
+
+The explicit fit uses quarter widths, a 3×3 stride-one stem without pooling, stage stride on
+the first 1×1 and all sixteen backbone blocks plus five embedded-Gaussian modules. It has
+1947546 learned/15328 moving scalars. Non-local maps are 16×16 and 8×8 with key/value
+subsampling. All preprocessing, augmentation, model, loss and update computations use tensors.
+The loop shows 128 fit/64 validation/64 official-test original CIFAR images, four batch-eight
+epochs (64 updates, kept short for build time), Adam(.001), explicit kernel L2=.0001/2, padded crops/flips and paired learned/BN
+validation checkpoints. This small single-seed fit cannot establish an attention accuracy or
+latency advantage and does not reproduce the source's larger training schedule.
+
+The editable concept diagram is `diagrams/non_local_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/non_local_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/non_local_concept.tikz > build/non_local_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/non_local_concept.svg build/non_local_concept.dvi > build/non_local_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/non_local_concept.svg)
+// result_end
+\caption(Non-Local Attention: Four Affinities, Global Derivatives and Explicit Fitting)
+\alttext(All queries and keys; Four affinity rules; then Zero-scale BN start; Global active response; then Five non-local modules; Explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/non_local_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::AttentionResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.stride_on_3x3 = false;
+  cfg.after_block   = n::models::NonLocalResNetHook(cfg.momentum, true);
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out      = n::models::AttentionResNet(p, state, image, cfg, false);
+        auto       previous = image;
+        for (std::size_t i = 0; i < out.blocks.size(); ++i) {
+          n::model_stage("Residual block " + std::to_string(i + 1), previous, out.blocks[i]);
+          previous = out.blocks[i];
+        }
+        return out.logits;
+      },
+      "Non-Local Attention: Four Affinities, Global Derivatives and Explicit Fitting");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/non_local_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+21 displayed nodes; 1947546 reachable learned values.
+\image(figures/non_local_architecture.svg)
+// result_end
+\caption(Executed non local tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right non local architecture with rotated names and exact output shapes.)
+
+> Eight affinity and derivative comparisons
+
+```{cpp, results="markdown", file="figures/non_local_affinities.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace n = dm::nn;
+n::models::NonLocalOutputs independent(const n::ParameterStore &p,
+                                       const n::ParameterStore &state, const n::Tensor &x,
+                                       n::models::Pairwise mode, bool pooled) {
+  const int64_t batch = x.size(0), channels = x.size(3), inner = channels / 2;
+  auto flat = [&](const auto &t) {
+    return t.reshape({batch, -1, t.size(3)});
+  };
+  const auto keys = pooled ? n::max_pool2d(x, 2, 2, n::Padding::Valid) : x;
+  auto linear = [&](const std::string &name, const n::Tensor &t, int64_t width) {
+    return n::matmul(flat(t), p.at("nl/" + name + "/W").reshape({t.size(3), width})) +
+           p.at("nl/" + name + "/b");
+  };
+  const auto g = linear("g", keys, inner);
+  n::Tensor affinity;
+  if (mode == n::models::Pairwise::kGaussian)
+    affinity = n::matmul(flat(x), flat(keys), false, true);
+  else {
+    const auto theta = linear("theta", x, inner), phi = linear("phi", keys, inner);
+    if (mode == n::models::Pairwise::kConcatenation)
+      affinity = n::relu(n::matmul(theta, p.at("nl/concat/W1")) +
+                         n::transpose(n::matmul(phi, p.at("nl/concat/W2")), {0, 2, 1}));
+    else {
+      affinity = n::matmul(theta, phi, false, true);
+      if (mode == n::models::Pairwise::kEmbeddedGaussian)
+        affinity = affinity / std::sqrt(double(inner));
+    }
+  }
+  const auto weights = (mode == n::models::Pairwise::kGaussian ||
+                        mode == n::models::Pairwise::kEmbeddedGaussian)
+                           ? n::softmax(affinity, -1)
+                           : affinity / double(g.size(1));
+  const auto response =
+      n::matmul(n::matmul(weights, g), p.at("nl/W/W").reshape({inner, channels})) +
+      p.at("nl/W/b");
+  const auto normalized = (response - state.at("nl/bn/moving_mean")) *
+                              n::rsqrt(state.at("nl/bn/moving_var") + 1e-5) *
+                              p.at("nl/bn/gamma") +
+                          p.at("nl/bn/beta");
+  return {weights, x + normalized.reshape(x.shape())};
+}
+
+int main() {
+  const auto type = n::DType::Float64;
+  auto layout = dm::graphics::RLayout::create(2, 2);
+  const std::vector<std::string> names = {"Gaussian", "Embedded Gaussian", "Dot product",
+                                          "Concatenation"};
+  int mode_index = 0;
+  for (auto mode : {n::models::Pairwise::kGaussian, n::models::Pairwise::kEmbeddedGaussian,
+                    n::models::Pairwise::kDotProduct, n::models::Pairwise::kConcatenation}) {
+    for (bool pool : {false, true}) {
+      n::ParameterStore p(17, type), state(17, type);
+      const auto x = n::sin(.37 * n::arange(0, 2 * 4 * 4 * 4).to(type) + .2)
+                         .reshape({2, 4, 4, 4})
+                         .detach()
+                         .requires_grad_();
+      {
+        n::NoGradGuard guard;
+        n::models::NonLocalBlock(p, state, "nl", x, mode, pool, false);
+        p.set("nl/bn/gamma", n::full({4}, .7, type));
+        p.set("nl/bn/beta", n::full({4}, .2, type));
+        state.set("nl/bn/moving_mean", n::full({4}, -.1, type));
+        state.set("nl/bn/moving_var", n::full({4}, 1.3, type));
+      }
+      const auto actual = n::models::NonLocalBlock(p, state, "nl", x, mode, pool, false);
+      auto vars = p.parameters();
+      vars.insert(vars.begin(), x);
+      const auto a = n::grad(n::mean(n::square(actual.output)), vars);
+      const auto expected = independent(p, state, x, mode, pool);
+      double error = std::max(n::max(n::abs(actual.output - expected.output)).item(),
+                              n::max(n::abs(actual.attention - expected.attention)).item());
+      const auto b = n::grad(n::mean(n::square(expected.output)), vars);
+      for (size_t i = 0; i < a.size(); ++i)
+        error = std::max(error, n::max(n::abs(a[i] - b[i])).item());
+      if (error > 1e-11 || actual.attention.shape() != n::Shape{2, 16, pool ? 4 : 16})
+        return 1;
+      if (mode == n::models::Pairwise::kGaussian ||
+          mode == n::models::Pairwise::kEmbeddedGaussian)
+        if (n::max(n::abs(n::sum(actual.attention, {2}) - 1)).item() > 1e-12)
+          return 1;
+      std::print("{}, subsample={}: all values/derivatives agree within {:.12f}; attention "
+                 "range [{:.6f},{:.6f}].\n",
+                 names[mode_index], pool, error, n::min(actual.attention).item(),
+                 n::max(actual.attention).item());
+      if (!pool) {
+        const auto matrix = n::slice_axis(actual.attention, 0, 0, 1).reshape({16, 16});
+        layout.add(n::plot_tensor_map(n::reverse(matrix, {0}), n::min(matrix).item(),
+                                      n::max(matrix).item())
+                       .title(names[mode_index] + " weights")
+                       .x_label("key position j")
+                       .y_label("query position i")
+                       .x_limits(-.5, 15.5)
+                       .y_limits(-.5, 15.5));
+      }
+    }
+    ++mode_index;
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1200, 960).fit_panels().save_svg("build/non_local_affinities.svg");
+}
+```
+// result_begin: markdown
+Gaussian, subsample=false: all values/derivatives agree within 0.000000000000; attention range [0.000314,0.290285].
+Gaussian, subsample=true: all values/derivatives agree within 0.000000000000; attention range [0.007918,0.870050].
+Embedded Gaussian, subsample=false: all values/derivatives agree within 0.000000000000; attention range [0.003446,0.229692].
+Embedded Gaussian, subsample=true: all values/derivatives agree within 0.000000000000; attention range [0.025766,0.697013].
+Dot product, subsample=false: all values/derivatives agree within 0.000000000000; attention range [-0.177962,0.177466].
+Dot product, subsample=true: all values/derivatives agree within 0.000000000000; attention range [-0.749053,0.750547].
+Concatenation, subsample=false: all values/derivatives agree within 0.000000000000; attention range [0.000000,0.064321].
+Concatenation, subsample=true: all values/derivatives agree within 0.000000000000; attention range [0.000000,0.261442].
+\image(figures/non_local_affinities.svg)
+// result_end
+\caption(All four pairwise modes are checked with and without input pooling, using dense tensor projections and explicit saved-BN normalization as an independent composition. Displayed maps use sample zero without pooling. Colour limits are each panel’s minima/maxima, printed in the results; only Gaussian modes have unit row sums, and dot weights can be negative.)
+\alttext(All four pairwise modes are checked with and without input pooling, using dense tensor projections and explicit saved-BN normalization as an independent composition. Displayed maps use sample zero without pooling. Colour limits are each panel’s minima/maxima, printed in the results; only Gaussian modes have unit row sums, and dot weights can be negative.)
+
+> Identity start and global support
+
+```{cpp, results="markdown", file="figures/non_local_support.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  for (auto mode : {n::models::Pairwise::kGaussian, n::models::Pairwise::kEmbeddedGaussian,
+                    n::models::Pairwise::kDotProduct}) {
+    n::ParameterStore p(17, type), state(17, type);
+    const auto x = n::sin(.37 * n::arange(0, 5 * 5 * 4).to(type) + .2)
+                       .reshape({1, 5, 5, 4})
+                       .detach()
+                       .requires_grad_();
+    const auto fresh = n::models::NonLocalBlock(p, state, "nl", x, mode, false, false);
+    if (n::max(n::abs(fresh.output - x)).item() != 0 ||
+        n::max(n::abs(n::grad(n::sum(fresh.output), {x})[0] - 1)).item() != 0)
+      return 1;
+    p.set("nl/bn/gamma", n::ones({4}, type));
+    const auto active = n::models::NonLocalBlock(p, state, "nl", x, mode, false, false);
+    const auto picked = n::slice(active.output, {0, 2, 2, 0}, {1, 1, 1, 4});
+    const auto derivative = n::grad(n::sum(picked), {x})[0];
+    const auto mass = n::sum(n::abs(derivative), {0, 3}),
+               support = n::greater(mass, 1e-14).to(type);
+    if (n::count_nonzero(support).item() != 25)
+      return 1;
+    if (mode == n::models::Pairwise::kEmbeddedGaussian) {
+      layout
+          .add(n::plot_tensor_map(mass, 0, n::max(mass).item())
+                   .title("One output pixel: derivative mass"))
+          .add(n::plot_tensor_map(support, 0, 1).title("Binary support: 25 of 25 sites"));
+    }
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1200, 500).fit_panels().save_svg("build/non_local_support.svg");
+  std::print("Fresh zero-gamma blocks preserve signed input and exact identity derivatives. "
+             "Active Gaussian/embedded/dot fixtures each reach every one of 25 sites. Max "
+             "pooling and concatenation ReLU need separate sparsity reasoning.\n");
+}
+```
+// result_begin: markdown
+Fresh zero-gamma blocks preserve signed input and exact identity derivatives. Active Gaussian/embedded/dot fixtures each reach every one of 25 sites. Max pooling and concatenation ReLU need separate sparsity reasoning.
+\image(figures/non_local_support.svg)
+// result_end
+\caption(The active embedded-Gaussian block’s chosen output depends on all 25 input positions. A binary support panel makes small nonzero contributions visible beside the dominant local shortcut derivative; white is one (above 1e-14) and green would be zero. This probe uses saved BN moments without subsampling, so global support comes from attention rather than training BN statistics.)
+\alttext(The active embedded-Gaussian block’s chosen output depends on all 25 input positions. A binary support panel makes small nonzero contributions visible beside the dominant local shortcut derivative; white is one (above 1e-14) and green would be zero. This probe uses saved BN moments without subsampling, so global support comes from attention rather than training BN statistics.)
+
+> Complete full-width topology
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17), state(17);
+  n::models::AttentionResNetConfig cfg;
+  cfg.update_stats = false;
+  cfg.after_block = n::models::NonLocalResNetHook(.9, false);
+  {
+    n::NoGradGuard guard;
+    const auto out = n::models::AttentionResNet(p, state, n::zeros({1, 64, 64, 3}), cfg);
+    if (p.count() != 32915496 || out.blocks.size() != 16)
+      return 1;
+    int modules = 0;
+    for (const auto &name : p.names()) {
+      if (name.ends_with("non_local/bn/gamma")) {
+        ++modules;
+        p.set(name, n::full(p.at(name).shape(), .2));
+      } else if (name.ends_with("/beta"))
+        p.set(name, (.5 * n::sin(.37 * n::arange(0, p.at(name).numel()).to(n::DType::Float32) +
+                                 double(name.size())))
+                        .reshape(p.at(name).shape()));
+    }
+    if (modules != 5)
+      return 1;
+  }
+  const auto x = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                     .reshape({2, 64, 64, 3});
+  const auto before = state.flatten();
+  const auto out = n::models::AttentionResNet(p, state, x, cfg, true);
+  const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+  double low = std::numeric_limits<double>::infinity(), high = 0;
+  for (const auto &g : gradients) {
+    const double norm = n::sqrt(n::sum(n::square(g))).item();
+    if (!std::isfinite(norm))
+      return 1;
+    low = std::min(low, norm);
+    high = std::max(high, norm);
+  }
+  if (high == 0 || state.flatten() != before)
+    return 1;
+  std::print(
+      "Full-width ResNet-50 plus five active non-local blocks at 64 pixels: {} learned "
+      "scalars, {} finite parameter-tensor derivatives, norm range [{:.12f},{:.9f}], all "
+      "moving state frozen. No claim that bias-shift invariances have nonzero gradients.\n",
+      p.count(), gradients.size(), low, high);
+}
+```
+// result_begin: markdown
+Full-width ResNet-50 plus five active non-local blocks at 64 pixels: 32915496 learned scalars, 211 finite parameter-tensor derivatives, norm range [0.000000001723,355.855468750], all moving state frozen. No claim that bias-shift invariances have nonzero gradients.
+// result_end
+
+> Original images and visible fitting
+
+```{cpp, results="markdown", file="figures/non_local_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/non_local_inputs.png", 5, 0., 1., 4,
+                     1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/non_local_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/non_local_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+             vy       = n::slice_axis(labels, 0, 128, 192);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  n::models::AttentionResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.stride_on_3x3 = false;
+  cfg.after_block   = n::models::NonLocalResNetHook(cfg.momentum, true);
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::AttentionResNet(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 1947546 || state.count() != 15328)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/non_local_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 4; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/non_local_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "non local / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("Non-local compact ResNet-50")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/non_local_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 1947546 learned scalars, 15328 moving scalars; 64 explicit Adam updates.
+Selected epoch 4; validation NLL 2.370671; inference training NLL 2.479165; test NLL 2.303873; test accuracy 0.171875.
+\image(figures/non_local_training.svg)
+// result_end
+\caption(Explicit 4-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 4-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+
+
+> Observed subset result
+
+Validation selected epoch 4: validation NLL 2.370671, inference training NLL
+2.479165 and official-test NLL 2.303873, with 11/64 predictions correct (17.1875%).
+After only 64 updates the model is still near chance (NLL 2.30 for ten classes), so the
+fit shows the explicit optimizer at work rather than a trained classifier. The small
+fixed-seed test set limits claims about generalization;
+this result does not establish superiority over the channel-attention reports.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/non_local_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Different affinity rules give different normalizations and gradient paths. Dense composition
+checks, active global support and a complete five-module fit make those rules executable.
+The visible optimizer preserves the source's pooling convention and states the bounded-data
+and arithmetic limits without treating every affinity as a probability or explanation.
+
+> References
+
+- [Wang et al. (2018), Non-local Neural Networks](https://arxiv.org/abs/1711.07971).
+- [Non-local network release](https://github.com/facebookresearch/video-nonlocal-net).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

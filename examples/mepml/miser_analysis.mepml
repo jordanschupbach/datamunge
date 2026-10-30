@@ -44,7 +44,7 @@ default multidimensional integrators in scientific libraries.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -121,7 +121,7 @@ plain Monte Carlo at the same budget, averaging the error over several seeds to 
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -1,0 +1,18 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{amsmath,lmodern}
+\usetikzlibrary{arrows.meta,positioning}
+\begin{document}
+\begin{tikzpicture}[font=\large,>={Stealth[length=3mm]},box/.style={draw=blue!60!black,fill=blue!5,rounded corners=2mm,minimum height=16mm,align=center,text width=37mm},flow/.style={->,thick,blue!65!black}]
+\node[box] (scores) at (0,0) {Current scores\\$F_{m-1,k}$};
+\node[box] (prob) at (5,0) {Softmax\\$p_{m-1,k}$};
+\node[box] (res) at (10,0) {All class targets\\$r_{mk}=y_k-p_{m-1,k}$};
+\node[box] (trees) at (10,-3.5) {$K$ residual trees\\$h_{mk}\approx r_{mk}$};
+\node[box] (add) at (5,-3.5) {Add shrunken trees\\$F_{mk}=F_{m-1,k}+\eta h_{mk}$};
+\node[box] (next) at (0,-3.5) {Next probabilities\\$\operatorname{softmax}(F_m)$};
+\draw[flow] (scores)--(prob);\draw[flow] (prob)--(res);\draw[flow] (res)--node[right,align=left,font=\normalsize]{same sampled rows\\for every class}(trees);
+\draw[flow] (trees)--(add);\draw[flow] (add)--(next);
+\node[above=7mm of scores,align=center,font=\normalsize] {Start: $F_{0,k}=\log(n_k/n)$};
+\node[above=7mm of res,align=center,font=\normalsize] {One-hot labels $y_k$};
+\node[below=7mm of add,align=center,font=\normalsize] {Every target uses the same pre-round probabilities.\\Then repeat with the updated scores.};
+\end{tikzpicture}
+\end{document}

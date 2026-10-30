@@ -39,7 +39,7 @@ unit issues them in the same cycle. Same iteration count, better hardware utilis
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -100,7 +100,7 @@ We divide and check a few quotients, then trace \(|D-1|\) each step for \(D\) sc
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

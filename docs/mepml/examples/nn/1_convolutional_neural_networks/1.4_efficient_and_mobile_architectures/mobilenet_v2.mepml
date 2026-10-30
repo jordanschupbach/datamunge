@@ -1,0 +1,564 @@
+//? Title: MobileNet v2: Expanded Features and Linear Bottlenecks
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Expanding before nonlinear filtering can preserve more information than clipping a narrow
+representation. We illustrate ReLU recovery on a spiral, check signed inverted residuals,
+verify full model budgets/gradients and explicitly fit all seventeen blocks with tensor Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v2.cpp`.
+
+> The method
+
+V2 expands a narrow Cin-channel map by t with a 1×1 BN/ReLU6, applies depthwise 3×3 BN/ReLU6,
+then projects linearly with 1×1 BN. Expansion is skipped at t=1. The shortcut adds the narrow
+input only for equal width and stride one; no activation gates the projection or sum.
+
+$$y=x+P\bigl(\operatorname{ReLU6}(D(\operatorname{ReLU6}(Ex)))\bigr).$$
+\alttext(Nonlinearities operate in the expanded representation; the narrow projection and residual sum remain linear.)
+
+The spiral example projects two-dimensional points into wider random spaces, applies ReLU,
+then uses tensor least squares over active coordinates as an independent information-recovery
+oracle. It illustrates why clipping a narrow manifold can lose recoverable coordinates; it does
+not prove all learned expansions are injective, and least squares does not fit the classifier.
+A separate zero-projection fixture verifies exact signed identity and weighted input derivatives.
+
+The complete Table-2 architecture has seventeen inverted residuals in seven groups with counts
+1/2/3/4/3/3/1. Channel widths align to eight, increased if rounding down loses more than 10%.
+The final 1280-channel width does not shrink for alpha<1. Global mean, training dropout .2 and
+a dense classifier finish the model. Full alpha-one has 3504872 learned and 34112 moving scalars;
+subtracting BN affine counts gives 3470760, explaining comparisons with tables that omit BN.
+Nine width/resolution MAC budgets are checked. The full-width backward probe shifts BN betas
+and separately checks seventeen projection BN shifts removed by downstream training normalization.
+It retains every block at 64-pixel synthetic inputs; classifier dropout is disabled for that probe.
+
+The CIFAR fit retains full width with 2236682 learned scalars and dropout retention .8.
+All model computations and fitting use the tensor library. BN learns scale/shift with epsilon .001;
+training uses batch moments and eager moving updates use unbiased variance. He-uniform fan-in
+initialization is an adaptation of the original release. Images stay at original 32×32 resolution;
+only the first stride changes to one, retaining every later block/downsampling. Fits use 128 fitting,
+64 validation and 64 official-test images, six batch-eight epochs (96 updates, kept short for build time) of Adam(.001), explicit kernel
+L2=.0001/2 and independent padded crops/flips. Validation selects paired weights/moving moments
+before test evaluation. These tiny CPU fits differ from both the larger source runs and published
+ImageNet schedules. MAC counts are arithmetic budgets from measured output shapes, not latency.
+
+The editable concept diagram is `diagrams/mobilenet_v2_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/mobilenet_v2_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/mobilenet_v2_concept.tikz > build/mobilenet_v2_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/mobilenet_v2_concept.svg build/mobilenet_v2_concept.dvi > build/mobilenet_v2_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/mobilenet_v2_concept.svg)
+// result_end
+\caption(MobileNet v2: Expanded Features and Linear Bottlenecks)
+\alttext(Expand narrow channels; nonlinear depthwise filter; then Linear projection; ungated shortcut sum; then All seventeen blocks; explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/mobilenet_v2_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::MobileNetV2Config cfg;
+  cfg.small_stem = true;
+  cfg.classes    = 10;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::MobileNetV2(p, state, image, cfg, false).logits;
+      },
+      "MobileNet v2: Expanded Features and Linear Bottlenecks");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/mobilenet_v2_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+154 displayed nodes; 2236682 reachable learned values.
+\image(figures/mobilenet_v2_architecture.svg)
+// result_end
+\caption(Executed mobilenet v2 tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right mobilenet v2 architecture with rotated names and exact output shapes.)
+
+> Simple information-recovery example
+
+The active-coordinate oracle makes the ReLU bottleneck argument visible.
+
+```{cpp, results="markdown", file="figures/mobilenet_v2_manifold.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::Generator gen(17);
+  n::NoGradGuard guard;
+  const auto angle = n::arange(0, 400).to(type) * (3 * std::acos(-1.) / 400),
+             radius = .2 + angle;
+  const auto x = n::stack({radius * n::cos(angle), radius * n::sin(angle)}, 0);
+  std::vector<double> dimensions, errors;
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  for (int width : {2, 3, 5, 15, 30}) {
+    double total = 0;
+    for (int trial = 0; trial < 20; ++trial) {
+      const auto matrix = n::normal({width, 2}, 0, 1, gen, type), z = n::matmul(matrix, x);
+      const auto active = n::expand_dims(n::transpose(n::greater(z, 0).to(type), {1, 0}), 2);
+      const auto rows = n::expand_dims(matrix, 0) * active,
+                 rhs = n::expand_dims(n::transpose(n::relu(z), {1, 0}), 2);
+      const auto recovered =
+          n::transpose(n::squeeze(n::matrix_solve_ls(rows, rhs, 1e-6), {2}), {1, 0});
+      const double error = n::sqrt(n::sum(n::square(recovered - x))).item() /
+                           n::sqrt(n::sum(n::square(x))).item();
+      if (!std::isfinite(error))
+        return 1;
+      total += error;
+      if (trial == 0 && (width == 2 || width == 30)) {
+        auto plot = dm::graphics::RPlot::create();
+        plot.lines(n::slice_axis(x, 0, 0, 1).reshape({400}).to_vector<double>(),
+                   n::slice_axis(x, 0, 1, 2).reshape({400}).to_vector<double>(), "original",
+                   {37, 99, 235})
+            .lines(n::slice_axis(recovered, 0, 0, 1).reshape({400}).to_vector<double>(),
+                   n::slice_axis(recovered, 0, 1, 2).reshape({400}).to_vector<double>(),
+                   "recovered", {234, 88, 12})
+            .title("ReLU embedding dimension " + std::to_string(width))
+            .x_label("coordinate 1")
+            .y_label("coordinate 2")
+            .y_limits(-10, 16);
+        layout.add(plot);
+      }
+    }
+    dimensions.push_back(width);
+    errors.push_back(total / 20);
+    std::print(
+        "Embedding dimension {}: mean relative reconstruction error {:.9f} over 20 draws.\n",
+        width, total / 20);
+  }
+  if (errors.back() >= errors.front() || errors.back() > .01)
+    return 1;
+  std::filesystem::create_directories("build");
+  layout.size(1100, 470).fit_panels().save_svg("build/mobilenet_v2_manifold.svg");
+}
+```
+// result_begin: markdown
+Embedding dimension 2: mean relative reconstruction error 0.717139534 over 20 draws.
+Embedding dimension 3: mean relative reconstruction error 0.565078838 over 20 draws.
+Embedding dimension 5: mean relative reconstruction error 0.242138095 over 20 draws.
+Embedding dimension 15: mean relative reconstruction error 0.015601332 over 20 draws.
+Embedding dimension 30: mean relative reconstruction error 0.000000091 over 20 draws.
+\image(figures/mobilenet_v2_manifold.svg)
+// result_end
+\caption(A tensor least-squares oracle recovers the original spiral using only positive embedding coordinates. It demonstrates information loss from ReLU at low width; it is not the classifier’s fitting algorithm. Left/right show the first of 20 independent projections, with both curves overlapping where recovery succeeds.)
+\alttext(A tensor least-squares oracle recovers the original spiral using only positive embedding coordinates. It demonstrates information loss from ReLU at low width; it is not the classifier’s fitting algorithm. Left/right show the first of 20 independent projections, with both curves overlapping where recovery succeeds.)
+
+> Signed bottleneck and strided projection
+
+A zero correction preserves negative inputs exactly.
+
+```{cpp, results="markdown", file="figures/mobilenet_v2_identity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), state(17, type);
+  std::vector<n::models::MobileLayer> layers;
+  n::models::MobileContext c{p, state, layers, false};
+  const auto x = n::linspace(-1, 1, 256, type).reshape({1, 8, 8, 4}).detach().requires_grad_();
+  {
+    n::NoGradGuard guard;
+    n::models::InvertedResidual(c, "b", x, 4, 6, 1);
+  }
+  p.set("b/project/bn/gamma", n::zeros({4}, type));
+  p.set("b/project/bn/beta", n::zeros({4}, type));
+  const auto out = n::models::InvertedResidual(c, "b", x, 4, 6, 1);
+  const auto weights = n::linspace(.1, 1, 256, type).reshape(x.shape()),
+             dx = n::grad(n::sum(out.output * weights), {x})[0];
+  if (n::max(n::abs(out.output - x)).item() != 0 || n::max(n::abs(dx - weights)).item() != 0 ||
+      out.expanded.size(3) != 24)
+    return 1;
+  const auto down = n::models::InvertedResidual(c, "down", x, 6, 6, 2);
+  if (down.filtered.shape() != n::Shape{1, 4, 4, 24} ||
+      down.output.shape() != n::Shape{1, 4, 4, 6})
+    return 1;
+  auto first = [](const auto &t) {
+    return n::slice_axis(t, 3, 0, 1).reshape({8, 8});
+  };
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(n::plot_tensor_map(first(x), -1, 1).title("Signed narrow input"))
+      .add(n::plot_tensor_map(first(out.output), -1, 1)
+               .title("Zero projection: signed identity"));
+  std::filesystem::create_directories("build");
+  layout.size(1100, 470).fit_panels().save_svg("build/mobilenet_v2_identity.svg");
+  std::print(
+      "Expansion 4->24; linear projection 24->4; exact signed identity and weighted input "
+      "derivatives. Stride-two 8x8->4x4, output width six, has no shortcut addition.\n");
+}
+```
+// result_begin: markdown
+Expansion 4->24; linear projection 24->4; exact signed identity and weighted input derivatives. Stride-two 8x8->4x4, output width six, has no shortcut addition.
+\image(figures/mobilenet_v2_identity.svg)
+// result_end
+\caption(Zero projection BN removes the learned correction without gating the shortcut. The stride-two diagnostic separately checks expansion, filtering and linear projection geometry.)
+\alttext(Zero projection BN removes the learned correction without gating the shortcut. The stride-two diagnostic separately checks expansion, filtering and linear projection geometry.)
+
+> Complete budgets and gradients
+
+Parameter counts include BN; arithmetic excludes BN and elementwise work.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  for (auto [a, size, count, moving, macs] :
+       std::vector<std::tuple<double, int, int64_t, int64_t, int64_t>>{
+           {1.4, 224, 6108776, 47936, 582195824},
+           {1, 224, 3504872, 34112, 300774272},
+           {.75, 224, 2636424, 26640, 209069792},
+           {.5, 224, 1968680, 18544, 97131840},
+           {.35, 224, 1677128, 14080, 59285808},
+           {1, 192, 3504872, 34112, 221316608},
+           {1, 160, 3504872, 34112, 154083200},
+           {1, 128, 3504872, 34112, 99074048},
+           {1, 96, 3504872, 34112, 56289152}}) {
+    n::NoGradGuard guard;
+    n::ParameterStore p(17), state(17);
+    n::models::MobileNetV2Config cfg;
+    cfg.alpha = a;
+    const auto out = n::models::MobileNetV2(p, state, n::zeros({1, size, size, 3}), cfg);
+    if (p.count() != count || state.count() != moving || out.Macs() != macs)
+      return 1;
+    std::print("alpha {}, resolution {}: {} learned / {} moving scalars, {} MACs/image; "
+               "excluding BN affine {} scalars.\n",
+               a, size, count, moving, macs, count - moving);
+  }
+  if (n::models::MakeDivisible(9) != 16 || n::models::MakeDivisible(17) != 16)
+    return 1;
+  std::print("Channel alignment: 9->16 due to 10% safeguard; 17->16. Final 1280-channel width "
+             "does not shrink below alpha one.\n");
+}
+```
+// result_begin: markdown
+alpha 1.4, resolution 224: 6108776 learned / 47936 moving scalars, 582195824 MACs/image; excluding BN affine 6060840 scalars.
+alpha 1, resolution 224: 3504872 learned / 34112 moving scalars, 300774272 MACs/image; excluding BN affine 3470760 scalars.
+alpha 0.75, resolution 224: 2636424 learned / 26640 moving scalars, 209069792 MACs/image; excluding BN affine 2609784 scalars.
+alpha 0.5, resolution 224: 1968680 learned / 18544 moving scalars, 97131840 MACs/image; excluding BN affine 1950136 scalars.
+alpha 0.35, resolution 224: 1677128 learned / 14080 moving scalars, 59285808 MACs/image; excluding BN affine 1663048 scalars.
+alpha 1, resolution 192: 3504872 learned / 34112 moving scalars, 221316608 MACs/image; excluding BN affine 3470760 scalars.
+alpha 1, resolution 160: 3504872 learned / 34112 moving scalars, 154083200 MACs/image; excluding BN affine 3470760 scalars.
+alpha 1, resolution 128: 3504872 learned / 34112 moving scalars, 99074048 MACs/image; excluding BN affine 3470760 scalars.
+alpha 1, resolution 96: 3504872 learned / 34112 moving scalars, 56289152 MACs/image; excluding BN affine 3470760 scalars.
+Channel alignment: 9->16 due to 10% safeguard; 17->16. Final 1280-channel width does not shrink below alpha one.
+// result_end
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  {
+    n::ParameterStore p(17), state(17);
+    n::models::MobileNetV2Config cfg;
+    cfg.update_stats = false;
+    cfg.keep_probability = 1;
+    const auto x = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                       .reshape({2, 64, 64, 3});
+    {
+      n::NoGradGuard guard;
+      n::models::MobileNetV2(p, state, x, cfg, true);
+      for (const auto &name : p.names())
+        if (name.ends_with("/beta") || false) {
+          const auto shape = p.at(name).shape();
+          p.set(name,
+                (.5 * n::sin(.37 * n::arange(0, p.at(name).numel()).to(n::DType::Float32) +
+                             double(name.size())))
+                    .reshape(shape));
+        }
+    }
+    const auto out = n::models::MobileNetV2(p, state, x, cfg, true);
+    const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+    double maximum = 0, minimum = std::numeric_limits<double>::infinity(), removed = 0;
+    int redundant = 0;
+    for (size_t i = 0; i < gradients.size(); ++i) {
+      const double norm = n::sqrt(n::sum(n::square(gradients[i]))).item();
+      if (!std::isfinite(norm))
+        return 1;
+      maximum = std::max(maximum, norm);
+      if (p.names()[i].ends_with("/project/bn/beta")) {
+        ++redundant;
+        removed = std::max(removed, norm);
+      } else
+        minimum = std::min(minimum, norm);
+    }
+    if (redundant != 17 || removed > 1e-5 * maximum || minimum <= 0)
+      return 1;
+    std::print(
+        "MobileNet-v2: {} finite parameter-tensor gradients; nonredundant minimum {:.9f}, "
+        "maximum {:.9f}; {} projection BN shifts removed downstream, max {:.9f}.\n",
+        gradients.size(), minimum, maximum, redundant, removed);
+  }
+}
+```
+// result_begin: markdown
+MobileNet-v2: 158 finite parameter-tensor gradients; nonredundant minimum 0.002606923, maximum 16.137609482; 17 projection BN shifts removed downstream, max 0.000000379.
+// result_end
+
+> Dataset and visible fitting
+
+Original pixels precede the complete optimizer loop.
+
+```{cpp, results="markdown", file="figures/mobilenet_v2_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/mobilenet_v2_inputs.png", 5, 0., 1., 4,
+                     1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/mobilenet_v2_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/mobilenet_v2_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 128), ty = n::slice_axis(labels, 0, 0, 128);
+  const auto vx       = 2 * n::slice_axis(images, 0, 128, 192) - 1,
+             vy       = n::slice_axis(labels, 0, 128, 192);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 64);
+  n::models::MobileNetV2Config cfg;
+  cfg.small_stem = true;
+  cfg.classes    = 10;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::MobileNetV2(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 2236682 || state.count() != 34112)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(128, 8, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/mobilenet_v2_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 6; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/mobilenet_v2_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "mobilenet v2 / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 64)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("MobileNet-v2, full width")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/mobilenet_v2_training.svg");
+  std::print(
+      "128 fit / 64 validation / 64 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+128 fit / 64 validation / 64 official-test rows; 2236682 learned scalars, 34112 moving scalars; 96 explicit Adam updates.
+Selected epoch 6; validation NLL 2.370849; inference training NLL 2.057844; test NLL 2.269060; test accuracy 0.187500.
+\image(figures/mobilenet_v2_training.svg)
+// result_end
+\caption(Explicit 6-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit 6-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
+
+
+The spiral oracle's mean relative errors are .717140/.565079/.242138/.015601/
+.000000091 at embedding dimensions 2/3/5/15/30. Width 15 still loses information
+for some random draws; wide recovery is an observed fixture result, not a universal
+injectivity guarantee.
+
+The classifier selects epoch 6, the last: validation NLL 2.370849, inference training NLL
+2.057844, test NLL 2.269060 and accuracy 0.187500. After 96 updates the model is only just
+below chance NLL (2.30 for ten classes) and still improving. This is a bounded optimization
+example rather than evidence of a v1/v2 accuracy ranking.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/mobilenet_v2_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+Expanded nonlinear processing and an ungated narrow projection define the inverted residual.
+The recovery oracle, exact identity derivatives and full budgets explain those choices; explicit
+Adam fitting shows the complete classifier while keeping tiny-data limitations visible.
+
+> References
+
+- [Sandler et al. (2018), MobileNetV2](https://arxiv.org/abs/1801.04381).
+- [TensorFlow v2 release](https://github.com/tensorflow/models/tree/master/research/slim/nets/mobilenet).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

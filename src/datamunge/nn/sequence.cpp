@@ -267,6 +267,8 @@ struct CrfShape {
 
 CrfShape crf_shape(const Tensor& potentials, const Tensor& lengths, const Tensor& transitions, const Tensor& start,
                    const Tensor& end, const char* what) {
+  for(const Tensor* value:{&potentials,&lengths,&transitions,&start,&end})
+    if(value->defined())detail::require_cpu(*value,what);
   if (potentials.dim() != 3)
     throw std::invalid_argument(std::string(what) + ": potentials must be [B, T, K], got " +
                                 shape_str(potentials.shape()));

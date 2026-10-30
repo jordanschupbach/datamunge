@@ -52,7 +52,7 @@ occur at every position \(\{0, 1, \dots, n\}\), mirroring
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The rolling hash
@@ -196,7 +196,7 @@ rejects it. The authoritative match positions come from
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

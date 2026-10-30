@@ -1,0 +1,601 @@
+//? Title: CenterNet Gaussian centres and learned upsampling
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Verify Gaussian radii, maximum-combined heatmaps, centre collisions and analytic loss derivatives, then check the full learned-upsample graph and explicitly fit the complete compact source detector with paired BN checkpoints.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/centernet.cpp`.
+
+> The method
+
+CenterNet detects objects as class heatmap centres with learned size and subpixel offsets. Size-adaptive Gaussians supervise peak location, while masked L1 supervises geometric attributes at retained centres.
+
+The editable concept diagram is `diagrams/centernet_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/centernet_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/centernet_concept.tikz > build/centernet_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/centernet_concept.svg build/centernet_concept.dvi > build/centernet_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/centernet_concept.svg)
+// result_end
+\caption(CenterNet Gaussian centres and learned upsampling)
+\alttext(Stride-four centres; Gaussian heatmaps; then Heatmap, size, offset; Learned upsampling; then Explicit Adam loop; Top100 local peaks.)
+
+> Executed tensor architecture
+
+All displayed prediction branches are joined only to keep them reachable in one diagram; the flattened display output is not postprocessed detection or pose inference.
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/centernet_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  m::DetectionSceneConfig cfg;
+  m::CenterNetConfig      model;
+  n::ParameterStore       p(17), state(17);
+  cfg.scenes            = 80;
+  cfg.seed              = 11;
+  model.classes         = 10;
+  model.backbone_depth  = 18;
+  model.width_divisor   = 8;
+  model.head_width      = 32;
+  model.upsample_widths = {64, 32, 32};
+  model.grayscale       = true;
+  n::Module architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out = m::CenterNet(p, state, image, model, false);
+        return n::concat(
+            {out.heatmap.reshape({1, -1}), out.size.reshape({1, -1}), out.offset.reshape({1, -1})},
+            1);
+      },
+      "CenterNet Gaussian centres and learned upsampling");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 64, 64, 1}), options);
+  diagram.save_svg("build/centernet_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+120 displayed nodes; 319862 reachable learned values.
+\image(figures/centernet_architecture.svg)
+// result_end
+\caption(Executed centernet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right centernet architecture with rotated names and exact output shapes.)
+
+> Adaptive Gaussian heatmaps and centre collisions
+
+CenterNet represents each object at `floor(pixel centre/4)` on a stride-four
+class heatmap, with height/width and subpixel dy/dx heads. The authors' radius
+formula takes the minimum of three quadratic expressions at overlap .7.
+This port preserves their code, including division by two in the second and
+third expressions. It floors the radius and uses sigma=(2*radius+1)/6 inside
+a finite square support. White pixels represent target1 and green pixels target0 in the heatmap figure. Same-class kernels combine by **maximum** and clip
+at image edges. Gaussian shoulders are negative targets with reduced penalty,
+not soft positive class labels.
+
+When several objects share a centre cell, this source keeps the largest area
+across classes, first truth on exact area ties. Only that winner draws a
+Gaussian; each discarded object counts as a collision. The fixture below
+checks a clipped radius-two kernel and three colliding objects.
+
+```{cpp, results="markdown", file="figures/centernet_targets.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto centres = n::from_vector(std::vector<std::int64_t>{3, 3, 0, 0, 3, 4}, {3, 2});
+  const auto heat =
+      m::CenterGaussianHeatmap(7, 7, 1, centres, n::zeros({3}, n::DType::Int64),
+                               n::full({3}, 2., n::DType::Int64), n::DType::Float64);
+  double error = 0;
+  for (int y = 0; y < 7; ++y)
+    for (int x = 0; x < 7; ++x) {
+      double expected = 0;
+      for (const auto &point : std::vector<std::array<int, 2>>{{3, 3}, {0, 0}, {3, 4}}) {
+        const int dy = y - point[0], dx = x - point[1];
+        if (std::abs(dy) <= 2 && std::abs(dx) <= 2)
+          expected =
+              std::max(expected, std::exp(-(dy * dy + dx * dx) / (2. * std::pow(5. / 6., 2))));
+      }
+      error = std::max(error, std::abs(heat.at({y, x, 0}) - expected));
+    }
+  if (error > 1e-15)
+    return 1;
+  m::TensorDetectionScenes data;
+  data.images = n::zeros({1, 64, 64, 1});
+  data.boxes = {n::tensor({8., 12., 24., 28., 9., 13., 25., 29., 7., 11., 27., 31.}, {3, 4})};
+  data.labels = {n::from_vector(std::vector<std::int64_t>{1, 2, 3})};
+  const auto t = m::MakeCenterTargets(data, {0}, 4);
+  if (t.collisions != 2 || t.heatmap.at({0, 4, 5, 3}) != 1 ||
+      t.heatmap.at({0, 4, 5, 1}) != 0 || n::sum(t.mask).item() != 1)
+    return 1;
+  auto a = n::plot_tensor_map(n::reverse(heat.reshape({7, 7}), {0}), 0, 1);
+  a.title("Clipped max-combined Gaussians")
+      .x_label("grid column")
+      .y_label("grid row")
+      .x_limits(-.5, 6.5)
+      .y_limits(-.5, 6.5);
+  const auto classes = n::unstack(t.heatmap, 3);
+  auto b = n::plot_tensor_map(n::reverse(classes[3].reshape({16, 16}), {0}), 0, 1);
+  b.title("Retained largest-object target")
+      .x_label("grid column")
+      .y_label("grid row")
+      .x_limits(-.5, 15.5)
+      .y_limits(-.5, 15.5);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(a).add(b).size(1200, 600).fit_panels().save_svg(
+      "build/centernet_targets.svg");
+  std::print("Every Gaussian pixel matches independent oracle, max error{:.16f}; "
+             "radius(10,10)={:.12f}. Two collisions retain class3 at row4,column5, size5/5, "
+             "offset.25/.25.\n",
+             error,
+             m::CenterGaussianRadius(n::full({}, 10., n::DType::Float64),
+                                     n::full({}, 10., n::DType::Float64))
+                 .item());
+}
+```
+// result_begin: markdown
+Every Gaussian pixel matches independent oracle, max error0.0000000000000000; radius(10,10)=2.733200530682. Two collisions retain class3 at row4,column5, size5/5, offset.25/.25.
+\image(figures/centernet_targets.svg)
+// result_end
+\caption(Left: actual finite-support maximum-combined radius-two Gaussians, including one clipped at row/column zero. Right: only the largest of three colliding objects draws its class target. Plot grid rows increase upward as labelled.)
+\alttext(Left: actual finite-support maximum-combined radius-two Gaussians, including one clipped at row/column zero. Right: only the largest of three colliding objects draws its class target. Plot grid rows increase upward as labelled.)
+
+> Penalty-reduced focal and masked L1 objective
+
+The heatmap loss uses `sigmoid(-x)²*softplus(-x)` at targets exactly one;
+other pixels use `(1-target)^4*sigmoid(x)²*softplus(x)`. There is no RetinaNet
+alpha factor. Summed heatmap focal plus `.1*size L1 + offset L1` divides by
+retained centres floored at one. L1 applies only at retained cells; background
+images still train heatmap negatives. The independent fixture checks every
+derivative, including the Gaussian .5 shoulder's factor of1/16.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  const auto l = n::zeros({1, 1, 3, 1}, type).requires_grad_(),
+             s = n::from_vector(std::vector<double>{.2, 4, 2, 3, 4, 5}, {1, 1, 3, 2})
+                     .requires_grad_(),
+             o = n::from_vector(std::vector<double>{.1, .8, 2, 3, 4, 5}, {1, 1, 3, 2})
+                     .requires_grad_();
+  const auto heat = n::from_vector(std::vector<double>{1, .5, 0}, {1, 1, 3, 1}),
+             ts = n::from_vector(std::vector<double>{1, 3, 0, 0, 0, 0}, {1, 1, 3, 2}),
+             to = n::from_vector(std::vector<double>{.3, .5, 0, 0, 0, 0}, {1, 1, 3, 2}),
+             mask = n::from_vector(std::vector<double>{1, 0, 0}, {1, 1, 3, 1});
+  const auto loss = n::models::CenterLoss(l, s, o, heat, ts, to, mask);
+  if (std::abs(loss.item() - (.515625 * std::log(2.) + .68)) > 1e-12)
+    return 1;
+  const auto g = n::grad(loss, {l, s, o});
+  const double a = .125 + .25 * std::log(2.), expected[] = {-a, a / 16, a};
+  double error = 0;
+  for (int i = 0; i < 3; ++i)
+    error = std::max(error, std::abs(g[0].reshape({3}).at({i}) - expected[i]));
+  for (int i = 0; i < 6; ++i) {
+    error = std::max(error, std::abs(g[1].reshape({6}).at({i}) - (i == 0   ? -.1
+                                                                  : i == 1 ? .1
+                                                                           : 0.)));
+    error = std::max(error, std::abs(g[2].reshape({6}).at({i}) - (i == 0   ? -1.
+                                                                  : i == 1 ? 1.
+                                                                           : 0.)));
+  }
+  if (error > 1e-12)
+    return 1;
+  const auto bg = n::models::CenterLoss(l, s, o, n::zeros({1, 1, 3, 1}, type), ts, to,
+                                        n::zeros({1, 1, 3, 1}, type));
+  for (const auto &v : n::grad(bg, {s, o}))
+    if (n::count_nonzero(v).item() != 0)
+      return 1;
+  std::print("Heatmap/size/offset fixture loss{:.12f}; every analytic derivative "
+             "error{:.12f}. Background heatmap loss{:.12f} retains learning with exact zero "
+             "size/offset derivatives.\n",
+             loss.item(), error, bg.item());
+}
+```
+// result_begin: markdown
+Heatmap/size/offset fixture loss1.037404014976; every analytic derivative error0.000000000000. Background heatmap loss0.519860385420 retains learning with exact zero size/offset derivatives.
+// result_end
+
+> Full learned-upsample graph and compact fit
+
+The full ResNet18 CenterNet has 14,046,164 learned and 10,496 BN-state scalars.
+Three 4x4 stride-two transposed convolutions (256/128/64 channels) each have
+BN/ReLU. Independent 3x3/ReLU then1x1 heads predict 80 heatmaps, height/width
+and dy/dx. Head kernels use normal standard deviation .001, heatmap bias -2.19;
+encoder/deconvolutions use their source initialization. No pretrained weights
+are loaded. This full128-pixel backward verifies all81 learned tensor derivatives.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  n::ParameterStore p(17), state(17);
+  n::models::CenterNetConfig c;
+  c.update_stats = false;
+  const auto net = n::models::CenterNet(
+      p, state, n::sin(.13 * n::arange(0, 128 * 128 * 3)).reshape({1, 128, 128, 3}), c, true);
+  if (p.count() != 14046164 || state.count() != 10496 ||
+      net.heatmap.shape() != n::Shape{1, 32, 32, 80})
+    return 1;
+  const auto g = n::grad(n::mean(n::square(net.heatmap)) + n::mean(n::square(net.size)) +
+                             n::mean(n::square(net.offset)),
+                         p.parameters());
+  if (g.size() != 81)
+    return 1;
+  for (const auto &v : g)
+    if (!v.defined() || !std::isfinite(n::sum(n::square(v)).item()))
+      return 1;
+  std::print("Full CenterNet128: {} learned/{} state scalars,32x32x80 heatmap and all{} "
+             "finite defined learned tensor derivatives. Initialized validation, not trained "
+             "benchmark output.\n",
+             p.count(), state.count(), g.size());
+}
+```
+// result_begin: markdown
+Full CenterNet128: 14046164 learned/10496 state scalars,32x32x80 heatmap and all81 finite defined learned tensor derivatives. Initialized validation, not trained benchmark output.
+// result_end
+
+The complete compact source network uses ResNet18 with widths divided by
+eight, upsampling widths64/32/32 and hidden heads32: 319,862 learned and1,456
+BN-state scalars. This report fits64-pixel scenes, an explicit smaller-scene
+adaptation. The split uses64 fit/16 validation scenes from the first2048
+MNIST training digits(seed11), and eight test scenes from the first512 official
+test digits(seed22). Actual training pixels and boxes appear below.
+
+```{cpp, results="markdown", file="figures/centernet_scenes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto train = n::load_mnist((cache / "mnist").string(), "train");
+  n::models::DetectionSceneConfig cfg;
+  cfg.scenes = 80;
+  cfg.seed = 11;
+  const auto scenes = n::models::MakeTensorDetectionScenes(
+      n::slice_axis(train.images, 0, 0, 2048), n::slice_axis(train.labels, 0, 0, 2048), cfg);
+
+  std::vector<n::Tensor> boxes(scenes.boxes.begin(), scenes.boxes.begin() + 8);
+  const auto preview = n::models::DrawDetectionBoxes(n::slice_axis(scenes.images, 0, 0, 8),
+                                                     boxes, {.1, 1., .2});
+  std::filesystem::create_directories("build");
+  n::save_image_grid(preview, "build/centernet_scenes.png", 4, 0., 1., 4, 1., 2);
+  std::int64_t objects = 0;
+  for (const auto &b : scenes.boxes)
+    objects += b.shape()[0];
+  std::print("80 generated training/validation scenes; {} accepted digits. Preview: first "
+             "eight training scenes with tight green boxes.\n",
+             objects);
+}
+```
+// result_begin: markdown
+80 generated training/validation scenes; 195 accepted digits. Preview: first eight training scenes with tight green boxes.
+\image(figures/centernet_scenes.png)
+// result_end
+\caption(Actual first eight training scenes with green target boxes; the compact CenterNet receives whole normalized scenes.)
+\alttext(Actual first eight training scenes with green target boxes; the compact CenterNet receives whole normalized scenes.)
+
+Every learned backbone, transposed-convolution and head parameter is warmed
+before Adam(.001), batch four,32 epochs and512 updates. The objective adds
+`.00005*sum(kernel²)`; biases and normalization affines are fitted but excluded
+from kernel L2. Validation AP50 selects paired learned/BN state checkpoints,
+which are restored before test evaluation and checked against selected AP.
+
+Decoding keeps classwise3x3 local maxima; equal plateaus retain all tied maxima.
+The top100 scores strictly above .01 per image are chosen **before** rejecting
+nonpositive sizes or clipped zero-area boxes. Higher flattened heatmap index
+wins exact score ties. Centres/sizes convert to pixels with stride four.
+There is no box NMS. Native tests check these ordering choices and plateaus.
+
+```{cpp, results="markdown", file="figures/centernet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto digits = n::load_mnist((cache / "mnist").string(), "train");
+  m::DetectionSceneConfig cfg;
+  cfg.scenes = 80;
+  cfg.seed = 11;
+  const auto scenes = m::MakeTensorDetectionScenes(
+      n::slice_axis(digits.images, 0, 0, 2048), n::slice_axis(digits.labels, 0, 0, 2048), cfg);
+  m::CenterNetConfig model;
+  model.classes = 10;
+  model.backbone_depth = 18;
+  model.width_divisor = 8;
+  model.head_width = 32;
+  model.upsample_widths = {64, 32, 32};
+  model.grayscale = true;
+  std::vector<std::int64_t> val_rows(16);
+  std::iota(val_rows.begin(), val_rows.end(), 64);
+  std::vector<int> val_ids(val_rows.begin(), val_rows.end());
+  n::ParameterStore p(17), state(17);
+  {
+    n::NoGradGuard guard;
+    const auto warm = m::CenterNet(p, state, n::zeros({1, 64, 64, 1}), model, false);
+    if (warm.heatmap.shape() != n::Shape{1, 16, 16, 10})
+      return 1;
+  }
+  if (p.count() != 319862 || state.count() != 1456)
+    return 1;
+  // Inference borrows this scope's parameter/state stores; every class and default is handled by tensor kernels.
+  const auto detect = [&](const m::TensorDetectionScenes &data,
+                          const std::vector<std::int64_t> &rows) {
+    n::NoGradGuard guard;
+    const auto net = m::CenterNet(
+        p, state, 2. * n::gather(data.images, n::from_vector(rows)) - 1., model, false);
+    return m::DecodeCenterDetections(net.peaks, net.size, net.offset, n::from_vector(rows), 64,
+                                     64);
+  };
+  // Annotation conversion is presentation of existing tensor boxes/IDs, with no box arithmetic.
+  const auto truth_records = [](const m::TensorDetectionScenes &data,
+                                const std::vector<std::int64_t> &rows) {
+    std::vector<m::DetectionEvaluationTruth> out;
+    for (auto row : rows) {
+      const auto boxes = n::boxes_to_vector(data.boxes[row]);
+      const auto labels = data.labels[row].to_vector<int>();
+      for (std::size_t i = 0; i < boxes.size(); ++i)
+        out.push_back({int(row), labels[i], boxes[i]});
+    }
+    return out;
+  };
+  const auto validation_truth = truth_records(scenes, val_rows);
+  n::OptimizerConfig adam_config;
+  adam_config.kind = n::OptimizerKind::Adam;
+  n::Optimizer adam(p, .001, adam_config);
+  n::BatchOrder batches(64, 4, 29);
+  std::vector<n::Tensor> kernels;
+  for (const auto &leaf : p.parameters())
+    if (leaf.dim() >= 2)
+      kernels.push_back(leaf);
+  std::filesystem::create_directories("build");
+  const std::string checkpoint = "build/centernet_best.npz";
+  std::vector<double> epochs, losses, ce_trace, reg_trace, ap_trace, scale_trace;
+  double best = -1;
+  int selected = 0, steps = 0;
+  std::print("| epoch | heat + size + offset loss | CE | regression | val AP50 "
+             "|\n|---:|---:|---:|---:|---:|\n");
+  for (int epoch = 1; epoch <= 32; ++epoch) {
+    batches.begin_epoch();
+    double total = 0, total_ce = 0, total_reg = 0;
+    std::size_t seen = 0;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto net = m::CenterNet(
+          p, state, 2. * n::gather(scenes.images, n::from_vector(rows)) - 1., model, true);
+      const auto targets = m::MakeCenterTargets(scenes, rows, 10);
+      const auto focal = n::sum(m::CenterHeatmapFocal(net.heatmap, targets.heatmap)) /
+                         n::maximum(n::sum(targets.mask), n::ones({}));
+      const auto objective = m::CenterLoss(net, targets);
+      n::Tensor penalty = n::zeros({});
+      for (const auto &kernel : kernels)
+        penalty = penalty + n::sum(n::square(kernel));
+      if (!std::isfinite(objective.item()))
+        return 1;
+      total += objective.item() * rows.size();
+      total_ce += focal.item() * rows.size();
+      total_reg += (objective - focal).item() * rows.size();
+      seen += rows.size();
+      adam.minimize(objective + .00005 * penalty);
+      ++steps;
+    }
+    const auto metric =
+        m::EvaluateDetectionDataset(m::DetectionEvaluationRecords(detect(scenes, val_rows)),
+                                    validation_truth, val_ids, false, true);
+    epochs.push_back(epoch);
+    losses.push_back(total / double(seen));
+    ce_trace.push_back(total_ce / double(seen));
+    reg_trace.push_back(total_reg / double(seen));
+    ap_trace.push_back(metric.ap50.item());
+    scale_trace.push_back(n::mean(n::abs(state.at(state.names()[0]))).item());
+    if (metric.ap50.item() > best) {
+      best = metric.ap50.item();
+      selected = epoch;
+      p.save(checkpoint);
+      state.save("build/centernet_best_state.npz");
+    }
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n", epoch, losses.back(),
+               ce_trace.back(), reg_trace.back(), ap_trace.back());
+  }
+  p.load(checkpoint);
+  state.load("build/centernet_best_state.npz");
+  const auto restored =
+      m::EvaluateDetectionDataset(m::DetectionEvaluationRecords(detect(scenes, val_rows)),
+                                  validation_truth, val_ids, false, true);
+  if (std::abs(restored.ap50.item() - best) > 1e-12)
+    return 1;
+  const auto test_digits = n::load_mnist((cache / "mnist").string(), "test");
+  cfg.scenes = 8;
+  cfg.seed = 22;
+  const auto test =
+      m::MakeTensorDetectionScenes(n::slice_axis(test_digits.images, 0, 0, 512),
+                                   n::slice_axis(test_digits.labels, 0, 0, 512), cfg);
+  std::vector<std::int64_t> test_rows(8);
+  std::iota(test_rows.begin(), test_rows.end(), 0);
+  std::vector<int> test_ids(test_rows.begin(), test_rows.end());
+  const auto output = detect(test, test_rows);
+  const auto records = m::DetectionEvaluationRecords(output);
+  const auto truth = truth_records(test, test_rows);
+  const auto voc = m::EvaluateDetectionDataset(records, truth, test_ids, false, true),
+             coco = m::EvaluateDetectionDataset(records, truth, test_ids, true);
+  std::vector<n::Tensor> predicted;
+  const auto image_ids = output.images.to_vector<int>();
+  for (int image = 0; image < 8; ++image) {
+    std::vector<std::int64_t> index;
+    for (std::size_t j = 0; j < image_ids.size(); ++j)
+      if (image_ids[j] == image)
+        index.push_back(std::int64_t(j));
+    predicted.push_back(n::gather(output.boxes, n::from_vector(index)));
+  }
+  const auto green = m::DrawDetectionBoxes(test.images, test.boxes, {.1, 1., .2}),
+             red = m::DrawDetectionBoxes(test.images, predicted, {1., .1, .1}),
+             raw = test.images * n::ones({1, 1, 1, 3});
+  n::save_image_grid(n::where(n::any(n::not_equal(green, raw), {3}, true), green, red),
+                     "build/centernet_detections.png", 4, 0., 1., 4, 1., 2);
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file("build/centernet_detections.png",
+                             "figures/centernet_detections.png",
+                             std::filesystem::copy_options::overwrite_existing);
+  auto a = dm::graphics::RPlot::create();
+  a.lines(epochs, losses, "heat + size + offset", {37, 99, 235})
+      .title("Compact CenterNet objective")
+      .x_label("epoch")
+      .y_label("unregularized objective")
+      .y_limits(0, 1.3 * *std::max_element(losses.begin(), losses.end()));
+  auto b = dm::graphics::RPlot::create();
+  b.lines(epochs, ce_trace, "heatmap focal", {37, 99, 235})
+      .lines(epochs, reg_trace, "size + offset", {220, 38, 38})
+      .title("Fitted heatmap and L1 terms")
+      .x_label("epoch")
+      .y_label("normalized loss")
+      .y_limits(0, 1.3 * std::max(*std::max_element(ce_trace.begin(), ce_trace.end()),
+                                  *std::max_element(reg_trace.begin(), reg_trace.end())));
+  auto c = dm::graphics::RPlot::create();
+  c.lines(epochs, ap_trace, "validation AP50", {22, 163, 74})
+      .title("Validation detection selection")
+      .x_label("epoch")
+      .y_label("inclusive VOC AP50")
+      .y_limits(0, 1.3);
+  auto d = dm::graphics::RPlot::create();
+  d.lines(epochs, scale_trace, "BN state", {147, 51, 234})
+      .title("Backbone moving state")
+      .x_label("epoch")
+      .y_label("mean abs first state tensor")
+      .y_limits(*std::min_element(scale_trace.begin(), scale_trace.end()) - .1,
+                *std::max_element(scale_trace.begin(), scale_trace.end()) + .2);
+  dm::graphics::RLayout::create(2, 2)
+      .add(a)
+      .add(b)
+      .add(c)
+      .add(d)
+      .size(1200, 1000)
+      .fit_panels()
+      .save_svg("build/centernet_training.svg");
+  std::print(
+      "{} learned scalars, {} Adam updates; selected epoch {}, validation AP50 {:.6f}. Test: "
+      "{} digits in eight scenes, inclusive VOC AP50 {:.6f}, COCO AP75 {:.6f}, AP50:95 "
+      "{:.6f}, {} detections. Selected mean absolute first BN state {:.6f}; paired learned "
+      "and BN state restored.\n",
+      p.count(), steps, selected, best, truth.size(), voc.ap50.item(), coco.ap75.item(),
+      coco.ap.item(), records.size(), n::mean(n::abs(state.at(state.names()[0]))).item());
+}
+```
+// result_begin: markdown
+| epoch | heat + size + offset loss | CE | regression | val AP50 |
+|---:|---:|---:|---:|---:|
+| 1 | 4.428185 | 2.974981 | 1.453204 | 0.000000 |
+| 2 | 3.746529 | 2.698313 | 1.048216 | 0.000000 |
+| 3 | 3.385131 | 2.658547 | 0.726584 | 0.000159 |
+| 4 | 3.275929 | 2.590218 | 0.685711 | 0.000000 |
+| 5 | 3.134123 | 2.477964 | 0.656159 | 0.006963 |
+| 6 | 2.949533 | 2.357633 | 0.591900 | 0.009934 |
+| 7 | 2.860109 | 2.290221 | 0.569888 | 0.039899 |
+| 8 | 2.754181 | 2.198366 | 0.555814 | 0.005047 |
+| 9 | 2.692261 | 2.151421 | 0.540841 | 0.006488 |
+| 10 | 2.647717 | 2.136250 | 0.511467 | 0.002132 |
+| 11 | 2.630552 | 2.110372 | 0.520180 | 0.030036 |
+| 12 | 2.602671 | 2.090865 | 0.511806 | 0.013381 |
+| 13 | 2.596740 | 2.090206 | 0.506534 | 0.017592 |
+| 14 | 2.511084 | 2.019819 | 0.491265 | 0.030968 |
+| 15 | 2.497739 | 2.013083 | 0.484655 | 0.012527 |
+| 16 | 2.455258 | 1.981817 | 0.473441 | 0.012160 |
+| 17 | 2.401996 | 1.949775 | 0.452222 | 0.011153 |
+| 18 | 2.390209 | 1.940677 | 0.449532 | 0.015859 |
+| 19 | 2.360094 | 1.915088 | 0.445006 | 0.019953 |
+| 20 | 2.354730 | 1.928915 | 0.425816 | 0.015033 |
+| 21 | 2.345221 | 1.904750 | 0.440470 | 0.025552 |
+| 22 | 2.293864 | 1.874421 | 0.419443 | 0.010555 |
+| 23 | 2.245477 | 1.862851 | 0.382626 | 0.035012 |
+| 24 | 2.236469 | 1.833775 | 0.402694 | 0.022256 |
+| 25 | 2.176568 | 1.819280 | 0.357288 | 0.022077 |
+| 26 | 2.140202 | 1.794383 | 0.345819 | 0.066967 |
+| 27 | 2.110787 | 1.787000 | 0.323787 | 0.025683 |
+| 28 | 2.112951 | 1.801263 | 0.311689 | 0.030958 |
+| 29 | 2.082586 | 1.781049 | 0.301537 | 0.039303 |
+| 30 | 2.037224 | 1.752289 | 0.284934 | 0.020636 |
+| 31 | 2.006385 | 1.739180 | 0.267205 | 0.009105 |
+| 32 | 1.988781 | 1.728917 | 0.259865 | 0.018210 |
+319862 learned scalars, 512 Adam updates; selected epoch 26, validation AP50 0.066967. Test: 23 digits in eight scenes, inclusive VOC AP50 0.025192, COCO AP75 0.000000, AP50:95 0.007186, 800 detections. Selected mean absolute first BN state 1.246062; paired learned and BN state restored.
+\image(figures/centernet_training.svg)
+// result_end
+\caption(Visible whole-network CenterNet Adam fitting, with heatmap and combined size/offset losses, validation AP50 and moving-state history. Both learned and BN-state checkpoints are restored.)
+\alttext(Visible whole-network CenterNet Adam fitting, with heatmap and combined size/offset losses, validation AP50 and moving-state history. Both learned and BN-state checkpoints are restored.)
+
+\image(figures/centernet_detections.png)
+\caption(Actual restored compact CenterNet detections in red, with green true boxes on eight held-out scenes. Incorrect sizes, extra peaks and class errors remain visible.)
+\alttext(Eight held-out digit scenes showing true boxes and CenterNet peak-decoded predictions.)
+
+> Conclusion
+
+The selected epoch26 has validation AP50 .066967. Test AP50 is .025192, AP75 is zero and AP50:95 is .007186, with 800 detections. This bounded schedule generalizes poorly despite decreasing training loss; extra/mislocalized boxes remain visible.
+
+Independent Gaussian and objective oracles precede full-graph validation and explicit compact fitting. The selected learned and normalization state are restored together; actual held-out predictions illustrate this instructional run without claiming full-dataset accuracy.
+
+> References
+
+- [Zhou, Wang and Krähenbühl (2019), Objects as Points](https://arxiv.org/abs/1904.07850).
+- [Authors’ Gaussian radius and heatmap implementation](https://github.com/xingyizhou/CenterNet/blob/master/src/lib/utils/image.py).

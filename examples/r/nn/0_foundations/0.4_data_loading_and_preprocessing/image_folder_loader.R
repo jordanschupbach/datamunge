@@ -1,9 +1,9 @@
 # Native R NN example. Image-folder datasets with PNG/JPEG decoding and bilinear resize.
+# CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/image_folder_loader.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example image_folder_loader
 # Port of tflow's image_folder_loader. Generate small RGB PNG/JPEG and
 # grayscale PNG fixtures. Scan class directories in deterministic order,
 # decode mixed image formats to RGB, and assemble a shuffled float32 batch

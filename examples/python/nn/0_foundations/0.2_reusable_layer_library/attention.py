@@ -1,4 +1,5 @@
 # Native Python NN example. Attention references, scaling, gradients and lookup training.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/attention.py
 """Additive, scaled dot-product and multi-head attention through the bound API."""
 import math
 from pydatamunge import nn

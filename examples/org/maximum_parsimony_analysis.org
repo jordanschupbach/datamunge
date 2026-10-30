@@ -35,7 +35,7 @@ whole tree; the most parsimonious *topology* is the one minimizing that sum.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Build a rooted 4-taxon tree ((a,b),(c,d)) with leaves 0..3, internals 4,5, root 6.
 inline ParsimonyTree topology(int a, int b, int c, int d) {

@@ -40,7 +40,7 @@ though the underlying hash (here SHA-256) is public and unkeyed.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static int tag_hamming(const std::array<std::uint8_t, 32>& a,
                        const std::array<std::uint8_t, 32>& b) {
@@ -134,7 +134,7 @@ change \-\- the key-avalanche a MAC needs.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static int tag_hamming(const std::array<std::uint8_t, 32>& a,
                        const std::array<std::uint8_t, 32>& b) {

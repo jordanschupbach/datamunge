@@ -1,3 +1,5 @@
+/// @file saga.cpp
+/// @brief SAGA native update, trial and stopping implementation.
 #include <datamunge/optim/saga.hpp>
 
 #include <cmath>

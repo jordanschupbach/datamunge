@@ -1,0 +1,350 @@
+//? Title: xoroshiro128+: Balanced Bits Can Still Be Predictable
+//? Subtitle: A reversible two-word generator, held-out recurrence checks and a car-data bootstrap
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+xoroshiro128+ combines a 128-bit XOR/rotate transition with addition of two
+64-bit words. We derive the transition's inverse and show why its lowest
+output bit remains linear despite the addition scrambler. A recurrence fitted
+on an initial segment predicts a separate suffix, revealing a weakness that
+bit frequencies and a small goodness-of-fit battery can miss. The generator
+then drives an ordinary bootstrap of mean fuel economy in
+`dm::datasets::mtcars()`, checked against the exact conditional standard error.
+Published jump operations organise reproducible simulation streams without
+turning disjoint state ranges into a claim of independence.
+)
+
+\toc
+
+> The data: fuel economy in a selected set of cars
+
+The built-in `mtcars` dataset contains 32 cars and 11 numeric variables.
+Fuel economy `mpg` is in miles per US gallon and weight `wt` is in thousands
+of pounds. The cars have different cylinder counts, weights and engines;
+they are a selected historical set, not a random sample of today's fleet.
+Our resampling calculation describes the empirical distribution of these
+records under an exchangeable-record model. It does not estimate a causal
+weight effect or automatically generalise to other cars.
+
+```{cpp, results="markdown", file="figures/xoroshiro_cars.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto cars = dm::datasets::mtcars();
+  std::print("{}\n", cars.select({"mpg", "cyl", "wt", "hp"}).head(6).to_md());
+  std::print("\n{}\n", (cars | dm::group_by("cyl") |
+      dm::summarise(dm::agg::n("cars"), dm::agg::mean("mpg", "mean_mpg"),
+          dm::agg::sd("mpg", "sd_mpg"), dm::agg::mean("wt", "mean_wt"))).to_md(4));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().points(cars.get_column("wt").values(), cars.get_column("mpg").values(),
+      "cars", dm::RGB{37,99,235}, 4)
+      .title("Fuel economy and weight in 32 historical cars")
+      .x_label("weight (1000 lb)").y_label("fuel economy (miles per US gallon)")
+      .size(900,480).save_svg("build/xoroshiro_cars.svg");
+}
+```
+// result_begin: markdown
+| mpg | cyl | wt | hp |
+| ---: | ---: | ---: | ---: |
+| 21.0 | 6 | 2.620 | 110 |
+| 21.0 | 6 | 2.875 | 110 |
+| 22.8 | 4 | 2.320 | 93 |
+| 21.4 | 6 | 3.215 | 110 |
+| 18.7 | 8 | 3.440 | 175 |
+| 18.1 | 6 | 3.460 | 105 |
+
+
+| cyl | cars | mean_mpg | sd_mpg | mean_wt |
+| ---: | ---: | ---: | ---: | ---: |
+| 6 | 7 | 19.7429 | 1.4536 | 3.1171 |
+| 4 | 11 | 26.6636 | 4.5098 | 2.2857 |
+| 8 | 14 | 15.1000 | 2.5600 | 3.9992 |
+
+\image(figures/xoroshiro_cars.svg)
+// result_end
+\caption(First records, cylinder-group summaries and the two measurements used to describe the car sample.)
+\alttext(A scatter plot showing lower fuel economy for heavier cars, with substantial variation among cars of similar weight.)
+
+> The method: addition hides some linear structure, but not the lowest bit
+
+For old state words \((a,b)\), put \(q=a\oplus b\). Version 1.0
+uses the 24/16/37 parameters, rather than the earlier 55/14/36 variant.
+With all words truncated to 64 bits, output and simultaneous transition are
+
+$$
+y=a+b\pmod{2^{64}},\qquad
+T(a,b)=\left(\operatorname{rotl}(a,24)\oplus q\oplus(q\ll16),\
+\operatorname{rotl}(q,37)\right).
+$$
+\alttext(The output adds the old words modulo two to the sixty-four. The next state XORs a rotated first word with the XOR of the old words and its shifted copy, then rotates that XOR for the second word.)
+
+XOR, fixed shifts and rotations are linear over \(\mathbf F_2\), so
+this is a binary linear state transition. Given a next state \((u,v)\),
+its inverse follows directly:
+
+$$
+q=\operatorname{rotr}(v,37),\qquad
+a=\operatorname{rotr}\left(u\oplus q\oplus(q\ll16),24\right),\qquad
+b=q\oplus a.
+$$
+\alttext(Undo the second rotation to recover the XOR of the old words, then undo the first rotation to recover the first word and XOR to recover the second.)
+
+This proves reversibility. The stronger claim that all nonzero states lie
+on one cycle of length \(2^{128}-1\) comes from the published primitive
+characteristic polynomial, not from the inverse or a short empirical run.
+The zero state is absorbing and rejected by the direct-state constructor.
+A scalar seed fills two words from successive SplitMix64 outputs. Those
+outputs are distinct because SplitMix's counter step and scrambling are
+invertible, so the pair cannot be all zero.
+
+Addition is nonlinear over XOR because of carries, but there is no carry
+into bit zero. Thus the lowest output bit is exactly
+
+$$
+z_t=(a_t)_0\oplus(b_t)_0=\ell(T^t s_0),\qquad
+z_t=\bigoplus_{j=1}^{L}c_j z_{t-j},\quad L\le128.
+$$
+\alttext(The lowest output bit is the XOR of the lowest state bits, a linear functional of the 128-bit state. Cayley–Hamilton gives it a binary recurrence of length at most 128.)
+
+The recurrence bound follows from applying the degree-128 characteristic
+identity for \(T\) to the state and then the linear functional \(\ell\).
+A sequence can have almost half ones and still obey such a short recurrence.
+The authors explicitly identify low linear complexity in the lowest bits;
+`uniform01()` instead uses the top 53 bits of a raw output.
+
+> Exact state and jump checks
+
+The published jump polynomials evaluate \(T^{2^{64}}\) and
+\(T^{2^{96}}\) using XOR accumulation over 128 transitions. They apply
+to the 24/16/37 version specifically. The reference states below are
+checked against the authors' compiled C implementation, including eight
+outputs after each starting point.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("| position | s0 | s1 | next output |\n| :--- | :--- | :--- | :--- |\n");
+  for (int mode : {0,1,2}) {
+    dm::random::Xoroshiro128Plus rng(std::array<std::uint64_t,2>{1,2});
+    if (mode == 1) rng.jump();
+    if (mode == 2) rng.long_jump();
+    const auto state = rng.state();
+    std::print("| {} | {:016x} | {:016x} | {:016x} |\n",
+        mode == 0 ? "initial" : mode == 1 ? "2^64 jump" : "2^96 jump", state[0], state[1], rng.next_u64());
+  }
+}
+```
+// result_begin: markdown
+| position | s0 | s1 | next output |
+| :--- | :--- | :--- | :--- |
+| initial | 0000000000000001 | 0000000000000002 | 0000000000000003 |
+| 2^64 jump | 66fbd4be1df0a7b5 | 830c3ddbb4aa3172 | ea081299d29ad927 |
+| 2^96 jump | 3ce44494d47d323a | 2aa25ca8d61de643 | 6786a13daa9b187d |
+// result_end
+\caption(Raw states and outputs in hexadecimal, avoiding loss of integer precision through floating-point table columns.)
+
+State snapshots exclude any second normal variate cached by the distribution
+interface. Jumps clear that cache, while copying a complete engine preserves
+both the raw state and the cache. Disjoint state ranges require stream
+lengths smaller than the jump spacing and no wrap around the full period;
+they are not a proof of statistical independence.
+
+> A recurrence trained on one segment and checked on another
+
+`bit_linear_complexities()` uses the existing Berlekamp–Massey solver on
+a prefix, fixes its coefficients, and predicts each held-out bit using the
+preceding observed bits. It never refits on the suffix. Here there are
+512 training words and 512 validation words, with six bit positions chosen
+before inspection. The one-frequency column uses the full 1024 words. When multiple shortest
+recurrences fit a prefix, the solver retains its deterministic choice.
+
+```{cpp, results="markdown", file="figures/xoroshiro_prediction.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::random::Xoroshiro128Plus rng(42);
+  std::vector<std::uint64_t> words(1024);
+  for (auto& word : words) word = rng.next_u64();
+  const auto diagnostic = dm::random::bit_linear_complexities(words,512);
+  std::print("{}\n", diagnostic.to_md(5));
+  std::vector<std::string> labels{"0","1","2","3","31","63"};
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::barplot(diagnostic.get_column("error_rate").values(),labels,"error fraction")
+      .abline_h(0.5,dm::RGB{220,38,38},2)
+      .title("A balanced lowest bit is predictable on unseen outputs")
+      .x_label("output bit position").y_label("held-out prediction error fraction")
+      .y_limits(0,0.6).size(900,480).save_svg("build/xoroshiro_prediction.svg");
+}
+```
+// result_begin: markdown
+| bit | training_size | heldout_size | linear_complexity | heldout_errors | error_rate | one_frequency |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 512 | 512 | 128 | 0 | 0.00000 | 0.50195 |
+| 1 | 512 | 512 | 258 | 264 | 0.51562 | 0.50488 |
+| 2 | 512 | 512 | 256 | 247 | 0.48242 | 0.50586 |
+| 3 | 512 | 512 | 257 | 239 | 0.46680 | 0.53711 |
+| 31 | 512 | 512 | 257 | 238 | 0.46484 | 0.51660 |
+| 63 | 512 | 512 | 256 | 272 | 0.53125 | 0.52148 |
+
+\image(figures/xoroshiro_prediction.svg)
+// result_end
+\caption(Training-prefix recurrence lengths and suffix prediction errors. The red line is the ideal independent-bit error fraction, one half.)
+\alttext(A bar chart with zero prediction error for bit zero and error fractions near one half for the other five selected bit positions.)
+
+For an ideal independent fair-bit stream, any predictor fixed from the
+training segment and based on previous observations makes an error with
+conditional probability one half on each next bit. A zero-error suffix of
+512 bits would have probability \(2^{-512}\) for that fixed diagnostic.
+This is a structural demonstration of the low-bit limitation, not a general
+ranking of generators. Larger samples and different diagnostics can expose
+other weaknesses; high bits are not made cryptographically secure by passing.
+
+```{cpp, results="markdown", file="figures/xoroshiro_complexity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::random::Xoroshiro128Plus rng(42);
+  std::vector<std::uint64_t> words(2048);
+  for (auto& word : words) word = rng.next_u64();
+  std::vector<double> n, low, high, reference;
+  std::print("| training words | lowest-bit L | highest-bit L |\n| ---: | ---: | ---: |\n");
+  for (const std::size_t size : {128,256,512,1024}) {
+    const auto row = dm::random::bit_linear_complexities(words,size,{0,63});
+    n.push_back(size); low.push_back(row.double_at("linear_complexity",0));
+    high.push_back(row.double_at("linear_complexity",1)); reference.push_back(size/2.0);
+    std::print("| {} | {} | {} |\n",size,low.back(),high.back());
+  }
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().line(n,low,"bit 0",dm::RGB{220,38,38},2)
+      .line(n,high,"bit 63",dm::RGB{37,99,235},2)
+      .line(n,reference,"N / 2",dm::RGB{100,100,100},1)
+      .title("Low-bit linear complexity stops growing at 128")
+      .x_label("training-prefix length N").y_label("shortest binary recurrence length")
+      .size(900,480).save_svg("build/xoroshiro_complexity.svg");
+}
+```
+// result_begin: markdown
+| training words | lowest-bit L | highest-bit L |
+| ---: | ---: | ---: |
+| 128 | 64 | 63 |
+| 256 | 128 | 128 |
+| 512 | 128 | 256 |
+| 1024 | 128 | 512 |
+\image(figures/xoroshiro_complexity.svg)
+// result_end
+\caption(The lowest-bit recurrence reaches length 128; the highest-bit finite-prefix complexity grows near the independent-bit scale N/2 over this range.)
+\alttext(A line chart showing lowest-bit complexity levelling at 128, while highest-bit complexity rises with roughly half the training length.)
+
+> A small quality battery addresses different questions
+
+The seven-test battery measures marginal uniformity, serial pairs, lag-one
+correlation, raw monobit balance and low-byte frequencies. It contains no
+linear-complexity test. Forty fresh scalar-seeded engines provide a
+second-level KS check of each test's p-values, with 100000 observations per
+first-level test. Approximate reference distributions, discrete statistics,
+multiple testing and related deterministic seed choices limit interpretation.
+All seven results are retained, without selecting a favourable seed.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto tests = dm::random::quality_tests_over_seeds([](std::uint64_t seed) {
+    return std::make_unique<dm::random::Xoroshiro128Plus>(seed);
+  },40,100000);
+  std::print("{}\n",tests.select({"test","mean_p","small_p_count","large_p_count","ks_p_value"}).to_md(5));
+}
+```
+// result_begin: markdown
+| test | mean_p | small_p_count | large_p_count | ks_p_value |
+| :--- | ---: | ---: | ---: | ---: |
+| Uniformity, chi-square (100 cells) | 0.56627 | 3 | 4 | 0.11277 |
+| Uniformity, Kolmogorov-Smirnov | 0.40402 | 2 | 1 | 0.06447 |
+| Serial pairs, chi-square (10 x 10 cells) | 0.50785 | 3 | 4 | 0.80132 |
+| Lag-1 correlation, z = r sqrt(n) | 0.50358 | 1 | 3 | 0.94221 |
+| Monobit, lowest bit (z) | 0.43006 | 3 | 0 | 0.17553 |
+| Monobit, highest bit (z) | 0.50801 | 2 | 5 | 0.69888 |
+| Lowest byte, chi-square (256 cells) | 0.44831 | 1 | 0 | 0.29535 |
+// result_end
+\caption(Per-test summaries across seeds 1–40. Under ideal calibration about two first-level p-values below 0.05 and two above 0.95 are expected per row.)
+
+> Applying the engine: resampling mean fuel economy
+
+For observations \(x_1,\ldots,x_n\), let \(s^2\) be their sample
+variance with denominator \(n-1\). An ordinary bootstrap draws \(n\)
+records independently with replacement from the empirical distribution.
+Its single-draw variance and exact conditional mean variance are
+
+$$
+\operatorname{Var}_*(X^*)=\frac{n-1}{n}s^2,\qquad
+\operatorname{Var}_*(\bar X^*)=\frac{n-1}{n^2}s^2,\qquad
+\operatorname{SE}_*(\bar X^*)=s\frac{\sqrt{n-1}}{n}.
+$$
+\alttext(The empirical-distribution variance is n minus one over n times the sample variance. Dividing by n yields the exact bootstrap mean variance.)
+
+The caller-owned generator controls the random draws; the seed stored in
+`BootstrapOptions` is ignored by this overload. Indices use unbiased
+multiply-and-reject bounded sampling, not a raw word modulo \(n\).
+For the 32-record sample, this uses the top five bits with no rejection,
+so the demonstrated raw lowest-bit recurrence does not choose the indices.
+This claim is specific to \(n=32\); for other bounds the multiplication
+and rejection rule must be considered directly.
+
+```{cpp, results="markdown", file="figures/xoroshiro_bootstrap.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto mpg = dm::datasets::mtcars().get_column("mpg").values();
+  dm::random::Xoroshiro128Plus rng(2026);
+  const auto result = dm::stats::Bootstrap({10000,0.95,42}).run(mpg,dm::mean,rng);
+  const double n = mpg.size(), exact = dm::sd(mpg)*std::sqrt(n-1)/n;
+  std::print("| cars | mean mpg | exact conditional SE | simulated SE | bias | percentile lower | percentile upper |\n"
+      "| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n"
+      "| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",mpg.size(),result.estimate,exact,
+      result.standard_error,result.bias,result.percentile_interval.first,result.percentile_interval.second);
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::hist(result.replicates,35,"bootstrap means")
+      .abline_v(result.estimate,dm::RGB{220,38,38},2)
+      .title("Mean fuel economy: 10000 empirical bootstrap replicates")
+      .x_label("bootstrap mean (miles per US gallon)").y_label("replicates")
+      .size(900,480).save_svg("build/xoroshiro_bootstrap.svg");
+}
+```
+// result_begin: markdown
+| cars | mean mpg | exact conditional SE | simulated SE | bias | percentile lower | percentile upper |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 32 | 20.090625 | 1.048645 | 1.037189 | -0.022860 | 18.071875 | 22.156328 |
+\image(figures/xoroshiro_bootstrap.svg)
+// result_end
+\caption(The simulated bootstrap standard error beside its exact conditional value. Percentile endpoints describe this exchangeable-record resampling model.)
+\alttext(A near-bell-shaped histogram of resampled mean fuel economy, centred near 20 miles per US gallon, with the original mean marked.)
+
+The simulated SE is 1.03719 mpg, about 1.1% below the exact 1.04865 mpg.
+For approximately normal replicates, the rough Monte Carlo SE of this
+standard-deviation estimate is \(1.04865/\sqrt{2(10000-1)}\), about 0.00742 mpg.
+The difference is about 1.5 such Monte Carlo standard errors. Independent
+Python reproduces all 10000 means, and R agrees on the summary and percentile
+endpoints.
+
+Increasing the replication count reduces Monte Carlo noise in these
+summaries. It cannot correct the original cars' selection or establish an
+independent-observation model. Agreement with the exact conditional variance
+checks the resampling calculation, not general statistical quality of the
+engine on every application.
+
+> Conclusion
+
+The 24/16/37 transition is reversible, and published jump polynomials match
+the authors' reference stream. Addition leaves a linear lowest bit whose
+short recurrence predicts new outputs even though balance alone looks
+ordinary. A modest quality battery and a held-out recurrence check answer
+different questions. In the car bootstrap the bounded-index API uses upper
+bits, and an exact conditional variance provides an application-specific
+oracle while preserving the limits of the resampling model.
+
+> References
+
+- D. Blackman and S. Vigna (2021). *Scrambled Linear Pseudorandom Number Generators*.
+  ACM Transactions on Mathematical Software 47(4). https://doi.org/10.1145/3460772
+- Authors' xoroshiro128+ 1.0 reference transition and jump operations,
+  https://prng.di.unimi.it/xoroshiro128plus.c
+- J. L. Massey (1969). *Shift-Register Synthesis and BCH Decoding*.
+  IEEE Transactions on Information Theory 15(1), 122–127. https://doi.org/10.1109/TIT.1969.1054260
+- B. Efron (1979). *Bootstrap Methods: Another Look at the Jackknife*.
+  Annals of Statistics 7(1), 1–26. https://doi.org/10.1214/aos/1176344552

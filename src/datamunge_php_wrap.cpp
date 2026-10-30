@@ -1792,9 +1792,9 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__set(std::vector< std::string > *sel
 
   #include "datamunge/datamunge.hpp"
 
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::plot::RGB(); }
-SWIGINTERN datamunge::plot::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::plot::RGB{r, g, b, alpha};
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
+SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
+    return new datamunge::graphics::RGB{r, g, b, alpha};
   }
 static zend_object_handlers Swig_Php_base_object_handlers;
 
@@ -2122,43 +2122,43 @@ static zend_class_entry *SWIG_Php_ce_RGB;
 
 static zend_object_handlers RGB_object_handlers;
 static zend_object *SWIG_Php_create_object_RGB(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &RGB_object_handlers);}
-static void SWIG_Php_free_obj_RGB(zend_object *object) {delete (datamunge::plot::RGB *)SWIG_Php_free_obj(object);}
+static void SWIG_Php_free_obj_RGB(zend_object *object) {delete (datamunge::graphics::RGB *)SWIG_Php_free_obj(object);}
 
 static zend_class_entry *SWIG_Php_ce_DataSeries;
 
 static zend_object_handlers DataSeries_object_handlers;
 static zend_object *SWIG_Php_create_object_DataSeries(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &DataSeries_object_handlers);}
-static void SWIG_Php_free_obj_DataSeries(zend_object *object) {delete (datamunge::plot::DataSeries *)SWIG_Php_free_obj(object);}
+static void SWIG_Php_free_obj_DataSeries(zend_object *object) {delete (datamunge::graphics::DataSeries *)SWIG_Php_free_obj(object);}
 
 static zend_class_entry *SWIG_Php_ce_ABLine;
 
 static zend_object_handlers ABLine_object_handlers;
 static zend_object *SWIG_Php_create_object_ABLine(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &ABLine_object_handlers);}
-static void SWIG_Php_free_obj_ABLine(zend_object *object) {delete (datamunge::plot::ABLine *)SWIG_Php_free_obj(object);}
+static void SWIG_Php_free_obj_ABLine(zend_object *object) {delete (datamunge::graphics::ABLine *)SWIG_Php_free_obj(object);}
 
 static zend_class_entry *SWIG_Php_ce_LegendEntry;
 
 static zend_object_handlers LegendEntry_object_handlers;
 static zend_object *SWIG_Php_create_object_LegendEntry(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &LegendEntry_object_handlers);}
-static void SWIG_Php_free_obj_LegendEntry(zend_object *object) {delete (datamunge::plot::LegendEntry *)SWIG_Php_free_obj(object);}
+static void SWIG_Php_free_obj_LegendEntry(zend_object *object) {delete (datamunge::graphics::LegendEntry *)SWIG_Php_free_obj(object);}
 
 static zend_class_entry *SWIG_Php_ce_Plot;
 
 static zend_object_handlers Plot_object_handlers;
 static zend_object *SWIG_Php_create_object_Plot(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &Plot_object_handlers);}
-static void SWIG_Php_free_obj_Plot(zend_object *object) {delete (datamunge::plot::Plot *)SWIG_Php_free_obj(object);}
+static void SWIG_Php_free_obj_Plot(zend_object *object) {delete (datamunge::graphics::Plot *)SWIG_Php_free_obj(object);}
 
 static zend_class_entry *SWIG_Php_ce_RPlot;
 
 static zend_object_handlers RPlot_object_handlers;
 static zend_object *SWIG_Php_create_object_RPlot(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &RPlot_object_handlers);}
-static void SWIG_Php_free_obj_RPlot(zend_object *object) {delete (datamunge::plot::RPlot *)SWIG_Php_free_obj(object);}
+static void SWIG_Php_free_obj_RPlot(zend_object *object) {delete (datamunge::graphics::RPlot *)SWIG_Php_free_obj(object);}
 
 static zend_class_entry *SWIG_Php_ce_RLayout;
 
 static zend_object_handlers RLayout_object_handlers;
 static zend_object *SWIG_Php_create_object_RLayout(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &RLayout_object_handlers);}
-static void SWIG_Php_free_obj_RLayout(zend_object *object) {delete (datamunge::plot::RLayout *)SWIG_Php_free_obj(object);}
+static void SWIG_Php_free_obj_RLayout(zend_object *object) {delete (datamunge::graphics::RLayout *)SWIG_Php_free_obj(object);}
 
 static zend_class_entry *SWIG_Php_ce_BSplineRegression;
 
@@ -2941,7 +2941,7 @@ static void *_p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__Differe
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::ProximalFunction *) x));
 }
 static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::RPlot *) x));
+    return (void *)((datamunge::graphics::Plot *)  ((datamunge::graphics::RPlot *) x));
 }
 static swig_type_info _swigt__int = {"_int", "int", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__AgglomerativeClustering = {"_p_datamunge__AgglomerativeClustering", "datamunge::AgglomerativeClustering *", 0, 0, (void*)0, 0};
@@ -3098,13 +3098,13 @@ static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewton = {"_p_datam
 static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewtonOptions = {"_p_datamunge__optim__TrustRegionNewtonOptions", "datamunge::optim::TrustRegionNewtonOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimization = {"_p_datamunge__optim__WhaleOptimization", "datamunge::optim::WhaleOptimization *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimizationOptions = {"_p_datamunge__optim__WhaleOptimizationOptions", "datamunge::optim::WhaleOptimizationOptions *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::plot::ABLine *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::plot::DataSeries *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::plot::LegendEntry *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::plot::Plot *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::plot::RGBA *|datamunge::plot::RGB *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::plot::RLayout *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::plot::RPlot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::graphics::ABLine *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::graphics::DataSeries *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::graphics::LegendEntry *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::graphics::Plot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::graphics::RGBA *|datamunge::graphics::RGB *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::graphics::RLayout *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::graphics::RPlot *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "datamunge::stats::ARIMA *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "datamunge::stats::ARIMAOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)0, 0};
@@ -3122,10 +3122,10 @@ static swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT_dou
 static swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t", "std::pair< int,int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__size_t = {"_p_std__size_t", "std::vector< std::size_t >::value_type *|std::size_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::plot::ABLine > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::plot::DataSeries > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::plot::LegendEntry > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::plot::RGB > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::graphics::ABLine > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::graphics::DataSeries > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::graphics::LegendEntry > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::graphics::RGB > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< std::vector< double > >::value_type *|std::vector< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__size_t_t = {"_p_std__vectorT_std__size_t_t", "std::vector< std::size_t > *", 0, 0, (void*)0, 0};
@@ -11995,14 +11995,14 @@ static PHP_METHOD(ShapeLayer,point_y) {
 
 static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_0) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
   std::size_t arg5 ;
-  datamunge::plot::RGB *tmp2 ;
-  datamunge::plot::RGB *tmp3 ;
+  datamunge::graphics::RGB *tmp2 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[4];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::ShapeLayer *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
@@ -12036,7 +12036,7 @@ static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_0) {
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -12050,13 +12050,13 @@ static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_0) {
 
 static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_1) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::size_t arg4 ;
-  datamunge::plot::RGB *tmp2 ;
-  datamunge::plot::RGB *tmp3 ;
+  datamunge::graphics::RGB *tmp2 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::ShapeLayer *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -12085,7 +12085,7 @@ static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_1) {
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -12099,12 +12099,12 @@ static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_2) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *tmp2 ;
-  datamunge::plot::RGB *tmp3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *tmp2 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::ShapeLayer *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -12128,7 +12128,7 @@ static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_2) {
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -12142,10 +12142,10 @@ static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_2) {
 
 static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_3) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::ShapeLayer *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -12162,7 +12162,7 @@ static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_3) {
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -12176,7 +12176,7 @@ static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_3) {
 
 static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_4) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::ShapeLayer *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -12186,7 +12186,7 @@ static ZEND_NAMED_FUNCTION(_wrap_ShapeLayer_plot__SWIG_4) {
   
   result = ((datamunge::ShapeLayer const *)arg1)->plot();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -12746,9 +12746,9 @@ static PHP_METHOD(GGPlot,__construct) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_point__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
-  datamunge::plot::RGB *tmp2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[2];
   datamunge::GGPlot *result = 0 ;
   
@@ -12781,8 +12781,8 @@ static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_point__SWIG_0) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_point__SWIG_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
   datamunge::GGPlot *result = 0 ;
   
@@ -12868,9 +12868,9 @@ static PHP_METHOD(GGPlot,geom_point) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_line__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
   double arg3 ;
-  datamunge::plot::RGB *tmp2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[2];
   datamunge::GGPlot *result = 0 ;
   
@@ -12903,8 +12903,8 @@ static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_line__SWIG_0) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_line__SWIG_1) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
   datamunge::GGPlot *result = 0 ;
   
@@ -12990,8 +12990,8 @@ static PHP_METHOD(GGPlot,geom_line) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_bar__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
   datamunge::GGPlot *result = 0 ;
   
@@ -13064,8 +13064,8 @@ static PHP_METHOD(GGPlot,geom_bar) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_col__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
   datamunge::GGPlot *result = 0 ;
   
@@ -13139,8 +13139,8 @@ static PHP_METHOD(GGPlot,geom_col) {
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_histogram__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
   std::size_t arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *tmp3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[2];
   datamunge::GGPlot *result = 0 ;
   
@@ -13262,8 +13262,8 @@ static PHP_METHOD(GGPlot,geom_histogram) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_boxplot__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
   datamunge::GGPlot *result = 0 ;
   
@@ -13336,8 +13336,8 @@ static PHP_METHOD(GGPlot,geom_boxplot) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_smooth__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
   datamunge::GGPlot *result = 0 ;
   
@@ -13410,8 +13410,8 @@ static PHP_METHOD(GGPlot,geom_smooth) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_area__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
   datamunge::GGPlot *result = 0 ;
   
@@ -13486,10 +13486,10 @@ static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_ribbon__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[3];
   datamunge::GGPlot *result = 0 ;
   
@@ -13606,8 +13606,8 @@ static PHP_METHOD(GGPlot,geom_ribbon) {
 
 static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_density__SWIG_0) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
   datamunge::GGPlot *result = 0 ;
   
@@ -13834,7 +13834,7 @@ static PHP_METHOD(GGPlot,theme_classic) {
 
 static PHP_METHOD(GGPlot,scale_color_manual) {
   datamunge::GGPlot *arg1 = 0 ;
-  std::vector< datamunge::plot::RGB > *arg2 = 0 ;
+  std::vector< datamunge::graphics::RGB > *arg2 = 0 ;
   zval args[1];
   datamunge::GGPlot *result = 0 ;
   
@@ -13850,7 +13850,7 @@ static PHP_METHOD(GGPlot,scale_color_manual) {
     return;
   }
   
-  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB > const &)*arg2);
+  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::graphics::RGB > const &)*arg2);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
   
@@ -15237,7 +15237,7 @@ static PHP_METHOD(LM,anova) {
 
 static PHP_METHOD(LM,plot_residuals_vs_fitted) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -15247,7 +15247,7 @@ static PHP_METHOD(LM,plot_residuals_vs_fitted) {
   
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -15261,7 +15261,7 @@ static PHP_METHOD(LM,plot_residuals_vs_fitted) {
 
 static PHP_METHOD(LM,plot_normal_qq) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -15271,7 +15271,7 @@ static PHP_METHOD(LM,plot_normal_qq) {
   
   result = ((datamunge::LM const *)arg1)->plot_normal_qq();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -15285,7 +15285,7 @@ static PHP_METHOD(LM,plot_normal_qq) {
 
 static PHP_METHOD(LM,plot_scale_location) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -15295,7 +15295,7 @@ static PHP_METHOD(LM,plot_scale_location) {
   
   result = ((datamunge::LM const *)arg1)->plot_scale_location();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -15309,7 +15309,7 @@ static PHP_METHOD(LM,plot_scale_location) {
 
 static PHP_METHOD(LM,plot_residuals_vs_leverage) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -15319,7 +15319,7 @@ static PHP_METHOD(LM,plot_residuals_vs_leverage) {
   
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -19712,7 +19712,7 @@ static PHP_METHOD(LDA,predict_frame) {
 
 static PHP_METHOD(LDA,plot_discriminants) {
   datamunge::LDA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LDA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -19722,7 +19722,7 @@ static PHP_METHOD(LDA,plot_discriminants) {
   
   result = ((datamunge::LDA const *)arg1)->plot_discriminants();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -21370,7 +21370,7 @@ static PHP_METHOD(DecisionTreeClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DecisionTreeClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -21396,7 +21396,7 @@ static PHP_METHOD(DecisionTreeClassifier,plot_classification) {
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -21416,7 +21416,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DecisionTreeClassifier_plot_decision_regions__S
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DecisionTreeClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -21441,7 +21441,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DecisionTreeClassifier_plot_decision_regions__S
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -21460,7 +21460,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DecisionTreeClassifier_plot_decision_regions__S
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DecisionTreeClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -21480,7 +21480,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DecisionTreeClassifier_plot_decision_regions__S
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -22162,7 +22162,7 @@ static PHP_METHOD(DecisionTreeRegressor,predict) {
 
 static PHP_METHOD(DecisionTreeRegressor,plot_predicted_vs_actual) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DecisionTreeRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -22172,7 +22172,7 @@ static PHP_METHOD(DecisionTreeRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -22186,7 +22186,7 @@ static PHP_METHOD(DecisionTreeRegressor,plot_predicted_vs_actual) {
 
 static PHP_METHOD(DecisionTreeRegressor,plot_residuals_vs_fitted) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DecisionTreeRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -22196,7 +22196,7 @@ static PHP_METHOD(DecisionTreeRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -23604,7 +23604,7 @@ static PHP_METHOD(RandomForestClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::RandomForestClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -23630,7 +23630,7 @@ static PHP_METHOD(RandomForestClassifier,plot_classification) {
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -23650,7 +23650,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RandomForestClassifier_plot_decision_regions__S
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::RandomForestClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -23675,7 +23675,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RandomForestClassifier_plot_decision_regions__S
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -23694,7 +23694,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RandomForestClassifier_plot_decision_regions__S
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::RandomForestClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -23714,7 +23714,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RandomForestClassifier_plot_decision_regions__S
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -25003,7 +25003,7 @@ static PHP_METHOD(RandomForestRegressor,predict) {
 
 static PHP_METHOD(RandomForestRegressor,plot_predicted_vs_actual) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::RandomForestRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -25013,7 +25013,7 @@ static PHP_METHOD(RandomForestRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -25027,7 +25027,7 @@ static PHP_METHOD(RandomForestRegressor,plot_predicted_vs_actual) {
 
 static PHP_METHOD(RandomForestRegressor,plot_residuals_vs_fitted) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::RandomForestRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -25037,7 +25037,7 @@ static PHP_METHOD(RandomForestRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -26114,7 +26114,7 @@ static PHP_METHOD(ElasticNet,predict) {
 
 static PHP_METHOD(ElasticNet,plot_coefficient_path) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::ElasticNet *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -26124,7 +26124,7 @@ static PHP_METHOD(ElasticNet,plot_coefficient_path) {
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -26138,7 +26138,7 @@ static PHP_METHOD(ElasticNet,plot_coefficient_path) {
 
 static PHP_METHOD(ElasticNet,plot_cv_curve) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::ElasticNet *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -26148,7 +26148,7 @@ static PHP_METHOD(ElasticNet,plot_cv_curve) {
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -26162,7 +26162,7 @@ static PHP_METHOD(ElasticNet,plot_cv_curve) {
 
 static PHP_METHOD(ElasticNet,plot_predicted_vs_actual) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::ElasticNet *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -26172,7 +26172,7 @@ static PHP_METHOD(ElasticNet,plot_predicted_vs_actual) {
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -26186,7 +26186,7 @@ static PHP_METHOD(ElasticNet,plot_predicted_vs_actual) {
 
 static PHP_METHOD(ElasticNet,plot_residuals_vs_fitted) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::ElasticNet *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -26196,7 +26196,7 @@ static PHP_METHOD(ElasticNet,plot_residuals_vs_fitted) {
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -27135,7 +27135,7 @@ static PHP_METHOD(Ridge,predict) {
 
 static PHP_METHOD(Ridge,plot_coefficient_path) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Ridge *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -27145,7 +27145,7 @@ static PHP_METHOD(Ridge,plot_coefficient_path) {
   
   result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -27159,7 +27159,7 @@ static PHP_METHOD(Ridge,plot_coefficient_path) {
 
 static PHP_METHOD(Ridge,plot_cv_curve) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Ridge *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -27169,7 +27169,7 @@ static PHP_METHOD(Ridge,plot_cv_curve) {
   
   result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -27183,7 +27183,7 @@ static PHP_METHOD(Ridge,plot_cv_curve) {
 
 static PHP_METHOD(Ridge,plot_predicted_vs_actual) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Ridge *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -27193,7 +27193,7 @@ static PHP_METHOD(Ridge,plot_predicted_vs_actual) {
   
   result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -27207,7 +27207,7 @@ static PHP_METHOD(Ridge,plot_predicted_vs_actual) {
 
 static PHP_METHOD(Ridge,plot_residuals_vs_fitted) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Ridge *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -27217,7 +27217,7 @@ static PHP_METHOD(Ridge,plot_residuals_vs_fitted) {
   
   result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -28175,7 +28175,7 @@ static PHP_METHOD(Lasso,predict) {
 
 static PHP_METHOD(Lasso,plot_coefficient_path) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Lasso *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -28185,7 +28185,7 @@ static PHP_METHOD(Lasso,plot_coefficient_path) {
   
   result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -28199,7 +28199,7 @@ static PHP_METHOD(Lasso,plot_coefficient_path) {
 
 static PHP_METHOD(Lasso,plot_cv_curve) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Lasso *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -28209,7 +28209,7 @@ static PHP_METHOD(Lasso,plot_cv_curve) {
   
   result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -28223,7 +28223,7 @@ static PHP_METHOD(Lasso,plot_cv_curve) {
 
 static PHP_METHOD(Lasso,plot_predicted_vs_actual) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Lasso *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -28233,7 +28233,7 @@ static PHP_METHOD(Lasso,plot_predicted_vs_actual) {
   
   result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -28247,7 +28247,7 @@ static PHP_METHOD(Lasso,plot_predicted_vs_actual) {
 
 static PHP_METHOD(Lasso,plot_residuals_vs_fitted) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Lasso *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -28257,7 +28257,7 @@ static PHP_METHOD(Lasso,plot_residuals_vs_fitted) {
   
   result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -28947,7 +28947,7 @@ static PHP_METHOD(KNNClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KNNClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -28973,7 +28973,7 @@ static PHP_METHOD(KNNClassifier,plot_classification) {
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -28993,7 +28993,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KNNClassifier_plot_decision_regions__SWIG_0) {
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KNNClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -29018,7 +29018,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KNNClassifier_plot_decision_regions__SWIG_0) {
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -29037,7 +29037,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KNNClassifier_plot_decision_regions__SWIG_1) {
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KNNClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -29057,7 +29057,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KNNClassifier_plot_decision_regions__SWIG_1) {
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -29759,7 +29759,7 @@ static PHP_METHOD(KNNRegressor,predict) {
 
 static PHP_METHOD(KNNRegressor,plot_predicted_vs_actual) {
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KNNRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -29769,7 +29769,7 @@ static PHP_METHOD(KNNRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -29783,7 +29783,7 @@ static PHP_METHOD(KNNRegressor,plot_predicted_vs_actual) {
 
 static PHP_METHOD(KNNRegressor,plot_residuals_vs_fitted) {
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KNNRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -29793,7 +29793,7 @@ static PHP_METHOD(KNNRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -31809,7 +31809,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::PCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -31829,7 +31829,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores__SWIG_0) {
   
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -31845,7 +31845,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores__SWIG_1) {
   datamunge::PCA *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::PCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -31860,7 +31860,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores__SWIG_1) {
   
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -31874,7 +31874,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores__SWIG_2) {
   datamunge::PCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::PCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -31884,7 +31884,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores__SWIG_2) {
   
   result = ((datamunge::PCA const *)arg1)->plot_scores();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -31946,7 +31946,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores_grouped__SWIG_0) {
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::PCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -31972,7 +31972,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores_grouped__SWIG_0) {
   
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -31989,7 +31989,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores_grouped__SWIG_1) {
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::PCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -32010,7 +32010,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores_grouped__SWIG_1) {
   
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -32026,7 +32026,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores_grouped__SWIG_2) {
   datamunge::PCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::PCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -32042,7 +32042,7 @@ static ZEND_NAMED_FUNCTION(_wrap_PCA_plot_scores_grouped__SWIG_2) {
   
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -32117,7 +32117,7 @@ static PHP_METHOD(PCA,plot_scores_grouped) {
 
 static PHP_METHOD(PCA,plot_scree) {
   datamunge::PCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::PCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -32127,7 +32127,7 @@ static PHP_METHOD(PCA,plot_scree) {
   
   result = ((datamunge::PCA const *)arg1)->plot_scree();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -32824,7 +32824,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::MDS *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -32844,7 +32844,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding__SWIG_0) {
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -32860,7 +32860,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding__SWIG_1) {
   datamunge::MDS *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::MDS *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -32875,7 +32875,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding__SWIG_1) {
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -32889,7 +32889,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding__SWIG_2) {
   datamunge::MDS *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::MDS *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -32899,7 +32899,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding__SWIG_2) {
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -32961,7 +32961,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding_grouped__SWIG_0) {
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::MDS *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -32987,7 +32987,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding_grouped__SWIG_0) {
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -33004,7 +33004,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding_grouped__SWIG_1) {
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::MDS *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -33025,7 +33025,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding_grouped__SWIG_1) {
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -33041,7 +33041,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding_grouped__SWIG_2) {
   datamunge::MDS *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::MDS *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -33057,7 +33057,7 @@ static ZEND_NAMED_FUNCTION(_wrap_MDS_plot_embedding_grouped__SWIG_2) {
   
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -33981,7 +33981,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Isomap *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -34001,7 +34001,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding__SWIG_0) {
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -34017,7 +34017,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding__SWIG_1) {
   datamunge::Isomap *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Isomap *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -34032,7 +34032,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding__SWIG_1) {
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -34046,7 +34046,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding__SWIG_2) {
   datamunge::Isomap *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Isomap *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -34056,7 +34056,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding__SWIG_2) {
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -34118,7 +34118,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding_grouped__SWIG_0) {
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Isomap *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -34144,7 +34144,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding_grouped__SWIG_0) {
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -34161,7 +34161,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding_grouped__SWIG_1) {
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Isomap *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -34182,7 +34182,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding_grouped__SWIG_1) {
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -34198,7 +34198,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding_grouped__SWIG_2) {
   datamunge::Isomap *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Isomap *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -34214,7 +34214,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Isomap_plot_embedding_grouped__SWIG_2) {
   
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -35297,7 +35297,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LLE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -35317,7 +35317,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding__SWIG_0) {
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -35333,7 +35333,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding__SWIG_1) {
   datamunge::LLE *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LLE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -35348,7 +35348,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding__SWIG_1) {
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -35362,7 +35362,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding__SWIG_2) {
   datamunge::LLE *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LLE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -35372,7 +35372,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding__SWIG_2) {
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -35434,7 +35434,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding_grouped__SWIG_0) {
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LLE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -35460,7 +35460,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding_grouped__SWIG_0) {
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -35477,7 +35477,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding_grouped__SWIG_1) {
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LLE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -35498,7 +35498,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding_grouped__SWIG_1) {
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -35514,7 +35514,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding_grouped__SWIG_2) {
   datamunge::LLE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LLE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -35530,7 +35530,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LLE_plot_embedding_grouped__SWIG_2) {
   
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -38447,7 +38447,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::TSNE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -38467,7 +38467,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding__SWIG_0) {
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -38483,7 +38483,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding__SWIG_1) {
   datamunge::TSNE *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::TSNE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -38498,7 +38498,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding__SWIG_1) {
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -38512,7 +38512,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding__SWIG_2) {
   datamunge::TSNE *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::TSNE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -38522,7 +38522,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding__SWIG_2) {
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -38584,7 +38584,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding_grouped__SWIG_0) {
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::TSNE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -38610,7 +38610,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding_grouped__SWIG_0) {
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -38627,7 +38627,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding_grouped__SWIG_1) {
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::TSNE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -38648,7 +38648,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding_grouped__SWIG_1) {
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -38664,7 +38664,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding_grouped__SWIG_2) {
   datamunge::TSNE *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::TSNE *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -38680,7 +38680,7 @@ static ZEND_NAMED_FUNCTION(_wrap_TSNE_plot_embedding_grouped__SWIG_2) {
   
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -39581,7 +39581,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LaplacianEigenmaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -39601,7 +39601,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_0) {
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -39617,7 +39617,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_1) {
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LaplacianEigenmaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -39632,7 +39632,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_1) {
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -39646,7 +39646,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_2) {
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LaplacianEigenmaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -39656,7 +39656,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_2) {
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -39718,7 +39718,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LaplacianEigenmaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -39744,7 +39744,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -39761,7 +39761,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LaplacianEigenmaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -39782,7 +39782,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -39798,7 +39798,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG
   datamunge::LaplacianEigenmaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::LaplacianEigenmaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -39814,7 +39814,7 @@ static ZEND_NAMED_FUNCTION(_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG
   
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -40875,7 +40875,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DiffusionMaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -40895,7 +40895,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding__SWIG_0) {
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -40911,7 +40911,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding__SWIG_1) {
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DiffusionMaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -40926,7 +40926,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding__SWIG_1) {
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -40940,7 +40940,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding__SWIG_2) {
   datamunge::DiffusionMaps *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DiffusionMaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -40950,7 +40950,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding__SWIG_2) {
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -41012,7 +41012,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0) {
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DiffusionMaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -41038,7 +41038,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0) {
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -41055,7 +41055,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1) {
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DiffusionMaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -41076,7 +41076,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1) {
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -41092,7 +41092,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2) {
   datamunge::DiffusionMaps *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::DiffusionMaps *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -41108,7 +41108,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2) {
   
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -42375,7 +42375,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelPCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -42395,7 +42395,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding__SWIG_0) {
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -42411,7 +42411,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding__SWIG_1) {
   datamunge::KernelPCA *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelPCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -42426,7 +42426,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding__SWIG_1) {
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -42440,7 +42440,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding__SWIG_2) {
   datamunge::KernelPCA *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelPCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -42450,7 +42450,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding__SWIG_2) {
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -42512,7 +42512,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding_grouped__SWIG_0) {
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelPCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -42538,7 +42538,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding_grouped__SWIG_0) {
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -42555,7 +42555,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding_grouped__SWIG_1) {
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelPCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -42576,7 +42576,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding_grouped__SWIG_1) {
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -42592,7 +42592,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding_grouped__SWIG_2) {
   datamunge::KernelPCA *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelPCA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -42608,7 +42608,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelPCA_plot_embedding_grouped__SWIG_2) {
   
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -44145,7 +44145,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::SammonMapping *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -44165,7 +44165,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding__SWIG_0) {
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -44181,7 +44181,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding__SWIG_1) {
   datamunge::SammonMapping *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::SammonMapping *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -44196,7 +44196,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding__SWIG_1) {
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -44210,7 +44210,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding__SWIG_2) {
   datamunge::SammonMapping *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::SammonMapping *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -44220,7 +44220,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding__SWIG_2) {
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -44282,7 +44282,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding_grouped__SWIG_0) {
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::SammonMapping *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -44308,7 +44308,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding_grouped__SWIG_0) {
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -44325,7 +44325,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding_grouped__SWIG_1) {
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::SammonMapping *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -44346,7 +44346,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding_grouped__SWIG_1) {
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -44362,7 +44362,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding_grouped__SWIG_2) {
   datamunge::SammonMapping *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::SammonMapping *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -44378,7 +44378,7 @@ static ZEND_NAMED_FUNCTION(_wrap_SammonMapping_plot_embedding_grouped__SWIG_2) {
   
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -46443,7 +46443,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding__SWIG_0) {
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::UMAP *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -46463,7 +46463,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding__SWIG_0) {
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -46479,7 +46479,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding__SWIG_1) {
   datamunge::UMAP *arg1 = 0 ;
   std::size_t arg2 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::UMAP *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -46494,7 +46494,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding__SWIG_1) {
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -46508,7 +46508,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding__SWIG_1) {
 
 static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding__SWIG_2) {
   datamunge::UMAP *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::UMAP *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -46518,7 +46518,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding__SWIG_2) {
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -46580,7 +46580,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding_grouped__SWIG_0) {
   std::size_t arg3 ;
   std::size_t arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::UMAP *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -46606,7 +46606,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding_grouped__SWIG_0) {
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -46623,7 +46623,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding_grouped__SWIG_1) {
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::UMAP *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -46644,7 +46644,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding_grouped__SWIG_1) {
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -46660,7 +46660,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding_grouped__SWIG_2) {
   datamunge::UMAP *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::UMAP *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -46676,7 +46676,7 @@ static ZEND_NAMED_FUNCTION(_wrap_UMAP_plot_embedding_grouped__SWIG_2) {
   
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -49468,7 +49468,7 @@ static PHP_METHOD(GBMClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GBMClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -49494,7 +49494,7 @@ static PHP_METHOD(GBMClassifier,plot_classification) {
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -49514,7 +49514,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GBMClassifier_plot_decision_regions__SWIG_0) {
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GBMClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -49539,7 +49539,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GBMClassifier_plot_decision_regions__SWIG_0) {
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -49558,7 +49558,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GBMClassifier_plot_decision_regions__SWIG_1) {
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GBMClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -49578,7 +49578,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GBMClassifier_plot_decision_regions__SWIG_1) {
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -49637,7 +49637,7 @@ static PHP_METHOD(GBMClassifier,plot_decision_regions) {
 
 static PHP_METHOD(GBMClassifier,plot_training_deviance) {
   datamunge::GBMClassifier *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GBMClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -49647,7 +49647,7 @@ static PHP_METHOD(GBMClassifier,plot_training_deviance) {
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -50707,7 +50707,7 @@ static PHP_METHOD(GBMRegressor,predict) {
 
 static PHP_METHOD(GBMRegressor,plot_predicted_vs_actual) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GBMRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -50717,7 +50717,7 @@ static PHP_METHOD(GBMRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -50731,7 +50731,7 @@ static PHP_METHOD(GBMRegressor,plot_predicted_vs_actual) {
 
 static PHP_METHOD(GBMRegressor,plot_residuals_vs_fitted) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GBMRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -50741,7 +50741,7 @@ static PHP_METHOD(GBMRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -50755,7 +50755,7 @@ static PHP_METHOD(GBMRegressor,plot_residuals_vs_fitted) {
 
 static PHP_METHOD(GBMRegressor,plot_training_deviance) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GBMRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -50765,7 +50765,7 @@ static PHP_METHOD(GBMRegressor,plot_training_deviance) {
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -52399,7 +52399,7 @@ static PHP_METHOD(XGBoostClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::XGBoostClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -52425,7 +52425,7 @@ static PHP_METHOD(XGBoostClassifier,plot_classification) {
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -52445,7 +52445,7 @@ static ZEND_NAMED_FUNCTION(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::XGBoostClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -52470,7 +52470,7 @@ static ZEND_NAMED_FUNCTION(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -52489,7 +52489,7 @@ static ZEND_NAMED_FUNCTION(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::XGBoostClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -52509,7 +52509,7 @@ static ZEND_NAMED_FUNCTION(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -52568,7 +52568,7 @@ static PHP_METHOD(XGBoostClassifier,plot_decision_regions) {
 
 static PHP_METHOD(XGBoostClassifier,plot_training_deviance) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::XGBoostClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -52578,7 +52578,7 @@ static PHP_METHOD(XGBoostClassifier,plot_training_deviance) {
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -54179,7 +54179,7 @@ static PHP_METHOD(XGBoostRegressor,predict) {
 
 static PHP_METHOD(XGBoostRegressor,plot_predicted_vs_actual) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::XGBoostRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -54189,7 +54189,7 @@ static PHP_METHOD(XGBoostRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -54203,7 +54203,7 @@ static PHP_METHOD(XGBoostRegressor,plot_predicted_vs_actual) {
 
 static PHP_METHOD(XGBoostRegressor,plot_residuals_vs_fitted) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::XGBoostRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -54213,7 +54213,7 @@ static PHP_METHOD(XGBoostRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -54227,7 +54227,7 @@ static PHP_METHOD(XGBoostRegressor,plot_residuals_vs_fitted) {
 
 static PHP_METHOD(XGBoostRegressor,plot_training_deviance) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::XGBoostRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -54237,7 +54237,7 @@ static PHP_METHOD(XGBoostRegressor,plot_training_deviance) {
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -54960,7 +54960,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelRegression_plot_fit__SWIG_0) {
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -54981,7 +54981,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelRegression_plot_fit__SWIG_0) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -54997,7 +54997,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelRegression_plot_fit__SWIG_1) {
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -55013,7 +55013,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelRegression_plot_fit__SWIG_1) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -55066,7 +55066,7 @@ static PHP_METHOD(KernelRegression,plot_fit) {
 
 static PHP_METHOD(KernelRegression,plot_predicted_vs_actual) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -55076,7 +55076,7 @@ static PHP_METHOD(KernelRegression,plot_predicted_vs_actual) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -55090,7 +55090,7 @@ static PHP_METHOD(KernelRegression,plot_predicted_vs_actual) {
 
 static PHP_METHOD(KernelRegression,plot_residuals_vs_fitted) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -55100,7 +55100,7 @@ static PHP_METHOD(KernelRegression,plot_residuals_vs_fitted) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -55114,7 +55114,7 @@ static PHP_METHOD(KernelRegression,plot_residuals_vs_fitted) {
 
 static PHP_METHOD(KernelRegression,plot_cv_curve) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -55124,7 +55124,7 @@ static PHP_METHOD(KernelRegression,plot_cv_curve) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -56171,7 +56171,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_0) {
   std::size_t arg3 ;
   double arg4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -56197,7 +56197,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_0) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -56214,7 +56214,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_1) {
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -56235,7 +56235,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_1) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -56251,7 +56251,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_2) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -56267,7 +56267,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_2) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -56339,7 +56339,7 @@ static PHP_METHOD(GaussianProcessRegression,plot_fit) {
 
 static PHP_METHOD(GaussianProcessRegression,plot_predicted_vs_actual) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -56349,7 +56349,7 @@ static PHP_METHOD(GaussianProcessRegression,plot_predicted_vs_actual) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -56363,7 +56363,7 @@ static PHP_METHOD(GaussianProcessRegression,plot_predicted_vs_actual) {
 
 static PHP_METHOD(GaussianProcessRegression,plot_residuals_vs_fitted) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -56373,7 +56373,7 @@ static PHP_METHOD(GaussianProcessRegression,plot_residuals_vs_fitted) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -56387,7 +56387,7 @@ static PHP_METHOD(GaussianProcessRegression,plot_residuals_vs_fitted) {
 
 static PHP_METHOD(GaussianProcessRegression,plot_length_scale_profile) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -56397,7 +56397,7 @@ static PHP_METHOD(GaussianProcessRegression,plot_length_scale_profile) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -56919,7 +56919,7 @@ static PHP_METHOD(NaiveBayesClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::NaiveBayesClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -56945,7 +56945,7 @@ static PHP_METHOD(NaiveBayesClassifier,plot_classification) {
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -56965,7 +56965,7 @@ static ZEND_NAMED_FUNCTION(_wrap_NaiveBayesClassifier_plot_decision_regions__SWI
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::NaiveBayesClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -56990,7 +56990,7 @@ static ZEND_NAMED_FUNCTION(_wrap_NaiveBayesClassifier_plot_decision_regions__SWI
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -57009,7 +57009,7 @@ static ZEND_NAMED_FUNCTION(_wrap_NaiveBayesClassifier_plot_decision_regions__SWI
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::NaiveBayesClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -57029,7 +57029,7 @@ static ZEND_NAMED_FUNCTION(_wrap_NaiveBayesClassifier_plot_decision_regions__SWI
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -58374,7 +58374,7 @@ static PHP_METHOD(GLM,predict_frame) {
 
 static PHP_METHOD(GLM,plot_residuals_vs_fitted) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GLM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -58384,7 +58384,7 @@ static PHP_METHOD(GLM,plot_residuals_vs_fitted) {
   
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -58398,7 +58398,7 @@ static PHP_METHOD(GLM,plot_residuals_vs_fitted) {
 
 static PHP_METHOD(GLM,plot_normal_qq) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GLM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -58408,7 +58408,7 @@ static PHP_METHOD(GLM,plot_normal_qq) {
   
   result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -58422,7 +58422,7 @@ static PHP_METHOD(GLM,plot_normal_qq) {
 
 static PHP_METHOD(GLM,plot_scale_location) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GLM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -58432,7 +58432,7 @@ static PHP_METHOD(GLM,plot_scale_location) {
   
   result = ((datamunge::GLM const *)arg1)->plot_scale_location();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -58446,7 +58446,7 @@ static PHP_METHOD(GLM,plot_scale_location) {
 
 static PHP_METHOD(GLM,plot_residuals_vs_leverage) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::GLM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -58456,7 +58456,7 @@ static PHP_METHOD(GLM,plot_residuals_vs_leverage) {
   
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -64330,11 +64330,11 @@ PHP_METHOD(c_Var,__isset) {
 
 
 static PHP_METHOD(RGB,r_set) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64353,10 +64353,10 @@ static PHP_METHOD(RGB,r_set) {
 
 
 static PHP_METHOD(RGB,r_get) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   
-  arg1 = (datamunge::plot::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64372,11 +64372,11 @@ static PHP_METHOD(RGB,r_get) {
 
 
 static PHP_METHOD(RGB,g_set) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64395,10 +64395,10 @@ static PHP_METHOD(RGB,g_set) {
 
 
 static PHP_METHOD(RGB,g_get) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   
-  arg1 = (datamunge::plot::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64414,11 +64414,11 @@ static PHP_METHOD(RGB,g_get) {
 
 
 static PHP_METHOD(RGB,b_set) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64437,10 +64437,10 @@ static PHP_METHOD(RGB,b_set) {
 
 
 static PHP_METHOD(RGB,b_get) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   int result;
   
-  arg1 = (datamunge::plot::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64456,11 +64456,11 @@ static PHP_METHOD(RGB,b_get) {
 
 
 static PHP_METHOD(RGB,alpha_set) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   double arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64479,10 +64479,10 @@ static PHP_METHOD(RGB,alpha_set) {
 
 
 static PHP_METHOD(RGB,alpha_get) {
-  datamunge::plot::RGB *arg1 = 0 ;
+  datamunge::graphics::RGB *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RGB *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64498,14 +64498,14 @@ static PHP_METHOD(RGB,alpha_get) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_new_RGB__SWIG_0) {
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_0();
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_0();
   
   SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__RGB, 1);
   
@@ -64520,7 +64520,7 @@ static ZEND_NAMED_FUNCTION(_wrap_new_RGB__SWIG_1) {
   int arg3 ;
   double arg4 ;
   zval args[4];
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -64547,7 +64547,7 @@ static ZEND_NAMED_FUNCTION(_wrap_new_RGB__SWIG_1) {
   arg4 = (double) zval_get_double(&args[3]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
   
   SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__RGB, 1);
   
@@ -64561,7 +64561,7 @@ static ZEND_NAMED_FUNCTION(_wrap_new_RGB__SWIG_2) {
   int arg2 ;
   int arg3 ;
   zval args[3];
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -64583,7 +64583,7 @@ static ZEND_NAMED_FUNCTION(_wrap_new_RGB__SWIG_2) {
   arg3 = (int) zval_get_long(&args[2]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
+  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
   
   SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__RGB, 1);
   
@@ -64831,11 +64831,11 @@ PHP_METHOD(RGB,__isset) {
 
 
 static PHP_METHOD(DataSeries,kind_set) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind arg2 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64843,7 +64843,7 @@ static PHP_METHOD(DataSeries,kind_set) {
   
   
   /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/php/utils.i,6,CONVERT_INT_IN@*/
-  arg2 = (datamunge::plot::DataSeries::Kind) zval_get_long(&args[0]);
+  arg2 = (datamunge::graphics::DataSeries::Kind) zval_get_long(&args[0]);
   /*@SWIG@*/;
   
   if (arg1) (arg1)->kind = arg2;
@@ -64854,16 +64854,16 @@ static PHP_METHOD(DataSeries,kind_set) {
 
 
 static PHP_METHOD(DataSeries,kind_get) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::DataSeries::Kind result;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries::Kind result;
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::DataSeries::Kind) ((arg1)->kind);
+  result = (datamunge::graphics::DataSeries::Kind) ((arg1)->kind);
   
   RETVAL_LONG((long)result);
   
@@ -64873,11 +64873,11 @@ static PHP_METHOD(DataSeries,kind_get) {
 
 
 static PHP_METHOD(DataSeries,x_set) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64897,10 +64897,10 @@ static PHP_METHOD(DataSeries,x_set) {
 
 
 static PHP_METHOD(DataSeries,x_get) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64916,11 +64916,11 @@ static PHP_METHOD(DataSeries,x_get) {
 
 
 static PHP_METHOD(DataSeries,y_set) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64940,10 +64940,10 @@ static PHP_METHOD(DataSeries,y_set) {
 
 
 static PHP_METHOD(DataSeries,y_get) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64959,12 +64959,12 @@ static PHP_METHOD(DataSeries,y_get) {
 
 
 static PHP_METHOD(DataSeries,label_set) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -64983,10 +64983,10 @@ static PHP_METHOD(DataSeries,label_set) {
 
 
 static PHP_METHOD(DataSeries,label_get) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   std::string *result = 0 ;
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65002,11 +65002,11 @@ static PHP_METHOD(DataSeries,label_get) {
 
 
 static PHP_METHOD(DataSeries,color_set) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65026,16 +65026,16 @@ static PHP_METHOD(DataSeries,color_set) {
 
 
 static PHP_METHOD(DataSeries,color_get) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RGB, 0);
   
@@ -65045,11 +65045,11 @@ static PHP_METHOD(DataSeries,color_get) {
 
 
 static PHP_METHOD(DataSeries,stroke_width_set) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65068,10 +65068,10 @@ static PHP_METHOD(DataSeries,stroke_width_set) {
 
 
 static PHP_METHOD(DataSeries,stroke_width_get) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65087,11 +65087,11 @@ static PHP_METHOD(DataSeries,stroke_width_get) {
 
 
 static PHP_METHOD(DataSeries,marker_size_set) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65110,10 +65110,10 @@ static PHP_METHOD(DataSeries,marker_size_set) {
 
 
 static PHP_METHOD(DataSeries,marker_size_get) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65129,11 +65129,11 @@ static PHP_METHOD(DataSeries,marker_size_get) {
 
 
 static PHP_METHOD(DataSeries,bar_width_set) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65152,10 +65152,10 @@ static PHP_METHOD(DataSeries,bar_width_set) {
 
 
 static PHP_METHOD(DataSeries,bar_width_get) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65171,11 +65171,11 @@ static PHP_METHOD(DataSeries,bar_width_get) {
 
 
 static PHP_METHOD(DataSeries,filled_set) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65194,10 +65194,10 @@ static PHP_METHOD(DataSeries,filled_set) {
 
 
 static PHP_METHOD(DataSeries,filled_get) {
-  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
   bool result;
   
-  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65213,14 +65213,14 @@ static PHP_METHOD(DataSeries,filled_get) {
 
 
 static PHP_METHOD(DataSeries,__construct) {
-  datamunge::plot::DataSeries *result = 0 ;
+  datamunge::graphics::DataSeries *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::DataSeries *)new datamunge::plot::DataSeries();
+  result = (datamunge::graphics::DataSeries *)new datamunge::graphics::DataSeries();
   
   SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__DataSeries, 1);
   
@@ -65493,11 +65493,11 @@ PHP_METHOD(DataSeries,__isset) {
 
 
 static PHP_METHOD(ABLine,vertical_set) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65516,10 +65516,10 @@ static PHP_METHOD(ABLine,vertical_set) {
 
 
 static PHP_METHOD(ABLine,vertical_get) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   bool result;
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65535,11 +65535,11 @@ static PHP_METHOD(ABLine,vertical_get) {
 
 
 static PHP_METHOD(ABLine,value_set) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65558,10 +65558,10 @@ static PHP_METHOD(ABLine,value_set) {
 
 
 static PHP_METHOD(ABLine,value_get) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65577,11 +65577,11 @@ static PHP_METHOD(ABLine,value_get) {
 
 
 static PHP_METHOD(ABLine,slope_set) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65600,10 +65600,10 @@ static PHP_METHOD(ABLine,slope_set) {
 
 
 static PHP_METHOD(ABLine,slope_get) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65619,11 +65619,11 @@ static PHP_METHOD(ABLine,slope_get) {
 
 
 static PHP_METHOD(ABLine,color_set) {
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65643,16 +65643,16 @@ static PHP_METHOD(ABLine,color_set) {
 
 
 static PHP_METHOD(ABLine,color_get) {
-  datamunge::plot::ABLine *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RGB, 0);
   
@@ -65662,11 +65662,11 @@ static PHP_METHOD(ABLine,color_get) {
 
 
 static PHP_METHOD(ABLine,stroke_width_set) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double arg2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65685,10 +65685,10 @@ static PHP_METHOD(ABLine,stroke_width_set) {
 
 
 static PHP_METHOD(ABLine,stroke_width_get) {
-  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::graphics::ABLine *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65704,14 +65704,14 @@ static PHP_METHOD(ABLine,stroke_width_get) {
 
 
 static PHP_METHOD(ABLine,__construct) {
-  datamunge::plot::ABLine *result = 0 ;
+  datamunge::graphics::ABLine *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
+  result = (datamunge::graphics::ABLine *)new datamunge::graphics::ABLine();
   
   SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__ABLine, 1);
   
@@ -65912,12 +65912,12 @@ PHP_METHOD(ABLine,__isset) {
 
 
 static PHP_METHOD(LegendEntry,label_set) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65936,10 +65936,10 @@ static PHP_METHOD(LegendEntry,label_set) {
 
 
 static PHP_METHOD(LegendEntry,label_get) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
   std::string *result = 0 ;
   
-  arg1 = (datamunge::plot::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65955,11 +65955,11 @@ static PHP_METHOD(LegendEntry,label_get) {
 
 
 static PHP_METHOD(LegendEntry,color_set) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *arg2 = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *arg2 = 0 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -65979,16 +65979,16 @@ static PHP_METHOD(LegendEntry,color_set) {
 
 
 static PHP_METHOD(LegendEntry,color_get) {
-  datamunge::plot::LegendEntry *arg1 = 0 ;
-  datamunge::plot::RGB *result = 0 ;
+  datamunge::graphics::LegendEntry *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
   
-  arg1 = (datamunge::plot::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGB *)& ((arg1)->color);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RGB, 0);
   
@@ -65998,14 +65998,14 @@ static PHP_METHOD(LegendEntry,color_get) {
 
 
 static PHP_METHOD(LegendEntry,__construct) {
-  datamunge::plot::LegendEntry *result = 0 ;
+  datamunge::graphics::LegendEntry *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
+  result = (datamunge::graphics::LegendEntry *)new datamunge::graphics::LegendEntry();
   
   SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__LegendEntry, 1);
   
@@ -66152,13 +66152,13 @@ PHP_METHOD(LegendEntry,__isset) {
 
 
 static PHP_METHOD(Plot,size) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66174,7 +66174,7 @@ static PHP_METHOD(Plot,size) {
   arg3 = (std::size_t) zval_get_long(&args[1]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66184,12 +66184,12 @@ static PHP_METHOD(Plot,size) {
 
 
 static PHP_METHOD(Plot,title) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
   zval args[1];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66199,7 +66199,7 @@ static PHP_METHOD(Plot,title) {
   convert_to_string(&args[0]);
   (&arg2)->assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   
-  result = (datamunge::plot::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66209,12 +66209,12 @@ static PHP_METHOD(Plot,title) {
 
 
 static PHP_METHOD(Plot,x_label) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
   zval args[1];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66224,7 +66224,7 @@ static PHP_METHOD(Plot,x_label) {
   convert_to_string(&args[0]);
   (&arg2)->assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   
-  result = (datamunge::plot::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66234,12 +66234,12 @@ static PHP_METHOD(Plot,x_label) {
 
 
 static PHP_METHOD(Plot,y_label) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string arg2 ;
   zval args[1];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66249,7 +66249,7 @@ static PHP_METHOD(Plot,y_label) {
   convert_to_string(&args[0]);
   (&arg2)->assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   
-  result = (datamunge::plot::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66259,13 +66259,13 @@ static PHP_METHOD(Plot,y_label) {
 
 
 static PHP_METHOD(Plot,background) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66278,7 +66278,7 @@ static PHP_METHOD(Plot,background) {
   }
   arg2 = *tmp2;
   
-  result = (datamunge::plot::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66288,13 +66288,13 @@ static PHP_METHOD(Plot,background) {
 
 
 static PHP_METHOD(Plot,axis_color) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66307,7 +66307,7 @@ static PHP_METHOD(Plot,axis_color) {
   }
   arg2 = *tmp2;
   
-  result = (datamunge::plot::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66317,13 +66317,13 @@ static PHP_METHOD(Plot,axis_color) {
 
 
 static PHP_METHOD(Plot,grid_color) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66336,7 +66336,7 @@ static PHP_METHOD(Plot,grid_color) {
   }
   arg2 = *tmp2;
   
-  result = (datamunge::plot::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66346,12 +66346,12 @@ static PHP_METHOD(Plot,grid_color) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_Plot_show_grid__SWIG_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
   zval args[1];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66362,7 +66362,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Plot_show_grid__SWIG_0) {
   arg2 = (bool) zend_is_true(&args[0]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid(arg2);
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid(arg2);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66372,16 +66372,16 @@ static ZEND_NAMED_FUNCTION(_wrap_Plot_show_grid__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_Plot_show_grid__SWIG_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::Plot *) &(arg1)->show_grid();
+  result = (datamunge::graphics::Plot *) &(arg1)->show_grid();
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66414,13 +66414,13 @@ static PHP_METHOD(Plot,show_grid) {
 
 
 static PHP_METHOD(Plot,x_limits) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   zval args[2];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66436,7 +66436,7 @@ static PHP_METHOD(Plot,x_limits) {
   arg3 = (double) zval_get_double(&args[1]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::Plot *) &(arg1)->x_limits(arg2,arg3);
+  result = (datamunge::graphics::Plot *) &(arg1)->x_limits(arg2,arg3);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66446,13 +66446,13 @@ static PHP_METHOD(Plot,x_limits) {
 
 
 static PHP_METHOD(Plot,y_limits) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   zval args[2];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66468,7 +66468,7 @@ static PHP_METHOD(Plot,y_limits) {
   arg3 = (double) zval_get_double(&args[1]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::Plot *) &(arg1)->y_limits(arg2,arg3);
+  result = (datamunge::graphics::Plot *) &(arg1)->y_limits(arg2,arg3);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66478,12 +66478,12 @@ static PHP_METHOD(Plot,y_limits) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_Plot_hide_axes__SWIG_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool arg2 ;
   zval args[1];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66494,7 +66494,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Plot_hide_axes__SWIG_0) {
   arg2 = (bool) zend_is_true(&args[0]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes(arg2);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66504,16 +66504,16 @@ static ZEND_NAMED_FUNCTION(_wrap_Plot_hide_axes__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_Plot_hide_axes__SWIG_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
+  result = (datamunge::graphics::Plot *) &(arg1)->hide_axes();
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66546,13 +66546,13 @@ static PHP_METHOD(Plot,hide_axes) {
 
 
 static PHP_METHOD(Plot,x_tick_labels) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
   std::vector< std::string > *tmp2 ;
   zval args[1];
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -66565,7 +66565,7 @@ static PHP_METHOD(Plot,x_tick_labels) {
   }
   arg2 = *tmp2;
   
-  result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
   
@@ -66575,16 +66575,16 @@ static PHP_METHOD(Plot,x_tick_labels) {
 
 
 static PHP_METHOD(Plot,width) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = ((datamunge::plot::Plot const *)arg1)->width();
+  result = ((datamunge::graphics::Plot const *)arg1)->width();
   
   RETVAL_LONG(result);
   
@@ -66594,16 +66594,16 @@ static PHP_METHOD(Plot,width) {
 
 
 static PHP_METHOD(Plot,height) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::size_t result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = ((datamunge::plot::Plot const *)arg1)->height();
+  result = ((datamunge::graphics::Plot const *)arg1)->height();
   
   RETVAL_LONG(result);
   
@@ -66613,16 +66613,16 @@ static PHP_METHOD(Plot,height) {
 
 
 static PHP_METHOD(Plot,title_text) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->title_text();
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->title_text();
   
   ZVAL_STRINGL(return_value, result->data(), result->size());
   
@@ -66632,16 +66632,16 @@ static PHP_METHOD(Plot,title_text) {
 
 
 static PHP_METHOD(Plot,x_label_text) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->x_label_text();
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->x_label_text();
   
   ZVAL_STRINGL(return_value, result->data(), result->size());
   
@@ -66651,16 +66651,16 @@ static PHP_METHOD(Plot,x_label_text) {
 
 
 static PHP_METHOD(Plot,y_label_text) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->y_label_text();
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->y_label_text();
   
   ZVAL_STRINGL(return_value, result->data(), result->size());
   
@@ -66670,16 +66670,16 @@ static PHP_METHOD(Plot,y_label_text) {
 
 
 static PHP_METHOD(Plot,series) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::DataSeries > *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::DataSeries > *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)arg1)->series();
+  result = (std::vector< datamunge::graphics::DataSeries > *) &((datamunge::graphics::Plot const *)arg1)->series();
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t, 0);
   
@@ -66689,18 +66689,18 @@ static PHP_METHOD(Plot,series) {
 
 
 static PHP_METHOD(Plot,background_color) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = ((datamunge::plot::Plot const *)arg1)->background_color();
+  result = ((datamunge::graphics::Plot const *)arg1)->background_color();
   {
-    datamunge::plot::RGB * resultobj = new datamunge::plot::RGB(result);
+    datamunge::graphics::RGB * resultobj = new datamunge::graphics::RGB(result);
     
     
     
@@ -66713,18 +66713,18 @@ static PHP_METHOD(Plot,background_color) {
 
 
 static PHP_METHOD(Plot,axes_color) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = ((datamunge::plot::Plot const *)arg1)->axes_color();
+  result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
   {
-    datamunge::plot::RGB * resultobj = new datamunge::plot::RGB(result);
+    datamunge::graphics::RGB * resultobj = new datamunge::graphics::RGB(result);
     
     
     
@@ -66737,18 +66737,18 @@ static PHP_METHOD(Plot,axes_color) {
 
 
 static PHP_METHOD(Plot,major_grid_color) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > result;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = ((datamunge::plot::Plot const *)arg1)->major_grid_color();
+  result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
   {
-    datamunge::plot::RGB * resultobj = new datamunge::plot::RGB(result);
+    datamunge::graphics::RGB * resultobj = new datamunge::graphics::RGB(result);
     
     
     
@@ -66761,16 +66761,16 @@ static PHP_METHOD(Plot,major_grid_color) {
 
 
 static PHP_METHOD(Plot,grid_visible) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (bool)((datamunge::plot::Plot const *)arg1)->grid_visible();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->grid_visible();
   
   RETVAL_BOOL((result) ? 1 : 0);
   
@@ -66780,16 +66780,16 @@ static PHP_METHOD(Plot,grid_visible) {
 
 
 static PHP_METHOD(Plot,has_x_limits) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_x_limits();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_x_limits();
   
   RETVAL_BOOL((result) ? 1 : 0);
   
@@ -66799,16 +66799,16 @@ static PHP_METHOD(Plot,has_x_limits) {
 
 
 static PHP_METHOD(Plot,has_y_limits) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (bool)((datamunge::plot::Plot const *)arg1)->has_y_limits();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_y_limits();
   
   RETVAL_BOOL((result) ? 1 : 0);
   
@@ -66818,16 +66818,16 @@ static PHP_METHOD(Plot,has_y_limits) {
 
 
 static PHP_METHOD(Plot,x_min) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_min();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_min();
   
   RETVAL_DOUBLE(result);
   
@@ -66837,16 +66837,16 @@ static PHP_METHOD(Plot,x_min) {
 
 
 static PHP_METHOD(Plot,x_max) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (double)((datamunge::plot::Plot const *)arg1)->x_max();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->x_max();
   
   RETVAL_DOUBLE(result);
   
@@ -66856,16 +66856,16 @@ static PHP_METHOD(Plot,x_max) {
 
 
 static PHP_METHOD(Plot,y_min) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_min();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_min();
   
   RETVAL_DOUBLE(result);
   
@@ -66875,16 +66875,16 @@ static PHP_METHOD(Plot,y_min) {
 
 
 static PHP_METHOD(Plot,y_max) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   double result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (double)((datamunge::plot::Plot const *)arg1)->y_max();
+  result = (double)((datamunge::graphics::Plot const *)arg1)->y_max();
   
   RETVAL_DOUBLE(result);
   
@@ -66894,16 +66894,16 @@ static PHP_METHOD(Plot,y_max) {
 
 
 static PHP_METHOD(Plot,axes_hidden) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   bool result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->axes_hidden();
   
   RETVAL_BOOL((result) ? 1 : 0);
   
@@ -66913,16 +66913,16 @@ static PHP_METHOD(Plot,axes_hidden) {
 
 
 static PHP_METHOD(Plot,x_tick_label_list) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::vector< std::string > *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+  result = (std::vector< std::string > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_label_list();
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_std__string_t, 0);
   
@@ -66932,16 +66932,16 @@ static PHP_METHOD(Plot,x_tick_label_list) {
 
 
 static PHP_METHOD(Plot,reference_lines) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::ABLine > *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::ABLine > *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
+  result = (std::vector< datamunge::graphics::ABLine > *) &((datamunge::graphics::Plot const *)arg1)->reference_lines();
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t, 0);
   
@@ -66951,16 +66951,16 @@ static PHP_METHOD(Plot,reference_lines) {
 
 
 static PHP_METHOD(Plot,legend_entries) {
-  datamunge::plot::Plot *arg1 = 0 ;
-  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< datamunge::graphics::LegendEntry > *result = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
+  result = (std::vector< datamunge::graphics::LegendEntry > *) &((datamunge::graphics::Plot const *)arg1)->legend_entries();
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t, 0);
   
@@ -66970,16 +66970,16 @@ static PHP_METHOD(Plot,legend_entries) {
 
 
 static PHP_METHOD(Plot,to_svg) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string result;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = ((datamunge::plot::Plot const *)arg1)->to_svg();
+  result = ((datamunge::graphics::Plot const *)arg1)->to_svg();
   
   ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
   
@@ -66989,12 +66989,12 @@ static PHP_METHOD(Plot,to_svg) {
 
 
 static PHP_METHOD(Plot,save) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67005,7 +67005,7 @@ static PHP_METHOD(Plot,save) {
   temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   arg2 = &temp2;
   
-  ((datamunge::plot::Plot const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save((std::string const &)*arg2);
   
   fail: SWIGUNUSED;
   return;
@@ -67013,12 +67013,12 @@ static PHP_METHOD(Plot,save) {
 
 
 static PHP_METHOD(Plot,save_svg) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67029,7 +67029,7 @@ static PHP_METHOD(Plot,save_svg) {
   temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   arg2 = &temp2;
   
-  ((datamunge::plot::Plot const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->save_svg((std::string const &)*arg2);
   
   fail: SWIGUNUSED;
   return;
@@ -67037,12 +67037,12 @@ static PHP_METHOD(Plot,save_svg) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_Plot_view__SWIG_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67053,7 +67053,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Plot_view__SWIG_0) {
   temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   arg2 = &temp2;
   
-  ((datamunge::plot::Plot const *)arg1)->view((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->view((std::string const &)*arg2);
   
   fail: SWIGUNUSED;
   return;
@@ -67061,15 +67061,15 @@ static ZEND_NAMED_FUNCTION(_wrap_Plot_view__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_Plot_view__SWIG_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  ((datamunge::plot::Plot const *)arg1)->view();
+  ((datamunge::graphics::Plot const *)arg1)->view();
   
   fail: SWIGUNUSED;
   return;
@@ -67102,12 +67102,12 @@ static PHP_METHOD(Plot,view) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_Plot_show__SWIG_0) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67118,7 +67118,7 @@ static ZEND_NAMED_FUNCTION(_wrap_Plot_show__SWIG_0) {
   temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   arg2 = &temp2;
   
-  ((datamunge::plot::Plot const *)arg1)->show((std::string const &)*arg2);
+  ((datamunge::graphics::Plot const *)arg1)->show((std::string const &)*arg2);
   
   fail: SWIGUNUSED;
   return;
@@ -67126,15 +67126,15 @@ static ZEND_NAMED_FUNCTION(_wrap_Plot_show__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_Plot_show__SWIG_1) {
-  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
   
-  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  ((datamunge::plot::Plot const *)arg1)->show();
+  ((datamunge::graphics::Plot const *)arg1)->show();
   
   fail: SWIGUNUSED;
   return;
@@ -67167,14 +67167,14 @@ static PHP_METHOD(Plot,show) {
 
 
 static PHP_METHOD(Plot,__construct) {
-  datamunge::plot::Plot *result = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::Plot *)new datamunge::plot::Plot();
+  result = (datamunge::graphics::Plot *)new datamunge::graphics::Plot();
   
   SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 1);
   
@@ -67285,16 +67285,16 @@ PHP_METHOD(Plot,__isset) {
 
 
 static PHP_METHOD(RPlot,create) {
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = datamunge::plot::RPlot::create();
+  result = datamunge::graphics::RPlot::create();
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -67307,13 +67307,13 @@ static PHP_METHOD(RPlot,create) {
 
 
 static PHP_METHOD(RPlot,size) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67329,7 +67329,7 @@ static PHP_METHOD(RPlot,size) {
   arg3 = (std::size_t) zval_get_long(&args[1]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67339,12 +67339,12 @@ static PHP_METHOD(RPlot,size) {
 
 
 static PHP_METHOD(RPlot,title) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67354,7 +67354,7 @@ static PHP_METHOD(RPlot,title) {
   convert_to_string(&args[0]);
   (&arg2)->assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67364,12 +67364,12 @@ static PHP_METHOD(RPlot,title) {
 
 
 static PHP_METHOD(RPlot,x_label) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67379,7 +67379,7 @@ static PHP_METHOD(RPlot,x_label) {
   convert_to_string(&args[0]);
   (&arg2)->assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67389,12 +67389,12 @@ static PHP_METHOD(RPlot,x_label) {
 
 
 static PHP_METHOD(RPlot,y_label) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67404,7 +67404,7 @@ static PHP_METHOD(RPlot,y_label) {
   convert_to_string(&args[0]);
   (&arg2)->assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67414,12 +67414,12 @@ static PHP_METHOD(RPlot,y_label) {
 
 
 static PHP_METHOD(RPlot,xlab) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67429,7 +67429,7 @@ static PHP_METHOD(RPlot,xlab) {
   convert_to_string(&args[0]);
   (&arg2)->assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67439,12 +67439,12 @@ static PHP_METHOD(RPlot,xlab) {
 
 
 static PHP_METHOD(RPlot,ylab) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::string arg2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67454,7 +67454,7 @@ static PHP_METHOD(RPlot,ylab) {
   convert_to_string(&args[0]);
   (&arg2)->assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67464,13 +67464,13 @@ static PHP_METHOD(RPlot,ylab) {
 
 
 static PHP_METHOD(RPlot,background) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67483,7 +67483,7 @@ static PHP_METHOD(RPlot,background) {
   }
   arg2 = *tmp2;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67493,13 +67493,13 @@ static PHP_METHOD(RPlot,background) {
 
 
 static PHP_METHOD(RPlot,axis_color) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67512,7 +67512,7 @@ static PHP_METHOD(RPlot,axis_color) {
   }
   arg2 = *tmp2;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67522,13 +67522,13 @@ static PHP_METHOD(RPlot,axis_color) {
 
 
 static PHP_METHOD(RPlot,grid_color) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg2 ;
-  datamunge::plot::RGB *tmp2 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB *tmp2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67541,7 +67541,7 @@ static PHP_METHOD(RPlot,grid_color) {
   }
   arg2 = *tmp2;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67551,12 +67551,12 @@ static PHP_METHOD(RPlot,grid_color) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_show_grid__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67567,7 +67567,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_show_grid__SWIG_0) {
   arg2 = (bool) zend_is_true(&args[0]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid(arg2);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67577,16 +67577,16 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_show_grid__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_show_grid__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::RPlot *) &(arg1)->show_grid();
+  result = (datamunge::graphics::RPlot *) &(arg1)->show_grid();
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67619,13 +67619,13 @@ static PHP_METHOD(RPlot,show_grid) {
 
 
 static PHP_METHOD(RPlot,x_limits) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67641,7 +67641,7 @@ static PHP_METHOD(RPlot,x_limits) {
   arg3 = (double) zval_get_double(&args[1]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->x_limits(arg2,arg3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_limits(arg2,arg3);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67651,13 +67651,13 @@ static PHP_METHOD(RPlot,x_limits) {
 
 
 static PHP_METHOD(RPlot,y_limits) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67673,7 +67673,7 @@ static PHP_METHOD(RPlot,y_limits) {
   arg3 = (double) zval_get_double(&args[1]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->y_limits(arg2,arg3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_limits(arg2,arg3);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67683,12 +67683,12 @@ static PHP_METHOD(RPlot,y_limits) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_hide_axes__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   bool arg2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67699,7 +67699,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hide_axes__SWIG_0) {
   arg2 = (bool) zend_is_true(&args[0]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes(arg2);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67709,16 +67709,16 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hide_axes__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_hide_axes__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::RPlot *) &(arg1)->hide_axes();
+  result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes();
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67751,13 +67751,13 @@ static PHP_METHOD(RPlot,hide_axes) {
 
 
 static PHP_METHOD(RPlot,x_tick_labels) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
   std::vector< std::string > *tmp2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -67770,7 +67770,7 @@ static PHP_METHOD(RPlot,x_tick_labels) {
   }
   arg2 = *tmp2;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -67784,12 +67784,12 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_0) {
   std::vector< double > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *tmp1 ;
   std::vector< double > *tmp2 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[5];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -67825,9 +67825,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_0) {
   }
   arg5 = *tmp5;
   
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -67847,7 +67847,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_1) {
   std::vector< double > *tmp1 ;
   std::vector< double > *tmp2 ;
   zval args[4];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -67876,9 +67876,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_1) {
   convert_to_string(&args[3]);
   (&arg4)->assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
   
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -67897,7 +67897,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_2) {
   std::vector< double > *tmp1 ;
   std::vector< double > *tmp2 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -67922,9 +67922,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_2) {
   convert_to_string(&args[2]);
   (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -67942,7 +67942,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_3) {
   std::vector< double > *tmp1 ;
   std::vector< double > *tmp2 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -67963,9 +67963,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_3) {
   }
   arg2 = *tmp2;
   
-  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68084,11 +68084,11 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_0) {
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *tmp1 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[4];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68118,9 +68118,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_0) {
   }
   arg4 = *tmp4;
   
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68138,7 +68138,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_1) {
   std::string arg3 ;
   std::vector< double > *tmp1 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68161,9 +68161,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_1) {
   convert_to_string(&args[2]);
   (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68180,7 +68180,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_2) {
   std::size_t arg2 ;
   std::vector< double > *tmp1 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68199,9 +68199,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_2) {
   arg2 = (std::size_t) zval_get_long(&args[1]);
   /*@SWIG@*/;
   
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68217,7 +68217,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_3) {
   std::vector< double > arg1 ;
   std::vector< double > *tmp1 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68231,9 +68231,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_3) {
   }
   arg1 = *tmp1;
   
-  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68334,12 +68334,12 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_0) {
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *tmp1 ;
   std::vector< std::string > *tmp2 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[4];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68371,9 +68371,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_0) {
   }
   arg4 = *tmp4;
   
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68392,7 +68392,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_1) {
   std::vector< double > *tmp1 ;
   std::vector< std::string > *tmp2 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68417,9 +68417,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_1) {
   convert_to_string(&args[2]);
   (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68437,7 +68437,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_2) {
   std::vector< double > *tmp1 ;
   std::vector< std::string > *tmp2 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68458,9 +68458,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_2) {
   }
   arg2 = *tmp2;
   
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68476,7 +68476,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_3) {
   std::vector< double > arg1 ;
   std::vector< double > *tmp1 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68490,9 +68490,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_3) {
   }
   arg1 = *tmp1;
   
-  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68592,12 +68592,12 @@ static PHP_METHOD(RPlot,barplot) {
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_boxplot__SWIG_0) {
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::vector< std::vector< double > > *tmp1 ;
   std::vector< std::string > *tmp2 ;
-  datamunge::plot::RGB *tmp3 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68625,9 +68625,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_boxplot__SWIG_0) {
   }
   arg3 = *tmp3;
   
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68645,7 +68645,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_boxplot__SWIG_1) {
   std::vector< std::vector< double > > *tmp1 ;
   std::vector< std::string > *tmp2 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68666,9 +68666,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_boxplot__SWIG_1) {
   }
   arg2 = *tmp2;
   
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68684,7 +68684,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_boxplot__SWIG_2) {
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::vector< double > > *tmp1 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68698,9 +68698,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_boxplot__SWIG_2) {
   }
   arg1 = *tmp1;
   
-  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68776,12 +68776,12 @@ static PHP_METHOD(RPlot,boxplot) {
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_pie__SWIG_0) {
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   std::vector< double > *tmp1 ;
   std::vector< std::string > *tmp2 ;
-  std::vector< datamunge::plot::RGB > *tmp3 ;
+  std::vector< datamunge::graphics::RGB > *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68809,9 +68809,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_pie__SWIG_0) {
   }
   arg3 = *tmp3;
   
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68829,7 +68829,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_pie__SWIG_1) {
   std::vector< double > *tmp1 ;
   std::vector< std::string > *tmp2 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68850,9 +68850,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_pie__SWIG_1) {
   }
   arg2 = *tmp2;
   
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68868,7 +68868,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_pie__SWIG_2) {
   std::vector< double > arg1 ;
   std::vector< double > *tmp1 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -68882,9 +68882,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_pie__SWIG_2) {
   }
   arg1 = *tmp1;
   
-  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -68963,10 +68963,10 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_0) {
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
-  datamunge::plot::RGB *tmp6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGB *tmp6 ;
   zval args[6];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -69005,9 +69005,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_0) {
   }
   arg6 = *tmp6;
   
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -69026,7 +69026,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_1) {
   std::size_t arg4 ;
   std::string arg5 ;
   zval args[5];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -69058,9 +69058,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_1) {
   convert_to_string(&args[4]);
   (&arg5)->assign(Z_STRVAL(args[4]), Z_STRLEN(args[4]));
   
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -69078,7 +69078,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_2) {
   double arg3 ;
   std::size_t arg4 ;
   zval args[4];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -69106,9 +69106,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_2) {
   arg4 = (std::size_t) zval_get_long(&args[3]);
   /*@SWIG@*/;
   
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -69125,7 +69125,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_3) {
   double arg2 ;
   double arg3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -69148,9 +69148,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_3) {
   arg3 = (double) zval_get_double(&args[2]);
   /*@SWIG@*/;
   
-  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
+  result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3);
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -69274,11 +69274,11 @@ static PHP_METHOD(RPlot,curve) {
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqnorm__SWIG_0) {
   std::vector< double > arg1 ;
   std::string arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::vector< double > *tmp1 ;
-  datamunge::plot::RGB *tmp3 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -69303,9 +69303,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqnorm__SWIG_0) {
   }
   arg3 = *tmp3;
   
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -69322,7 +69322,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqnorm__SWIG_1) {
   std::string arg2 ;
   std::vector< double > *tmp1 ;
   zval args[2];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -69340,9 +69340,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqnorm__SWIG_1) {
   convert_to_string(&args[1]);
   (&arg2)->assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
   
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -69358,7 +69358,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqnorm__SWIG_2) {
   std::vector< double > arg1 ;
   std::vector< double > *tmp1 ;
   zval args[1];
-  datamunge::plot::RPlot result;
+  datamunge::graphics::RPlot result;
   
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -69372,9 +69372,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqnorm__SWIG_2) {
   }
   arg1 = *tmp1;
   
-  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
+  result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
   {
-    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    datamunge::graphics::RPlot * resultobj = new datamunge::graphics::RPlot(result);
     
     
     
@@ -69444,19 +69444,19 @@ static PHP_METHOD(RPlot,qqnorm) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[5];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -69492,7 +69492,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_0) {
   arg6 = (double) zval_get_double(&args[4]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -69502,18 +69502,18 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -69544,7 +69544,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_1) {
   }
   arg5 = *tmp5;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -69554,16 +69554,16 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -69587,7 +69587,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_2) {
   convert_to_string(&args[2]);
   (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -69597,15 +69597,15 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_2) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -69625,7 +69625,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_3) {
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -69635,19 +69635,19 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_3) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[5];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -69683,7 +69683,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_0) {
   arg6 = (double) zval_get_double(&args[4]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -69693,18 +69693,18 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -69735,7 +69735,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_1) {
   }
   arg5 = *tmp5;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -69745,16 +69745,16 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -69778,7 +69778,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_2) {
   convert_to_string(&args[2]);
   (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -69788,15 +69788,15 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_2) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -69816,7 +69816,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_3) {
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -69930,19 +69930,19 @@ static PHP_METHOD(RPlot,line) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[5];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -69978,7 +69978,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_0) {
   arg6 = (double) zval_get_double(&args[4]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -69988,18 +69988,18 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70030,7 +70030,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_1) {
   }
   arg5 = *tmp5;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70040,16 +70040,16 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70073,7 +70073,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_2) {
   convert_to_string(&args[2]);
   (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70083,15 +70083,15 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_2) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70111,7 +70111,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_3) {
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70121,18 +70121,18 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_3) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70164,7 +70164,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_4) {
   arg5 = (double) zval_get_double(&args[3]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70174,17 +70174,17 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_4) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_5) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70211,7 +70211,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_5) {
   }
   arg4 = *tmp4;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70372,18 +70372,18 @@ static PHP_METHOD(RPlot,points) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_4) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70415,7 +70415,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_4) {
   arg5 = (double) zval_get_double(&args[3]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70425,17 +70425,17 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_4) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_5) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70462,7 +70462,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_5) {
   }
   arg4 = *tmp4;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70623,19 +70623,19 @@ static PHP_METHOD(RPlot,lines) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[5];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70671,7 +70671,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_0) {
   arg6 = (double) zval_get_double(&args[4]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70681,18 +70681,18 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70723,7 +70723,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_1) {
   }
   arg5 = *tmp5;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70733,16 +70733,16 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70766,7 +70766,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_2) {
   convert_to_string(&args[2]);
   (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70776,15 +70776,15 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_2) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70804,7 +70804,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_3) {
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70918,7 +70918,7 @@ static PHP_METHOD(RPlot,bars) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -70926,14 +70926,14 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_0) {
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   double arg10 ;
   std::vector< double > *tmp8 ;
-  datamunge::plot::RGB *tmp9 ;
+  datamunge::graphics::RGB *tmp9 ;
   zval args[9];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 9 || zend_get_parameters_array_ex(9, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -70988,7 +70988,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_0) {
   arg10 = (double) zval_get_double(&args[8]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -70998,7 +70998,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -71006,13 +71006,13 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_1) {
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg9 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
   std::vector< double > *tmp8 ;
-  datamunge::plot::RGB *tmp9 ;
+  datamunge::graphics::RGB *tmp9 ;
   zval args[8];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 8 || zend_get_parameters_array_ex(8, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71062,7 +71062,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_1) {
   }
   arg9 = *tmp9;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71072,7 +71072,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -71082,9 +71082,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_2) {
   std::vector< double > arg8 ;
   std::vector< double > *tmp8 ;
   zval args[7];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 7 || zend_get_parameters_array_ex(7, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71127,7 +71127,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_2) {
   }
   arg8 = *tmp8;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71137,7 +71137,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_2) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_3) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   double arg4 ;
@@ -71145,9 +71145,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_3) {
   double arg6 ;
   double arg7 ;
   zval args[6];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71183,7 +71183,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_3) {
   arg7 = (double) zval_get_double(&args[5]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+  result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71327,16 +71327,16 @@ static PHP_METHOD(RPlot,box) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   double arg5 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71364,7 +71364,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_0) {
   arg5 = (double) zval_get_double(&args[3]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71374,15 +71374,15 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
-  datamunge::plot::RGB *tmp4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71405,7 +71405,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_1) {
   }
   arg4 = *tmp4;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71415,13 +71415,13 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71437,7 +71437,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_2) {
   arg3 = (double) zval_get_double(&args[1]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71505,15 +71505,15 @@ static PHP_METHOD(RPlot,abline) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
-  datamunge::plot::RGB *tmp3 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71536,7 +71536,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_0) {
   arg4 = (double) zval_get_double(&args[2]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71546,14 +71546,14 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *tmp3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71571,7 +71571,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_1) {
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71581,12 +71581,12 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71597,7 +71597,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_2) {
   arg2 = (double) zval_get_double(&args[0]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71656,15 +71656,15 @@ static PHP_METHOD(RPlot,abline_h) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
-  datamunge::plot::RGB *tmp3 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71687,7 +71687,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_0) {
   arg4 = (double) zval_get_double(&args[2]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71697,14 +71697,14 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
-  datamunge::plot::RGB *tmp3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71722,7 +71722,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_1) {
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71732,12 +71732,12 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71748,7 +71748,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_2) {
   arg2 = (double) zval_get_double(&args[0]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71807,16 +71807,16 @@ static PHP_METHOD(RPlot,abline_v) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   double arg4 ;
   std::vector< double > *tmp2 ;
-  datamunge::plot::RGB *tmp3 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71841,7 +71841,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_0) {
   arg4 = (double) zval_get_double(&args[2]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71851,15 +71851,15 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg3 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
   std::vector< double > *tmp2 ;
-  datamunge::plot::RGB *tmp3 ;
+  datamunge::graphics::RGB *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71879,7 +71879,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_1) {
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71889,13 +71889,13 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > *tmp2 ;
   zval args[1];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -71908,7 +71908,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_2) {
   }
   arg2 = *tmp2;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -71976,15 +71976,15 @@ static PHP_METHOD(RPlot,qqline) {
 
 
 static PHP_METHOD(RPlot,legend) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   std::vector< std::string > *tmp2 ;
-  std::vector< datamunge::plot::RGB > *tmp3 ;
+  std::vector< datamunge::graphics::RGB > *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72004,7 +72004,7 @@ static PHP_METHOD(RPlot,legend) {
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72014,17 +72014,17 @@ static PHP_METHOD(RPlot,legend) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
   double arg6 ;
-  datamunge::plot::RGB *tmp5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[5];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72056,7 +72056,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_0) {
   arg6 = (double) zval_get_double(&args[4]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72066,16 +72066,16 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg5 ;
-  datamunge::plot::RGB *tmp5 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGB *tmp5 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72102,7 +72102,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_1) {
   }
   arg5 = *tmp5;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72112,14 +72112,14 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72139,7 +72139,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_2) {
   convert_to_string(&args[2]);
   (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72219,18 +72219,18 @@ static PHP_METHOD(RPlot,text) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   bool arg5 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72262,7 +72262,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_0) {
   arg5 = (bool) zend_is_true(&args[3]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72272,17 +72272,17 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg4 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp4 ;
+  datamunge::graphics::RGB *tmp4 ;
   zval args[3];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72309,7 +72309,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_1) {
   }
   arg4 = *tmp4;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72319,15 +72319,15 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[2];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72347,7 +72347,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_2) {
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72433,22 +72433,22 @@ static PHP_METHOD(RPlot,polygon) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_0) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   double arg7 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   std::vector< double > *tmp4 ;
   std::vector< double > *tmp5 ;
-  datamunge::plot::RGB *tmp6 ;
+  datamunge::graphics::RGB *tmp6 ;
   zval args[6];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72494,7 +72494,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_0) {
   arg7 = (double) zval_get_double(&args[5]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72504,21 +72504,21 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_0) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_1) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::plot::RGB > arg6 ;
+  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   std::vector< double > *tmp4 ;
   std::vector< double > *tmp5 ;
-  datamunge::plot::RGB *tmp6 ;
+  datamunge::graphics::RGB *tmp6 ;
   zval args[5];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72559,7 +72559,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_1) {
   }
   arg6 = *tmp6;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72569,7 +72569,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_1) {
 
 
 static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_2) {
-  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
@@ -72579,9 +72579,9 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_2) {
   std::vector< double > *tmp4 ;
   std::vector< double > *tmp5 ;
   zval args[4];
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72615,7 +72615,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_2) {
   }
   arg5 = *tmp5;
   
-  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
+  result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
@@ -72737,14 +72737,14 @@ static PHP_METHOD(RPlot,segments) {
 
 
 static PHP_METHOD(RPlot,__construct) {
-  datamunge::plot::RPlot *result = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
   
   SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   
@@ -72860,7 +72860,7 @@ static PHP_METHOD(RLayout,create) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   zval args[2];
-  datamunge::plot::RLayout result;
+  datamunge::graphics::RLayout result;
   
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
@@ -72877,9 +72877,9 @@ static PHP_METHOD(RLayout,create) {
   arg2 = (std::size_t) zval_get_long(&args[1]);
   /*@SWIG@*/;
   
-  result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  result = datamunge::graphics::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
   {
-    datamunge::plot::RLayout * resultobj = new datamunge::plot::RLayout(result);
+    datamunge::graphics::RLayout * resultobj = new datamunge::graphics::RLayout(result);
     
     
     
@@ -72892,12 +72892,12 @@ static PHP_METHOD(RLayout,create) {
 
 
 static PHP_METHOD(RLayout,add) {
-  datamunge::plot::RLayout *arg1 = 0 ;
-  datamunge::plot::Plot *arg2 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  datamunge::graphics::Plot *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
-  arg1 = (datamunge::plot::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72909,7 +72909,7 @@ static PHP_METHOD(RLayout,add) {
     return;
   }
   
-  result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
+  result = (datamunge::graphics::RLayout *) &(arg1)->add((datamunge::graphics::Plot const &)*arg2);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RLayout, 0);
   
@@ -72919,13 +72919,13 @@ static PHP_METHOD(RLayout,add) {
 
 
 static PHP_METHOD(RLayout,size) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
-  arg1 = (datamunge::plot::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72941,7 +72941,7 @@ static PHP_METHOD(RLayout,size) {
   arg3 = (std::size_t) zval_get_long(&args[1]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  result = (datamunge::graphics::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RLayout, 0);
   
@@ -72951,16 +72951,16 @@ static PHP_METHOD(RLayout,size) {
 
 
 static PHP_METHOD(RLayout,to_svg) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string result;
   
-  arg1 = (datamunge::plot::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = ((datamunge::plot::RLayout const *)arg1)->to_svg();
+  result = ((datamunge::graphics::RLayout const *)arg1)->to_svg();
   
   ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
   
@@ -72970,12 +72970,12 @@ static PHP_METHOD(RLayout,to_svg) {
 
 
 static PHP_METHOD(RLayout,save) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -72986,7 +72986,7 @@ static PHP_METHOD(RLayout,save) {
   temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   arg2 = &temp2;
   
-  ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save((std::string const &)*arg2);
   
   fail: SWIGUNUSED;
   return;
@@ -72994,12 +72994,12 @@ static PHP_METHOD(RLayout,save) {
 
 
 static PHP_METHOD(RLayout,save_svg) {
-  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string temp2 ;
   zval args[1];
   
-  arg1 = (datamunge::plot::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::graphics::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
     zend_wrong_param_count();
     RETURN_THROWS();
@@ -73010,7 +73010,7 @@ static PHP_METHOD(RLayout,save_svg) {
   temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
   arg2 = &temp2;
   
-  ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+  ((datamunge::graphics::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
   
   fail: SWIGUNUSED;
   return;
@@ -73018,14 +73018,14 @@ static PHP_METHOD(RLayout,save_svg) {
 
 
 static PHP_METHOD(RLayout,__construct) {
-  datamunge::plot::RLayout *result = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 0) {
     zend_wrong_param_count();
     RETURN_THROWS();
   }
   
-  result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
+  result = (datamunge::graphics::RLayout *)new datamunge::graphics::RLayout();
   
   SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__RLayout, 1);
   
@@ -124801,25 +124801,25 @@ SWIG_php_minit {
 
   /* cinit subsection */
 
-  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Scatter", sizeof("Kind_Scatter") - 1, (int)(datamunge::plot::DataSeries::Kind::Scatter));
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Scatter", sizeof("Kind_Scatter") - 1, (int)(datamunge::graphics::DataSeries::Kind::Scatter));
 
 
-  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Line", sizeof("Kind_Line") - 1, (int)(datamunge::plot::DataSeries::Kind::Line));
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Line", sizeof("Kind_Line") - 1, (int)(datamunge::graphics::DataSeries::Kind::Line));
 
 
-  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Bar", sizeof("Kind_Bar") - 1, (int)(datamunge::plot::DataSeries::Kind::Bar));
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Bar", sizeof("Kind_Bar") - 1, (int)(datamunge::graphics::DataSeries::Kind::Bar));
 
 
-  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Box", sizeof("Kind_Box") - 1, (int)(datamunge::plot::DataSeries::Kind::Box));
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Box", sizeof("Kind_Box") - 1, (int)(datamunge::graphics::DataSeries::Kind::Box));
 
 
-  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Polygon", sizeof("Kind_Polygon") - 1, (int)(datamunge::plot::DataSeries::Kind::Polygon));
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Polygon", sizeof("Kind_Polygon") - 1, (int)(datamunge::graphics::DataSeries::Kind::Polygon));
 
 
-  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Text", sizeof("Kind_Text") - 1, (int)(datamunge::plot::DataSeries::Kind::Text));
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Text", sizeof("Kind_Text") - 1, (int)(datamunge::graphics::DataSeries::Kind::Text));
 
 
-  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Segment", sizeof("Kind_Segment") - 1, (int)(datamunge::plot::DataSeries::Kind::Segment));
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Segment", sizeof("Kind_Segment") - 1, (int)(datamunge::graphics::DataSeries::Kind::Segment));
 
 SWIG_LONG_CONSTANT(TrendType_None, (int)(datamunge::stats::TrendType::None));
 

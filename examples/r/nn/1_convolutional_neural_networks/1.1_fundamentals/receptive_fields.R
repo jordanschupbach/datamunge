@@ -1,4 +1,5 @@
 # Native R NN example. Receptive-field geometry and trained CNN feature derivatives in R.
+# CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/receptive_fields.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
@@ -8,7 +9,6 @@ nn_helper("cnn_baselines")
 nn_helper("mnist")
 nn_helper("receptive_field")
 
-# CMD: just r-example receptive_fields
 # Receptive fields and trained CNN feature maps, with numerical validation.
 #
 # Port of tflow's receptive_fields. Preparation: just r-example cnn_mnist
@@ -95,7 +95,7 @@ main <- function(arguments = commandArgs(TRUE)) {
     field <- geometry()
     support_checks(field)
     nn_require(file.exists(args$checkpoint), "run cnn_mnist first to create trained checkpoint")
-    dataset <- nn$load_mnist(args$data, "test")
+    dataset <- nn_components$dataset_assets$LoadMnist(args$data, "test")
     count <- as.numeric(dataset$images$shape())[1L]
     pixels <- nn$reshape(dataset$images, c(count, 784))
 

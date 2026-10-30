@@ -1,0 +1,796 @@
+//? Title: Independent Component Analysis: Beyond Decorrelation
+//? Subtitle: Exact FastICA updates, source matching and limits of identification
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Several measured signals may each contain a different mixture of the same hidden
+sources. Recovering those sources requires assumptions beyond making the measurements
+uncorrelated. Independent component analysis uses an instantaneous linear mixing model
+and non-Gaussian structure to estimate a separating transform. We first construct an
+exact uncorrelated-but-dependent four-point example and calculate a FastICA update by
+hand. Known waveforms, independent random sources, a Gaussian control and mixture
+geometry then test what the algorithm recovers and what numerical convergence cannot
+establish. Iris supplies an observed-data illustration with no known latent-source
+truth. Population whitening, per-component stopping, frozen transforms and one-to-one
+recovery matching remain explicit throughout. All twelve non-Gaussian random-source
+fits meet the angle rule, with matched mean correlations from .98949 to .99986;
+Gaussian controls show why neither a high score nor numerical stopping identifies
+a unique source basis.
+)
+\toc
+
+> The method
+
+>> Specify the source model and its ambiguities
+
+Let observations satisfy \(x=\mu+As\), with \(p\) measured coordinates, \(k\le p\)
+mutually independent source variables and a full-column-rank mixing matrix \(A\).
+We estimate \(s\) from the observations without knowing \(A\). This is an
+instantaneous linear model; it does not represent reverberation, time delays,
+nonlinear mixtures or an arbitrary collection of measured variables.
+
+Sign, scale and ordering cannot be inferred from the mixture alone. For an invertible
+diagonal \(D\) and permutation \(P\),
+
+$$
+ As=(AP^TD^{-1})(DPs).
+$$
+\alttext(Scaling and permuting the sources can be undone in the mixing matrix without changing any observation. Thus source sign, magnitude and order are ambiguous.)
+
+With independent non-Gaussian sources, standard ICA identification results recover
+these directions up to those ambiguities; at most one source can be Gaussian. A
+multi-source Gaussian subspace permits additional orthogonal rotations with the
+same distribution. Numerical contrast optimization on a finite sample does not
+prove independence or select a physically meaningful interpretation.
+
+Independence means the joint probability law factorizes. Zero covariance constrains
+only one second moment. A nonlinear dependence can remain even when every pairwise
+correlation is zero. The central limit theorem motivates searching for non-Gaussian
+projections, but it does not order every finite weighted sum as “more Gaussian than
+each constituent” under every contrast. We use specific contrast approximations,
+which can have local or spurious stationary directions and sampling error.
+
+>> Population whitening removes covariance, not all dependence
+
+For the \(n\) complete fitting rows, let \(X_c\) be the centered row matrix. Compute
+its population-divisor covariance and retain the leading \(k\) positive eigenvalues:
+
+$$
+ C=\frac1nX_c^TX_c=E\Lambda E^T,\qquad
+ K=E_k\Lambda_k^{-1/2},\qquad Z=X_cK,\qquad \frac1nZ^TZ=I_k.
+$$
+\alttext(Population covariance divides the centered cross-product by n. The retained eigenvectors divided by square roots of their eigenvalues form a whitening map. Multiplication by that map gives identity population covariance.)
+
+Every orthogonal rotation of \(Z\) retains that identity covariance. Thus covariance
+alone cannot choose the independent orientation. PCA coordinates are not automatically
+white: whitening additionally divides each retained score by its standard deviation.
+PCA truncation discards information before ICA and depends on the original feature
+units. Native ICA centers but does not standardize the input feature columns.
+
+The diagram uses a two-source example with mixing matrix rows (1,.8),(.8,1).
+Its thin mixture parallelogram becomes a white diamond in PCA coordinates, then a
+square in the independent coordinates. Both latter clouds have identity covariance.
+Rendering needs LaTeX, PGF/TikZ, standalone, Latin Modern and dvisvgm; export reads
+the local SVG and does not rerun TeX.
+
+```{bash, results="output", file="figures/ica_whitening_rotation.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/ica_whitening_rotation.tikz > build/ica_whitening_rotation.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/ica_whitening_rotation.svg build/ica_whitening_rotation.dvi > build/ica_whitening_rotation.render.log 2>&1
+printf 'Rendered the local whitening and rotation diagram.\n'
+```
+// result_begin:
+// Rendered the local whitening and rotation diagram.
+// \image(figures/ica_whitening_rotation.svg)
+// result_end
+\caption(Whitening leaves an orientation problem: a white diamond and a white square can have different dependence.)
+\alttext(Three panels show mixed four-corner source values in a thin parallelogram, their PCA-whitened diamond, and the independent square. Arrows distinguish covariance whitening from the contrast-based rotation.)
+
+>> Derive the deflationary fixed-point update
+
+For one unit direction \(w\) in white coordinates, approximate non-Gaussianity using
+a smooth contrast \(G\). Under the constraint \(w^Tw=1\), stationarity requires
+\(E[z\,g(w^Tz)]-\beta w=0\), with \(g=G'\). A Newton-style approximation replaces
+the expectation involving \(zz^Tg'\) by \(E[g']I\). Rescaling the resulting direction
+leads to the FastICA update below. This is a fixed-point method, not a line search
+that guarantees a monotone empirical contrast at every iteration.
+
+$$
+ u=\frac1n\sum_i z_i g(w^Tz_i)-\left[\frac1n\sum_i g'(w^Tz_i)\right]w,
+ \quad u\leftarrow u-\sum_{j<c}(u^Tw_j)w_j,\quad
+ w^+=\frac{u}{\|u\|_2},\quad e=1-|{w^+}^Tw|.
+$$
+\alttext(Averages of whitened rows times the contrast derivative, minus average derivative-of-derivative times the old direction, give a raw update. Project off previously extracted directions and normalize. A sign-invariant angle change measures numerical progress.)
+
+Deflation extracts directions sequentially. Two projection passes keep new directions
+orthogonal to the previous ones. The three implemented derivative pairs are
+
+$$
+ \begin{aligned}
+ \text{logcosh}:&\quad g(u)=\tanh u,&g'(u)&=1-\tanh^2u,\\
+ \text{exp}:&\quad g(u)=u e^{-u^2/2},&g'(u)&=(1-u^2)e^{-u^2/2},\\
+ \text{cube}:&\quad g(u)=u^3,&g'(u)&=3u^2.
+ \end{aligned}
+$$
+\alttext(Logcosh uses tanh and its derivative; exp uses u times a Gaussian-shaped exponential and its derivative; cube uses cubic and quadratic functions.)
+
+These are contrasts for a non-Gaussianity approximation, not direct independence
+measurements. Empirical excess kurtosis is \(E[y^4]/E[y^2]^2-3\) for centered sources.
+A nonzero value rules out Gaussian marginal shape, but zero kurtosis does not imply
+a Gaussian law or independence. Bounded tanh is less sensitive to large projections
+than the cubic contrast; no contrast is universally best.
+
+>> Fitted maps, diagnostics and numerical contracts
+
+Let \(R\) contain the extracted orthonormal directions as rows. The fitted source,
+unmixing and mixing maps are
+
+$$
+ S=ZR^T=X_cB^T,\qquad B=RK^T,\qquad
+ A_{\rm fit}=E_k\Lambda_k^{1/2}R^T=B^+,\qquad
+ A_{\rm fit}B=E_kE_k^T.
+$$
+\alttext(Source rows are whitened rows multiplied by the rotation transpose. The original-unit unmixing is rotation times whitening transpose. Its pseudo-inverse reconstructs the retained PCA subspace, with full reconstruction only when that subspace spans the observations.)
+
+The columns of \(A_{\rm fit}\) are feature-space mixing patterns. The rows of \(B\)
+are unmixing covectors; they are not interchangeable geometric arrows. With fewer
+components, reconstruction is the retained PCA projection regardless of the ICA
+rotation. A tiny full-rank reconstruction error therefore checks algebra, not
+source separation or statistical independence.
+
+`ICA` drops rows with null selected features jointly and exposes their original
+indices through `kept_row_indices()`. Retained values must be finite, feature names
+unique and numeric, the iteration budget positive, and \(0<\mathrm{tol}<1\) finite.
+A common feature-scale factor stabilizes covariance formation. The relative rank
+cutoff is \(\max(n,p)\epsilon\lambda_{\max}\); asking for too many nondegenerate
+dimensions is an error. A zero deflated update raises an exception instead of NaNs.
+
+`converged()` means every direction had \(e<\mathrm{tol}\) within its budget. It is
+not an accuracy or independence certificate. `component_diagnostics()` retains
+individual stopping flags, angle changes, population variances and kurtoses;
+`convergence_history()` records every completed direction update before final signs.
+Even an exhausted fit retains orthonormal directions and a valid reconstruction map.
+The first training value with largest absolute magnitude fixes each component's sign
+positive; components remain in extraction order. Seed reproducibility assumes the
+same standard library's normal-distribution implementation, not every platform.
+
+`transform()` always uses the fitted means and unmixing map, so an observation gives
+the same answer alone or in a batch. Query null/nonfinite values are rejected rather
+than omitted. `inverse_transform()` adds back the training mean. A known-source
+benchmark uses `ica_source_matches()` to maximize the total absolute correlation
+with a one-to-one Hungarian assignment. It also supplies sign/scale/offset alignment
+for plotting. Truth is used only for scoring, never for fitting; unknown observed
+data have no such recovery score.
+
+Covariance formation costs \(O(np^2)\), with a bounded-sweep \(O(p^3)\) eigensolve.
+For \(T\) total updates across \(k\) components, fixed-point work is
+\(O(T(nk+k^2))\). Retained arrays and history use
+\(O(n(p+k)+p^2+k^2+Tk)\) storage. Source matching adds \(O(nk^2+k^3)\) work.
+
+> Simple examples
+
+>> Four equally likely points: decorrelated but dependent
+
+Take all four combinations of \((s_1,s_2)\in\{-1,1\}^2\), each with probability one
+quarter. The sources are independent, centered and have variance one. Rotate them:
+\(u=(s_1+s_2)/\sqrt2\), \(v=(s_1-s_2)/\sqrt2\). The rotated variables also have
+variance one and covariance zero, but exactly one is zero in every row. Thus
+\(P(u=0)=P(v=0)=1/2\), while \(P(u=0,v=0)=0\ne1/4\). Equivalently,
+\(u^2+v^2=2\) and their squared values are perfectly negatively correlated.
+The native Pearson call below supplies only its coefficient; its inference assumptions
+are not applied to this discrete four-point construction.
+
+```{cpp, results="markdown", file="figures/ica_dependence.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::vector<double> s1 = {-1, -1, 1, 1}, s2 = {-1, 1, -1, 1};
+  std::vector<double>       u, v, u2, v2;
+  for (std::size_t i = 0; i < 4; ++i) {
+    u.push_back((s1[i] + s2[i]) / std::sqrt(2.));
+    v.push_back((s1[i] - s2[i]) / std::sqrt(2.));
+    u2.push_back(u.back() * u.back());
+    v2.push_back(v.back() * v.back());
+  }
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  left.points(s1, s2, "independent corners", {37, 99, 235}, 7)
+      .title("Independent square")
+      .x_label("source 1")
+      .y_label("source 2")
+      .x_limits(-2, 2)
+      .y_limits(-2, 3);
+  right.points(u, v, "zero covariance", {220, 38, 38}, 7)
+      .title("White, but dependent")
+      .x_label("rotated u")
+      .y_label("rotated v")
+      .x_limits(-2, 2)
+      .y_limits(-2, 3);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/ica_dependence.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("s1", s1);
+  table.add_column("s2", s2);
+  table.add_column("u", u);
+  table.add_column("v", v);
+  table.add_column("u_squared", u2);
+  table.add_column("v_squared", v2);
+  std::size_t both_zero = 0;
+  for (std::size_t i = 0; i < 4; ++i)
+    both_zero += u[i] == 0 && v[i] == 0;
+  std::print(
+      "Pearson(u,v)={:.8f}; Pearson(u squared,v squared)={:.8f}.\nJoint zeros: {}/4; marginal "
+      "zeros: {}/4 and {}/4.\n\n{}\n",
+      dm::stats::pearson_correlation_test(u, v).estimate1,
+      dm::stats::pearson_correlation_test(u2, v2).estimate1,
+      both_zero,
+      std::count(u.begin(), u.end(), 0.),
+      std::count(v.begin(), v.end(), 0.),
+      table.to_md(8));
+}
+```
+// result_begin: markdown
+Pearson(u,v)=0.00000000; Pearson(u squared,v squared)=-1.00000000.
+Joint zeros: 0/4; marginal zeros: 2/4 and 2/4.
+
+| s1 | s2 | u | v | u_squared | v_squared |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| -1 | -1 | -1.41421356 | 0.00000000 | 2 | 0 |
+| -1 | 1 | 0.00000000 | -1.41421356 | 0 | 2 |
+| 1 | -1 | 0.00000000 | 1.41421356 | 0 | 2 |
+| 1 | 1 | 1.41421356 | 0.00000000 | 2 | 0 |
+
+\image(figures/ica_dependence.svg)
+// result_end
+\caption(Identity covariance does not distinguish an independent square from a dependent diamond.)
+\alttext(Two four-point scatters show independent source corners and their rotated diamond. The table exposes every point and its squared coordinates. Printed correlations and joint/marginal zero counts verify nonlinear dependence exactly.)
+
+>> A cubic update that can be checked by hand
+
+For the independent corners and a unit direction \(w=(a,b)\), \(E[s_1^4]=E[s_2^4]=1\)
+and mixed odd moments vanish. With the cubic contrast,
+\(E[s(s^Tw)^3]-3w=(-2a^3,-2b^3)\). Starting at (.8,.6), the raw update is
+(−1.024,−.432). After normalization, its direction ratio is
+\((.6/.8)^3=.421875\). This exact example explains the locally cubic direction
+convergence of the kurtosis update near a source axis; finite data and other
+contrasts need their own analysis.
+
+The same program fits ICA blindly to four mixtures with matrix rows (1,.6),(.3,1.2).
+The native local-step call uses the already white source corners to verify the
+hand calculation; the separate fitted model sees only the mixture columns. Its
+diagnostics check whitening and reconstruction without treating either as a proof
+that all possible source models have been identified.
+
+```{cpp, results="markdown", file="figures/ica_exact_update.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::linalg::DenseMatrix<double> s(4, 2, {-1, -1, -1, 1, 1, -1, 1, 1});
+  const auto                            step = dm::stats::ica_fixed_point_step(s, {.8, .6}, "cube");
+  dm::dstruct::DataFrame                d;
+  d.add_column("x1", std::vector<double>{-1.6, -.4, .4, 1.6});
+  d.add_column("x2", std::vector<double>{-1.5, .9, -.9, 1.5});
+  const dm::stats::ICA m(d, {"x1", "x2"}, {2, "cube", 200, 1e-10, 7});
+  auto                 left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  left.points(
+          d.numeric_column("x1").values(),
+          d.numeric_column("x2").values(),
+          "mixture rows",
+          {37, 99, 235},
+          6)
+      .title("The blind fit sees four mixtures")
+      .x_label("x1")
+      .y_label("x2")
+      .x_limits(-2, 2)
+      .y_limits(-2, 3);
+  right.line({0, .8}, {0, .6}, "initial direction", {100, 116, 139})
+      .line({0, -step.direction[0]}, {0, -step.direction[1]}, "updated", {220, 38, 38})
+      .points({1}, {0}, "source axis", {37, 99, 235}, 5)
+      .title("Cube update towards a source axis")
+      .x_label("white coordinate 1")
+      .y_label("white coordinate 2")
+      .x_limits(-.1, 1.2)
+      .y_limits(-.1, 1.5);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/ica_exact_update.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 9;
+  fmt.scientific = {
+      "whitening_error",
+      "source_covariance_error",
+      "rotation_error",
+      "reconstruction_rmse",
+      "alignment_error",
+      "rank_threshold"};
+  std::print(
+      "Raw update: ({:.9f},{:.9f}); norm {:.9f}; direction ratio {:.9f}.\n\nBlind-fit "
+      "diagnostics:\n\n{}\n\nPer-component status:\n\n{}\n\nFirst six completed updates:\n\n{}\n",
+      step.raw_update[0],
+      step.raw_update[1],
+      step.update_norm,
+      step.direction[1] / step.direction[0],
+      m.diagnostics().to_md(fmt),
+      m.component_diagnostics().to_md(fmt),
+      m.convergence_history().head(6).to_md(fmt));
+}
+```
+// result_begin: markdown
+Raw update: (-1.024000000,-0.432000000); norm 1.111395519; direction ratio 0.421875000.
+
+Blind-fit diagnostics:
+
+| observations | features | components | converged | whitening_error | source_covariance_error | rotation_error | reconstruction_rmse | retained_variance_fraction | rank_threshold |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 4 | 2 | 2 | 1 | 2.220446049e-16 | 2.220446049e-16 | 1.110223025e-16 | 2.833250111e-16 | 1 | 2.192499994e-15 |
+
+
+Per-component status:
+
+| component | iterations | converged | alignment_error | mean | population_variance | excess_kurtosis |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 3 | 1 | 2.458477866e-12 | 0 | 1 | -2 |
+| 2 | 1 | 1 | 0.000000000e+00 | 0 | 1 | -2 |
+
+
+First six completed updates:
+
+| component | iteration | alignment_error | update_norm | w0 | w1 |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 2.369564143e-02 | 1.84476293 | -0.813099653 | 0.582124518 |
+| 1 | 2 | 8.498134508e-05 | 1.99948998 | 0.820619536 | -0.571474914 |
+| 1 | 3 | 2.458477866e-12 | 2.00000000 | -0.820620803 | 0.571473095 |
+| 2 | 1 | 0.000000000e+00 | 2.00000000 | -0.571473095 | -0.820620803 |
+
+\image(figures/ica_exact_update.svg)
+// result_end
+\caption(The local cubic calculation matches the native update, while a separate blind fit checks the complete whitening pipeline.)
+\alttext(Four observed mixture points appear beside initial and updated directions in already white coordinates. The new direction is sign-flipped only for display. Tables report blind-fit whitening/reconstruction checks, component stopping and actual unsigned update directions.)
+
+> Checking the theory
+
+>> Preserve the waveform demonstration without assuming random independence
+
+The original report used a sine, square wave and sawtooth on a common deterministic
+time grid. Those traces can be separated well in this example, but sharing a time
+index does not establish independent random variables. `ica_benchmark(...,"waveforms")`
+retains those exact formulas and the original three-by-three mixing matrix.
+
+Fit only x1,x2,x3. For comparison, fit centered, unscaled PCA on the same mixtures.
+One-to-one absolute-correlation matching measures recovery for both methods. The
+right plot restores the chosen sign, mean and scale of each true source only for
+comparison; this supervised alignment is not part of the blind ICA fit. The first
+200 of 1000 samples are displayed and all 1000 contribute to fitting and scoring.
+
+```{cpp, results="markdown", file="figures/ica_waveforms.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto                      d     = dm::stats::ica_benchmark(1000, 42, "waveforms");
+  const std::vector<std::string>  names = {"x1", "x2", "x3"};
+  const dm::stats::ICA            m(d, names, {3, "logcosh", 500, 1e-8, 42});
+  const dm::stats::PCA            pca(d, names, {true, false});
+  dm::linalg::DenseMatrix<double> truth(d.nrows(), 3);
+  for (std::size_t i = 0; i < d.nrows(); ++i)
+    for (std::size_t j = 0; j < 3; ++j)
+      truth(i, j) = d.double_at("s" + std::to_string(j + 1), i);
+  const auto match     = dm::stats::ica_source_matches(truth, m.sources()),
+             pca_match = dm::stats::ica_source_matches(truth, pca.scores());
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+  for (std::size_t j = 0; j < 3; ++j) {
+    std::vector<double> time, mixed, original, recovered;
+    const auto          c = std::size_t(match.double_at("component", j)) - 1;
+    for (std::size_t i = 0; i < 200; ++i) {
+      time.push_back(i);
+      mixed.push_back(d.double_at(names[j], i) + 4 * j);
+      original.push_back(truth(i, j) + 4 * j);
+      recovered.push_back(
+          match.double_at("offset", j) + match.double_at("multiplier", j) * m.sources()(i, c) +
+          4 * j);
+    }
+    left.line(time, mixed, names[j], colors[j]);
+    right.line(time, recovered, "source " + std::to_string(j + 1), colors[j])
+        .points(time, original, "", colors[j], 1.5);
+  }
+  left.title("Observed mixtures, with vertical offsets")
+      .x_label("sample index")
+      .y_label("mixture + 4 per trace")
+      .y_limits(-2.5, 14);
+  right.title("Aligned ICA lines and true-source dots")
+      .x_label("sample index")
+      .y_label("source + 4 per trace")
+      .y_limits(-2.5, 14);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/ica_waveforms.svg");
+  std::print(
+      "ICA matching (all 1000 rows):\n\n{}\n\nPCA matching on identical mixtures:\n\n{}\n\nICA "
+      "component diagnostics:\n\n{}\n",
+      match.to_md(8),
+      pca_match.to_md(8),
+      m.component_diagnostics().to_md(9));
+}
+```
+// result_begin: markdown
+ICA matching (all 1000 rows):
+
+| source | component | correlation | absolute_correlation | offset | multiplier |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | -0.99997292 | 0.99997292 | 0.03268286 | -0.70460561 |
+| 2 | 2 | -0.99989740 | 0.99989740 | 0.01400000 | -0.99990200 |
+| 3 | 3 | -0.99993335 | 0.99993335 | -0.02500000 | -0.57716982 |
+
+
+PCA matching on identical mixtures:
+
+| source | component | correlation | absolute_correlation | offset | multiplier |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2 | 0.72607732 | 0.72607732 | 0.03268286 | 1.48503053 |
+| 2 | 1 | 0.75560487 | 0.75560487 | 0.01400000 | 0.81580870 |
+| 3 | 3 | -0.90652170 | 0.90652170 | -0.02500000 | -2.44268592 |
+
+
+ICA component diagnostics:
+
+| component | iterations | converged | alignment_error | mean | population_variance | excess_kurtosis |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 8 | 1 | 0.000000007 | 0 | 1 | -1.485396580 |
+| 2 | 4 | 1 | 0.000000000 | 0 | 1 | -1.998396197 |
+| 3 | 1 | 1 | 0.000000000 | 0 | 1 | -1.201010968 |
+
+\image(figures/ica_waveforms.svg)
+// result_end
+\caption(Known deterministic waveforms are recovered up to supervised sign/scale/order alignment; their construction alone does not prove independence.)
+\alttext(The left panel shows three observed mixture traces offset by four units. The right compares aligned ICA lines with true-source dots for the first 200 samples. Tables compare one-to-one ICA and PCA recovery using all 1000 rows and expose the ICA stopping diagnostics.)
+
+>> Independent-source recovery and a Gaussian control
+
+The independent benchmark draws separate Laplace, uniform and Rademacher source
+coordinates, each with population variance one before finite-sample variation.
+Compare it with three independent Gaussian sources using the identical mixing
+matrix. For each family, four declared data seeds and all three contrasts are fit
+with the same 500-update budget and 1e-8 tolerance. The plotted score is the mean
+absolute correlation after one-to-one source matching; the table also reports the
+worst individual match and numerical stopping.
+
+Gaussian nonidentifiability is a population statement, not a hypothesis test based
+on one low score. If \(s\sim N(0,I)\), every orthogonal \(Q\) gives \(Qs\sim N(0,I)\)
+because \(\|Qs\|^2=\|s\|^2\). The rotated Gaussian coordinates are also independent.
+No observation-only method can distinguish these alternative source bases. Finite
+samples can still produce a converged contrast direction and accidentally high
+matching correlations; neither contradicts the identification failure. These seed
+runs are descriptive sensitivity checks, not confidence intervals or significance tests.
+
+```{cpp, results="markdown", file="figures/ica_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  auto left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  dm::dstruct::DataFrame         table;
+  const std::vector<std::string> contrasts    = {"logcosh", "exp", "cube"},
+                                 families     = {"independent", "gaussian"};
+  const std::vector<std::uint64_t>     seeds  = {3, 7, 11, 19};
+  const std::vector<dm::graphics::RGB> colors = {{37, 99, 235}, {220, 38, 38}};
+  for (std::size_t family = 0; family < 2; ++family) {
+    std::vector<double> x, score, iterations;
+    for (std::size_t s = 0; s < seeds.size(); ++s) {
+      const auto d = dm::stats::ica_benchmark(1200, seeds[s], families[family]);
+      dm::linalg::DenseMatrix<double> truth(d.nrows(), 3);
+      for (std::size_t i = 0; i < d.nrows(); ++i)
+        for (std::size_t j = 0; j < 3; ++j)
+          truth(i, j) = d.double_at("s" + std::to_string(j + 1), i);
+      for (std::size_t c = 0; c < contrasts.size(); ++c) {
+        const dm::stats::ICA m(d, {"x1", "x2", "x3"}, {3, contrasts[c], 500, 1e-8, 42});
+        const auto           matches = dm::stats::ica_source_matches(truth, m.sources());
+        const auto           values  = matches.numeric_column("absolute_correlation").values();
+        const double         mean    = std::accumulate(values.begin(), values.end(), 0.) / 3;
+        const auto count = *std::max_element(m.iterations().begin(), m.iterations().end());
+        x.push_back(s + 1 + (double(c) - 1) * .2);
+        score.push_back(mean);
+        iterations.push_back(std::log10(count));
+        dm::dstruct::DataFrame row;
+        row.add_column("family", std::vector<std::string>{families[family]});
+        row.add_column("data_seed", std::vector<double>{double(seeds[s])});
+        row.add_column("contrast", std::vector<std::string>{contrasts[c]});
+        row.add_column("mean_abs_correlation", std::vector<double>{mean});
+        row.add_column(
+            "minimum_abs_correlation",
+            std::vector<double>{*std::min_element(values.begin(), values.end())});
+        row.add_column("converged", std::vector<double>{m.converged() ? 1. : 0.});
+        row.add_column("max_component_iterations", std::vector<double>{double(count)});
+        table = table.ncols() ? table.concat_rows(row) : row;
+      }
+    }
+    left.points(x, score, families[family], colors[family], 5);
+    right.points(x, iterations, families[family], colors[family], 5);
+  }
+  left.title("Source recovery across four data seeds")
+      .x_label("seed group; three contrasts per group")
+      .y_label("mean absolute source correlation")
+      .x_limits(.5, 4.5)
+      .y_limits(.4, 1.4);
+  right.title("Gaussian axes remain unidentifiable")
+      .x_label("seed group; three contrasts per group")
+      .y_label("log10 maximum component iterations")
+      .x_limits(.5, 4.5)
+      .y_limits(-.1, 4.5);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/ica_controls.svg");
+  std::print(
+      "Seed groups: 3, 7, 11, 19; within-group offsets: logcosh, exp, cube.\n\n{}\n",
+      table.to_md(8));
+}
+```
+// result_begin: markdown
+Seed groups: 3, 7, 11, 19; within-group offsets: logcosh, exp, cube.
+
+| family | data_seed | contrast | mean_abs_correlation | minimum_abs_correlation | converged | max_component_iterations |
+| :--- | ---: | :--- | ---: | ---: | ---: | ---: |
+| independent | 3 | logcosh | 0.99558805 | 0.99249824 | 1 | 5 |
+| independent | 3 | exp | 0.99620853 | 0.99355936 | 1 | 5 |
+| independent | 3 | cube | 0.98948957 | 0.98448015 | 1 | 6 |
+| independent | 7 | logcosh | 0.99952692 | 0.99874569 | 1 | 6 |
+| independent | 7 | exp | 0.99956261 | 0.99890832 | 1 | 6 |
+| independent | 7 | cube | 0.99656153 | 0.99356584 | 1 | 6 |
+| independent | 11 | logcosh | 0.99973730 | 0.99953087 | 1 | 4 |
+| independent | 11 | exp | 0.99971831 | 0.99950260 | 1 | 4 |
+| independent | 11 | cube | 0.99963722 | 0.99954767 | 1 | 5 |
+| independent | 19 | logcosh | 0.99985756 | 0.99975414 | 1 | 5 |
+| independent | 19 | exp | 0.99968651 | 0.99943299 | 1 | 4 |
+| independent | 19 | cube | 0.99731405 | 0.99545482 | 1 | 6 |
+| gaussian | 3 | logcosh | 0.83767197 | 0.75830402 | 0 | 500 |
+| gaussian | 3 | exp | 0.97614069 | 0.97207669 | 0 | 500 |
+| gaussian | 3 | cube | 0.82849842 | 0.74408299 | 0 | 500 |
+| gaussian | 7 | logcosh | 0.82410427 | 0.73674414 | 0 | 500 |
+| gaussian | 7 | exp | 0.90384116 | 0.86805477 | 0 | 500 |
+| gaussian | 7 | cube | 0.73923695 | 0.65679520 | 1 | 10 |
+| gaussian | 11 | logcosh | 0.85175439 | 0.76667501 | 0 | 500 |
+| gaussian | 11 | exp | 0.85008651 | 0.80041744 | 1 | 41 |
+| gaussian | 11 | cube | 0.84653138 | 0.79046664 | 0 | 500 |
+| gaussian | 19 | logcosh | 0.80921245 | 0.72560367 | 1 | 36 |
+| gaussian | 19 | exp | 0.80535468 | 0.71893851 | 1 | 25 |
+| gaussian | 19 | cube | 0.82028017 | 0.71568069 | 1 | 27 |
+
+\image(figures/ica_controls.svg)
+// result_end
+\caption(Known independent non-Gaussian sources and Gaussian controls separate numerical stopping from identifiable source recovery.)
+\alttext(For each of four data seeds and three contrast choices, two panels plot matched recovery and maximum iteration count for non-Gaussian and Gaussian families. All 24 fits appear in the table, including component-budget exhaustion; no significance comparison is inferred.)
+
+All twelve non-Gaussian fits converge under the declared angle rule. Their mean
+matched correlations range from .98948957 to .99985756. Seven of the twelve Gaussian
+fits exhaust the 500-update budget; one of those still has mean matching .97614069.
+A high score against an arbitrarily chosen Gaussian source basis therefore does not
+resolve population nonidentifiability. The table keeps both the score and status.
+
+>> Geometry and reconstruction answer different questions
+
+Two independent uniform coordinates fill a square. The benchmark's mixing matrix
+has rows (1,.8),(.3,1), producing a parallelogram. Plot the estimated mixing columns
+from the two-component ICA fit in original feature units, alongside PCA's orthogonal
+variance axes. The ICA columns may be oblique; its unmixing rows are their dual map.
+All arrows below are rescaled for visibility and centred on the fitted mean.
+
+Compare one-component and two-component ICA reconstructions. The one-component
+model keeps only the leading PCA direction; rotating inside that retained
+one-dimensional space cannot restore the discarded variation. Full two-component
+reconstruction is nearly exact for any fitted orthogonal ICA rotation. The
+retained variance and reconstruction table therefore verifies the fitted maps,
+while only known-source matching evaluates separation here.
+
+```{cpp, results="markdown", file="figures/ica_geometry.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto                     d     = dm::stats::ica_benchmark(800, 7, "uniform");
+  const std::vector<std::string> names = {"x1", "x2"};
+  const dm::stats::ICA           full(d, names, {2, "logcosh", 500, 1e-8, 42}),
+      reduced(d, names, {1, "logcosh", 500, 1e-8, 42});
+  const dm::stats::PCA pca(d, names, {true, false});
+  auto                 left = dm::graphics::RPlot::create(), right = dm::graphics::RPlot::create();
+  left.points(
+      d.numeric_column("x1").values(),
+      d.numeric_column("x2").values(),
+      "mixtures",
+      {148, 163, 184},
+      2);
+  for (std::size_t c = 0; c < 2; ++c) {
+    const double norm = std::hypot(full.mixing_matrix()(0, c), full.mixing_matrix()(1, c));
+    left.line(
+        {full.mean()[0] - 1.7 * full.mixing_matrix()(0, c) / norm,
+         full.mean()[0] + 1.7 * full.mixing_matrix()(0, c) / norm},
+        {full.mean()[1] - 1.7 * full.mixing_matrix()(1, c) / norm,
+         full.mean()[1] + 1.7 * full.mixing_matrix()(1, c) / norm},
+        c == 0 ? "ICA mixing columns" : "",
+        {220, 38, 38});
+    left.line(
+        {full.mean()[0] - 1.7 * pca.loadings()(0, c), full.mean()[0] + 1.7 * pca.loadings()(0, c)},
+        {full.mean()[1] - 1.7 * pca.loadings()(1, c), full.mean()[1] + 1.7 * pca.loadings()(1, c)},
+        c == 0 ? "PCA axes" : "",
+        {37, 99, 235});
+  }
+  const auto summary = reduced.diagnostics().concat_rows(full.diagnostics());
+  left.title("Mixing patterns and variance axes")
+      .x_label("mixture x1")
+      .y_label("mixture x2")
+      .x_limits(-3.5, 3.5)
+      .y_limits(-3, 5.5);
+  right
+      .bars(
+          {1, 2},
+          summary.numeric_column("reconstruction_rmse").values(),
+          "reconstruction RMSE",
+          {37, 99, 235},
+          .6)
+      .title("Truncation discards a PCA direction")
+      .x_label("retained component count")
+      .y_label("RMSE per original-unit feature cell")
+      .y_limits(0, .7);
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/ica_geometry.svg");
+  dm::linalg::DenseMatrix<double> truth(d.nrows(), 2);
+  for (std::size_t i = 0; i < d.nrows(); ++i)
+    for (std::size_t j = 0; j < 2; ++j)
+      truth(i, j) = d.double_at("s" + std::to_string(j + 1), i);
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 9;
+  fmt.scientific = {
+      "whitening_error",
+      "source_covariance_error",
+      "rotation_error",
+      "reconstruction_rmse",
+      "rank_threshold"};
+  std::print(
+      "Reconstruction checks:\n\n{}\n\nFull ICA source matching:\n\n{}\n",
+      summary.to_md(fmt),
+      dm::stats::ica_source_matches(truth, full.sources()).to_md(8));
+}
+```
+// result_begin: markdown
+Reconstruction checks:
+
+| observations | features | components | converged | whitening_error | source_covariance_error | rotation_error | reconstruction_rmse | retained_variance_fraction | rank_threshold |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 800 | 2 | 1 | 1 | 0.000000000e+00 | 0.000000000e+00 | 0.000000000e+00 | 3.363880777e-01 | 0.919055082 | 4.564501501e-13 |
+| 800 | 2 | 2 | 1 | 6.661338148e-16 | 5.551115123e-16 | 2.220446049e-16 | 2.714303481e-16 | 1.000000000 | 4.564501501e-13 |
+
+
+Full ICA source matching:
+
+| source | component | correlation | absolute_correlation | offset | multiplier |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2 | 0.99997307 | 0.99997307 | -0.02030534 | 0.98872666 |
+| 2 | 1 | -0.99993829 | 0.99993829 | 0.08804767 | -1.01501212 |
+
+\image(figures/ica_geometry.svg)
+// result_end
+\caption(The mixing pattern is distinct from an unmixing covector, and exact reconstruction alone does not verify separation.)
+\alttext(A uniform-mixture parallelogram is overlaid with red fitted mixing columns and blue PCA axes. A bar plot compares one- and two-component reconstruction RMSE. Tables give the numerical checks and supervised source matching for the full fit.)
+
+> Iris: observed components without source truth
+
+Iris has 150 flowers, four numeric measurements in centimetres and three species.
+Fit all four measurement columns with logcosh, a 1000-update budget and 1e-7 angle
+tolerance. No species label participates in centring, whitening or component extraction;
+labels colour the scatter afterwards using the retained original-row map. Compare
+retaining two and four PCA dimensions before ICA, and report every component's
+numerical status and kurtosis.
+
+These measurements are not supplied with a validated instantaneous independent-source
+mixing model. Neither a visually separated species group nor non-Gaussian component
+kurtosis establishes biological latent causes or independent sources. All rows are
+used for this descriptive fit, with no classification accuracy or held-out prediction
+claim. Full-rank reconstruction checks the linear algebra, while the reduced fit's
+error records discarded variation. Both use frozen training means for later transforms.
+
+```{cpp, results="markdown", file="figures/ica_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto                     d        = dm::datasets::iris();
+  const std::vector<std::string> features = {
+      "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+  const dm::stats::ICA full(d, features, {4, "logcosh", 1000, 1e-7, 42}),
+      reduced(d, features, {2, "logcosh", 1000, 1e-7, 42});
+  std::vector<std::string> groups;
+  for (auto i : full.kept_row_indices())
+    groups.push_back(d.string_at("Species", i));
+  auto         left = full.plot_sources(groups), right = dm::graphics::RPlot::create();
+  const auto   y      = full.component(1);
+  const auto   bounds = std::minmax_element(y.begin(), y.end());
+  const double span   = *bounds.second - *bounds.first;
+  left.title("Species labels added after fitting")
+      .y_limits(*bounds.first - .1 * span, *bounds.second + .8 * span);
+  const auto kurtosis = full.source_kurtosis();
+  const auto k_bounds = std::minmax_element(kurtosis.begin(), kurtosis.end());
+  right.bars({1, 2, 3, 4}, kurtosis, "excess kurtosis", {37, 99, 235}, .65)
+      .title("Marginal shape is not independence")
+      .x_label("component in extraction order")
+      .y_label("empirical excess kurtosis")
+      .y_limits(std::min(-.2, *k_bounds.first - .5), std::max(.2, *k_bounds.second + 2));
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 490).fit_panels().save_svg(
+      "build/ica_iris.svg");
+  dm::dstruct::DataFrame::MarkdownOptions fmt;
+  fmt.digits     = 9;
+  fmt.scientific = {
+      "whitening_error",
+      "source_covariance_error",
+      "rotation_error",
+      "reconstruction_rmse",
+      "alignment_error",
+      "rank_threshold"};
+  std::print(
+      "Data preview:\n\n{}\n\nTwo- and four-component checks:\n\n{}\n\nEvery component in the full "
+      "fit:\n\n{}\n",
+      d.head(4).to_md(2),
+      reduced.diagnostics().concat_rows(full.diagnostics()).to_md(fmt),
+      full.component_diagnostics().to_md(fmt));
+}
+```
+// result_begin: markdown
+Data preview:
+
+| Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
+| ---: | ---: | ---: | ---: | :--- |
+| 5.1 | 3.5 | 1.4 | 0.2 | setosa |
+| 4.9 | 3.0 | 1.4 | 0.2 | setosa |
+| 4.7 | 3.2 | 1.3 | 0.2 | setosa |
+| 4.6 | 3.1 | 1.5 | 0.2 | setosa |
+
+
+Two- and four-component checks:
+
+| observations | features | components | converged | whitening_error | source_covariance_error | rotation_error | reconstruction_rmse | retained_variance_fraction | rank_threshold |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 150 | 4 | 2 | 1 | 4.440892099e-16 | 6.661338148e-16 | 2.220446049e-16 | 1.591887996e-01 | 0.977685206 | 1.398898806e-13 |
+| 150 | 4 | 4 | 1 | 5.551115123e-15 | 4.662936703e-15 | 2.220446049e-16 | 3.967669861e-16 | 1.000000000 | 1.398898806e-13 |
+
+
+Every component in the full fit:
+
+| component | iterations | converged | alignment_error | mean | population_variance | excess_kurtosis |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 34 | 1 | 2.811737521e-08 | 0 | 1 | 1.211467258 |
+| 2 | 7 | 1 | 5.362478217e-08 | 0 | 1 | -1.072055456 |
+| 3 | 42 | 1 | 9.030431325e-08 | 0 | 1 | -0.410447653 |
+| 4 | 1 | 1 | 0.000000000e+00 | 0 | 1 | 0.014098824 |
+
+\image(figures/ica_iris.svg)
+// result_end
+\caption(Iris illustrates fitted coordinates and numerical checks, with no known-source recovery or causal claim.)
+\alttext(A scatter of the first two full-fit components is coloured by external species labels. Bars show the four marginal excess kurtoses. Tables preview the measured data, compare reduced/full reconstructions and report every component’s angle stopping and population moments.)
+
+For Iris, both dimension choices meet the angle rule. Two retained PCA dimensions
+account for .977685206 of the original covariance trace, with reconstruction RMSE
+.1591888 cm per feature cell. Four dimensions reconstruct to floating-point precision.
+These are retained-subspace diagnostics, not an ICA variance ranking or an estimate
+of latent-source accuracy.
+
+> Conclusion
+
+The four-point example proves directly that whitening does not establish independence.
+The exact cubic update explains how non-Gaussian shape can select a direction after
+whitening, and the known-source benchmarks evaluate recovery with a one-to-one match.
+The Gaussian control illustrates an identification limit that numerical convergence
+cannot remove. The deterministic waveform recovery is useful evidence for that
+construction, rather than a proof that all signals sharing a time index are independent.
+
+Mixing-pattern geometry, reconstruction accuracy, contrast stopping and source recovery
+answer different questions. Iris has no source truth, so its fitted coordinates and
+kurtoses remain a descriptive illustration. In practice, source-model assumptions,
+finite-sample stability, component count and the downstream use all need assessment;
+a converged FastICA fit alone does not settle them.
+
+> References
+
+- P. Comon (1994), “Independent component analysis, a new concept?”, Signal Processing
+  36(3), 287–314. https://doi.org/10.1016/0165-1684(94)90029-9.
+- A. Hyvärinen and E. Oja (1997), “A fast fixed-point algorithm for independent
+  component analysis”, Neural Computation 9(7), 1483–1492.
+  https://www.cs.helsinki.fi/u/ahyvarin/papers/NC97.pdf.
+- A. Hyvärinen (1999), “Fast and robust fixed-point algorithms for independent
+  component analysis”, IEEE Transactions on Neural Networks 10(3), 626–634.
+  https://www.cs.helsinki.fi/u/ahyvarin/papers/TNN99_reprint.pdf.
+- A. Hyvärinen and E. Oja (2000), “Independent component analysis: algorithms and
+  applications”, Neural Networks 13(4–5), 411–430.
+  https://doi.org/10.1016/S0893-6080(00)00026-5.
+

@@ -1,0 +1,11 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,font=\sffamily\large,box/.style={draw,rounded corners,align=center,text width=4cm,minimum height=1.8cm,fill=blue!7,inner sep=6pt}]
+\node[box] (n0) at (0.0,0) {RGB patches\\grouped filters};
+\node[box] (n1) at (5.2,0) {LRN and pooling\\five convolutions};
+\node[box] (n2) at (10.4,0) {Two dense layers\\dropout and Adam};
+\draw[->,thick] (n0)--(n1);
+\draw[->,thick] (n1)--(n2);
+\end{tikzpicture}
+\end{document}

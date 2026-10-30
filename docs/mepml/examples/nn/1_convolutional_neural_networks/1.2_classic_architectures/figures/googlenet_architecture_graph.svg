@@ -1,0 +1,828 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2980.83" height="1107.66" viewBox="0 0 2980.83 1107.66" role="img" data-model-layout="left-to-right" data-model-style="Graph" data-model-detail="layers" aria-labelledby="model-title model-description">
+<title id="model-title">GoogLeNet / main inference path</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">GoogLeNet / main inference path</text>
+<text x="24" y="51" font-size="12">86 nodes | 379046 unique learned values | Graph / layers</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#64B5CD"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#748BCB"/><text x="302" y="69" font-size="11">Dense</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#5ABF9A"/><text x="432" y="69" font-size="11">Pooling</text>
+<rect x="544" y="59" width="12" height="12" rx="2" fill="#CC79A7"/><text x="562" y="69" font-size="11">Normalization</text>
+<rect x="674" y="59" width="12" height="12" rx="2" fill="#D55E00"/><text x="692" y="69" font-size="11">Merge</text>
+<rect x="804" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="822" y="69" font-size="11">Output</text>
+<rect x="24" y="81" width="12" height="12" rx="2" fill="#94A3B8"/><text x="42" y="91" font-size="11">Operation</text>
+<text x="24" y="121" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<path data-from="0" data-to="1" d="M 121 224.5 C 133 224.5 133 201.312 145 201.312" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="1" data-to="2" d="M 195.625 201.312 C 212.669 201.312 212.669 189.312 229.713 189.312" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="2" data-to="3" d="M 256.337 189.312 C 278.425 189.312 278.425 189.312 300.512 189.312" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="3" data-to="4" d="M 327.137 189.312 C 349.225 189.312 349.225 189.312 371.312 189.312" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="4" data-to="5" d="M 397.938 189.312 C 418.712 189.312 418.712 191.938 439.488 191.938" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="5" data-to="6" d="M 471.363 191.938 C 490.825 191.938 490.825 191.938 510.288 191.938" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="6" data-to="7" d="M 542.163 191.938 C 564.625 191.938 564.625 185.938 587.087 185.938" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="7" data-to="8" d="M 606.962 185.938 C 633.737 185.938 633.737 183.312 660.512 183.312" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="7" data-to="9" d="M 606.962 185.938 C 633.409 185.938 633.409 387.694 659.856 387.694" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="9" data-to="10" d="M 675.794 387.694 C 702.897 387.694 702.897 184.625 730 184.625" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="7" data-to="11" d="M 606.962 185.938 C 634.144 185.938 634.144 641.963 661.325 641.963" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="11" data-to="12" d="M 674.325 641.963 C 703.147 641.963 703.147 389.006 731.969 389.006" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="7" data-to="13" d="M 606.962 185.938 C 632.425 185.938 632.425 889.75 657.887 889.75" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="13" data-to="14" d="M 677.762 889.75 C 704.866 889.75 704.866 582.969 731.969 582.969" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="8" data-to="15" d="M 675.137 183.312 C 691.137 183.312 691.137 172 707.137 172 L 766.175 172 C 782.175 172 782.175 187.25 798.175 187.25" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="10" data-to="15" d="M 747.25 184.625 C 772.712 184.625 772.712 187.25 798.175 187.25" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="12" data-to="15" d="M 745.281 389.006 C 771.728 389.006 771.728 187.25 798.175 187.25" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="14" data-to="15" d="M 745.281 582.969 C 771.728 582.969 771.728 187.25 798.175 187.25" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="15" data-to="16" d="M 820.675 187.25 C 846.137 187.25 846.137 184.625 871.6 184.625" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="15" data-to="17" d="M 820.675 187.25 C 846.137 187.25 846.137 390.975 871.6 390.975" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="17" data-to="18" d="M 888.85 390.975 C 914.969 390.975 914.969 185.938 941.087 185.938" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="15" data-to="19" d="M 820.675 187.25 C 847.122 187.25 847.122 646.056 873.569 646.056" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="19" data-to="20" d="M 886.881 646.056 C 914.969 646.056 914.969 392.944 943.056 392.944" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="15" data-to="21" d="M 820.675 187.25 C 844.825 187.25 844.825 895.313 868.975 895.313" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="21" data-to="22" d="M 891.475 895.313 C 917.594 895.313 917.594 597.325 943.712 597.325" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="16" data-to="23" d="M 888.85 184.625 C 904.85 184.625 904.85 164 920.85 164 L 973.981 164 C 989.981 164 989.981 191.844 1005.98 191.844" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="18" data-to="23" d="M 960.962 185.938 C 983.472 185.938 983.472 191.844 1005.98 191.844" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="20" data-to="23" d="M 958.994 392.944 C 982.487 392.944 982.487 191.844 1005.98 191.844" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="22" data-to="23" d="M 958.337 597.325 C 982.159 597.325 982.159 191.844 1005.98 191.844" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="23" data-to="24" d="M 1037.67 191.844 C 1058.72 191.844 1058.72 188.844 1079.78 188.844" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="24" data-to="25" d="M 1105.47 188.844 C 1130.98 188.844 1130.98 182.938 1156.49 182.938" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="24" data-to="26" d="M 1105.47 188.844 C 1131.96 188.844 1131.96 367.044 1158.46 367.044" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="26" data-to="27" d="M 1168.39 367.044 C 1197.68 367.044 1197.68 183.266 1226.96 183.266" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="24" data-to="28" d="M 1105.47 188.844 C 1132.7 188.844 1132.7 615.312 1159.92 615.312" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="28" data-to="29" d="M 1166.92 615.312 C 1198.58 615.312 1198.58 375.166 1230.24 375.166" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="24" data-to="30" d="M 1105.47 188.844 C 1128.02 188.844 1128.02 863.006 1150.58 863.006" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="30" data-to="31" d="M 1176.27 863.006 C 1203.09 863.006 1203.09 555.663 1229.91 555.663" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="25" data-to="32" d="M 1170.36 182.938 C 1186.36 182.938 1186.36 164 1202.36 164 L 1259.52 164 C 1275.52 164 1275.52 189.5 1291.52 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="27" data-to="32" d="M 1241.49 183.266 C 1266.51 183.266 1266.51 189.5 1291.52 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="29" data-to="32" d="M 1238.21 375.166 C 1264.87 375.166 1264.87 189.5 1291.52 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="31" data-to="32" d="M 1238.54 555.663 C 1265.03 555.663 1265.03 189.5 1291.52 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="32" data-to="33" d="M 1318.52 189.5 C 1344.03 189.5 1344.03 182.281 1369.54 182.281" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="32" data-to="34" d="M 1318.52 189.5 C 1344.53 189.5 1344.53 366.059 1370.53 366.059" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="34" data-to="35" d="M 1381.12 366.059 C 1410.08 366.059 1410.08 183.594 1439.03 183.594" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="32" data-to="36" d="M 1318.52 189.5 C 1345.42 189.5 1345.42 614.656 1372.32 614.656" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="36" data-to="37" d="M 1379.32 614.656 C 1410.82 614.656 1410.82 376.15 1442.31 376.15" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="32" data-to="38" d="M 1318.52 189.5 C 1340.42 189.5 1340.42 863.006 1362.32 863.006" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="38" data-to="39" d="M 1389.32 863.006 C 1415.82 863.006 1415.82 556.975 1442.31 556.975" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="33" data-to="40" d="M 1382.11 182.281 C 1398.11 182.281 1398.11 156 1414.11 156 L 1471.92 156 C 1487.92 156 1487.92 189.5 1503.92 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="35" data-to="40" d="M 1454.22 183.594 C 1479.07 183.594 1479.07 189.5 1503.92 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="37" data-to="40" d="M 1450.94 376.15 C 1477.43 376.15 1477.43 189.5 1503.92 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="39" data-to="40" d="M 1450.94 556.975 C 1477.43 556.975 1477.43 189.5 1503.92 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="40" data-to="41" d="M 1530.92 189.5 C 1556.76 189.5 1556.76 181.625 1582.6 181.625" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="40" data-to="42" d="M 1530.92 189.5 C 1556.76 189.5 1556.76 365.075 1582.6 365.075" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="42" data-to="43" d="M 1593.85 365.075 C 1622.31 365.075 1622.31 184.25 1650.77 184.25" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="40" data-to="44" d="M 1530.92 189.5 C 1557.82 189.5 1557.82 614 1584.72 614" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="44" data-to="45" d="M 1591.72 614 C 1623.22 614 1623.22 377.462 1654.71 377.462" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="40" data-to="46" d="M 1530.92 189.5 C 1552.82 189.5 1552.82 862.35 1574.72 862.35" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="46" data-to="47" d="M 1601.72 862.35 C 1628.22 862.35 1628.22 558.288 1654.71 558.288" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="41" data-to="48" d="M 1593.85 181.625 C 1609.85 181.625 1609.85 172 1625.85 172 L 1684.32 172 C 1700.32 172 1700.32 189.5 1716.32 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="43" data-to="48" d="M 1667.27 184.25 C 1691.8 184.25 1691.8 189.5 1716.32 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="45" data-to="48" d="M 1663.34 377.462 C 1689.83 377.462 1689.83 189.5 1716.32 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="47" data-to="48" d="M 1663.34 558.288 C 1689.83 558.288 1689.83 189.5 1716.32 189.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="48" data-to="49" d="M 1743.32 189.5 C 1769.33 189.5 1769.33 181.297 1795.33 181.297" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="48" data-to="50" d="M 1743.32 189.5 C 1769 189.5 1769 364.747 1794.67 364.747" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="50" data-to="51" d="M 1806.58 364.747 C 1834.55 364.747 1834.55 184.906 1862.52 184.906" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="48" data-to="52" d="M 1743.32 189.5 C 1770.15 189.5 1770.15 614.156 1796.97 614.156" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="52" data-to="53" d="M 1804.28 614.156 C 1835.7 614.156 1835.7 378.775 1867.11 378.775" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="48" data-to="54" d="M 1743.32 189.5 C 1765.22 189.5 1765.22 862.663 1787.12 862.663" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="54" data-to="55" d="M 1814.12 862.663 C 1840.62 862.663 1840.62 559.6 1867.11 559.6" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="49" data-to="56" d="M 1805.92 181.297 C 1821.92 181.297 1821.92 164 1837.92 164 L 1896.4 164 C 1912.4 164 1912.4 189.828 1928.4 189.828" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="51" data-to="56" d="M 1880.33 184.906 C 1904.36 184.906 1904.36 189.828 1928.4 189.828" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="53" data-to="56" d="M 1875.74 378.775 C 1902.07 378.775 1902.07 189.828 1928.4 189.828" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="55" data-to="56" d="M 1875.74 559.6 C 1902.07 559.6 1902.07 189.828 1928.4 189.828" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="56" data-to="57" d="M 1956.05 189.828 C 1980.41 189.828 1980.41 184.25 2004.77 184.25" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="56" data-to="58" d="M 1956.05 189.828 C 1981.4 189.828 1981.4 370.981 2006.74 370.981" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="58" data-to="59" d="M 2019.31 370.981 C 2046.78 370.981 2046.78 185.562 2074.26 185.562" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="56" data-to="60" d="M 1956.05 189.828 C 1982.71 189.828 1982.71 620.719 2009.37 620.719" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="60" data-to="61" d="M 2016.68 620.719 C 2047.44 620.719 2047.44 381.4 2078.2 381.4" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="56" data-to="62" d="M 1956.05 189.828 C 1977.62 189.828 1977.62 869.553 1999.2 869.553" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="62" data-to="63" d="M 2026.85 869.553 C 2052.53 869.553 2052.53 564.85 2078.2 564.85" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="57" data-to="64" d="M 2021.27 184.25 C 2037.27 184.25 2037.27 156 2053.27 156 L 2102.56 156 C 2118.56 156 2118.56 196.062 2134.56 196.062" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="59" data-to="64" d="M 2093.39 185.562 C 2113.97 185.562 2113.97 196.062 2134.56 196.062" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="61" data-to="64" d="M 2089.45 381.4 C 2112.01 381.4 2112.01 196.062 2134.56 196.062" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="63" data-to="64" d="M 2089.45 564.85 C 2112.01 564.85 2112.01 196.062 2134.56 196.062" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="64" data-to="65" d="M 2174.69 196.062 C 2190.77 196.062 2190.77 194.562 2206.86 194.562" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="65" data-to="66" d="M 2243.99 194.562 C 2266.73 194.562 2266.73 182.75 2289.47 182.75" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="65" data-to="67" d="M 2243.99 194.562 C 2267.72 194.562 2267.72 366.481 2291.44 366.481" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="67" data-to="68" d="M 2301.01 366.481 C 2329.98 366.481 2329.98 184.062 2358.96 184.062" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="65" data-to="69" d="M 2243.99 194.562 C 2269.03 194.562 2269.03 613.219 2294.07 613.219" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="69" data-to="70" d="M 2298.38 613.219 C 2330.64 613.219 2330.64 376.9 2362.9 376.9" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="65" data-to="71" d="M 2243.99 194.562 C 2260.82 194.562 2260.82 865.288 2277.66 865.288" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="71" data-to="72" d="M 2314.79 865.288 C 2338.84 865.288 2338.84 557.35 2362.9 557.35" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="66" data-to="73" d="M 2302.97 182.75 C 2318.97 182.75 2318.97 156 2334.97 156 L 2387.26 156 C 2403.26 156 2403.26 194.562 2419.26 194.562" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="68" data-to="73" d="M 2375.09 184.062 C 2397.18 184.062 2397.18 194.562 2419.26 194.562" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="70" data-to="73" d="M 2371.15 376.9 C 2395.21 376.9 2395.21 194.562 2419.26 194.562" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="72" data-to="73" d="M 2371.15 557.35 C 2395.21 557.35 2395.21 194.562 2419.26 194.562" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="73" data-to="74" d="M 2456.39 194.562 C 2477.82 194.562 2477.82 185.375 2499.25 185.375" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="73" data-to="75" d="M 2456.39 194.562 C 2479.79 194.562 2479.79 372.388 2503.19 372.388" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="75" data-to="76" d="M 2514.06 372.388 C 2542.06 372.388 2542.06 185.375 2570.05 185.375" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="73" data-to="77" d="M 2456.39 194.562 C 2481.26 194.562 2481.26 620.109 2506.14 620.109" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="77" data-to="78" d="M 2511.11 620.109 C 2543.2 620.109 2543.2 379.525 2575.3 379.525" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="73" data-to="79" d="M 2456.39 194.562 C 2473.23 194.562 2473.23 872.506 2490.06 872.506" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="79" data-to="80" d="M 2527.19 872.506 C 2551.24 872.506 2551.24 559.975 2575.3 559.975" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="74" data-to="81" d="M 2518 185.375 C 2534 185.375 2534 172 2550 172 L 2595.73 172 C 2611.73 172 2611.73 198.5 2627.73 198.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="76" data-to="81" d="M 2588.8 185.375 C 2608.26 185.375 2608.26 198.5 2627.73 198.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="78" data-to="81" d="M 2583.55 379.525 C 2605.64 379.525 2605.64 198.5 2627.73 198.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="80" data-to="81" d="M 2583.55 559.975 C 2605.64 559.975 2605.64 198.5 2627.73 198.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="81" data-to="82" d="M 2672.73 198.5 C 2692.13 198.5 2692.13 224.5 2711.53 224.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="82" data-to="83" d="M 2730.53 224.5 C 2756.43 224.5 2756.43 224.5 2782.33 224.5" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="83" data-to="84" d="M 2801.33 224.5 C 2827.23 224.5 2827.23 178.375 2853.13 178.375" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="84" data-to="85" d="M 2872.13 178.375 C 2898.03 178.375 2898.03 178.375 2923.93 178.375" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 96 x 96 x 3]</title>
+<g id="model-glyph-0" data-left="24" data-right="121" data-face-width="96" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="24" y="176" width="97" height="97" rx="14" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(72.5 363.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 96 x 96 x 3]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>stem/conv7 [1 x 48 x 48 x 16]</title>
+<g id="model-glyph-1" data-left="145" data-right="195.625" data-face-width="48" data-face-height="48" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="145" y="176" width="50.625" height="50.625" rx="12.6562" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(170.312 321.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">stem/conv7</text>
+<text x="0" y="12.35" font-size="13">[1 x 48 x 48 x 16]</text>
+</g></g>
+<g data-node="2" data-category="Pooling"><title>MaxPool [1 x 24 x 24 x 16]</title>
+<g id="model-glyph-2" data-left="229.713" data-right="256.337" data-face-width="24" data-face-height="24" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="229.713" y="176" width="26.625" height="26.625" rx="6.65625" fill="#5ABF9A"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(243.025 297.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 24 x 24 x 16]</text>
+</g></g>
+<g data-node="3" data-category="Normalization"><title>LRN [1 x 24 x 24 x 16]</title>
+<g id="model-glyph-3" data-left="300.512" data-right="327.137" data-face-width="24" data-face-height="24" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="300.512" y="176" width="26.625" height="26.625" rx="6.65625" fill="#CC79A7"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(313.825 297.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">LRN</text>
+<text x="0" y="12.35" font-size="13">[1 x 24 x 24 x 16]</text>
+</g></g>
+<g data-node="4" data-category="Convolution"><title>stem/reduce [1 x 24 x 24 x 16]</title>
+<g id="model-glyph-4" data-left="371.312" data-right="397.938" data-face-width="24" data-face-height="24" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="371.312" y="176" width="26.625" height="26.625" rx="6.65625" fill="#64B5CD"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(384.625 297.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">stem/reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 24 x 24 x 16]</text>
+</g></g>
+<g data-node="5" data-category="Convolution"><title>stem/conv3 [1 x 24 x 24 x 48]</title>
+<g id="model-glyph-5" data-left="439.488" data-right="471.363" data-face-width="24" data-face-height="24" data-depth="7.875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="439.488" y="176" width="31.875" height="31.875" rx="7.96875" fill="#64B5CD"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(455.425 302.425) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">stem/conv3</text>
+<text x="0" y="12.35" font-size="13">[1 x 24 x 24 x 48]</text>
+</g></g>
+<g data-node="6" data-category="Normalization"><title>LRN [1 x 24 x 24 x 48]</title>
+<g id="model-glyph-6" data-left="510.288" data-right="542.163" data-face-width="24" data-face-height="24" data-depth="7.875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="510.288" y="176" width="31.875" height="31.875" rx="7.96875" fill="#CC79A7"/>
+</g>
+<g id="model-label-6" data-node-label="6" transform="translate(526.225 302.425) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">LRN</text>
+<text x="0" y="12.35" font-size="13">[1 x 24 x 24 x 48]</text>
+</g></g>
+<g data-node="7" data-category="Pooling"><title>MaxPool [1 x 12 x 12 x 48]</title>
+<g id="model-glyph-7" data-left="587.087" data-right="606.962" data-face-width="12" data-face-height="12" data-depth="7.875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="587.087" y="176" width="19.875" height="19.875" rx="4.96875" fill="#5ABF9A"/>
+</g>
+<g id="model-label-7" data-node-label="7" transform="translate(597.025 290.425) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 48]</text>
+</g></g>
+<g data-node="8" data-category="Convolution"><title>inception3a/one [1 x 12 x 12 x 16]</title>
+<g id="model-glyph-8" data-left="660.512" data-right="675.137" data-face-width="12" data-face-height="12" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="660.512" y="176" width="14.625" height="14.625" rx="3.65625" fill="#64B5CD"/>
+</g>
+<g id="model-label-8" data-node-label="8" transform="translate(667.825 285.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3a/one</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 16]</text>
+</g></g>
+<g data-node="9" data-category="Convolution"><title>inception3a/three_reduce [1 x 12 x 12 x 24]</title>
+<g id="model-glyph-9" data-left="659.856" data-right="675.794" data-face-width="12" data-face-height="12" data-depth="3.9375" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="659.856" y="379.725" width="15.9375" height="15.9375" rx="3.98438" fill="#64B5CD"/>
+</g>
+<g id="model-label-9" data-node-label="9" transform="translate(667.825 515.562) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3a/three_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 24]</text>
+</g></g>
+<g data-node="10" data-category="Convolution"><title>inception3a/three [1 x 12 x 12 x 32]</title>
+<g id="model-glyph-10" data-left="730" data-right="747.25" data-face-width="12" data-face-height="12" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="730" y="176" width="17.25" height="17.25" rx="4.3125" fill="#64B5CD"/>
+</g>
+<g id="model-label-10" data-node-label="10" transform="translate(738.625 287.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3a/three</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 32]</text>
+</g></g>
+<g data-node="11" data-category="Convolution"><title>inception3a/five_reduce [1 x 12 x 12 x 4]</title>
+<g id="model-glyph-11" data-left="661.325" data-right="674.325" data-face-width="12" data-face-height="12" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="661.325" y="635.463" width="13" height="13" rx="3.25" fill="#64B5CD"/>
+</g>
+<g id="model-label-11" data-node-label="11" transform="translate(667.825 764.138) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3a/five_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 4]</text>
+</g></g>
+<g data-node="12" data-category="Convolution"><title>inception3a/five [1 x 12 x 12 x 8]</title>
+<g id="model-glyph-12" data-left="731.969" data-right="745.281" data-face-width="12" data-face-height="12" data-depth="1.3125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="731.969" y="382.35" width="13.3125" height="13.3125" rx="3.32812" fill="#64B5CD"/>
+</g>
+<g id="model-label-12" data-node-label="12" transform="translate(738.625 485.988) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3a/five</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 8]</text>
+</g></g>
+<g data-node="13" data-category="Pooling"><title>MaxPool [1 x 12 x 12 x 48]</title>
+<g id="model-glyph-13" data-left="657.887" data-right="677.762" data-face-width="12" data-face-height="12" data-depth="7.875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="657.887" y="879.813" width="19.875" height="19.875" rx="4.96875" fill="#5ABF9A"/>
+</g>
+<g id="model-label-13" data-node-label="13" transform="translate(667.825 994.238) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 48]</text>
+</g></g>
+<g data-node="14" data-category="Convolution"><title>inception3a/pool [1 x 12 x 12 x 8]</title>
+<g id="model-glyph-14" data-left="731.969" data-right="745.281" data-face-width="12" data-face-height="12" data-depth="1.3125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="731.969" y="576.312" width="13.3125" height="13.3125" rx="3.32812" fill="#64B5CD"/>
+</g>
+<g id="model-label-14" data-node-label="14" transform="translate(738.625 679.95) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3a/pool</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 8]</text>
+</g></g>
+<g data-node="15" data-category="Merge"><title>ConcatV2 [1 x 12 x 12 x 64]</title>
+<g id="model-glyph-15" data-left="798.175" data-right="820.675" data-face-width="12" data-face-height="12" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="798.175" y="176" width="22.5" height="22.5" rx="5.625" fill="#D55E00"/>
+</g>
+<g id="model-label-15" data-node-label="15" transform="translate(809.425 293.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 64]</text>
+</g></g>
+<g data-node="16" data-category="Convolution"><title>inception3b/one [1 x 12 x 12 x 32]</title>
+<g id="model-glyph-16" data-left="871.6" data-right="888.85" data-face-width="12" data-face-height="12" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="871.6" y="176" width="17.25" height="17.25" rx="4.3125" fill="#64B5CD"/>
+</g>
+<g id="model-label-16" data-node-label="16" transform="translate(880.225 287.8) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3b/one</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 32]</text>
+</g></g>
+<g data-node="17" data-category="Convolution"><title>inception3b/three_reduce [1 x 12 x 12 x 32]</title>
+<g id="model-glyph-17" data-left="871.6" data-right="888.85" data-face-width="12" data-face-height="12" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="871.6" y="382.35" width="17.25" height="17.25" rx="4.3125" fill="#64B5CD"/>
+</g>
+<g id="model-label-17" data-node-label="17" transform="translate(880.225 519.5) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3b/three_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 32]</text>
+</g></g>
+<g data-node="18" data-category="Convolution"><title>inception3b/three [1 x 12 x 12 x 48]</title>
+<g id="model-glyph-18" data-left="941.087" data-right="960.962" data-face-width="12" data-face-height="12" data-depth="7.875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="941.087" y="176" width="19.875" height="19.875" rx="4.96875" fill="#64B5CD"/>
+</g>
+<g id="model-label-18" data-node-label="18" transform="translate(951.025 290.425) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3b/three</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 48]</text>
+</g></g>
+<g data-node="19" data-category="Convolution"><title>inception3b/five_reduce [1 x 12 x 12 x 8]</title>
+<g id="model-glyph-19" data-left="873.569" data-right="886.881" data-face-width="12" data-face-height="12" data-depth="1.3125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="873.569" y="639.4" width="13.3125" height="13.3125" rx="3.32812" fill="#64B5CD"/>
+</g>
+<g id="model-label-19" data-node-label="19" transform="translate(880.225 768.388) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3b/five_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 8]</text>
+</g></g>
+<g data-node="20" data-category="Convolution"><title>inception3b/five [1 x 12 x 12 x 24]</title>
+<g id="model-glyph-20" data-left="943.056" data-right="958.994" data-face-width="12" data-face-height="12" data-depth="3.9375" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="943.056" y="384.975" width="15.9375" height="15.9375" rx="3.98438" fill="#64B5CD"/>
+</g>
+<g id="model-label-20" data-node-label="20" transform="translate(951.025 495.463) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3b/five</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 24]</text>
+</g></g>
+<g data-node="21" data-category="Pooling"><title>MaxPool [1 x 12 x 12 x 64]</title>
+<g id="model-glyph-21" data-left="868.975" data-right="891.475" data-face-width="12" data-face-height="12" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="868.975" y="884.063" width="22.5" height="22.5" rx="5.625" fill="#5ABF9A"/>
+</g>
+<g id="model-label-21" data-node-label="21" transform="translate(880.225 1001.11) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 64]</text>
+</g></g>
+<g data-node="22" data-category="Convolution"><title>inception3b/pool [1 x 12 x 12 x 16]</title>
+<g id="model-glyph-22" data-left="943.712" data-right="958.337" data-face-width="12" data-face-height="12" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="943.712" y="590.013" width="14.625" height="14.625" rx="3.65625" fill="#64B5CD"/>
+</g>
+<g id="model-label-22" data-node-label="22" transform="translate(951.025 699.188) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception3b/pool</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 16]</text>
+</g></g>
+<g data-node="23" data-category="Merge"><title>ConcatV2 [1 x 12 x 12 x 120]</title>
+<g id="model-glyph-23" data-left="1005.98" data-right="1037.67" data-face-width="12" data-face-height="12" data-depth="19.6875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1005.98" y="176" width="31.6875" height="31.6875" rx="7.92188" fill="#D55E00"/>
+</g>
+<g id="model-label-23" data-node-label="23" transform="translate(1021.82 306.462) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 12 x 12 x 120]</text>
+</g></g>
+<g data-node="24" data-category="Pooling"><title>MaxPool [1 x 6 x 6 x 120]</title>
+<g id="model-glyph-24" data-left="1079.78" data-right="1105.47" data-face-width="6" data-face-height="6" data-depth="19.6875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1079.78" y="176" width="25.6875" height="25.6875" rx="6.42188" fill="#5ABF9A"/>
+</g>
+<g id="model-label-24" data-node-label="24" transform="translate(1092.62 292.012) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 120]</text>
+</g></g>
+<g data-node="25" data-category="Convolution"><title>inception4a/one [1 x 6 x 6 x 48]</title>
+<g id="model-glyph-25" data-left="1156.49" data-right="1170.36" data-face-width="6" data-face-height="6" data-depth="7.875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1156.49" y="176" width="13.875" height="13.875" rx="3.46875" fill="#64B5CD"/>
+</g>
+<g id="model-label-25" data-node-label="25" transform="translate(1163.42 275.975) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4a/one</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 48]</text>
+</g></g>
+<g data-node="26" data-category="Convolution"><title>inception4a/three_reduce [1 x 6 x 6 x 24]</title>
+<g id="model-glyph-26" data-left="1158.46" data-right="1168.39" data-face-width="6" data-face-height="6" data-depth="3.9375" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1158.46" y="362.075" width="9.9375" height="9.9375" rx="2.48438" fill="#64B5CD"/>
+</g>
+<g id="model-label-26" data-node-label="26" transform="translate(1163.42 491.913) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4a/three_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 24]</text>
+</g></g>
+<g data-node="27" data-category="Convolution"><title>inception4a/three [1 x 6 x 6 x 52]</title>
+<g id="model-glyph-27" data-left="1226.96" data-right="1241.49" data-face-width="6" data-face-height="6" data-depth="8.53125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1226.96" y="176" width="14.5312" height="14.5312" rx="3.63281" fill="#64B5CD"/>
+</g>
+<g id="model-label-27" data-node-label="27" transform="translate(1234.22 280.856) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4a/three</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 52]</text>
+</g></g>
+<g data-node="28" data-category="Convolution"><title>inception4a/five_reduce [1 x 6 x 6 x 4]</title>
+<g id="model-glyph-28" data-left="1159.92" data-right="1166.92" data-face-width="6" data-face-height="6" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1159.92" y="611.812" width="7" height="7" rx="1.75" fill="#64B5CD"/>
+</g>
+<g id="model-label-28" data-node-label="28" transform="translate(1163.42 734.487) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4a/five_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 4]</text>
+</g></g>
+<g data-node="29" data-category="Convolution"><title>inception4a/five [1 x 6 x 6 x 12]</title>
+<g id="model-glyph-29" data-left="1230.24" data-right="1238.21" data-face-width="6" data-face-height="6" data-depth="1.96875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1230.24" y="371.181" width="7.96875" height="7.96875" rx="1.99219" fill="#64B5CD"/>
+</g>
+<g id="model-label-29" data-node-label="29" transform="translate(1234.22 465.25) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4a/five</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 12]</text>
+</g></g>
+<g data-node="30" data-category="Pooling"><title>MaxPool [1 x 6 x 6 x 120]</title>
+<g id="model-glyph-30" data-left="1150.58" data-right="1176.27" data-face-width="6" data-face-height="6" data-depth="19.6875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1150.58" y="850.163" width="25.6875" height="25.6875" rx="6.42188" fill="#5ABF9A"/>
+</g>
+<g id="model-label-30" data-node-label="30" transform="translate(1163.42 966.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 120]</text>
+</g></g>
+<g data-node="31" data-category="Convolution"><title>inception4a/pool [1 x 6 x 6 x 16]</title>
+<g id="model-glyph-31" data-left="1229.91" data-right="1238.54" data-face-width="6" data-face-height="6" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1229.91" y="551.35" width="8.625" height="8.625" rx="2.15625" fill="#64B5CD"/>
+</g>
+<g id="model-label-31" data-node-label="31" transform="translate(1234.22 646.075) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4a/pool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 16]</text>
+</g></g>
+<g data-node="32" data-category="Merge"><title>ConcatV2 [1 x 6 x 6 x 128]</title>
+<g id="model-glyph-32" data-left="1291.52" data-right="1318.52" data-face-width="6" data-face-height="6" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1291.52" y="176" width="27" height="27" rx="6.75" fill="#D55E00"/>
+</g>
+<g id="model-label-32" data-node-label="32" transform="translate(1305.02 293.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 128]</text>
+</g></g>
+<g data-node="33" data-category="Convolution"><title>inception4b/one [1 x 6 x 6 x 40]</title>
+<g id="model-glyph-33" data-left="1369.54" data-right="1382.11" data-face-width="6" data-face-height="6" data-depth="6.5625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1369.54" y="176" width="12.5625" height="12.5625" rx="3.14062" fill="#64B5CD"/>
+</g>
+<g id="model-label-33" data-node-label="33" transform="translate(1375.82 274.663) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4b/one</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 40]</text>
+</g></g>
+<g data-node="34" data-category="Convolution"><title>inception4b/three_reduce [1 x 6 x 6 x 28]</title>
+<g id="model-glyph-34" data-left="1370.53" data-right="1381.12" data-face-width="6" data-face-height="6" data-depth="4.59375" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1370.53" y="360.763" width="10.5938" height="10.5938" rx="2.64844" fill="#64B5CD"/>
+</g>
+<g id="model-label-34" data-node-label="34" transform="translate(1375.82 491.256) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4b/three_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 28]</text>
+</g></g>
+<g data-node="35" data-category="Convolution"><title>inception4b/three [1 x 6 x 6 x 56]</title>
+<g id="model-glyph-35" data-left="1439.03" data-right="1454.22" data-face-width="6" data-face-height="6" data-depth="9.1875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1439.03" y="176" width="15.1875" height="15.1875" rx="3.79688" fill="#64B5CD"/>
+</g>
+<g id="model-label-35" data-node-label="35" transform="translate(1446.62 281.512) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4b/three</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 56]</text>
+</g></g>
+<g data-node="36" data-category="Convolution"><title>inception4b/five_reduce [1 x 6 x 6 x 6]</title>
+<g id="model-glyph-36" data-left="1372.32" data-right="1379.32" data-face-width="6" data-face-height="6" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1372.32" y="611.156" width="7" height="7" rx="1.75" fill="#64B5CD"/>
+</g>
+<g id="model-label-36" data-node-label="36" transform="translate(1375.82 733.831) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4b/five_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 6]</text>
+</g></g>
+<g data-node="37" data-category="Convolution"><title>inception4b/five [1 x 6 x 6 x 16]</title>
+<g id="model-glyph-37" data-left="1442.31" data-right="1450.94" data-face-width="6" data-face-height="6" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1442.31" y="371.837" width="8.625" height="8.625" rx="2.15625" fill="#64B5CD"/>
+</g>
+<g id="model-label-37" data-node-label="37" transform="translate(1446.62 466.562) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4b/five</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 16]</text>
+</g></g>
+<g data-node="38" data-category="Pooling"><title>MaxPool [1 x 6 x 6 x 128]</title>
+<g id="model-glyph-38" data-left="1362.32" data-right="1389.32" data-face-width="6" data-face-height="6" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1362.32" y="849.506" width="27" height="27" rx="6.75" fill="#5ABF9A"/>
+</g>
+<g id="model-label-38" data-node-label="38" transform="translate(1375.82 966.831) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 128]</text>
+</g></g>
+<g data-node="39" data-category="Convolution"><title>inception4b/pool [1 x 6 x 6 x 16]</title>
+<g id="model-glyph-39" data-left="1442.31" data-right="1450.94" data-face-width="6" data-face-height="6" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1442.31" y="552.663" width="8.625" height="8.625" rx="2.15625" fill="#64B5CD"/>
+</g>
+<g id="model-label-39" data-node-label="39" transform="translate(1446.62 647.388) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4b/pool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 16]</text>
+</g></g>
+<g data-node="40" data-category="Merge"><title>ConcatV2 [1 x 6 x 6 x 128]</title>
+<g id="model-glyph-40" data-left="1503.92" data-right="1530.92" data-face-width="6" data-face-height="6" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1503.92" y="176" width="27" height="27" rx="6.75" fill="#D55E00"/>
+</g>
+<g id="model-label-40" data-node-label="40" transform="translate(1517.42 293.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 128]</text>
+</g></g>
+<g data-node="41" data-category="Convolution"><title>inception4c/one [1 x 6 x 6 x 32]</title>
+<g id="model-glyph-41" data-left="1582.6" data-right="1593.85" data-face-width="6" data-face-height="6" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1582.6" y="176" width="11.25" height="11.25" rx="2.8125" fill="#64B5CD"/>
+</g>
+<g id="model-label-41" data-node-label="41" transform="translate(1588.22 273.35) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4c/one</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 32]</text>
+</g></g>
+<g data-node="42" data-category="Convolution"><title>inception4c/three_reduce [1 x 6 x 6 x 32]</title>
+<g id="model-glyph-42" data-left="1582.6" data-right="1593.85" data-face-width="6" data-face-height="6" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1582.6" y="359.45" width="11.25" height="11.25" rx="2.8125" fill="#64B5CD"/>
+</g>
+<g id="model-label-42" data-node-label="42" transform="translate(1588.22 490.6) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4c/three_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 32]</text>
+</g></g>
+<g data-node="43" data-category="Convolution"><title>inception4c/three [1 x 6 x 6 x 64]</title>
+<g id="model-glyph-43" data-left="1650.77" data-right="1667.27" data-face-width="6" data-face-height="6" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1650.77" y="176" width="16.5" height="16.5" rx="4.125" fill="#64B5CD"/>
+</g>
+<g id="model-label-43" data-node-label="43" transform="translate(1659.02 282.825) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4c/three</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 64]</text>
+</g></g>
+<g data-node="44" data-category="Convolution"><title>inception4c/five_reduce [1 x 6 x 6 x 6]</title>
+<g id="model-glyph-44" data-left="1584.72" data-right="1591.72" data-face-width="6" data-face-height="6" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1584.72" y="610.5" width="7" height="7" rx="1.75" fill="#64B5CD"/>
+</g>
+<g id="model-label-44" data-node-label="44" transform="translate(1588.22 733.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4c/five_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 6]</text>
+</g></g>
+<g data-node="45" data-category="Convolution"><title>inception4c/five [1 x 6 x 6 x 16]</title>
+<g id="model-glyph-45" data-left="1654.71" data-right="1663.34" data-face-width="6" data-face-height="6" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1654.71" y="373.15" width="8.625" height="8.625" rx="2.15625" fill="#64B5CD"/>
+</g>
+<g id="model-label-45" data-node-label="45" transform="translate(1659.02 467.875) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4c/five</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 16]</text>
+</g></g>
+<g data-node="46" data-category="Pooling"><title>MaxPool [1 x 6 x 6 x 128]</title>
+<g id="model-glyph-46" data-left="1574.72" data-right="1601.72" data-face-width="6" data-face-height="6" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1574.72" y="848.85" width="27" height="27" rx="6.75" fill="#5ABF9A"/>
+</g>
+<g id="model-label-46" data-node-label="46" transform="translate(1588.22 966.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 128]</text>
+</g></g>
+<g data-node="47" data-category="Convolution"><title>inception4c/pool [1 x 6 x 6 x 16]</title>
+<g id="model-glyph-47" data-left="1654.71" data-right="1663.34" data-face-width="6" data-face-height="6" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1654.71" y="553.975" width="8.625" height="8.625" rx="2.15625" fill="#64B5CD"/>
+</g>
+<g id="model-label-47" data-node-label="47" transform="translate(1659.02 648.7) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4c/pool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 16]</text>
+</g></g>
+<g data-node="48" data-category="Merge"><title>ConcatV2 [1 x 6 x 6 x 128]</title>
+<g id="model-glyph-48" data-left="1716.32" data-right="1743.32" data-face-width="6" data-face-height="6" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1716.32" y="176" width="27" height="27" rx="6.75" fill="#D55E00"/>
+</g>
+<g id="model-label-48" data-node-label="48" transform="translate(1729.82 293.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 128]</text>
+</g></g>
+<g data-node="49" data-category="Convolution"><title>inception4d/one [1 x 6 x 6 x 28]</title>
+<g id="model-glyph-49" data-left="1795.33" data-right="1805.92" data-face-width="6" data-face-height="6" data-depth="4.59375" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1795.33" y="176" width="10.5938" height="10.5938" rx="2.64844" fill="#64B5CD"/>
+</g>
+<g id="model-label-49" data-node-label="49" transform="translate(1800.62 272.694) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4d/one</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 28]</text>
+</g></g>
+<g data-node="50" data-category="Convolution"><title>inception4d/three_reduce [1 x 6 x 6 x 36]</title>
+<g id="model-glyph-50" data-left="1794.67" data-right="1806.58" data-face-width="6" data-face-height="6" data-depth="5.90625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1794.67" y="358.794" width="11.9062" height="11.9062" rx="2.97656" fill="#64B5CD"/>
+</g>
+<g id="model-label-50" data-node-label="50" transform="translate(1800.62 490.6) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4d/three_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 36]</text>
+</g></g>
+<g data-node="51" data-category="Convolution"><title>inception4d/three [1 x 6 x 6 x 72]</title>
+<g id="model-glyph-51" data-left="1862.52" data-right="1880.33" data-face-width="6" data-face-height="6" data-depth="11.8125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1862.52" y="176" width="17.8125" height="17.8125" rx="4.45312" fill="#64B5CD"/>
+</g>
+<g id="model-label-51" data-node-label="51" transform="translate(1871.42 284.137) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4d/three</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 72]</text>
+</g></g>
+<g data-node="52" data-category="Convolution"><title>inception4d/five_reduce [1 x 6 x 6 x 8]</title>
+<g id="model-glyph-52" data-left="1796.97" data-right="1804.28" data-face-width="6" data-face-height="6" data-depth="1.3125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1796.97" y="610.5" width="7.3125" height="7.3125" rx="1.82812" fill="#64B5CD"/>
+</g>
+<g id="model-label-52" data-node-label="52" transform="translate(1800.62 733.487) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4d/five_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 8]</text>
+</g></g>
+<g data-node="53" data-category="Convolution"><title>inception4d/five [1 x 6 x 6 x 16]</title>
+<g id="model-glyph-53" data-left="1867.11" data-right="1875.74" data-face-width="6" data-face-height="6" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1867.11" y="374.462" width="8.625" height="8.625" rx="2.15625" fill="#64B5CD"/>
+</g>
+<g id="model-label-53" data-node-label="53" transform="translate(1871.42 469.188) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4d/five</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 16]</text>
+</g></g>
+<g data-node="54" data-category="Pooling"><title>MaxPool [1 x 6 x 6 x 128]</title>
+<g id="model-glyph-54" data-left="1787.12" data-right="1814.12" data-face-width="6" data-face-height="6" data-depth="21" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1787.12" y="849.163" width="27" height="27" rx="6.75" fill="#5ABF9A"/>
+</g>
+<g id="model-label-54" data-node-label="54" transform="translate(1800.62 966.488) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 128]</text>
+</g></g>
+<g data-node="55" data-category="Convolution"><title>inception4d/pool [1 x 6 x 6 x 16]</title>
+<g id="model-glyph-55" data-left="1867.11" data-right="1875.74" data-face-width="6" data-face-height="6" data-depth="2.625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1867.11" y="555.288" width="8.625" height="8.625" rx="2.15625" fill="#64B5CD"/>
+</g>
+<g id="model-label-55" data-node-label="55" transform="translate(1871.42 650.013) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4d/pool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 16]</text>
+</g></g>
+<g data-node="56" data-category="Merge"><title>ConcatV2 [1 x 6 x 6 x 132]</title>
+<g id="model-glyph-56" data-left="1928.4" data-right="1956.05" data-face-width="6" data-face-height="6" data-depth="21.6562" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1928.4" y="176" width="27.6562" height="27.6562" rx="6.91406" fill="#D55E00"/>
+</g>
+<g id="model-label-56" data-node-label="56" transform="translate(1942.22 293.981) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 132]</text>
+</g></g>
+<g data-node="57" data-category="Convolution"><title>inception4e/one [1 x 6 x 6 x 64]</title>
+<g id="model-glyph-57" data-left="2004.77" data-right="2021.27" data-face-width="6" data-face-height="6" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2004.77" y="176" width="16.5" height="16.5" rx="4.125" fill="#64B5CD"/>
+</g>
+<g id="model-label-57" data-node-label="57" transform="translate(2013.02 278.6) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4e/one</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 64]</text>
+</g></g>
+<g data-node="58" data-category="Convolution"><title>inception4e/three_reduce [1 x 6 x 6 x 40]</title>
+<g id="model-glyph-58" data-left="2006.74" data-right="2019.31" data-face-width="6" data-face-height="6" data-depth="6.5625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2006.74" y="364.7" width="12.5625" height="12.5625" rx="3.14062" fill="#64B5CD"/>
+</g>
+<g id="model-label-58" data-node-label="58" transform="translate(2013.02 497.163) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4e/three_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 40]</text>
+</g></g>
+<g data-node="59" data-category="Convolution"><title>inception4e/three [1 x 6 x 6 x 80]</title>
+<g id="model-glyph-59" data-left="2074.26" data-right="2093.39" data-face-width="6" data-face-height="6" data-depth="13.125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2074.26" y="176" width="19.125" height="19.125" rx="4.78125" fill="#64B5CD"/>
+</g>
+<g id="model-label-59" data-node-label="59" transform="translate(2083.82 285.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4e/three</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 80]</text>
+</g></g>
+<g data-node="60" data-category="Convolution"><title>inception4e/five_reduce [1 x 6 x 6 x 8]</title>
+<g id="model-glyph-60" data-left="2009.37" data-right="2016.68" data-face-width="6" data-face-height="6" data-depth="1.3125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2009.37" y="617.062" width="7.3125" height="7.3125" rx="1.82812" fill="#64B5CD"/>
+</g>
+<g id="model-label-60" data-node-label="60" transform="translate(2013.02 740.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4e/five_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 8]</text>
+</g></g>
+<g data-node="61" data-category="Convolution"><title>inception4e/five [1 x 6 x 6 x 32]</title>
+<g id="model-glyph-61" data-left="2078.2" data-right="2089.45" data-face-width="6" data-face-height="6" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2078.2" y="375.775" width="11.25" height="11.25" rx="2.8125" fill="#64B5CD"/>
+</g>
+<g id="model-label-61" data-node-label="61" transform="translate(2083.82 473.125) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4e/five</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 32]</text>
+</g></g>
+<g data-node="62" data-category="Pooling"><title>MaxPool [1 x 6 x 6 x 132]</title>
+<g id="model-glyph-62" data-left="1999.2" data-right="2026.85" data-face-width="6" data-face-height="6" data-depth="21.6562" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="1999.2" y="855.725" width="27.6562" height="27.6562" rx="6.91406" fill="#5ABF9A"/>
+</g>
+<g id="model-label-62" data-node-label="62" transform="translate(2013.02 973.706) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 132]</text>
+</g></g>
+<g data-node="63" data-category="Convolution"><title>inception4e/pool [1 x 6 x 6 x 32]</title>
+<g id="model-glyph-63" data-left="2078.2" data-right="2089.45" data-face-width="6" data-face-height="6" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2078.2" y="559.225" width="11.25" height="11.25" rx="2.8125" fill="#64B5CD"/>
+</g>
+<g id="model-label-63" data-node-label="63" transform="translate(2083.82 656.575) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception4e/pool</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 32]</text>
+</g></g>
+<g data-node="64" data-category="Merge"><title>ConcatV2 [1 x 6 x 6 x 208]</title>
+<g id="model-glyph-64" data-left="2134.56" data-right="2174.69" data-face-width="6" data-face-height="6" data-depth="34.125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2134.56" y="176" width="40.125" height="40.125" rx="10.0312" fill="#D55E00"/>
+</g>
+<g id="model-label-64" data-node-label="64" transform="translate(2154.62 306.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 6 x 6 x 208]</text>
+</g></g>
+<g data-node="65" data-category="Pooling"><title>MaxPool [1 x 3 x 3 x 208]</title>
+<g id="model-glyph-65" data-left="2206.86" data-right="2243.99" data-face-width="3" data-face-height="3" data-depth="34.125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2206.86" y="176" width="37.125" height="37.125" rx="9.28125" fill="#5ABF9A"/>
+</g>
+<g id="model-label-65" data-node-label="65" transform="translate(2225.42 303.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 208]</text>
+</g></g>
+<g data-node="66" data-category="Convolution"><title>inception5a/one [1 x 3 x 3 x 64]</title>
+<g id="model-glyph-66" data-left="2289.47" data-right="2302.97" data-face-width="3" data-face-height="3" data-depth="10.5" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2289.47" y="176" width="13.5" height="13.5" rx="3.375" fill="#64B5CD"/>
+</g>
+<g id="model-label-66" data-node-label="66" transform="translate(2296.22 275.6) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5a/one</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 64]</text>
+</g></g>
+<g data-node="67" data-category="Convolution"><title>inception5a/three_reduce [1 x 3 x 3 x 40]</title>
+<g id="model-glyph-67" data-left="2291.44" data-right="2301.01" data-face-width="3" data-face-height="3" data-depth="6.5625" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2291.44" y="361.7" width="9.5625" height="9.5625" rx="2.39062" fill="#64B5CD"/>
+</g>
+<g id="model-label-67" data-node-label="67" transform="translate(2296.22 491.163) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5a/three_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 40]</text>
+</g></g>
+<g data-node="68" data-category="Convolution"><title>inception5a/three [1 x 3 x 3 x 80]</title>
+<g id="model-glyph-68" data-left="2358.96" data-right="2375.09" data-face-width="3" data-face-height="3" data-depth="13.125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2358.96" y="176" width="16.125" height="16.125" rx="4.03125" fill="#64B5CD"/>
+</g>
+<g id="model-label-68" data-node-label="68" transform="translate(2367.03 282.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5a/three</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 80]</text>
+</g></g>
+<g data-node="69" data-category="Convolution"><title>inception5a/five_reduce [1 x 3 x 3 x 8]</title>
+<g id="model-glyph-69" data-left="2294.07" data-right="2298.38" data-face-width="3" data-face-height="3" data-depth="1.3125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2294.07" y="611.062" width="4.3125" height="4.3125" rx="1.07812" fill="#64B5CD"/>
+</g>
+<g id="model-label-69" data-node-label="69" transform="translate(2296.22 731.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5a/five_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 8]</text>
+</g></g>
+<g data-node="70" data-category="Convolution"><title>inception5a/five [1 x 3 x 3 x 32]</title>
+<g id="model-glyph-70" data-left="2362.9" data-right="2371.15" data-face-width="3" data-face-height="3" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2362.9" y="372.775" width="8.25" height="8.25" rx="2.0625" fill="#64B5CD"/>
+</g>
+<g id="model-label-70" data-node-label="70" transform="translate(2367.03 467.125) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5a/five</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 32]</text>
+</g></g>
+<g data-node="71" data-category="Pooling"><title>MaxPool [1 x 3 x 3 x 208]</title>
+<g id="model-glyph-71" data-left="2277.66" data-right="2314.79" data-face-width="3" data-face-height="3" data-depth="34.125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2277.66" y="846.725" width="37.125" height="37.125" rx="9.28125" fill="#5ABF9A"/>
+</g>
+<g id="model-label-71" data-node-label="71" transform="translate(2296.22 974.175) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 208]</text>
+</g></g>
+<g data-node="72" data-category="Convolution"><title>inception5a/pool [1 x 3 x 3 x 32]</title>
+<g id="model-glyph-72" data-left="2362.9" data-right="2371.15" data-face-width="3" data-face-height="3" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2362.9" y="553.225" width="8.25" height="8.25" rx="2.0625" fill="#64B5CD"/>
+</g>
+<g id="model-label-72" data-node-label="72" transform="translate(2367.03 647.575) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5a/pool</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 32]</text>
+</g></g>
+<g data-node="73" data-category="Merge"><title>ConcatV2 [1 x 3 x 3 x 208]</title>
+<g id="model-glyph-73" data-left="2419.26" data-right="2456.39" data-face-width="3" data-face-height="3" data-depth="34.125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2419.26" y="176" width="37.125" height="37.125" rx="9.28125" fill="#D55E00"/>
+</g>
+<g id="model-label-73" data-node-label="73" transform="translate(2437.83 303.45) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 208]</text>
+</g></g>
+<g data-node="74" data-category="Convolution"><title>inception5b/one [1 x 3 x 3 x 96]</title>
+<g id="model-glyph-74" data-left="2499.25" data-right="2518" data-face-width="3" data-face-height="3" data-depth="15.75" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2499.25" y="176" width="18.75" height="18.75" rx="4.6875" fill="#64B5CD"/>
+</g>
+<g id="model-label-74" data-node-label="74" transform="translate(2508.63 280.85) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5b/one</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 96]</text>
+</g></g>
+<g data-node="75" data-category="Convolution"><title>inception5b/three_reduce [1 x 3 x 3 x 48]</title>
+<g id="model-glyph-75" data-left="2503.19" data-right="2514.06" data-face-width="3" data-face-height="3" data-depth="7.875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2503.19" y="366.95" width="10.875" height="10.875" rx="2.71875" fill="#64B5CD"/>
+</g>
+<g id="model-label-75" data-node-label="75" transform="translate(2508.63 497.725) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5b/three_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 48]</text>
+</g></g>
+<g data-node="76" data-category="Convolution"><title>inception5b/three [1 x 3 x 3 x 96]</title>
+<g id="model-glyph-76" data-left="2570.05" data-right="2588.8" data-face-width="3" data-face-height="3" data-depth="15.75" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2570.05" y="176" width="18.75" height="18.75" rx="4.6875" fill="#64B5CD"/>
+</g>
+<g id="model-label-76" data-node-label="76" transform="translate(2579.43 285.075) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5b/three</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 96]</text>
+</g></g>
+<g data-node="77" data-category="Convolution"><title>inception5b/five_reduce [1 x 3 x 3 x 12]</title>
+<g id="model-glyph-77" data-left="2506.14" data-right="2511.11" data-face-width="3" data-face-height="3" data-depth="1.96875" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2506.14" y="617.625" width="4.96875" height="4.96875" rx="1.24219" fill="#64B5CD"/>
+</g>
+<g id="model-label-77" data-node-label="77" transform="translate(2508.63 738.269) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5b/five_reduce</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 12]</text>
+</g></g>
+<g data-node="78" data-category="Convolution"><title>inception5b/five [1 x 3 x 3 x 32]</title>
+<g id="model-glyph-78" data-left="2575.3" data-right="2583.55" data-face-width="3" data-face-height="3" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2575.3" y="375.4" width="8.25" height="8.25" rx="2.0625" fill="#64B5CD"/>
+</g>
+<g id="model-label-78" data-node-label="78" transform="translate(2579.43 469.75) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5b/five</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 32]</text>
+</g></g>
+<g data-node="79" data-category="Pooling"><title>MaxPool [1 x 3 x 3 x 208]</title>
+<g id="model-glyph-79" data-left="2490.06" data-right="2527.19" data-face-width="3" data-face-height="3" data-depth="34.125" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2490.06" y="853.944" width="37.125" height="37.125" rx="9.28125" fill="#5ABF9A"/>
+</g>
+<g id="model-label-79" data-node-label="79" transform="translate(2508.63 981.394) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">MaxPool</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 208]</text>
+</g></g>
+<g data-node="80" data-category="Convolution"><title>inception5b/pool [1 x 3 x 3 x 32]</title>
+<g id="model-glyph-80" data-left="2575.3" data-right="2583.55" data-face-width="3" data-face-height="3" data-depth="5.25" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2575.3" y="555.85" width="8.25" height="8.25" rx="2.0625" fill="#64B5CD"/>
+</g>
+<g id="model-label-80" data-node-label="80" transform="translate(2579.43 650.2) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">inception5b/pool</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 32]</text>
+</g></g>
+<g data-node="81" data-category="Merge"><title>ConcatV2 [1 x 3 x 3 x 256]</title>
+<g id="model-glyph-81" data-left="2627.73" data-right="2672.73" data-face-width="3" data-face-height="3" data-depth="42" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2627.73" y="176" width="45" height="45" rx="11.25" fill="#D55E00"/>
+</g>
+<g id="model-label-81" data-node-label="81" transform="translate(2650.23 311.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="12.35" font-size="13">[1 x 3 x 3 x 256]</text>
+</g></g>
+<g data-node="82" data-category="Operation"><title>Sum [1 x 256]</title>
+<g id="model-glyph-82" data-left="2711.53" data-right="2730.53" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2711.53" y="176" width="19" height="97" rx="4.75" fill="#94A3B8"/>
+</g>
+<g id="model-label-82" data-node-label="82" transform="translate(2721.03 329.525) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Sum</text>
+<text x="0" y="12.35" font-size="13">[1 x 256]</text>
+</g></g>
+<g data-node="83" data-category="Operation"><title>Div [1 x 256]</title>
+<g id="model-glyph-83" data-left="2782.33" data-right="2801.33" data-face-width="18" data-face-height="96" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2782.33" y="176" width="19" height="97" rx="4.75" fill="#94A3B8"/>
+</g>
+<g id="model-label-83" data-node-label="83" transform="translate(2791.83 329.525) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Div</text>
+<text x="0" y="12.35" font-size="13">[1 x 256]</text>
+</g></g>
+<g data-node="84" data-category="Dense"><title>output [1 x 10]</title>
+<g id="model-glyph-84" data-left="2853.13" data-right="2872.13" data-face-width="18" data-face-height="3.75" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<circle data-unit="0" cx="2862.63" cy="176.264" r="0.263889" fill="#748BCB"/>
+<circle data-unit="1" cx="2862.63" cy="176.792" r="0.263889" fill="#748BCB"/>
+<circle data-unit="2" cx="2862.63" cy="177.319" r="0.263889" fill="#748BCB"/>
+<circle data-unit="3" cx="2862.63" cy="177.847" r="0.263889" fill="#748BCB"/>
+<circle cx="2862.63" cy="178.23" r="0.0448611" stroke="none" fill="#172033"/>
+<circle cx="2862.63" cy="178.375" r="0.0448611" stroke="none" fill="#172033"/>
+<circle cx="2862.63" cy="178.52" r="0.0448611" stroke="none" fill="#172033"/>
+<circle data-unit="6" cx="2862.63" cy="178.903" r="0.263889" fill="#748BCB"/>
+<circle data-unit="7" cx="2862.63" cy="179.431" r="0.263889" fill="#748BCB"/>
+<circle data-unit="8" cx="2862.63" cy="179.958" r="0.263889" fill="#748BCB"/>
+<circle data-unit="9" cx="2862.63" cy="180.486" r="0.263889" fill="#748BCB"/>
+</g>
+<g id="model-label-84" data-node-label="84" transform="translate(2862.63 233.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+<g data-node="85" data-category="Output"><title>Output [1 x 10]</title>
+<g id="model-glyph-85" data-left="2923.93" data-right="2942.93" data-face-width="18" data-face-height="3.75" data-depth="1" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<rect x="2923.93" y="176" width="19" height="4.75" rx="1.1875" fill="#6C8194"/>
+</g>
+<g id="model-label-85" data-node-label="85" transform="translate(2933.43 233.05) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 10]</text>
+</g></g>
+</g></svg>

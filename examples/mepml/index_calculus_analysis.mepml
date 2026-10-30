@@ -48,7 +48,7 @@ cryptography.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::uint64_t pmod(std::uint64_t a, std::uint64_t e, std::uint64_t m) {
     unsigned __int128 r = 1; a %= m;
@@ -120,7 +120,7 @@ We hide exponents behind \(h=g^x\bmod p\) for several primes and recover \(x\), 
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::uint64_t pmod(std::uint64_t a, std::uint64_t e, std::uint64_t m) {
     unsigned __int128 r = 1; a %= m;

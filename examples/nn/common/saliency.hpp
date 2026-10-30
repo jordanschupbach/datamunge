@@ -65,48 +65,8 @@ inline void SaveArrays(const std::filesystem::path& file, const Arrays& arrays) 
 // ---- model (common/nn/saliency.h) ------------------------------------------------------
 
 /// The post-activation function of conv1/conv2/hidden: ReLU, or guided_backprop's GuidedRelu.
-using Gate = std::function<Tensor(const Tensor&)>;
-
-struct SaliencyCnnOutput {
-  Tensor conv1, pool1, conv2, pool2, hidden, logits;
-};
-
-/// conv5x5x8 ReLU (He uniform, SAME) / avg2 / conv3x3x16 ReLU / avg2 / FC32 ReLU / 10 raw logits.
-/// Only the convolutional part (conv1, pool1, conv2, pool2): any input size. TF's graphs run
-/// just these nodes when they fetch conv features of resized (20x20, 24x24) images.
-inline SaliencyCnnOutput SaliencyConvFeatures(nn::ParameterStore& p, const Tensor& image, const Gate& gate = {}) {
-  const Gate           relu = gate ? gate : Gate([](const Tensor& x) { return nn::relu(x); });
-  nn::ConvLayerOptions opt;
-  opt.init = nn::init::he_uniform();
-  SaliencyCnnOutput out;
-  out.conv1 = relu(nn::conv2d(p, "conv1", image, 8, 5, opt));
-  out.pool1 = nn::avg_pool2d(out.conv1, 2, 2, nn::Padding::Valid);
-  out.conv2 = relu(nn::conv2d(p, "conv2", out.pool1, 16, 3, opt));
-  out.pool2 = nn::avg_pool2d(out.conv2, 2, 2, nn::Padding::Valid);
-  return out;
-}
-
-inline SaliencyCnnOutput SaliencyCnn(nn::ParameterStore& p, const Tensor& image, const Gate& gate = {}) {
-  const Gate relu = gate ? gate : Gate([](const Tensor& x) { return nn::relu(x); });
-  auto       out = SaliencyConvFeatures(p, image, gate);
-  out.hidden = relu(nn::dense(p, "hidden", nn::reshape(out.pool2, {out.pool2.size(0), 784}), 32));
-  out.logits = nn::dense(p, "head", out.hidden, 10);
-  return out;
-}
-
-/// Selected raw logit per row: sum(logits * onehot(target)).
-inline Tensor SaliencyScore(const Tensor& logits, const Tensor& target, int classes = 10) {
-  return nn::sum(nn::mul(logits, nn::one_hot(target, classes, 1.0, 0.0, logits.dtype())), {1});
-}
-
-/// d sum_b score_b / d image, ordinary backprop through `forward` (logits of the image).
-inline Tensor VanillaInputGradient(const std::function<Tensor(const Tensor&)>& forward, const Tensor& image,
-                                   const Tensor& target, int classes = 10) {
-  Tensor x = image.detach().clone();
-  x.requires_grad_(true);
-  return nn::grad(nn::sum(SaliencyScore(forward(x), target, classes)), {x})[0].detach();
-}
-
+using Gate=nn::models::SaliencyGate;
+using nn::models::SaliencyCnnOutput;using nn::models::SaliencyConvFeatures;using nn::models::SaliencyCnn;using nn::models::SaliencyScore;using nn::models::VanillaInputGradient;
 // ---- classifier wrapper (common/ml/saliency.h) -----------------------------------------
 
 inline void CheckTargets(const Tensor& classes, std::int64_t n) {
@@ -120,8 +80,9 @@ class SaliencyModel {
   Gate                           gate;
   std::unique_ptr<nn::Optimizer> optimizer;
 
-  explicit SaliencyModel(bool training = true, std::uint64_t seed = 1103, Gate g = {})
-      : parameters(seed), gate(std::move(g)) {
+  explicit SaliencyModel(bool training = true, std::uint64_t seed = 1103) : SaliencyModel(training, seed, Gate{}) {}
+  /// With a custom post-activation gate (guided_backprop's GuidedRelu).
+  SaliencyModel(bool training, std::uint64_t seed, Gate g) : parameters(seed), gate(std::move(g)) {
     {
       nn::NoGradGuard guard;
       SaliencyCnn(parameters, nn::zeros({1, 28, 28, 1}));
@@ -189,35 +150,7 @@ inline void SaliencyMetrics(const std::string& name, const SaliencyData& d, cons
 }
 
 /// Fit-only 7x7 mean-intensity 1-nearest-neighbour reference (one-hot "logits").
-inline Tensor SaliencyNearest(const SaliencyData& fit, const SaliencyData& test) {
-  auto feature = [](const Tensor& x) {
-    const auto                       v = F(x);
-    const auto                       n = x.size(0);
-    std::vector<std::vector<double>> result(std::size_t(n), std::vector<double>(49));
-    for (std::int64_t b = 0; b < n; ++b)
-      for (int y = 0; y < 28; ++y)
-        for (int a = 0; a < 28; ++a) result[b][(y / 4) * 7 + a / 4] += v[b * 784 + y * 28 + a] / 16;
-    return result;
-  };
-  const auto       a = feature(fit.images), b = feature(test.images);
-  const auto       labels = I(fit.labels);
-  std::vector<float> out(b.size() * 10, 0.f);
-  for (std::size_t i = 0; i < b.size(); ++i) {
-    double best = INFINITY;
-    int    label = 0;
-    for (std::size_t j = 0; j < a.size(); ++j) {
-      double distance = 0;
-      for (int k = 0; k < 49; ++k) distance += std::pow(b[i][k] - a[j][k], 2);
-      if (distance < best) {
-        best  = distance;
-        label = labels[j];
-      }
-    }
-    out[i * 10 + label] = 1;
-  }
-  return FromF(out, {std::int64_t(b.size()), 10});
-}
-
+using nn::models::SaliencyNearest;
 // ---- gallery rendering -----------------------------------------------------------------
 
 inline std::uint8_t SaliencyByte(double x) { return std::uint8_t(std::lround(std::clamp(x, 0., 255.))); }

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1112" height="966" viewBox="0 0 1112 966" role="img" data-model-layout="left-to-right" data-model-style="Flow" data-model-detail="blocks" aria-labelledby="model-title model-description">
+<title id="model-title">Transpose convolution versus resize then convolve</title>
+<desc id="model-description">Left-to-right executed differentiable forward graph; node labels rotate 90 degrees counterclockwise. Shapes and dependencies are exact. Glyphs use shared shape scales and an explicit visibility floor. Feature-map sheets and neurons are sampled. Constants and detached paths are not expanded.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/></marker></defs>
+<g font-family="sans-serif" fill="#172033">
+<text x="24" y="24" font-size="20" font-weight="600">Transpose convolution versus resize then convolve</text>
+<text x="24" y="51" font-size="12">6 nodes | 0 unique learned values | Flow / blocks</text>
+<rect x="24" y="59" width="12" height="12" rx="2" fill="#E69F00"/><text x="42" y="69" font-size="11">Input</text>
+<rect x="154" y="59" width="12" height="12" rx="2" fill="#64B5CD"/><text x="172" y="69" font-size="11">Convolution</text>
+<rect x="284" y="59" width="12" height="12" rx="2" fill="#D55E00"/><text x="302" y="69" font-size="11">Merge</text>
+<rect x="414" y="59" width="12" height="12" rx="2" fill="#6C8194"/><text x="432" y="69" font-size="11">Output</text>
+<rect x="544" y="59" width="12" height="12" rx="2" fill="#94A3B8"/><text x="562" y="69" font-size="11">Operation</text>
+<text x="24" y="99" font-size="11">Shape scale: spatial linear; channels/vectors linear; floor 1 px. Sheets/neurons sampled; exact shapes in labels/tooltips.</text>
+<polygon class="flow-funnel" points="128,154 176,154 176,330 128,258" fill="#64B5CD" fill-opacity="0.08"/>
+<path data-from="0" data-to="1" d="M 128 206 C 152 206 152 242 176 242" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="128,154 176,563.55 176,739.55 128,258" fill="#94A3B8" fill-opacity="0.08"/>
+<path data-from="0" data-to="2" d="M 128 206 C 152 206 152 651.55 176 651.55" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="352,563.55 400,154 400,330 352,739.55" fill="#64B5CD" fill-opacity="0.08"/>
+<path data-from="2" data-to="3" d="M 352 651.55 C 376 651.55 376 242 400 242" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<path data-from="1" data-to="4" d="M 352 242 C 368 242 368 142 384 142 L 592 142 C 608 142 608 258 624 258" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="576,154 624,154 624,362 576,330" fill="#D55E00" fill-opacity="0.08"/>
+<path data-from="3" data-to="4" d="M 576 242 C 600 242 600 258 624 258" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<polygon class="flow-funnel" points="832,154 880,154 880,362 832,362" fill="#6C8194" fill-opacity="0.08"/>
+<path data-from="4" data-to="5" d="M 832 258 C 856 258 856 258 880 258" fill="none" stroke="#64748B" stroke-opacity="0.55" stroke-width="1.25" marker-end="url(#arrow)"/>
+<g data-node="0" data-category="Input"><title>Input [1 x 8 x 8 x 1]</title>
+<g id="model-glyph-0" data-left="24" data-right="128" data-face-width="72" data-face-height="72" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="24,186 56,154 128,154 96,186" fill="#E69F00"/>
+<polygon class="volume-side" points="96,186 128,154 128,226 96,258" fill="#E69F00"/>
+<rect class="volume-front" x="24" y="186" width="72" height="72" fill="#E69F00"/>
+</g>
+<g id="model-label-0" data-node-label="0" transform="translate(76 339.875) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Input</text>
+<text x="0" y="12.35" font-size="13">[1 x 8 x 8 x 1]</text>
+</g></g>
+<g data-node="1" data-category="Convolution"><title>Conv2DBackpropInput [1 x 16 x 16 x 1]</title>
+<g id="model-glyph-1" data-left="176" data-right="352" data-face-width="144" data-face-height="144" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="176,186 208,154 352,154 320,186" fill="#64B5CD"/>
+<polygon class="volume-side" points="320,186 352,154 352,298 320,330" fill="#64B5CD"/>
+<rect class="volume-front" x="176" y="186" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-1" data-node-label="1" transform="translate(264 428.775) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Conv2DBackpropInput</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 16 x 16 x 1]</text>
+</g></g>
+<g data-node="2" data-category="Operation"><title>ResizeNearestNeighbor [1 x 16 x 16 x 1]</title>
+<g id="model-glyph-2" data-left="176" data-right="352" data-face-width="144" data-face-height="144" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="176,595.55 208,563.55 352,563.55 320,595.55" fill="#94A3B8"/>
+<polygon class="volume-side" points="320,595.55 352,563.55 352,707.55 320,739.55" fill="#94A3B8"/>
+<rect class="volume-front" x="176" y="595.55" width="144" height="144" fill="#94A3B8"/>
+</g>
+<g id="model-label-2" data-node-label="2" transform="translate(264 846.775) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">ResizeNearestNeighbor</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 16 x 16 x 1]</text>
+</g></g>
+<g data-node="3" data-category="Convolution"><title>Conv2D [1 x 16 x 16 x 1]</title>
+<g id="model-glyph-3" data-left="400" data-right="576" data-face-width="144" data-face-height="144" data-depth="32" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="400,186 432,154 576,154 544,186" fill="#64B5CD"/>
+<polygon class="volume-side" points="544,186 576,154 576,298 544,330" fill="#64B5CD"/>
+<rect class="volume-front" x="400" y="186" width="144" height="144" fill="#64B5CD"/>
+</g>
+<g id="model-label-3" data-node-label="3" transform="translate(488 420.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">Conv2D</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 16 x 16 x 1]</text>
+</g></g>
+<g data-node="4" data-category="Merge"><title>ConcatV2 [1 x 16 x 16 x 2]</title>
+<g id="model-glyph-4" data-left="624" data-right="832" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="624,218 688,154 832,154 768,218" fill="#D55E00"/>
+<polygon class="volume-side" points="768,218 832,154 832,298 768,362" fill="#D55E00"/>
+<rect class="volume-front" x="624" y="218" width="144" height="144" fill="#D55E00"/>
+</g>
+<g id="model-label-4" data-node-label="4" transform="translate(728 452.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-13" font-size="13" font-weight="600">ConcatV2</text>
+<text x="0" y="3.9" font-size="13">Operation</text>
+<text x="0" y="20.8" font-size="13">[1 x 16 x 16 x 2]</text>
+</g></g>
+<g data-node="5" data-category="Output"><title>Output [1 x 16 x 16 x 2]</title>
+<g id="model-glyph-5" data-left="880" data-right="1088" data-face-width="144" data-face-height="144" data-depth="64" stroke="#475569" stroke-width="1.25" fill-opacity="0.8">
+<polygon class="volume-top" points="880,218 944,154 1088,154 1024,218" fill="#6C8194"/>
+<polygon class="volume-side" points="1024,218 1088,154 1088,298 1024,362" fill="#6C8194"/>
+<rect class="volume-front" x="880" y="218" width="144" height="144" fill="#6C8194"/>
+</g>
+<g id="model-label-5" data-node-label="5" transform="translate(984 452.325) rotate(-90)" text-anchor="middle" font-family="monospace">
+<text x="0" y="-4.55" font-size="13" font-weight="600">Output</text>
+<text x="0" y="12.35" font-size="13">[1 x 16 x 16 x 2]</text>
+</g></g>
+</g></svg>

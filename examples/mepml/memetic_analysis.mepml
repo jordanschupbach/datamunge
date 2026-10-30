@@ -40,7 +40,7 @@ dominate on hard combinatorial problems like graph partitioning, routing, and sc
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -111,7 +111,7 @@ over all partitions. The figure shows the best cut climbing across generations o
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

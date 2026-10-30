@@ -1,0 +1,132 @@
+//? Title: CIFAR Binary Loading: Bytes, Channels and Labels
+//? Subtitle: Check record boundaries before converting planar bytes to NHWC
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Image bytes and labels must stay aligned when records are concatenated, decoded and normalised.
+We decode generated CIFAR-10 and CIFAR-100 records with independently known channel values,
+inspect the planar-to-NHWC mapping and reject damaged records. No dataset download or classifier
+is needed to establish the binary format contract.
+)
+\toc
+
+> The method
+
+CIFAR-10 stores one label byte followed by 1024 red, 1024 green and 1024 blue bytes.
+CIFAR-100 adds a coarse label before the fine label, giving record widths 3073 and 3074.
+For record r, pixel p and channel c, decoding is the permutation
+
+$$
+x_{r,\lfloor p/32\rfloor,p\bmod32,c}=b_{rR+q+1024c+p},\qquad \widetilde x=x/255.
+$$
+\alttext(Each planar channel byte moves to its corresponding interleaved NHWC coordinate, then divides by 255.)
+
+Here q is the number of label bytes and R=3072+q. Validate exact multiples of R and label
+ranges before allocating. The raw parser returns Int32 pixels in 0..255 and Int32 labels;
+the fixed-name load_cifar10/100 convenience loaders instead return Float32 pixels in [0,1]
+and Int64 labels. File-list order determines row order. A permutation must be applied to
+both images and labels. Runtime and output memory are O(records times 3072).
+
+The concept diagram has a retained TikZ source in `diagrams/cifar_loader_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/cifar_loader_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/cifar_loader_concept.tikz > build/cifar_loader_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/cifar_loader_concept.svg build/cifar_loader_concept.dvi > build/cifar_loader_concept.render.log 2>&1
+printf 'Rendered build/cifar_loader_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/cifar_loader_concept.svg from local TikZ source.
+// \image(figures/cifar_loader_concept.svg)
+// result_end
+\caption(Check record boundaries before converting planar bytes to NHWC)
+\alttext(Label + R/G/B planes; 3073 or 3074 bytes Then Validate + permute; [N,32,32,3] Then Cast and divide; x/255; keep labels.)
+
+> Simple examples
+
+One generated record has fine label 7 and constant red, green and blue planes 0, 127 and 254. CIFAR-100 adds coarse label 3 without changing the image.
+
+```{cpp, results="markdown", file="figures/cifar_loader_channels.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace d=dm::nn::data; namespace n=dm::nn;
+  dm::dstruct::DataFrame table; std::vector<double> format,coarse,fine,red,green,blue;
+  for(auto kind:{d::Cifar::k10,d::Cifar::k100}) {
+    d::Bytes bytes; if(kind==d::Cifar::k100) bytes.push_back(3); bytes.push_back(7);
+    for(int c=0;c<3;++c) bytes.insert(bytes.end(),1024,static_cast<unsigned char>(127*c));
+    const auto decoded=d::ParseCifar({bytes},kind);
+    const auto x=n::cast(decoded.images,n::DType::Float64)/255.;
+    format.push_back(kind==d::Cifar::k10?10:100);coarse.push_back(decoded.coarse_labels.defined()?decoded.coarse_labels.item():-1);
+    fine.push_back(decoded.labels.item());red.push_back(x.at({0,0,0,0}));green.push_back(x.at({0,0,0,1}));blue.push_back(x.at({0,0,0,2}));
+  }
+  table.add_column("format",format);table.add_column("coarse_or_minus_one",coarse);table.add_column("fine",fine);
+  table.add_column("red",red);table.add_column("green",green);table.add_column("blue",blue);
+  auto p=dm::graphics::RPlot::create();p.bars({0,1,2},{red[0],green[0],blue[0]},"normalised channel",{37,99,235},.5)
+    .title("Planar bytes become RGB coordinates").x_label("channel: red=0, green=1, blue=2").y_label("value").y_limits(0,1.2);
+  std::filesystem::create_directories("build");p.size(820,420).save_svg("build/cifar_loader_channels.svg");
+  std::print("{}\n",table.to_md(6));
+}
+```
+// result_begin: markdown
+| format | coarse_or_minus_one | fine | red | green | blue |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 10 | -1 | 7 | 0 | 0.498039 | 0.996078 |
+| 100 | 3 | 7 | 0 | 0.498039 | 0.996078 |
+
+\image(figures/cifar_loader_channels.svg)
+// result_end
+\caption(The label-prefix length changes; RGB values and NHWC channel order do not.)
+\alttext(The label-prefix length changes; RGB values and NHWC channel order do not.)
+
+> Checking the theory
+
+A varying byte pattern tests all 6144 image coordinates, not just three means. We then damage one property at a time.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+ namespace d=dm::nn::data; namespace n=dm::nn;
+ dm::dstruct::DataFrame table;std::vector<double> formats,checked,rejected;
+ for(auto kind:{d::Cifar::k10,d::Cifar::k100}) {
+   std::vector<d::Bytes> files;
+   for(int r=0;r<2;++r) {
+     d::Bytes b;if(kind==d::Cifar::k100)b.push_back(4+r);b.push_back(3+r);
+     for(int c=0;c<3;++c)for(int p=0;p<1024;++p)b.push_back((17*r+61*c+p)%256);
+     files.push_back(b);
+   }
+   const auto batch=d::ParseCifar(files,kind);int count=0,bad=0;
+   for(int r=0;r<2;++r)for(int p=0;p<1024;++p)for(int c=0;c<3;++c) {
+     if(batch.images.at({r,p/32,p%32,c})!=(17*r+61*c+p)%256)return 1;++count;
+   }
+   for(int mode=0;mode<4;++mode) {
+     auto b=files[0];if(mode==0)b.clear();if(mode==1)b.pop_back();if(mode==2)b.push_back(0);if(mode==3)b[0]=255;
+     try{d::ParseCifar({b},kind);}catch(const std::invalid_argument&){++bad;}
+   }
+   const auto images=n::take_rows(batch.images,{1,0}),labels=n::take_rows(batch.labels,{1,0});
+   if(labels.at({0})!=4 || images.at({0,0,0,0})!=17 || bad!=4)return 1;
+   formats.push_back(kind==d::Cifar::k10?10:100);checked.push_back(count);rejected.push_back(bad);
+ }
+ table.add_column("format",formats);table.add_column("coordinates_checked",checked);table.add_column("malformed_rejected",rejected);
+ std::print("{}\n",table.to_md());
+}
+```
+// result_begin: markdown
+| format | coordinates_checked | malformed_rejected |
+| ---: | ---: | ---: |
+| 10 | 6144 | 4 |
+| 100 | 6144 | 4 |
+// result_end
+
+
+> Conclusion
+
+Every raw coordinate follows the documented permutation, and paired gathering preserves row labels.
+The fixtures establish decoding and error detection, not performance on the real CIFAR images.
+Use the authors' binary archive, rather than the Python pickle archive, with these loaders.
+
+> References
+
+- [Krizhevsky, Nair and Hinton: CIFAR dataset and binary layouts](https://www.cs.toronto.edu/~kriz/cifar.html).

@@ -1,0 +1,118 @@
+//? Title: NumPy Weights: Typed NPZ Parameters
+//? Subtitle: Names and array shapes form a model contract beyond the file format
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Exported numeric arrays become model weights only when their names and shapes match a known
+computation. We load native NumPy-format affine weights into a native store, compare stored and
+compressed NPZ, and preserve scalar, empty and large-integer tensors. The examples separate
+valid numeric storage from a valid serving model.
+)
+\toc
+
+> The method
+
+For input X with two columns, weights W of shape [2,1] and bias b of shape [1], the serving
+contract is Y=XW+b. NPZ member names identify W and b; array metadata establishes dtypes and
+shapes. ParameterStore contains floating learnable values, so generic state such as integer
+counters belongs in NamedTensors instead. With W=(.75,-1.5) and b=.25,
+
+$$
+f(2,-3)=2(3/4)-3(-3/2)+1/4=25/4.
+$$
+\alttext(The two-feature affine prediction is six point two five.)
+
+Stored and deflate-compressed archives represent the same arrays. Bool, Int32, Int64, Float32
+and Float64 are native interchange types; narrow integer arrays widen on read. A scalar shape
+is different from [1], and a zero-sized axis must retain its dimensions. Native writers produce
+C-order little-endian NPY 1.0; the decoder also accepts supported newer header versions. CRC and
+length checks reject damaged data. No Python pickle or graph code is executed.
+
+The concept diagram has a retained TikZ source in `diagrams/numpy_weights_concept.tikz`.
+Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+
+```{bash, results="output", file="figures/numpy_weights_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/numpy_weights_concept.tikz > build/numpy_weights_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/numpy_weights_concept.svg build/numpy_weights_concept.dvi > build/numpy_weights_concept.render.log 2>&1
+printf 'Rendered build/numpy_weights_concept.svg from local TikZ source.\n'
+```
+// result_begin:
+// Rendered build/numpy_weights_concept.svg from local TikZ source.
+// \image(figures/numpy_weights_concept.svg)
+// result_end
+\caption(Names and array shapes form a model contract beyond the file format)
+\alttext(NPZ named arrays; weights [2,1], bias [1] Then Validate dtype + shape; known affine function Then Native prediction; Y=XW+b.)
+
+> Simple examples
+
+```{cpp, results="output", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/nn/array_io.hpp>
+int main(){
+ namespace n=dm::nn;
+ std::filesystem::create_directories("build");
+ const n::NamedTensors arrays{{"weights",n::tensor({.75,-1.5},{2,1}).to(n::DType::Float32)},{"bias",n::tensor({.25}).to(n::DType::Float32)}};
+ n::save_npz("build/numpy_weights_stored.npz",arrays);
+ n::save_npz("build/numpy_weights_deflated.npz",arrays,true);
+ std::print("Native C++ wrote the same two named arrays in stored and deflated archives.\n");
+}
+```
+// result_begin:
+// Native C++ wrote the same two named arrays in stored and deflated archives.
+// result_end
+
+```{cpp, results="markdown", file="figures/numpy_weights_prediction.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;n::ParameterStore s;s.load("build/numpy_weights_stored.npz",false);
+ const auto stored=n::load_npz("build/numpy_weights_stored.npz"),compressed=n::load_npz("build/numpy_weights_deflated.npz");
+ for(size_t i=0;i<stored.size();++i)if(n::encode_npy(stored[i].second)!=n::encode_npy(compressed[i].second))return 1;
+ const auto x=n::tensor({{0,0},{1,0},{0,1},{2,-3}}),y=n::affine_inference(x,s.at("weights"),s.at("bias"));
+ auto p=dm::graphics::RPlot::create();p.bars({0,1,2,3},y.to_vector<double>(),"prediction",{37,99,235},.5)
+ .title("The weights are interpreted by a serving function").x_label("query row").y_label("prediction");
+ p.size(820,420).save_svg("build/numpy_weights_prediction.svg");
+ if(y.at({3,0})!=6.25)return 1;
+ std::print("Predictions: {}.\n\nStored and compressed members have identical native NPY encodings.\n",y.to_vector<double>());
+}
+```
+// result_begin: markdown
+Predictions: [0.25, 1, -1.25, 6.25].
+
+Stored and compressed members have identical native NPY encodings.
+\image(figures/numpy_weights_prediction.svg)
+// result_end
+\caption(Known weights produce .25, 1, -1.25 and 6.25 for the four query rows.)
+\alttext(Known weights produce .25, 1, -1.25 and 6.25 for the four query rows.)
+
+> Checking the theory
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;
+ const n::NamedTensors arrays{{"counter",n::from_vector(std::vector<int64_t>{(int64_t{1}<<40)+7},{}).reshape({})},{"empty",n::zeros({2,0,3})},{"bool",n::tensor({0,1},{2},n::DType::Bool)}};
+ const auto decoded=n::decode_npz(n::encode_npz(arrays));
+ for(size_t i=0;i<arrays.size();++i)if(n::encode_npy(arrays[i].second)!=n::encode_npy(decoded[i].second))return 1;
+ auto bytes=n::encode_npy(n::zeros({2,3}));bytes.pop_back();int bad=0;try{n::decode_npy(bytes);}catch(const std::exception&){++bad;}
+ if(bad!=1)return 1;
+ std::print("Int64 scalar: {}; empty shape: {}; Bool values: {}.\n\nTruncated NPY rejected.\n",decoded[0].second.item<int64_t>(),n::shape_str(decoded[1].second.shape()),decoded[2].second.to_vector<int>());
+}
+```
+// result_begin: markdown
+Int64 scalar: 1099511627783; empty shape: [2, 0, 3]; Bool values: [0, 1].
+
+Truncated NPY rejected.
+// result_end
+
+
+> Conclusion
+
+File encodings preserve dtype and shape, while the affine contract gives the arrays predictive
+meaning. Generic integer and boolean state remains outside ParameterStore. For explicit byte-order and layout checks, see the companion numpy_interop report. Independent NumPy-written arrays are retained in the native regression tests.
+
+> References
+
+- [NumPy NPY format specification](https://numpy.org/doc/stable/reference/generated/numpy.lib.format.html).

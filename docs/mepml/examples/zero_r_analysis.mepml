@@ -1,0 +1,323 @@
+//? Title: ZeroR: What a Majority-Class Baseline Measures
+//? Subtitle: Empirical risk, held-out evaluation and the hidden cost of ignoring a minority
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+ZeroR predicts the most frequent training label for every input. We derive
+its optimality among constant decisions under unweighted zero-one loss,
+including why randomising a feature-free decision cannot improve that
+objective. On `dm::datasets::titanic()`, the rule attains respectable
+ordinary accuracy while missing every survivor. Training/test separation,
+class-level recalls and balanced accuracy expose this difference. Repeated
+splits illustrate sampling variation without changing the decision rule.
+The result is a useful reference for a specified metric, rather than a
+universal test of whether a model has learned anything.
+)
+
+\toc
+
+> The data: Titanic survival is imbalanced
+
+The built-in Titanic frame has 891 passengers and 12 columns. `Survived`
+is an integer-coded nominal label: 0 for a passenger who died and 1 for
+a survivor. ZeroR uses only this response, so missing ages, cabins or other
+predictors do not remove training or evaluation rows. Numeric storage does
+not make the response a regression target in this report.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto passengers = dm::datasets::titanic();
+  std::print("{}\n", passengers.select({"PassengerId", "Survived", "Sex", "Age"}).head(8).to_md());
+  std::print("\n| passengers | columns |\n| ---: | ---: |\n| {} | {} |\n", passengers.nrows(), passengers.ncols());
+}
+```
+// result_begin: markdown
+| PassengerId | Survived | Sex | Age |
+| ---: | ---: | :--- | ---: |
+| 1 | 0 | male | 22 |
+| 2 | 1 | female | 38 |
+| 3 | 1 | female | 26 |
+| 4 | 1 | female | 35 |
+| 5 | 0 | male | 35 |
+| 6 | 0 | male | NA |
+| 7 | 0 | male | 54 |
+| 8 | 0 | male | 2 |
+
+
+| passengers | columns |
+| ---: | ---: |
+| 891 | 12 |
+// result_end
+\caption(The beginning of the dataset, including its response and some unused predictors.)
+
+```{cpp, results="markdown", file="figures/zero_r_distribution.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto counts = dm::algorithms::zero_r_counts(dm::datasets::titanic(), "Survived");
+  std::print("{}\n", counts.to_md(6));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::barplot(counts.get_column("count").values(), {"died (0)", "survived (1)"}, "passengers")
+      .title("The class imbalance a constant rule can exploit")
+      .y_label("passengers").size(850, 460).save_svg("build/zero_r_distribution.svg");
+}
+```
+// result_begin: markdown
+| class | count | proportion |
+| ---: | ---: | ---: |
+| 0 | 549 | 0.616162 |
+| 1 | 342 | 0.383838 |
+
+\image(figures/zero_r_distribution.svg)
+// result_end
+\caption(Response counts and proportions in all 891 records. These descriptive counts are not used to choose the held-out prediction.)
+\alttext(A bar chart of passengers who died and survived, with the died class larger.)
+
+> The method: empirical risk for a constant decision
+
+For labels \(y_1,\ldots,y_n\), let \(n_k\) count class \(k\). A
+constant prediction \(a\) makes \(n-n_a\) mistakes. Its empirical
+zero-one risk is therefore
+
+$$
+\widehat R(a)=\frac1n\sum_{i=1}^n\mathbf1\{y_i\ne a\}
+ =1-\frac{n_a}{n},\qquad
+\widehat a\in\arg\max_k n_k.
+$$
+\alttext(The empirical error of a constant decision a is one minus the proportion of class a. Minimising this error selects the class with the largest count.)
+
+The library chooses the smallest integer class in a tie. Its model stores
+the selected class, its count and the training size. `accuracy()` is the
+training fraction \(n_{\widehat a}/n\), not an estimate automatically
+valid for another dataset.
+
+Could a feature-free random decision improve training accuracy? Let
+\(q_k\) be its probability of predicting class \(k\), independently of
+the outcome. Since the \(q_k\) sum to one,
+
+$$
+\mathbb E[\widehat{\operatorname{accuracy}}]
+ =\sum_k q_k\frac{n_k}{n}
+ \le\max_k\frac{n_k}{n}.
+$$
+\alttext(The expected accuracy of a random constant classifier is a weighted average of class frequencies, so it cannot exceed their maximum.)
+
+A deterministic majority decision attains the bound. This proves optimality
+within the stated class of feature-free decisions and loss; it does not
+prove that features contain no information, or that majority prediction
+is optimal under another metric or cost.
+
+The current implementation uses a sorted map for counts, so training costs
+\(O(n\log K)\) time and \(O(K)\) counting storage for \(K\) classes.
+The DataFrame adapter also holds an \(O(n)\) temporary label vector.
+A prediction costs \(O(1)\) and does not inspect features. Empty training
+input produces an empty low-level model; evaluation helpers reject that
+model and empty evaluation data instead of reporting misleading scores.
+
+> Fit on training data, then freeze the decision
+
+The split is a reproducible, unstratified random 70/30 partition. This
+keeps the numeric class column as supplied by the dataset. The model is
+fitted on `train` only; the separate evaluation helpers do not recompute
+the majority from `test`. A change in test prevalence can therefore change
+accuracy even though the prediction stays fixed.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [train, test] = dm::stats::train_test_split(dm::datasets::titanic(), 0.3, 2024);
+  const auto model = dm::algorithms::zero_r_train(train, "Survived");
+  std::print("Training class counts:\n\n{}\n", dm::algorithms::zero_r_counts(train, "Survived").to_md(6));
+  std::print("\nTest class counts:\n\n{}\n", dm::algorithms::zero_r_counts(test, "Survived").to_md(6));
+  std::print("\nFixed-model test evaluation:\n\n{}\n", dm::algorithms::zero_r_evaluate(model, test, "Survived").to_md(6));
+}
+```
+// result_begin: markdown
+Training class counts:
+
+| class | count | proportion |
+| ---: | ---: | ---: |
+| 0 | 383 | 0.613782 |
+| 1 | 241 | 0.386218 |
+
+
+Test class counts:
+
+| class | count | proportion |
+| ---: | ---: | ---: |
+| 0 | 166 | 0.621723 |
+| 1 | 101 | 0.378277 |
+
+
+Fixed-model test evaluation:
+
+| prediction | training_rows | training_accuracy | evaluated_rows | observed_classes | accuracy | balanced_accuracy |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 624 | 0.613782 | 267 | 2 | 0.621723 | 0.5 |
+// result_end
+\caption(The training and held-out class frequencies, followed by evaluation of the fixed training-majority prediction. Training accuracy is kept separate.)
+
+The seed-2024 training set has 383 deaths and 241 survivors, so the frozen
+prediction is zero. On 267 test passengers it is correct for 166 deaths:
+ordinary accuracy is about 62.2%. The 101 test survivors are all missed.
+
+> Why balanced accuracy reveals the blind spot
+
+For evaluation class \(k\), recall is the fraction of its true members
+predicted as \(k\). A constant rule has recall one for its chosen class
+and zero for every other observed class. If that chosen class is present
+among \(K\) evaluation classes, balanced accuracy is
+
+$$
+\operatorname{BA}=\frac1K\sum_{k=1}^{K}\operatorname{recall}_k
+ =\frac1K.
+$$
+\alttext(Balanced accuracy is the mean of the class recalls. A constant prediction gets recall one for one present class and zero for the others, giving one divided by K.)
+
+It is zero when the predicted class is absent. The helper averages only
+over classes actually observed in evaluation; absent classes are not
+invented as zero-recall members of the denominator. For this two-class
+test set, the theoretical value is exactly 0.5, regardless of imbalance.
+
+```{cpp, results="markdown", file="figures/zero_r_recalls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto [train, test] = dm::stats::train_test_split(dm::datasets::titanic(), 0.3, 2024);
+  const auto model = dm::algorithms::zero_r_train(train, "Survived");
+  const auto confusion = dm::algorithms::zero_r_confusion(model, test, "Survived");
+  std::print("{}\n", confusion.to_md(6));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::barplot(confusion.get_column("recall").values(), {"died (0)", "survived (1)"}, "recall")
+      .abline_h(0.5, dm::RGB{220, 38, 38}, 1)
+      .title("Every survivor is missed by the fixed majority rule")
+      .y_label("held-out class recall").y_limits(0, 1.05)
+      .size(850, 460).save_svg("build/zero_r_recalls.svg");
+}
+```
+// result_begin: markdown
+| class | support | predicted | true_positive | recall | precision |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 166 | 267 | 166 | 1 | 0.621723 |
+| 1 | 101 | 0 | 0 | 0 | 0.000000 |
+
+\image(figures/zero_r_recalls.svg)
+// result_end
+\caption(Class-level confusion summaries and recalls. The horizontal line is balanced accuracy, the mean of these two recalls. Zero predicted survivors give precision zero under the helper's explicit zero-denominator convention.)
+\alttext(Recall is one for passengers who died and zero for survivors, while balanced accuracy is one half.)
+
+If detecting survivors were the priority, a classifier could improve
+survivor recall while losing some ordinary accuracy. That tradeoff would
+need evaluation under the chosen objective. The statement that any model
+below ZeroR accuracy has learned nothing would conceal it.
+
+> Sampling variation across splits
+
+For a fixed constant class, test accuracy equals its test-set prevalence.
+If a test subset of size \(m\) is drawn without replacement from \(N\)
+records with class proportion \(p\), the number of correct predictions
+is hypergeometric and
+
+$$
+\mathbb E[\widehat A]=p,\qquad
+\operatorname{Var}(\widehat A)=\frac{p(1-p)}m\frac{N-m}{N-1}.
+$$
+\alttext(For a fixed class decision, expected test accuracy is its population proportion. Its variance has the binomial variance divided by test size, multiplied by the finite-population correction.)
+
+This formula treats the decision as fixed. If a split changes the training
+majority, selecting a new class changes the calculation. The following
+runs record the chosen class explicitly. They reuse the same finite
+passenger dataset; their spread is a split-sensitivity diagnostic, not
+extra independent evidence about another population.
+
+```{cpp, results="markdown", file="figures/zero_r_splits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto passengers = dm::datasets::titanic();
+  std::vector<double> seeds, accuracy, balanced;
+  std::print("| seed | chosen class | training accuracy | test accuracy | balanced accuracy |\n"
+             "| ---: | ---: | ---: | ---: | ---: |\n");
+  for (int seed = 1; seed <= 20; ++seed) {
+    const auto [train, test] = dm::stats::train_test_split(passengers, 0.3, seed);
+    const auto model = dm::algorithms::zero_r_train(train, "Survived");
+    const auto score = dm::algorithms::zero_r_evaluate(model, test, "Survived");
+    seeds.push_back(seed); accuracy.push_back(score.double_at("accuracy", 0));
+    balanced.push_back(score.double_at("balanced_accuracy", 0));
+    std::print("| {} | {} | {:.6f} | {:.6f} | {:.6f} |\n", seed, model.prediction,
+               model.accuracy(), accuracy.back(), balanced.back());
+  }
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create()
+      .points(seeds, accuracy, "ordinary accuracy", dm::RGB{37, 99, 235}, 4)
+      .points(seeds, balanced, "balanced accuracy", dm::RGB{220, 38, 38}, 4)
+      .title("Changing class proportions changes ordinary accuracy")
+      .x_label("split seed").y_label("held-out score").y_limits(0.45, 0.75)
+      .size(900, 480).save_svg("build/zero_r_splits.svg");
+}
+```
+// result_begin: markdown
+| seed | chosen class | training accuracy | test accuracy | balanced accuracy |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 0 | 0.628205 | 0.588015 | 0.500000 |
+| 2 | 0 | 0.625000 | 0.595506 | 0.500000 |
+| 3 | 0 | 0.615385 | 0.617978 | 0.500000 |
+| 4 | 0 | 0.613782 | 0.621723 | 0.500000 |
+| 5 | 0 | 0.629808 | 0.584270 | 0.500000 |
+| 6 | 0 | 0.610577 | 0.629213 | 0.500000 |
+| 7 | 0 | 0.626603 | 0.591760 | 0.500000 |
+| 8 | 0 | 0.600962 | 0.651685 | 0.500000 |
+| 9 | 0 | 0.618590 | 0.610487 | 0.500000 |
+| 10 | 0 | 0.605769 | 0.640449 | 0.500000 |
+| 11 | 0 | 0.633013 | 0.576779 | 0.500000 |
+| 12 | 0 | 0.615385 | 0.617978 | 0.500000 |
+| 13 | 0 | 0.608974 | 0.632959 | 0.500000 |
+| 14 | 0 | 0.604167 | 0.644195 | 0.500000 |
+| 15 | 0 | 0.594551 | 0.666667 | 0.500000 |
+| 16 | 0 | 0.628205 | 0.588015 | 0.500000 |
+| 17 | 0 | 0.612179 | 0.625468 | 0.500000 |
+| 18 | 0 | 0.602564 | 0.647940 | 0.500000 |
+| 19 | 0 | 0.625000 | 0.595506 | 0.500000 |
+| 20 | 0 | 0.629808 | 0.584270 | 0.500000 |
+\image(figures/zero_r_splits.svg)
+// result_end
+\caption(Twenty independently seeded partitions of the same data, showing the selected class and both held-out metrics.)
+\alttext(Ordinary accuracy varies between splits while balanced accuracy stays at one half for the constant decision.)
+
+All twenty fits choose class zero. Their test accuracies range from about
+57.7% to 66.7%, while balanced accuracy remains exactly 0.5. This spread
+comes from which class members enter each partition, without any feature
+learning or change to the constant decision.
+
+> Different losses give different feature-free baselines
+
+With binary prevalence \(\pi=\Pr(Y=1)\), a false-positive cost
+\(c_{01}\) and false-negative cost \(c_{10}\), the risks of constant
+predictions zero and one are respectively \(\pi c_{10}\) and
+\((1-\pi)c_{01}\). Predicting one is better when
+
+$$
+\pi>\frac{c_{01}}{c_{01}+c_{10}}.
+$$
+\alttext(The optimal constant positive decision under asymmetric costs uses a prevalence threshold equal to false-positive cost divided by the sum of the two error costs.)
+
+This need not be the majority threshold of one half. Likewise, a constant
+probability scored by squared probability error is optimised by the class
+frequency, rather than a hard zero/one decision. ZeroR's hard classification
+rule should not stand in for every probability or decision-cost baseline.
+
+> Conclusion
+
+The class counts explain the accuracy a constant rule can obtain. A
+training-only fit gives an honest fixed decision for held-out evaluation;
+per-class recall shows the minority it never detects. Balanced accuracy
+checks the exact constant-rule value of one half, while repeated splits
+show the effect of changing prevalence. The baseline is useful when its
+loss, fitting data and evaluation metric are stated explicitly.
+
+> References
+
+- Weka. *ZeroR*, nominal-class majority rule (the numeric-target mean variant is not used here).
+  https://weka.sourceforge.io/doc.stable/weka/classifiers/rules/ZeroR.html
+- K. H. Brodersen, C. S. Ong, K. E. Stephan and J. M. Buhmann (2010).
+  *The Balanced Accuracy and Its Posterior Distribution*. ICPR, 3121–3124.
+  https://doi.org/10.1109/ICPR.2010.764

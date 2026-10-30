@@ -35,7 +35,7 @@ the decoder is *about to* create), resolved by \(w + w[0]\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 ** Pseudocode

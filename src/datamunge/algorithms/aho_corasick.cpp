@@ -1,87 +1,149 @@
+/// @file aho_corasick.cpp
+/// @brief The Aho-Corasick automaton: trie, breadth-first failure and dictionary links, scans.
+
 #include <datamunge/algorithms/aho_corasick.hpp>
 
+#include <algorithm>
 #include <queue>
-#include <unordered_map>
 
 namespace datamunge::algorithms {
 
-namespace {
-
-// A single automaton state. The goto function is `next` (the trie edges); `fail` is the failure
-// link; `dict` is the dictionary-suffix (output) link -- the nearest state reachable by failure
-// links that completes a pattern, or 0 (the root) when there is none. `output` holds the indices of
-// every pattern that ends *exactly* at this state (a vector, so duplicate patterns coexist).
-struct Node {
-    std::unordered_map<char, std::size_t> next;
-    std::size_t                           fail{0};
-    std::size_t                           dict{0};
-    std::vector<std::size_t>              output;
-};
-
-} // namespace
-
-std::vector<AhoCorasickMatch> aho_corasick_search(const std::string&              text,
-                                                  const std::vector<std::string>& patterns) {
-    // ---- Build the trie of patterns (the goto function). Node 0 is the root. --------------------
-    std::vector<Node> nodes(1); // root
-    for (std::size_t pi = 0; pi < patterns.size(); ++pi) {
-        const std::string& p = patterns[pi];
-        if (p.empty()) continue; // empty patterns match nowhere, by convention
+AhoCorasick::AhoCorasick(std::vector<std::string> patterns) : patterns_(std::move(patterns)), nodes_(1) {
+    // The trie (goto function). Node 0 is the root.
+    for (std::size_t pi = 0; pi < patterns_.size(); ++pi) {
+        const std::string& p = patterns_[pi];
+        if (p.empty()) continue;  // empty patterns match nowhere
         std::size_t cur = 0;
         for (const char ch : p) {
-            auto it = nodes[cur].next.find(ch);
-            if (it == nodes[cur].next.end()) {
-                const std::size_t created = nodes.size();
-                nodes.emplace_back();           // may reallocate; only indices are kept, so it is safe
-                nodes[cur].next[ch] = created;  // re-index `cur` after the potential reallocation
-                cur = created;
-            } else {
+            const auto it = nodes_[cur].next.find(ch);
+            if (it != nodes_[cur].next.end()) {
                 cur = it->second;
+                continue;
             }
+            const std::size_t created = nodes_.size();
+            Node node;
+            node.depth = nodes_[cur].depth + 1;
+            node.parent = cur;
+            node.label = ch;
+            nodes_.push_back(std::move(node));
+            nodes_[cur].next[ch] = created;
+            cur = created;
         }
-        nodes[cur].output.push_back(pi);
+        nodes_[cur].output.push_back(pi);
     }
-
-    // ---- Compute failure and dictionary-suffix links by BFS over the trie, in order of depth. ----
-    // For an edge u --ch--> v, the failure link of v is the goto target of ch from fail[u] (walking
-    // up failure links until such a target exists), which is the longest proper suffix of v's
-    // matched prefix that is a trie node. The dictionary link of v is fail[v] itself if fail[v]
-    // completes a pattern, otherwise fail[v]'s own dictionary link.
+    // Failure and dictionary links in breadth-first order: a state's links depend only on
+    // shallower states. For an edge u -ch-> v, fail[v] is the ch-child of the deepest state on
+    // u's failure chain that has one (or the root).
     std::queue<std::size_t> bfs;
     bfs.push(0);
     while (!bfs.empty()) {
         const std::size_t u = bfs.front();
         bfs.pop();
-        for (const auto& [ch, v] : nodes[u].next) {
-            std::size_t f = nodes[u].fail;
-            while (f != 0 && nodes[f].next.find(ch) == nodes[f].next.end()) f = nodes[f].fail;
-            std::size_t candidate = 0;
-            if (const auto it = nodes[f].next.find(ch); it != nodes[f].next.end() && it->second != v)
-                candidate = it->second;
-            nodes[v].fail = candidate;
-            nodes[v].dict = nodes[candidate].output.empty() ? nodes[candidate].dict : candidate;
+        bfs_order_.push_back(u);
+        for (const auto& [ch, v] : nodes_[u].next) {
+            std::size_t f = nodes_[u].fail;
+            while (f != 0 && !nodes_[f].next.contains(ch)) f = nodes_[f].fail;
+            std::size_t target = 0;
+            if (const auto it = nodes_[f].next.find(ch); it != nodes_[f].next.end() && it->second != v) target = it->second;
+            nodes_[v].fail = target;
+            nodes_[v].dict = nodes_[target].output.empty() ? nodes_[target].dict : target;
             bfs.push(v);
         }
     }
+}
 
-    // ---- Scan the text once, following goto / failure transitions and emitting every match. ------
+std::size_t AhoCorasick::step(std::size_t state, char ch, AhoCorasickScanStats* stats) const {
+    while (state != 0 && !nodes_[state].next.contains(ch)) {
+        state = nodes_[state].fail;
+        if (stats) ++stats->failure_steps;
+    }
+    if (const auto it = nodes_[state].next.find(ch); it != nodes_[state].next.end()) {
+        if (stats) ++stats->goto_steps;
+        return it->second;
+    }
+    return 0;
+}
+
+std::vector<AhoCorasickMatch> AhoCorasick::search(std::string_view text) const {
     std::vector<AhoCorasickMatch> matches;
-    std::size_t                   state = 0;
+    std::size_t state = 0;
     for (std::size_t i = 0; i < text.size(); ++i) {
-        const char ch = text[i];
-        while (state != 0 && nodes[state].next.find(ch) == nodes[state].next.end())
-            state = nodes[state].fail;
-        if (const auto it = nodes[state].next.find(ch); it != nodes[state].next.end())
-            state = it->second;
-        // else: no edge from the root either -> stay at the root.
-
-        // Report the pattern(s) ending at `state`, then walk the dictionary-suffix links so that
-        // every shorter pattern that is a suffix of the current match is reported too.
-        for (std::size_t u = state; u != 0; u = nodes[u].dict)
-            for (const std::size_t pi : nodes[u].output)
-                matches.push_back(AhoCorasickMatch{i - patterns[pi].size() + 1, pi});
+        state = step(state, text[i], nullptr);
+        for (std::size_t u = state; u != 0; u = nodes_[u].dict)
+            for (const std::size_t pi : nodes_[u].output) matches.push_back({i + 1 - patterns_[pi].size(), pi});
     }
     return matches;
+}
+
+std::vector<std::size_t> AhoCorasick::count(std::string_view text) const {
+    std::vector<std::size_t> counts(patterns_.size(), 0);
+    std::size_t state = 0;
+    for (const char ch : text) {
+        state = step(state, ch, nullptr);
+        for (std::size_t u = state; u != 0; u = nodes_[u].dict)
+            for (const std::size_t pi : nodes_[u].output) ++counts[pi];
+    }
+    return counts;
+}
+
+std::map<std::size_t, std::size_t> AhoCorasick::longest_at(std::string_view text) const {
+    std::map<std::size_t, std::size_t> best;
+    for (const auto& m : search(text)) {
+        const auto [it, inserted] = best.emplace(m.position, m.pattern_index);
+        if (!inserted && patterns_[m.pattern_index].size() > patterns_[it->second].size()) it->second = m.pattern_index;
+    }
+    return best;
+}
+
+AhoCorasickScanStats AhoCorasick::scan_stats(std::string_view text) const {
+    AhoCorasickScanStats stats;
+    std::size_t state = 0;
+    for (const char ch : text) {
+        ++stats.characters;
+        state = step(state, ch, &stats);
+        for (std::size_t u = state; u != 0; u = nodes_[u].dict) stats.matches += nodes_[u].output.size();
+    }
+    return stats;
+}
+
+std::string AhoCorasick::prefix(std::size_t state) const {
+    std::string out;
+    for (; state != 0; state = nodes_[state].parent) out += nodes_[state].label;
+    std::ranges::reverse(out);
+    return out;
+}
+
+dstruct::DataFrame AhoCorasick::automaton() const {
+    std::vector<double> state, depth, fail, dict;
+    std::vector<std::string> prefixes, fail_prefixes, outputs, edges;
+    for (const std::size_t s : bfs_order_) {
+        const Node& node = nodes_[s];
+        state.push_back(static_cast<double>(s));
+        prefixes.push_back(prefix(s));
+        depth.push_back(static_cast<double>(node.depth));
+        fail.push_back(static_cast<double>(node.fail));
+        fail_prefixes.push_back(prefix(node.fail));
+        dict.push_back(static_cast<double>(node.dict));
+        std::string out, edge;
+        for (const std::size_t pi : node.output) out += (out.empty() ? "" : ",") + std::to_string(pi);
+        for (const auto& [ch, v] : node.next) edge += ch;
+        outputs.push_back(out);
+        edges.push_back(edge);
+    }
+    dstruct::DataFrame frame;
+    frame.add_column("state", state);
+    frame.add_column("prefix", prefixes);
+    frame.add_column("depth", depth);
+    frame.add_column("fail", fail);
+    frame.add_column("fail_prefix", fail_prefixes);
+    frame.add_column("dict", dict);
+    frame.add_column("outputs", outputs);
+    frame.add_column("edges", edges);
+    return frame;
+}
+
+std::vector<AhoCorasickMatch> aho_corasick_search(const std::string& text, const std::vector<std::string>& patterns) {
+    return AhoCorasick(patterns).search(text);
 }
 
 } // namespace datamunge::algorithms

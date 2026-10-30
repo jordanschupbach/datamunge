@@ -1,0 +1,587 @@
+//? Title: Multidimensional Scaling: Recovering Geometry from Distances
+//? Subtitle: Double-centring, strain versus distance error, non-Euclidean spectra and the exact PCA connection, with datamunge's stats::MDS
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given only the pairwise dissimilarities between objects, we want coordinates for a map that
+shows their relationships. A two-dimensional map generally cannot preserve every distance,
+and some dissimilarities cannot be represented exactly in any Euclidean dimension.
+Classical multidimensional scaling recovers a centred inner-product matrix from squared
+distances and retains its leading positive eigenpairs. We derive this construction and its
+least-squares guarantee, which concerns inner products rather than distances. A four-point
+rectangle makes every centring step checkable; a four-cycle shows why retaining all positive
+inertia can still leave distance error. An analytic spectrum sweep checks where Euclidean
+representability fails. Finally, iris illustrates dimensionality choice, Euclidean versus
+Manhattan dissimilarities, and the exact equivalence with centred, unscaled PCA. On iris, two Euclidean axes retain 97.77% of positive inertia, while the relative
+distance error is 4.18%; the Manhattan map has a larger 5.79% distance error and a
+substantial negative spectrum. Labels are used only to colour the resulting map.
+)
+
+\toc
+
+> The method
+
+>> What is observed, and what must be reconstructed?
+
+Let \(D=(d_{ij})\) be a symmetric, non-negative dissimilarity matrix on \(n\) objects,
+with \(d_{ii}=0\). We seek points \(y_i\in\mathbb R^k\) whose Euclidean distances
+\(\hat d_{ij}=\lVert y_i-y_j\rVert\) resemble \(d_{ij}\).
+The input may come from measured distances without feature vectors, or from a metric on
+observed features. `MDS::from_distances(D,k)` accepts the former; the DataFrame constructor
+builds Euclidean or Manhattan distances from selected numeric columns. Neither path
+standardises features or makes a non-Euclidean matrix Euclidean by adding a constant.
+
+The problem has an unavoidable ambiguity: translation, rotation and reflection preserve all
+distances. Repeated eigenvalues also permit arbitrary choices of basis within their
+subspace. Comparing coordinates one by one is therefore usually the wrong verification.
+Compare pair distances or the centred Gram matrix instead.
+
+>> Distances determine a centred Gram matrix
+
+If rows of \(X\) are Euclidean coordinates, write \(G=XX^\top\) and
+\(q_i=\lVert x_i\rVert^2\). Squared distances satisfy
+
+$$
+D^{(2)}=q\mathbf1^\top+\mathbf1q^\top-2XX^\top,
+\qquad J=I-\frac1n\mathbf1\mathbf1^\top.
+$$
+\alttext(The matrix of squared distances is the vector of squared point norms repeated across rows, plus its transpose, minus twice X X transpose. J is the identity minus the all-ones matrix divided by n.)
+
+Since \(J\mathbf1=0\), multiplying on both sides by \(J\) eliminates the norm terms:
+
+$$
+B=-\tfrac12JD^{(2)}J=(JX)(JX)^\top,
+\qquad
+B_{ij}=-\tfrac12\left(d_{ij}^2-\overline{d^2}_{i\cdot}
+-\overline{d^2}_{\cdot j}+\overline{d^2}_{\cdot\cdot}\right).
+$$
+\alttext(B is minus one half J times the squared-distance matrix times J. For Euclidean input this equals the Gram matrix of centred coordinates. Each entry subtracts the squared-distance row and column means and adds their grand mean before multiplying by minus one half.)
+
+`gram_matrix()` exposes this intermediate matrix, not the truncated reconstruction. Its
+row sums vanish up to round-off. For Euclidean input it is positive semidefinite (PSD):
+\(z^\top Bz=\lVert X^\top Jz\rVert^2\geq0\).
+Conversely, if the double-centred \(B\) is PSD, factor it as \(YY^\top\); the corresponding
+squared distances reproduce the original hollow symmetric \(D^{(2)}\). To see the last
+claim, expand \(B_{ii}+B_{jj}-2B_{ij}\): all centring means cancel, leaving \(d_{ij}^2\).
+Thus non-negative Gram eigenvalues characterise exact Euclidean representability.
+
+>> The eigenvalue solution and what it optimises
+
+Let \(B=V\Lambda V^\top\), with eigenvalues in descending order. Classical MDS takes
+
+$$
+Y_k=V_{:,1:k}\operatorname{diag}\left(\sqrt{\max(\lambda_1,0)},\ldots,
+\sqrt{\max(\lambda_k,0)}\right).
+$$
+\alttext(The k-dimensional coordinates are the leading k eigenvectors, with each column multiplied by the square root of its eigenvalue clamped below at zero.)
+
+Its guarantee is about *strain*, the squared Frobenius error in the Gram matrix:
+
+$$
+\min_{Y\in\mathbb R^{n\times k}}\lVert B-YY^\top\rVert_F^2
+=\sum_{j>k,\lambda_j>0}\lambda_j^2+\sum_{\lambda_j<0}\lambda_j^2.
+$$
+\alttext(The least squared Gram error over k-dimensional coordinates equals the sum of squared omitted positive eigenvalues plus the sum of all squared negative eigenvalues.)
+
+A proof sketch separates eigenvalues from orientation. The eigenvalues of \(YY^\top\)
+are non-negative with at most \(k\) non-zero entries. Expanding the squared error gives
+\(\operatorname{tr}(B^2)+\operatorname{tr}(A^2)-2\operatorname{tr}(BA)\), with
+\(A=YY^\top\). Aligning their largest eigenvalues maximises the cross term; minimising
+each remaining \((\lambda_j-a_j)^2\), subject to \(a_j\geq0\), retains the largest
+positive \(\lambda_j\) and sets the others to zero. Negative eigenvalues therefore leave
+an irreducible strain floor in every Euclidean embedding.
+
+This is not a guarantee of minimum squared error in distances. Two useful distance
+summaries, reported by `dimension_diagnostics()`, are
+
+$$
+\mathrm{RMSE}_k=\sqrt{\frac{\sum_{i<j}(\hat d_{ij,k}-d_{ij})^2}{\binom n2}},
+\qquad
+E_k=\sqrt{\frac{\sum_{i<j}(\hat d_{ij,k}-d_{ij})^2}{\sum_{i<j}d_{ij}^2}}.
+$$
+\alttext(Distance RMSE is the square root of the mean squared pairwise distance residual. Relative distance error E is the square root of the sum of squared residuals divided by the sum of squared input dissimilarities.)
+
+The second column is named `relative_distance_error`: its denominator uses the input
+matrix, explicitly fixing the normalisation. We do not label it Kruskal Stress-1, whose
+normalisation can use fitted distances. Both summaries are computed over unordered pairs.
+`pair_distances()` exposes every residual; `plot_shepard()` plots \(\hat d\) against \(d\).
+On Euclidean input, truncated distances never exceed the originals and increase with added
+axes, so these distance errors decrease. That monotonicity need not hold for indefinite input.
+
+>> Two goodness-of-fit fractions
+
+The original `goodness_of_fit()` reports retained positive inertia. For comparison with
+R's `cmdscale`, the diagnostics expose both of its spectral fractions:
+
+$$
+G_+(k)=\frac{\sum_{j\leq k}\max(\lambda_j,0)}{\sum_j\max(\lambda_j,0)},
+\qquad
+G_{|\cdot|}(k)=\frac{\sum_{j\leq k}\max(\lambda_j,0)}{\sum_j|\lambda_j|}.
+$$
+\alttext(G positive divides the sum of retained positive eigenvalues by the total positive eigenvalue sum. G absolute divides the same numerator by the sum of absolute eigenvalues.)
+
+For PSD input these coincide. Otherwise \(G_+=1\) says only that every positive direction
+was retained: it ignores the negative spectrum. Neither fraction is a percentage of distances
+reproduced, nor a percentage of the strain removed. `relative_strain` instead reports the
+square root of the residual eigenvalue-square sum divided by \(\sum_j\lambda_j^2\).
+The all-zero matrix has no inertia; the implementation reports zero for its fit fractions
+and zero for its distortion measures. Tiny eigenvalues of either sign can be round-off;
+`spectrum()` flags a negative value only below \(-10^{-10}\max_j|\lambda_j|\).
+
+>> The exact relationship to PCA
+
+For Euclidean feature distances, centre \(X\) and write its singular value decomposition
+as \(X_c=U\Sigma V^\top\). Then
+
+$$
+B=X_cX_c^\top=U\Sigma^2U^\top,\qquad
+\frac{X_c^\top X_c}{n-1}=V\frac{\Sigma^2}{n-1}V^\top,
+\qquad Y_k=U_k\Sigma_k=X_cV_k.
+$$
+\alttext(The centred Gram matrix has eigenvalues equal to squared singular values. The sample covariance has those eigenvalues divided by n minus one. MDS coordinates and unscaled PCA scores both equal U k times Sigma k.)
+
+Thus the non-zero MDS eigenvalues are exactly \((n-1)\) times the PCA covariance
+eigenvalues; their positive-inertia proportions agree. The coordinates agree up to
+orthogonal choices of axes. This is an equality, not an approximate correlation claim.
+The comparison must use `PCAOptions{true,false}`: PCA centres and scales by default,
+whereas the feature MDS constructor uses the original units. Scaling changes the question.
+
+>> Computation and limits
+
+Feature distances cost \(O(n^2p)\) work, double-centring costs \(O(n^2)\), and dense
+storage costs \(O(n^2)\). The implementation uses cyclic Jacobi eigendecomposition,
+with \(O(n^3)\) work per sweep and a relative off-diagonal tolerance of \(10^{-12}\)
+(up to 100 sweeps). All \(n\) eigenvalues are retained for diagnostics. Prefix diagnostics
+reuse the fitted axes in \(O(n^2k)\) work, rather than refitting \(k\) models.
+This is classical scaling, not iterative stress minimisation or non-metric MDS.
+There is no out-of-sample transform in this API. Coordinates have the input distance units;
+plots use their canvas aspect ratio and should not be used as rulers.
+
+> Simple examples
+
+>> A 4 by 3 rectangle: recover the hidden coordinates
+
+Take \(A=(0,0),B=(4,0),C=(4,3),D=(0,3)\). The squared-distance matrix has rows
+\((0,16,25,9)\), \((16,0,9,25)\), \((25,9,0,16)\), \((9,25,16,0)\).
+Every row mean and the grand mean equal \(50/4=12.5\). Consequently
+\(B_{AA}=-\tfrac12(0-12.5)=6.25\) and
+\(B_{AB}=-\tfrac12(16-12.5)=-1.75\). The entire intermediate matrix is printed below.
+Its two non-zero eigenvalues are 16 and 9, so two dimensions recover all distances.
+The axes may change sign, but the reconstructed rectangle is the same geometry.
+
+```{cpp, results="markdown", file="figures/mds_rectangle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame data, gram;
+  data.add_column("x",std::vector<double>{0,4,4,0});
+  data.add_column("y",std::vector<double>{0,0,3,3});
+  const dm::stats::MDS model(data,{"x","y"});
+  const std::vector<std::string> labels{"A","B","C","D"};
+  gram.add_column("row",labels);
+  for (std::size_t j=0;j<4;++j) gram.add_column(labels[j],model.gram_matrix().col(j));
+  auto plot=model.plot_embedding();
+  const auto x=model.dimension(0), y=model.dimension(1);
+  for (std::size_t i=0;i<4;++i) {
+    const auto j=(i+1)%4;
+    plot.segments({x[i]},{y[i]},{x[j]},{y[j]},{90,90,90},1.2);
+    plot.text(x[i]+0.18,y[i]+0.18,labels[i]);
+  }
+  std::filesystem::create_directories("build");
+  plot.title("Recovered 4 by 3 rectangle").x_limits(-3,3).y_limits(-2.25,2.25)
+      .size(720,611).save_svg("build/mds_rectangle.svg");
+  std::print("{}\n",gram.to_md(2));
+}
+```
+// result_begin: markdown
+| row | A | B | C | D |
+| :--- | ---: | ---: | ---: | ---: |
+| A | 6.25 | -1.75 | -6.25 | 1.75 |
+| B | -1.75 | 6.25 | 1.75 | -6.25 |
+| C | -6.25 | 1.75 | 6.25 | -1.75 |
+| D | 1.75 | -6.25 | -1.75 | 6.25 |
+
+\image(figures/mds_rectangle.svg)
+// result_end
+\caption(The double-centred Gram matrix and recovered rectangle. B has rank two; the coordinate origin is the centroid, not vertex A.)
+\alttext(Four labelled points form a rectangle centred on the origin, with horizontal coordinates minus and plus two and vertical coordinates minus and plus one and a half. Grey edges join A to B to C to D and back to A.)
+
+>> Dropping an axis: the exact strain and the actual distance loss
+
+Keeping only the eigenvalue 16 discards 9, hence \(G_+(1)=16/25=0.64\) but the
+squared Gram error is \(9^2=81\), not 36% of a distance loss. Vertices sharing the
+same horizontal coordinate coincide in one dimension: the vertical sides shrink from 3
+to 0 and the diagonals from 5 to 4. Horizontal sides keep length 4. Therefore
+
+$$
+\mathrm{RMSE}_1=\sqrt{\frac{2(3-0)^2+2(5-4)^2}{6}}=\sqrt{10/3},
+\qquad E_1=\sqrt{\frac{20}{100}}=1/\sqrt5.
+$$
+\alttext(The one-dimensional distance RMSE is the square root of twenty divided by six, or ten thirds. The relative distance error is the square root of twenty divided by one hundred, or one over square root five.)
+
+```{cpp, results="markdown", file="figures/mds_rectangle_shepard.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::dstruct::DataFrame data;
+  data.add_column("x",std::vector<double>{0,4,4,0});
+  data.add_column("y",std::vector<double>{0,0,3,3});
+  const dm::stats::MDS model(data,{"x","y"});
+  auto layout=dm::graphics::RLayout::create(1,2);
+  layout.add(model.plot_shepard(1).title("One axis: vertical sides collapse"))
+        .add(model.plot_shepard(2).title("Two axes: exact distances"));
+  std::filesystem::create_directories("build");
+  layout.size(1100,480).fit_panels().save_svg("build/mds_rectangle_shepard.svg");
+  std::print("{}\n",model.dimension_diagnostics().to_md(6));
+}
+```
+// result_begin: markdown
+| dimensions | gof_positive | gof_absolute | strain_squared | relative_strain | distance_rmse | relative_distance_error |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.64 | 0.64 | 81 | 0.490261 | 1.825742 | 0.447214 |
+| 2 | 1.00 | 1.00 | 0 | 0.000000 | 0.000000 | 0.000000 |
+
+\image(figures/mds_rectangle_shepard.svg)
+// result_end
+\caption(Prefix diagnostics and Shepard plots for the rectangle. The grey equality line is exact distance preservation; overlapping pairs reduce the six observations to three visible points.)
+\alttext(Two distance-versus-distance panels. With one axis, the points are at input and fitted distances 3 and 0, 4 and 4, and 5 and 4. With two axes they lie on the equality line at 3, 4 and 5.)
+
+>> A four-cycle: perfect positive inertia is not perfect distance preservation
+
+Consider four objects around a cycle. Adjacent dissimilarities are 1; opposite ones are 2.
+These are the Manhattan distances between the corners of a unit square. They obey the
+triangle inequality but cannot be Euclidean distances with the same values. The full
+Gram spectrum is \((2,2,0,-1)\). Classical scaling drops the negative direction and
+returns a square of side \(\sqrt2\) and diagonal 2. It retains every positive eigenvalue,
+yet makes all four sides too long. The exact diagnostics are
+
+$$
+G_+(2)=1,\quad G_{|\cdot|}(2)=4/5,\quad
+\lVert B-Y_2Y_2^\top\rVert_F^2=1,\quad
+E_2=\frac{\sqrt2-1}{\sqrt3}.
+$$
+\alttext(The positive-inertia goodness of fit is one, the absolute-inertia fraction is four fifths, squared strain is one, and relative distance error is square root two minus one divided by square root three.)
+
+There is an explicit configuration with *smaller distance loss*. A square of side \(s\)
+has squared distance loss \(4(s-1)^2+2(\sqrt2s-2)^2\). Differentiating gives
+\(16s-8-8\sqrt2=0\), so \(s=(1+\sqrt2)/2\). Its loss is half that of the classical
+solution. This candidate suffices to disprove distance-loss optimality; we do not claim
+it is the optimum over all possible four-point configurations.
+
+```{cpp, results="markdown", file="figures/mds_cycle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::linalg::DenseMatrix<double> d(4,4,{0,1,2,1, 1,0,1,2, 2,1,0,1, 1,2,1,0});
+  const auto model=dm::stats::MDS::from_distances(d,3);
+  const auto pairs=model.pair_distances(2);
+  const double side=(1+std::sqrt(2.0))/2;
+  auto loss=dm::graphics::RPlot::create();
+  loss.points(pairs.numeric_column("dissimilarity").values(),pairs.numeric_column("embedded_distance").values(),
+              "Classical",{37,99,235},6)
+      .points({1,2},{side,std::sqrt(2.0)*side},"Lower distance loss",{220,38,38},6)
+      .segments({0},{0},{2.8},{2.8},{90,90,90},1)
+      .x_limits(0,2.8).y_limits(0,2.8).x_label("Input dissimilarity").y_label("Embedded distance")
+      .title("Two different least-squares targets");
+  auto layout=dm::graphics::RLayout::create(1,2);
+  layout.add(model.plot_embedding().title("Classical two-axis map").x_limits(-1.9,1.9).y_limits(-1.5,1.5))
+        .add(loss);
+  std::filesystem::create_directories("build");
+  layout.size(1100,500).fit_panels().save_svg("build/mds_cycle.svg");
+  std::print("{}\n\n{}\n",model.spectrum().select({"dimension","eigenvalue","significant_negative"}).to_md(3),
+             model.dimension_diagnostics().to_md(6));
+}
+```
+// result_begin: markdown
+| dimension | eigenvalue | significant_negative |
+| ---: | ---: | ---: |
+| 1 | 2 | 0 |
+| 2 | 2 | 0 |
+| 3 | 0 | 0 |
+| 4 | -1 | 1 |
+
+
+| dimensions | gof_positive | gof_absolute | strain_squared | relative_strain | distance_rmse | relative_distance_error |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.5 | 0.4 | 5 | 0.745356 | 0.806459 | 0.570252 |
+| 2 | 1.0 | 0.8 | 1 | 0.333333 | 0.338204 | 0.239146 |
+| 3 | 1.0 | 0.8 | 1 | 0.333333 | 0.338204 | 0.239146 |
+
+\image(figures/mds_cycle.svg)
+// result_end
+\caption(The negative eigenvalue leaves a strain floor even with three requested axes. In the right panel the red square configuration has half the blue configuration's summed squared distance loss.)
+\alttext(Left: four points form a square centred on the origin. Right: blue classical distances are about 1.414 for adjacent objects and 2 for opposite objects. Red alternative distances are about 1.207 and 1.707. A grey equality line makes the trade-off visible.)
+
+> Checking the theory
+
+>> Sweep through the boundary of Euclidean representability
+
+Generalise the preceding cycle so opposite dissimilarities are \(t\), while adjacent ones
+remain 1. For \(1\leq t\leq2\) these still form a metric. Its centred Gram eigenvectors
+can be chosen proportional to \((1,0,-1,0)\), \((0,1,0,-1)\),
+\((1,-1,1,-1)\) and \((1,1,1,1)\). Their eigenvalues are
+
+$$
+\{t^2/2,t^2/2,1-t^2/2,0\},\qquad
+\text{irreducible squared strain}=\left[\max(0,t^2/2-1)\right]^2.
+$$
+\alttext(The four eigenvalues are t squared over two twice, one minus t squared over two, and zero. The irreducible squared strain is the square of the positive part of t squared over two minus one.)
+
+The third direction is positive below \(\sqrt2\), zero at \(\sqrt2\), and negative
+above it. Three dimensions exactly represent the first regime; two suffice at the boundary;
+no dimension can exactly represent the final regime. We check the complete spectrum and
+strain floor at 101 values of \(t\). Errors compare sorted spectra, so eigenvector
+non-uniqueness cannot disguise a failure.
+
+```{cpp, results="markdown", file="figures/mds_cycle_sweep.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <algorithm>
+int main() {
+  std::vector<double> t,positive,changing,floor,error;
+  double max_eigen_error=0,max_floor_error=0;
+  for (int i=0;i<=100;++i) {
+    const double a=1+i/100.0;
+    const dm::linalg::DenseMatrix<double> d(4,4,{0,1,a,1, 1,0,1,a, a,1,0,1, 1,a,1,0});
+    const auto model=dm::stats::MDS::from_distances(d,3);
+    const auto path=model.dimension_diagnostics();
+    std::vector<double> exact{a*a/2,a*a/2,1-a*a/2,0};
+    std::sort(exact.begin(),exact.end(),std::greater<double>());
+    for (std::size_t j=0;j<4;++j) max_eigen_error=std::max(max_eigen_error,std::abs(exact[j]-model.eigenvalues()[j]));
+    const double predicted=std::pow(std::max(0.0,a*a/2-1),2);
+    max_floor_error=std::max(max_floor_error,std::abs(predicted-path.double_at("strain_squared",2)));
+    t.push_back(a); positive.push_back(a*a/2); changing.push_back(1-a*a/2);
+    floor.push_back(path.double_at("relative_strain",2)); error.push_back(path.double_at("relative_distance_error",2));
+  }
+  auto eigen=dm::graphics::RPlot::create(), residual=dm::graphics::RPlot::create();
+  eigen.lines(t,positive,"Repeated eigenvalue",{37,99,235}).lines(t,changing,"Changing eigenvalue",{220,38,38})
+       .abline_h(0,{90,90,90}).abline_v(std::sqrt(2.0),{90,90,90})
+       .title("An eigenvalue crosses zero").x_label("Opposite dissimilarity t").y_label("Gram eigenvalue").y_limits(-1.2,3.2);
+  residual.lines(t,floor,"Gram error",{37,99,235}).lines(t,error,"Distance error",{220,38,38})
+       .abline_v(std::sqrt(2.0),{90,90,90}).title("A negative mode leaves a residual")
+       .x_label("Opposite dissimilarity t").y_label("Relative residual").y_limits(-0.02,0.55);
+  auto layout=dm::graphics::RLayout::create(1,2); layout.add(eigen).add(residual);
+  std::filesystem::create_directories("build");
+  layout.size(1100,500).fit_panels().save_svg("build/mds_cycle_sweep.svg");
+  dm::dstruct::DataFrame checks;
+  checks.add_column("maximum eigenvalue error",std::vector<double>{max_eigen_error});
+  checks.add_column("maximum strain-floor error",std::vector<double>{max_floor_error});
+  std::print("{}\n",checks.to_md(12));
+}
+```
+// result_begin: markdown
+| maximum eigenvalue error | maximum strain-floor error |
+| ---: | ---: |
+| 0 | 0 |
+
+\image(figures/mds_cycle_sweep.svg)
+// result_end
+\caption(The closed-form eigenvalues and the observed three-axis residuals across the Euclidean/non-Euclidean boundary. The error table checks every fitted spectrum and strain floor.)
+\alttext(Left: a blue eigenvalue curve rises from 0.5 to 2; a red curve falls from 0.5 to minus 1, crossing zero at t equal to square root two. Right: both residuals are effectively zero before this crossing and increase afterwards. Relative strain reaches one third at t equal to two.)
+
+> A dataset example: iris
+
+>> Four measurements, with species withheld from the fit
+
+`dm::datasets::iris()` contains 150 flowers and four measurements in centimetres, plus
+species. No selected feature is missing here. More generally, the constructor drops rows
+with a null selected feature; `kept_row_indices()` must then be used to align external labels.
+The species means below describe the input but are never supplied to MDS as predictors.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto iris=dm::datasets::iris();
+  std::print("{} flowers, {} columns.\n\n",iris.nrows(),iris.ncols());
+  std::print("{}\n",iris | dm::group_by("Species")
+      | dm::summarise(dm::agg::n("n"),dm::agg::mean("Sepal.Length","Sepal length"),
+                      dm::agg::mean("Sepal.Width","Sepal width"),
+                      dm::agg::mean("Petal.Length","Petal length"),dm::agg::mean("Petal.Width","Petal width"))
+      | dm::to_md(3));
+}
+```
+// result_begin: markdown
+150 flowers, 5 columns.
+
+| Species | n | Sepal length | Sepal width | Petal length | Petal width |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| setosa | 50 | 5.006 | 3.428 | 1.462 | 0.246 |
+| versicolor | 50 | 5.936 | 2.770 | 4.260 | 1.326 |
+| virginica | 50 | 6.588 | 2.974 | 5.552 | 2.026 |
+// result_end
+\caption(Class sizes and mean measurements in centimetres. All four numeric columns are used; species is used only for description and plot colours.)
+
+>> Euclidean and Manhattan maps answer different questions
+
+Both maps below use raw centimetres. Euclidean distance is the straight-line length in
+four-dimensional measurement space; Manhattan distance adds absolute differences in each
+measurement. Squaring the latter does not generally produce a PSD centred Gram matrix.
+Consequently its positive-inertia fraction alone cannot describe map quality.
+
+```{cpp, results="markdown", file="figures/mds_iris_maps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto iris=dm::datasets::iris();
+  const std::vector<std::string> features{"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};
+  auto layout=dm::graphics::RLayout::create(1,2);
+  std::vector<std::string> names; std::vector<double> gof,absolute,relative_error,negative;
+  for (auto metric : {dm::stats::DistanceMetric::Euclidean,dm::stats::DistanceMetric::Manhattan}) {
+    const dm::stats::MDS model(iris,features,{2,metric});
+    std::vector<std::string> labels;
+    for (auto row : model.kept_row_indices()) labels.push_back(iris.string_at("Species",row));
+    const auto diag=model.dimension_diagnostics();
+    names.push_back(metric==dm::stats::DistanceMetric::Euclidean ? "Euclidean" : "Manhattan");
+    gof.push_back(diag.double_at("gof_positive",1)); absolute.push_back(diag.double_at("gof_absolute",1));
+    relative_error.push_back(diag.double_at("relative_distance_error",1));
+    const auto flags=model.spectrum().numeric_column("significant_negative").values();
+    negative.push_back(std::accumulate(flags.begin(),flags.end(),0.0));
+    layout.add(model.plot_embedding(labels).title(names.back()).y_limits(-3,4));
+  }
+  std::filesystem::create_directories("build");
+  layout.size(1100,510).fit_panels().save_svg("build/mds_iris_maps.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("metric",names); table.add_column("positive inertia",gof); table.add_column("absolute inertia",absolute);
+  table.add_column("relative distance error",relative_error); table.add_column("negative modes",negative);
+  std::print("{}\n",table.to_md(6));
+}
+```
+// result_begin: markdown
+| metric | positive inertia | absolute inertia | relative distance error | negative modes |
+| :--- | ---: | ---: | ---: | ---: |
+| Euclidean | 0.977685 | 0.977685 | 0.041796 | 0 |
+| Manhattan | 0.894589 | 0.812986 | 0.057863 | 92 |
+
+\image(figures/mds_iris_maps.svg)
+// result_end
+\caption(Two-dimensional iris maps, fitted without species. Negative-mode counts use the relative spectral tolerance; the small negative eigenvalues of a Euclidean Gram matrix are numerical round-off.)
+\alttext(Two panels show the same flowers coloured by species after Euclidean and Manhattan scaling. Setosa forms a separate cluster at one end of the first axis, while versicolor and virginica overlap. The different metrics change the spread and placement of points.)
+
+For these two-axis fits the Euclidean relative distance error is 4.18%, while the Manhattan
+value is 5.79%. The Manhattan positive-inertia fraction is 89.46%, but its absolute-inertia
+fraction is only 81.30%; 92 eigenvalues are negative beyond the stated tolerance. That
+difference explains why its positive-inertia fraction needs a separate residual check.
+
+A map can reveal separation without being a classifier. No supervised accuracy is estimated
+here, and these in-sample distance diagnostics do not measure prediction on new flowers.
+The colours interpret an unsupervised result; they did not guide its construction.
+
+>> How much is lost by keeping two dimensions?
+
+Four dimensions suffice for the Euclidean distances of four-feature rows. Fitting four
+axes once lets the library inspect every prefix. The positive-inertia proportion and
+normalised strain differ because one weights eigenvalues and the other their squares.
+Actual distance errors add a third, directly interpretable check.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const dm::stats::MDS model(dm::datasets::iris(),
+      {"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"},{4});
+  std::print("{}\n",model.dimension_diagnostics().to_md(7));
+}
+```
+// result_begin: markdown
+| dimensions | gof_positive | gof_absolute | strain_squared | relative_strain | distance_rmse | relative_distance_error |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.9246187 | 0.9246187 | 1455.8068078 | 0.0604520 | 0.3307987 | 0.1093831 |
+| 2 | 0.9776852 | 0.9776852 | 148.4100785 | 0.0193015 | 0.1264017 | 0.0417964 |
+| 3 | 0.9947878 | 0.9947878 | 12.6126469 | 0.0056268 | 0.0371897 | 0.0122973 |
+| 4 | 1.0000000 | 1.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 |
+// result_end
+\caption(Euclidean iris diagnostics for one through four axes, from one fit. Four axes recover the original distances to numerical precision.)
+
+The Shepard plots make the difference between metrics visible for all \(\binom{150}{2}=11175\)
+unordered pairs. Euclidean two-axis distances lie below the equality line because an
+orthogonal projection cannot increase distance. With Manhattan input, the negative
+spectrum changes that geometry and some embedded distances can exceed the input values.
+
+```{cpp, file="figures/mds_iris_shepard.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto iris=dm::datasets::iris();
+  const std::vector<std::string> features{"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};
+  const dm::stats::MDS euclidean(iris,features), manhattan(iris,features,{2,dm::stats::DistanceMetric::Manhattan});
+  auto layout=dm::graphics::RLayout::create(1,2);
+  layout.add(euclidean.plot_shepard().title("Euclidean, two axes"))
+        .add(manhattan.plot_shepard().title("Manhattan, two axes"));
+  std::filesystem::create_directories("build");
+  layout.size(1100,500).fit_panels().save_svg("build/mds_iris_shepard.svg");
+}
+```
+// result_begin:
+// \image(figures/mds_iris_shepard.svg)
+// result_end
+\caption(All 11175 pair distances under each metric, compared with the corresponding two-axis embedding. Marker overlap is substantial; the cloud is a geometric residual check, not a frequency estimate.)
+\alttext(Two dense blue distance clouds follow grey equality lines. The Euclidean cloud lies on or below its line, especially falling below it at short distances. The Manhattan cloud spreads on both sides at short and intermediate dissimilarities.)
+
+>> Check PCA through invariants, not a correlation of chosen axes
+
+The final check explicitly disables PCA scaling. The printed eigenvalue table tests
+\(\lambda_j^{\mathrm{MDS}}=149\lambda_j^{\mathrm{PCA}}\).
+The full reconstructed Gram matrices should agree as well; this check tolerates sign flips
+and rotations in repeated-eigenvalue subspaces. A default standardised PCA fit would
+instead analyse a different set of distances.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto iris=dm::datasets::iris();
+  const std::vector<std::string> features{"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};
+  const dm::stats::MDS mds(iris,features,{4});
+  const dm::stats::PCA pca(iris,features,{true,false});
+  const auto a=mds.embedding()*mds.embedding().transpose(), b=pca.scores()*pca.scores().transpose();
+  std::print("Relative Gram discrepancy: {:.12f}.\n\n",(a-b).norm_frobenius()/b.norm_frobenius());
+  dm::dstruct::DataFrame table;
+  std::vector<double> dimension,mds_eigen,pca_eigen,error;
+  for (std::size_t j=0;j<4;++j) {
+    dimension.push_back(j+1); mds_eigen.push_back(mds.eigenvalues()[j]);
+    pca_eigen.push_back((iris.nrows()-1)*pca.explained_variance()[j]);
+    error.push_back(std::abs(mds_eigen.back()-pca_eigen.back()));
+  }
+  table.add_column("axis",dimension); table.add_column("MDS eigenvalue",mds_eigen);
+  table.add_column("149 times PCA eigenvalue",pca_eigen); table.add_column("absolute error",error);
+  std::print("{}\n",table.to_md(10));
+}
+```
+// result_begin: markdown
+Relative Gram discrepancy: 0.000000000000.
+
+| axis | MDS eigenvalue | 149 times PCA eigenvalue | absolute error |
+| ---: | ---: | ---: | ---: |
+| 1 | 630.00801420 | 630.00801420 | 0 |
+| 2 | 36.15794144 | 36.15794144 | 0 |
+| 3 | 11.65321551 | 11.65321551 | 0 |
+| 4 | 3.55142885 | 3.55142885 | 0 |
+// result_end
+\caption(The Euclidean-MDS/PCA equivalence checked at the spectrum and reconstructed-Gram levels. This establishes the same centred geometry without requiring identical coordinates.)
+
+The displayed distances, full spectra, reconstructed Gram matrices and goodness-of-fit
+fractions were checked independently with R 4.5.2 `cmdscale` (without an additive correction),
+and the Euclidean geometry with `prcomp(center=TRUE,scale.=FALSE)`. NumPy independently
+reconstructs the matrices and all prefix residuals from exported inputs and coordinates.
+All 101 cycle spectra also match the analytic eigenvalues. These checks compare geometric
+invariants; no coordinate sign is chosen merely to make two plots look alike.
+
+> Conclusion
+
+The rectangle exposes every step between distances and coordinates: squaring, removing
+means, diagonalising a Gram matrix and dropping an axis. Its retained inertia, strain and
+distance loss are three different quantities with different values. The cycle then shows
+why a perfect positive-inertia fraction can coexist with unavoidable distortion, and supplies
+a concrete configuration with smaller distance loss than the classical solution. The
+spectrum sweep locates exactly where the obstruction appears.
+
+Iris behaves as the Euclidean derivation predicts: its classical map is unscaled PCA in
+another orientation, and its four-feature distances require at most four axes. Manhattan
+input poses a different geometry, so negative eigenvalues and direct residuals must be
+examined alongside retained positive inertia. A useful two-dimensional picture is evidence
+about the chosen dissimilarities; its appearance alone is neither a proof of exact distance
+recovery nor a validation of a predictive model.
+
+> References
+
+- W. S. Torgerson (1952). *Multidimensional scaling: I. Theory and method*. Psychometrika 17, 401–419.
+  [Original paper|https://doi.org/10.1007/BF02288916].
+- J. C. Gower (1966). *Some distance properties of latent root and vector methods used in multivariate analysis*.
+  Biometrika 53, 325–338. [Original paper|https://doi.org/10.1093/biomet/53.3-4.325].
+- R Core Team. *Classical (Metric) Multidimensional Scaling*.
+  [stats::cmdscale documentation|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cmdscale.html].
+  Definitions of the two spectral goodness-of-fit fractions; datamunge keeps the requested
+  number of columns and does not implement the optional Cailliez additive correction.

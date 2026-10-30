@@ -39,7 +39,7 @@ lengths, which always satisfy the Kraft equality \(\sum_i 2^{-\ell_i}=1\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 inline long weighted_cost(const std::vector<std::uint64_t>& w, const std::vector<int>& len) {
     long c = 0; for (std::size_t i = 0; i < w.size(); ++i) c += (long)w[i] * len[i]; return c;

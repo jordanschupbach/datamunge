@@ -34,7 +34,7 @@ That guaranteed, shape-independent progress is bisection's great virtue; its slo
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -102,7 +102,7 @@ program reports the converged root and traces the shrinking bracket.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

@@ -48,7 +48,7 @@ state words; the block's contribution is added back at the end.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static int digest_hamming(const std::array<std::uint8_t, 20>& a,
                           const std::array<std::uint8_t, 20>& b) {
@@ -132,7 +132,7 @@ bit of a fixed message and count how many of the 160 output bits change (ideal 8
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static int digest_hamming(const std::array<std::uint8_t, 20>& a,
                           const std::array<std::uint8_t, 20>& b) {

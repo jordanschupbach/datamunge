@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>SWIG-friendly facade for datamunge::plot::GGPlot — a ggplot2-style grammar-of-graphics        builder. Geom/theme/scale/facet calls are chainable, mirroring ggplot2's own layered        `ggplot(df, aes(...)) + geom_point() + ...` style as closely as C++ method chaining allows.</summary>
+/// <summary>SWIG-friendly facade for datamunge::graphics::GGPlot — a ggplot2-style grammar-of-graphics        builder. Geom/theme/scale/facet calls are chainable, mirroring ggplot2's own layered        `ggplot(df, aes(...)) + geom_point() + ...` style as closely as C++ method chaining allows.</summary>
 public class GGPlot : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;

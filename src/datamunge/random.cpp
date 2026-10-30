@@ -1,6 +1,8 @@
 #include <datamunge/random/random.hpp>
+#include <datamunge/random/mt19937_64_analysis.hpp>
 
 #include <cmath>
+#include <algorithm>
 #include <limits>
 #include <numeric>
 #include <stdexcept>
@@ -44,12 +46,17 @@ std::uint64_t RandomGenerator::uniform_u64(std::uint64_t lower, std::uint64_t up
   const std::uint64_t range = upper - lower + 1U;
   if (range == 0U) return next_u64();
 
-  const std::uint64_t threshold = -range % range;
-  std::uint64_t       value;
-  do {
-    value = next_u64();
-  } while (value < threshold);
-  return lower + value % range;
+  // Lemire's multiply-shift method: the answer is the top word of x * range, so it is taken from
+  // the high bits of x (a modulo would use the low bits, which are periodic for generators
+  // working modulo 2^64 such as LCGs and ACORN). Rejecting low words below 2^64 mod range makes
+  // it exactly uniform.
+  auto product = static_cast<unsigned __int128>(next_u64()) * range;
+  if (static_cast<std::uint64_t>(product) < range) {
+    const std::uint64_t threshold = -range % range;
+    while (static_cast<std::uint64_t>(product) < threshold)
+      product = static_cast<unsigned __int128>(next_u64()) * range;
+  }
+  return lower + static_cast<std::uint64_t>(product >> 64U);
 }
 
 bool RandomGenerator::bernoulli(double probability) {
@@ -119,6 +126,46 @@ Acorn64::Acorn64(std::vector<std::uint64_t> state) : state_(std::move(state)) {
 std::uint64_t Acorn64::next_u64() {
   for (std::size_t i = 1; i < state_.size(); ++i) state_[i] += state_[i - 1];
   return state_.back();
+}
+
+namespace {
+
+/// @brief The inverse of an odd @p a modulo 2^64, by Newton's iteration x <- x (2 - a x).
+std::uint64_t inverse_mod_2_64(std::uint64_t a) {
+  std::uint64_t x = a;  // correct to 3 bits for odd a
+  for (int i = 0; i < 5; ++i) x *= 2U - a * x;
+  return x;
+}
+
+/// @brief Writes @p t = 2^e * odd, returning the odd part modulo 2^64 and adding e to @p twos.
+std::uint64_t odd_part(unsigned __int128 t, int& twos) {
+  while ((t & 1U) == 0U) {
+    t >>= 1U;
+    ++twos;
+  }
+  return static_cast<std::uint64_t>(t);
+}
+
+}  // namespace
+
+void Acorn64::discard(std::uint64_t steps) {
+  if (steps == 0) return;
+  const std::size_t k = order();
+  // c[r] = C(steps + r - 1, r) mod 2^64 = prod_{i=1..r} (steps + i - 1) / i.
+  std::vector<std::uint64_t> c(k + 1, 1U);
+  std::uint64_t odd_num = 1U, odd_den = 1U;
+  int twos = 0;
+  for (std::size_t r = 1; r <= k; ++r) {
+    int num_twos = 0, den_twos = 0;
+    odd_num *= odd_part(static_cast<unsigned __int128>(steps) + r - 1U, num_twos);
+    odd_den *= odd_part(r, den_twos);
+    twos += num_twos - den_twos;  // never negative: the ratio is an integer
+    c[r] = twos >= 64 ? 0U : (odd_num * inverse_mod_2_64(odd_den)) << twos;
+  }
+  std::vector<std::uint64_t> next(k + 1, 0U);
+  for (std::size_t j = 0; j <= k; ++j)
+    for (std::size_t m = 0; m <= j; ++m) next[j] += c[j - m] * state_[m];
+  state_ = std::move(next);
 }
 
 BlumBlumShub::BlumBlumShub(std::uint64_t seed, std::uint64_t p, std::uint64_t q) {
@@ -191,23 +238,16 @@ MersenneTwister64::MersenneTwister64(std::uint64_t seed) {
 }
 
 void MersenneTwister64::twist() {
-  constexpr std::uint64_t upper_mask = 0xFFFFFFFF80000000ULL;
-  constexpr std::uint64_t lower_mask = 0x7FFFFFFFULL;
-  constexpr std::uint64_t matrix_a   = 0xB5026F5AA96619E9ULL;
   for (std::size_t i = 0; i < state_.size(); ++i) {
-    const std::uint64_t value = (state_[i] & upper_mask) | (state_[(i + 1) % state_.size()] & lower_mask);
-    state_[i] = state_[(i + 156) % state_.size()] ^ (value >> 1U) ^ ((value & 1U) ? matrix_a : 0U);
+    state_[i] = mt19937_64_twist_steps(
+        state_[i], state_[(i + 1) % state_.size()], state_[(i + 156) % state_.size()]).back();
   }
   index_ = 0;
 }
 
 std::uint64_t MersenneTwister64::next_u64() {
   if (index_ == state_.size()) twist();
-  std::uint64_t value = state_[index_++];
-  value ^= (value >> 29U) & 0x5555555555555555ULL;
-  value ^= (value << 17U) & 0x71D67FFFEDA60000ULL;
-  value ^= (value << 37U) & 0xFFF7EEE000000000ULL;
-  return value ^ (value >> 43U);
+  return mt19937_64_temper_steps(state_[index_++]).back();
 }
 
 Pcg32::Pcg32(std::uint64_t seed, std::uint64_t sequence) : increment_((sequence << 1U) | 1U) {
@@ -233,6 +273,12 @@ Xoroshiro128Plus::Xoroshiro128Plus(std::uint64_t seed) {
   state1_ = splitmix64_step(seed);
 }
 
+Xoroshiro128Plus::Xoroshiro128Plus(const std::array<std::uint64_t,2>& state)
+    : state0_(state[0]), state1_(state[1]) {
+  if ((state0_ | state1_) == 0)
+    throw std::invalid_argument("Xoroshiro128Plus: all-zero state");
+}
+
 std::uint64_t Xoroshiro128Plus::next_u64() {
   const std::uint64_t result = state0_ + state1_;
   state1_ ^= state0_;
@@ -241,8 +287,33 @@ std::uint64_t Xoroshiro128Plus::next_u64() {
   return result;
 }
 
+void Xoroshiro128Plus::apply_jump(const std::array<std::uint64_t,2>& polynomial) {
+  std::uint64_t a=0, b=0;
+  for (const auto word : polynomial) {
+    for (int bit=0; bit<64; ++bit) {
+      if ((word >> bit) & 1U) { a ^= state0_; b ^= state1_; }
+      (void)next_u64();
+    }
+  }
+  state0_ = a; state1_ = b;
+  reset_normal_cache();
+}
+
+void Xoroshiro128Plus::jump() {
+  apply_jump({0xdf900294d8f554a5ULL, 0x170865df4b3201fcULL});
+}
+
+void Xoroshiro128Plus::long_jump() {
+  apply_jump({0xd2a98b26625eee7bULL, 0xdddf9b1090aa7ac1ULL});
+}
+
 Xoshiro256StarStar::Xoshiro256StarStar(std::uint64_t seed) {
   for (auto& value : state_) value = splitmix64_step(seed);
+}
+
+Xoshiro256StarStar::Xoshiro256StarStar(const std::array<std::uint64_t,4>& state) : state_(state) {
+  if ((state_[0] | state_[1] | state_[2] | state_[3]) == 0)
+    throw std::invalid_argument("Xoshiro256StarStar: all-zero state");
 }
 
 std::uint64_t Xoshiro256StarStar::next_u64() {
@@ -256,6 +327,27 @@ std::uint64_t Xoshiro256StarStar::next_u64() {
   state_[2] ^= t;
   state_[3] = rotl(state_[3], 45);
   return result;
+}
+
+void Xoshiro256StarStar::apply_jump(const std::array<std::uint64_t,4>& polynomial) {
+  std::array<std::uint64_t,4> target{};
+  for (const auto word : polynomial) {
+    for (int bit=0; bit<64; ++bit) {
+      if ((word >> bit) & 1U)
+        for (std::size_t i=0; i<state_.size(); ++i) target[i] ^= state_[i];
+      (void)next_u64();
+    }
+  }
+  state_ = target;
+  reset_normal_cache();
+}
+
+void Xoshiro256StarStar::jump() {
+  apply_jump({0x180ec6d33cfd0abaULL, 0xd5a61266f0c9392cULL, 0xa9582618e03fc9aaULL, 0x39abdc4529b1661cULL});
+}
+
+void Xoshiro256StarStar::long_jump() {
+  apply_jump({0x76e15d3efefdcbbfULL, 0xc5004e441c522fb3ULL, 0x77710069854ee241ULL, 0x39109bb02acbe635ULL});
 }
 
 Sfc64::Sfc64(std::uint64_t seed) {

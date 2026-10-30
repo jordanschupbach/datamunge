@@ -1,3 +1,6 @@
+/// @file metrics.cpp
+/// @brief Confusion-matrix aggregation and tensor/ranking classification metric calculations.
+
 #include "datamunge/nn/metrics.hpp"
 
 #include <algorithm>
@@ -11,10 +14,13 @@
 
 namespace datamunge::nn {
 
+/// @brief Zero-safe ratios, integer label validation, and shared score ranking.
 namespace {
 
+/// @brief Returns n/d, defining the result as zero for a zero denominator.
 double ratio(double n, double d) { return d ? n / d : 0.0; }
 
+/// @brief Copies Int32/Int64 tensor labels to a flat vector; rejects other dtypes with an operation name.
 std::vector<std::int64_t> integer_values(const Tensor& t, const char* what) {
   if (!is_integral(t.dtype()))
     throw std::invalid_argument(std::string(what) + ": expected an int32 or int64 tensor, got " +
@@ -22,11 +28,16 @@ std::vector<std::int64_t> integer_values(const Tensor& t, const char* what) {
   return t.to_vector<std::int64_t>();
 }
 
+/// @brief One validated score/binary-label pair for ordered threshold sweeps.
 struct Ranked {
+  /// @brief Finite classifier score, with larger values ranking ahead of smaller ones.
   double score;
+  /// @brief Binary ground-truth label, either zero or one.
   int    label;
 };
 
+/// @brief Validates nonempty paired binary labels/finite scores and stably sorts by descending score.
+/// @throws std::invalid_argument For empty/different lengths, non-binary labels, or non-finite scores.
 std::vector<Ranked> rank(const std::vector<int>& truth, const std::vector<double>& scores) {
   if (truth.empty() || truth.size() != scores.size()) throw std::invalid_argument("ranking: invalid inputs");
   std::vector<Ranked> ranked;

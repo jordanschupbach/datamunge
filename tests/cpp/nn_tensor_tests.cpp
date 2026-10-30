@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 
 #include <cstdint>
+#include <limits>
 #include <datamunge/nn/nn.hpp>
 #include <sstream>
 #include <string>
@@ -240,6 +241,32 @@ TEST(NnTensor, AtItemToVector) {
   // to_vector reads views in logical order.
   const auto tv = nn::tensor({{1, 2}, {3, 4}}).transpose().to_vector<double>();
   EXPECT_EQ(tv, (std::vector<double>{1, 3, 2, 4}));
+}
+
+
+TEST(NnTensor, Int64HostVectorPreservesFullRangeAndStridedOrder) {
+  const std::int64_t low = std::numeric_limits<std::int64_t>::min();
+  const std::int64_t high = std::numeric_limits<std::int64_t>::max();
+  const std::int64_t odd = 9007199254740993LL;
+  const std::vector<std::int64_t> values{low, high, odd, -odd};
+  const auto tensor = nn::from_vector(values, {2, 2});
+  EXPECT_EQ(tensor.to_vector<std::int64_t>(), values);
+  EXPECT_EQ(tensor.transpose().to_vector<std::int64_t>(),
+            (std::vector<std::int64_t>{low, odd, high, -odd}));
+  EXPECT_EQ(nn::slice_axis(tensor.reshape({4}), 0, 1, 3).to_vector<std::int64_t>(),
+            (std::vector<std::int64_t>{high, odd}));
+  EXPECT_TRUE(nn::zeros({0}, DType::Int64).to_vector<std::int64_t>().empty());
+}
+
+TEST(NnTensor, Int64HostScalarPreservesLimitsAndOffsets) {
+  const std::int64_t low = std::numeric_limits<std::int64_t>::min();
+  const std::int64_t high = std::numeric_limits<std::int64_t>::max();
+  const auto values = nn::from_vector(std::vector<std::int64_t>{low, high, 9007199254740993LL});
+  EXPECT_EQ(nn::select(values, 0, 0).item<std::int64_t>(), low);
+  EXPECT_EQ(nn::select(values, 0, 1).item<std::int64_t>(), high);
+  EXPECT_EQ(nn::slice_axis(values, 0, 2, 3).item<std::int64_t>(), 9007199254740993LL);
+  EXPECT_EQ(nn::from_vector(std::vector<std::int64_t>{42}).item<int>(), 42);
+  EXPECT_DOUBLE_EQ(nn::from_vector(std::vector<std::int64_t>{42}).item(), 42.);
 }
 
 // ---- in-place -------------------------------------------------------------------------------------

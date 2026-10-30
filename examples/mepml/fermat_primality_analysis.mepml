@@ -40,7 +40,7 @@ practical code uses Miller-Rabin instead.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::uint64_t powmod(std::uint64_t b, std::uint64_t e, std::uint64_t m) {
     std::uint64_t r = 1 % m; b %= m;
@@ -123,7 +123,7 @@ signature.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::uint64_t powmod(std::uint64_t b, std::uint64_t e, std::uint64_t m) {
     std::uint64_t r = 1 % m; b %= m;

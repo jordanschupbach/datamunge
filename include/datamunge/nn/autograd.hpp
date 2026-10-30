@@ -31,6 +31,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -44,29 +45,40 @@ class Generator;
 
 /// Whether ops currently record history (thread-local; on by default).
 bool is_grad_enabled();
+/// @brief Sets recording for the current thread; prefer a guard for scoped changes.
 void set_grad_enabled(bool enabled);
 
 /// Turns recording off for its lifetime (TF: ops outside the gradient path).
 class NoGradGuard {
  public:
+  /// @brief Saves this thread's recording mode and disables recording.
   NoGradGuard() : previous_(is_grad_enabled()) { set_grad_enabled(false); }
+  /// @brief Restores the recording mode saved by the constructor.
   ~NoGradGuard() { set_grad_enabled(previous_); }
+  /// @brief Disallowed: each scope must restore its own saved recording mode exactly once.
   NoGradGuard(const NoGradGuard&)            = delete;
+  /// @brief Disallowed: transferring a guard would lose its original restoration state.
   NoGradGuard& operator=(const NoGradGuard&) = delete;
 
  private:
+  /// @brief Recording mode to restore when this guard leaves scope.
   bool previous_;
 };
 
 /// Turns recording on for its lifetime (inside a NoGradGuard).
 class EnableGradGuard {
  public:
+  /// @brief Saves this thread's recording mode and enables recording.
   EnableGradGuard() : previous_(is_grad_enabled()) { set_grad_enabled(true); }
+  /// @brief Restores the recording mode that was active before this scope.
   ~EnableGradGuard() { set_grad_enabled(previous_); }
+  /// @brief Disallowed so nested recording scopes have independent restoration state.
   EnableGradGuard(const EnableGradGuard&)            = delete;
+  /// @brief Disallowed so assignment cannot replace a live scope's saved mode.
   EnableGradGuard& operator=(const EnableGradGuard&) = delete;
 
  private:
+  /// @brief Recording mode that was active on entry to this scope.
   bool previous_;
 };
 
@@ -81,29 +93,45 @@ using BackwardFn =
 
 /// Where a gradient goes: input slot `input_nr` of `node`.
 struct Edge {
+  /// @brief Destination backward node, or null when the forward input needs no gradient.
   std::shared_ptr<Node> node;
+  /// @brief Gradient input slot at the destination, corresponding to its forward output index.
   std::uint32_t         input_nr{0};
 };
 
 /// Shape and dtype of a tensor flowing through a node, used to materialise
 /// zero gradients and to check returned gradient shapes.
 struct TensorMeta {
+  /// @brief Logical dimensions required for this tensor's gradient.
   Shape shape;
+  /// @brief Gradient element representation, matching the corresponding forward tensor.
   DType dtype{DType::Float32};
+  /// @brief Retained device context for materialized gradients; absent means default CPU.
+  std::optional<compute::Context> context;
 };
 
 /// One recorded op.
 class Node : public std::enable_shared_from_this<Node> {
  public:
+  /// @brief Owns a backward callback, graph edges, and metadata for one recorded operation.
+  /// @param name Operation name used in diagnostics.
+  /// @param next_edges Destinations for gradients of each forward input, in input order.
+  /// @param input_meta Shape and dtype of each forward input, aligned with @p next_edges.
+  /// @param output_meta Shape and dtype of each forward output, defining incoming gradient slots.
+  /// @param fn Backward callback; marker and derived nodes may supply null when they override apply().
   Node(std::string name, std::vector<Edge> next_edges, std::vector<TensorMeta> input_meta,
        std::vector<TensorMeta> output_meta, BackwardFn fn);
   /// Frees upstream nodes iteratively, so dropping a very deep graph (an
   /// RNN unrolled over thousands of steps) cannot overflow the stack.
   virtual ~Node();
 
+  /// @brief Borrows the operation name used in graph displays and errors.
   [[nodiscard]] const std::string&             name() const noexcept { return name_; }
+  /// @brief Borrows upstream gradient destinations, one per forward input.
   [[nodiscard]] const std::vector<Edge>&       next_edges() const noexcept { return next_edges_; }
+  /// @brief Borrows forward-input metadata used to validate returned gradients.
   [[nodiscard]] const std::vector<TensorMeta>& input_meta() const noexcept { return input_meta_; }
+  /// @brief Borrows forward-output metadata used to create missing zero gradients.
   [[nodiscard]] const std::vector<TensorMeta>& output_meta() const noexcept { return output_meta_; }
   /// Creation order (process-wide counter): a node made later has a larger number.
   [[nodiscard]] std::uint64_t                  sequence_nr() const noexcept { return sequence_nr_; }
@@ -115,31 +143,47 @@ class Node : public std::enable_shared_from_this<Node> {
   /// Frees the backward function and anything it saved.
   virtual void release();
 
-  /// Keeps detached copies of the outputs so `apply` can hand them back to
-  /// the backward function with this node as their history.
+  /// Keeps detached views of the outputs and their storage versions so apply()
+  /// can return them to the backward callback with this node as their history.
+  /// The storage is shared rather than copied; later in-place mutation is detected.
   void save_outputs(const std::vector<Tensor>& outputs);
 
  protected:
+  /// @brief Diagnostic name of the recorded forward operation.
   std::string             name_;
+  /// @brief Ordered upstream destinations for gradients returned by the callback.
   std::vector<Edge>       next_edges_;
+  /// @brief Forward-input dimensions and dtypes checked during backward propagation.
   std::vector<TensorMeta> input_meta_;
+  /// @brief Forward-output dimensions and dtypes of the callback's incoming gradients.
   std::vector<TensorMeta> output_meta_;
+  /// @brief Owned backward closure and its captures; cleared when the node is released.
   BackwardFn              fn_;
+  /// @brief Whether saved state has been freed and another backward call must fail.
   bool                    released_{false};
-  std::vector<Tensor>     saved_outputs_;  // detached
+  /// @brief Detached output views, avoiding an ownership cycle back to this node.
+  std::vector<Tensor>     saved_outputs_;
+  /// @brief Storage version at capture time for each entry in saved_outputs_.
   std::vector<std::uint64_t> saved_versions_;
+  /// @brief Monotonic creation ID used to delimit checkpoint recomputation graphs.
   std::uint64_t           sequence_nr_{0};
 };
 
 /// Sink node that adds incoming gradients into a leaf tensor's `grad()`.
 class AccumulateGrad : public Node {
  public:
+  /// @brief Creates a leaf-gradient sink without extending the leaf implementation's lifetime.
   explicit AccumulateGrad(const std::shared_ptr<TensorImpl>& variable);
+  /// @brief Adds the first incoming gradient to the live leaf's grad; returns no upstream gradients.
+  /// The incoming vector must have one entry. An expired leaf or undefined entry is ignored.
   std::vector<Tensor> apply(const std::vector<Tensor>& grad_outputs) override;
+  /// @brief Keeps this stateless sink reusable across backward passes; no saved state is released.
   void                release() override {}
+  /// @brief Locks the leaf's weak reference, returning null if the leaf no longer exists.
   [[nodiscard]] std::shared_ptr<TensorImpl> variable() const { return variable_.lock(); }
 
  private:
+  /// @brief Leaf receiving gradients; weak ownership avoids retaining unused leaf tensors.
   std::weak_ptr<TensorImpl> variable_;
 };
 
@@ -160,12 +204,18 @@ void record(const std::string& name, const std::vector<Tensor>& inputs, const st
 /// instead of silently producing a wrong gradient.
 class SavedTensor {
  public:
+  /// @brief Creates an empty capture whose get() returns an undefined tensor.
   SavedTensor() = default;
+  /// @brief Retains the tensor handle and records its current storage version if defined.
   explicit SavedTensor(Tensor tensor);
+  /// @brief Borrows the captured handle after validating its storage version.
+  /// @throws std::logic_error If a defined capture was modified in place after construction.
   [[nodiscard]] const Tensor& get() const;
 
  private:
+  /// @brief Captured tensor handle, preserving its data and any differentiation history.
   Tensor        tensor_;
+  /// @brief Storage version expected by get(); unused for an undefined capture.
   std::uint64_t version_{0};
 };
 
@@ -187,6 +237,9 @@ struct GradOptions {
 /// Gradients of sum_i <grad_outputs[i], outputs[i]> with respect to each of
 /// `inputs` (TF AddSymbolicGradients). `grad_outputs` defaults to ones for
 /// one-element outputs. Does not touch `Tensor::grad()`.
+/// Every input must be defined and require gradients, even with allow_unused.
+/// @throws std::invalid_argument For invalid inputs, seed counts/shapes, or unused inputs
+/// when allow_unused is false. Saved state is freed unless retention is requested.
 std::vector<Tensor> grad(const std::vector<Tensor>& outputs, const std::vector<Tensor>& inputs,
                          const std::vector<Tensor>& grad_outputs = {}, const GradOptions& options = {});
 /// Single-output form.
@@ -216,20 +269,26 @@ std::vector<Tensor> apply_function(const std::string& name, const std::vector<Te
 /// A reusable custom function (TF: an op plus REGISTER_GRADIENT_OP).
 class Function {
  public:
+  /// @brief Stores the operation name and the forward/backward callbacks for reuse.
   Function(std::string name, CustomForward forward, CustomBackward backward)
       : name_(std::move(name)), forward_(std::move(forward)), backward_(std::move(backward)) {}
 
+  /// @brief Evaluates the custom forward callback and records its custom backward when needed.
   std::vector<Tensor> operator()(const std::vector<Tensor>& inputs) const {
     return apply_function(name_, inputs, forward_, backward_);
   }
   /// One input, first output.
   Tensor operator()(const Tensor& input) const { return apply_function(name_, {input}, forward_, backward_).at(0); }
 
+  /// @brief Borrows the operation name used for recorded nodes and callback diagnostics.
   [[nodiscard]] const std::string& name() const noexcept { return name_; }
 
  private:
+  /// @brief Name assigned to graph nodes created by this custom function.
   std::string    name_;
+  /// @brief Forward callback invoked on detached inputs with recording disabled.
   CustomForward  forward_;
+  /// @brief Callback mapping output gradients to one gradient per original input.
   CustomBackward backward_;
 };
 
@@ -285,7 +344,9 @@ bool in_recompute();
 /// An additive coupling block: y1 = x1 + f(x2), y2 = x2 + g(y1). It is
 /// inverted exactly (up to rounding) by x2 = y2 - g(y1), x1 = y1 - f(x2).
 struct ReversibleBlock {
+  /// @brief First coupling map: evaluated at x2 and added to x1 to form y1.
   CheckpointFn1 f;
+  /// @brief Second coupling map: evaluated at y1 and added to x2 to form y2.
   CheckpointFn1 g;
 };
 

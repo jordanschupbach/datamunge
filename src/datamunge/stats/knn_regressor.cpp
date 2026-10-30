@@ -1,3 +1,6 @@
+/// @file knn_regressor.cpp
+/// @brief KNNRegressor: fitting, exact leave-one-out evaluation, prediction and plots.
+
 #include <datamunge/stats/knn_regressor.hpp>
 
 #include <algorithm>
@@ -11,8 +14,13 @@
 
 namespace datamunge::stats {
 
+/// @brief Helpers private to this file.
 namespace {
 
+/// @brief Formats @p v with fixed @p precision ("NaN" for NaN).
+/// @param v          Value.
+/// @param precision  Digits after the point.
+/// @return The text.
 std::string format_stat(double v, int precision = 4) {
     if (std::isnan(v)) return "NaN";
     std::ostringstream oss;
@@ -23,8 +31,7 @@ std::string format_stat(double v, int precision = 4) {
 } // namespace
 
 KNNRegressor::KNNRegressor(const dstruct::DataFrame& data, const std::string& formula, KNNRegressorOptions options)
-    : formula_(formula) {
-    options_ = options;
+    : formula_(formula), options_(options) {
     fit(data);
 }
 
@@ -37,74 +44,73 @@ void KNNRegressor::fit(const dstruct::DataFrame& data) {
     const std::size_t p = dm.X.cols();
 
     predictor_names_ = design_.coefficient_names;
-    observations_     = n;
-    training_y_       = dm.y;
+    observations_    = n;
+    training_y_      = dm.y;
 
-    feature_mean_.assign(p, 0.0);
-    feature_scale_.assign(p, 1.0);
-    if (options_.standardize) {
-        for (std::size_t j = 0; j < p; ++j) {
-            double sum = 0.0;
-            for (std::size_t i = 0; i < n; ++i) sum += dm.X(i, j);
-            feature_mean_[j] = sum / static_cast<double>(n);
-        }
-        for (std::size_t j = 0; j < p; ++j) {
-            double ss = 0.0;
-            for (std::size_t i = 0; i < n; ++i) {
-                const double d = dm.X(i, j) - feature_mean_[j];
-                ss += d * d;
-            }
-            const double scale = std::sqrt(ss / static_cast<double>(n));
-            feature_scale_[j]  = (scale < 1e-12) ? 1.0 : scale;
-        }
-    }
-
-    training_X_std_ = linalg::DenseMatrix<double>(n, p, 0.0);
-    for (std::size_t i = 0; i < n; ++i)
-        for (std::size_t j = 0; j < p; ++j) training_X_std_(i, j) = (dm.X(i, j) - feature_mean_[j]) / feature_scale_[j];
+    scaling_        = detail::knn_scaling(dm.X, options_.standardize);
+    training_X_  = dm.X;
+    multipliers_ = detail::knn_multipliers(scaling_);
 
     fitted_.resize(n);
     for (std::size_t i = 0; i < n; ++i) {
         std::vector<double> query(p);
-        for (std::size_t j = 0; j < p; ++j) query[j] = training_X_std_(i, j);
-        fitted_[i] = predict_one(query, /*exclude_row=*/i);
+        for (std::size_t j = 0; j < p; ++j) query[j] = training_X_(i, j);
+        fitted_[i] = predict_one(query, i, detail::knn_loo_multipliers(scaling_, training_X_, i, options_.standardize));
     }
 }
 
-double KNNRegressor::predict_one(const std::vector<double>& query_std, std::size_t exclude_row) const {
-    const std::size_t n = training_X_std_.rows();
-    const std::size_t p = training_X_std_.cols();
-
-    std::vector<std::pair<double, std::size_t>> distances;
-    distances.reserve(n);
-    for (std::size_t i = 0; i < n; ++i) {
-        if (i == exclude_row) continue;
-        double d = 0.0;
-        if (options_.metric == DistanceMetric::Euclidean) {
-            for (std::size_t j = 0; j < p; ++j) {
-                const double diff = training_X_std_(i, j) - query_std[j];
-                d += diff * diff;
-            }
-            d = std::sqrt(d);
-        } else {
-            for (std::size_t j = 0; j < p; ++j) d += std::fabs(training_X_std_(i, j) - query_std[j]);
-        }
-        distances.emplace_back(d, i);
-    }
-
-    const std::size_t kk = std::min(options_.k, distances.size());
-    std::partial_sort(distances.begin(), distances.begin() + static_cast<std::ptrdiff_t>(kk), distances.end());
-
-    double weighted_sum = 0.0;
-    double weight_total  = 0.0;
-    for (std::size_t idx = 0; idx < kk; ++idx) {
-        const double      d   = distances[idx].first;
-        const std::size_t row = distances[idx].second;
-        const double       w   = options_.weighted ? 1.0 / (d + 1e-12) : 1.0;
+double KNNRegressor::predict_one(const std::vector<double>& query, std::size_t exclude_row,
+                                 const std::vector<double>& mult) const {
+    double weighted_sum = 0.0, weight_total = 0.0;
+    for (const auto& [d, row] : detail::knn_nearest(training_X_, query, options_.metric, options_.k,
+                                                    mult.empty() ? multipliers_ : mult, exclude_row)) {
+        const double w = detail::knn_weight(d, options_.weighted);
         weighted_sum += w * training_y_[row];
         weight_total += w;
     }
-    return (weight_total > 0.0) ? (weighted_sum / weight_total) : std::numeric_limits<double>::quiet_NaN();
+    return weight_total > 0.0 ? weighted_sum / weight_total : std::numeric_limits<double>::quiet_NaN();
+}
+
+std::vector<double> KNNRegressor::loo_rmse_path(std::size_t max_k) const {
+    if (max_k == 0) throw std::invalid_argument("KNNRegressor::loo_rmse_path: max_k must be at least 1");
+    const std::size_t n = training_X_.rows(), p = training_X_.cols();
+    max_k = std::min(max_k, n - 1);
+    std::vector<double> sse(max_k, 0.0);
+    for (std::size_t i = 0; i < n; ++i) {
+        std::vector<double> query(p);
+        for (std::size_t j = 0; j < p; ++j) query[j] = training_X_(i, j);
+        const auto nearest = detail::knn_nearest(training_X_, query, options_.metric, max_k,
+                                                 detail::knn_loo_multipliers(scaling_, training_X_, i,
+                                                                             options_.standardize),
+                                                 i);
+        double sum = 0.0, total = 0.0;
+        for (std::size_t k = 0; k < nearest.size(); ++k) {
+            const double w = detail::knn_weight(nearest[k].first, options_.weighted);
+            sum += w * training_y_[nearest[k].second];
+            total += w;
+            sse[k] += (training_y_[i] - sum / total) * (training_y_[i] - sum / total);
+        }
+    }
+    for (double& s : sse) s = std::sqrt(s / static_cast<double>(n));
+    return sse;
+}
+
+KNNNeighbors KNNRegressor::kneighbors(const dstruct::DataFrame& newdata) const {
+    design_.validate_categorical_levels(newdata, "KNNRegressor::kneighbors");
+    const auto dm = design_.build_matrix(newdata, /*require_response=*/false);
+    KNNNeighbors result;
+    result.index.assign(newdata.nrows(), {});
+    result.distance.assign(newdata.nrows(), {});
+    for (std::size_t i = 0; i < dm.used_row_indices.size(); ++i) {
+        std::vector<double> query(dm.X.cols());
+        for (std::size_t j = 0; j < dm.X.cols(); ++j) query[j] = dm.X(i, j);
+        const auto row = dm.used_row_indices[i];
+        for (const auto& [d, r] : detail::knn_nearest(training_X_, query, options_.metric, options_.k, multipliers_)) {
+            result.index[row].push_back(r);
+            result.distance[row].push_back(d);
+        }
+    }
+    return result;
 }
 
 double KNNRegressor::r_squared() const {
@@ -152,24 +158,24 @@ std::vector<double> KNNRegressor::predict(const dstruct::DataFrame& newdata) con
     std::vector<double> result(newdata.nrows(), std::numeric_limits<double>::quiet_NaN());
     for (std::size_t i = 0; i < dm.used_row_indices.size(); ++i) {
         std::vector<double> query(dm.X.cols());
-        for (std::size_t j = 0; j < dm.X.cols(); ++j) query[j] = (dm.X(i, j) - feature_mean_[j]) / feature_scale_[j];
+        for (std::size_t j = 0; j < dm.X.cols(); ++j) query[j] = dm.X(i, j);
         result[dm.used_row_indices[i]] = predict_one(query);
     }
     return result;
 }
 
-plot::RPlot KNNRegressor::plot_predicted_vs_actual() const {
-    auto plot = plot::RPlot::create();
+graphics::RPlot KNNRegressor::plot_predicted_vs_actual() const {
+    auto plot = graphics::RPlot::create();
     plot.points(training_y_, fitted_, "predictions");
     plot.title("Predicted vs Actual (leave-one-out)").x_label("Actual").y_label("Predicted");
     return plot;
 }
 
-plot::RPlot KNNRegressor::plot_residuals_vs_fitted() const {
+graphics::RPlot KNNRegressor::plot_residuals_vs_fitted() const {
     std::vector<double> residuals(training_y_.size());
     for (std::size_t i = 0; i < training_y_.size(); ++i) residuals[i] = training_y_[i] - fitted_[i];
 
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     plot.points(fitted_, residuals, "residuals");
     plot.title("Residuals vs Fitted (leave-one-out)").x_label("Fitted values").y_label("Residuals");
     return plot;

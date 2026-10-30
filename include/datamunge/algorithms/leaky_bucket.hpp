@@ -38,6 +38,22 @@ class LeakyBucket {
         return level_;
     }
 
+    /// @brief Bucket size (the largest backlog tolerated).
+    /// @return The capacity passed to the constructor.
+    [[nodiscard]] double capacity() const noexcept { return capacity_; }
+
+    /// @brief Drain rate.
+    /// @return Units leaked per unit time.
+    [[nodiscard]] double leak_rate() const noexcept { return leak_rate_; }
+
+    /// @brief Fill level as of the last update, without applying any leaking (unlike \ref level).
+    /// @return The stored level at \ref last_time.
+    [[nodiscard]] double stored_level() const noexcept { return level_; }
+
+    /// @brief Time of the last leak update.
+    /// @return The most recent \c now seen by \ref add or \ref level (0 initially).
+    [[nodiscard]] double last_time() const noexcept { return last_; }
+
   private:
     void leak(double now) {
         if (now > last_) {

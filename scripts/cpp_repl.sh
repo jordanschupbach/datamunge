@@ -5,7 +5,7 @@
 #   scripts/cpp_repl.sh [--cling] [--bare] [example]
 #
 #   scripts/cpp_repl.sh                  # clang-repl, datamunge headers preloaded
-#   scripts/cpp_repl.sh dataframe_ex     # ... plus examples/cpp/source/dataframe_ex.cpp, main() called
+#   scripts/cpp_repl.sh dataframe_ex     # ... plus examples/cpp/source/data/dataframe_ex.cpp, main() called
 #   scripts/cpp_repl.sh --cling          # cling instead of clang-repl
 #   scripts/cpp_repl.sh --bare           # skip the prelude (nothing included, nothing using'd)
 set -euo pipefail
@@ -29,6 +29,11 @@ if [[ -n "$example" ]]; then
   for candidate in "$example" "examples/cpp/source/${example}.cpp" "examples/cpp/source/${example}"; do
     if [[ -f "$candidate" ]]; then example_path="$candidate"; break; fi
   done
+  if [[ -z "$example_path" ]]; then
+    for candidate in examples/cpp/source/*/"${example%.cpp}.cpp"; do
+      if [[ -f "$candidate" ]]; then example_path="$candidate"; break; fi
+    done
+  fi
   if [[ -z "$example_path" ]]; then
     echo "No such example: $example (looked in examples/cpp/source/)" >&2
     exit 1

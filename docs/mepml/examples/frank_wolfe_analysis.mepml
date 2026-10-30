@@ -1,0 +1,562 @@
+//? Title: The Frank-Wolfe Algorithm
+//? Subtitle: Projection-free convex optimisation, with its duality-gap certificate and O(1/k) rate derived, the zig-zag that away-step and pairwise variants cure, and the nonparametric MLE of Old Faithful's waiting times, using datamunge's algorithms::frank_wolfe
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Many estimation problems minimise a smooth convex function over a constraint set: weights
+that must be nonnegative and sum to one, coefficients with a bounded \(\ell_1\) norm, flows in a
+network. Projected gradient methods must project onto the set at every step, which can cost as
+much as the problem itself. The Frank-Wolfe algorithm (1956) needs only a *linear* minimisation
+over the set, which for these sets is a single scan for the best vertex. We derive its two key
+facts: a free certificate \(g_k\ge f(x_k)-f^\star\), and the rate \(f(x_k)-f^\star\le2C/(k+2)\).
+On a triangle we watch it zig-zag when the optimum lies on an edge, and watch the away-step
+and pairwise variants stop in four and three steps. On least squares over a 40-dimensional
+simplex, the vanilla method is still \(10^{-4}\) to \(10^{-2}\) from optimal after 2,000 steps, and
+exact line search makes it slower, while the variants reach \(10^{-12}\) within about 100 steps. Finally, the nonparametric maximum
+likelihood estimate of a Gaussian mixture for Old Faithful's waiting times is a Frank-Wolfe
+problem over the simplex: the pairwise variant finds a 7-atom solution with a certified gap of
+\(10^{-6}\), where EM keeps 11 weights above \(10^{-8}\).
+)
+
+\toc
+
+> The problem
+
+Let \(C\subset\mathbb R^d\) be compact and convex, and \(f\) convex and differentiable with an
+\(L\)-Lipschitz gradient, so that
+
+$$
+f(y)\le f(x)+\langle\nabla f(x),y-x\rangle+\frac L2\lVert y-x\rVert^2\qquad\text{for all }x,y\in C.
+$$
+\alttext(f of y is at most f of x plus the inner product of the gradient at x with y minus x, plus L over 2 times the squared norm of y minus x, for all x and y in C.)
+
+We want \(f^\star=\min_{x\in C}f(x)\). Projected gradient takes a gradient step and then finds the
+nearest point of \(C\), itself a quadratic programme for most sets. Frank and Wolfe (1956) replace
+the projection by a *linear minimisation oracle* (LMO), which minimises a linear function over
+\(C\). A linear function on a polytope attains its minimum at a vertex, and for the common sets
+the LMO is a scan:
+
+- the probability simplex \(\Delta_d=\{x\ge0,\ \sum_ix_i=1\}\): \(\min_{s\in\Delta_d}\langle g,s\rangle=\min_ig_i\), attained at the unit vector \(e_{i^\star}\) (`simplex_lmo`);
+- the \(\ell_1\) ball of radius \(r\): \(-r\,\operatorname{sign}(g_{i^\star})e_{i^\star}\) with \(i^\star=\arg\max_i|g_i|\) (`l1_ball_lmo`);
+- a polytope given by its vertices: the vertex with the smallest \(\langle g,v\rangle\) (`vertex_lmo`).
+
+Projecting onto the simplex needs a sort, and projecting onto the convex hull of a list of
+vertices is a quadratic programme. The LMOs above cost \(O(d)\) and \(O(dV)\).
+
+> The method
+
+>> One step
+
+At \(x_k\), let \(g=\nabla f(x_k)\), ask the oracle for \(s_k=\arg\min_{s\in C}\langle g,s\rangle\), and
+move towards it:
+
+$$
+x_{k+1}=x_k+\gamma_k\,(s_k-x_k),\qquad\gamma_k\in[0,1].
+$$
+\alttext(x k plus 1 equals x k plus gamma k times s k minus x k, with gamma k between 0 and 1.)
+
+The new iterate is a convex combination of points of \(C\), so it stays feasible with no
+projection. Three step rules are implemented: the standard \(\gamma_k=2/(k+2)\), the *short step*
+\(\gamma_k=\min\{1,\ g_k/(L\lVert s_k-x_k\rVert^2)\}\) that minimises the quadratic upper bound,
+and an exact line search on \(f\).
+
+>> A free certificate
+
+Define the *Frank-Wolfe gap* \(g_k=\langle\nabla f(x_k),x_k-s_k\rangle\ge0\).
+
+*Lemma 1.* \(f(x_k)-f^\star\le g_k\).
+
+*Proof.* By convexity, for the minimiser \(x^\star\),
+\(f^\star\ge f(x_k)+\langle\nabla f(x_k),x^\star-x_k\rangle\ge f(x_k)+\min_{s\in C}\langle\nabla f(x_k),s-x_k\rangle=f(x_k)-g_k\).
+\(\blacksquare\)
+
+The oracle call that chooses the step also bounds the error, so Frank-Wolfe can stop when
+\(g_k\le\varepsilon\) and *know* that it is within \(\varepsilon\) of optimal. Projected gradient has no
+such certificate.
+
+>> The \(O(1/k)\) rate
+
+Let \(D=\max_{x,y\in C}\lVert x-y\rVert\) be the diameter and \(C_f=LD^2\). Write \(h_k=f(x_k)-f^\star\).
+
+*Theorem.* With \(\gamma_k=2/(k+2)\), \(h_k\le 2C_f/(k+2)\) for all \(k\ge1\). Short steps and line
+search do at least as well.
+
+*Proof.* Apply the smoothness bound with \(y=x_{k+1}\) and use \(g_k\ge h_k\):
+
+$$
+h_{k+1}\le h_k-\gamma_kg_k+\frac{\gamma_k^2}2LD^2\le(1-\gamma_k)h_k+\frac{\gamma_k^2}2C_f .
+$$
+\alttext(h k plus 1 is at most h k minus gamma k g k plus gamma k squared over 2 times L D squared, which is at most 1 minus gamma k times h k plus gamma k squared over 2 times C f.)
+
+For \(k=0\), \(\gamma_0=1\) gives \(h_1\le C_f/2\). If \(h_k\le2C_f/(k+2)\), then
+
+$$
+h_{k+1}\le\frac k{k+2}\cdot\frac{2C_f}{k+2}+\frac{2C_f}{(k+2)^2}=\frac{2C_f(k+1)}{(k+2)^2}\le\frac{2C_f}{k+3},
+$$
+\alttext(h k plus 1 is at most k over k plus 2 times 2 C f over k plus 2, plus 2 C f over k plus 2 squared, which equals 2 C f times k plus 1 over k plus 2 squared, which is at most 2 C f over k plus 3.)
+
+since \((k+1)(k+3)\le(k+2)^2\). The short step minimises the middle expression over \(\gamma\) and
+line search minimises \(f\) itself, so each makes at least as much progress as
+\(\gamma_k=2/(k+2)\) does in the same inequality. \(\blacksquare\)
+
+Starting from a vertex, \(x_k\) is a convex combination of at most \(k+1\) vertices. Over the simplex
+this means at most \(k+1\) nonzero coordinates, so Frank-Wolfe produces *sparse* approximate
+solutions with a known accuracy.
+
+>> Why the rate is not better, and the cure
+
+The vanilla method does not converge linearly, even when \(f\) is strongly convex. Canon and
+Cullum (1968) showed that with exact line search, when the minimiser lies inside a face of a
+polytope and is not a vertex, \(h_k\) decreases more slowly than \(1/k^{1+\delta}\) for every
+\(\delta>0\). The open-loop step \(2/(k+2)\) can do somewhat better in this situation, up to
+\(O(1/k^2)\) (Wirth, Kerdreux and Pokutta 2023), but not linearly. The mechanism is
+visible in the update: a vertex that entered early and is not on the optimal face keeps its
+weight, multiplied by \((1-\gamma_k)\) at each step, and the only way to shrink it is to step
+towards *other* vertices. The iterate then zig-zags between the vertices of the optimal face.
+
+The *away-step* variant (Wolfe 1970) remembers the active set \(S_k\) of vertices with their
+weights \(\alpha_v\), and also considers the *away direction* \(x_k-v_k\), where
+\(v_k=\arg\max_{v\in S_k}\langle\nabla f(x_k),v\rangle\) is the worst active vertex. It takes
+whichever direction descends faster, with a step of at most \(\alpha_{v}/(1-\alpha_v)\) along the
+away direction; a full away step *drops* \(v_k\). The *pairwise* variant moves weight straight from
+\(v_k\) to \(s_k\), along \(s_k-v_k\), with a step of at most \(\alpha_{v_k}\). Lacoste-Julien and Jaggi
+(2015) proved that both converge linearly for strongly convex \(f\) over a polytope,
+\(h_{k+1}\le(1-\rho)h_k\) on all but a bounded fraction of steps, with \(\rho\) depending on the
+condition number and the polytope's geometry.
+
+`algorithms::frank_wolfe` implements all three variants on top of any LMO. Equal vertices from
+the oracle are recognised as the same atom, so the active set is exact.
+
+> Simple examples
+
+>> A triangle with the optimum on an edge
+
+Minimise \(f(x)=\tfrac12\lVert x-c\rVert^2\) with \(c=(0.7,0.7)\) over the triangle with vertices
+\((0,0)\), \((1,0)\) and \((0,1)\). The minimiser is the projection of \(c\) onto the hypotenuse,
+\(x^\star=(0.5,0.5)\), with \(f^\star=0.04\): it lies inside an edge, the case where vanilla
+Frank-Wolfe is slow. Here \(L=1\) and \(D^2=2\), so \(C_f=2\). All runs start at \((0,0)\) and use exact
+line search.
+
+```{cpp, results="markdown", file="figures/frank_wolfe_triangle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::vector<double>> triangle = {{0, 0}, {1, 0}, {0, 1}};
+  const auto f = [](const std::vector<double>& x) { return 0.5 * ((x[0] - 0.7) * (x[0] - 0.7) + (x[1] - 0.7) * (x[1] - 0.7)); };
+  const auto grad = [](const std::vector<double>& x) { return std::vector<double>{x[0] - 0.7, x[1] - 0.7}; };
+  const auto lmo = [&](const std::vector<double>& g) { return alg::vertex_lmo(g, triangle); };
+
+  const std::vector<std::pair<alg::FrankWolfeVariant, std::string>> variants = {
+      {alg::FrankWolfeVariant::Vanilla, "vanilla"}, {alg::FrankWolfeVariant::AwayStep, "away-step"},
+      {alg::FrankWolfeVariant::Pairwise, "pairwise"}};
+  std::vector<std::string> name, steps, moves, error, gap;
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  for (const auto& [variant, label] : variants) {
+    alg::FrankWolfeOptions options{.max_iter = 1000, .tolerance = 1e-12, .variant = variant,
+                                   .step = alg::FrankWolfeStep::LineSearch, .record_path = true};
+    const auto r = alg::frank_wolfe(f, grad, lmo, {0.0, 0.0}, options);
+    name.push_back(label);
+    steps.push_back(r.converged ? std::to_string(r.iterations) : std::format("> {}", r.iterations));
+    std::string m;
+    for (std::size_t k = 0; k < std::min<std::size_t>(r.moves.size(), 8); ++k) m += char(r.moves[k]);
+    moves.push_back(m + (r.moves.size() > 8 ? "..." : ""));
+    error.push_back(std::format("{:.1e}", r.objective.back() - 0.04));
+    gap.push_back(std::format("{:.1e}", r.gap.back()));
+    if (variant == alg::FrankWolfeVariant::Pairwise) continue;
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.polygon({0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}, dm::RGB{148, 163, 184}, false);
+    std::vector<double> cx, cy; // the level set of f through x*, a circle around c
+    for (int t = 0; t <= 120; ++t) {
+      const double a = 2 * std::numbers::pi * t / 120;
+      cx.push_back(0.7 + std::sqrt(0.08) * std::cos(a));
+      cy.push_back(0.7 + std::sqrt(0.08) * std::sin(a));
+    }
+    plot.lines(cx, cy, dm::RGB{203, 213, 225}, 1.5);
+    std::vector<double> px, py;
+    for (std::size_t k = 0; k < std::min<std::size_t>(r.path.size(), 41); ++k) {
+      px.push_back(r.path[k][0]);
+      py.push_back(r.path[k][1]);
+    }
+    plot.lines(px, py, dm::RGB{37, 99, 235}, 1.5).points(px, py, dm::RGB{37, 99, 235}, 4.5);
+    plot.points({0.7}, {0.7}, dm::RGB{220, 38, 38}, 7.0).text(0.74, 0.74, "c", dm::RGB{220, 38, 38}, 15.0);
+    plot.points({0.5}, {0.5}, dm::RGB{17, 24, 39}, 7.0).text(0.53, 0.47, "x*", dm::RGB{17, 24, 39}, 15.0);
+    layout.add(plot.x_limits(-0.1, 1.1)
+                   .y_limits(-0.1, 1.1)
+                   .title(std::format("{}: {} steps", label, steps.back()))
+                   .x_label("x1")
+                   .y_label("x2"));
+  }
+  layout.size(1100, 520).fit_panels().save_svg("build/frank_wolfe_triangle.svg");
+
+  dm::dstruct::DataFrame table;
+  table.add_column("variant", name);
+  table.add_column("steps to gap 1e-12", steps);
+  table.add_column("first moves", moves);
+  table.add_column("final f - f*", error);
+  table.add_column("final gap", gap);
+  std::print("{}\n", table.to_md());
+}
+```
+// result_begin: markdown
+| variant | steps to gap 1e-12 | first moves | final f - f* | final gap |
+| :--- | :--- | :--- | :--- | :--- |
+| vanilla | > 1000 | FFFFFFFF... | 2.4e-04 | 4.9e-04 |
+| away-step | 4 | FFDF | -6.9e-18 | 2.8e-17 |
+| pairwise | 3 | PDP | -2.1e-17 | -0.0e+00 |
+
+\image(figures/frank_wolfe_triangle.svg)
+// result_end
+
+\caption(Left: vanilla Frank-Wolfe with line search, first 40 iterates; right: the away-step variant. The grey curve is the level set of \(f\) through \(x^\star\), a circle drawn with unequal axis scales. Table: steps to a gap of \(10^{-12}\) (at most 1,000), the first moves (F forward, D drop, P pairwise), and the final error and gap.)
+\alttext(Two panels showing the triangle with corners 0 0, 1 0 and 0 1, a red point c at 0.7, 0.7 outside it, and a grey level curve around c touching the hypotenuse at x star, 0.5, 0.5. Left, vanilla: the blue path goes from the origin along the bottom edge to 0.7 0, up to about 0.37 0.47, then zig-zags in a tight fan of ever shorter segments that converges on x star from below the hypotenuse. Right, away-step: the path goes from the origin to 0.7 0, to about 0.37 0.47, onto the hypotenuse at about 0.44 0.56, and along it to x star, four segments in all.)
+
+Vanilla Frank-Wolfe is still \(2.4\times10^{-4}\) from optimal after 1,000 steps, with every step
+a forward one. The two variants are exact to rounding after four and three steps.
+
+>> One drop step, by hand
+
+The away-step run can be checked by hand. From \(x_0=(0,0)\) the gradient is \((-0.7,-0.7)\), both
+other vertices tie, and the oracle returns \((1,0)\); line search along \((1,0)\) stops at
+\(x_1=(0.7,0)\). Next the oracle returns \((0,1)\), and line search gives a point inside the
+triangle, with the active set \(\{(0,0),(1,0),(0,1)\}\). Now the worst active vertex is \((0,0)\),
+where \(\langle\nabla f,v\rangle\) is largest, and moving away from it descends faster than moving
+towards a vertex. The full away step removes all of its weight, which puts the iterate on the
+hypotenuse: that is the *drop*. One more forward step along the hypotenuse lands on
+\(x^\star\). Vanilla Frank-Wolfe never removes the weight on \((0,0)\), so it can only approach the
+edge.
+
+> Checking the theory
+
+>> Least squares over a simplex
+
+A larger test: \(f(x)=\tfrac12\lVert Ax-b\rVert^2\) over \(\Delta_{40}\), with \(A\) an \(80\times40\)
+standard normal matrix and \(b\) standard normal. With more rows than columns \(f\) is strongly
+convex, and the minimiser has 14 nonzero coordinates, so it lies inside a face of the simplex.
+Here \(L=\lambda_{\max}(A^\top A)\) (found by power iteration) and \(D^2=2\), so the theorem promises
+\(h_k\le4L/(k+2)\). The reference \(f^\star\) is the pairwise variant run to a gap of \(10^{-13}\).
+
+```{cpp, results="markdown", file="figures/frank_wolfe_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <random>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const int m = 80, d = 40;
+  std::mt19937_64 rng(4);
+  std::normal_distribution<double> z;
+  std::vector<std::vector<double>> A(m, std::vector<double>(d));
+  std::vector<double> b(m);
+  for (auto& row : A)
+    for (auto& v : row) v = z(rng);
+  for (auto& v : b) v = z(rng);
+  const auto residual = [&](const std::vector<double>& x) {
+    std::vector<double> r(b.size());
+    for (int i = 0; i < m; ++i) r[i] = std::inner_product(A[i].begin(), A[i].end(), x.begin(), -b[i]);
+    return r;
+  };
+  const auto f = [&](const std::vector<double>& x) {
+    const auto r = residual(x);
+    return 0.5 * std::inner_product(r.begin(), r.end(), r.begin(), 0.0);
+  };
+  const auto grad = [&](const std::vector<double>& x) {
+    const auto r = residual(x);
+    std::vector<double> g(d, 0.0);
+    for (int i = 0; i < m; ++i)
+      for (int j = 0; j < d; ++j) g[j] += A[i][j] * r[i];
+    return g;
+  };
+  std::vector<std::vector<double>> AtA(d, std::vector<double>(d, 0.0));
+  for (int i = 0; i < m; ++i)
+    for (int j = 0; j < d; ++j)
+      for (int k = 0; k < d; ++k) AtA[j][k] += A[i][j] * A[i][k];
+  const double L = alg::power_iteration(AtA, 2000).value;
+  std::vector<double> x0(d, 0.0);
+  x0[0] = 1.0;
+
+  const auto ref = alg::frank_wolfe(f, grad, alg::simplex_lmo, x0,
+                                    {.max_iter = 100000, .tolerance = 1e-13, .variant = alg::FrankWolfeVariant::Pairwise,
+                                     .step = alg::FrankWolfeStep::LineSearch});
+  const double f_star = ref.objective.back();
+  int support = 0;
+  for (const double v : ref.x) support += v > 0;
+
+  struct Run {
+    std::string label;
+    alg::FrankWolfeVariant variant;
+    alg::FrankWolfeStep step;
+    dm::RGB colour;
+  };
+  const std::vector<Run> runs = {
+      {"vanilla, 2/(k+2)", alg::FrankWolfeVariant::Vanilla, alg::FrankWolfeStep::Standard, {234, 88, 12}},
+      {"vanilla, line search", alg::FrankWolfeVariant::Vanilla, alg::FrankWolfeStep::LineSearch, {217, 119, 6}},
+      {"away-step", alg::FrankWolfeVariant::AwayStep, alg::FrankWolfeStep::LineSearch, {37, 99, 235}},
+      {"pairwise", alg::FrankWolfeVariant::Pairwise, alg::FrankWolfeStep::LineSearch, {5, 150, 105}}};
+  std::vector<std::string> name, e10, e100, e2000, steps;
+  int violations = 0;
+  auto left = dm::graphics::RPlot::create();
+  auto right = dm::graphics::RPlot::create();
+  for (const auto& run : runs) {
+    const auto r = alg::frank_wolfe(f, grad, alg::simplex_lmo, x0,
+                                    {.max_iter = 2000, .tolerance = -1.0, .variant = run.variant, .step = run.step});
+    std::vector<double> lk, le, k_lin, le_lin;
+    int reached = -1;
+    for (std::size_t k = 1; k < r.objective.size(); ++k) {
+      const double err = std::max(r.objective[k] - f_star, 1e-16);
+      if (r.gap[k] < r.objective[k] - f_star - 1e-9) ++violations;
+      if (r.objective[k] - f_star > 4 * L / (k + 2.0)) ++violations;
+      if (reached < 0 && err <= 1e-12) reached = static_cast<int>(k);
+      lk.push_back(std::log10(double(k)));
+      le.push_back(std::log10(err));
+      if (k <= 200) k_lin.push_back(double(k)), le_lin.push_back(std::log10(err));
+    }
+    name.push_back(run.label);
+    e10.push_back(std::format("{:.1e}", r.objective[10] - f_star));
+    e100.push_back(std::format("{:.1e}", r.objective[100] - f_star));
+    e2000.push_back(std::format("{:.1e}", r.objective[2000] - f_star));
+    steps.push_back(reached < 0 ? "> 2000" : std::to_string(reached));
+    left.lines(lk, le, run.label, run.colour, 2.0);
+    right.lines(k_lin, le_lin, run.colour, 2.0);
+  }
+  std::vector<double> bk, bv;
+  for (int k = 1; k <= 2000; k += 10) bk.push_back(std::log10(double(k))), bv.push_back(std::log10(4 * L / (k + 2.0)));
+  left.lines(bk, bv, "bound 4L/(k+2)", dm::RGB{100, 116, 139}, 1.5)
+      .x_limits(0, 3.4)
+      .y_limits(-17, 6)
+      .title("Error, log-log")
+      .x_label("log10 k")
+      .y_label("log10 (f(x_k) - f*)");
+  right.x_limits(0, 200).y_limits(-17, 6).title("Error, first 200 steps").x_label("k").y_label("log10 (f(x_k) - f*)");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 500).fit_panels().save_svg("build/frank_wolfe_rates.svg");
+
+  dm::dstruct::DataFrame table;
+  table.add_column("method", name);
+  table.add_column("error at k = 10", e10);
+  table.add_column("k = 100", e100);
+  table.add_column("k = 2000", e2000);
+  table.add_column("steps to error 1e-12", steps);
+  std::print("\\(L={:.1f}\\), \\(f^\\star={:.6f}\\) with {} nonzero coordinates (reference: {} pairwise steps). ", L, f_star,
+             support, ref.iterations);
+  std::print("Violations of Lemma 1 or of the theorem's bound over all 8,000 iterates: {}.\n\n{}\n", violations, table.to_md());
+}
+```
+// result_begin: markdown
+\(L=218.8\), \(f^\star=32.006462\) with 14 nonzero coordinates (reference: 141 pairwise steps). Violations of Lemma 1 or of the theorem's bound over all 8,000 iterates: 0.
+
+| method | error at k = 10 | k = 100 | k = 2000 | steps to error 1e-12 |
+| :--- | :--- | :--- | :--- | :--- |
+| vanilla, 2/(k+2) | 1.3e+00 | 1.8e-02 | 8.4e-05 | > 2000 |
+| vanilla, line search | 8.8e-01 | 1.7e-01 | 1.5e-02 | > 2000 |
+| away-step | 3.7e-01 | 1.1e-12 | 1.4e-14 | 101 |
+| pairwise | 2.5e-01 | 0.0e+00 | 0.0e+00 | 63 |
+
+\image(figures/frank_wolfe_rates.svg)
+// result_end
+
+\caption(Least squares over the 40-dimensional simplex. Left: error against step on log-log axes, with the theorem's bound \(4L/(k+2)\) in grey. Right: the first 200 steps on a log scale, where a straight line means linear convergence; errors below \(10^{-16}\) are drawn at \(10^{-16}\). Table: error after 10, 100 and 2,000 steps.)
+\alttext(Left panel, log10 error from minus 17 to 6 against log10 k from 0 to 3.4. The grey bound falls from 2.5 to minus 0.4. Both vanilla curves stay below it: the 2 over k plus 2 curve, jagged, falls with slope about minus 2 to minus 4 at k equals 2000; the line-search curve, smooth, falls more slowly to minus 1.8. Away-step and pairwise curves drop steeply after log10 k of 1 and hit the floor near minus 14 to minus 16 by log10 k of 2. Right panel, the first 200 steps with linear k axis: pairwise falls as a nearly straight line to the floor at about k equals 70, away-step at about k equals 120, while both vanilla curves stay between 0 and minus 2.)
+
+Every one of the 8,000 iterates obeys both Lemma 1 and the theorem's bound, which is loose by
+three to four orders of magnitude here. Between \(k=100\) and \(2{,}000\) the line-search errors
+fall with log-log slope about \(-0.8\), slower than \(1/k\), as Canon and Cullum's result
+predicts. The standard step does better, slope about \(-1.8\), in line with the faster open-loop
+rates of Wirth, Kerdreux and Pokutta. So line search made vanilla Frank-Wolfe *slower*: after
+2,000 steps it is 180 times further from optimal. The theorem only promises that line search is
+no worse in the bound, not in practice. The away-step and
+pairwise errors fall on straight lines in the right panel, the linear convergence of
+Lacoste-Julien and Jaggi, reaching \(10^{-12}\) after 101 and 63 steps.
+
+> A dataset example: the nonparametric MLE of a mixture
+
+`dm::datasets::faithful()` records 272 eruptions of the Old Faithful geyser; we model the waiting
+time before each eruption, in minutes, which is bimodal. A *Gaussian location mixture* with known
+\(\sigma\) has density \(\sum_j\pi_j\varphi_\sigma(x-\mu_j)\). The Kiefer-Wolfowitz *nonparametric
+maximum likelihood estimate* (NPMLE) leaves the mixing distribution free: fix a fine grid of
+locations \(\mu_1,\dots,\mu_J\), and choose the weights \(\pi\in\Delta_J\) to maximise the likelihood.
+With \(\varphi_{ij}=\varphi_\sigma(x_i-\mu_j)\) and \(m_i(\pi)=\sum_j\pi_j\varphi_{ij}\) we minimise
+
+$$
+f(\pi)=-\frac1n\sum_{i=1}^n\log m_i(\pi),\qquad\frac{\partial f}{\partial\pi_j}=-D_j(\pi),\quad D_j(\pi)=\frac1n\sum_{i=1}^n\frac{\varphi_{ij}}{m_i(\pi)} .
+$$
+\alttext(f of pi equals minus 1 over n times the sum over i of log m i of pi; the partial derivative of f with respect to pi j equals minus D j of pi, where D j of pi equals 1 over n times the sum over i of phi i j over m i of pi.)
+
+This is convex over the simplex, so Frank-Wolfe applies with `simplex_lmo`. Since
+\(\sum_j\pi_jD_j(\pi)=\frac1n\sum_im_i/m_i=1\), the Frank-Wolfe gap is
+
+$$
+g(\pi)=\langle\nabla f(\pi),\pi-e_{j^\star}\rangle=\max_jD_j(\pi)-1 ,
+$$
+\alttext(g of pi equals the inner product of the gradient with pi minus e j star, which equals the maximum over j of D j of pi, minus 1.)
+
+and Lemma 1 becomes Lindsay's (1983) optimality condition: \(\pi\) is the NPMLE exactly when
+\(D_j(\pi)\le1\) for every \(j\). The classical EM algorithm for the weights is
+\(\pi_j\leftarrow\pi_jD_j(\pi)\), which keeps the weights on the simplex by the same identity.
+EM never sets a weight to zero, while the NPMLE is known to be discrete with few atoms (Lindsay
+1983). Frank-Wolfe with line search is the "vertex direction method" of this literature, and the
+pairwise variant is Böhning's (1986) "vertex exchange method".
+
+`algorithms::gaussian_location_npmle` starts from equal weights on every grid point, each its
+own atom, so that away and pairwise steps can drop grid points; `gaussian_location_em` runs EM
+from the same start. We use \(\sigma=5\) minutes, a little below the spread within each of the two
+clusters, a grid from 40 to 100 minutes in steps of one, a tolerance of \(10^{-6}\) on the gap and
+at most 20,000 iterations.
+
+```{cpp, results="markdown", file="figures/frank_wolfe_faithful.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+namespace alg = dm::algorithms;
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto faithful = dm::datasets::faithful();
+  const auto waiting = faithful.get_column("waiting").values();
+  std::vector<double> grid;
+  for (double t = 40; t <= 100; t += 1) grid.push_back(t);
+  const double sigma = 5.0;
+
+  struct Fit {
+    std::string label;
+    alg::MixingWeightsFit fit;
+    dm::RGB colour;
+  };
+  std::vector<Fit> fits;
+  const auto npmle = [&](alg::FrankWolfeVariant v, alg::FrankWolfeStep s) {
+    return alg::gaussian_location_npmle(waiting, grid, sigma, {.max_iter = 20000, .tolerance = 1e-6, .variant = v, .step = s});
+  };
+  fits.push_back({"vanilla, 2/(k+2)", npmle(alg::FrankWolfeVariant::Vanilla, alg::FrankWolfeStep::Standard), {234, 88, 12}});
+  fits.push_back({"vanilla, line search", npmle(alg::FrankWolfeVariant::Vanilla, alg::FrankWolfeStep::LineSearch), {217, 119, 6}});
+  fits.push_back({"away-step", npmle(alg::FrankWolfeVariant::AwayStep, alg::FrankWolfeStep::LineSearch), {37, 99, 235}});
+  fits.push_back({"pairwise", npmle(alg::FrankWolfeVariant::Pairwise, alg::FrankWolfeStep::LineSearch), {5, 150, 105}});
+  fits.push_back({"EM", alg::gaussian_location_em(waiting, grid, sigma, 20000, 1e-6), {124, 58, 237}});
+
+  std::vector<std::string> name, iters, loglik, gap, support;
+  auto right = dm::graphics::RPlot::create();
+  for (const auto& [label, fit, colour] : fits) {
+    name.push_back(label);
+    iters.push_back(fit.converged ? std::to_string(fit.iterations) : std::format("> {}", fit.iterations));
+    loglik.push_back(std::format("{:.6f}", fit.log_likelihood));
+    gap.push_back(std::format("{:.1e}", fit.gap.back()));
+    int positive = 0;
+    for (const double w : fit.weights) positive += w > 1e-8;
+    support.push_back(std::to_string(positive));
+    std::vector<double> k, lg;
+    for (double t = 0; t <= std::log10(double(fit.gap.size() - 1)); t += 0.02) {
+      const auto i = static_cast<std::size_t>(std::round(std::pow(10.0, t)));
+      k.push_back(std::log10(double(i)));
+      lg.push_back(std::log10(std::max(fit.gap[i], 1e-12)));
+    }
+    right.lines(k, lg, label, colour, 2.0);
+  }
+  right.segments({0.0}, {-6.0}, {4.3}, {-6.0}, dm::RGB{100, 116, 139}, 1.0)
+      .x_limits(0, 4.4)
+      .y_limits(-7, 9)
+      .title("Frank-Wolfe gap")
+      .x_label("log10 iteration")
+      .y_label("log10 (max D_j - 1)");
+
+  const auto& best = fits[3].fit; // pairwise
+  std::string atoms;
+  for (std::size_t j = 0; j < grid.size(); ++j)
+    if (best.weights[j] > 0) atoms += std::format("{}{:.0f} ({:.3f})", atoms.empty() ? "" : ", ", grid[j], best.weights[j]);
+
+  // Density histogram, the fitted mixture density and the atoms (heights scaled to the weights).
+  const double width = 2.5;
+  std::vector<double> mids, dens;
+  for (double lo = 40; lo < 100; lo += width) {
+    int count = 0;
+    for (const double w : waiting) count += w >= lo && w < lo + width;
+    mids.push_back(lo + width / 2);
+    dens.push_back(count / (waiting.size() * width));
+  }
+  std::vector<double> xs, ys;
+  for (double x = 40; x <= 100; x += 0.25) {
+    double v = 0;
+    for (std::size_t j = 0; j < grid.size(); ++j) v += best.weights[j] * std::exp(-0.5 * std::pow((x - grid[j]) / sigma, 2));
+    xs.push_back(x);
+    ys.push_back(v / (sigma * std::sqrt(2 * std::numbers::pi)));
+  }
+  auto left = dm::graphics::RPlot::create();
+  left.bars(mids, dens, "", dm::RGB{191, 219, 254}, width * 0.95).lines(xs, ys, dm::RGB{17, 24, 39}, 2.0);
+  for (std::size_t j = 0; j < grid.size(); ++j)
+    if (best.weights[j] > 0)
+      left.segments({grid[j]}, {0.0}, {grid[j]}, {0.1 * best.weights[j]}, dm::RGB{5, 150, 105}, 3.0);
+  left.x_limits(40, 100).y_limits(0, 0.06).title("NPMLE (pairwise), sigma = 5").x_label("waiting time (min)").y_label("density");
+  dm::graphics::RLayout::create(1, 2).add(left).add(right).size(1100, 500).fit_panels().save_svg("build/frank_wolfe_faithful.svg");
+
+  dm::dstruct::DataFrame table;
+  table.add_column("method", name);
+  table.add_column("iterations", iters);
+  table.add_column("log-likelihood", loglik);
+  table.add_column("final gap", gap);
+  table.add_column("weights > 1e-8", support);
+  std::print("Pairwise atoms, location (weight): {}.\n\n{}\n", atoms, table.to_md());
+}
+```
+// result_begin: markdown
+Pairwise atoms, location (weight): 52 (0.073), 53 (0.205), 62 (0.086), 63 (0.012), 79 (0.412), 80 (0.103), 86 (0.108).
+
+| method | iterations | log-likelihood | final gap | weights > 1e-8 |
+| :--- | :--- | :--- | :--- | :--- |
+| vanilla, 2/(k+2) | > 20000 | -1032.391439 | 9.4e-05 | 24 |
+| vanilla, line search | > 20000 | -1032.401997 | 1.1e-04 | 61 |
+| away-step | 9480 | -1032.391418 | 9.8e-07 | 7 |
+| pairwise | 3977 | -1032.391418 | 8.9e-07 | 7 |
+| EM | 17827 | -1032.391429 | 1.0e-06 | 11 |
+
+\image(figures/frank_wolfe_faithful.svg)
+// result_end
+
+\caption(Old Faithful waiting times. Left: density histogram, the NPMLE mixture density (black) and its atoms (green bars, height proportional to weight). Right: the Frank-Wolfe gap against iteration for each method, with the tolerance \(10^{-6}\) in grey. Table: iterations to the tolerance (at most 20,000), final log-likelihood, gap and number of weights above \(10^{-8}\).)
+\alttext(Left panel: a histogram of waiting times from 43 to 96 minutes with two humps, near 53 and 80 minutes, the right one taller. A smooth black bimodal density follows the histogram, peaking at about 0.024 near 54 minutes and 0.045 near 80 minutes. Seven green bars mark the atoms at 52, 53, 62, 63, 79, 80 and 86 minutes; the tallest is at 79. Right panel: log10 gap from minus 7 to 9 against log10 iteration from 0 to 4.4. The vanilla standard-step curve starts near 9 and falls quickly to 0. All curves then decline roughly linearly; both vanilla curves end near minus 4 at 20,000 iterations, while pairwise drops steeply to minus 6 at about 4,000 iterations, away-step at about 9,500, and EM at about 18,000.)
+
+All three converged methods agree on the log-likelihood to \(10^{-5}\), and the two that certify a
+gap below \(10^{-6}\) with an exact active set agree to all six decimals: \(-1032.391418\). Neither
+vanilla run reaches the tolerance in 20,000 steps. The line-search version is the vertex
+direction method, whose slowness is the reason Böhning proposed the exchange method; it is also
+stuck with every one of the 61 starting weights, since vanilla steps can only shrink them by
+factors \((1-\gamma)\). The standard step jumps to a single grid point at its first step
+(\(\gamma_0=1\)), so it starts sparse, but it still collects 24 points.
+
+The pairwise solution has seven atoms in four groups: 52 and 53, 62 and 63, 79 and 80, and 86
+minutes. Adjacent pairs are the grid's way of representing an atom that lies between two grid
+points, so the mixing distribution has about four support points: the two clusters, each with a
+shoulder. EM reaches the same likelihood within \(10^{-5}\) but leaves 11 weights above
+\(10^{-8}\), because its multiplicative update shrinks unused weights geometrically and never sets
+them to zero. EM's iterations are cheaper than pairwise ones, which need a line search, so EM's
+4.5 times as many iterations do not make it slower in proportion. The difference is the answer: pairwise Frank-Wolfe returns the sparse
+solution itself, with a certificate.
+
+> Conclusion
+
+Frank-Wolfe replaces projection with a linear minimisation, which for simplices, \(\ell_1\) balls
+and vertex lists is a scan. The same oracle call gives a gap that bounds the error (Lemma 1),
+and the standard step guarantees \(f(x_k)-f^\star\le2C_f/(k+2)\). Both held on every iterate we
+checked. The rate is also the method's limit: when the optimum lies inside a face, the vanilla
+method zig-zags and stays sublinear, and exact line search did not help, in two experiments it
+made things worse. The away-step and pairwise variants fix this by keeping the active vertices and
+moving weight off the bad ones. They reached machine precision in tens of steps on the triangle
+and least-squares problems, and produced a sparse, certified NPMLE on the Old Faithful data.
+
+Limits: the guarantees need a smooth objective. The mixture likelihood is not globally smooth
+near the boundary of the simplex, which is why its vanilla runs are so slow. The away and pairwise
+variants need the active set, which costs memory proportional to the number of vertices used. And
+the LMO must be cheap: over sets where linear minimisation is as hard as projection, the method
+loses its advantage.
+
+> References
+
+- Böhning, D. (1986). A vertex-exchange-method in D-optimal design theory. *Metrika*, 33, 337–347.
+- Canon, M. D. and Cullum, C. D. (1968). A tight upper bound on the rate of convergence of Frank-Wolfe algorithm. *SIAM Journal on Control*, 6(4), 509–516.
+- Frank, M. and Wolfe, P. (1956). An algorithm for quadratic programming. *Naval Research Logistics Quarterly*, 3(1–2), 95–110.
+- Jaggi, M. (2013). Revisiting Frank-Wolfe: projection-free sparse convex optimization. *Proceedings of ICML*, 427–435.
+- Kiefer, J. and Wolfowitz, J. (1956). Consistency of the maximum likelihood estimator in the presence of infinitely many incidental parameters. *Annals of Mathematical Statistics*, 27(4), 887–906.
+- Lacoste-Julien, S. and Jaggi, M. (2015). On the global linear convergence of Frank-Wolfe optimization variants. *Advances in Neural Information Processing Systems* 28.
+- Lindsay, B. G. (1983). The geometry of mixture likelihoods: a general theory. *Annals of Statistics*, 11(1), 86–94.
+- Wirth, E., Kerdreux, T. and Pokutta, S. (2023). Acceleration of Frank-Wolfe algorithms with open-loop step-sizes. *Proceedings of AISTATS*, PMLR 206, 77–100.
+- Wolfe, P. (1970). Convergence theory in nonlinear programming. In J. Abadie (ed.), *Integer and Nonlinear Programming*, 1–36. North-Holland.

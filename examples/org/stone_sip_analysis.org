@@ -45,7 +45,7 @@ fast solver for the structured grids of computational fluid dynamics and heat tr
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

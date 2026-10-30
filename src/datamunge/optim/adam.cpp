@@ -1,3 +1,5 @@
+/// @file adam.cpp
+/// @brief Adam native update, trial and stopping implementation.
 #include <datamunge/optim/adam.hpp>
 
 #include <cmath>

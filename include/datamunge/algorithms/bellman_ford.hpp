@@ -1,5 +1,9 @@
 #pragma once
 
+/// @file bellman_ford.hpp
+/// @brief Single-source shortest paths with negative edge weights: Bellman-Ford in passes and in
+///        queue form (SPFA), with negative-cycle detection and extraction.
+
 #include <cstddef>
 #include <tuple>
 #include <vector>
@@ -8,6 +12,7 @@
 
 namespace datamunge::algorithms {
 
+/// Result of bellman_ford() and bellman_ford_queue().
 struct BellmanFordResult {
     /// @brief distance[v] is the weight of a shortest path from the source to v, or
     ///        +infinity if v is unreachable. If has_negative_cycle is true these values are
@@ -19,6 +24,16 @@ struct BellmanFordResult {
     std::vector<std::size_t> predecessor;
     /// @brief True iff a negative-weight cycle is reachable from the source.
     bool has_negative_cycle{false};
+    /// @brief One reachable negative cycle, as vertices in edge order (the edge from the last
+    ///        vertex back to the first closes it); empty when there is none.
+    std::vector<std::size_t> negative_cycle;
+    /// @brief Rounds run: full passes over the edge list for bellman_ford(), or queue "generations"
+    ///        (vertices whose shortest-path tree depth is the same) for bellman_ford_queue().
+    std::size_t passes{0};
+    /// @brief Successful relaxations (distance decreases) in each round.
+    std::vector<std::size_t> relaxations_per_pass;
+    /// @brief Total number of edges examined.
+    std::size_t edge_checks{0};
 };
 
 /// @brief The Bellman-Ford single-source shortest-path algorithm (Bellman 1958; Ford 1956). Given
@@ -43,5 +58,27 @@ struct BellmanFordResult {
 BellmanFordResult bellman_ford(std::size_t n,
                                const std::vector<std::tuple<std::size_t, std::size_t, double>>& edges,
                                std::size_t source);
+
+/// @brief Queue-based Bellman-Ford (Moore 1959; often called SPFA): only the out-edges of
+///        vertices whose distance fell in the previous round are examined.
+///
+/// Gives the same distances as bellman_ford() and usually examines far fewer edges, though the
+/// worst case is still \f$O(VE)\f$. A vertex whose shortest-path tree depth reaches \f$n\f$ proves a
+/// reachable negative cycle, which is then extracted from the predecessor pointers.
+/// @param n number of vertices.
+/// @param edges directed (from, to, weight) triples; weights may be negative.
+/// @param source the source vertex.
+/// @return distances, predecessors, rounds and the negative cycle if any.
+/// @throws std::invalid_argument if the source or an endpoint is out of range.
+BellmanFordResult bellman_ford_queue(std::size_t n,
+                                     const std::vector<std::tuple<std::size_t, std::size_t, double>>& edges,
+                                     std::size_t source);
+
+/// @brief Vertices of the path from the source to @p target, read from the predecessor tree;
+///        empty if @p target is unreachable or the tree is broken by a negative cycle.
+/// @param result output of bellman_ford() or bellman_ford_queue().
+/// @param target the end vertex.
+/// @return the path, starting at the source.
+std::vector<std::size_t> shortest_path_to(const BellmanFordResult& result, std::size_t target);
 
 } // namespace datamunge::algorithms

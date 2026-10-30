@@ -19,3 +19,26 @@ just test
 ```
 
 ## Code Style
+
+Use Doxygen comments on maintained C/C++ definitions, including private helpers,
+enum values, fields, constants, and static state. Describe behavior, constraints,
+ownership, and errors where relevant; put comments at declarations so symbol
+help can display them. Preserve generated documentation through its headers or
+generators rather than editing generated wrappers.
+
+`just docs` uses the `cpp` Nix shell so executable reports get matching installed
+headers and library; Nix builds that library if necessary. The `cpp-tools` shell
+and `just docs-audit` remain independent of an installed core. `just docs-audit` reports
+missing documentation, and `just docs-audit --check --path include/path.hpp`
+checks a finished batch. See the [documentation completion plan](docs/documentation-plan.md)
+for the checklist, scope, and verification requirements.
+Completed source batches are listed in `docs/documented-paths.txt` and enforced
+by CI with `python3 scripts/check_documentation.py --check --completed` after
+fresh XML generation.
+`just docs-hover` verifies representative descriptions through clangd at their
+definitions, and `just test-docs` tests the auditor against real Doxygen output.
+
+The repository's [documentation maintenance skill](skills/maintain-docs/SKILL.md)
+and [library development skill](skills/change-library/SKILL.md) describe the
+repeatable workflow for future changes. Keep contracts current in the same patch
+as the symbols they describe.

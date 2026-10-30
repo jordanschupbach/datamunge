@@ -43,7 +43,7 @@ already here: trade a full comparison for a redundant digit and a bounded remain
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

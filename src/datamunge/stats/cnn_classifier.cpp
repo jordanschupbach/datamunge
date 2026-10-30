@@ -389,10 +389,10 @@ void CNNClassifier::print_summary(std::ostream& os) const {
     os << "Training accuracy: " << format_stat(training_accuracy()) << "\n";
 }
 
-plot::RPlot CNNClassifier::plot_loss_curve() const {
+graphics::RPlot CNNClassifier::plot_loss_curve() const {
     std::vector<double> epochs(loss_curve_.size());
     for (std::size_t i = 0; i < loss_curve_.size(); ++i) epochs[i] = static_cast<double>(i + 1);
-    auto plot = plot::RPlot::create();
+    auto plot = graphics::RPlot::create();
     plot.line(epochs, loss_curve_, "training cross-entropy", {37, 99, 235}, 2.0);
     plot.title("CNN Training Loss Curve").x_label("epoch").y_label("mean cross-entropy");
     return plot;

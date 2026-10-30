@@ -1,9 +1,9 @@
 # Native R NN example. Depthwise separable convolution: equivalence, gradients, rank and cost.
+# CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/depthwise_separable.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
-# CMD: just r-example depthwise_separable
 # Compose HWIM depthwise and 1x1 pointwise filters into a dense HWIO filter,
 # with no intervening activation. Check outputs, input gradients and both
 # factor gradients against dense convolution for multipliers 1/2 and strides
@@ -12,7 +12,7 @@ rm(.nn_common)
 # rank m; SVD quantifies the lost energy. Count parameters and MACs, then time
 # matching dense and separable forwards (two threads). Inputs come from the
 # same std::mt19937 streams as the C++ (bit-identical).
-# C++ reference: examples/cpp/nn/1_convolutional_neural_networks/1.1_fundamentals/depthwise_separable.cpp
+# C++ reference: examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/depthwise_separable.cpp
 
 nn_helper("checks")
 nn_helper("separable")

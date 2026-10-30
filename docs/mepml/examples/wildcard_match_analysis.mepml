@@ -1,0 +1,323 @@
+//? Title: Wildcard Matching: Whole Fields, Byte Semantics and Suffix Rescans
+//? Subtitle: Titanic name filters, an actual last-star trace and a quadratic worst-case family
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A restricted glob has two metacharacters: a star accepts any byte sequence
+and a question mark accepts exactly one byte. We apply this language to
+`Name` fields in `dm::datasets::titanic()`, separating whole-field filtering
+from substring occurrence counting. A trace of the canonical matcher shows
+how the most recent star expands; a separate prefix dynamic program explains
+the accepted language. The same loop's counters expose a quadratic family,
+correcting the tempting inference that monotone star expansion implies
+linear total work. A regression involving a star inside the text illustrates
+why pattern metacharacters must retain their meaning before literal comparison.
+)
+
+\toc
+
+> The data: independent passenger-name fields
+
+The built-in Titanic frame contains 891 passenger records. We treat each
+non-null `Name` cell as an independent byte string; matching never bridges
+two records. Names include surnames, titles, given names and punctuation.
+The query language does not parse those components. The first table and
+length distribution describe the strings being filtered.
+
+```{cpp, results="markdown", file="figures/wildcard_names.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto passengers = dm::datasets::titanic();
+  std::print("{}\n",passengers.select({"PassengerId","Name","Survived"}).head(6).to_md());
+  const auto lengths = passengers | dm::mutate("name_bytes",[](const auto& row) {
+    return static_cast<double>(row.get_string("Name").size());
+  });
+  std::print("\n{}\n",(lengths | dm::summarise(dm::agg::n("records"),dm::agg::mean("name_bytes","mean_bytes"),
+      dm::agg::min("name_bytes","min_bytes"),dm::agg::max("name_bytes","max_bytes"))).to_md(4));
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::hist(lengths.get_column("name_bytes").values(),25,"name lengths")
+      .title("Titanic passenger name fields: byte lengths")
+      .x_label("bytes in one Name field").y_label("passengers")
+      .size(1000,480).save_svg("build/wildcard_names.svg");
+}
+```
+// result_begin: markdown
+| PassengerId | Name | Survived |
+| ---: | :--- | ---: |
+| 1 | Braund, Mr. Owen Harris | 0 |
+| 2 | Cumings, Mrs. John Bradley (Florence Briggs Thayer) | 1 |
+| 3 | Heikkinen, Miss. Laina | 1 |
+| 4 | Futrelle, Mrs. Jacques Heath (Lily May Peel) | 1 |
+| 5 | Allen, Mr. William Henry | 0 |
+| 6 | Moran, Mr. James | 0 |
+
+
+| records | mean_bytes | min_bytes | max_bytes |
+| ---: | ---: | ---: | ---: |
+| 891 | 26.9652 | 12 | 82 |
+
+\image(figures/wildcard_names.svg)
+// result_end
+\caption(First records and the distribution of byte lengths. No name fields in this dataset are omitted; the reusable filter skips and counts null string cells when present.)
+\alttext(A histogram of name-field lengths, with most fields a few dozen bytes long and a tail of longer names.)
+
+> The language, precisely
+
+Matching is case-sensitive and anchored to the complete field. A star `*`
+matches zero or more bytes; `?` matches exactly one. Every other pattern
+byte is literal, including period, comma, slash, brackets and backslash.
+There is no escaping, bracket class, path rule or case folding. This is a
+restricted glob language, not a regular expression, a full shell expansion
+engine, SQL LIKE or the complete `.gitignore` syntax.
+
+Consequently `Mr.*` requires the field to begin with the literal bytes
+`Mr.`. `*Mr.*` permits a prefix and suffix and asks whether those literal
+bytes occur anywhere. A question mark refers to a byte, not a Unicode
+character: UTF-8 `é` needs two question marks. Embedded NUL bytes remain
+ordinary text bytes. If text contains `*`, a pattern star still acts as a
+wildcard. For example, text `*ba` matches pattern `*a`; interpreting their
+first equal-looking stars as a literal match would incorrectly reject it.
+The canonical loop now handles the pattern star before literal comparison.
+
+> A last-star scan and why only one retry point is needed
+
+Use text offset \(i\), pattern offset \(j\), most recent star position
+\(s\), and its current text endpoint \(q\). At a literal or question
+match, advance both offsets. At a pattern star, remember it and first try
+an empty match. On a mismatch, if a star exists, extend its matched text
+by one and restart immediately after that star. Otherwise reject.
+Trailing pattern stars may accept an empty suffix.
+
+Between stars the pattern consists of fixed-length blocks of literals
+and question marks. Choosing the earliest feasible placement of a block
+leaves at least as much suffix text as any later placement. Once another
+star is reached, that newer star can absorb any extra gap needed later;
+there is no benefit in retaining alternative placements before it. This
+exchange argument justifies remembering the most recent retry point.
+It does not claim that all text positions are examined only once.
+
+>> A separate prefix dynamic program describes the same language
+
+Let \(D(i,j)\) mean that pattern prefix \([0,j)\) accepts text prefix
+\([0,i)\). Start with \(D(0,0)=1\), \(D(i,0)=0\) for positive
+\(i\), and \(D(0,j)=D(0,j-1)\) only for a trailing star in that
+empty-text prefix. For positive indices,
+
+$$
+D(i,j)=
+\begin{cases}
+D(i,j-1)\lor D(i-1,j), & p_{j-1}=*,\\
+D(i-1,j-1), & p_{j-1}=?\text{ or }p_{j-1}=t_{i-1},\\
+0, & \text{otherwise}.
+\end{cases}
+$$
+\alttext(A star either matches empty text, using the state to its left, or consumes another byte, using the state above. A question mark or equal literal advances diagonally. Other cases are false.)
+
+The star case has priority over literal equality, including when the text
+byte itself is a star. Induction on prefix lengths proves the recurrence:
+the final action of any accepting match is one of the listed cases, and
+each listed predecessor extends to a valid match. The whole field is
+accepted exactly when \(D(n,m)\) is true. This explanatory grid is not
+the state path executed by the greedy matcher.
+
+```{cpp, results="markdown", file="figures/wildcard_prefixes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto text = dm::datasets::titanic().string_at("Name",2);
+  const std::string pattern = "*Miss.*";
+  const auto work = dm::algorithms::wildcard_match_stats(text,pattern);
+  std::print("| field | pattern | matched | scan steps | literal tests | retries |\n| :--- | :--- | :--- | ---: | ---: | ---: |\n"
+      "| {} | `{}` | {} | {} | {} | {} |\n",text,pattern,work.matched,work.steps,work.literal_tests,work.retries);
+  std::print("\nActual scan transitions (first 14):\n\n{}\n",dm::algorithms::wildcard_match_trace(text,pattern)
+      .select({"event","action","text_before","pattern_before","text_after","pattern_after"}).head(14).to_md());
+  std::filesystem::create_directories("build");
+  dm::algorithms::wildcard_dp_plot(text,pattern).title("Prefix states for a passenger name and *Miss.*")
+      .size(1000,900).save_svg("build/wildcard_prefixes.svg");
+}
+```
+// result_begin: markdown
+| field | pattern | matched | scan steps | literal tests | retries |
+| :--- | :--- | :--- | ---: | ---: | ---: |
+| Heikkinen, Miss. Laina | `*Miss.*` | true | 24 | 16 | 17 |
+
+Actual scan transitions (first 14):
+
+| event | action | text_before | pattern_before | text_after | pattern_after |
+| ---: | :--- | ---: | ---: | ---: | ---: |
+| 0 | star-empty | 0 | 0 | 0 | 1 |
+| 1 | expand-star | 0 | 1 | 1 | 1 |
+| 2 | expand-star | 1 | 1 | 2 | 1 |
+| 3 | expand-star | 2 | 1 | 3 | 1 |
+| 4 | expand-star | 3 | 1 | 4 | 1 |
+| 5 | expand-star | 4 | 1 | 5 | 1 |
+| 6 | expand-star | 5 | 1 | 6 | 1 |
+| 7 | expand-star | 6 | 1 | 7 | 1 |
+| 8 | expand-star | 7 | 1 | 8 | 1 |
+| 9 | expand-star | 8 | 1 | 9 | 1 |
+| 10 | expand-star | 9 | 1 | 10 | 1 |
+| 11 | expand-star | 10 | 1 | 11 | 1 |
+| 12 | literal | 11 | 1 | 12 | 2 |
+| 13 | literal | 12 | 2 | 13 | 3 |
+
+\image(figures/wildcard_prefixes.svg)
+// result_end
+\caption(The actual greedy work and transition trace, followed by an independent DP state diagram for the same field. Green states accept their prefixes; the gold terminal state accepts the full name.)
+\alttext(A prefix grid with pattern bytes across the top and name bytes down the left. The first star permits many text prefixes, literal title bytes advance diagonally, and the final star reaches the accepting lower-right corner.)
+
+> Applying whole-field filters and inspecting work
+
+Each summary row counts matched records once. A field with two occurrences
+of `William` still contributes one match to `*William*`; this differs from
+an occurrence-counting substring search. The work columns aggregate actual
+scan steps, literal byte tests and last-star expansions across records.
+They are not wall-clock timings.
+
+```{cpp, results="markdown", file="figures/wildcard_filters.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto passengers = dm::datasets::titanic();
+  const std::vector<std::string> patterns{"Mr.*","*Mr.*","*Mrs.*","*Miss.*","*Master.*","*William*","*Anna*","*mr.*"};
+  const auto result = dm::algorithms::wildcard_summary(passengers,"Name",patterns);
+  std::print("{}\n",(result.select({"pattern","evaluated_rows","matches","steps","literal_tests","retries"}) |
+      dm::mutate("pattern",[](const auto& row) { return "`"+row.get_string("pattern")+"`"; })).to_md());
+  std::print("\nA filtered subset:\n\n{}\n",dm::algorithms::wildcard_filter(passengers,"Name","*Anna*")
+      .select({"PassengerId","Name","Survived"}).head(6).to_md());
+  std::print("\n| title pattern | matched passengers | survival fraction |\n| :--- | ---: | ---: |\n");
+  for (const auto& pattern : std::vector<std::string>{"*Mr.*","*Mrs.*","*Miss.*","*Master.*"}) {
+    const auto group = dm::algorithms::wildcard_filter(passengers,"Name",pattern);
+    const auto summary = group | dm::summarise(dm::agg::n("passengers"),dm::agg::mean("Survived","survival"));
+    std::print("| `{}` | {} | {:.6f} |\n",pattern,summary.double_at("passengers",0),summary.double_at("survival",0));
+  }
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::barplot(result.get_column("matches").values(),patterns,"matched records")
+      .title("Whole-field glob filters count passenger records")
+      .x_label("restricted glob pattern").y_label("matched passengers").size(1100,480).save_svg("build/wildcard_filters.svg");
+}
+```
+// result_begin: markdown
+| pattern | evaluated_rows | matches | steps | literal_tests | retries |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| `Mr.*` | 891 | 0 | 965 | 965 | 0 |
+| `*Mr.*` | 891 | 517 | 26123 | 18788 | 22474 |
+| `*Mrs.*` | 891 | 125 | 26519 | 21884 | 23524 |
+| `*Miss.*` | 891 | 182 | 26005 | 22671 | 23114 |
+| `*Master.*` | 891 | 40 | 26198 | 24720 | 23745 |
+| `*William*` | 891 | 69 | 25093 | 23419 | 23542 |
+| `*Anna*` | 891 | 17 | 25227 | 24175 | 23956 |
+| `*mr.*` | 891 | 0 | 25276 | 24385 | 23999 |
+
+
+A filtered subset:
+
+| PassengerId | Name | Survived |
+| ---: | :--- | ---: |
+| 23 | McGowan, Miss. Anna "Annie" | 1 |
+| 107 | Salkjelsvik, Miss. Anna Kristine | 1 |
+| 120 | Andersson, Miss. Ellis Anna Maria | 0 |
+| 129 | Peter, Miss. Anna | 1 |
+| 142 | Nysten, Miss. Anna Sofia | 1 |
+| 168 | Skoog, Mrs. William (Anna Bernhardina Karlsson) | 0 |
+
+
+| title pattern | matched passengers | survival fraction |
+| :--- | ---: | ---: |
+| `*Mr.*` | 517 | 0.156673 |
+| `*Mrs.*` | 125 | 0.792000 |
+| `*Miss.*` | 182 | 0.697802 |
+| `*Master.*` | 40 | 0.575000 |
+\image(figures/wildcard_filters.svg)
+// result_end
+\caption(Record counts, actual scan work, a sample filtered frame and observational survival summaries for four title-like patterns. Original rows and columns are retained by the filter.)
+\alttext(A bar chart showing Mr as the largest wrapped title filter, followed by Miss, Mrs and Master, smaller William and Anna matches, and zero matches for the unwrapped prefix and lowercase mr patterns.)
+
+The wrapped and unwrapped `Mr.` patterns show the effect of anchoring;
+the lowercase query shows case sensitivity. Survival fractions describe
+these matched records and their associated demographics. They do not
+establish a causal title effect or turn the glob into a survival model.
+Null strings are distinct from empty strings: a null is skipped, whereas
+an empty string is a valid field matched by an empty pattern or stars.
+
+> Why monotone star expansion does not prove linear time
+
+The star endpoint \(q\) only increases, but the current text offset
+\(i\) can return to the beginning of the suffix being retried. Take
+text \(a^{2r}\) and pattern \(*a^r b\). For each failed candidate,
+the matcher consumes \(r\) matching `a` bytes and tests the final `b`
+again. There are \(r\) such failing suffix attempts, then a final
+\(r\)-byte scan reaches text exhaustion with `b` still unmatched.
+Including the initial star transition, the exact loop-step count is
+
+$$
+C(r)=1+r(r+1)+r=(r+1)^2.
+$$
+\alttext(One initial star step, r retries each requiring r successful comparisons and a failing comparison, and one final r-byte scan give exactly the square of r plus one steps.)
+
+Both input lengths grow linearly with \(r\), so this family is
+quadratic. The general scan bound is \(O((n+1)(m+1))\): at most
+\(n\) star expansions, each allowing another pattern suffix scan, plus
+the initial and trailing work. It avoids exponential enumeration of star
+assignments, yet constant auxiliary storage is compatible with repeated
+work. Optimised glob implementations may use additional strategies; this
+bound describes this actual local loop.
+
+```{cpp, results="markdown", file="figures/wildcard_quadratic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::vector<double> text_lengths,steps,formula;
+  std::print("| r | text bytes | pattern bytes | accepted | steps | literal tests | retries | (r+1)^2 |\n"
+      "| ---: | ---: | ---: | :--- | ---: | ---: | ---: | ---: |\n");
+  for (const std::size_t r : {8,16,32,64,128,256}) {
+    const std::string text(2*r,'a'),pattern="*"+std::string(r,'a')+"b";
+    const auto work = dm::algorithms::wildcard_match_stats(text,pattern);
+    text_lengths.push_back(text.size());steps.push_back(work.steps);formula.push_back((r+1)*(r+1));
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",r,text.size(),pattern.size(),work.matched,
+        work.steps,work.literal_tests,work.retries,(r+1)*(r+1));
+  }
+  std::filesystem::create_directories("build");
+  dm::graphics::RPlot::create().line(text_lengths,formula,"formula",dm::RGB{100,100,100},2)
+      .points(text_lengths,steps,"counted steps",dm::RGB{37,99,235},5)
+      .title("The last-star scan has a quadratic worst-case family")
+      .x_label("text length (2r bytes)").y_label("greedy-loop steps").y_limits(0,80000)
+      .size(1000,480).save_svg("build/wildcard_quadratic.svg");
+}
+```
+// result_begin: markdown
+| r | text bytes | pattern bytes | accepted | steps | literal tests | retries | (r+1)^2 |
+| ---: | ---: | ---: | :--- | ---: | ---: | ---: | ---: |
+| 8 | 16 | 10 | false | 81 | 80 | 8 | 81 |
+| 16 | 32 | 18 | false | 289 | 288 | 16 | 289 |
+| 32 | 64 | 34 | false | 1089 | 1088 | 32 | 1089 |
+| 64 | 128 | 66 | false | 4225 | 4224 | 64 | 4225 |
+| 128 | 256 | 130 | false | 16641 | 16640 | 128 | 16641 |
+| 256 | 512 | 258 | false | 66049 | 66048 | 256 | 66049 |
+\image(figures/wildcard_quadratic.svg)
+// result_end
+\caption(Actual work agrees exactly with the derived count. These synthetic strings isolate the mechanism; they are not representative passenger names or a wall-clock benchmark.)
+\alttext(A rising quadratic work curve with measured step counts on the theoretical reference line as text length increases.)
+
+The full explanatory DP takes \(O((n+1)(m+1))\) storage as well as time.
+Its public helper checks a cell budget before allocating. The trace helper
+also checks its retained-event budget. The ordinary decision and counter
+APIs need constant auxiliary storage and do not build either diagnostic
+artifact.
+
+> Conclusion
+
+Whole-field glob filters are precise about anchoring, byte consumption,
+case and punctuation. On Titanic names they produce reproducible row
+subsets and record-level summaries. A shared scan gives both decisions
+and actual work traces; a separate DP explains acceptance independently.
+Correct pattern-star handling includes stars inside the text. Finally,
+an exact adversarial count makes the performance limit explicit: this
+last-star matcher uses constant workspace but can take quadratic time.
+
+> References
+
+- K. J. Krauss. *Matching Wildcards: An Improved Algorithm for Big Data*.
+  https://developforperformance.com/MatchingWildcards_AnImprovedAlgorithmForBigData.html
+- R. Cox (2017). *Glob Matching Can Be Simple And Fast Too*.
+  https://research.swtch.com/glob
+- Python standard-library documentation, *fnmatch*: the broader shell-style
+  syntax and case-sensitive `fnmatchcase` operation.
+  https://docs.python.org/3/library/fnmatch.html

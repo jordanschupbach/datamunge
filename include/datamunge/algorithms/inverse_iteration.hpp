@@ -17,6 +17,8 @@
 #include <utility>
 #include <vector>
 
+#include <datamunge/algorithms/linear_algebra.hpp>
+
 namespace datamunge::algorithms {
 
 namespace detail {
@@ -64,11 +66,6 @@ inline double eig_normalize(std::vector<double>& v) {
 }
 
 } // namespace detail
-
-struct EigenPair {
-    double              value{0};
-    std::vector<double> vector;
-};
 
 // Eigenvector of `A` for the eigenvalue nearest `mu`, by inverse iteration.
 // Returns the refined eigenvalue (Rayleigh quotient) and the unit eigenvector.

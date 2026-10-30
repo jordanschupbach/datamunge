@@ -142,7 +142,8 @@ void Fixtures() {
 
 void Inspect(const fs::path& dir, const std::string& split) {
   const auto images = dir / (split + "-images-idx3-ubyte"), labels = dir / (split + "-labels-idx1-ubyte");
-  const auto dataset = LoadPair(images, labels);
+  const auto dataset = LoadPair(fs::exists(images) ? images : fs::path(images.string() + ".gz"),
+                                fs::exists(labels) ? labels : fs::path(labels.string() + ".gz"));
   const auto n       = dataset.labels.size(0);
   std::array<std::int64_t, 10> counts{};
   for (auto label : dataset.labels.to_vector<std::int64_t>()) ++counts[static_cast<std::size_t>(label)];
@@ -154,7 +155,7 @@ void Inspect(const fs::path& dir, const std::string& split) {
             << "]\n    class counts:";
   for (auto count : counts) std::cout << ' ' << count;
   std::cout << '\n';
-  if (fs::exists(fs::path(images.string() + ".gz")) && fs::exists(fs::path(labels.string() + ".gz"))) {
+  if (fs::exists(images) && fs::exists(labels) && fs::exists(fs::path(images.string() + ".gz")) && fs::exists(fs::path(labels.string() + ".gz"))) {
     const auto gz = LoadPair(images.string() + ".gz", labels.string() + ".gz");
     check::Require(nn::all(nn::equal(gz.images, dataset.images)).item() == 1 &&
                        nn::all(nn::equal(gz.labels, dataset.labels)).item() == 1,
@@ -190,10 +191,8 @@ int main(int argc, char** argv) {
       Inspect(required, split);
     else
       for (const std::string name : {"mnist", "fashion_mnist"}) {
-        if (fs::exists(root / name / (split + "-images-idx3-ubyte")))
-          Inspect(root / name, split);
-        else
-          std::cout << "  " << name << " not cached; fetch with scripts/fetch_datasets.py " << name << '\n';
+        dataset_assets::EnsureMnist((root / name).string(), name == "fashion_mnist", split == "train" ? "train" : "test");
+        Inspect(root / name, split);
       }
     std::cout << "All IDX loader checks passed.\n";
   } catch (const std::exception& e) {

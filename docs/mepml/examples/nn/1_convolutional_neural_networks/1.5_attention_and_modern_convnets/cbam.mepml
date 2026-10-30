@@ -1,0 +1,476 @@
+//? Title: CBAM: Shared Channel Gates, Spatial Refinement and Visible Adam
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Tensor attention modules expose how global context changes channel or branch weights.
+We check the small module, complete network counts and gradients, then show every update
+of the source-shaped compact CIFAR classifier with tensor Adam.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/cbam.cpp`.
+
+> The method
+
+CBAM first applies the SAME C-to-C/r-to-C biased MLP to the spatial mean and spatial maximum.
+It sums logits BEFORE sigmoid, then scales the input by that channel gate. The refined map
+is pooled across channels using MAX then MEAN, concatenated and filtered by a bias-free 7×7
+convolution with symmetric padding, BN and logistic sigmoid. It therefore refines channels
+before spatial locations. This implementation follows the released BN spatial branch.
+The MLP has no BN; learned dense defaults differ from the spatial He-uniform initializer.
+A controlled Float64 composition uses nontrivial saved spatial BN moments and affine values.
+
+CBAM-ResNet-50 has 28089624 learned scalars: plain ResNet-50 plus 2530992 channel-MLP and
+1600 spatial-gate scalars. The compact CIFAR form has 1646982. Gate visualizations below are
+unfitted operations; they are not a learned localization explanation or segmentation labels.
+
+The backbone retains all sixteen ResNet-50 bottlenecks (3/4/6/3). Each unit ends with a linear
+1×1/BN, its attention gate, shortcut addition and ReLU. He-uniform bias-free convolution
+filters use symmetric padding, and BN learns scale/shift with epsilon 1e-5. A global mean
+and biased classifier finish the model. In grouped variants, the width is
+floor(planes*base_width/64)*cardinality. Stage stride belongs either to the first 1×1 or to
+the spatial filter; grouped layers and replacement hooks receive the actual spatial stride,
+preventing double downsampling when it belongs to the first filter.
+
+Full-width count/forward and backward probes below use 64-pixel inputs to bound computation;
+they retain every block and channel but are not full-resolution ImageNet accuracy evaluations.
+The backward probe freezes moving updates, shifts BN betas away from inactive ReLUs, and checks
+every parameter gradient is finite. Its printed norm range does not guarantee every derivative
+is nonzero for arbitrary data or gates. All numerical model/gradient computations use tensors.
+
+The explicit fit uses the source's quarter-width CIFAR backbone: a 3×3 stride-one stem without
+pooling, all sixteen blocks, stage stride on the first 1×1 and original 32×32 images. It shows
+five batch-sixteen epochs on 64 fit/32 validation/32 official-test rows, tensor Adam(.001), explicit
+kernel L2=.0001/2, padded crops/flips and paired learned/BN checkpoint selection by validation NLL.
+All attention parameters participate in the optimizer. This bounded single-seed run differs
+from the paper's ImageNet schedule and cannot establish attention accuracy superiority.
+
+The editable concept diagram is `diagrams/cbam_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/cbam_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/cbam_concept.tikz > build/cbam_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/cbam_concept.svg build/cbam_concept.dvi > build/cbam_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/cbam_concept.svg)
+// result_end
+\caption(CBAM: Shared Channel Gates, Spatial Refinement and Visible Adam)
+\alttext(Shared mean/max MLP; Channel refinement; then Max and mean maps; 7 by 7 spatial gate; then All sixteen blocks; Explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/cbam_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::models::AttentionResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.stride_on_3x3 = false;
+  cfg.attention     = n::models::ChannelAttention::kCbam;
+  n::ParameterStore p(17), state(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        const auto out      = n::models::AttentionResNet(p, state, image, cfg, false);
+        auto       previous = image;
+        for (std::size_t i = 0; i < out.blocks.size(); ++i) {
+          n::model_stage("Residual block " + std::to_string(i + 1), previous, out.blocks[i]);
+          previous = out.blocks[i];
+        }
+        return out.logits;
+      },
+      "CBAM: Shared Channel Gates, Spatial Refinement and Visible Adam");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 32, 32, 3}), options);
+  diagram.save_svg("build/cbam_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+21 displayed nodes; 1646982 reachable learned values.
+\image(figures/cbam_architecture.svg)
+// result_end
+\caption(Executed cbam tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right cbam architecture with rotated names and exact output shapes.)
+
+> Small module and visible gates
+
+```{cpp, results="markdown", file="figures/cbam_gates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), state(17, type);
+  const auto x =
+      n::sin(.37 * n::arange(0, 2 * 9 * 9 * 16).to(type) + .2).reshape({2, 9, 9, 16});
+  {
+    n::NoGradGuard guard;
+    n::models::Cbam(p, state, "cb", x, 4, false, .9);
+    state.set("cb/spatial/bn/moving_mean", n::full({1}, .2, type));
+    state.set("cb/spatial/bn/moving_var", n::full({1}, 1.3, type));
+    p.set("cb/spatial/bn/gamma", n::full({1}, .7, type));
+    p.set("cb/spatial/bn/beta", n::full({1}, -.1, type));
+  }
+  const auto out = n::models::Cbam(p, state, "cb", x, 4, false, .9);
+  auto mlp = [&](const auto &h) {
+    return n::matmul(n::relu(n::matmul(h, p.at("cb/mlp1/W")) + p.at("cb/mlp1/b")),
+                     p.at("cb/mlp2/W")) +
+           p.at("cb/mlp2/b");
+  };
+  const auto channel = n::sigmoid(mlp(n::mean(x, {1, 2})) + mlp(n::max(x, {1, 2})))
+                           .reshape({2, 1, 1, 16}),
+             refined = x * channel;
+  const auto maps = n::concat({n::max(refined, {3}, true), n::mean(refined, {3}, true)}, 3);
+  auto opts = n::conv_options(1, n::Padding::Explicit);
+  opts.explicit_paddings = {3, 3, 3, 3};
+  const auto filtered = n::conv2d(maps, p.at("cb/spatial/W"), opts);
+  const auto spatial = n::sigmoid((filtered - state.at("cb/spatial/bn/moving_mean")) *
+                                      n::rsqrt(state.at("cb/spatial/bn/moving_var") + 1e-5) *
+                                      p.at("cb/spatial/bn/gamma") +
+                                  p.at("cb/spatial/bn/beta"));
+  if (n::max(n::abs(out.output - refined * spatial)).item() > 1e-12 || p.count() != 248)
+    return 1;
+  auto curve = dm::graphics::RPlot::create();
+  curve
+      .lines(n::arange(0, 16).to_vector<double>(),
+             n::slice_axis(channel, 0, 0, 1).reshape({16}).to_vector<double>(), "channel gate",
+             {37, 99, 235})
+      .title("Shared mean/max MLP gate")
+      .x_label("channel")
+      .y_label("gate")
+      .y_limits(0, 1.2);
+  const auto map = n::slice_axis(out.spatial_gate, 0, 0, 1).reshape({9, 9});
+  std::filesystem::create_directories("build");
+  dm::graphics::RLayout::create(1, 2)
+      .add(curve)
+      .add(n::plot_tensor_map(map, 0, 1).title("Spatial gate after channel refinement"))
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/cbam_gates.svg");
+  std::print("Shared 16-to-4-to-16 MLP plus spatial gate: 248 learned scalars. Explicit "
+             "channel/max-mean/spatial/BN composition agrees to 1e-12 with nontrivial saved "
+             "BN state.\n");
+}
+```
+// result_begin: markdown
+Shared 16-to-4-to-16 MLP plus spatial gate: 248 learned scalars. Explicit channel/max-mean/spatial/BN composition agrees to 1e-12 with nontrivial saved BN state.
+\image(figures/cbam_gates.svg)
+// result_end
+\caption(The same MLP weights process spatial mean and maximum; its logits add before sigmoid. The spatial gate uses channel-refined features, max then mean, a bias-free 7×7 filter and BN. Its pictured [0,1] gate is an unfitted diagnostic, not an explanatory segmentation mask.)
+\alttext(The same MLP weights process spatial mean and maximum; its logits add before sigmoid. The spatial gate uses channel-refined features, max then mean, a bias-free 7×7 filter and BN. Its pictured [0,1] gate is an unfitted diagnostic, not an explanatory segmentation mask.)
+
+> Complete network counts and backward
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::set_num_threads(2);
+  struct Case {
+    int cardinality, base;
+    int64_t count;
+  };
+  for (const auto &c : std::vector<Case>{{1, 64, 28089624}}) {
+    n::ParameterStore p(17), state(17);
+    n::models::AttentionResNetConfig cfg;
+    cfg.attention = n::models::ChannelAttention::kCbam;
+    cfg.cardinality = c.cardinality;
+    cfg.base_width = c.base;
+    cfg.update_stats = false;
+    {
+      n::NoGradGuard guard;
+      const auto out = n::models::AttentionResNet(p, state, n::zeros({1, 64, 64, 3}), cfg);
+      if (p.count() != c.count || out.blocks.size() != 16 ||
+          out.features.shape() != n::Shape{1, 2, 2, 2048})
+        return 1;
+      std::print("Full-width cbam groups {}: {} learned / {} moving scalars; sixteen blocks, "
+                 "64-pixel forward.\n",
+                 c.cardinality, p.count(), state.count());
+      for (const auto &name : p.names())
+        if (name.ends_with("/beta"))
+          p.set(name,
+                (.5 * n::sin(.37 * n::arange(0, p.at(name).numel()).to(n::DType::Float32) +
+                             double(name.size())))
+                    .reshape(p.at(name).shape()));
+    }
+    const auto x = n::sin(.37 * n::arange(0, 2 * 64 * 64 * 3).to(n::DType::Float32))
+                       .reshape({2, 64, 64, 3});
+    const auto before = state.flatten();
+    const auto out = n::models::AttentionResNet(p, state, x, cfg, true);
+    const auto gradients = n::grad(n::mean(n::square(out.logits)), p.parameters());
+    double low = std::numeric_limits<double>::infinity(), high = 0;
+    for (const auto &g : gradients) {
+      const double norm = n::sqrt(n::sum(n::square(g))).item();
+      if (!std::isfinite(norm))
+        return 1;
+      low = std::min(low, norm);
+      high = std::max(high, norm);
+    }
+    if (high == 0 || before != state.flatten())
+      return 1;
+    std::print("Every {} parameter-tensor gradient finite; norm range [{:.12f},{:.9f}], "
+               "moving state frozen.\n",
+               gradients.size(), low, high);
+  }
+}
+```
+// result_begin: markdown
+Full-width cbam groups 1: 28089624 learned / 53152 moving scalars; sixteen blocks, 64-pixel forward.
+Every 273 parameter-tensor gradient finite; norm range [0.000046657678,4.647744179], moving state frozen.
+// result_end
+
+> Original pixels and explicit optimization
+
+```{cpp, results="markdown", file="figures/cbam_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw =
+      n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.;
+  const auto labels = raw.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/cbam_inputs.png", 5, 0., 1., 4, 1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/cbam_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/cbam_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("cifar10", (cache / "cifar10").string());
+
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, 64), ty = n::slice_axis(labels, 0, 0, 64);
+  const auto vx = 2 * n::slice_axis(images, 0, 64, 96) - 1, vy = n::slice_axis(labels, 0, 64, 96);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 32) - 1,
+             qy       = n::slice_axis(official.labels, 0, 0, 32);
+  n::models::AttentionResNetConfig cfg;
+  cfg.classes       = 10;
+  cfg.width_divisor = 4;
+  cfg.small_stem    = true;
+  cfg.stride_on_3x3 = false;
+  cfg.attention     = n::models::ChannelAttention::kCbam;
+  n::ParameterStore p(17), state(17);
+  auto              output = [&](const n::Tensor& image, bool training) {
+    return n::models::AttentionResNet(p, state, image, cfg, training).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 32, 32, 3}), false);
+  }
+  if (p.count() != 1646982)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .001, config);
+  n::BatchOrder batches(64, 16, 2026);
+  n::Generator  augmentation(151);
+  std::filesystem::create_directories("build");
+  const std::string   checkpoint = "build/cbam_best";
+  double              best       = std::numeric_limits<double>::infinity();
+  int                 best_epoch = 0;
+  std::vector<double> epochs, train, validation;
+  for (int epoch = 1; epoch <= 5; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+      std::vector<n::Tensor> transformed;
+      for (int64_t row = 0; row < batch.size(0); ++row) {
+        auto image =
+            n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+        image = n::augment::random_crop(image, 32, 32, augmentation);
+        transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
+      }
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(2 * n::concat(transformed, 0) - 1, true), target);
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    train.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint + "_params.npz");
+      state.save(checkpoint + "_state.npz");
+    }
+  }
+  p.load(checkpoint + "_params.npz");
+  state.load(checkpoint + "_state.npz");
+  n::NoGradGuard guard;
+  const auto     prediction = output(qx, false);
+  const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  const double training_nll = n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
+  const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/cbam_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "cbam / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 32)
+    return 1;
+  auto trace = dm::graphics::RPlot::create();
+  trace.lines(epochs, train, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("cbam quarter-width ResNet-50")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  // Flip before the image helper so its vertical tick is the actual true-class ID.
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted class")
+      .y_label("true class")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2).add(trace).add(counts).size(1100, 470).fit_panels().save_svg(
+      "build/cbam_training.svg");
+  std::print(
+      "64 fit / 32 validation / 32 official-test rows; {} learned scalars, {} moving "
+      "scalars; {} explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
+      "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
+      p.count(),
+      state.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+64 fit / 32 validation / 32 official-test rows; 1646982 learned scalars, 13312 moving scalars; 20 explicit Adam updates.
+Selected epoch 2; validation NLL 2.303205; inference training NLL 2.111003; test NLL 2.335123; test accuracy 0.093750.
+\image(figures/cbam_training.svg)
+// result_end
+\caption(Explicit five-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)
+\alttext(Explicit five-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)
+
+
+> Observed subset result
+
+validation selects epoch 2, with validation NLL 2.303205, inference training NLL
+2.111003, test NLL 2.335123 and 9.375% test accuracy (3 of 32 images). After 20
+updates the held-out NLL is still at the chance level ln 10 ≈ 2.30.
+
+These fixed-seed subset results do not establish a ranking of attention mechanisms or
+deformable variants. Validation selection and training/inference BN differences matter;
+the small test split is not a published benchmark.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/cbam_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+The gate definition, complete topology and visible optimizer loop connect attention to executable
+tensor computation. The subset fit and diagnostic gate maps do not establish published accuracy
+or make the gates causal explanations of image content.
+
+> References
+
+- [Woo et al., CBAM: Convolutional Block Attention Module](https://arxiv.org/abs/1807.06521).
+- [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).

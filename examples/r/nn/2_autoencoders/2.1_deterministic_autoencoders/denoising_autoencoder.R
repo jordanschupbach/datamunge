@@ -1,10 +1,10 @@
 # Native R NN example. Corrupted-input/clean-target denoising autoencoder with a matched ordinary control.
+# CMD: nix develop .#r --command Rscript examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/denoising_autoencoder.R
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)
 rm(.nn_common)
 
-# CMD: just r-example denoising_autoencoder
 # Actual corrupted-input/CLEAN-target autoencoder with fresh epoch noise and matched ordinary AE.
 # Three epochs/default; fixed validation/test Gaussian banks, clean/low/strong/secondseed controls.
 #

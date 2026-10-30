@@ -69,7 +69,7 @@ sorts ascending in place using an \(O(n)\) scratch buffer, and a keyed overload
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // Instrumented copy of the library's top-down merge sort: identical logic and tie-breaking, but it
 // counts every key comparison so we can compare the empirical count to the theoretical bound.

@@ -1,3 +1,6 @@
+/// @file convert.cpp
+/// @brief Copy-based conversion between autodiff tensors and the general linear-algebra tensor type.
+
 #include "datamunge/nn/convert.hpp"
 
 #include "datamunge/nn/ops.hpp"

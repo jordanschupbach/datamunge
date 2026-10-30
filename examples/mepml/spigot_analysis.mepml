@@ -43,7 +43,7 @@ simple and needs only \(O(n)\) small integers of memory.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > Algorithm
@@ -96,7 +96,7 @@ digit \(0\)-\(9\) appears over a longer run.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

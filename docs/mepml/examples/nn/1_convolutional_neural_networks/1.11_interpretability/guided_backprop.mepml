@@ -1,0 +1,437 @@
+//? Title: Guided backpropagation:unchanged logits and a modified backward rule
+//? Requires: vanilla_saliency.mepml
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Gradient-based image visualizations can change when the backward propagation rule changes. Freeze the verified MNIST classifier and compare ordinary derivatives with a positive-positive guided rule,including every sign/zero gate and real-image target/weight controls.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.11_interpretability/guided_backprop.cpp`.
+
+> The method
+
+At a ReLU with pre-activation a and incoming signal g,the guided rule returns g*1[a>0]*1[g>0]. Forward ReLU values remain identical. Because the extra gate depends on the incoming signal,the rule is nonlinear in g and is not the derivative VJP of that forward function.
+
+$$ G(a,g)=g\,1[a>0]1[g>0]. $$
+\alttext(Guided backpropagation retains the incoming signal only when both the forward activation and incoming signal are strictly positive.)
+
+No classifier fitting occurs here. Restore the exact selected and actual-initial arrays produced by the explicit tensor-Adam loop in vanilla_saliency;all model computations and control statistics remain tensors.
+
+The editable concept diagram is `diagrams/guided_backprop_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/guided_backprop_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/guided_backprop_concept.tikz > build/guided_backprop_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/guided_backprop_concept.svg build/guided_backprop_concept.dvi > build/guided_backprop_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/guided_backprop_concept.svg)
+// result_end
+\caption(Guided backpropagation:unchanged logits and a modified backward rule)
+\alttext(Frozen identical;  forward scores; then Positive-positive;  hidden gates; then Target and weight;  sensitivity controls.)
+
+> Frozen classifier and genuine observations
+
+Restore the selected eight-leaf MNIST classifier from the
+[vanilla-saliency report](vanilla_saliency.mepml). That report shows all96tensor
+Adam updates,validation selection,all200held-out errors and the original
+initialization. The model has88%held-out accuracy,including24wrong predictions.
+This report performs zero new training epochs. The genuine data remain the
+same1000/200/200balanced original MNIST observations with source IDs.
+
+All three hidden ReLUs are replaced in an isolated guided execution using the
+SAME learned leaves. Forward values are ordinary ReLU,so every categorical
+score must remain unchanged. We first show the exact gate rule and why it is
+not a linear vector-Jacobian product,then inspect fixed-target real-image signals.
+
+> Executed tensor architecture
+
+The diagram shows the forward MNIST CNN that the attribution or feature-optimization method inspects; the attribution algorithm is explained separately.
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/guided_backprop_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+  n::ParameterStore p(1103);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) { return m::SaliencyCnn(p, image).logits; },
+      "Guided backpropagation:unchanged logits and a modified backward rule");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 28, 28, 1}), options);
+  diagram.save_svg("build/guided_backprop_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+12 displayed nodes; 26826 reachable learned values.
+\image(figures/guided_backprop_architecture.svg)
+// result_end
+\caption(Executed guided backprop tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right guided backprop architecture with rotated names and exact output shapes.)
+
+> Hand-checkable positive/negative/zero gates
+
+Ordinary ReLU reverse propagation is g*1[x>0]. Guided propagation additionally
+requires g>0. Incoming-only deconvolution gating omits the forward x>0test.
+Atx2,the true derivative of a weighted ReLU with incoming-3is-3,but guided
+returns0. For incoming-3and4,separate guided signals sum to4while the guided
+signal of their sum1is1. A derivative VJP must be linear in the incoming vector;
+this rule is not. Finite differences therefore check the ordinary derivative
+and expose the difference;they do not certify guided propagation as a derivative.
+```{cpp, results="markdown", file="figures/guided_backprop_gates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  const auto x =
+      n::from_vector(std::vector<float>{-2, -2, -2, 0, 0, 0, 2, 2, 2}, {9}).requires_grad_();
+  const auto upstream = n::from_vector(std::vector<float>{-3, 0, 4, -3, 0, 4, -3, 0, 4}, {9});
+  const auto guided = n::grad(n::sum(m::GuidedRelu(x) * upstream), {x})[0],
+             ordinary = n::grad(n::sum(n::relu(x) * upstream), {x})[0];
+  std::print(
+      "| x | incoming | ordinary | guided | incoming-only |\n|---:|---:|---:|---:|---:|\n");
+  const auto incoming_only = upstream * n::greater(upstream, 0.).to(n::DType::Float32);
+  for (int i = 0; i < 9; ++i)
+    std::print("| {} | {} | {} | {} | {} |\n", x.at({i}), upstream.at({i}), ordinary.at({i}),
+               guided.at({i}), incoming_only.at({i}));
+  const auto separate = m::GuidedReluBackward(n::ones({1}), n::full({1}, -3)) +
+                        m::GuidedReluBackward(n::ones({1}), n::full({1}, 4));
+  const auto together = m::GuidedReluBackward(n::ones({1}), n::ones({1}));
+  std::print("Guided separate sum {},combined incoming result {}:NOT a linear VJP.\n",
+             separate.item(), together.item());
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(n::arange(0, 9).to_vector<double>(), ordinary.to_vector<double>(), "ordinary",
+              {37, 99, 235})
+      .points(n::arange(0, 9).to_vector<double>(), guided.to_vector<double>(), "guided",
+              {220, 38, 38})
+      .title("All nine sign and zero combinations")
+      .x_label("fixture row ordinal")
+      .y_label("backward signal")
+      .y_limits(-4, 5);
+  plot.save_svg("build/guided_backprop_gates.svg");
+}
+```
+// result_begin: markdown
+| x | incoming | ordinary | guided | incoming-only |
+|---:|---:|---:|---:|---:|
+| -2 | -3 | -0 | -0 | -0 |
+| -2 | 0 | 0 | 0 | 0 |
+| -2 | 4 | 0 | 0 | 4 |
+| 0 | -3 | -0 | -0 | -0 |
+| 0 | 0 | 0 | 0 | 0 |
+| 0 | 4 | 0 | 0 | 4 |
+| 2 | -3 | -3 | -0 | -0 |
+| 2 | 0 | 0 | 0 | 0 |
+| 2 | 4 | 4 | 4 | 4 |
+Guided separate sum 4,combined incoming result 1:NOT a linear VJP.
+\image(figures/guided_backprop_gates.svg)
+// result_end
+\caption(All nine activation/incoming sign combinations,including both boundaries. Ordinary and guided forward values agree,while negative incoming signals at active units distinguish the backward rules.)
+\alttext(All nine activation/incoming sign combinations,including both boundaries. Ordinary and guided forward values agree,while negative incoming signals at active units distinguish the backward rules.)
+
+> Every held-out forward score and all three replacements
+
+The diagnostic count verifies exactly three guided calls per full forward.
+Compare all2000held-out raw logits with ordinary execution on the same batch.
+Source classifier arrays remain unchanged;this isolates the visualization rule.
+Show the same first actual held-out observation of each true digit as before.
+```{cpp, results="markdown", file="figures/guided_backprop_data.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  dm::datasets::prepare_example_data("mnist-assets", cache.string());
+  const auto pools = m::LoadSaliency(cache / "saliency");
+  const auto &fit = pools[0];
+  const auto &validation = pools[1];
+  const auto &test = pools[2];
+
+  n::ParameterStore p(1103);
+  {
+    n::NoGradGuard guard;
+    m::SaliencyCnn(p, n::zeros({1, 28, 28, 1}));
+  }
+  auto predict = [&](const n::Tensor &images) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> parts;
+    for (std::int64_t start = 0; start < images.size(0); start += 32)
+      parts.push_back(
+          m::SaliencyCnn(p, n::slice_axis(images, 0, start,
+                                          std::min<std::int64_t>(start + 32, images.size(0))))
+              .logits);
+    return n::concat(parts, 0);
+  };
+
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_best.npz"))
+    p.set(key, value.clone());
+
+  std::vector<std::int64_t> chosen;
+  const auto labels = test.labels.to_vector<int>();
+  for (int digit = 0; digit < 10; ++digit) {
+    const auto it = std::find(labels.begin(), labels.end(), digit);
+    chosen.push_back(it - labels.begin());
+  }
+  const auto examples = m::SaliencyRows(test, chosen);
+  const auto z = predict(examples.images);
+  const auto sorted = n::argsort(z, true);
+  const auto targets = n::select(sorted, 1, 0).to(n::DType::Int32),
+             runners = n::select(sorted, 1, 1).to(n::DType::Int32);
+
+  const auto before = p.flatten();
+  n::NoGradGuard guard;
+  const auto ordinary = m::SaliencyCnn(p, test.images).logits;
+  const auto count = m::GuidedReluCount().load();
+  const auto guided = m::GuidedSaliencyCnn(p, test.images).logits;
+  const auto parity = n::max(n::abs(ordinary - guided));
+  if (parity.item() != 0 || m::GuidedReluCount().load() - count != 3 || before != p.flatten())
+    return 1;
+  std::print(
+      "All{}held-out raw logits unchanged,max{};exactly3guided gates,all8weights immutable.\n",
+      ordinary.numel(), parity.item());
+  std::print("Original case IDs {},true digits {},fixed targets {},runners {}.\n",
+             examples.source, examples.labels, targets, runners);
+  n::save_image_grid(examples.images, "build/guided_backprop_data.png", 10, 0, 1, 2, .8, 4);
+}
+```
+// result_begin: markdown
+All2000held-out raw logits unchanged,max0;exactly3guided gates,all8weights immutable.
+Original case IDs int32[10] [66921, 63380, 68936, 62280, 62094, 65222, 61209, 61721, 69402, 62570],true digits int32[10] [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],fixed targets int32[10] [0, 1, 2, 3, 9, 5, 6, 7, 8, 9],runners int32[10] [2, 6, 3, 5, 4, 9, 1, 9, 5, 4].
+\image(figures/guided_backprop_data.png)
+// result_end
+\caption(The same ten original MNIST cases,true digit0..9left-to-right. Their source IDs and fixed learned target/runner choices remain explicit;no guided signal affects selection.)
+\alttext(The same ten original MNIST cases,true digit0..9left-to-right. Their source IDs and fixed learned target/runner choices remain explicit;no guided signal affects selection.)
+
+> Guided,ordinary,target and weight controls
+
+Use the same selected store for ordinary and guided execution,and restore two
+independent controls:actual initial weights,and selected weights with only the
+categorical head reset to its actual initial arrays. Compute fixed selected-target and runner-up signals.
+Cosine similarity is a sensitivity control,not an explanation-quality score.
+Guided input signals can still contain both signs because convolution weights
+remain signed;the positive gate acts at hidden ReLUs,not at the final input.
+All signals use one global absolute display peak,with signed zero grey.
+The actual mean guided cosine is.817330223for the runner-up,.758817072for
+full initialization,and.997573187for the initial-head control. The latter
+remains visually very similar despite the changed head,so a sharp-looking
+gallery alone does not demonstrate dependence on the learned class head.
+```{cpp, results="markdown", file="figures/guided_backprop_maps.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+
+  dm::datasets::prepare_example_data("mnist-assets", cache.string());
+  const auto pools = m::LoadSaliency(cache / "saliency");
+  const auto &fit = pools[0];
+  const auto &validation = pools[1];
+  const auto &test = pools[2];
+
+  n::ParameterStore p(1103);
+  {
+    n::NoGradGuard guard;
+    m::SaliencyCnn(p, n::zeros({1, 28, 28, 1}));
+  }
+  auto predict = [&](const n::Tensor &images) {
+    n::NoGradGuard guard;
+    std::vector<n::Tensor> parts;
+    for (std::int64_t start = 0; start < images.size(0); start += 32)
+      parts.push_back(
+          m::SaliencyCnn(p, n::slice_axis(images, 0, start,
+                                          std::min<std::int64_t>(start + 32, images.size(0))))
+              .logits);
+    return n::concat(parts, 0);
+  };
+
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_best.npz"))
+    p.set(key, value.clone());
+
+  std::vector<std::int64_t> chosen;
+  const auto labels = test.labels.to_vector<int>();
+  for (int digit = 0; digit < 10; ++digit) {
+    const auto it = std::find(labels.begin(), labels.end(), digit);
+    chosen.push_back(it - labels.begin());
+  }
+  const auto examples = m::SaliencyRows(test, chosen);
+  const auto z = predict(examples.images);
+  const auto sorted = n::argsort(z, true);
+  const auto targets = n::select(sorted, 1, 0).to(n::DType::Int32),
+             runners = n::select(sorted, 1, 1).to(n::DType::Int32);
+
+  const auto before = p.flatten();
+  n::ParameterStore fresh(1103), head(1103);
+  {
+    n::NoGradGuard guard;
+    m::SaliencyCnn(fresh, n::zeros({1, 28, 28, 1}));
+    m::SaliencyCnn(head, n::zeros({1, 28, 28, 1}));
+  }
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_best.npz"))
+    head.set(key, value.clone());
+  for (const auto &[key, value] : n::load_npz("build/vanilla_saliency_initial.npz")) {
+    fresh.set(key, value.clone());
+    if (key.starts_with("head/"))
+      head.set(key, value.clone());
+  }
+  const auto fresh_before = fresh.flatten(), head_before = head.flatten();
+  auto ordinary = [&](const n::Tensor &x) {
+    return m::SaliencyCnn(p, x).logits;
+  };
+  auto guided = [&](const n::Tensor &x) {
+    return m::GuidedSaliencyCnn(p, x).logits;
+  };
+  const auto vanilla = m::VanillaInputGradient(ordinary, examples.images, targets),
+             signal = m::VanillaInputGradient(guided, examples.images, targets),
+             runner = m::VanillaInputGradient(guided, examples.images, runners),
+             initial = m::VanillaInputGradient(
+                 [&](const n::Tensor &x) {
+                   return m::GuidedSaliencyCnn(fresh, x).logits;
+                 },
+                 examples.images, targets),
+             head_reset = m::VanillaInputGradient(
+                 [&](const n::Tensor &x) {
+                   return m::GuidedSaliencyCnn(head, x).logits;
+                 },
+                 examples.images, targets);
+  const auto repeat = m::VanillaInputGradient(guided, examples.images, targets),
+             single = m::VanillaInputGradient(guided, n::slice_axis(examples.images, 0, 0, 1),
+                                              n::slice_axis(targets, 0, 0, 1));
+  const auto repeated = n::max(n::abs(signal - repeat)),
+             batch = n::max(n::abs(single - n::slice_axis(signal, 0, 0, 1)));
+  if (repeated.item() != 0 || batch.item() > 2e-6 || before != p.flatten() ||
+      fresh_before != fresh.flatten() || head_before != head.flatten())
+    return 1;
+  std::print(
+      "Repeat {},single/batch {:.9g};all24selected/initial/head-reset arrays immutable.\n",
+      repeated.item(), batch.item());
+  std::vector<n::Tensor> cosines;
+  std::print("| control | total guided L1change | mean case cosine |\n|---|---:|---:|\n");
+  for (const auto &[name, value] :
+       std::vector<std::pair<std::string, n::Tensor>>{{"ordinary", vanilla},
+                                                      {"runner", runner},
+                                                      {"actual initial", initial},
+                                                      {"head reset", head_reset}}) {
+    const auto a = signal.to(n::DType::Float64).reshape({10, 784}),
+               b = value.to(n::DType::Float64).reshape({10, 784});
+    const auto denominator = n::sqrt(n::sum(n::square(a), {1}) * n::sum(n::square(b), {1}));
+    const auto cosine =
+        n::sum(a * b, {1}) / n::maximum(denominator, n::full({10}, 1e-30, n::DType::Float64));
+    cosines.push_back(cosine);
+    std::print("| {} | {:.9g} | {:.9g} |\n", name, n::sum(n::abs(signal - value)).item(),
+               n::mean(cosine).item());
+  }
+  const auto peak =
+      n::max(n::stack({n::max(n::abs(signal)), n::max(n::abs(vanilla)), n::max(n::abs(runner)),
+                       n::max(n::abs(initial)), n::max(n::abs(head_reset))},
+                      0))
+          .item();
+  const auto display = n::concat({examples.images, vanilla / (2 * peak) + .5,
+                                  signal / (2 * peak) + .5, runner / (2 * peak) + .5,
+                                  initial / (2 * peak) + .5, head_reset / (2 * peak) + .5},
+                                 0);
+  auto plot = dm::graphics::RPlot::create();
+  for (int i = 0; i < 4; ++i)
+    plot.lines(n::arange(0, 10).to_vector<double>(), cosines[i].to_vector<double>(),
+               std::vector<std::string>{"ordinary", "runner", "initial", "head reset"}[i],
+               std::vector<dm::graphics::RGB>{
+                   {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {147, 51, 234}}[i]);
+  plot.title("Every case target and weight control")
+      .x_label("true digit0..9")
+      .y_label("guided-map cosine")
+      .y_limits(-1.1, 1.2);
+  plot.save_svg("build/guided_backprop_similarity.svg");
+  std::filesystem::copy_file("build/guided_backprop_similarity.svg",
+                             "figures/guided_backprop_similarity.svg",
+                             std::filesystem::copy_options::overwrite_existing);
+  n::save_npz("build/guided_backprop_maps.npz", {{"images", examples.images},
+                                                 {"targets", targets},
+                                                 {"runners", runners},
+                                                 {"vanilla", vanilla},
+                                                 {"guided", signal},
+                                                 {"runner", runner},
+                                                 {"initial", initial},
+                                                 {"head_reset", head_reset}});
+  n::save_image_grid(display, "build/guided_backprop_maps.png", 10, 0, 1, 2, .8, 4);
+}
+```
+// result_begin: markdown
+Repeat 0,single/batch 2.98023224e-08;all24selected/initial/head-reset arrays immutable.
+| control | total guided L1change | mean case cosine |
+|---|---:|---:|
+| ordinary | 351.020233 | 0.635562927 |
+| runner | 190.699829 | 0.817330223 |
+| actual initial | 292.196411 | 0.758817072 |
+| head reset | 34.7883873 | 0.997573187 |
+\image(figures/guided_backprop_maps.png)
+// result_end
+\caption(Columns:true digits0..9. Rows:actual input,ordinary selected-target gradient,guided selected-target signal,guided runner-up signal,guided actual-initial-weight signal,guided head-reset signal. All signed signal rows share one absolute peak,zero grey.)
+\alttext(Columns:true digits0..9. Rows:actual input,ordinary selected-target gradient,guided selected-target signal,guided runner-up signal,guided actual-initial-weight signal,guided head-reset signal. All signed signal rows share one absolute peak,zero grey.)
+
+
+\image(figures/guided_backprop_similarity.svg)
+\caption(All ten per-case cosine comparisons against ordinary,target-switched,full-initial and head-initial signals. Similarity controls diagnose dependence and do not establish explanation quality.)
+\alttext(Four complete cosine curves over the same ten original digit observations.)
+
+> Conclusion
+
+All forward predictions remain unchanged while the visualization signal changes. Exact sign/zero checks expose a nonlinear modified backward rule;real-image target and weight controls assess dependence without turning the guided signal into an ordinary derivative or causal explanation.
+
+> References
+
+- [Springenberg et al.(2014/2015),Striving for Simplicity:The All Convolutional Net](https://arxiv.org/abs/1412.6806).
+- [Simonyan et al.(2013/2014),Deep Inside Convolutional Networks](https://arxiv.org/abs/1312.6034).

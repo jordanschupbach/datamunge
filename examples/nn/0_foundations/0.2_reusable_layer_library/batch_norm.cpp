@@ -116,10 +116,24 @@ void MovingStatistics(int steps) {
   std::mt19937_64          rng(2);
   const std::vector<float> mean = {1, 2, 3, 4}, std = {1, 2, 0.5f, 3};
   std::vector<float>       mm, mv;
+  std::vector<double> expected_mean(4, 0), expected_var(4, 1);
   std::printf("  %6s | %-31s | %-31s\n", "step", "moving mean", "moving var");
   for (int step = 1; step <= steps; ++step) {
     nn::NoGradGuard g;
-    nn::batch_norm(p, stats, "bn1", RandomMatrix(32, 4, rng, mean, std), true, Options(0.9));
+    const auto batch = RandomMatrix(32, 4, rng, mean, std);
+    nn::batch_norm(p, stats, "bn1", batch, true, Options(0.9));
+    // Check the recurrence on the actual samples. Standard-library normal
+    // distributions need not produce identical streams across platforms.
+    for (int c = 0; c < 4; ++c) {
+      double average = 0, variance = 0;
+      for (int row = 0; row < 32; ++row) average += batch.at({row, c});
+      average /= 32;
+      for (int row = 0; row < 32; ++row) variance += std::pow(batch.at({row, c}) - average, 2);
+      expected_mean[c] = .9 * expected_mean[c] + .1 * average;
+      expected_var[c] = .9 * expected_var[c] + .1 * variance / 31;
+      check::Near(stats.at("bn1/moving_mean").at({c}), expected_mean[c], 2e-5, "moving mean recurrence");
+      check::Near(stats.at("bn1/moving_var").at({c}), expected_var[c], 2e-5, "moving unbiased variance recurrence");
+    }
     if (step == 1 || step == 10 || step == 30 || step == 100 || step == steps) {
       mm = stats.at("bn1/moving_mean").to_vector<float>(), mv = stats.at("bn1/moving_var").to_vector<float>();
       std::printf("  %6d |", step);
@@ -130,26 +144,15 @@ void MovingStatistics(int steps) {
     }
   }
   std::printf("  %6s |   1.000   2.000   3.000   4.000 |   1.000   4.000   0.250   9.000\n", "target");
-  // TF prints exactly these values at step 300 (same data stream).
-  const float tf_mean[4] = {1.021f, 2.041f, 2.990f, 4.014f}, tf_var[4] = {1.102f, 4.113f, 0.234f, 8.317f};
-  if (steps == 300) for (int c = 0; c < 4; ++c) {
-    check::Near(mm[c], tf_mean[c], 2e-3, "moving mean vs TF at step 300");
-    check::Near(mv[c], tf_var[c], 2e-3, "moving var vs TF at step 300");
-  }
   // A fresh batch through the inference branch is standardised with the moving stats.
   const Tensor              fresh = RandomMatrix(4096, 4, rng, mean, std);
   const std::vector<float>  y     = nn::batch_norm(p, stats, "bn1", fresh, false, Options(0.9)).to_vector<float>();
-  const float               tf_m[4] = {-0.041f, -0.021f, 0.028f, 0.002f}, tf_s[4] = {0.963f, 0.999f, 1.027f, 1.046f};
   std::printf("  inference on 4096 fresh rows: per-channel mean / std of the output =");
   for (int c = 0; c < 4; ++c) {
     double s = 0, ss = 0;
     for (int i = 0; i < 4096; ++i) s += y[i * 4 + c], ss += double(y[i * 4 + c]) * y[i * 4 + c];
     const double m = s / 4096, sd = std::sqrt(ss / 4096 - m * m);
     std::printf("  %.3f / %.3f", m, sd);
-    if (steps == 300) {
-      check::Near(m, tf_m[c], 2e-3, "inference output mean vs TF");
-      check::Near(sd, tf_s[c], 2e-3, "inference output std vs TF");
-    }
     for (int i = 0; i < 4096; ++i)
       check::Near(y[i * 4 + c], (fresh.at({i, c}) - mm[c]) / std::sqrt(mv[c] + kEps), 1e-5,
                   "inference uses the current moving statistics");
@@ -269,7 +272,7 @@ void Backward() {
   // TF: 4.9e-07, 6.5e-07, 1.1e-07; FD 6.9e-05 (2.9e-05 relative, max 2.40); column sums <= 1.4e-06.
   check::Require(err_x < 1e-5f && err_gamma < 1e-5f && err_beta < 1e-5f, "batch-norm gradient vs closed form");
   check::Require(err_fd / gmax < 1e-3f, "batch-norm gradient vs finite differences");
-  check::Near(gmax, 2.40, 0.01, "max |dL/dx| vs TF");
+  check::Require(std::isfinite(gmax) && gmax > 0, "nonzero finite input gradient");
   check::Require(max_col < 1e-5f, "column sums of dL/dx should vanish");
 }
 

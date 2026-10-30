@@ -50,7 +50,7 @@ matches.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // An instrumented Boyer-Moore that records the shift taken at every alignment, so the report can
 // trace the algorithm's large skips. It mirrors boyer_moore_search exactly; the library function
@@ -284,7 +284,7 @@ code paths that must agree.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 // An instrumented Boyer-Moore that records the shift taken at every alignment, so the report can
 // trace the algorithm's large skips. It mirrors boyer_moore_search exactly; the library function

@@ -2,6 +2,7 @@
 
 #include <numeric>
 
+#include "datamunge/nn/views.hpp"
 #include "detail.hpp"
 
 namespace datamunge::nn {
@@ -155,9 +156,14 @@ Tensor reshape(const Tensor& x, const Shape& shape_in) {
                                 " elements) to " + shape_str(shape_in));
   Tensor out;
   {
-    NoGradGuard  guard;
-    const Tensor packed = nograd(x).contiguous();
-    out                 = make_view(packed, shape, contiguous_strides(shape), packed.offset());
+    NoGradGuard guard;
+    // A view whenever the strides allow one (view_strides); otherwise pack first.
+    if (const auto strides = view_strides(x.shape(), x.strides(), shape)) {
+      out = make_view(nograd(x), shape, *strides, x.offset());
+    } else {
+      const Tensor packed = nograd(x).contiguous();
+      out                 = make_view(packed, shape, contiguous_strides(shape), packed.offset());
+    }
   }
   const Shape in_shape = x.shape();
   record("Reshape", {x}, {out}, [in_shape](const Grads& g, const Grads&) { return Grads{reshape(g[0], in_shape)}; });

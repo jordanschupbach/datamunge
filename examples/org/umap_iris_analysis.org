@@ -281,7 +281,7 @@ uses the same construction.
 The entire analysis is one C++ program against =datamunge=:
 =dstruct::DataFrame= for the data, =stats::UMAP= (and, for §4.4's
 comparisons, =stats::PCA=, =stats::MDS=, =stats::TSNE=, and
-=stats::Isomap=) for the models, and =plot::RPlot= for every figure. No
+=stats::Isomap=) for the models, and =graphics::RPlot= for every figure. No
 external plotting or statistics package is used.
 
 ** Program, presented as a literate whole
@@ -327,7 +327,7 @@ using datamunge::stats::TSNE;
 using datamunge::stats::TSNEOptions;
 using datamunge::stats::UMAP;
 using datamunge::stats::UMAPOptions;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 double pearson(const std::vector<double>& a,
                const std::vector<double>& b) {

@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from pydatamunge import nn
+from pydatamunge.nn_components import dataset_assets
 from pydatamunge.nn_workflows import helper
 
 checks = helper("checks")
@@ -191,6 +192,7 @@ def sentence_rows(d, rows):
 
 def load_sentences(root):
     """Returns (pools [fit, validation, test], KimConfig) from <root>/sentence.npz."""
+    dataset_assets.EnsureSentences(str(root))
     arrays = replay.to_map(nn.load_npz(str(Path(root) / "sentence.npz")))
     config_tensor = npz(arrays, "config")
     checks.require(config_tensor.dtype() == nn.DType.Int32 and list(config_tensor.shape()) == [2],

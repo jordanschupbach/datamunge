@@ -41,7 +41,7 @@ bucket; detecting that a bucket did not shrink and sorting it directly keeps the
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

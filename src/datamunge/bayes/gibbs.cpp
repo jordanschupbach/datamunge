@@ -1,3 +1,6 @@
+/// @file gibbs.cpp
+/// @brief Metropolis-within-Gibbs sampler.
+
 #include <datamunge/bayes/gibbs.hpp>
 
 #include <datamunge/bayes/detail/dual_averaging.hpp>

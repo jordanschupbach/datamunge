@@ -1,3 +1,5 @@
+/// @file proximal_gradient.cpp
+/// @brief ProximalGradient native update, trial and stopping implementation.
 #include <datamunge/optim/proximal_gradient.hpp>
 #include <cmath>
 #include <stdexcept>

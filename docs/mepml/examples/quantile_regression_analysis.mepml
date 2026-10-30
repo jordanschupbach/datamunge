@@ -1,0 +1,1144 @@
+//? Title: Quantile Regression: Modelling the Whole Conditional Distribution
+//? Subtitle: The check loss, the linear program and its dual, an exact simplex against ADMM, and standard errors, derived, checked by hand and by simulation, and applied to New York ozone, using datamunge's stats::QuantileRegression
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Least squares estimates how the mean of a response changes with the predictors. Quantile regression
+estimates how any chosen quantile changes: the 10th percentile, the median, the 90th. This report
+derives the estimator from the check loss, writes it as a linear program and derives its dual. It
+then solves the program with an exact simplex, which the library now uses by default, and with
+ADMM. Hand examples show the counting rule behind a sample quantile, and the ten candidate lines
+through five points. They also show that the optimal line is a step function of \(\tau\), and that it is
+not always unique. On a cloud whose spread fans out with \(x\), the fitted slopes rise from 1.37 at \(\tau=0.1\) to 2.79 at
+\(\tau=0.9\), against true values of 1.36 and 2.64, while least squares reports only the middle. One extreme
+response moves the least-squares slope from 1.50 to 131 and leaves the median slope at exactly 1.50.
+A point of high leverage breaks both. The theory checks out to rounding: exactly \(n\tau-1\) points lie
+below each fit, and the primal and dual objectives agree. The simplex needs 5 to 8 pivots for up
+to 20 000 rows. ADMM stops at its 10 000-iteration cap from 1000 rows up, with losses \(2\times10^{-9}\) to \(4\times10^{-8}\) above the
+optimum. In
+500 simulated samples the IID standard error is 16–17% too small and its 95% intervals cover 86–89%
+of the time; the NID sandwich and the bootstrap cover 94–96%. On the New York ozone data a degree
+Fahrenheit raises the 10th percentile of ozone by 1.4 ppb, the median by 2.1 and the 75th
+percentile by 2.5. The library also gained the dual solution and IID, NID and bootstrap standard
+errors, plus a quantile-process helper. A thin QR replaced a factorisation whose memory grew as \(n^2\).
+Across 120 fits with ties, the simplex reached scikit-learn's linear-programming optimum to
+\(10^{-15}\).
+)
+
+\toc
+
+> The problem
+
+Least squares fits the conditional *mean* \(\mathbb E[Y\mid X=x]\). Often the question is about another part
+of the distribution. A drug may help the sickest patients more than the typical patient. Peak ozone,
+not average ozone, breaks the health standard. The spread of the response may grow with the
+predictor, so that one line through the middle hides how the tails move. Quantile regression
+(Koenker and Bassett, 1978) fits the conditional quantile
+
+$$
+Q_Y(\tau\mid x)=\inf\{y:\Pr(Y\le y\mid X=x)\ge\tau\},\qquad 0<\tau<1,
+$$
+\alttext(Q sub Y of tau given x equals the infimum of y such that the probability that Y is at most y given X equals x is at least tau, for tau between 0 and 1.)
+
+as a linear function \(x^\top\beta(\tau)\), one \(\tau\) at a time. The median is \(\tau=\tfrac12\). Fitting a grid of
+values of \(\tau\) describes the whole conditional distribution without assuming normal errors or a
+constant variance. This report derives the estimator and the linear program behind it, solves that
+program two ways, derives and checks the standard errors, and applies the method to the New York
+ozone data.
+
+> The method
+
+>> The check loss and the sample quantile
+
+The mean of a sample minimises the sum of squared deviations. The \(\tau\)-quantile minimises a sum of
+asymmetric absolute deviations,
+
+$$
+\hat q_\tau=\arg\min_q\sum_{i=1}^n\rho_\tau(y_i-q),\qquad
+\rho_\tau(r)=r\bigl(\tau-\mathbf 1\{r<0\}\bigr)=\begin{cases}\tau r,&r\ge0,\\(\tau-1)r,&r<0.\end{cases}
+$$
+\alttext(q hat tau is the argmin over q of the sum over i of rho tau of y i minus q, where the check loss rho tau of r equals r times tau minus the indicator that r is negative: tau r for r at least 0, and tau minus 1 times r for r negative.)
+
+A point above the fit costs \(\tau\) per unit and a point below costs \(1-\tau\). The objective is convex
+and piecewise linear in \(q\), with a corner at every \(y_i\). Moving \(q\) up by a small amount raises the
+cost of the points at or below \(q\) and lowers that of the points above it, so the right and left
+derivatives are
+
+$$
+D^+(q)=(1-\tau)N_\le(q)-\tau\bigl(n-N_\le(q)\bigr)=N_\le(q)-n\tau,\qquad D^-(q)=N_<(q)-n\tau,
+$$
+\alttext(The right derivative D plus of q equals 1 minus tau times N at most q, minus tau times n minus N at most q, which is N at most q minus n tau. The left derivative D minus of q equals N less than q minus n tau.)
+
+where \(N_\le(q)\) and \(N_<(q)\) count the observations at most \(q\) and below \(q\). A minimiser needs
+\(D^-(q)\le0\le D^+(q)\), that is
+
+$$
+N_<(q)\le n\tau\le N_\le(q).
+$$
+\alttext(N less than q is at most n tau, which is at most N at most q.)
+
+At most a fraction \(\tau\) of the sample lies below \(q\) and at least a fraction \(\tau\) lies at or below it:
+\(q\) is a sample \(\tau\)-quantile. When \(n\tau\) is not an integer the minimiser is the unique order statistic
+\(y_{(\lceil n\tau\rceil)}\). When it is an integer, every \(q\) between \(y_{(n\tau)}\) and \(y_{(n\tau+1)}\) is a minimiser. With
+weights \(w_i\) the counts become sums of weights.
+
+>> Regression quantiles
+
+Replacing the constant \(q\) by \(x_i^\top\beta\) gives the regression quantile
+
+$$
+\hat\beta(\tau)=\arg\min_{\beta\in\mathbb R^p}\sum_{i=1}^nw_i\rho_\tau\bigl(y_i-x_i^\top\beta\bigr).
+$$
+\alttext(beta hat of tau is the argmin over beta in R p of the sum over i of w i times rho tau of y i minus x i transpose beta.)
+
+The population version justifies it. If \(Q_Y(\tau\mid x)=x^\top\beta(\tau)\), the derivative of
+\(\mathbb E\,\rho_\tau(Y-x^\top b)\) in \(b\) is \(\mathbb E\bigl[x\bigl(\Pr(Y<x^\top b\mid x)-\tau\bigr)\bigr]\), which vanishes at \(b=\beta(\tau)\), and the
+objective is convex. Nothing is assumed about the shape of the errors or about how their spread
+depends on \(x\). Two properties follow from the definition. The fit is *equivariant*: replacing \(y\) by
+\(ay+X\gamma\) with \(a>0\) gives \(a\hat\beta(\tau)+\gamma\). And conditional quantiles commute with increasing
+transformations, \(Q_{h(Y)}(\tau\mid x)=h(Q_Y(\tau\mid x))\), which conditional means do not.
+
+>> A linear program and its dual
+
+Split each residual into its positive and negative parts, \(y_i-x_i^\top\beta=u_i-v_i\) with \(u_i,v_i\ge0\). The fit
+is the linear program
+
+$$
+\min_{\beta,u,v}\;\sum_iw_i\bigl(\tau u_i+(1-\tau)v_i\bigr)\quad\text{subject to}\quad X\beta+u-v=y,\;u\ge0,\;v\ge0.
+$$
+\alttext(Minimise over beta, u and v the sum over i of w i times tau u i plus 1 minus tau times v i, subject to X beta plus u minus v equals y, with u and v non-negative.)
+
+With a multiplier \(w_ia_i\) for row \(i\) of the constraint, the Lagrangian is
+\(\sum_iw_i\bigl[(\tau-a_i)u_i+(1-\tau+a_i)v_i+a_iy_i\bigr]-\beta^\top X^\top Wa\). It is bounded below in \(\beta\) only if
+\(X^\top Wa=0\), and in \(u\) and \(v\) only if \(\tau-1\le a_i\le\tau\). The dual is therefore
+
+$$
+\max_a\;\sum_iw_ia_iy_i\quad\text{subject to}\quad X^\top Wa=0,\quad\tau-1\le a_i\le\tau .
+$$
+\alttext(Maximise over a the sum over i of w i a i y i, subject to X transpose W a equal to zero and tau minus 1 at most a i at most tau.)
+
+Complementary slackness says \(a_i=\tau\) for a point above the fit and \(a_i=\tau-1\) for a point below it;
+only points on the fit take values in between. At the optimum the two objectives are equal. The
+shifted values \(a_i+1-\tau\in[0,1]\) are Koenker's *regression rank scores*.
+
+A linear program attains its optimum at a vertex. Here a vertex is a set \(h\) of \(p\) rows with an
+invertible submatrix \(X_h\), and \(\hat\beta=X_h^{-1}y_h\): the fitted plane passes exactly through \(p\) of the
+points. The counting rule for the sample quantile carries over. Write \(a_i=\tau-b_i\), with \(b_i=1\) below
+the fit, \(b_i=0\) above it and \(b_i\in[0,1]\) on it. With an intercept, the first row of \(X^\top a=0\) (unit
+weights) is \(\sum_ia_i=n\tau-N_--\sum_{\text{on}}b_i=0\), so
+
+$$
+N_-\le n\tau\le N_-+N_0 ,
+$$
+\alttext(N minus, the number of points below the fit, is at most n tau, which is at most N minus plus N zero, the number of points on the fit.)
+
+where \(N_-\) and \(N_0\) count the points below and on the fit. With \(N_0=p\), the share of points below the
+fitted plane is within \(p/n\) of \(\tau\).
+
+>> An exact simplex
+
+The library's default solver walks from vertex to vertex. At a vertex \(h\) with residuals \(r=y-X\hat\beta\),
+let \(d_j=X_h^{-1}e_j\). Moving to \(\hat\beta+td_j\) keeps every basis row except \(h_j\) on the fit, and moves the fit at
+row \(h_j\) by \(t\). Along that edge the loss is
+
+$$
+f_j(t)=\sum_iw_i\rho_\tau(r_i-tc_i),\qquad c_i=x_i^\top d_j ,
+$$
+\alttext(f j of t equals the sum over i of w i rho tau of r i minus t c i, where c i equals x i transpose d j.)
+
+convex and piecewise linear, with a corner at each \(t_i=r_i/c_i\). As \(t\to-\infty\) its slope is
+\(-\sum_iw_i\lvert c_i\rvert\kappa_i\), with \(\kappa_i=\tau\) if \(c_i>0\) and \(1-\tau\) otherwise, and crossing corner \(t_i\) raises the
+slope by \(w_i\lvert c_i\rvert\). The minimiser is the first corner, in sorted order, at which the slope turns
+non-negative: a weighted quantile of the \(t_i\), found by one sort. The solver evaluates every edge,
+takes the one that lowers the loss most, swaps the row at its minimising corner into the basis,
+and repeats.
+
+It stops when no edge lowers the loss, and that is a proof of optimality. Using \(X^\top Wa=0\), the right and
+left derivatives of \(f_j\) at \(t=0\) are \(w_{h_j}(a_{h_j}+1-\tau)\) and \(w_{h_j}(a_{h_j}-\tau)\). Neither edge direction
+descends exactly when \(\tau-1\le a_{h_j}\le\tau\), the dual feasibility of the vertex. The basis duals solve
+\(X_h^\top W_ha_h=-\sum_{i\notin h}w_ia_ix_i\), with \(a_i\) fixed by the sign of \(r_i\) off the basis.
+
+Two details make this robust. The start is the \(p\) linearly independent rows nearest the
+least-squares fit, so that few pivots are needed. Ties in the data, such as rounded responses or
+repeated rows, put more than \(p\) points on a fit. At such a *degenerate* vertex an edge can have zero
+length, and the descent can stall short of the optimum. The solver therefore walks on responses
+perturbed by a fixed pseudo-random amount of relative size \(10^{-9}\), which removes the ties. At the
+final basis it recomputes \(\hat\beta\) from the unperturbed responses and certifies it: the basis duals must
+lie in \([\tau-1,\tau]\), and every point clearly off the fit must have the sign its dual value claims. One
+pivot costs \(O(pn\log n)\).
+
+>> ADMM
+
+The alternating direction method of multipliers (Boyd et al., 2011) is the alternative. It splits off
+the residual, \(\min\sum_iw_i\rho_\tau(r_i)\) subject to \(y-X\beta-r=0\), and with a penalty \(\varrho>0\) and scaled dual \(u\)
+iterates
+
+$$
+\beta\leftarrow\arg\min_\beta\lVert y-r+u-X\beta\rVert_2^2,\qquad
+r_i\leftarrow\operatorname{prox}_i(y_i-x_i^\top\beta+u_i),\qquad
+u\leftarrow u+y-X\beta-r .
+$$
+\alttext(beta is updated to the least-squares solution of y minus r plus u against X; each r i to the proximal map of y i minus x i transpose beta plus u i; and u to u plus y minus X beta minus r.)
+
+The first step is least squares with a fixed design, done with one thin QR factorisation. The second
+minimises \(w_i\rho_\tau(r)+\tfrac\varrho2(r-v)^2\), whose solution is an asymmetric soft threshold:
+\(r=v-w_i\tau/\varrho\) if \(v>w_i\tau/\varrho\), \(r=v+w_i(1-\tau)/\varrho\) if \(v<-w_i(1-\tau)/\varrho\), and \(r=0\) in between. At a fixed point,
+\(\varrho u_i\) is a subgradient of \(w_i\rho_\tau\) at \(r_i\), so \(\varrho u_i/w_i\) estimates the dual \(a_i\). Each iteration costs \(O(np)\), but
+convergence on this non-smooth problem is slow, and the answer is only as accurate as the
+stopping tolerances.
+
+>> Standard errors
+
+Under regularity conditions (Koenker, 2005, section 4.2),
+
+$$
+\sqrt n\bigl(\hat\beta(\tau)-\beta(\tau)\bigr)\xrightarrow{d}N\bigl(0,\;\tau(1-\tau)H^{-1}JH^{-1}\bigr),\qquad
+J=\mathbb E[xx^\top],\quad H=\mathbb E\bigl[f_x(x^\top\beta(\tau))\,xx^\top\bigr],
+$$
+\alttext(Root n times beta hat of tau minus beta of tau converges in distribution to a normal with mean zero and covariance tau times 1 minus tau times H inverse J H inverse, where J is the expectation of x x transpose and H the expectation of f x at x transpose beta of tau times x x transpose.)
+
+where \(f_x\) is the conditional density of \(Y\) given \(x\). A sketch: the estimator nearly solves
+\(n^{-1/2}\sum_ix_i(\tau-\mathbf 1\{y_i<x_i^\top\hat\beta\})=0\). The summands at the true \(\beta\) have mean zero and covariance \(\tau(1-\tau)J\),
+and a small change \(\delta\) in \(\beta\) shifts their mean by \(-H\delta\), since \(\Pr(Y<x^\top(\beta+\delta)\mid x)\approx\tau+f_x\,x^\top\delta\).
+Solving for \(\delta\) gives the sandwich. The density at the quantile is unknown and is estimated in one of
+three ways.
+
+- *IID.* If the errors are independent of \(x\), \(f_x\) is one number \(f\), and the covariance reduces to
+  \(\tau(1-\tau)s^2(X^\top X)^{-1}\) with the *sparsity* \(s=1/f(F^{-1}(\tau))\). The sparsity is the slope of the
+  quantile function of the residuals, estimated over \(\tau\pm h\).
+- *NID* (Hendricks and Koenker, 1992). The slope of the conditional quantile function in \(\tau\) is
+  \(1/f_x\), so \(\hat f_i=2h/x_i^\top\bigl(\hat\beta(\tau+h)-\hat\beta(\tau-h)\bigr)\), clamped at zero, and the covariance is
+  \(\tau(1-\tau)\hat H^{-1}\hat J\hat H^{-1}\) with \(\hat H=\sum_i\hat f_ix_ix_i^\top\) and \(\hat J=\sum_ix_ix_i^\top\). This allows the spread to depend on \(x\).
+- *Bootstrap.* Resample the \(n\) rows with replacement, refit, and take the standard deviation of the
+  refitted coefficients.
+
+The bandwidth is Hall and Sheather's (1988)
+\(h=n^{-1/3}z_{0.975}^{2/3}\bigl(1.5\,\phi(z_\tau)^2/(2z_\tau^2+1)\bigr)^{1/3}\) with \(z_\tau=\Phi^{-1}(\tau)\), the default of R's `quantreg`. Intervals
+are estimate \(\pm\,t_{n-p,0.975}\) standard errors.
+
+>> Goodness of fit
+
+Squared-error \(R^2\) belongs to the mean. Koenker and Machado (1999) compare the loss with that of the
+intercept-only fit at the same \(\tau\):
+
+$$
+R^1(\tau)=1-\frac{\sum_iw_i\rho_\tau\bigl(y_i-x_i^\top\hat\beta(\tau)\bigr)}{\sum_iw_i\rho_\tau(y_i-\hat q_\tau)} .
+$$
+\alttext(R 1 of tau equals 1 minus the ratio of the check loss of the fitted model to the check loss of the sample tau quantile.)
+
+It lies in \([0,1]\) and measures the improvement at that quantile, not a share of variance.
+
+>> In the library
+
+`stats::QuantileRegression(data, "y ~ x1 + x2", {.quantile = tau})` resolves the formula like
+`stats::LM` and fits by the simplex; `{.method = QuantileRegressionMethod::ADMM}` selects ADMM.
+`basis()` gives the interpolated rows and `dual_solution()` the dual \(\hat a\). `coefficient_table(method,
+level)` gives IID, NID or bootstrap standard errors with t tests and intervals.
+`stats::quantile_process(data, formula, taus)` fits a grid of \(\tau\), and `check_loss`,
+`hall_sheather_bandwidth` and `bofinger_bandwidth` are free functions.
+
+> Simple examples
+
+>> Five points by hand
+
+Five points, \((1,1),(2,3),(3,2),(4,5),(5,4)\). A fit passes through two of them, so there are only ten
+candidate lines, and the table lists every one with its check loss at \(\tau=0.25\) and \(\tau=0.5\).
+
+```{cpp, results="markdown", file="figures/qr_hand.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<double> x{1, 2, 3, 4, 5}, y{1, 3, 2, 5, 4};
+  dm::dstruct::DataFrame d;
+  d.add_column("x", x);
+  d.add_column("y", y);
+  const auto loss = [&](double b0, double b1, double tau) {
+    double total = 0.0;
+    for (std::size_t i = 0; i < 5; ++i) total += dm::stats::check_loss(y[i] - b0 - b1 * x[i], tau);
+    return total;
+  };
+  // Every line through two of the points. Its loss is linear in tau:
+  // sum rho_tau(r_i) = tau * sum r_i + sum_{r_i < 0} |r_i| = A + B tau.
+  std::vector<std::string> through;
+  std::vector<double> b0s, b1s, as, bs, l25, l50;
+  for (std::size_t i = 0; i < 5; ++i)
+    for (std::size_t j = i + 1; j < 5; ++j) {
+      const double b1 = (y[j] - y[i]) / (x[j] - x[i]), b0 = y[i] - b1 * x[i];
+      double sa = 0.0, sb = 0.0;
+      for (std::size_t k = 0; k < 5; ++k) {
+        const double r = y[k] - b0 - b1 * x[k];
+        sb += r, sa += r < 0 ? -r : 0.0;
+      }
+      through.push_back(std::format("{} and {}", i + 1, j + 1));
+      b0s.push_back(b0), b1s.push_back(b1), as.push_back(sa), bs.push_back(sb);
+      l25.push_back(loss(b0, b1, 0.25)), l50.push_back(loss(b0, b1, 0.5));
+    }
+  dm::dstruct::DataFrame table;
+  table.add_column("line through points", through);
+  table.add_column("intercept", b0s);
+  table.add_column("slope", b1s);
+  table.add_column("A", as);
+  table.add_column("B", bs);
+  table.add_column("loss, tau = 0.25", l25);
+  table.add_column("loss, tau = 0.5", l50);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 4;
+  std::print("{}\n\n", table.to_md(md));
+
+  // The lower envelope of the ten loss lines A + B tau over 0 < tau < 1.
+  std::size_t current = 0;
+  for (std::size_t l = 1; l < as.size(); ++l)
+    if (as[l] < as[current] - 1e-12 || (std::fabs(as[l] - as[current]) < 1e-12 && bs[l] < bs[current])) current = l;
+  std::vector<std::pair<double, std::size_t>> pieces{{0.0, current}};
+  for (double from = 0.0;;) {
+    double next = 1.0;
+    std::size_t to = current;
+    for (std::size_t l = 0; l < as.size(); ++l)
+      if (bs[l] < bs[current] - 1e-12) {
+        const double t = (as[l] - as[current]) / (bs[current] - bs[l]);
+        // At a tie between several crossings, the steepest line (smallest B) is the one below after it.
+        if (t > from + 1e-12 && (t < next - 1e-12 || (t < next + 1e-12 && to != current && bs[l] < bs[to]))) next = t, to = l;
+      }
+    if (to == current) break;
+    from = next, current = to;
+    pieces.push_back({from, current});
+  }
+  std::vector<std::string> ranges;
+  for (std::size_t k = 0; k < pieces.size(); ++k) {
+    const double lo = pieces[k].first, hi = k + 1 < pieces.size() ? pieces[k + 1].first : 1.0;
+    const double mid = 0.5 * (lo + hi);
+    const dm::stats::QuantileRegression fit(d, "y ~ x", {.quantile = mid});
+    std::string rows;
+    for (const std::size_t i : fit.basis()) rows += std::format("{}{}", rows.empty() ? "" : " and ", i + 1);
+    ranges.push_back(std::format("{:g} < tau < {:g}", lo, hi));
+    std::string tied;
+    for (std::size_t l = 0; l < as.size(); ++l)
+      if (l != pieces[k].second && std::fabs(as[l] - as[pieces[k].second]) < 1e-12 && std::fabs(bs[l] - bs[pieces[k].second]) < 1e-12)
+        tied += std::format(" (tied at every tau with the line through {})", through[l]);
+    std::print("- \\({:.4f}<\\tau<{:.4f}\\): line through {}{}; the simplex at \\(\\tau={:.4f}\\) passes through {}.\n", lo, hi,
+               through[pieces[k].second], tied, mid, rows);
+  }
+  std::print("\n");
+  for (const double tau : {0.25, 0.5}) {
+    const dm::stats::QuantileRegression fit(d, "y ~ x", {.quantile = tau});
+    std::string duals;
+    for (const double a : fit.dual_solution()) duals += std::format("{}{:.4g}", duals.empty() ? "" : ", ", a);
+    std::print("- \\(\\tau={}\\): intercept {:.4f}, slope {:.4f}, loss {:.4f}; dual \\(\\hat a=({})\\); {} pivots; "
+               "certified optimal: {}.\n",
+               tau, fit.coefficients()[0], fit.coefficients()[1], fit.objective(), duals, fit.iterations(),
+               fit.converged() ? "yes" : "no");
+  }
+
+  // Left: the loss of a constant q (no slope) at three levels. Right: the optimal lines and their tau ranges.
+  const dm::RGB ink{17, 24, 39}, blue{37, 99, 235}, red{220, 38, 38}, grey{148, 163, 184};
+  const std::vector<std::pair<double, dm::RGB>> levels{{0.25, blue}, {0.5, ink}, {0.75, red}};
+  auto left = dm::graphics::RPlot::create();
+  for (const auto& [tau, colour] : levels) {
+    std::vector<double> qs, ls;
+    for (double q = 0.0; q <= 6.0 + 1e-9; q += 0.01) {
+      double total = 0.0;
+      for (const double v : y) total += dm::stats::check_loss(v - q, tau);
+      qs.push_back(q), ls.push_back(total);
+    }
+    const dm::stats::QuantileRegression constant(d, "y ~ 1", {.quantile = tau});
+    left.lines(qs, ls, std::format("tau = {}", tau), colour, 2.0)
+        .points({constant.coefficients()[0]}, {constant.objective()}, colour, 9.0);
+  }
+  left.x_limits(0.0, 6.0).y_limits(0.0, 16.0).title("Loss of a constant fit q").x_label("q").y_label("sum of check losses");
+  auto right = dm::graphics::RPlot::create();
+  right.points(x, y, "", grey, 9.0);
+  const std::vector<dm::RGB> piece_colours{blue, ink, red, dm::RGB{22, 163, 74}, dm::RGB{147, 51, 234}};
+  for (std::size_t k = 0; k < pieces.size(); ++k) {
+    const std::size_t l = pieces[k].second;
+    right.lines({0.5, 5.5}, {b0s[l] + 0.5 * b1s[l], b0s[l] + 5.5 * b1s[l]}, ranges[k], piece_colours[k % 5], 2.0);
+  }
+  right.x_limits(0.5, 5.5).y_limits(-1.0, 9.0).title("Optimal lines over tau").x_label("x").y_label("y");
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(left);
+  fig.add(right);
+  fig.size(1100, 460).fit_panels();
+  fig.save_svg("build/qr_hand.svg");
+}
+```
+// result_begin: markdown
+| line through points | intercept | slope | A | B | loss, tau = 0.25 | loss, tau = 0.5 |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 and 2 | -1.0000 | 2.0000 | 10.0 | -10.0000 | 7.5000 | 5.0000 |
+| 1 and 3 | 0.5000 | 0.5000 | 0.0 | 5.0000 | 1.2500 | 2.5000 |
+| 1 and 4 | -0.3333 | 1.3333 | 4.0 | -3.3333 | 3.1667 | 2.3333 |
+| 1 and 5 | 0.2500 | 0.7500 | 0.5 | 2.5000 | 1.1250 | 1.7500 |
+| 2 and 3 | 5.0000 | -1.0000 | 3.0 | 5.0000 | 4.2500 | 5.5000 |
+| 2 and 4 | 1.0000 | 1.0000 | 5.0 | -5.0000 | 3.7500 | 2.5000 |
+| 2 and 5 | 2.3333 | 0.3333 | 3.0 | -1.6667 | 2.5833 | 2.1667 |
+| 3 and 4 | -7.0000 | 3.0000 | 4.0 | 5.0000 | 5.2500 | 6.5000 |
+| 3 and 5 | -1.0000 | 1.0000 | 0.0 | 5.0000 | 1.2500 | 2.5000 |
+| 4 and 5 | 9.0000 | -1.0000 | 15.0 | -15.0000 | 11.2500 | 7.5000 |
+
+
+- \(0.0000<\tau<0.2000\): line through 1 and 3 (tied at every tau with the line through 3 and 5); the simplex at \(\tau=0.1000\) passes through 1 and 3.
+- \(0.2000<\tau<0.6000\): line through 1 and 5; the simplex at \(\tau=0.4000\) passes through 1 and 5.
+- \(0.6000<\tau<1.0000\): line through 2 and 4; the simplex at \(\tau=0.8000\) passes through 2 and 4.
+
+- \(\tau=0.25\): intercept 0.2500, slope 0.7500, loss 1.1250; dual \(\hat a=(0.125, 0.25, -0.75, 0.25, 0.125)\); 0 pivots; certified optimal: yes.
+- \(\tau=0.5\): intercept 0.2500, slope 0.7500, loss 1.7500; dual \(\hat a=(-0.25, 0.5, -0.5, 0.5, -0.25)\); 0 pivots; certified optimal: yes.
+\image(figures/qr_hand.svg)
+// result_end
+
+\caption(Left: the summed check loss of a constant fit \(q\) to the five responses, at three levels of \(\tau\); dots mark the sample quantiles 2, 3 and 4. Right: the five points and the line that is optimal over each range of \(\tau\).)
+\alttext(Left: three V-shaped piecewise-linear curves over q from 0 to 6 with corners at the responses 1 to 5. The blue tau 0.25 curve has its minimum 2.25 at q equals 2, the black tau 0.5 curve its minimum 3 at q equals 3, and the red tau 0.75 curve its minimum 2.25 at q equals 4. Right: five grey points at (1,1), (2,3), (3,2), (4,5), (5,4), with a blue line through the first and third (tau below 0.2), a black line through the first and fifth (tau from 0.2 to 0.6), and a red line through the second and fourth (tau above 0.6).)
+
+Each line's loss is linear in \(\tau\). With residuals \(r_i\), \(\sum_i\rho_\tau(r_i)=A+B\tau\) with \(A=\sum_{r_i<0}\lvert r_i\rvert\) and \(B=\sum_ir_i\).
+For the line through points 1 and 5, \(y=0.25+0.75x\), the residuals are \(0,1.25,-0.5,1.75,0\), so \(A=0.5\),
+\(B=2.5\), and the loss is 1.125 at \(\tau=0.25\) and 1.75 at \(\tau=0.5\). The regression quantile at each \(\tau\) is the
+lowest of the ten lines \(A+B\tau\). The table shows that the line through 1 and 5 is lowest at both
+levels, so the two fits are the same line. The lower envelope has three pieces. For \(\tau<0.2\) the
+best loss is \(5\tau\), from the line through 1 and 3, which never has a point below it. At \(\tau=0.2\) it
+meets \(0.5+2.5\tau\), the line through 1 and 5. At \(\tau=0.6\) three lines tie at loss 2, and above it the
+line through 2 and 4 is lowest. The simplex, run at the middle of each range, returns the same
+lines. The regression quantile is therefore a step function of \(\tau\), constant between the levels at
+which the optimal basis changes.
+
+It is not always unique. The lines through 1 and 3 and through 3 and 5 have the same \(A=0\) and
+\(B=5\), so they tie at every \(\tau<0.2\). In fact every line through the point \((3,2)\) with a slope between
+0.5 and 1 keeps the other four points on or above it, and its loss is then \(\tau\) times the sum of its
+residuals, which is 5 for all such lines. The whole range of slopes is optimal, and the simplex
+reports one end of it.
+
+The dual values at \(\tau=0.25\) follow the rules derived above. Points 2 and 4 lie above the fit, so
+\(\hat a=\tau=0.25\), and point 3 lies below it, so \(\hat a=\tau-1=-0.75\). The two points on the fit share the rest,
+\(0.125\) each, inside \([-0.75,0.25]\). By hand, \(\sum\hat a_i=0\), \(\sum\hat a_ix_i=0.125+0.5-2.25+1+0.625=0\), and
+\(\sum\hat a_iy_i=0.125+0.75-1.5+1.25+0.5=1.125\), equal to the loss. No pivot was needed: the least-squares
+line \(y=0.6+0.8x\) is nearest to points 1 and 5 (residuals \(-0.4\) and \(-0.6\)), and that start was already
+optimal. In the left panel the constant fits behave as the counting rule says. With \(n=5\), \(n\tau\) is
+1.25, 2.5 and 3.75, so the minimisers are the 2nd, 3rd and 4th order statistics, 2, 3 and 4.
+
+>> A fanning cloud
+
+Five hundred points with \(x\) uniform on \([0,10]\) and \(y=1+2x+(1+0.5x)z\), \(z\) standard normal. The spread grows
+with \(x\), so the true conditional quantiles are lines that fan out:
+\(Q(\tau\mid x)=(1+z_\tau)+(2+0.5z_\tau)x\). Least squares estimates only the middle line, with slope 2.
+
+```{cpp, results="markdown", file="figures/qr_fan.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <random>
+
+int main() {
+  std::filesystem::create_directories("build");
+  std::mt19937_64 gen(1);
+  std::normal_distribution<double> z;
+  std::uniform_real_distribution<double> u(0.0, 10.0);
+  std::vector<double> x(500), y(500);
+  for (std::size_t i = 0; i < 500; ++i) x[i] = u(gen), y[i] = 1.0 + 2.0 * x[i] + (1.0 + 0.5 * x[i]) * z(gen);
+  dm::dstruct::DataFrame d;
+  d.add_column("x", x);
+  d.add_column("y", y);
+
+  const std::vector<double> taus{0.1, 0.25, 0.5, 0.75, 0.9};
+  const std::vector<dm::RGB> colours{{37, 99, 235}, {96, 165, 250}, {17, 24, 39}, {248, 113, 113}, {220, 38, 38}};
+  std::vector<double> b0_true, b0, b1_true, b1, se1, below;
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(x, y, "", dm::RGB{203, 213, 225}, 3.0);
+  for (std::size_t k = 0; k < taus.size(); ++k) {
+    const double tau = taus[k], zt = dm::random::normal_quantile(tau);
+    const dm::stats::QuantileRegression fit(d, "y ~ x", {.quantile = tau});
+    const auto table = fit.coefficient_table();
+    b0_true.push_back(1.0 + zt), b0.push_back(fit.coefficients()[0]);
+    b1_true.push_back(2.0 + 0.5 * zt), b1.push_back(fit.coefficients()[1]), se1.push_back(table.std_error[1]);
+    double n_below = 0.0;
+    for (const double r : fit.residuals()) n_below += r < 0.0;
+    below.push_back(n_below / 500.0);
+    plot.lines({0.0, 10.0}, {1.0 + zt, 1.0 + zt + 10.0 * (2.0 + 0.5 * zt)}, k == 0 ? "true quantiles" : "",
+               dm::RGB{100, 116, 139}, 1.0);
+    plot.lines({0.0, 10.0}, {b0.back(), b0.back() + 10.0 * b1.back()}, std::format("tau = {}", tau), colours[k], 2.5);
+  }
+  const dm::stats::LM ols(d, "y ~ x");
+  plot.lines({0.0, 10.0}, {ols.coefficients()[0], ols.coefficients()[0] + 10.0 * ols.coefficients()[1]},
+             "least squares", dm::RGB{22, 163, 74}, 2.0);
+  dm::dstruct::DataFrame table;
+  table.add_column("tau", taus);
+  table.add_column("true intercept", b0_true);
+  table.add_column("intercept", b0);
+  table.add_column("true slope", b1_true);
+  table.add_column("slope", b1);
+  table.add_column("NID se of slope", se1);
+  table.add_column("share below fit", below);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 3;
+  md.column_digits = {{"tau", 2}};
+  std::print("{}\n\nLeast squares: intercept {:.3f}, slope {:.3f}.\n", table.to_md(md), ols.coefficients()[0],
+             ols.coefficients()[1]);
+  plot.x_limits(0.0, 10.0).y_limits(-5.0, 58.0).title("Quantile lines in a fanning cloud").x_label("x").y_label("y");
+  plot.size(800, 560);
+  plot.save_svg("build/qr_fan.svg");
+}
+```
+// result_begin: markdown
+| tau | true intercept | intercept | true slope | slope | NID se of slope | share below fit |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.10 | -0.282 | -0.438 | 1.359 | 1.368 | 0.077 | 0.098 |
+| 0.25 | 0.326 | 0.494 | 1.663 | 1.665 | 0.081 | 0.248 |
+| 0.50 | 1.000 | 0.930 | 2.000 | 2.010 | 0.060 | 0.498 |
+| 0.75 | 1.674 | 1.629 | 2.337 | 2.407 | 0.095 | 0.748 |
+| 0.90 | 2.282 | 2.231 | 2.641 | 2.792 | 0.118 | 0.898 |
+
+
+Least squares: intercept 1.040, slope 2.035.
+\image(figures/qr_fan.svg)
+// result_end
+
+\caption(Five hundred points with spread \(1+0.5x\). Coloured lines: regression quantiles at five levels; thin grey lines: the true conditional quantiles; green: least squares, almost on top of the median.)
+\alttext(A cloud of 500 light grey points over x from 0 to 10, narrow near x equals 0 (y about 1) and wide near x equals 10 (y from about 3 to 33). Five coloured lines fan out from near y equals 0 to 2 at x equals 0: the tau 0.1 line ends near 13 at x equals 10, tau 0.25 near 17, tau 0.5 near 21, tau 0.75 near 26 and tau 0.9 near 30. Thin grey true quantile lines lie close to the coloured ones. The green least-squares line nearly coincides with the median line.)
+
+The fitted slopes increase with \(\tau\) as the true ones do, from 1.368 at \(\tau=0.1\) (true 1.359) to 2.792 at
+\(\tau=0.9\) (true 2.641). The largest error, at \(\tau=0.9\), is 0.151, or 1.3 of its NID standard errors. The
+upper quantiles are estimated less precisely than the median (standard errors 0.118 and 0.060),
+because few points lie in the tail and they are spread out. Least squares gives slope 2.035: a
+good estimate of the median line, which here equals the mean, and silent about the fan. The share
+of points below each fit is \(0.098\), \(0.248\), \(0.498\), \(0.748\) and \(0.898\): exactly \((n\tau-1)/n\) in every case, as the
+next section explains.
+
+>> One wild point
+
+Twenty-one points close to the line \(y=5+1.5x\), \(x=0,\dots,20\). The last point is then moved, first
+vertically and then far to the right.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::vector<std::string> names;
+  std::vector<double> ols_slope, ols_intercept, med_slope, med_intercept;
+  const auto run = [&](const std::string& name, double last_x, double last_y) {
+    std::vector<double> x, y;
+    for (int i = 0; i <= 20; ++i) x.push_back(i), y.push_back(5.0 + 1.5 * i + ((i % 3) - 1) * 0.2);
+    x.back() = last_x, y.back() = last_y;
+    dm::dstruct::DataFrame d;
+    d.add_column("x", x);
+    d.add_column("y", y);
+    const dm::stats::LM ols(d, "y ~ x");
+    const dm::stats::QuantileRegression median(d, "y ~ x");
+    names.push_back(name);
+    ols_intercept.push_back(ols.coefficients()[0]), ols_slope.push_back(ols.coefficients()[1]);
+    med_intercept.push_back(median.coefficients()[0]), med_slope.push_back(median.coefficients()[1]);
+  };
+  run("as generated, (20, 35.2)", 20.0, 35.2);
+  run("last y = 100", 20.0, 100.0);
+  run("last y = 10000", 20.0, 10000.0);
+  run("last y = -10000", 20.0, -10000.0);
+  run("last point (200, 35.2)", 200.0, 35.2);
+  run("last point (200, 305), on the line", 200.0, 305.0);
+  dm::dstruct::DataFrame table;
+  table.add_column("data", names);
+  table.add_column("least squares intercept", ols_intercept);
+  table.add_column("least squares slope", ols_slope);
+  table.add_column("median intercept", med_intercept);
+  table.add_column("median slope", med_slope);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 3;
+  std::print("{}\n", table.to_md(md));
+}
+```
+// result_begin: markdown
+| data | least squares intercept | least squares slope | median intercept | median slope |
+| :--- | ---: | ---: | ---: | ---: |
+| as generated, (20, 35.2) | 4.964 | 1.504 | 5.000 | 1.500 |
+| last y = 100 | -0.366 | 2.345 | 5.000 | 1.500 |
+| last y = 10000 | -814.652 | 130.917 | 5.000 | 1.500 |
+| last y = -10000 | 830.370 | -128.824 | 5.000 | 1.500 |
+| last point (200, 35.2) | 17.947 | 0.111 | 17.504 | 0.088 |
+| last point (200, 305), on the line | 4.989 | 1.500 | 5.000 | 1.500 |
+// result_end
+
+Moving the last response up to 100 or 10 000, or down to \(-10000\), leaves the median line at
+\(y=5+1.5x\) to every printed digit. Least squares follows the point, to a slope of 130.9 or \(-128.8\). The
+median line has nine or ten points on each side whatever the last point does, so the
+point only contributes its sign to the first-order conditions. This resistance is to the
+*response*. Moving the last point to \(x=200\) at its old height gives it leverage. Both fits then swing
+towards it, to slopes 0.111 and 0.088. A single row far out in \(x\) can carry a line through itself,
+and the check loss offers no protection, because the optimal line passes through \(p\) points and that
+row is one of them. At \((200,305)\), on the line, the point is harmless to both fits.
+
+> Checking the theory
+
+>> Counting points and closing the duality gap
+
+The fanning cloud again, at seven levels. The table counts the points below, on and above the
+fitted line, evaluates the dual objective \(\sum_i\hat a_iy_i\) and the largest entry of \(X^\top\hat a\), and checks the
+bounds \(N_-\le n\tau\le N_-+N_0\).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <random>
+
+int main() {
+  std::mt19937_64 gen(1);
+  std::normal_distribution<double> z;
+  std::uniform_real_distribution<double> u(0.0, 10.0);
+  std::vector<double> x(500), y(500);
+  for (std::size_t i = 0; i < 500; ++i) x[i] = u(gen), y[i] = 1.0 + 2.0 * x[i] + (1.0 + 0.5 * x[i]) * z(gen);
+  dm::dstruct::DataFrame d;
+  d.add_column("x", x);
+  d.add_column("y", y);
+
+  std::vector<double> taus{0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99}, ntau, below, on, above, primal, dual, xa, amin, amax;
+  std::vector<std::string> bounds;
+  for (const double tau : taus) {
+    const dm::stats::QuantileRegression fit(d, "y ~ x", {.quantile = tau});
+    const auto& a = fit.dual_solution();
+    double nb = 0, no = 0, na = 0, dv = 0, s0 = 0, s1 = 0, lo = 1, hi = -1;
+    for (std::size_t i = 0; i < 500; ++i) {
+      const double r = fit.residuals()[i];
+      (r < 0 ? nb : r > 0 ? na : no) += 1;
+      dv += a[i] * y[i], s0 += a[i], s1 += a[i] * x[i];
+      if (r == 0) lo = std::min(lo, a[i]), hi = std::max(hi, a[i]);
+    }
+    ntau.push_back(500 * tau), below.push_back(nb), on.push_back(no), above.push_back(na);
+    primal.push_back(fit.objective()), dual.push_back(dv), xa.push_back(std::max(std::fabs(s0), std::fabs(s1)));
+    amin.push_back(lo), amax.push_back(hi);
+    bounds.push_back(nb <= 500 * tau && 500 * tau <= nb + no ? "yes" : "no");
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("tau", taus);
+  table.add_column("n tau", ntau);
+  table.add_column("below", below);
+  table.add_column("on", on);
+  table.add_column("above", above);
+  table.add_column("bounds hold", bounds);
+  table.add_column("primal loss", primal);
+  table.add_column("dual objective", dual);
+  table.add_column("max |X^T a|", xa);
+  table.add_column("a, 1st point on fit", amin);
+  table.add_column("a, 2nd point on fit", amax);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"tau", 2}, {"n tau", 0}, {"below", 0}, {"on", 0}, {"above", 0}};
+  md.scientific = {"max |X^T a|"};
+  std::print("{}\n\n", table.to_md(md));
+
+  // Four values, tau = 0.5: n tau = 2 is an integer, so every q in [2, 3] is a median.
+  dm::dstruct::DataFrame four;
+  four.add_column("y", std::vector<double>{4, 1, 3, 2});
+  for (const double q : {1.5, 2.0, 2.5, 3.0, 3.5}) {
+    double total = 0.0;
+    for (const double v : {4.0, 1.0, 3.0, 2.0}) total += dm::stats::check_loss(v - q, 0.5);
+    std::print("{}q = {}: loss {}", q == 1.5 ? "Four values 1, 2, 3, 4 at tau = 0.5: " : "; ", q, total);
+  }
+  std::print(". The simplex returns q = {}.\n", dm::stats::QuantileRegression(four, "y ~ 1").coefficients()[0]);
+}
+```
+// result_begin: markdown
+| tau | n tau | below | on | above | bounds hold | primal loss | dual objective | max \|X^T a\| | a, 1st point on fit | a, 2nd point on fit |
+| ---: | ---: | ---: | ---: | ---: | :--- | ---: | ---: | ---: | ---: | ---: |
+| 0.01 | 5 | 4 | 2 | 494 | yes | 55.6371 | 55.6371 | 6.6874e-16 | -0.7453 | -0.2347 |
+| 0.10 | 50 | 49 | 2 | 449 | yes | 338.7820 | 338.7820 | 4.3410e-14 | -0.5687 | -0.2313 |
+| 0.25 | 125 | 124 | 2 | 374 | yes | 606.7560 | 606.7560 | 3.5527e-15 | -0.4550 | -0.0450 |
+| 0.50 | 250 | 249 | 2 | 249 | yes | 763.6004 | 763.6004 | 1.9540e-14 | -0.0780 | 0.0780 |
+| 0.75 | 375 | 374 | 2 | 124 | yes | 636.8059 | 636.8059 | 2.6645e-15 | -0.0643 | 0.5643 |
+| 0.90 | 450 | 449 | 2 | 49 | yes | 354.0396 | 354.0396 | 1.9748e-14 | 0.1557 | 0.6443 |
+| 0.99 | 495 | 494 | 2 | 4 | yes | 47.8566 | 47.8566 | 3.6637e-15 | 0.0688 | 0.9112 |
+
+
+Four values 1, 2, 3, 4 at tau = 0.5: q = 1.5: loss 2.5; q = 2: loss 2; q = 2.5: loss 2; q = 3: loss 2; q = 3.5: loss 2.5. The simplex returns q = 2.
+// result_end
+
+Every fit has exactly two points on it and \(n\tau-1\) below it. With \(n=500\) every \(n\tau\) in the table is an
+integer, and the counting identity \(n\tau=N_-+\sum_{\text{on}}b_i\) then forces the two \(b\)'s to sum to 1, that is
+\(\hat a_1+\hat a_2=2\tau-1\). At \(\tau=0.9\), \(0.1557+0.6443=0.8\), and at \(\tau=0.01\), \(-0.7453-0.2347=-0.98\). Both dual values
+lie strictly inside \([\tau-1,\tau]\) in every row, so each vertex is the unique optimum. The primal loss and
+the dual objective agree to every printed digit, and \(X^\top\hat a\) vanishes to \(4\times10^{-14}\), so there is no
+duality gap.
+
+The four values show the non-uniqueness the counting rule predicts. With \(n\tau=2\) the loss is flat at 2
+between the 2nd and 3rd order statistics, and rises outside them. Any \(q\) in \([2,3]\) is a median. The
+simplex returns the vertex \(q=2\); R's `median()` would report the midpoint 2.5.
+
+>> The simplex against ADMM
+
+The two solvers on fanning clouds of growing size at \(\tau=0.9\). ADMM runs with its default penalty
+\(\varrho=1\) and tolerances, up to its default 10 000 iterations. The gap is ADMM's loss above the
+simplex's, relative to it.
+
+```{cpp, results="markdown", file="figures/qr_admm.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <random>
+
+dm::dstruct::DataFrame fan(std::size_t n) {
+  std::mt19937_64 gen(1);
+  std::normal_distribution<double> z;
+  std::uniform_real_distribution<double> u(0.0, 10.0);
+  std::vector<double> x(n), y(n);
+  for (std::size_t i = 0; i < n; ++i) x[i] = u(gen), y[i] = 1.0 + 2.0 * x[i] + (1.0 + 0.5 * x[i]) * z(gen);
+  dm::dstruct::DataFrame d;
+  d.add_column("x", x);
+  d.add_column("y", y);
+  return d;
+}
+
+int main() {
+  std::filesystem::create_directories("build");
+  using dm::stats::QuantileRegression, dm::stats::QuantileRegressionMethod;
+  std::vector<double> ns, pivots, iterations, gaps, slope_diff;
+  std::vector<std::string> certified, converged;
+  for (const std::size_t n : {200, 1000, 5000, 20000}) {
+    const auto d = fan(n);
+    const QuantileRegression exact(d, "y ~ x", {.quantile = 0.9});
+    const QuantileRegression admm(d, "y ~ x", {.quantile = 0.9, .method = QuantileRegressionMethod::ADMM});
+    ns.push_back(n), pivots.push_back(exact.iterations()), iterations.push_back(admm.iterations());
+    certified.push_back(exact.converged() ? "yes" : "no"), converged.push_back(admm.converged() ? "yes" : "no");
+    gaps.push_back((admm.objective() - exact.objective()) / exact.objective());
+    slope_diff.push_back(std::fabs(admm.coefficients()[1] - exact.coefficients()[1]));
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("n", ns);
+  table.add_column("simplex pivots", pivots);
+  table.add_column("certified", certified);
+  table.add_column("ADMM iterations", iterations);
+  table.add_column("ADMM converged", converged);
+  table.add_column("relative loss gap", gaps);
+  table.add_column("slope difference", slope_diff);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 2;
+  md.column_digits = {{"n", 0}, {"simplex pivots", 0}, {"ADMM iterations", 0}};
+  md.scientific = {"relative loss gap", "slope difference"};
+  std::print("{}\n\n", table.to_md(md));
+
+  // ADMM's gap against its iteration count, n = 1000, for three penalties.
+  const auto d = fan(1000);
+  const double best = QuantileRegression(d, "y ~ x", {.quantile = 0.9}).objective();
+  auto plot = dm::graphics::RPlot::create();
+  const std::vector<std::pair<double, dm::RGB>> penalties{{0.1, {37, 99, 235}}, {1.0, {17, 24, 39}}, {10.0, {220, 38, 38}}};
+  for (const auto& [rho, colour] : penalties) {
+    std::vector<double> lk, lg;
+    for (int m = 0; m <= 40; ++m) {
+      const auto k = static_cast<std::size_t>(std::round(std::pow(10.0, m / 10.0)));
+      const QuantileRegression fit(d, "y ~ x", {.quantile = 0.9, .rho = rho, .max_iterations = k,
+                                                .absolute_tolerance = 1e-300, .relative_tolerance = 1e-300,
+                                                .method = QuantileRegressionMethod::ADMM});
+      lk.push_back(std::log10(double(k)));
+      lg.push_back(std::log10(std::max((fit.objective() - best) / best, 1e-16)));
+    }
+    std::print("rho = {}: relative gap {:.2e} after 100 iterations, {:.2e} after 1000, {:.2e} after 10000.\n", rho,
+               std::pow(10.0, lg[20]), std::pow(10.0, lg[30]), std::pow(10.0, lg[40]));
+    plot.lines(lk, lg, std::format("rho = {}", rho), colour, 2.0);
+  }
+  plot.x_ticks({0, 1, 2, 3, 4}, {"1", "10", "100", "1000", "10000"})
+      .y_ticks({-10, -8, -6, -4, -2, 0}, {"1e-10", "1e-8", "1e-6", "1e-4", "0.01", "1"})
+      .x_limits(0.0, 4.0).y_limits(-10.5, 0.5).title("ADMM: loss above the exact optimum")
+      .x_label("iterations").y_label("relative loss gap");
+  plot.size(800, 500);
+  plot.save_svg("build/qr_admm.svg");
+}
+```
+// result_begin: markdown
+| n | simplex pivots | certified | ADMM iterations | ADMM converged | relative loss gap | slope difference |
+| ---: | ---: | :--- | ---: | :--- | ---: | ---: |
+| 200 | 8 | yes | 2121 | yes | 5.30e-09 | 3.01e-08 |
+| 1000 | 5 | yes | 10000 | no | 4.23e-08 | 1.21e-05 |
+| 5000 | 8 | yes | 10000 | no | 2.14e-08 | 1.28e-05 |
+| 20000 | 8 | yes | 10000 | no | 1.55e-09 | 5.26e-06 |
+
+
+rho = 0.1: relative gap 7.90e-05 after 100 iterations, 9.63e-06 after 1000, 2.12e-08 after 10000.
+rho = 1: relative gap 1.05e-04 after 100 iterations, 2.51e-06 after 1000, 4.23e-08 after 10000.
+rho = 10: relative gap 2.98e-01 after 100 iterations, 3.07e-04 after 1000, 2.47e-08 after 10000.
+\image(figures/qr_admm.svg)
+// result_end
+
+\caption(ADMM on the fanning cloud with \(n=1000\) and \(\tau=0.9\): the loss after \(k\) iterations relative to the exact optimum, for three penalties \(\varrho\), on logarithmic axes.)
+\alttext(Three decreasing curves of relative loss gap against iterations, both on log scales from 1 to 10000 iterations and from 1e-10 to 1. The blue rho 0.1 curve drops fastest at first but oscillates between 1e-3 and 1e-5 from 5 to 1000 iterations. The black rho 1 curve falls smoothly to about 3e-6 at 1000 iterations. The red rho 10 curve stays near 1 for 30 iterations, then falls steeply after 300 iterations. All three end between 1e-8 and 1e-7 at 10000 iterations.)
+
+The simplex needs 5 to 8 pivots at every size and certifies each answer. ADMM converges by its
+tolerances only for \(n=200\), after 2121 iterations. For larger \(n\) it stops at the iteration cap with
+a loss \(2\times10^{-9}\) to \(4\times10^{-8}\) above the optimum, and slopes that differ from the exact ones in the fifth
+decimal. A pivot sorts \(n\) breakpoints for each of the \(p\) edges, so 8 pivots cost about as much as a
+few hundred passes over the data. ADMM's 10 000 iterations are 10 000 such passes. The figure shows
+why ADMM is slow here. The gap after 1000 iterations is \(9.6\times10^{-6}\) for \(\varrho=0.1\), \(2.5\times10^{-6}\) for \(\varrho=1\), and
+\(3.1\times10^{-4}\) for \(\varrho=10\). The small penalty makes fast progress and then oscillates, and the large one
+moves slowly. After 10 000 iterations all three are within \(2\times10^{-8}\) to \(5\times10^{-8}\) of the optimum, and none
+is exact. For this reason the library's default is now the simplex. ADMM remains available, for
+example as a starting point for penalised variants. Its default penalty \(\varrho=1\) was the best of the three
+after 1000 iterations.
+
+Outside this report, the simplex was compared with scikit-learn's `QuantileRegressor`, which solves the
+same linear program with HiGHS. On 40 random data sets with \(p=1\) to 5 predictors, heavy-tailed
+errors and rounded values that create ties, at three levels each, the two losses agreed to a
+relative \(8\times10^{-16}\) in all 120 fits. The coefficients agreed to \(10^{-8}\) except on one data set with
+rounded predictors and integer \(n\tau\), where the optimum is a whole face and the two solvers report
+different points of it. Before the tie-breaking perturbation was added, the simplex stalled at
+degenerate vertices in 8 of those 120 fits. The certificate flagged all 8 as not optimal.
+
+>> Standard errors and coverage
+
+Five hundred samples of 200 points from the fanning cloud. For each, the median and the 0.9
+quantile are fitted, and the slope gets IID, NID and bootstrap (200 resamples) standard errors and
+95% intervals. The asymptotic standard deviation comes from the sandwich, with
+\(f_x=\phi(z_\tau)/(1+0.5x)\) and the expectations over \(x\sim U(0,10)\) computed numerically.
+
+```{cpp, results="markdown", file="figures/qr_coverage.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <random>
+
+int main() {
+  std::filesystem::create_directories("build");
+  using dm::stats::QuantileStandardErrors;
+  const std::size_t n = 200, samples = 500;
+  const std::vector<QuantileStandardErrors> methods{QuantileStandardErrors::IID, QuantileStandardErrors::NID,
+                                                    QuantileStandardErrors::Bootstrap};
+  std::vector<double> taus{0.5, 0.9}, truth, mean_est, sd_est, asymptotic, se_iid, se_nid, se_boot;
+  std::vector<std::vector<double>> cover(2, std::vector<double>(3, 0.0));
+  std::vector<double> slopes_90;
+  for (std::size_t t = 0; t < 2; ++t) {
+    const double tau = taus[t], zt = dm::random::normal_quantile(tau), phi = dm::random::normal_pdf(zt);
+    // The sandwich: H = E[f_x x x^T], J = E[x x^T], x = (1, x) with x ~ U(0, 10), midpoint rule.
+    double h00 = 0, h01 = 0, h11 = 0, j00 = 1, j01 = 0, j11 = 0;
+    for (int k = 0; k < 100000; ++k) {
+      const double v = 10.0 * (k + 0.5) / 100000, f = phi / (1.0 + 0.5 * v);
+      h00 += f / 1e5, h01 += f * v / 1e5, h11 += f * v * v / 1e5, j01 += v / 1e5, j11 += v * v / 1e5;
+    }
+    const double det = h00 * h11 - h01 * h01, a = -h01 / det, b = h00 / det; // row 2 of H^{-1}
+    asymptotic.push_back(std::sqrt(tau * (1 - tau) * (a * a * j00 + 2 * a * b * j01 + b * b * j11) / n));
+    truth.push_back(2.0 + 0.5 * zt);
+    std::vector<double> slopes, se(3, 0.0);
+    for (std::size_t s = 0; s < samples; ++s) {
+      std::mt19937_64 gen(1000 + s);
+      std::normal_distribution<double> z;
+      std::uniform_real_distribution<double> u(0.0, 10.0);
+      std::vector<double> x(n), y(n);
+      for (std::size_t i = 0; i < n; ++i) x[i] = u(gen), y[i] = 1.0 + 2.0 * x[i] + (1.0 + 0.5 * x[i]) * z(gen);
+      dm::dstruct::DataFrame d;
+      d.add_column("x", x);
+      d.add_column("y", y);
+      const dm::stats::QuantileRegression fit(d, "y ~ x", {.quantile = tau});
+      slopes.push_back(fit.coefficients()[1]);
+      for (std::size_t m = 0; m < 3; ++m) {
+        const auto table = fit.coefficient_table(methods[m], 0.95, 200, s + 1);
+        se[m] += table.std_error[1] / samples;
+        cover[t][m] += (table.lower[1] <= truth.back() && truth.back() <= table.upper[1]) / double(samples);
+      }
+    }
+    double mean = 0, var = 0;
+    for (const double v : slopes) mean += v / samples;
+    for (const double v : slopes) var += (v - mean) * (v - mean) / (samples - 1);
+    mean_est.push_back(mean), sd_est.push_back(std::sqrt(var));
+    se_iid.push_back(se[0]), se_nid.push_back(se[1]), se_boot.push_back(se[2]);
+    if (tau == 0.9) slopes_90 = slopes;
+  }
+  dm::dstruct::DataFrame table;
+  table.add_column("tau", taus);
+  table.add_column("true slope", truth);
+  table.add_column("mean estimate", mean_est);
+  table.add_column("sd of estimates", sd_est);
+  table.add_column("asymptotic sd", asymptotic);
+  table.add_column("mean IID se", se_iid);
+  table.add_column("mean NID se", se_nid);
+  table.add_column("mean bootstrap se", se_boot);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 4;
+  md.column_digits = {{"tau", 1}};
+  std::print("{}\n\n", table.to_md(md));
+  dm::dstruct::DataFrame coverage;
+  coverage.add_column("tau", taus);
+  coverage.add_column("IID coverage", std::vector<double>{cover[0][0], cover[1][0]});
+  coverage.add_column("NID coverage", std::vector<double>{cover[0][1], cover[1][1]});
+  coverage.add_column("bootstrap coverage", std::vector<double>{cover[0][2], cover[1][2]});
+  md.digits = 3;
+  std::print("{}\n\nMonte Carlo standard error of a coverage near 0.95: {:.4f}.\n", coverage.to_md(md),
+             std::sqrt(0.95 * 0.05 / samples));
+
+  // Left: histogram (as a density) of the 0.9-quantile slopes with the asymptotic normal density.
+  const double lo = 2.15, width = 0.05;
+  std::vector<double> centres, density;
+  for (int k = 0; k < 20; ++k) centres.push_back(lo + (k + 0.5) * width), density.push_back(0.0);
+  for (const double v : slopes_90) {
+    const int k = static_cast<int>(std::floor((v - lo) / width));
+    if (k >= 0 && k < 20) density[k] += 1.0 / (samples * width);
+  }
+  std::vector<double> grid, normal;
+  for (double v = lo; v <= lo + 20 * width + 1e-9; v += 0.005)
+    grid.push_back(v), normal.push_back(dm::random::normal_pdf(v, truth[1], asymptotic[1]));
+  auto left = dm::graphics::RPlot::create();
+  left.bars(centres, density, "500 estimates", dm::RGB{147, 197, 253}, width)
+      .lines(grid, normal, "asymptotic normal", dm::RGB{220, 38, 38}, 2.0);
+  left.x_limits(lo, lo + 20 * width).y_limits(0.0, 4.6).title("Slope estimates at tau = 0.9")
+      .x_label("estimated slope").y_label("density");
+  // Right: coverage of the three intervals with Monte Carlo error bars.
+  const double mc = 2 * std::sqrt(0.95 * 0.05 / samples);
+  auto right = dm::graphics::RPlot::create();
+  right.lines({0.5, 3.5}, {0.95, 0.95}, "nominal 0.95", dm::RGB{148, 163, 184}, 1.5);
+  const std::vector<std::pair<std::size_t, dm::RGB>> series{{0, {37, 99, 235}}, {1, {220, 38, 38}}};
+  for (const auto& [t, colour] : series) {
+    std::vector<double> px, py, x0, y0, y1;
+    for (std::size_t m = 0; m < 3; ++m) {
+      const double at = m + 1 + (t == 0 ? -0.1 : 0.1);
+      px.push_back(at), py.push_back(cover[t][m]), x0.push_back(at), y0.push_back(cover[t][m] - mc), y1.push_back(cover[t][m] + mc);
+    }
+    right.segments(x0, y0, x0, y1, colour, 1.5).points(px, py, std::format("tau = {}", taus[t]), colour, 9.0);
+  }
+  right.x_ticks({1, 2, 3}, {"IID", "NID", "bootstrap"}).x_limits(0.5, 3.5).y_limits(0.8, 1.02)
+      .title("Coverage of 95% intervals").x_label("standard error").y_label("share covering the true slope");
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  fig.add(left);
+  fig.add(right);
+  fig.size(1100, 460).fit_panels();
+  fig.save_svg("build/qr_coverage.svg");
+}
+```
+// result_begin: markdown
+| tau | true slope | mean estimate | sd of estimates | asymptotic sd | mean IID se | mean NID se | mean bootstrap se |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.5 | 2.0000 | 2.0046 | 0.1024 | 0.1005 | 0.0861 | 0.1026 | 0.1058 |
+| 0.9 | 2.6408 | 2.6427 | 0.1360 | 0.1370 | 0.1135 | 0.1469 | 0.1460 |
+
+
+| tau | IID coverage | NID coverage | bootstrap coverage |
+| ---: | ---: | ---: | ---: |
+| 0.5 | 0.894 | 0.942 | 0.942 |
+| 0.9 | 0.862 | 0.962 | 0.946 |
+
+
+Monte Carlo standard error of a coverage near 0.95: 0.0097.
+\image(figures/qr_coverage.svg)
+// result_end
+
+\caption(Left: the 500 estimated slopes at \(\tau=0.9\), as a density histogram, with the asymptotic normal density centred on the true slope 2.641. Right: the share of the 500 intervals that contain the true slope, for each standard error, with \(\pm2\) Monte Carlo standard errors.)
+\alttext(Left: a bell-shaped histogram of slopes from about 2.2 to 3.0, peaking near 2.65 at density about 2.9, closely followed by a red normal curve. Right: coverage points for IID, NID and bootstrap at tau 0.5 (blue) and tau 0.9 (red), with a grey line at 0.95. IID is low, at 0.894 and 0.862; NID is at 0.942 and 0.962; bootstrap at 0.942 and 0.946, both within their error bars of 0.95.)
+
+The estimator behaves as the asymptotic theory says. Its mean is within 0.005 of the true slope at
+both levels, and its standard deviation, 0.1024 and 0.1360, is within 2% of the sandwich values
+0.1005 and 0.1370. The histogram follows the normal curve.
+
+The three standard errors differ in how they estimate the density at the quantile. The IID
+standard error averages 0.0861 and 0.1135, 16% and 17% too small. It assumes one density for all
+rows, but here the density at \(x\) is \(\phi(z_\tau)/(1+0.5x)\), lowest at large \(x\), where the points also have the
+most leverage on the slope. Its 95% intervals cover the true slope only 89.4% and 86.2% of the time,
+5.8 and 9.1 Monte Carlo standard errors below 0.95. NID estimates a density for each row and is
+close: 0.1026 and 0.1469, the latter 8% too large, with coverage 0.942 and 0.962. The bootstrap gives
+0.1058 and 0.1460, with coverage 0.942 and 0.946. Both are within about 1.2 Monte Carlo standard errors
+of 0.95. The library defaults to NID, which needs only two refits; the bootstrap needs 200.
+
+> New York ozone
+
+R's `airquality` data has daily ozone concentrations (parts per billion, at Roosevelt Island) and
+weather for New York from May to September 1973. Of the 153 days, 116 have an ozone reading and
+111 have ozone, temperature, wind and solar radiation. Ozone forms in sunlight and heat, and its
+spread grows with temperature.
+
+>> Ozone against temperature
+
+```{cpp, results="markdown", file="figures/qr_ozone.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  using dm::stats::QuantileStandardErrors;
+  const auto air = dm::datasets::airquality();
+  std::vector<std::string> model;
+  std::vector<double> intercept, slope, ci_lo, ci_hi, r1;
+  std::vector<std::optional<double>> boot_lo, boot_hi;
+  const std::vector<double> taus{0.1, 0.25, 0.5, 0.75, 0.9};
+  const std::vector<dm::RGB> colours{{37, 99, 235}, {96, 165, 250}, {17, 24, 39}, {248, 113, 113}, {220, 38, 38}};
+  std::vector<double> temp, ozone;
+  for (std::size_t i = 0; i < air.nrows(); ++i)
+    if (const auto o = air.optional_double_at("Ozone", i)) temp.push_back(*air.optional_double_at("Temp", i)), ozone.push_back(*o);
+  auto plot = dm::graphics::RPlot::create();
+  plot.points(temp, ozone, "", dm::RGB{148, 163, 184}, 6.0);
+  for (std::size_t k = 0; k < taus.size(); ++k) {
+    const dm::stats::QuantileRegression fit(air, "Ozone ~ Temp", {.quantile = taus[k]});
+    const auto nid = fit.coefficient_table(QuantileStandardErrors::NID);
+    const auto boot = fit.coefficient_table(QuantileStandardErrors::Bootstrap, 0.95, 1000);
+    model.push_back(std::format("tau = {}", taus[k]));
+    intercept.push_back(fit.coefficients()[0]), slope.push_back(fit.coefficients()[1]);
+    ci_lo.push_back(nid.lower[1]), ci_hi.push_back(nid.upper[1]);
+    boot_lo.push_back(boot.lower[1]), boot_hi.push_back(boot.upper[1]), r1.push_back(fit.pseudo_r_squared());
+    const auto& b = fit.coefficients();
+    plot.lines({56.0, 97.0}, {b[0] + 56 * b[1], b[0] + 97 * b[1]}, model.back(), colours[k], 2.5);
+    if (k == 0) std::print("{} days with an ozone reading.\n\n", fit.observations());
+  }
+  const dm::stats::LM ols(air, "Ozone ~ Temp");
+  const auto ci = ols.confidence_intervals();
+  const auto& b = ols.coefficients();
+  model.push_back("least squares");
+  intercept.push_back(b[0]), slope.push_back(b[1]), ci_lo.push_back(ci[1].lower), ci_hi.push_back(ci[1].upper);
+  boot_lo.push_back(std::nullopt), boot_hi.push_back(std::nullopt), r1.push_back(ols.r_squared());
+  plot.lines({56.0, 97.0}, {b[0] + 56 * b[1], b[0] + 97 * b[1]}, "least squares", dm::RGB{22, 163, 74}, 2.0);
+  dm::dstruct::DataFrame table;
+  table.add_column("fit", model);
+  table.add_column("intercept", intercept);
+  table.add_column("slope", slope);
+  table.add_column("95% CI lower, NID (t for LS)", ci_lo);
+  table.add_column("upper", ci_hi);
+  table.add_column("bootstrap lower", boot_lo);
+  table.add_column("bootstrap upper", boot_hi);
+  table.add_column("R1 (R^2 for LS)", r1);
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 2;
+  md.column_digits = {{"R1 (R^2 for LS)", 3}};
+  std::print("{}\n\nThe tau = 0.1 and tau = 0.25 lines cross at {:.2f} degrees F.\n", table.to_md(md),
+             (intercept[0] - intercept[1]) / (slope[1] - slope[0]));
+  plot.x_limits(56.0, 97.0).y_limits(-20.0, 215.0).title("Ozone against temperature, New York 1973")
+      .x_label("daily maximum temperature (degrees F)").y_label("mean ozone, 13:00 to 15:00 (ppb)");
+  plot.size(800, 560);
+  plot.save_svg("build/qr_ozone.svg");
+}
+```
+// result_begin: markdown
+116 days with an ozone reading.
+
+| fit | intercept | slope | 95% CI lower, NID (t for LS) | upper | bootstrap lower | bootstrap upper | R1 (R^2 for LS) |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| tau = 0.1 | -89.75 | 1.38 | 0.48 | 2.27 | 0.42 | 2.33 | 0.160 |
+| tau = 0.25 | -122.38 | 1.88 | 1.48 | 2.27 | 0.95 | 2.80 | 0.216 |
+| tau = 0.5 | -123.94 | 2.12 | 1.57 | 2.67 | 1.62 | 2.62 | 0.318 |
+| tau = 0.75 | -144.82 | 2.54 | 2.05 | 3.02 | 2.13 | 2.94 | 0.405 |
+| tau = 0.9 | -122.97 | 2.41 | 0.83 | 3.99 | 1.67 | 3.15 | 0.320 |
+| least squares | -147.00 | 2.43 | 1.97 | 2.89 | NA | NA | 0.488 |
+
+
+The tau = 0.1 and tau = 0.25 lines cross at 65.25 degrees F.
+\image(figures/qr_ozone.svg)
+// result_end
+
+\caption(Ozone against daily maximum temperature on 116 days, with the regression quantiles at five levels and the least-squares line.)
+\alttext(Grey points of ozone from near 0 to 168 ppb against temperature from 57 to 97 degrees F. Below 75 degrees the points are below about 40 ppb; above 80 degrees they spread from 7 to 168 ppb. Five quantile lines fan out to the right: at 97 degrees the tau 0.1 line reaches 44 ppb, tau 0.25 about 60, tau 0.5 about 82, tau 0.75 about 101 and tau 0.9 about 110. The green least-squares line ends near 89 ppb, between the median and the 0.75 line. All lines start below 12 ppb at 56 degrees, some slightly below zero.)
+
+The fitted slopes rise with \(\tau\) from 1.38 ppb per degree at \(\tau=0.1\) to 2.54 at \(\tau=0.75\): hot days have higher
+ozone, and a much more variable one. A degree raises the 10th percentile by 1.4 ppb, the median by 2.1
+and the 75th percentile by 2.5. Least squares gives 2.43, which describes none of these well. It lies
+above the median slope, pulled up by the few very high readings, among them 168 ppb at 81 °F. The
+estimate at \(\tau=0.9\), 2.41, is below that at 0.75. The top 10% of days rests on about 11 points, and
+its NID interval, 0.83 to 3.99, is very wide.
+
+With 116 days, the NID and bootstrap intervals disagree more than in the simulation. At \(\tau=0.25\) the
+bootstrap interval, 0.95 to 2.80, is 2.3 times as wide as the NID one, 1.48 to 2.27. At \(\tau=0.9\) the
+NID interval is the wider one. Both data columns are integers, so many residuals tie, and the
+density estimates behind NID become unstable. At this sample size neither interval should be
+read to two digits. Both methods do agree that the slope at \(\tau=0.1\) is lower than at \(\tau=0.75\). Their
+intervals barely overlap: 2.27 against 2.05 for NID, and 2.33 against 2.13 for the bootstrap. The
+\(R^1\) values, 0.16 to 0.41, measure improvement over a constant quantile and are not comparable with the
+least-squares \(R^2\) of 0.488. The fitted lines also go below zero at low temperatures, which is
+impossible for ozone. Worse, the 0.1 and 0.25 lines cross at 65.25 °F, inside the data: below that
+temperature the fitted 25th percentile lies under the fitted 10th. Each \(\tau\) is fitted separately, and
+nothing in the method prevents this. A linear quantile model is only a good description where
+it has many points.
+
+>> How each predictor acts across the distribution
+
+With temperature, wind speed and solar radiation together, the quantile process
+\(\tau\mapsto\hat\beta(\tau)\) is fitted at \(\tau=0.10,0.15,\dots,0.90\), with NID 95% intervals, and compared with the
+least-squares coefficient and its interval.
+
+```{cpp, results="markdown", file="figures/qr_ozone_process.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  const auto air = dm::datasets::airquality();
+  const std::string formula = "Ozone ~ Temp + Wind + Solar.R";
+  std::vector<double> taus;
+  for (int k = 2; k <= 18; ++k) taus.push_back(0.05 * k);
+  const auto process = dm::stats::quantile_process(air, formula, taus);
+  const dm::stats::LM ols(air, formula);
+  const auto ci = ols.confidence_intervals();
+
+  dm::dstruct::DataFrame table;
+  table.add_column("tau", taus);
+  for (std::size_t j = 1; j < process.names.size(); ++j) {
+    std::vector<double> est, se;
+    for (std::size_t k = 0; k < taus.size(); ++k) est.push_back(process.coefficients[k][j]), se.push_back(process.std_error[k][j]);
+    table.add_column(process.names[j], est);
+    table.add_column("se " + process.names[j], se);
+  }
+  const std::vector<std::size_t> shown{0, 3, 8, 13, 16};
+  dm::dstruct::DataFrame::MarkdownOptions md;
+  md.digits = 3;
+  md.column_digits = {{"tau", 2}};
+  std::print("{}\n\n", table.take_rows(shown).to_md(md));
+  std::print("Least squares: Temp {:.3f} [{:.3f}, {:.3f}], Wind {:.3f} [{:.3f}, {:.3f}], Solar.R {:.4f} [{:.4f}, {:.4f}].\n",
+             ols.coefficients()[1], ci[1].lower, ci[1].upper, ols.coefficients()[2], ci[2].lower, ci[2].upper,
+             ols.coefficients()[3], ci[3].lower, ci[3].upper);
+
+  auto fig = dm::graphics::RLayout::create(1, 2);
+  const std::vector<std::pair<std::size_t, std::string>> panels{{1, "Temperature (ppb per degree F)"}, {2, "Wind (ppb per mph)"}};
+  for (const auto& [j, title] : panels) {
+    std::vector<double> est, band_x, band_y;
+    for (std::size_t k = 0; k < taus.size(); ++k) est.push_back(process.coefficients[k][j]);
+    for (std::size_t k = 0; k < taus.size(); ++k) band_x.push_back(taus[k]), band_y.push_back(process.upper[k][j]);
+    for (std::size_t k = taus.size(); k-- > 0;) band_x.push_back(taus[k]), band_y.push_back(process.lower[k][j]);
+    auto p = dm::graphics::RPlot::create();
+    p.polygon(band_x, band_y, dm::RGB{191, 219, 254})
+        .lines({0.0, 1.0}, {ci[j].lower, ci[j].lower}, "", dm::RGB{134, 239, 172}, 1.5)
+        .lines({0.0, 1.0}, {ci[j].upper, ci[j].upper}, "", dm::RGB{134, 239, 172}, 1.5)
+        .lines({0.0, 1.0}, {ols.coefficients()[j], ols.coefficients()[j]}, "least squares", dm::RGB{22, 163, 74}, 2.0)
+        .lines({0.0, 1.0}, {0.0, 0.0}, "", dm::RGB{148, 163, 184}, 1.0)
+        .lines(taus, est, "quantile regression", dm::RGB{37, 99, 235}, 2.5)
+        .points(taus, est, dm::RGB{37, 99, 235}, 6.0);
+    double lo = std::min({0.0, ci[j].lower, *std::min_element(band_y.begin(), band_y.end())});
+    double hi = std::max({0.0, ci[j].upper, *std::max_element(band_y.begin(), band_y.end())});
+    p.x_limits(0.0, 1.0).y_limits(lo - 0.05 * (hi - lo), hi + 0.35 * (hi - lo)).title(title)
+        .x_label("quantile level tau").y_label("coefficient");
+    fig.add(p);
+  }
+  fig.size(1100, 460).fit_panels();
+  fig.save_svg("build/qr_ozone_process.svg");
+}
+```
+// result_begin: markdown
+| tau | Temp | se Temp | Wind | se Wind | Solar.R | se Solar.R |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.10 | 1.230 | 0.176 | -1.724 | 0.631 | 0.061 | 0.010 |
+| 0.25 | 1.435 | 0.144 | -2.635 | 0.594 | 0.062 | 0.009 |
+| 0.50 | 1.782 | 0.261 | -3.089 | 0.687 | 0.034 | 0.023 |
+| 0.75 | 2.116 | 0.457 | -2.955 | 1.178 | 0.039 | 0.042 |
+| 0.90 | 1.363 | 0.603 | -3.112 | 1.321 | 0.089 | 0.043 |
+
+
+Least squares: Temp 1.652 [1.149, 2.155], Wind -3.334 [-4.631, -2.036], Solar.R 0.0598 [0.0139, 0.1058].
+\image(figures/qr_ozone_process.svg)
+// result_end
+
+\caption(The quantile process of the temperature (left) and wind (right) coefficients in the model with temperature, wind and solar radiation, with NID 95% bands, against the least-squares coefficient (dark green) and its 95% interval (light green).)
+\alttext(Left: blue points for the temperature coefficient against tau from 0.1 to 0.9, rising from 1.23 at 0.1 to 2.12 at 0.75, then falling to 1.36 at 0.9, inside a light blue band that widens sharply above 0.8, from about 0.2 to 2.6 at tau 0.9. The least-squares coefficient 1.65 is a horizontal green line, with its interval from 1.15 to 2.16. Right: the wind coefficient, from -1.72 at tau 0.1 to about -3 from tau 0.35 on, inside a band that stays below zero; the least-squares line is at -3.33 with interval -4.63 to -2.04.)
+
+With all three predictors, the temperature coefficient rises from 1.230 at \(\tau=0.1\) to 2.116 at \(\tau=0.75\).
+The lower quantiles respond to heat less than the mean does. At \(\tau=0.1\) the coefficient is 1.230 with
+standard error 0.176, so its own 95% interval, about 0.88 to 1.58, excludes the least-squares estimate
+1.652. Wind lowers ozone, by dispersing it. Its effect is weakest at the bottom,
+\(-1.724\) at \(\tau=0.1\), and about \(-3\) from the median up, close to the least-squares \(-3.334\). Solar radiation
+matters most at the extremes, 0.061 at \(\tau=0.1\) and 0.089 at 0.9, against 0.034 at the median. Above \(\tau=0.8\)
+the bands widen quickly, because only 11 to 22 of the 111 days lie above those quantiles. Taken across
+all levels, the process shows what one least-squares coefficient averages over. At the low end of
+the distribution, ozone responds less to heat and to wind than the mean does, and more to sunshine.
+
+> Conclusion
+
+Quantile regression replaces squared error by the check loss and so estimates a conditional
+quantile instead of the mean. The resulting fit is a linear program. Its solutions interpolate \(p\)
+points, leave \(n\tau\) points below them up to \(p\), and change only at isolated values of \(\tau\). Its dual
+gives a certificate of optimality, and its dual values are the regression rank scores. On data
+whose spread depends on the predictors, the fits at different \(\tau\) recover the different slopes of
+the true quantiles, which least squares averages away. The median is resistant to wild responses,
+but like every fit that passes through data points, not to a single point of high leverage.
+
+Two practical lessons came from the checks. An exact simplex started near the least-squares fit
+needs only a handful of pivots and is certified optimal. ADMM, the previous default, stopped at
+its iteration cap from 1000 rows up, and the library now uses the simplex. Ties need care: they made
+the plain simplex stall, and a fixed tiny perturbation with a final check on the original data
+fixed that. For inference, the IID standard error assumes a density that does not depend on \(x\),
+and it undercovered badly when that failed. NID and the bootstrap held their nominal 95%. On the
+ozone data they disagreed at \(n=116\) with integer-valued data, a reminder that tail quantiles need
+many observations. The method's main limitation is that each \(\tau\) is fitted separately. Nothing stops
+two fitted quantile lines from crossing, and on the ozone data the 10th- and 25th-percentile lines
+crossed inside the range of the data.
+
+> References
+
+- R. Koenker and G. Bassett (1978). "Regression quantiles". *Econometrica* 46(1), 33–50. doi:10.2307/1913643
+- R. Koenker (2005). *Quantile Regression*. Cambridge University Press. doi:10.1017/CBO9780511754098
+- R. Koenker and J. A. F. Machado (1999). "Goodness of fit and related inference processes for quantile regression". *Journal of the American Statistical Association* 94(448), 1296–1310. doi:10.1080/01621459.1999.10473882
+- W. Hendricks and R. Koenker (1992). "Hierarchical spline models for conditional quantiles and the demand for electricity". *Journal of the American Statistical Association* 87(417), 58–68. doi:10.1080/01621459.1992.10475175
+- P. Hall and S. J. Sheather (1988). "On the distribution of a studentized quantile". *Journal of the Royal Statistical Society, Series B* 50(3), 381–391. doi:10.1111/j.2517-6161.1988.tb01735.x
+- I. Barrodale and F. D. K. Roberts (1974). "Solution of an overdetermined system of equations in the l1 norm". *Communications of the ACM* 17(6), 319–320. doi:10.1145/355616.361024
+- S. Boyd, N. Parikh, E. Chu, B. Peleato and J. Eckstein (2011). "Distributed optimization and statistical learning via the alternating direction method of multipliers". *Foundations and Trends in Machine Learning* 3(1), 1–122. doi:10.1561/2200000016
+- J. M. Chambers, W. S. Cleveland, B. Kleiner and P. A. Tukey (1983). *Graphical Methods for Data Analysis*. Wadsworth. (Source of the `airquality` data.)

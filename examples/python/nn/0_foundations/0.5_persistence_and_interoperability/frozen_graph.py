@@ -1,4 +1,5 @@
 # Native Python NN example. Training, dependency pruning and frozen export live here.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.5_persistence_and_interoperability/frozen_graph.py
 import math
 from pathlib import Path
 import os

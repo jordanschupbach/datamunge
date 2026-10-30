@@ -35,7 +35,7 @@ wrong product, at a total cost of \(O(kn^2)\), far below recomputing \(AB\).
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<std::vector<double>> naive(const std::vector<std::vector<double>>& A, const std::vector<std::vector<double>>& B) {
     const std::size_t m = A.size(), k = A[0].size(), n = B[0].size();
@@ -113,7 +113,7 @@ often a single wrong entry slips past as the number of rounds grows.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static std::vector<std::vector<double>> naive(const std::vector<std::vector<double>>& A, const std::vector<std::vector<double>>& B) {
     const std::size_t m = A.size(), k = A[0].size(), n = B[0].size();

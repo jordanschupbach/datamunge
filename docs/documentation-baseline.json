@@ -1,0 +1,254 @@
+{
+  "by_area": {
+    "include/datamunge": {
+      "documented": 203,
+      "missing": 865,
+      "total": 1068
+    },
+    "include/datamunge/algebra": {
+      "documented": 62,
+      "missing": 167,
+      "total": 229
+    },
+    "include/datamunge/algorithms": {
+      "documented": 1033,
+      "missing": 891,
+      "total": 1924
+    },
+    "include/datamunge/autodiff": {
+      "documented": 15,
+      "missing": 82,
+      "total": 97
+    },
+    "include/datamunge/bayes": {
+      "documented": 51,
+      "missing": 123,
+      "total": 174
+    },
+    "include/datamunge/cv": {
+      "documented": 34,
+      "missing": 47,
+      "total": 81
+    },
+    "include/datamunge/datasets": {
+      "documented": 0,
+      "missing": 2,
+      "total": 2
+    },
+    "include/datamunge/dstruct": {
+      "documented": 81,
+      "missing": 1112,
+      "total": 1193
+    },
+    "include/datamunge/fda": {
+      "documented": 1,
+      "missing": 56,
+      "total": 57
+    },
+    "include/datamunge/fem": {
+      "documented": 15,
+      "missing": 47,
+      "total": 62
+    },
+    "include/datamunge/filter": {
+      "documented": 28,
+      "missing": 126,
+      "total": 154
+    },
+    "include/datamunge/geometry": {
+      "documented": 35,
+      "missing": 209,
+      "total": 244
+    },
+    "include/datamunge/gis": {
+      "documented": 6,
+      "missing": 30,
+      "total": 36
+    },
+    "include/datamunge/image": {
+      "documented": 52,
+      "missing": 67,
+      "total": 119
+    },
+    "include/datamunge/linalg": {
+      "documented": 26,
+      "missing": 525,
+      "total": 551
+    },
+    "include/datamunge/nn": {
+      "documented": 282,
+      "missing": 453,
+      "total": 735
+    },
+    "include/datamunge/ode": {
+      "documented": 9,
+      "missing": 25,
+      "total": 34
+    },
+    "include/datamunge/optim": {
+      "documented": 169,
+      "missing": 406,
+      "total": 575
+    },
+    "include/datamunge/plot": {
+      "documented": 26,
+      "missing": 190,
+      "total": 216
+    },
+    "include/datamunge/random": {
+      "documented": 31,
+      "missing": 119,
+      "total": 150
+    },
+    "include/datamunge/stats": {
+      "documented": 253,
+      "missing": 2002,
+      "total": 2255
+    },
+    "src/datamunge": {
+      "documented": 15,
+      "missing": 131,
+      "total": 146
+    },
+    "src/datamunge/algorithms": {
+      "documented": 187,
+      "missing": 572,
+      "total": 759
+    },
+    "src/datamunge/autodiff": {
+      "documented": 0,
+      "missing": 25,
+      "total": 25
+    },
+    "src/datamunge/bayes": {
+      "documented": 8,
+      "missing": 50,
+      "total": 58
+    },
+    "src/datamunge/datasets": {
+      "documented": 0,
+      "missing": 19,
+      "total": 19
+    },
+    "src/datamunge/dstruct": {
+      "documented": 0,
+      "missing": 1,
+      "total": 1
+    },
+    "src/datamunge/fda": {
+      "documented": 0,
+      "missing": 12,
+      "total": 12
+    },
+    "src/datamunge/fem": {
+      "documented": 4,
+      "missing": 67,
+      "total": 71
+    },
+    "src/datamunge/gis": {
+      "documented": 2,
+      "missing": 22,
+      "total": 24
+    },
+    "src/datamunge/image": {
+      "documented": 27,
+      "missing": 239,
+      "total": 266
+    },
+    "src/datamunge/linalg": {
+      "documented": 0,
+      "missing": 20,
+      "total": 20
+    },
+    "src/datamunge/nn": {
+      "documented": 594,
+      "missing": 825,
+      "total": 1419
+    },
+    "src/datamunge/ode": {
+      "documented": 0,
+      "missing": 35,
+      "total": 35
+    },
+    "src/datamunge/optim": {
+      "documented": 4,
+      "missing": 153,
+      "total": 157
+    },
+    "src/datamunge/plot": {
+      "documented": 4,
+      "missing": 5,
+      "total": 9
+    },
+    "src/datamunge/stats": {
+      "documented": 29,
+      "missing": 429,
+      "total": 458
+    },
+    "src/datamunge/stats/detail": {
+      "documented": 2,
+      "missing": 11,
+      "total": 13
+    }
+  },
+  "by_kind": {
+    "class": {
+      "documented": 215,
+      "missing": 130,
+      "total": 345
+    },
+    "define": {
+      "documented": 0,
+      "missing": 1,
+      "total": 1
+    },
+    "enum": {
+      "documented": 24,
+      "missing": 49,
+      "total": 73
+    },
+    "enumvalue": {
+      "documented": 10,
+      "missing": 325,
+      "total": 335
+    },
+    "file": {
+      "documented": 176,
+      "missing": 689,
+      "total": 865
+    },
+    "friend": {
+      "documented": 0,
+      "missing": 49,
+      "total": 49
+    },
+    "function": {
+      "documented": 1930,
+      "missing": 4976,
+      "total": 6906
+    },
+    "namespace": {
+      "documented": 2,
+      "missing": 236,
+      "total": 238
+    },
+    "struct": {
+      "documented": 229,
+      "missing": 406,
+      "total": 635
+    },
+    "typedef": {
+      "documented": 29,
+      "missing": 135,
+      "total": 164
+    },
+    "variable": {
+      "documented": 673,
+      "missing": 3164,
+      "total": 3837
+    }
+  },
+  "documented": 3288,
+  "missing": 10160,
+  "total": 13448
+}

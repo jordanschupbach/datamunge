@@ -1,6 +1,6 @@
 # Native Python NN example. Spatial 7x7x4-code convolutional autoencoder with latent and baseline controls.
-"""CMD: just python-example convolutional_autoencoder
-Actual spatial 7x7x4 code / nearest-repeat convolutional decoder, 741 learned parameters.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/convolutional_autoencoder.py
+"""Actual spatial 7x7x4 code / nearest-repeat convolutional decoder, 741 learned parameters.
 Three default epochs, mean/initial/pool-only/zero/shuffled-code controls.
 
 Port of tflow's convolutional_autoencoder. Preparation (in ~/projects/tflow_examples):

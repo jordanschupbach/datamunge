@@ -1,3 +1,6 @@
+/// @file primality.cpp
+/// @brief Implementations of the primality tests and sieves declared in primality.hpp.
+
 #include <datamunge/algorithms/primality.hpp>
 
 #include <cstdint>
@@ -5,11 +8,14 @@
 
 namespace datamunge::algorithms {
 
+/// @brief Modular arithmetic and helpers shared by the tests.
 namespace {
 
+/// @brief (a * b) mod m without overflow, via 128-bit arithmetic.
 std::uint64_t mulmod(std::uint64_t a, std::uint64_t b, std::uint64_t m) {
     return static_cast<std::uint64_t>((static_cast<__uint128_t>(a) * b) % m);
 }
+/// @brief base^exp mod m by square-and-multiply.
 std::uint64_t powmod(std::uint64_t base, std::uint64_t exp, std::uint64_t m) {
     std::uint64_t r = 1 % m;
     base %= m;
@@ -21,7 +27,7 @@ std::uint64_t powmod(std::uint64_t base, std::uint64_t exp, std::uint64_t m) {
     return r;
 }
 
-// Distinct prime factors of x by trial division.
+/// @brief Distinct prime factors of x by trial division.
 std::vector<std::uint64_t> distinct_prime_factors(std::uint64_t x) {
     std::vector<std::uint64_t> out;
     for (std::uint64_t d = 2; d * d <= x; ++d)
@@ -33,7 +39,7 @@ std::vector<std::uint64_t> distinct_prime_factors(std::uint64_t x) {
     return out;
 }
 
-// SplitMix64 step, for reproducible base selection without pulling in the random module.
+/// @brief SplitMix64 step, for reproducible base selection without pulling in the random module.
 std::uint64_t splitmix(std::uint64_t& state) {
     std::uint64_t z = (state += 0x9E3779B97F4A7C15ULL);
     z              = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9ULL;
@@ -89,34 +95,6 @@ std::vector<std::uint64_t> sundaram_primes(std::uint64_t limit) {
         for (std::uint64_t j = i; i + j + 2 * i * j <= k; ++j) marked[i + j + 2 * i * j] = true;
     for (std::uint64_t i = 1; i <= k; ++i)
         if (!marked[i]) primes.push_back(2 * i + 1);
-    return primes;
-}
-
-std::vector<std::uint64_t> atkin_primes(std::uint64_t limit) {
-    std::vector<std::uint64_t> primes;
-    if (limit < 2) return primes;
-
-    std::vector<bool> sieve(limit + 1, false);
-    for (std::uint64_t x = 1; x * x <= limit; ++x)
-        for (std::uint64_t y = 1; y * y <= limit; ++y) {
-            std::uint64_t n = 4 * x * x + y * y;
-            if (n <= limit && (n % 12 == 1 || n % 12 == 5)) sieve[n] = !sieve[n];
-            n = 3 * x * x + y * y;
-            if (n <= limit && n % 12 == 7) sieve[n] = !sieve[n];
-            if (x > y) {
-                n = 3 * x * x - y * y;
-                if (n <= limit && n % 12 == 11) sieve[n] = !sieve[n];
-            }
-        }
-    // Remove multiples of squares of primes.
-    for (std::uint64_t r = 5; r * r <= limit; ++r)
-        if (sieve[r])
-            for (std::uint64_t m = r * r; m <= limit; m += r * r) sieve[m] = false;
-
-    if (limit >= 2) primes.push_back(2);
-    if (limit >= 3) primes.push_back(3);
-    for (std::uint64_t n = 5; n <= limit; ++n)
-        if (sieve[n]) primes.push_back(n);
     return primes;
 }
 

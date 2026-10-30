@@ -70,9 +70,9 @@ std::vector<double> ys_of(const std::vector<Point2D>& points) {
 
 } // namespace
 
-plot::RPlot ShapeLayer::plot(const plot::RGB fill_color, const plot::RGB border_color, const std::size_t width,
+graphics::RPlot ShapeLayer::plot(const graphics::RGB fill_color, const graphics::RGB border_color, const std::size_t width,
                              const std::size_t height) const {
-  auto canvas = plot::RPlot::create();
+  auto canvas = graphics::RPlot::create();
   canvas.size(width, height);
   canvas.x_label("");
   canvas.y_label("");

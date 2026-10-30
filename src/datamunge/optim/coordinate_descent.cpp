@@ -1,11 +1,17 @@
+/// @file coordinate_descent.cpp
+/// @brief CoordinateDescent native update, trial and stopping implementation.
 #include <datamunge/optim/coordinate_descent.hpp>
 
 #include <cmath>
 #include <stdexcept>
 
 namespace datamunge::optim {
+/// @brief Private coordinate descent arithmetic, validation and local state.
 namespace {
 
+/// @brief Validate native step/search ranges before using callbacks.
+/// @param options Borrowed method controls.
+/// @throws std::invalid_argument A checked step, tolerance or search control is out of range.
 void validate(const CoordinateDescentOptions& options) {
     if (options.step_size <= 0.0) throw std::invalid_argument("CoordinateDescent: step_size must be positive");
     if (options.tolerance < 0.0) throw std::invalid_argument("CoordinateDescent: tolerance must be non-negative");

@@ -1,3 +1,4 @@
+# CMD: nix develop .#r --command Rscript examples/r/lm_ex.r
 # Note: this uses the flat ClassName_method(obj, ...) call form throughout, not R's usual
 # obj$method(...) syntax -- the latter unreliably fails for overloaded methods (anything with
 # a default argument) in this package's generated R bindings. See memory/

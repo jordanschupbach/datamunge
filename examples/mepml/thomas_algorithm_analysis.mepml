@@ -36,7 +36,7 @@ sweep is numerically stable.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double PI = 3.14159265358979323846;
 ```
@@ -106,7 +106,7 @@ points turns it into a tridiagonal system with diagonal \(2/h^2\) and off-diagon
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 static constexpr double PI = 3.14159265358979323846;
 

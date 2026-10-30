@@ -52,7 +52,7 @@ list of primes.
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 ```
 
 > The algorithm and its two shortcuts
@@ -190,7 +190,7 @@ composites it *newly* strikes, then list the survivors. We then evaluate
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 
 int main() {
     std::filesystem::create_directories("build");

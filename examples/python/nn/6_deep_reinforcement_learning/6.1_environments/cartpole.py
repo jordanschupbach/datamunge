@@ -1,7 +1,6 @@
 # Native Python NN example. CartPole: the balancing benchmark.
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/cartpole.py
 """CartPole: the balancing benchmark.
-
-CMD: just python-example cartpole
 
 Port of tflow's cartpole. Same physics and constants as Gymnasium's
 CartPole-v1 (common/rl/classic_control.hpp, copied from tflow). A random

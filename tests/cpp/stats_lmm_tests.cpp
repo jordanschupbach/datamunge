@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <datamunge/datasets/datasets.hpp>
 #include <datamunge/dstruct/dstruct.hpp>
 #include <datamunge/stats/lm.hpp>
 #include <datamunge/stats/lmm.hpp>
@@ -204,4 +205,95 @@ TEST(LMM, PredictAppliesBlupForKnownGroup) {
     const double expected = model.coefficients()[0] + model.random_effects()[0][0];
     ASSERT_EQ(model.group_labels()[0], "0");
     EXPECT_NEAR(preds[0], expected, 1e-9);
+}
+
+// Reference values from R's nlme 3.1-168: lme(distance ~ age * sex, random = ~ age | subject,
+// data = Orthodont), with method = "REML" (default) and "ML". This is the case that exposed a
+// transposed-Lambda bug (the likelihood used Lambda' Lambda, Sigma and the BLUPs Lambda Lambda'),
+// so it checks the variance components, correlation and BLUPs, not just the likelihood.
+TEST(LMM, RandomSlopeMatchesNlmeOnOrthodont) {
+    const auto growth = datamunge::datasets::orthodont();
+    const LMM reml(growth, "distance ~ age * sex + (1 + age | subject)");
+    const std::vector<double> beta{17.3727272727, 0.4795454545, -1.0321022727, 0.3048295455};
+    const std::vector<double> se{1.2283958, 0.1037193, 1.5957329, 0.1347353};
+    for (std::size_t j = 0; j < 4; ++j) {
+        EXPECT_NEAR(reml.coefficients()[j], beta[j], 1e-6);
+        EXPECT_NEAR(reml.standard_errors()[j], se[j], 1e-6);
+    }
+    EXPECT_NEAR(reml.random_effect_std_devs()[0], 2.4055009, 1e-5);
+    EXPECT_NEAR(reml.random_effect_std_devs()[1], 0.1803455, 1e-5);
+    EXPECT_NEAR(reml.random_effect_correlation(0, 1), -0.668, 5e-4);
+    EXPECT_NEAR(reml.residual_std_dev(), 1.3100396, 1e-6);
+    EXPECT_NEAR(reml.log_likelihood(), -216.2908308, 1e-6);
+    ASSERT_EQ(reml.group_labels().front(), "F01");
+    EXPECT_NEAR(reml.random_effects().front()[0], -0.6413202408, 1e-5);
+    EXPECT_NEAR(reml.random_effects().front()[1], -0.04475484529, 1e-6);
+    EXPECT_NEAR(reml.random_effects().back()[0], -0.7832560530, 1e-5);  // M16
+    EXPECT_NEAR(reml.random_effects().back()[1], -0.08864706073, 1e-6);
+
+    const LMM ml(growth, "distance ~ age * sex + (1 + age | subject)", LMMOptions{.reml = false});
+    const std::vector<double> se_ml{1.18202362104, 0.09980390455, 1.53549372554, 0.12964907511};
+    for (std::size_t j = 0; j < 4; ++j) {
+        EXPECT_NEAR(ml.coefficients()[j], beta[j], 1e-6);
+        EXPECT_NEAR(ml.standard_errors()[j], se_ml[j], 1e-5);
+    }
+    EXPECT_NEAR(ml.random_effect_std_devs()[0], 2.1346882563, 1e-5);
+    EXPECT_NEAR(ml.random_effect_std_devs()[1], 0.1541389639, 1e-5);
+    EXPECT_NEAR(ml.log_likelihood(), -213.9029754, 1e-6);
+    EXPECT_NEAR(ml.random_effects().front()[0], -0.6828078979, 1e-5);
+    EXPECT_NEAR(ml.random_effects().front()[1], -0.03997159248, 1e-6);
+}
+
+// Balanced one-way layout: REML gives the ANOVA estimates sigma^2 = MSW and
+// tau^2 = (MSB - MSW)/m; ML gives tau^2 = (SSB/g - MSW)/m; the BLUPs are the group-mean
+// deviations shrunk by m tau^2 / (m tau^2 + sigma^2).
+TEST(LMM, BalancedOneWayMatchesAnovaClosedForms) {
+    const std::vector<std::vector<double>> groups{{3, 5, 4}, {8, 9, 10}, {6, 4, 8}, {11, 13, 12}};
+    DataFrame df;
+    std::vector<double> g, y;
+    for (std::size_t k = 0; k < groups.size(); ++k)
+        for (const double v : groups[k]) g.push_back(static_cast<double>(k)), y.push_back(v);
+    df.add_column("g", g);
+    df.add_column("y", y);
+    const double m = 3, ng = 4;
+    double grand = 0, ssw = 0, ssb = 0;
+    for (const double v : y) grand += v / 12.0;
+    std::vector<double> means;
+    for (const auto& grp : groups) {
+        const double mean = (grp[0] + grp[1] + grp[2]) / 3.0;
+        means.push_back(mean);
+        for (const double v : grp) ssw += (v - mean) * (v - mean);
+        ssb += m * (mean - grand) * (mean - grand);
+    }
+    const double msw = ssw / (ng * (m - 1)), msb = ssb / (ng - 1);
+
+    const LMM reml(df, "y ~ 1 + (1 | g)");
+    const double tau2 = (msb - msw) / m;
+    EXPECT_NEAR(reml.residual_variance(), msw, 1e-7);
+    EXPECT_NEAR(reml.random_effect_covariance()(0, 0), tau2, 1e-6);
+    EXPECT_NEAR(reml.coefficients()[0], grand, 1e-9);
+    EXPECT_NEAR(reml.standard_errors()[0], std::sqrt(msb / (m * ng)), 1e-7);
+    const double shrink = m * tau2 / (m * tau2 + msw);
+    for (std::size_t k = 0; k < 4; ++k) EXPECT_NEAR(reml.random_effects()[k][0], shrink * (means[k] - grand), 1e-7);
+    EXPECT_NEAR(reml.theta()[0], std::sqrt(tau2 / msw), 1e-6);
+    EXPECT_NEAR(reml.deviance_at(reml.theta()), reml.deviance(), 1e-12);
+    EXPECT_GT(reml.deviance_at({0.5 * reml.theta()[0]}), reml.deviance());
+
+    const LMM ml(df, "y ~ 1 + (1 | g)", LMMOptions{.reml = false});
+    EXPECT_NEAR(ml.residual_variance(), msw, 1e-7);
+    EXPECT_NEAR(ml.random_effect_covariance()(0, 0), (ssb / ng - msw) / m, 1e-6);
+    EXPECT_THROW((void)ml.deviance_at({1.0, 2.0}), std::invalid_argument);
+}
+
+TEST(LMM, CoefficientAndRandomEffectFrames) {
+    const LMM fit(datamunge::datasets::orthodont(), "distance ~ age + (1 + age | subject)");
+    const auto coef = fit.coefficient_frame();
+    EXPECT_EQ(coef.columns(), (std::vector<std::string>{"term", "estimate", "std_error", "z_value", "p_value"}));
+    EXPECT_EQ(coef.string_at("term", 1), "age");
+    EXPECT_DOUBLE_EQ(coef.double_at("estimate", 1), fit.coefficients()[1]);
+    const auto re = fit.random_effects_frame();
+    EXPECT_EQ(re.columns(), (std::vector<std::string>{"subject", "n", "(Intercept)", "age"}));
+    EXPECT_EQ(re.nrows(), 27u);
+    EXPECT_DOUBLE_EQ(re.double_at("n", 0), 4.0);
+    EXPECT_DOUBLE_EQ(re.double_at("age", 26), fit.random_effects()[26][1]);
 }

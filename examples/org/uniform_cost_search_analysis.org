@@ -41,7 +41,7 @@ large map with a nearby target, that early stop is a large saving over computing
 #include <vector>
 
 using namespace datamunge::algorithms;
-using namespace datamunge::plot;
+using namespace datamunge::graphics;
 #+end_src
 
 * Algorithm

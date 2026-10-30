@@ -1,7 +1,7 @@
 # R data, evaluation and training helpers; numerical ops use the SWIG NN API.
 suppressPackageStartupMessages(library(datamungerNN))
 
-nn_data_root <- function() Sys.getenv("DATAMUNGE_DATA_DIR", file.path(path.expand("~"), "projects/tflow_examples/output/datasets"))
+nn_data_root <- function() nn_components$dataset_assets$DataRoot()
 
 nn_output_root <- function(full = FALSE) Sys.getenv("DATAMUNGE_OUTPUT_DIR", file.path("output/nn/r",
     if (full) "full" else "quick"))
@@ -13,11 +13,11 @@ nn_options <- function(arguments, defaults) {
             result$full <- argument == "--full"
             next
         }
-        parts <- strsplit(argument, "=", fixed = TRUE)[[1]]
-        key <- parts[1]
-        if (length(parts) < 2L || !key %in% names(result))
+        equal <- regexpr("=", argument, fixed = TRUE)[1L]
+        key <- if (equal > 0L) substr(argument, 1L, equal - 1L) else argument
+        if (equal < 1L || !key %in% names(result))
             stop("unknown option: ", argument)
-        value <- substring(argument, nchar(key) + 2L)
+        value <- substring(argument, equal + 1L)
         result[[key]] <- if (is.integer(result[[key]]))
             as.integer(value)
         else if (is.numeric(result[[key]]))

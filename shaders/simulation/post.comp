@@ -1,0 +1,37 @@
+#version 450
+// Screen-space ambient occlusion, HDR/ACES presentation and native bitmap overlay.
+layout(local_size_x=8,local_size_y=8) in;
+layout(set=0,binding=0,std430) readonly buffer Direct {vec4 direct_color[];};
+layout(set=0,binding=1,std430) readonly buffer Geometry {vec4 normal_depth[];};
+layout(set=0,binding=2,std430) readonly buffer Ambient {vec4 ambient_color[];};
+layout(set=0,binding=3,std430) readonly buffer Overlay {uint overlay[];};
+layout(set=0,binding=4,std430) writeonly buffer Output {uint rgba[];};
+layout(push_constant) uniform Parameters {
+  vec4 camera_position;vec4 camera_rotation;vec4 camera;uvec4 output_size;
+  vec4 bounds;vec4 ao;vec4 flags;vec4 background;
+} p;
+vec3 rotate(vec4 q,vec3 v){return v+2*cross(q.yzw,cross(q.yzw,v)+q.x*v);}
+vec3 ray(ivec2 pixel){vec2 uv=(vec2(pixel)+.5)/vec2(p.output_size.xy),local=(uv-p.bounds.xy)/p.bounds.zw;return normalize(rotate(p.camera_rotation,vec3((2*local.x-1)*p.camera.x*p.camera.y,(1-2*local.y)*p.camera.x,-1)));}
+float occlusion(ivec2 pixel,vec4 geometry){
+  if(p.ao.x==0||p.ao.w==0||geometry.w<=0)return 1;
+  vec3 point=ray(pixel)*geometry.w;float covered=0,samples=0;
+  float radius=clamp(p.ao.y*float(p.output_size.y)*p.bounds.w/(2*geometry.w*p.camera.x),1,64);
+  float noise=fract(sin(dot(vec2(pixel),vec2(12.9898,78.233)))*43758.5453);
+  for(int i=0;i<16;++i){float angle=(float(i)+noise)*2.39996323,scale=sqrt((float(i)+.5)/16);
+    ivec2 neighbor=pixel+ivec2(round(vec2(cos(angle),sin(angle))*radius*scale));
+    if(any(lessThan(neighbor,ivec2(0)))||any(greaterThanEqual(neighbor,ivec2(p.output_size.xy))))continue;
+    vec4 other=normal_depth[uint(neighbor.y)*p.output_size.x+uint(neighbor.x)];samples+=1;if(other.w<=0)continue;
+    vec3 delta=ray(neighbor)*other.w-point;float distance=length(delta);if(distance>p.ao.y||distance<.00001)continue;
+    float horizon=dot(geometry.xyz,delta)-p.ao.z;
+    if(horizon>0)covered+=clamp(horizon/distance,0,1)*(1-distance/p.ao.y);
+  }
+  return pow(clamp(1-covered/max(samples,1),0,1),p.ao.w);
+}
+vec3 aces(vec3 x){return clamp((x*(2.51*x+.03))/(x*(2.43*x+.59)+.14),0,1);}
+void main(){
+  ivec2 pixel=ivec2(gl_GlobalInvocationID.xy);if(any(greaterThanEqual(pixel,ivec2(p.output_size.xy))))return;
+  uint index=uint(pixel.y)*p.output_size.x+uint(pixel.x);vec4 geometry=normal_depth[index];float ao=occlusion(pixel,geometry);
+  vec3 linear=direct_color[index].rgb+ambient_color[index].rgb*ao;
+  vec3 color=p.flags.x>0?vec3(ao):pow(aces(max(linear,vec3(0))*p.flags.y),vec3(1/2.2));
+  vec4 hud=unpackUnorm4x8(overlay[index]);color=mix(color,hud.rgb,hud.a);rgba[index]=packUnorm4x8(vec4(color,1));
+}

@@ -1,0 +1,544 @@
+//? Title: Highway Networks: Coupled Gates and Carry Derivatives
+//? Subtitle: Tensor computations, explicit checks and reproducible local figures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A deep transform stack can attenuate signals and their derivatives before it learns useful
+features. Highway layers mix a learned transform with a learned carry path. We check the
+complete input-dependent Jacobian, compare a controlled hundred-layer scalar stack, and train
+a twenty-hidden-layer MNIST classifier using an explicit tensor Adam loop.
+)
+\toc
+
+Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/highway_networks.cpp`.
+
+> The method
+
+A highway layer computes H=ReLU(x Wh+bh), T=sigmoid(x Wt+bt), and
+
+$$
+y=H\odot T+x\odot(1-T).
+$$
+\alttext(The transform gate and its complementary carry weight mix a learned transform with the input.)
+
+The shapes match; a separate projection changes widths when necessary. Convolutional layers
+use two same-channel SAME filters, and a 1×1 convolution agrees with dense per-position
+mixing after identical weights are reshaped. H uses He-uniform weights; the gate uses
+Glorot and a negative initial bias. Bias arguments initialize newly created leaves only:
+calling the model again does not reset a fitted gate. Explicit T=0/1 fixtures recover the
+identity/transform limits. Finite learned biases use sigmoid gates rather than a hard switch.
+
+With a column-form Jacobian J[j,k]=d y_j/d x_k, all three terms matter:
+
+$$
+J=\operatorname{diag}(1-T)
++\operatorname{diag}(T\odot\mathbf{1}_{a_H>0})W_H^T
++\operatorname{diag}((H-x)\odot T\odot(1-T))W_T^T.
+$$
+\alttext(The input derivative contains carry, transform and input-dependent gate terms.)
+
+The last term remains even if the transform is locally inactive. The worked input (.8,-.5)
+uses Wh=((.7,-.2),(.3,.8)), bh=(.2,.1), Wt=((.4,-.1),(-.2,.3)), bt=(-1,-1), in row-major
+order. It gives transform (.61,0) and gate logits (-.58,-1.23). Tensor autograd agrees with
+the analytic matrix, including its off-diagonal entries. The 1×1 convolution agrees in values
+and input Jacobian, and every learned parameter tensor has a finite derivative.
+
+Negative gate bias favours carrying initially, but input-dependent gates do not guarantee an
+identity derivative. To isolate attenuation, a separate scalar fixture fixes H(x)=.5x and
+T=sigmoid(b) independent of x. One layer has gain g=1−.5sigmoid(b); at positive input one,
+100 layers have response and input derivative g¹⁰⁰. Plain layers give .5¹⁰⁰; b=0 gives .75¹⁰⁰,
+and b=−3 gives (1−.5sigmoid(−3))¹⁰⁰. Relative-error checks avoid treating tiny nonzero
+signals as zero. These fixed filters are a diagnostic, not an empirical claim about trained gates.
+
+A width-D dense highway layer learns 2(D²+D) scalars and costs O(ND²). A square k×k
+convolutional layer with C channels learns 2(k²C²+C) and costs O(NHW k²C²). The MNIST
+classifier explicitly flattens 28×28 images, applies a 784→50 plain ReLU projection, nineteen
+50-wide highway layers with initial gate bias −2, then ten linear logits: 136660 scalars.
+Projection/output use Glorot; internal transforms use He. Evaluation is deterministic, with
+no BN state or dropout. The full architecture and all parameter gradients are checked.
+
+The bounded dataset fit uses 512 fitting digits, 128 validation digits and 128 official-test
+digits, ten epochs and batch 32. Adam(.001) minimizes mean cross entropy plus .0001/2 times
+the sum of kernel squares. Validation NLL selects a parameter checkpoint before test evaluation.
+Preprocessing stays in tensor reshape; pixels remain in [0,1]. Cached MNIST is required.
+
+The editable concept diagram is `diagrams/highway_networks_concept.tikz`. Regeneration uses
+LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+
+```{bash, results="output", file="figures/highway_networks_concept.svg"}
+set -eu
+mkdir -p build
+latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/highway_networks_concept.tikz > build/highway_networks_concept.compile.log 2>&1
+dvisvgm --no-fonts --bbox=10 --output=build/highway_networks_concept.svg build/highway_networks_concept.dvi > build/highway_networks_concept.render.log 2>&1
+printf 'Rendered local concept diagram.\n'
+```
+// result_begin:
+// Rendered local concept diagram.
+// \image(figures/highway_networks_concept.svg)
+// result_end
+\caption(Highway Networks: Coupled Gates and Carry Derivatives)
+\alttext(Transform H(x); sigmoid gate T(x); then Carry and transform; gate derivatives; then Twenty hidden layers; explicit tensor Adam.)
+
+> Executed tensor architecture
+
+This figure executes the inference configuration shown in the code, using a zero-valued
+shape probe without fitting or loading a checkpoint. Named stage boundaries group
+whole subgraphs where available; other nodes retain functional-layer detail. Exact
+batch-inclusive shapes and reachable parameter totals come from the trace. Shared
+linear scales map spatial dimensions and channel counts to blocks; the one-pixel
+visibility floor is disclosed in the legend. Labels use compact monospace text,
+rotate counterclockwise and sit beside their own glyphs. Arrows flow left to right;
+wide diagrams scroll at native size on the website.
+
+```{cpp, results="markdown", file="figures/highway_networks_architecture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <filesystem>
+#include <print>
+int main() {
+  namespace n = dm::nn;
+  namespace m = n::models;
+  n::set_num_threads(2);
+  std::filesystem::create_directories("build");
+
+  n::ParameterStore p(17);
+  n::Module         architecture_model(
+      [&](const n::Tensor& image) {
+        return n::models::HighwayClassifier(p, image, 20, 50, 10, -2).logits;
+      },
+      "Highway Networks: Coupled Gates and Carry Derivatives");
+  n::ModelPlotOptions options;
+  options.style                 = n::ModelPlotStyle::Flow;
+  options.detail                = n::ModelPlotDetail::Blocks;
+  options.labels                = {.type = n::ModelPlotLabel::NameAndShape, .size = 12, .wrap = 24};
+  options.spacing               = {.layer = 24, .lane = 12, .label = 8, .margin = 20};
+  options.sizing.spatial_size   = 96;
+  options.sizing.channel_size   = 42;
+  options.sizing.minimum_extent = 1;
+  options.opacity               = .8;
+  const auto diagram            = architecture_model.plot(n::zeros({1, 784}), options);
+  diagram.save_svg("build/highway_networks_architecture.svg");
+  std::print(
+      "{} displayed nodes; {} reachable learned values.\n",
+      diagram.nodes().size(),
+      diagram.parameter_count());
+}
+```
+// result_begin: markdown
+194 displayed nodes; 136660 reachable learned values.
+\image(figures/highway_networks_architecture.svg)
+// result_end
+\caption(Executed highway networks tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
+\alttext(Left-to-right highway networks architecture with rotated names and exact output shapes.)
+
+> Simple coupled-gate example
+
+The signed two-channel fixture includes an inactive transform component and a nonzero gate derivative.
+
+```{cpp, results="markdown", file="figures/highway_networks_gates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  n::ParameterStore p(17, type), q(17, type);
+  const auto x = n::from_vector(std::vector<double>{.8, -.5}, {1, 2}).requires_grad_();
+  {
+    n::NoGradGuard guard;
+    n::models::HighwayDense(p, "h", x, -1);
+    n::models::HighwayConv2D(q, "h", x.reshape({1, 1, 1, 2}), 1, -1);
+  }
+  const std::vector<std::pair<std::string, std::vector<double>>> values{
+      {"transform/W", {.7, -.2, .3, .8}},
+      {"transform/b", {.2, .1}},
+      {"gate/W", {.4, -.1, -.2, .3}},
+      {"gate/b", {-1, -1}}};
+  for (const auto &[part, value] : values) {
+    p.set("h/" + part, n::from_vector(value, p.at("h/" + part).shape()));
+    q.set("h/" + part, n::from_vector(value, q.at("h/" + part).shape()));
+  }
+  const auto net = n::models::HighwayDense(p, "h", x, -1);
+  const auto jac = n::jacobian(
+                       [&](const n::Tensor &z) {
+                         return n::models::HighwayDense(p, "h", z, -1).output;
+                       },
+                       x)
+                       .reshape({2, 2});
+  const auto t = net.gate, active = n::greater(net.transformed, 0).to(type);
+  const auto carry = (1 - t).reshape({2, 1}) * n::eye(2, type);
+  const auto transform =
+      (t * active).reshape({2, 1}) * n::transpose(p.at("h/transform/W"), {1, 0});
+  const auto gate_term = ((net.transformed - x) * t * (1 - t)).reshape({2, 1}) *
+                         n::transpose(p.at("h/gate/W"), {1, 0});
+  const double error = n::max(n::abs(jac - carry - transform - gate_term)).item();
+  if (error > 1e-12 || n::max(n::abs(gate_term)).item() == 0)
+    return 1;
+  const auto conv = n::models::HighwayConv2D(q, "h", x.reshape({1, 1, 1, 2}), 1, -1);
+  const auto conv_jac = n::jacobian(
+                            [&](const n::Tensor &z) {
+                              return n::models::HighwayConv2D(q, "h", z, 1, -1).output;
+                            },
+                            x.reshape({1, 1, 1, 2}))
+                            .reshape({2, 2});
+  if (n::max(n::abs(conv.output.reshape({1, 2}) - net.output)).item() > 1e-12 ||
+      n::max(n::abs(conv_jac - jac)).item() > 1e-12)
+    return 1;
+  if (n::max(n::abs(n::models::HighwayMix(x, net.transformed, n::scalar(0, type)) - x))
+              .item() != 0 ||
+      n::max(n::abs(n::models::HighwayMix(x, net.transformed, n::scalar(1, type)) -
+                    net.transformed))
+              .item() != 0)
+    return 1;
+  for (const auto &g : n::grad(n::sum(net.output), p.parameters()))
+    if (!std::isfinite(n::sum(n::abs(g)).item()))
+      return 1;
+  auto activation = dm::graphics::RPlot::create();
+  activation.lines({0, 1}, x.to_vector<double>(), "input", {37, 99, 235})
+      .lines({0, 1}, net.transformed.to_vector<double>(), "transform H", {234, 88, 12})
+      .lines({0, 1}, net.output.to_vector<double>(), "output", {22, 163, 74})
+      .title("One two-channel highway evaluation")
+      .x_label("component index")
+      .y_label("signed activation")
+      .y_limits(-.7, 1.3);
+  auto layout = dm::graphics::RLayout::create(1, 2);
+  layout.add(activation)
+      .add(n::plot_tensor_map(jac, -.05, 1).title("Complete input Jacobian"));
+  std::filesystem::create_directories("build");
+  layout.size(1100, 470).fit_panels().save_svg("build/highway_networks_gates.svg");
+  dm::dstruct::DataFrame table;
+  table.add_column("output_component", std::vector<double>{0, 1});
+  table.add_column("d_y_d_x0", n::slice_axis(jac, 1, 0, 1).reshape({2}).to_vector<double>());
+  table.add_column("d_y_d_x1", n::slice_axis(jac, 1, 1, 2).reshape({2}).to_vector<double>());
+  std::print("Transform {}, gates {}, output {}.\n\n{}\n\nFull Jacobian error {:.12f}; "
+             "omitting the gate term would change an entry by {:.9f}. Dense/1x1-conv values "
+             "and Jacobians agree.\n",
+             net.transformed.to_vector<double>(), net.gate.to_vector<double>(),
+             net.output.to_vector<double>(), table.to_md(9), error,
+             n::max(n::abs(gate_term)).item());
+}
+```
+// result_begin: markdown
+Transform [0.6099999999999999, 0], gates [0.35893259366518293, 0.22618142573054623], output [0.7318028072036152, -0.3869092871347269].
+
+| output_component | d_y_d_x0 | d_y_d_x1 |
+| ---: | ---: | ---: |
+| 0 | 0.874832623 | 0.116423578 |
+| 1 | -0.008751169 | 0.800072083 |
+
+
+Full Jacobian error 0.000000000000; omitting the gate term would change an entry by 0.026253508. Dense/1x1-conv values and Jacobians agree.
+\image(figures/highway_networks_gates.svg)
+// result_end
+\caption(The input-dependent gate contributes a third Jacobian term. Heatmap rows are output components in top-to-bottom order, columns are inputs left-to-right, with colour limits [-.05,1]. The table gives exact component labels and values.)
+\alttext(The input-dependent gate contributes a third Jacobian term. Heatmap rows are output components in top-to-bottom order, columns are inputs left-to-right, with colour limits [-.05,1]. The table gives exact component labels and values.)
+
+> Checking depth attenuation
+
+All scalar coefficients are fixed explicitly; no optimization is hidden in this comparison.
+
+```{cpp, results="markdown", file="figures/highway_networks_depth.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  const auto type = n::DType::Float64;
+  const auto input = n::ones({1, 1}, type).requires_grad_();
+  std::vector<double> layers{0}, plain_trace{0};
+  auto plain = input;
+  for (int i = 1; i <= 100; ++i) {
+    plain = .5 * plain;
+    layers.push_back(i);
+    plain_trace.push_back(n::log(plain).item() / std::log(10.));
+  }
+  const double plain_expected = std::pow(.5, 100),
+               plain_gradient = n::grad(plain, {input})[0].item();
+  if (std::abs(plain.item() / plain_expected - 1) > 1e-11 ||
+      std::abs(plain_gradient / plain_expected - 1) > 1e-11)
+    return 1;
+  auto plot = dm::graphics::RPlot::create();
+  plot.lines(layers, plain_trace, "plain, gain .5", {37, 99, 235});
+  std::print("Plain 100-layer response and input derivative {:.12e}.\n", plain.item());
+  for (double bias : {0., -3.}) {
+    n::ParameterStore p(17, type);
+    auto h = input;
+    std::vector<double> trace{0};
+    for (int i = 1; i <= 100; ++i) {
+      const auto name = "b" + std::to_string(i);
+      p.set(name + "/transform/W", n::full({1, 1}, .5, type));
+      p.set(name + "/transform/b", n::zeros({1}, type));
+      p.set(name + "/gate/W", n::zeros({1, 1}, type));
+      p.set(name + "/gate/b", n::full({1}, bias, type));
+      h = n::models::HighwayDense(p, name, h, bias).output;
+      trace.push_back(n::log(h).item() / std::log(10.));
+    }
+    const double expected = std::pow(1 - .5 / (1 + std::exp(-bias)), 100),
+                 gradient = n::grad(h, {input})[0].item();
+    if (std::abs(h.item() / expected - 1) > 1e-11 || std::abs(gradient / expected - 1) > 1e-11)
+      return 1;
+    plot.lines(layers, trace, bias == 0 ? "gate bias 0" : "gate bias -3",
+               bias == 0 ? dm::graphics::RGB{234, 88, 12} : dm::graphics::RGB{22, 163, 74});
+    std::print("Bias {:.0f}: response {:.12e}, input derivative {:.12e}; exact constant-gate "
+               "formula verified.\n",
+               bias, h.item(), gradient);
+  }
+  plot.title("One hundred scalar layers with fixed transforms and gates")
+      .x_label("layers")
+      .y_label("log10 response")
+      .y_limits(-32, 10);
+  std::filesystem::create_directories("build");
+  plot.size(1000, 470).save_svg("build/highway_networks_depth.svg");
+}
+```
+// result_begin: markdown
+Plain 100-layer response and input derivative 7.888609052210e-31.
+Bias 0: response 3.207202185382e-13, input derivative 3.207202185382e-13; exact constant-gate formula verified.
+Bias -3: response 9.073053250520e-02, input derivative 9.073053250520e-02; exact constant-gate formula verified.
+\image(figures/highway_networks_depth.svg)
+// result_end
+\caption(Fixed H(x)=.5x and constant gates, evaluated on positive scalar input one. The response is also the input derivative in this linear fixture. Negative gate bias reduces attenuation here; learned input-dependent gates require the full derivative check above.)
+\alttext(Fixed H(x)=.5x and constant gates, evaluated on positive scalar input one. The response is also the input derivative in this linear fixture. Negative gate bias reduces attenuation here; learned input-dependent gates require the full derivative check above.)
+
+> Checking the complete classifier
+
+The first plain projection counts as one of twenty hidden layers. A changed initializer must preserve existing learned biases.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+  n::ParameterStore p(17);
+  n::Generator rng(29);
+  const auto x = n::normal({2, 784}, 0, .3, rng);
+  const auto net = n::models::HighwayClassifier(p, x, 20, 50, 10, -2);
+  if (p.count() != 136660 || net.layers.size() != 19 ||
+      net.projection.shape() != n::Shape{2, 50} || net.logits.shape() != n::Shape{2, 10})
+    return 1;
+  const auto gradients = n::grad(
+      n::sparse_softmax_cross_entropy(net.logits, n::tensor({0, 1}).to(n::DType::Int64)),
+      p.parameters());
+  for (const auto &g : gradients)
+    if (!std::isfinite(n::sum(n::abs(g)).item()))
+      return 1;
+  n::NoGradGuard guard;
+  const auto a = n::models::HighwayClassifier(p, x).logits,
+             b = n::models::HighwayClassifier(p, x).logits;
+  if (n::max(n::abs(a - b)).item() != 0)
+    return 1;
+  p.set("highway0/gate/b", n::full({50}, .25));
+  n::models::HighwayClassifier(p, x, 20, 50, 10, -10);
+  if (n::max(n::abs(p.at("highway0/gate/b") - .25)).item() != 0)
+    return 1;
+  std::print("Complete classifier: {} learned scalars; projection plus 19 highway layers; {} "
+             "finite parameter-tensor gradients.\nEvaluation is deterministic. Changing the "
+             "bias initializer does not reset an existing learned gate bias.\n",
+             p.count(), gradients.size());
+}
+```
+// result_begin: markdown
+Complete classifier: 136660 learned scalars; projection plus 19 highway layers; 80 finite parameter-tensor gradients.
+Evaluation is deterministic. Changing the bias initializer does not reset an existing learned gate bias.
+// result_end
+
+> Dataset example
+
+The contact sheet shows one original 28×28 training image per digit, ordered 0–4 then 5–9, with integer pixel enlargement for visibility.
+
+```{cpp, results="markdown", file="figures/highway_networks_inputs.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  namespace n = dm::nn;
+
+  std::filesystem::path cache;
+  if (const auto *p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto *p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto data = n::load_mnist((cache / "mnist").string(), "train");
+  const auto images = data.images, labels = data.labels;
+
+  std::vector<int64_t> rows;
+  for (int cls = 0; cls < 10; ++cls) {
+    for (int64_t row = 0; row < labels.numel(); ++row)
+      if (labels.at({row}) == cls) {
+        rows.push_back(row);
+        break;
+      }
+  }
+  if (rows.size() != 10)
+    return 1;
+  std::filesystem::create_directories("build");
+  n::save_image_grid(n::take_rows(images, rows), "build/highway_networks_inputs.png", 5, 0.,
+                     1., 4, 1., 4);
+  std::print("One original cached training image per class, IDs 0..4 then 5..9.\n");
+}
+```
+// result_begin: markdown
+One original cached training image per class, IDs 0..4 then 5..9.
+\image(figures/highway_networks_inputs.png)
+// result_end
+\caption(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+\alttext(Original cached images, selected by first occurrence of each class; IDs run 0–4 then 5–9. Pixels are repeated four times per side for display.)
+
+```{cpp, results="markdown", file="figures/highway_networks_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  int rendered_confusions = 0;
+  namespace n             = dm::nn;
+  n::set_num_threads(2);
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  dm::datasets::fetch("mnist", (cache / "mnist").string());
+
+  const auto train = n::load_mnist((cache / "mnist").string(), "train"),
+             test  = n::load_mnist((cache / "mnist").string(), "test");
+  const auto tx    = n::slice_axis(train.images, 0, 0, 512).reshape({512, 784}),
+             ty    = n::slice_axis(train.labels, 0, 0, 512);
+  const auto vx    = n::slice_axis(train.images, 0, 512, 640).reshape({128, 784}),
+             vy    = n::slice_axis(train.labels, 0, 512, 640);
+  const auto qx    = n::slice_axis(test.images, 0, 0, 128).reshape({128, 784}),
+             qy    = n::slice_axis(test.labels, 0, 0, 128);
+  n::ParameterStore p(17);
+  auto              output = [&](const n::Tensor& x) {
+    return n::models::HighwayClassifier(p, x, 20, 50, 10, -2).logits;
+  };
+  {
+    n::NoGradGuard guard;
+    output(n::zeros({1, 784}));
+  }
+  if (p.count() != 136660)
+    return 1;
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer        optimizer(p, .001, config);
+  n::BatchOrder       batches(512, 32, 2026);
+  std::vector<double> epochs, training, validation;
+  std::filesystem::create_directories("build");
+  const std::string checkpoint = "build/highway_networks_best.npz";
+  double            best       = std::numeric_limits<double>::infinity();
+  int               best_epoch = 0;
+  for (int epoch = 1; epoch <= 10; ++epoch) {
+    batches.begin_epoch();
+    n::WeightedMean average;
+    for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
+      const auto nll =
+          n::sparse_softmax_cross_entropy(output(n::take_rows(tx, rows)), n::take_rows(ty, rows));
+      auto objective = nll;
+      for (const auto& w : p.parameters())
+        if (w.dim() >= 2)
+          objective = objective + .00005 * n::sum(n::square(w));
+      optimizer.minimize(objective);
+      average.add(nll.item(), rows.size());
+    }
+    n::NoGradGuard guard;
+    const double   val = n::sparse_softmax_cross_entropy(output(vx), vy).item();
+    if (!std::isfinite(val))
+      return 1;
+    epochs.push_back(epoch);
+    training.push_back(average.value());
+    validation.push_back(val);
+    if (val < best) {
+      best       = val;
+      best_epoch = epoch;
+      p.save(checkpoint);
+    }
+  }
+  p.load(checkpoint);
+  n::NoGradGuard guard;
+  const auto     prediction   = output(qx);
+  const double   training_nll = n::sparse_softmax_cross_entropy(output(tx), ty).item(),
+               test_nll       = n::sparse_softmax_cross_entropy(prediction, qy).item();
+  if (!std::isfinite(test_nll))
+    return 1;
+  const auto confusion =
+      n::matmul(n::transpose(n::one_hot(qy, 10), {1, 0}), n::one_hot(n::argmax(prediction, 1), 10));
+  n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
+      .save_svg(
+          "build/highway_networks_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+          {.title = "highway networks / selected-checkpoint test counts"});
+
+  if (n::sum(confusion).item() != 128)
+    return 1;
+  auto learning = dm::graphics::RPlot::create();
+  learning.lines(epochs, training, "training", {37, 99, 235})
+      .lines(epochs, validation, "validation", {234, 88, 12})
+      .title("Twenty hidden layers, explicit Adam")
+      .x_label("epoch")
+      .y_label("mean primary NLL");
+  auto counts = n::plot_tensor_map(n::reverse(confusion, {0}), 0, n::max(confusion).item());
+  counts
+      .title(
+          "Test counts, range [0," + std::to_string(static_cast<int>(n::max(confusion).item())) +
+          "]")
+      .x_label("predicted digit")
+      .y_label("true digit")
+      .x_limits(-.5, 9.5)
+      .y_limits(-.5, 9.5);
+  dm::graphics::RLayout::create(1, 2)
+      .add(learning)
+      .add(counts)
+      .size(1100, 470)
+      .fit_panels()
+      .save_svg("build/highway_networks_training.svg");
+  std::print(
+      "512 fit / 128 validation / 128 official-test digits; {} learned scalars; {} "
+      "explicit Adam updates.\nSelected epoch {}, validation NLL {:.6f}, training NLL "
+      "{:.6f}, test NLL {:.6f}, test accuracy {:.6f}.\n",
+      p.count(),
+      optimizer.iterations(),
+      best_epoch,
+      best,
+      training_nll,
+      test_nll,
+      n::accuracy(prediction, qy));
+}
+```
+// result_begin: markdown
+512 fit / 128 validation / 128 official-test digits; 136660 learned scalars; 160 explicit Adam updates.
+Selected epoch 9, validation NLL 0.962916, training NLL 0.126805, test NLL 0.759486, test accuracy 0.765625.
+\image(figures/highway_networks_training.svg)
+// result_end
+\caption(Visible Adam updates train all twenty hidden layers and both terms of every coupled gate. The checkpoint uses validation NLL; the test count matrix sums to 128 and its title gives the colour limits.)
+\alttext(Visible Adam updates train all twenty hidden layers and both terms of every coupled gate. The checkpoint uses validation NLL; the test count matrix sums to 128 and its title gives the colour limits.)
+
+
+Validation selects epoch nine. The restored model has training NLL 0.126805,
+validation NLL 0.962916 and test NLL 0.759486, with 76.5625% accuracy on 128
+official-test digits. The gap shows that strong fitting on 512 digits does not
+translate to equally low held-out loss. The count matrix exposes the selected
+model's class pattern; this small run establishes the explicit training workflow.
+
+> Native confusion matrices
+
+These matrices use the held-out predictions from the executed program above.
+The native `ConfusionMatrix` SVG API labels exact counts with true classes
+running from top to bottom and predicted classes from left to right.
+
+\image(figures/highway_networks_confusion_api_0.svg)
+\caption(Held-out classification confusion counts, evaluation 1. Exact cell counts are printed in the image.)
+\alttext(Integer prediction counts with true classes as rows and predicted classes as columns.)
+
+
+> Conclusion
+
+The carry path and transform path are coupled by a learned sigmoid gate, whose input
+derivative must be included. Controlled deep-stack gains explain one attenuation mechanism;
+the full MNIST architecture then exposes every optimizer step and validation-selected
+checkpoint. The fixed-gate algebra and the learned-model experiment answer different questions.
+
+> References
+
+- [Srivastava, Greff and Schmidhuber (2015), Highway Networks](https://arxiv.org/abs/1505.00387).
+- [MNIST dataset and IDX format, CVDF mirror maintained with the authors' permission](https://github.com/cvdfoundation/mnist).

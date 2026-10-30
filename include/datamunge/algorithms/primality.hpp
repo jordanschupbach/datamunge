@@ -1,5 +1,8 @@
 #pragma once
 
+/// @file primality.hpp
+/// @brief Primality tests (Fermat, Miller-Rabin, Solovay-Strassen, AKS and others) and prime sieves.
+
 #include <cstdint>
 #include <vector>
 
@@ -47,7 +50,9 @@ std::vector<std::uint64_t> sundaram_primes(std::uint64_t limit);
 ///        @c 3x^2-y^2 with the appropriate residues), toggling each hit, then removes squares of
 ///        primes. It has a better asymptotic operation count than Eratosthenes -- @c O(limit) with
 ///        wheel optimization (here @c O(limit) toggles over the quadratics) -- and generates all
-///        primes up to @p limit.
+///        primes up to @p limit. Each form is enumerated only over its own region, about
+///        @c 1.04*limit lattice points in all. Defined in sieve_of_atkin.cpp; see
+///        sieve_of_atkin.hpp for the forms and operation counts.
 ///
 /// @param limit the inclusive upper bound.
 /// @return the primes @c <= limit, in increasing order.

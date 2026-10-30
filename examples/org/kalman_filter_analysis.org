@@ -265,7 +265,7 @@ All computation uses =datamunge='s C++ =filter= module --
 =InformationFilter=, =EnsembleKalmanFilter=, =ParticleFilter=,
 =AlphaBetaFilter=, and =AlphaBetaGammaFilter= -- together with
 =filter::VectorFunction= (the director-enabled interface every
-nonlinear filter's \(f\)/\(h\) implements) and =plot::RPlot= for
+nonlinear filter's \(f\)/\(h\) implements) and =graphics::RPlot= for
 visualization.
 
 ** Program, presented as a literate whole
@@ -283,7 +283,7 @@ visualization.
 #include <random>
 
 using namespace datamunge::filter;
-using datamunge::plot::RPlot;
+using datamunge::graphics::RPlot;
 
 namespace {
 
@@ -316,7 +316,7 @@ std::vector<double> column(const std::vector<KalmanState>& states,
 #+end_src
 
 This mirrors the reference example
-(=examples/cpp/source/kalman_filter_ex.cpp=), extended below with three
+(=examples/cpp/source/time_series/kalman_filter_ex.cpp=), extended below with three
 =RPlot= visualizations.
 
 *** Kalman filter and RTS smoother, and visualizing both

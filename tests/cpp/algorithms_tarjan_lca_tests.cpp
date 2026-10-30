@@ -2,6 +2,7 @@
 
 #include <datamunge/algorithms/tarjan_lca.hpp>
 
+#include <algorithm>
 #include <numeric>
 #include <random>
 #include <utility>
