@@ -30,6 +30,22 @@ class PerformanceReportTests(unittest.TestCase):
             self.assertIn('Before/rows:1',final);self.assertIn('After/rows:2',final)
             self.assertEqual(final.count(report.START),1)
 
+    def test_tables_survive_when_snapshot_json_is_not_on_disk(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder); destination=root/'PERFORMANCE.md'; results=root/'results'; results.mkdir()
+            (results/'kept.comparison.json').write_text(json.dumps([self.row('Kept/rows:1/f64:0/real_time')]))
+            report.update_report(destination,results,root)
+            first=destination.read_text()
+            self.assertNotIn('](',first.split(report.START)[1])
+            for path in results.rglob('*.json'): path.unlink()
+            report.update_report(destination,results,root)
+            self.assertEqual(first,destination.read_text())
+            (results/'new.comparison.json').write_text(json.dumps([self.row('New/rows:2/f64:1/real_time')]))
+            report.update_report(destination,results,root)
+            final=destination.read_text()
+            self.assertIn('Kept/rows:1',final); self.assertIn('New/rows:2',final)
+            self.assertIn('2 runs; 2 per-case comparisons',final)
+
     def test_malformed_markers_do_not_overwrite_report(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);destination=root/'PERFORMANCE.md';destination.write_text(report.START)

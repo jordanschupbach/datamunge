@@ -4,6 +4,7 @@ import argparse
 import html
 import hashlib
 import json
+import re
 from pathlib import Path
 import tempfile
 
@@ -47,7 +48,12 @@ def comparison_records(directory, root=ROOT):
     return sorted(records, key=lambda item: (item[1]['label'], item[1]['id']))
 
 
-def render_comparisons(directory, root=ROOT):
+DETAILS = re.compile(r'<details><summary>(.*?) — (\d+) cases — ([0-9a-f]{12})</summary>\n.*?\n</details>\n', re.S)
+
+
+def render_comparisons(directory, root=ROOT, previous=''):
+    """The comparison section: every archived run, plus the runs already shown in `previous`
+    whose JSON is not on disk (benchmark JSON is local output and is not committed)."""
     files = comparison_records(directory, root)
     text = ['<a id="tensorflow-comparisons"></a>', '',
             '## All TensorFlow / in-house comparison tables', '',
@@ -55,40 +61,49 @@ def render_comparisons(directory, root=ROOT):
             'Use the dated results above for conclusions; do not combine different builds, fixture sets '
             'or noisy historical runs into one score. Ratios above 1 mean native took longer. '
             'Times are medians in microseconds; CV columns are percentages. '
-            'Immutable snapshots retain older comparisons even when default output filenames are reused.', '']
-    count = 0
+            'Immutable snapshots retain older comparisons even when default output filenames are reused. '
+            'The snapshot JSON is kept locally and is not committed; tables already in this report '
+            'are kept when their snapshot is not on disk.', '']
+    blocks = []
     for path, record in files:
         rows = record['rows']
         label = html.escape(record['label'])
         relative = path.resolve().relative_to(Path(root).resolve()).as_posix()
-        text.extend([f'<details><summary>{label} — {len(rows)} cases — {record["id"][:12]}</summary>', '',
-                     f'Immutable data: [JSON]({relative}). Run date: `{record["context"].get("date", "unrecorded")}`.', '',
-                     '| Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |',
-                     '|---|---:|---:|---:|---:|---:|---:|---:|---:|'])
+        block = [f'<details><summary>{label} — {len(rows)} cases — {record["id"][:12]}</summary>', '',
+                 f'Snapshot: `{relative}` (local). Run date: `{record["context"].get("date", "unrecorded")}`.', '',
+                 '| Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |',
+                 '|---|---:|---:|---:|---:|---:|---:|---:|---:|']
         for row in sorted(rows, key=lambda r: r['case']):
             numbers = [row['native_ns']/1000, row['eager_ns']/1000, row['graph_ns']/1000,
                        row['native_over_eager'], row['native_over_graph'],
                        row.get('native_cv_percent'), row.get('eager_cv_percent'), row.get('graph_cv_percent')]
             case = row['case'].removeprefix('BM_TensorFlowMatched/').replace('|', '\\|')
-            text.append('| `' + case + '` | ' + ' | '.join('—' if v is None else f'{v:.6g}' for v in numbers) + ' |')
-        text.extend(['', '</details>', ''])
-        count += len(rows)
-    text.insert(5, f'**{len(files)} runs; {count} per-case comparisons.**')
-    return '\n'.join(text)
+            block.append('| `' + case + '` | ' + ' | '.join('—' if v is None else f'{v:.6g}' for v in numbers) + ' |')
+        block.extend(['', '</details>', ''])
+        blocks.append((record['label'], record['id'][:12], len(rows), '\n'.join(block)))
+    archived = {key for _, key, _, _ in blocks}
+    for match in DETAILS.finditer(previous):
+        if match.group(3) not in archived:
+            blocks.append((html.unescape(match.group(1)), match.group(3), int(match.group(2)),
+                           match.group(0)))
+    blocks.sort(key=lambda block: (block[0], block[1]))
+    count = sum(rows for _, _, rows, _ in blocks)
+    text.insert(5, f'**{len(blocks)} runs; {count} per-case comparisons.**')
+    return '\n'.join(text + [block for *_, block in blocks])
 
 
 def update_report(report=ROOT/'PERFORMANCE.md', directory=ROOT/'benchmarks/results/tensorflow', root=ROOT):
     report = Path(report)
     existing = report.read_text() if report.exists() else '# Performance plan and comparisons\n\n'
-    content = render_comparisons(directory, root)
-    block = START + '\n\n' + content + '\n' + END
     if START in existing or END in existing:
         if existing.count(START) != 1 or existing.count(END) != 1 or existing.index(START) >= existing.index(END):
             raise ValueError('Performance report comparison markers are malformed')
         begin, rest = existing.split(START)
-        _, suffix = rest.split(END)
+        previous, suffix = rest.split(END)
+        block = START + '\n\n' + render_comparisons(directory, root, previous) + '\n' + END
         updated = begin + block + suffix
     else:
+        block = START + '\n\n' + render_comparisons(directory, root) + '\n' + END
         updated = existing.rstrip() + '\n\n' + block + '\n'
     with tempfile.NamedTemporaryFile(mode='w', dir=report.parent, delete=False) as stream:
         temporary = Path(stream.name)

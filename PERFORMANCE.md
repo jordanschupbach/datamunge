@@ -18,7 +18,7 @@ implementation pass and the follow-up renderer/preview pass are now complete.
 
 Reproduce with `just bench-fruit-render`. The [benchmark guide](benchmarks/cad/README.md)
 describes prerequisites and the independent Release build. The
-[raw baseline](benchmarks/results/fruit_render/baseline.json) retains every sample,
+raw baseline (`benchmarks/results/fruit_render/baseline.json`, local, not committed) retains every sample,
 environment, linked library/executable/input hashes and min/max/deviation.
 
 The presentation default is now the final **20 seconds of the recorded minute
@@ -56,7 +56,7 @@ rendering, 76.92 s CPU wrist views and 20.42 s overview preparation. This new
 physical motion/camera trace differs from the historical performance trace, so
 these are end-to-end costs rather than an isolated renderer regression test.
 The video has 300 frames and fully decodes. Detailed evidence is in
-[physics_fidelity.json](benchmarks/results/fruit_render/physics_fidelity.json).
+`benchmarks/results/fruit_render/physics_fidelity.json` (local, not committed).
 
 ### Native RL pipeline comparison (2026-11-02)
 
@@ -91,7 +91,7 @@ and actual learning are covered by native tests. Both installed CPU/CUDA package
 build; the simulation suite passes 107 tests with eight optional GPU skips, and
 the installed package separately passes all nine new RL tests. Rendering remains
 a 20-second/300-frame preview of world time 40–60 seconds. Raw results are in
-[`rl_pipelines.json`](benchmarks/results/fruit_render/rl_pipelines.json).
+`benchmarks/results/fruit_render/rl_pipelines.json` (local, not committed).
 The installed-package report build passes in **157.86 s** including compilation;
 program time is **143.48 s**, with **141.24 s** rendering/streaming (CUDA overview
 **73.25 s**, CPU wrist **58.55 s**). These are replay timings, excluding training
@@ -133,7 +133,7 @@ renderer speed comparison. All 30 assets/links, full video decode, servo bounds,
 independent seeds and outcome/vision records pass. Native tests pass 98/106 with
 eight optional GPU skips; scoped documentation covers 193/193 definitions, six
 clangd hovers and five compiled public examples. See
-[`control_training.json`](benchmarks/results/fruit_render/control_training.json).
+`benchmarks/results/fruit_render/control_training.json` (local, not committed).
 
 ### Idle infeed watching (2026-11-02)
 
@@ -152,7 +152,7 @@ CPU wrist views **57.56 s**, and overview preparation **7.20 s**. Outer Nix buil
 are excluded. No longer clip or new training run was performed. Full video
 decode, all 26 assets/links, servo bounds, conserved outcomes and matching
 independent simulation trajectories/decisions pass. See
-[`infeed_watch.json`](benchmarks/results/fruit_render/infeed_watch.json).
+`benchmarks/results/fruit_render/infeed_watch.json` (local, not committed).
 
 ### Exterior realism pass (2026-11-02)
 
@@ -190,7 +190,7 @@ exterior assets/camera; it is not an equal-quality speed comparison. Full
 trajectories, classification decisions, checkpoint hashes and outcomes match;
 both saved wrist insets are pixel-identical. All 26 report assets, HTML links and
 TeX export pass the audit. Raw settings, fingerprints and timings are retained in
-[`presentation.json`](benchmarks/results/fruit_render/presentation.json).
+`benchmarks/results/fruit_render/presentation.json` (local, not committed).
 
 ### CPU wrist-view optimization (2026-11-02)
 
@@ -215,7 +215,7 @@ changed-pose inspection improves **466.66 → 341.45 ms**; stable-pose inspectio
 These are equal-weight sparse pose measurements, not a full-minute estimate.
 An earlier, more variable paired run observed 13.3% lower aggregate cost; its
 complete samples are retained with the acceptance data in
-[`wrist.json`](benchmarks/results/fruit_render/wrist.json). Unpinned host load and
+`benchmarks/results/fruit_render/wrist.json` (local, not committed). Unpinned host load and
 CPU clocks limit the precision of any individual timing.
 
 The same five-second, 75-frame GPU-overview playground clip now spends
@@ -268,7 +268,7 @@ and first base upload/render are recorded separately. An earlier run observed
 about 3.1x; the unpinned host and CPU clock/load variation limit precision.
 These sparse pose comparisons are not an end-to-end video speedup estimate.
 All samples, quality measurements and fingerprints are retained in
-[`cuda.json`](benchmarks/results/fruit_render/cuda.json).
+`benchmarks/results/fruit_render/cuda.json` (local, not committed).
 
 The float32 CUDA path uses a larger self-intersection bias. RGB RMSE across the
 four poses is **0.57–0.72 / 255**, source-ID mismatch **0.021–0.024%**, and
@@ -329,7 +329,7 @@ overview-render time improves **7.5%** in the latter comparison (**449 → 415 m
 These comparisons use the previous optimized renderer, sixteen workers for both
 implementations, and the same full-minute trajectory and quality settings.
 Three paired serial rounds per affinity mode retain all 144 full-frame samples
-in [`pass2.json`](benchmarks/results/fruit_render/pass2.json). The unpinned old
+in `benchmarks/results/fruit_render/pass2.json` (local, not committed). The unpinned old
 run means range from 618 to 811 ms, so an initial 16% estimate was not adopted;
 the reported reduction is the median of repeated run means, with the faster old
 run retained. These measurements include PNG output; production streaming does not.
@@ -425,7 +425,7 @@ Implemented in the canonical core and adopted in the complete playground code:
   from Nix package source inputs so editing them does not rebuild the core.
 
 Repeated adjacent comparisons are retained in
-[`optimized.json`](benchmarks/results/fruit_render/optimized.json). Three serial
+`benchmarks/results/fruit_render/optimized.json` (local, not committed). Three serial
 Latin-square rounds put each configuration in each position once. Each run uses
 12 temporal strata, with candidate caches primed from each frame's actual
 immediate predecessor outside timing. This matters: sampling jumps otherwise
@@ -519,7 +519,7 @@ Independent measurements, each repeated three times:
   crop, 50 warmed predictions per sample. It excludes localization/crop generation.
 - **Encoding all 900 existing PNGs:** **7.009 s** median, 6.905–7.170 s range,
   using the report's actual x264 settings. Optimizing the final H.264 encode
-  alone will barely affect the overall runtime. An [earlier encoding batch](benchmarks/results/fruit_render/encoding_initial.json)
+  alone will barely affect the overall runtime. An earlier encoding batch (`benchmarks/results/fruit_render/encoding_initial.json`, local, not committed)
   took 3.005–3.089 s; host load rose substantially for the retained final batch.
   The baseline labels its environment/load snapshot as the summary/encoding pass
   because native samples were reused when adding provenance checks. The final
@@ -910,12 +910,12 @@ automatically. It preserves manually written planning/history sections.
 
 ## All TensorFlow / in-house comparison tables
 
-Every archived comparison is included below, including superseded and exploratory runs. Use the dated results above for conclusions; do not combine different builds, fixture sets or noisy historical runs into one score. Ratios above 1 mean native took longer. Times are medians in microseconds; CV columns are percentages. Immutable snapshots retain older comparisons even when default output filenames are reused.
+Every archived comparison is included below, including superseded and exploratory runs. Use the dated results above for conclusions; do not combine different builds, fixture sets or noisy historical runs into one score. Ratios above 1 mean native took longer. Times are medians in microseconds; CV columns are percentages. Immutable snapshots retain older comparisons even when default output filenames are reused. The snapshot JSON is kept locally and is not committed; tables already in this report are kept when their snapshot is not on disk.
 **17 runs; 1049 per-case comparisons.**
 
 <details><summary>expanded_after_tf — 164 cases — e5a686c61138</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/e5a686c61138949b2f431c039a19615c99edcab65eca378a7cf65d8124e2df24.json). Run date: `2026-10-24T21:02:02.850448+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/e5a686c61138949b2f431c039a19615c99edcab65eca378a7cf65d8124e2df24.json` (local). Run date: `2026-10-24T21:02:02.850448+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1088,7 +1088,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/e5a686c61138949
 
 <details><summary>expanded_before_tf — 164 cases — 2e4bc6678786</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/2e4bc66787867a59fe741f3ca5a3e3961a65f1e9d3f2b27e4b2b2f44c18244ab.json). Run date: `2026-10-24T20:19:30.509855+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/2e4bc66787867a59fe741f3ca5a3e3961a65f1e9d3f2b27e4b2b2f44c18244ab.json` (local). Run date: `2026-10-24T20:19:30.509855+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1261,7 +1261,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/2e4bc66787867a5
 
 <details><summary>expanded_reduction_repeat_tf — 2 cases — 865445a7b659</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/865445a7b6592ee49cc33dea5b325a4061533e45648440c484f8e86bec8542a7.json). Run date: `2026-10-24T21:18:01.312504+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/865445a7b6592ee49cc33dea5b325a4061533e45648440c484f8e86bec8542a7.json` (local). Run date: `2026-10-24T21:18:01.312504+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1272,7 +1272,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/865445a7b6592ee
 
 <details><summary>gap_batch_check_tf — 1 cases — b24c24ab0012</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/b24c24ab0012e71d05ced6a5120df1f537263d002b893c000b090f74424e8111.json). Run date: `2026-10-24T17:44:10.855936+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/b24c24ab0012e71d05ced6a5120df1f537263d002b893c000b090f74424e8111.json` (local). Run date: `2026-10-24T17:44:10.855936+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1282,7 +1282,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/b24c24ab0012e71
 
 <details><summary>gap_tf_after — 28 cases — 83c0c3990eed</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/83c0c3990eed1f116c835a7182b3bf93d7b49674260de6d6e6c0f228a3a6b6eb.json). Run date: `2026-10-24T17:34:06.076769+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/83c0c3990eed1f116c835a7182b3bf93d7b49674260de6d6e6c0f228a3a6b6eb.json` (local). Run date: `2026-10-24T17:34:06.076769+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1319,7 +1319,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/83c0c3990eed1f1
 
 <details><summary>gap_tf_before — 28 cases — 3a51e143295d</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/3a51e143295dcf60cda48aded3ab8eb776c4e5e36a558dfd2365830dc6069892.json). Run date: `2026-10-24T17:25:40.610177+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/3a51e143295dcf60cda48aded3ab8eb776c4e5e36a558dfd2365830dc6069892.json` (local). Run date: `2026-10-24T17:25:40.610177+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1356,7 +1356,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/3a51e143295dcf6
 
 <details><summary>release_latest_repeat_tf — 2 cases — daf6388e89bc</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/daf6388e89bc45aafd5e29151b37061c9736c6578384d9034babc494e7f108cd.json). Run date: `2026-10-24T19:04:40.778198+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/daf6388e89bc45aafd5e29151b37061c9736c6578384d9034babc494e7f108cd.json` (local). Run date: `2026-10-24T19:04:40.778198+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1367,7 +1367,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/daf6388e89bc45a
 
 <details><summary>release_latest_tf — 72 cases — e316ff812b7d</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/e316ff812b7dd38b1d8348a9446cc818f5797f2e1846bcb17f9f7de34e3c00fc.json). Run date: `2026-10-24T18:59:34.706176+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/e316ff812b7dd38b1d8348a9446cc818f5797f2e1846bcb17f9f7de34e3c00fc.json` (local). Run date: `2026-10-24T18:59:34.706176+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1448,7 +1448,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/e316ff812b7dd38
 
 <details><summary>release_pass_after_tf — 72 cases — 90861f341f0f</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/90861f341f0f775b2afa4e0b3bf3777690273af6cbd2e4fb6b9931a7cefb1f6c.json). Run date: `2026-10-24T18:39:08.328303+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/90861f341f0f775b2afa4e0b3bf3777690273af6cbd2e4fb6b9931a7cefb1f6c.json` (local). Run date: `2026-10-24T18:39:08.328303+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1529,7 +1529,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/90861f341f0f775
 
 <details><summary>release_pass_before_tf — 72 cases — 7a7d16edba78</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/7a7d16edba781f00c2c95f136ceb6fe4b1eca4a459c65cb280b6c2326305b50f.json). Run date: `2026-10-24T18:31:42.878887+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/7a7d16edba781f00c2c95f136ceb6fe4b1eca4a459c65cb280b6c2326305b50f.json` (local). Run date: `2026-10-24T18:31:42.878887+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1610,7 +1610,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/7a7d16edba781f0
 
 <details><summary>release_pass_final_tf — 72 cases — a332244c2534</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/a332244c253416192084fbdad99cf762c0b8f7c8a69104f4b9830f7203a92b8b.json). Run date: `2026-10-24T19:27:54.764975+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/a332244c253416192084fbdad99cf762c0b8f7c8a69104f4b9830f7203a92b8b.json` (local). Run date: `2026-10-24T19:27:54.764975+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1691,7 +1691,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/a332244c2534161
 
 <details><summary>release_repeat_tf — 12 cases — 9f8cc75d4bbf</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/9f8cc75d4bbff5e09ae0df407032c995a3a34770b2909949503a5c6aeeeacc74.json). Run date: `2026-10-24T18:42:41.099596+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/9f8cc75d4bbff5e09ae0df407032c995a3a34770b2909949503a5c6aeeeacc74.json` (local). Run date: `2026-10-24T18:42:41.099596+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1712,7 +1712,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/9f8cc75d4bbff5e
 
 <details><summary>release_tf — 72 cases — a68ac8d3c004</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/a68ac8d3c004b9120725bda4592ab06379a8dfbb3cc50e63f438647cf0b626a3.json). Run date: `2026-10-24T18:36:29.246084+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/a68ac8d3c004b9120725bda4592ab06379a8dfbb3cc50e63f438647cf0b626a3.json` (local). Run date: `2026-10-24T18:36:29.246084+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1793,7 +1793,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/a68ac8d3c004b91
 
 <details><summary>tensorflow — 72 cases — b2f5f61d8958</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/b2f5f61d8958b06428d2c5f94a5c50c6056fb8484982273e6937c5fae3f46117.json). Run date: `2026-10-24T17:15:34.659765+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/b2f5f61d8958b06428d2c5f94a5c50c6056fb8484982273e6937c5fae3f46117.json` (local). Run date: `2026-10-24T17:15:34.659765+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1874,7 +1874,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/b2f5f61d8958b06
 
 <details><summary>tensorflow_before — 72 cases — bbbe5abecabd</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/bbbe5abecabdda8c64589266e20dafb2adbd4fd6cb7afa73fb76f8aad938fa12.json). Run date: `2026-10-24T16:31:11.607651+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/bbbe5abecabdda8c64589266e20dafb2adbd4fd6cb7afa73fb76f8aad938fa12.json` (local). Run date: `2026-10-24T16:31:11.607651+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1955,7 +1955,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/bbbe5abecabdda8
 
 <details><summary>tensorflow_final — 72 cases — 535f52c7b8cc</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/535f52c7b8cceee4e02f7d6093d161aae45ad2bc7a1e148fb9075b6ced527243.json). Run date: `2026-10-24T16:50:00.067413+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/535f52c7b8cceee4e02f7d6093d161aae45ad2bc7a1e148fb9075b6ced527243.json` (local). Run date: `2026-10-24T16:50:00.067413+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -2036,7 +2036,7 @@ Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/535f52c7b8cceee
 
 <details><summary>tensorflow_paired_after — 72 cases — 778322254170</summary>
 
-Immutable data: [JSON](benchmarks/results/tensorflow/comparisons/778322254170f6680b9b8e90a34391ed9e0aae9b4bf59dc08eefb36be2b48fad.json). Run date: `2026-10-24T16:36:53.831080+00:00`.
+Snapshot: `benchmarks/results/tensorflow/comparisons/778322254170f6680b9b8e90a34391ed9e0aae9b4bf59dc08eefb36be2b48fad.json` (local). Run date: `2026-10-24T16:36:53.831080+00:00`.
 
 | Case | Native µs | TF eager µs | TF graph µs | Native/eager | Native/graph | Native CV% | Eager CV% | Graph CV% |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -2888,7 +2888,8 @@ measurements; smoke runs provide execution coverage only.
   and `cache_pass_final_after.json`; intermediate accepted/rejected experiments
   remain alongside them.
 - Compact summaries: `benchmarks/history/summaries/`; immutable raw snapshots:
-  `benchmarks/history/runs/` (gitignored). Commit summaries for lasting Git history.
+  `benchmarks/history/runs/` (both gitignored, local only). The committed TSV comparisons
+  below keep the lasting record.
 - Comparison: `benchmarks/history/cache-pass-comparison.tsv`; sample compatible
   time series: `benchmarks/history/cache-pass-trend.tsv`.
 - `just benchmark-record FILE --label LABEL` imports historical observations;
