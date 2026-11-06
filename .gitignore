@@ -139,3 +139,7 @@ docs/mepml/examples/**/figures/*.gif
 
 # Keep generated SVG plots out even where a wildcard exception above re-includes a folder.
 *.svg
+
+# Benchmark JSON (raw results and history summaries) is local output, never committed.
+/benchmarks/results/**/*.json
+/benchmarks/history/**/*.json

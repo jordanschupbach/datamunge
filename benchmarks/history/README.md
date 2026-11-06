@@ -4,10 +4,10 @@ Every successful `just bench-backend` run automatically stores its original JSON
 in `runs/<sha256>.json` and a compact summary in `summaries/<sha256>.json`.
 Snapshots are content-addressed and written atomically; recording the same file
 again is idempotent. Failed fixtures are rejected and optional LAPACK skips are
-explicit. Raw archives are gitignored; **commit the compact summaries** to keep
-long-term history in the repository. Existing result files remain intact.
-CI uploads raw results and summaries for 90 days; committed summaries outlive
-artifact retention. No timing regression gate is enabled on shared CI runners.
+explicit. Raw archives and summaries are gitignored (local only); keep
+long-term history in CI artifacts or your own archive. Existing result files remain intact.
+CI uploads raw results and summaries for 90 days.
+No timing regression gate is enabled on shared CI runners.
 
 ```sh
 # Capture a repeated observation (automatic persistent recording).
