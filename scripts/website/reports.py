@@ -314,9 +314,25 @@ def report_rel(path, examples_root):
     return os.path.relpath(os.path.abspath(path), os.path.abspath(examples_root)).replace(os.sep, "/")
 
 
+FIGURE_REF = re.compile(r'\\(?:image|video)\(([^)\s]+)\)|```\{[^\n}]*?\bfile="([^"]+)"')
+
+
+def missing_figures(path):
+    """Figures the report shows that are not on disk (they are build output, never committed)."""
+    with open(path, encoding="utf-8") as source:
+        text = source.read()
+    base = os.path.dirname(path)
+    refs = {a or b for a, b in FIGURE_REF.findall(text)}
+    return sorted(r for r in refs
+                  if not re.match(r"^[a-z]+:|^/", r) and not os.path.exists(os.path.join(base, r)))
+
+
 def is_stale(path, status_path, force=False):
-    """Whether the report has to run: it changed since its last run, or that run failed."""
+    """Whether the report has to run: it changed since its last run, that run failed,
+    or a figure it shows is missing (e.g. a fresh clone or a cleaned tree)."""
     if force or not os.path.exists(status_path) or os.path.getmtime(path) > os.path.getmtime(status_path):
+        return True
+    if missing_figures(path):
         return True
     # A report that failed (or that mep could not run) is rerun until it passes:
     # the fix may be in the library, not in the report.

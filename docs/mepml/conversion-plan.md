@@ -129,7 +129,9 @@ Never print SVG XML or data URIs into report results.
    Blocks are short; anything long or reusable moves into the library.
 4. Figures: programs write `build/<name>.svg`; the block has
    `file="figures/<name>.svg"`, a `\caption(...)` and an `\alttext(...)`.
-   Figures are committed (`.gitignore` re-includes report SVG and PNG assets).
+   Figures are build output and are never committed (`.gitignore` ignores report
+   SVG and PNG files); running the reports (`just docs`) renders them again, and
+   a report whose figures are missing is rerun.
    Pixel-image contact sheets may use `build/<name>.png` and a matching `file=`
    instead: use tensor `save_image_grid` with explicit pixel scaling/spacing,
    and identify the class order in the caption. PNG keeps original image pixels
@@ -142,7 +144,7 @@ Never print SVG XML or data URIs into report results.
    the rendered image through `file=` as above. Add missing reusable primitives
    to the native graphics library. Use multiline UTF-8 labels and equal coordinate
    scales for geometry. Visually inspect the exported diagram alongside plots.
-   The docs export consumes committed rendered figures.
+   The docs export consumes the figures the report run just rendered.
    **Make every figure render well in HTML** (user, 2026-10-28). The Doxygen page
    scales each figure to the width of the text column, about 700 to 1100 px:
    - Multi-panel `RLayout` figures must call `.fit_panels()` after `.size(...)`

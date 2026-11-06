@@ -63,7 +63,8 @@ tensor inference. Formatting must keep statements and control flow readable.
 - For pixel-image contact sheets, prefer tensor `save_image_grid` to a local PNG
   with explicit class order and integer pixel scaling. This avoids large SVG
   rectangle payloads for raster data. Keep scalar plots, heatmaps and concept
-  diagrams as local SVGs; both formats are committed and exported.
+  diagrams as local SVGs; both formats are build output
+  (not committed), rendered again when the reports run, and exported.
 - The original `.cpp` examples stay for now: they are `just run-nn` targets with
   Python/R mirrors and audit entries (`examples/nn/example_audit.json`). Removing
   them is a separate decision for the user.
