@@ -416,17 +416,31 @@ TEST(RLayout, SavesSvgWithOneNestedSvgPerPanel) {
   std::filesystem::remove(path);
 }
 
-TEST(PlotSvg, TextColourIsNotOverriddenByStylesheet) {
-  // A stylesheet rule "text{fill:...}" beats the fill attribute in every renderer, so the
-  // default colour must only target text without its own fill.
+TEST(PlotSvg, TextIsDrawnFromEmbeddedFontOutlines) {
+  // Web fonts (@font-face) are ignored by Inkscape, librsvg and many editors, which then fall
+  // back to a system serif; outlines render as Computer Modern everywhere.
   auto p = RPlot::plot({0.0, 1.0}, {0.0, 1.0}, "p", "pts");
+  p.title("Title");
   p.text(0.5, 0.5, "white", RGB{255, 255, 255});
   const std::string svg = p.to_svg();
+  EXPECT_EQ(svg.find("@font-face"), std::string::npos);
+  EXPECT_EQ(svg.find("font-family"), std::string::npos);
+  EXPECT_NE(svg.find("<path id=\"dm-g-"), std::string::npos);
+  EXPECT_NE(svg.find("<use href=\"#dm-g-"), std::string::npos);
+  // Each label keeps its own colour; the searchable <text> copy is invisible.
   EXPECT_NE(svg.find("fill=\"rgb(255,255,255)\""), std::string::npos);
-  EXPECT_NE(svg.find("text:not([fill]){fill:"), std::string::npos);
-  const auto rule = svg.find("text{font-family:");
-  ASSERT_NE(rule, std::string::npos);
-  EXPECT_EQ(svg.substr(rule, svg.find('}', rule) - rule).find("fill"), std::string::npos);
+  const auto title = svg.find(">Title</text>");
+  ASSERT_NE(title, std::string::npos);
+  EXPECT_NE(svg.substr(svg.rfind("<text", title), title - svg.rfind("<text", title)).find("opacity=\"0\""),
+            std::string::npos);
+  // Every referenced glyph is defined exactly once, also in multi-panel layouts.
+  auto layout = RLayout::create(1, 2);
+  layout.title("Grid").add(p).add(p);
+  const std::string grid = layout.to_svg();
+  const std::string id = grid.substr(grid.find("<use href=\"#") + 12);
+  const std::string def = "id=\"" + id.substr(0, id.find('"')) + "\"";
+  EXPECT_NE(grid.find(def), std::string::npos);
+  EXPECT_EQ(grid.find(def, grid.find(def) + 1), std::string::npos);
 }
 
 TEST(PlotSvg, ToSvgReturnsSameDocumentAsSaveSvg) {

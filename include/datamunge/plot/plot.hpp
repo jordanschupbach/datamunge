@@ -473,8 +473,8 @@ class Plot {
 
   /// @brief Renders the plot as a standalone SVG document and returns it as a string.
   ///
-  /// The document starts with an XML declaration and embeds the plot font, so it displays
-  /// identically in any browser. The plot is not modified, and no file or display is used.
+  /// The document starts with an XML declaration and draws text as embedded Computer Modern
+  /// glyph outlines, so it displays identically in any SVG viewer, with or without web fonts. The plot is not modified, and no file or display is used.
   ///
   /// @return The complete SVG text.
   /// @throws std::runtime_error  If the plot has no data series, or the canvas is smaller than

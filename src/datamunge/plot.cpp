@@ -14,11 +14,14 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iomanip>
+#include <locale>
 #include <memory>
+#include <set>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -406,39 +409,152 @@ RGB darken(RGB color, double amount) {
   return RGB{mix(color.r), mix(color.g), mix(color.b), color.alpha};
 }
 
-/// @brief CSS font stack for SVG text: the embedded Computer Modern subset, then installed copies.
-constexpr const char* kSvgFontFamily = "'datamunge CMU Serif','CMU Serif','Latin Modern Roman','Computer Modern',serif";
+// ---- Text: embedded Computer Modern (CMU Serif) --------------------------------------------
 
-/// @brief `<defs>` block embedding the CMU Serif subset (WOFF, base64) for SVG text; built once.
-const std::string& svg_font_defs() {
-  static const std::string defs = [] {
-    constexpr char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    const auto*    data = detail::cmu_serif::woff;
-    const std::size_t size = std::size(detail::cmu_serif::woff);
-    std::string    b64;
-    b64.reserve((size + 2) / 3 * 4);
-    for (std::size_t i = 0; i < size; i += 3) {
-      const std::uint32_t n = (std::uint32_t{data[i]} << 16) | (i + 1 < size ? std::uint32_t{data[i + 1]} << 8 : 0U)
-                            | (i + 2 < size ? std::uint32_t{data[i + 2]} : 0U);
-      b64 += alphabet[(n >> 18) & 63U];
-      b64 += alphabet[(n >> 12) & 63U];
-      b64 += i + 1 < size ? alphabet[(n >> 6) & 63U] : '=';
-      b64 += i + 2 < size ? alphabet[n & 63U] : '=';
+namespace font = detail::cmu_serif;
+
+/// @brief Where a text run sits relative to its anchor x (SVG `text-anchor`).
+enum class TextAnchor { Start, Middle, End };
+
+/// @brief Decodes UTF-8, mapping malformed sequences to U+FFFD.
+std::vector<char32_t> decode_utf8(const std::string& text) {
+  std::vector<char32_t> out;
+  out.reserve(text.size());
+  for (std::size_t i = 0; i < text.size();) {
+    const auto lead = static_cast<unsigned char>(text[i]);
+    const int  extra = lead < 0x80 ? 0 : (lead >> 5) == 0x6 ? 1 : (lead >> 4) == 0xE ? 2 : (lead >> 3) == 0x1E ? 3 : -1;
+    if (extra < 0 || i + static_cast<std::size_t>(extra) >= text.size()) {
+      out.push_back(U'�');
+      ++i;
+      continue;
     }
-    return "  <defs><style>@font-face{font-family:'datamunge CMU Serif';src:url(data:font/woff;base64," + b64
-         + ") format('woff');}</style></defs>\n";
-  }();
-  return defs;
+    char32_t cp = extra == 0 ? lead : lead & (0x3F >> extra);
+    bool     ok = true;
+    for (int k = 1; k <= extra; ++k) {
+      const auto next = static_cast<unsigned char>(text[i + static_cast<std::size_t>(k)]);
+      if ((next & 0xC0) != 0x80) {
+        ok = false;
+        break;
+      }
+      cp = (cp << 6) | (next & 0x3F);
+    }
+    out.push_back(ok ? cp : U'�');
+    i += ok ? static_cast<std::size_t>(extra) + 1 : 1;
+  }
+  return out;
+}
+
+/// @brief Index of @p cp in the embedded glyph table, or of '?' when the font lacks it.
+std::size_t glyph_index(char32_t cp) {
+  const auto begin = std::begin(font::glyphs);
+  const auto end = std::end(font::glyphs);
+  const auto found = std::lower_bound(begin, end, cp, [](const font::GlyphEntry& g, char32_t c) { return g.codepoint < c; });
+  if (found != end && found->codepoint == cp) return static_cast<std::size_t>(found - begin);
+  return cp == U'?' ? 0 : glyph_index(U'?');
+}
+
+/// @brief Pair kerning between two glyph indices, in font units (0 when unkerned).
+int kerning(std::size_t left, std::size_t right) {
+  const auto key = std::pair{left, right};
+  const auto found = std::lower_bound(std::begin(font::kerning), std::end(font::kerning), key,
+                                      [](const font::KernPair& k, const std::pair<std::size_t, std::size_t>& v) {
+                                        return std::pair<std::size_t, std::size_t>{k.left, k.right} < v;
+                                      });
+  if (found != std::end(font::kerning) && found->left == left && found->right == right) return found->value;
+  return 0;
+}
+
+/// @brief Glyph indices of @p text plus each glyph's pen x offset in font units; returns the total advance.
+double layout_glyphs(const std::string& text, std::vector<std::size_t>& indices, std::vector<double>& offsets) {
+  indices.clear();
+  offsets.clear();
+  double pen = 0.0;
+  for (const char32_t cp : decode_utf8(text)) {
+    const std::size_t index = glyph_index(cp);
+    if (!indices.empty()) pen += kerning(indices.back(), index);
+    indices.push_back(index);
+    offsets.push_back(pen);
+    pen += font::glyphs[index].advance;
+  }
+  return pen;
+}
+
+/// @brief Width in pixels of @p text set in the embedded font at @p px pixels per em.
+[[maybe_unused]] double text_width(const std::string& text, double px) {
+  std::vector<std::size_t> indices;
+  std::vector<double>      offsets;
+  return layout_glyphs(text, indices, offsets) * px / font::units_per_em;
+}
+
+
+/// @brief Writes one embedded-font glyph outline as a reusable SVG `<path>` (font units, y up).
+void svg_glyph_path(std::ostream& out, std::size_t index) {
+  const auto& glyph = font::glyphs[index];
+  const auto* points = font::points + 2U * glyph.point_begin;
+  std::size_t next = 0;
+  out << "    <path id=\"dm-g-" << index << "\" d=\"";
+  for (std::uint32_t i = 0; i < glyph.op_count; ++i) {
+    const auto op = font::ops[glyph.op_begin + i];
+    out << (op == font::MOVE ? 'M' : op == font::LINE ? 'L' : op == font::QUAD ? 'Q' : op == font::CUBIC ? 'C' : 'Z');
+    const int count = op == font::CLOSE ? 0 : op == font::CUBIC ? 3 : op == font::QUAD ? 2 : 1;
+    for (int j = 0; j < count; ++j, ++next) out << points[2 * next] << ' ' << points[2 * next + 1] << ' ';
+  }
+  out << "\"/>\n";
+}
+
+/// @brief `<defs>` holding the outline of every glyph that @p body references via `#dm-g-N`.
+///        Text is drawn from outlines rather than an @font-face web font, which many SVG
+///        renderers (Inkscape, librsvg, editors) ignore and replace with a system serif.
+std::string svg_glyph_defs(const std::string& body) {
+  std::set<std::size_t> used;
+  const std::string     marker = "href=\"#dm-g-";
+  for (auto at = body.find(marker); at != std::string::npos; at = body.find(marker, at + 1))
+    used.insert(static_cast<std::size_t>(std::strtoul(body.c_str() + at + marker.size(), nullptr, 10)));
+  if (used.empty()) return {};
+  std::ostringstream out;
+  out.imbue(std::locale::classic());
+  out << "  <defs>\n";
+  for (const auto index : used) svg_glyph_path(out, index);
+  out << "  </defs>\n";
+  return out.str();
+}
+
+/// @brief Writes @p text as Computer Modern glyph outlines with its baseline at (@p x, @p y),
+///        matching the raster draw_text() layout (kerning, anchors). @p vertical rotates it
+///        -90 degrees about the anchor. An invisible `<text>` copy keeps the label searchable.
+void svg_text(std::ostream&      out,
+              double             x,
+              double             y,
+              const std::string& text,
+              double             px,
+              TextAnchor         anchor,
+              const std::string& fill,
+              bool               vertical = false) {
+  if (text.empty()) return;
+  std::vector<std::size_t> indices;
+  std::vector<double>      offsets;
+  const double             scale = px / font::units_per_em;
+  const double             width = layout_glyphs(text, indices, offsets) * scale;
+  const double             shift = anchor == TextAnchor::Middle ? -width / 2.0 : anchor == TextAnchor::End ? -width : 0.0;
+  out << "  <text x=\"" << x << "\" y=\"" << y << "\" font-size=\"" << px << "\" opacity=\"0\"";
+  if (vertical) out << " transform=\"rotate(-90 " << x << ' ' << y << ")\"";
+  if (anchor != TextAnchor::Start) out << " text-anchor=\"" << (anchor == TextAnchor::Middle ? "middle" : "end") << '"';
+  out << '>' << xml_escape(text) << "</text>\n";
+  out << "  <g aria-hidden=\"true\" fill=\"" << fill << "\" transform=\"translate(" << x << ' ' << y << ')';
+  if (vertical) out << " rotate(-90)";
+  out << "\">";
+  for (std::size_t g = 0; g < indices.size(); ++g) {
+    if (font::glyphs[indices[g]].op_count == 0) continue; // spaces have no outline
+    out << "<use href=\"#dm-g-" << indices[g] << "\" transform=\"matrix(" << scale << " 0 0 " << -scale << ' '
+        << shift + offsets[g] * scale << " 0)\"/>";
+  }
+  out << "</g>\n";
 }
 
 void write_axes_and_grid(std::ostringstream& out, const Plot& plot, const Layout& layout) {
   out << "  <rect width=\"100%\" height=\"100%\" fill=\"" << rgb_css(plot.background_color())
       << "\"/>\n";
-  out << "  <style>"
-      // The default colour applies only to text without its own fill attribute: a CSS rule
-      // would otherwise override the per-label colour of text().
-      << "text{font-family:" << kSvgFontFamily << ";}text:not([fill]){fill:" << rgb_css(plot.axes_color()) << ";}"
-      << "</style>\n";
+  const std::string ink = rgb_css(plot.axes_color());
 
   if (!plot.axes_hidden()) {
     if (plot.grid_visible()) {
@@ -465,32 +581,20 @@ void write_axes_and_grid(std::ostringstream& out, const Plot& plot, const Layout
         << rgb_css(plot.axes_color()) << "\" stroke-width=\"2\"/>\n";
 
     for (const auto& tick : x_axis_ticks(plot, layout)) {
-      out << "  <text x=\"" << tick.pixel << "\" y=\"" << x_tick_baseline(layout, plot.tick_font_px())
-          << "\" font-size=\"" << plot.tick_font_px() << "\" text-anchor=\"middle\">" << xml_escape(tick.label)
-          << "</text>\n";
+      svg_text(out, tick.pixel, x_tick_baseline(layout, plot.tick_font_px()), tick.label, plot.tick_font_px(),
+               TextAnchor::Middle, ink);
     }
     for (const auto& tick : y_axis_ticks(plot, layout)) {
-      out << "  <text x=\"" << layout.left - 10 << "\" y=\"" << tick.pixel + kTextCenterEm * plot.tick_font_px()
-          << "\" font-size=\"" << plot.tick_font_px() << "\" text-anchor=\"end\">" << xml_escape(tick.label)
-          << "</text>\n";
+      svg_text(out, layout.left - 10, tick.pixel + kTextCenterEm * plot.tick_font_px(), tick.label,
+               plot.tick_font_px(), TextAnchor::End, ink);
     }
   }
 
-  out << "  <text x=\"" << plot.width() / 2.0
-      << "\" y=\"36\" font-size=\"24\" text-anchor=\"middle\">"
-      << xml_escape(plot.title_text()) << "</text>\n";
-  if (!plot.subtitle_text().empty()) {
-    out << "  <text x=\"" << plot.width() / 2.0
-        << "\" y=\"60\" font-size=\"16\" text-anchor=\"middle\">"
-        << xml_escape(plot.subtitle_text()) << "</text>\n";
-  }
+  svg_text(out, plot.width() / 2.0, 36.0, plot.title_text(), 24.0, TextAnchor::Middle, ink);
+  svg_text(out, plot.width() / 2.0, 60.0, plot.subtitle_text(), 16.0, TextAnchor::Middle, ink);
   if (!plot.axes_hidden()) {
-    out << "  <text x=\"" << plot.width() / 2.0 << "\" y=\"" << plot.height() - 20
-        << "\" font-size=\"16\" text-anchor=\"middle\">" << xml_escape(plot.x_label_text())
-        << "</text>\n";
-    out << "  <text x=\"24\" y=\"" << plot.height() / 2.0
-        << "\" font-size=\"16\" text-anchor=\"middle\" transform=\"rotate(-90 24 "
-        << plot.height() / 2.0 << ")\">" << xml_escape(plot.y_label_text()) << "</text>\n";
+    svg_text(out, plot.width() / 2.0, plot.height() - 20.0, plot.x_label_text(), 16.0, TextAnchor::Middle, ink);
+    svg_text(out, 24.0, plot.height() / 2.0, plot.y_label_text(), 16.0, TextAnchor::Middle, ink, true);
   }
 }
 
@@ -642,10 +746,9 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
         if (series.x.empty()) {
           break;
         }
-        out << "  <text x=\"" << map_x(layout, series.x[0]) << "\" y=\""
-            << map_y(layout, series.y[0]) << "\" dy=\"0.35em\" font-size=\"" << series.marker_size
-            << "\" fill=\"" << color << "\" text-anchor=\"middle\">" << xml_escape(series.label)
-            << "</text>\n";
+        // Vertically centred on the point, like R's text().
+        svg_text(out, map_x(layout, series.x[0]), map_y(layout, series.y[0]) + kTextCenterEm * series.marker_size,
+                 series.label, series.marker_size, TextAnchor::Middle, color);
         break;
       }
       case DataSeries::Kind::Segment: {
@@ -679,8 +782,7 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
       if (entry.color.alpha < 1.0)
         out << " fill-opacity=\"" << std::clamp(entry.color.alpha, 0.0, 1.0) << "\"";
       out << "/>\n";
-      out << "  <text x=\"" << x0 + 26 << "\" y=\"" << legend_y - 4 << "\" font-size=\"12\">"
-          << xml_escape(entry.label) << "</text>\n";
+      svg_text(out, x0 + 26, legend_y - 4, entry.label, 12.0, TextAnchor::Start, rgb_css(plot.axes_color()));
       legend_y += 20.0;
     }
   } else {
@@ -691,8 +793,7 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
       const double x0 = layout.left + layout.plot_w - 140.0;
       out << "  <rect x=\"" << x0 << "\" y=\"" << legend_y - 12
           << "\" width=\"18\" height=\"8\" fill=\"" << rgb_css(series.color) << "\"/>\n";
-      out << "  <text x=\"" << x0 + 26 << "\" y=\"" << legend_y - 4 << "\" font-size=\"12\">"
-          << xml_escape(series.label) << "</text>\n";
+      svg_text(out, x0 + 26, legend_y - 4, series.label, 12.0, TextAnchor::Start, rgb_css(plot.axes_color()));
       legend_y += 20.0;
     }
   }
@@ -712,8 +813,8 @@ std::string svg_string(const Plot& plot) {
   out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" << plot.width()
       << "\" height=\"" << plot.height() << "\" viewBox=\"0 0 " << plot.width() << " "
       << plot.height() << "\">\n";
-  out << svg_font_defs();
-  out << svg_body(plot);
+  const std::string body = svg_body(plot);
+  out << svg_glyph_defs(body) << body;
   out << "</svg>\n";
   return out.str();
 }
@@ -762,83 +863,6 @@ void draw_line(Image& image, double x0, double y0, double x1, double y1, RGB col
     const double py = y0 + dy * t;
     draw_circle(image, px, py, radius, color);
   }
-}
-
-// ---- Text: embedded Computer Modern (CMU Serif) --------------------------------------------
-
-namespace font = detail::cmu_serif;
-
-/// @brief Where a text run sits relative to its anchor x (SVG `text-anchor`).
-enum class TextAnchor { Start, Middle, End };
-
-/// @brief Decodes UTF-8, mapping malformed sequences to U+FFFD.
-std::vector<char32_t> decode_utf8(const std::string& text) {
-  std::vector<char32_t> out;
-  out.reserve(text.size());
-  for (std::size_t i = 0; i < text.size();) {
-    const auto lead = static_cast<unsigned char>(text[i]);
-    const int  extra = lead < 0x80 ? 0 : (lead >> 5) == 0x6 ? 1 : (lead >> 4) == 0xE ? 2 : (lead >> 3) == 0x1E ? 3 : -1;
-    if (extra < 0 || i + static_cast<std::size_t>(extra) >= text.size()) {
-      out.push_back(U'�');
-      ++i;
-      continue;
-    }
-    char32_t cp = extra == 0 ? lead : lead & (0x3F >> extra);
-    bool     ok = true;
-    for (int k = 1; k <= extra; ++k) {
-      const auto next = static_cast<unsigned char>(text[i + static_cast<std::size_t>(k)]);
-      if ((next & 0xC0) != 0x80) {
-        ok = false;
-        break;
-      }
-      cp = (cp << 6) | (next & 0x3F);
-    }
-    out.push_back(ok ? cp : U'�');
-    i += ok ? static_cast<std::size_t>(extra) + 1 : 1;
-  }
-  return out;
-}
-
-/// @brief Index of @p cp in the embedded glyph table, or of '?' when the font lacks it.
-std::size_t glyph_index(char32_t cp) {
-  const auto begin = std::begin(font::glyphs);
-  const auto end = std::end(font::glyphs);
-  const auto found = std::lower_bound(begin, end, cp, [](const font::GlyphEntry& g, char32_t c) { return g.codepoint < c; });
-  if (found != end && found->codepoint == cp) return static_cast<std::size_t>(found - begin);
-  return cp == U'?' ? 0 : glyph_index(U'?');
-}
-
-/// @brief Pair kerning between two glyph indices, in font units (0 when unkerned).
-int kerning(std::size_t left, std::size_t right) {
-  const auto key = std::pair{left, right};
-  const auto found = std::lower_bound(std::begin(font::kerning), std::end(font::kerning), key,
-                                      [](const font::KernPair& k, const std::pair<std::size_t, std::size_t>& v) {
-                                        return std::pair<std::size_t, std::size_t>{k.left, k.right} < v;
-                                      });
-  if (found != std::end(font::kerning) && found->left == left && found->right == right) return found->value;
-  return 0;
-}
-
-/// @brief Glyph indices of @p text plus each glyph's pen x offset in font units; returns the total advance.
-double layout_glyphs(const std::string& text, std::vector<std::size_t>& indices, std::vector<double>& offsets) {
-  indices.clear();
-  offsets.clear();
-  double pen = 0.0;
-  for (const char32_t cp : decode_utf8(text)) {
-    const std::size_t index = glyph_index(cp);
-    if (!indices.empty()) pen += kerning(indices.back(), index);
-    indices.push_back(index);
-    offsets.push_back(pen);
-    pen += font::glyphs[index].advance;
-  }
-  return pen;
-}
-
-/// @brief Width in pixels of @p text set in the embedded font at @p px pixels per em.
-[[maybe_unused]] double text_width(const std::string& text, double px) {
-  std::vector<std::size_t> indices;
-  std::vector<double>      offsets;
-  return layout_glyphs(text, indices, offsets) * px / font::units_per_em;
 }
 
 /// @brief Exact-area coverage accumulator: lines add signed area, a running row sum yields coverage.
@@ -2827,25 +2851,21 @@ std::string RLayout::to_svg() const {
   out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
   out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" << width_ << "\" height=\""
       << height_ << "\" viewBox=\"0 0 " << width_ << " " << height_ << "\">\n";
-  out << svg_font_defs();
-  out << "  <rect width=\"100%\" height=\"100%\" fill=\"rgb(255,255,255)\"/>\n";
-  if (!title_.empty()) {
-    out << "  <text x=\"" << static_cast<double>(width_) / 2.0 << "\" y=\"" << band * 0.7
-        << "\" font-size=\"24\" text-anchor=\"middle\" "
-        << "font-family=\"" << kSvgFontFamily << "\" fill=\"rgb(55,65,81)\">"
-        << xml_escape(title_) << "</text>\n";
-  }
+  std::ostringstream body;
+  body << "  <rect width=\"100%\" height=\"100%\" fill=\"rgb(255,255,255)\"/>\n";
+  svg_text(body, static_cast<double>(width_) / 2.0, band * 0.7, title_, 24.0, TextAnchor::Middle, "rgb(55,65,81)");
   for (std::size_t i = 0; i < panels_.size(); ++i) {
     const std::size_t row = i / cols_;
     const std::size_t col = i % cols_;
     const double       x = static_cast<double>(col) * cell_w;
     const double       y = band + static_cast<double>(row) * cell_h;
-    out << "  <svg x=\"" << x << "\" y=\"" << y << "\" width=\"" << cell_w << "\" height=\""
-        << cell_h << "\" viewBox=\"0 0 " << panels_[i].plot.width() << " "
-        << panels_[i].plot.height() << "\">\n"
-        << panels_[i].svg_fragment << "  </svg>\n";
+    body << "  <svg x=\"" << x << "\" y=\"" << y << "\" width=\"" << cell_w << "\" height=\""
+         << cell_h << "\" viewBox=\"0 0 " << panels_[i].plot.width() << " "
+         << panels_[i].plot.height() << "\">\n"
+         << panels_[i].svg_fragment << "  </svg>\n";
   }
-  out << "</svg>\n";
+  // Glyph outlines are defined once at the root and shared by every panel.
+  out << svg_glyph_defs(body.str()) << body.str() << "</svg>\n";
   return out.str();
 }
 
