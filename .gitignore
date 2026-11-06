@@ -143,3 +143,6 @@ docs/mepml/examples/**/figures/*.gif
 # Benchmark JSON (raw results and history summaries) is local output, never committed.
 /benchmarks/results/**/*.json
 /benchmarks/history/**/*.json
+
+# Shapefiles the GIS examples (gis_ex) write into the working directory.
+/datamunge_gis_ex_counties_*
